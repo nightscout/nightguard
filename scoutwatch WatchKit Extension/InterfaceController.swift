@@ -8,7 +8,6 @@
 
 import WatchKit
 import Foundation
-import NKWatchChart
 
 class InterfaceController: WKInterfaceController {
 
@@ -88,90 +87,10 @@ class InterfaceController: WKInterfaceController {
         }
     }
     
-    func createChart(sgvValues : [Int]) {
-        let frame = self.contentFrame
-        let rect : CGRect = CGRect.init(x: 0, y: 0, width: 332, height: 120)
-        let chart : NKLineChart = NKLineChart.init(frame: rect)
-        chart.showCoordinateAxis = false
-        chart.showLabel = true
-        chart.yFixedValueMax = 200
-        chart.yFixedValueMin = 0
-        chart.yUnit = "mg/dl"
-        chart.xUnit = "Time"
-        chart.yLabels = [80, 180]
-        chart.yLabelFormat = "%1.1f"
-        chart.xLabels = ["1", "2", "3", "4", "5", "6"]
-        chart.yLabelColor = NKGREEN
-        chart.xLabelColor = NKGREEN
-        chart.xLabelFont = UIFont.systemFontOfSize(6)
-        chart.yLabelFont = UIFont.systemFontOfSize(6)
-        chart.xLabelWidth = 0
-        chart.yLabelHeight = 0
-        chart.chartMargin = 0
-        
-        // paint the real blood glucose data line
-        let lineChartGlucoseData : NKLineChartData = NKLineChartData.init()
-        lineChartGlucoseData.color = NKGREEN
-        lineChartGlucoseData.itemCount = UInt(sgvValues.count)
-        //lineChartGlucoseData.lineWidth = 5
-        //lineChartGlucoseData.inflexionPointStyle = NKLineChartPointStyle.Circle
-        //lineChartGlucoseData.inflexionPointWidth = 2
-        lineChartGlucoseData.getData = {(index : UInt) -> NKLineChartDataItem in
-            let yValue : CGFloat = CGFloat(sgvValues[Int(index)] as NSNumber)
-            // increase the maximum y axis if the data is above 200
-            if yValue > chart.yFixedValueMax {
-                chart.yFixedValueMax = yValue
-            }
-            return NKLineChartDataItem.init(y: yValue)
-        }
-        
-        // paint the 80 line
-        let lineChart80Data : NKLineChartData = NKLineChartData.init()
-        lineChart80Data.color = NKYELLOW
-        lineChart80Data.itemCount = UInt(sgvValues.count)
-        lineChart80Data.getData = {(index : UInt) -> NKLineChartDataItem in
-            return NKLineChartDataItem.init(y: 80)
-        }
-        
-        // paint the 180 line
-        let lineChart180Data : NKLineChartData = NKLineChartData.init()
-        lineChart180Data.color = NKYELLOW
-        lineChart180Data.itemCount = UInt(sgvValues.count)
-        lineChart180Data.getData = {(index : UInt) -> NKLineChartDataItem in
-            return NKLineChartDataItem.init(y: 180)
-        }
-        
-        chart.chartData = [lineChartGlucoseData, lineChart80Data, lineChart180Data]
-        let image : UIImage = chart.drawImage()
+    func createChart(bgValues : [Int]) {
+        let chartPainter : ChartPainter = ChartPainter();
 
-        self.chartImage.setImage(drawCustomImage(frame.size))
-    }
-    
-    func drawCustomImage(size: CGSize) -> UIImage {
-        // Setup our context
-        let bounds = CGRect(origin: CGPoint.zero, size: size)
-        let opaque = false
-        let scale: CGFloat = 0
-        UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
-        let context = UIGraphicsGetCurrentContext()
-        
-        // Setup complete, do drawing here
-        CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor)
-        CGContextSetLineWidth(context, 2.0)
-        
-        CGContextStrokeRect(context, bounds)
-        
-        CGContextBeginPath(context)
-        CGContextMoveToPoint(context, CGRectGetMinX(bounds), CGRectGetMinY(bounds))
-        CGContextAddLineToPoint(context, CGRectGetMaxX(bounds), CGRectGetMaxY(bounds))
-        CGContextMoveToPoint(context, CGRectGetMaxX(bounds), CGRectGetMinY(bounds))
-        CGContextAddLineToPoint(context, CGRectGetMinX(bounds), CGRectGetMaxY(bounds))
-        CGContextStrokePath(context)
-        
-        // Drawing complete, retrieve the finished image and cleanup
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
+        self.chartImage.setImage(chartPainter.drawImage(bgValues))
     }
     
     func readChartData() {
