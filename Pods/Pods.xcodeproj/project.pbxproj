@@ -1,0 +1,582 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0191C97CF2E48EB7E33B7FBB88C1BDFC /* NKBarChart.h in Headers */ = {isa = PBXBuildFile; fileRef = 02DBAA7DA9C2DD97C297184B16D45912 /* NKBarChart.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0929F1BDC806D4CE13247BA0B136EED7 /* NKRadarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D5CA95F3ACE0D2E8165983F3F58E248 /* NKRadarChart.m */; };
+		2540EC3C7A6F45DF7EFB435E16E731CA /* NKWatchChart-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B50590458436C1C2C398E0FA32123AC0 /* NKWatchChart-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D0742E6949380292A79D011B7CD4EFC /* NKLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 0742DB81FCC8D5761407755B68564737 /* NKLineChart.m */; };
+		3054937AB1E26FCB6A9F9575731A114B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5967960C2F210D96773F1BA0D8A4B57 /* Foundation.framework */; };
+		489CCA765F6A84561A1ABADD3DF5815B /* NKCircleChart.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D8F9916C20A3D2FD9E3C3DD0FB020FD /* NKCircleChart.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51CAAF691E8BD5A63F973D53FF02AE0C /* NKRadarChart.h in Headers */ = {isa = PBXBuildFile; fileRef = B2E63B8233F0E8C92C8A9158D84FA0F3 /* NKRadarChart.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		53B128510A54EED6F067F2A79DB88101 /* NKPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = F1F8305DC04A7B19332D2929E9470D71 /* NKPieChart.m */; };
+		6EBE6811AA407952B00734906A8B7DD6 /* NKLineChartDataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FFB3821303B17E8873821A8C1E9319 /* NKLineChartDataItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7633E8AB0669FC3231504A01514EDE23 /* Pods-scoutwatch WatchKit Extension-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 10A5A474E338B609AF2340656E6A8954 /* Pods-scoutwatch WatchKit Extension-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		76718A6873674B884C9A6A5C71EDD298 /* NKWatchChart-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 20AF55F199FCC67A803208CBB909AA61 /* NKWatchChart-dummy.m */; };
+		77B29F64DE62F3DC8BF1AA7C15628AE6 /* NKLineChart.h in Headers */ = {isa = PBXBuildFile; fileRef = 68048E4632D90A579C98C6E7DAB11EC0 /* NKLineChart.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		78562409430841154D7DF969CAE09C57 /* NKPieChart.h in Headers */ = {isa = PBXBuildFile; fileRef = 35CECF674DB28303F663AA9F2DEF55BB /* NKPieChart.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		81C6324F78A396B1AC98B8403A579180 /* NKRadarChartDataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 611D77DF73E8E9DDD7893F1EE07E3B6A /* NKRadarChartDataItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		83A3CDE9FF09BECF8AAE9896CB906161 /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 313C84F2410DDC2E3A1972F9649C438F /* WatchKit.framework */; };
+		8848064B463EE5FDC5A7AF370DC17206 /* NKPieChartDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B7E5ABB098FE0CC80C055DF991EE9B1 /* NKPieChartDataItem.m */; };
+		8F33606EE29230922EC97687B52C5C82 /* NKColor.h in Headers */ = {isa = PBXBuildFile; fileRef = E2FA5CCF1C8DF34F7255B6C8B00B4F79 /* NKColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		975412CCCDB49A3FD5E540DAEFB685B6 /* NKLineChartData.h in Headers */ = {isa = PBXBuildFile; fileRef = D488B83D45E32B1F28804C33C94532A7 /* NKLineChartData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		98F2754AA8219BDE8172EDFF0AB89D76 /* Pods-scoutwatch WatchKit Extension-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C5C4DAB7BD702D747F0049AEE67EE32 /* Pods-scoutwatch WatchKit Extension-dummy.m */; };
+		9E290001CA9FB7F17036C9C75E433D6B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5967960C2F210D96773F1BA0D8A4B57 /* Foundation.framework */; };
+		A364A61B67A18F222C8C3D402086DB35 /* NKWatchChart.h in Headers */ = {isa = PBXBuildFile; fileRef = 774DABF88734DC2B32354E9FF71B0F15 /* NKWatchChart.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB2D1C105C50A062BFC0CAAF74F2AAFD /* NKPieChartDataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AB97937E6FD533D40F23188422807FC /* NKPieChartDataItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D2AD2B3B04CF5C1FA5769F1B1B6D6C15 /* NKLineChartData.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D85F49D256AB14B620552BA502E53A /* NKLineChartData.m */; };
+		DD3A8B192672007DB719E82861B4BA26 /* NKBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C41058858A4B5541DD9E68968F71B4 /* NKBarChart.m */; };
+		DD51EAAB08F0060ABD73A13170EAC711 /* NKColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 96465AF62B572EA6C5DF0C8E701F9504 /* NKColor.m */; };
+		E98B7DFB33059A8105C5717CC2A6EFC9 /* NKRadarChartDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5477047E2DBEA71C107D0536A87A16 /* NKRadarChartDataItem.m */; };
+		EC501DEA5D1AB13BF58DC00D44B7B4AB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCEA3A97755E59188AA2B7FD5C489602 /* UIKit.framework */; };
+		F3128FC3633E5254758EF9BFD12B70CC /* NKCircleChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C494CF0771802A8728E5AE1A1D403E /* NKCircleChart.m */; };
+		FD2F4E098C86B5C8A63065ECD79B6EC1 /* NKLineChartDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 063A2A229B025AE2E7A6BC7FDF93539D /* NKLineChartDataItem.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7D31D5E781F5953B195F1A4AE0142F6E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7DFB3DDA21EC05C9BF634EB3CBFE2272;
+			remoteInfo = NKWatchChart;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02DBAA7DA9C2DD97C297184B16D45912 /* NKBarChart.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKBarChart.h; path = "WatchChart Extension/NKWatchChart/NKBarChart.h"; sourceTree = "<group>"; };
+		063A2A229B025AE2E7A6BC7FDF93539D /* NKLineChartDataItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKLineChartDataItem.m; path = "WatchChart Extension/NKWatchChart/NKLineChartDataItem.m"; sourceTree = "<group>"; };
+		0742DB81FCC8D5761407755B68564737 /* NKLineChart.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKLineChart.m; path = "WatchChart Extension/NKWatchChart/NKLineChart.m"; sourceTree = "<group>"; };
+		10A5A474E338B609AF2340656E6A8954 /* Pods-scoutwatch WatchKit Extension-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-scoutwatch WatchKit Extension-umbrella.h"; sourceTree = "<group>"; };
+		13D9D53DDC48BC60D1BF8318BAA77D0F /* NKWatchChart-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NKWatchChart-prefix.pch"; sourceTree = "<group>"; };
+		1A5477047E2DBEA71C107D0536A87A16 /* NKRadarChartDataItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKRadarChartDataItem.m; path = "WatchChart Extension/NKWatchChart/NKRadarChartDataItem.m"; sourceTree = "<group>"; };
+		20AF55F199FCC67A803208CBB909AA61 /* NKWatchChart-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NKWatchChart-dummy.m"; sourceTree = "<group>"; };
+		313C84F2410DDC2E3A1972F9649C438F /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/WatchKit.framework; sourceTree = DEVELOPER_DIR; };
+		35CECF674DB28303F663AA9F2DEF55BB /* NKPieChart.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKPieChart.h; path = "WatchChart Extension/NKWatchChart/NKPieChart.h"; sourceTree = "<group>"; };
+		3B7E5ABB098FE0CC80C055DF991EE9B1 /* NKPieChartDataItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKPieChartDataItem.m; path = "WatchChart Extension/NKWatchChart/NKPieChartDataItem.m"; sourceTree = "<group>"; };
+		4120F3235A42477E456938ABE8A735C0 /* Pods-scoutwatch WatchKit Extension-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-scoutwatch WatchKit Extension-acknowledgements.plist"; sourceTree = "<group>"; };
+		4AB97937E6FD533D40F23188422807FC /* NKPieChartDataItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKPieChartDataItem.h; path = "WatchChart Extension/NKWatchChart/NKPieChartDataItem.h"; sourceTree = "<group>"; };
+		4D8F9916C20A3D2FD9E3C3DD0FB020FD /* NKCircleChart.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKCircleChart.h; path = "WatchChart Extension/NKWatchChart/NKCircleChart.h"; sourceTree = "<group>"; };
+		4EF6906E3E3579B0378FB810BC85AEA5 /* NKWatchChart.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = NKWatchChart.modulemap; sourceTree = "<group>"; };
+		611D77DF73E8E9DDD7893F1EE07E3B6A /* NKRadarChartDataItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKRadarChartDataItem.h; path = "WatchChart Extension/NKWatchChart/NKRadarChartDataItem.h"; sourceTree = "<group>"; };
+		68048E4632D90A579C98C6E7DAB11EC0 /* NKLineChart.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKLineChart.h; path = "WatchChart Extension/NKWatchChart/NKLineChart.h"; sourceTree = "<group>"; };
+		699A2F6121BDF36C07E069C93C974C1F /* Pods-scoutwatch WatchKit Extension-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-scoutwatch WatchKit Extension-resources.sh"; sourceTree = "<group>"; };
+		6E26282F9050F877BAA0F4205E70543E /* Pods-scoutwatch WatchKit Extension.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-scoutwatch WatchKit Extension.modulemap"; sourceTree = "<group>"; };
+		774DABF88734DC2B32354E9FF71B0F15 /* NKWatchChart.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKWatchChart.h; path = "WatchChart Extension/NKWatchChart/NKWatchChart.h"; sourceTree = "<group>"; };
+		7C5C4DAB7BD702D747F0049AEE67EE32 /* Pods-scoutwatch WatchKit Extension-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-scoutwatch WatchKit Extension-dummy.m"; sourceTree = "<group>"; };
+		7DA8160A1E5BE653E3D073EF61990517 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7FC3D01F95A2D9BAF78B446C63CF823C /* NKWatchChart.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NKWatchChart.xcconfig; sourceTree = "<group>"; };
+		85C494CF0771802A8728E5AE1A1D403E /* NKCircleChart.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKCircleChart.m; path = "WatchChart Extension/NKWatchChart/NKCircleChart.m"; sourceTree = "<group>"; };
+		8FB2A54CE4597FE8EEF61E2F240214F3 /* Pods_scoutwatch_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_scoutwatch_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92C41058858A4B5541DD9E68968F71B4 /* NKBarChart.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKBarChart.m; path = "WatchChart Extension/NKWatchChart/NKBarChart.m"; sourceTree = "<group>"; };
+		952E2C0E0382E583E9AAC93949FAC8C3 /* Pods-scoutwatch WatchKit Extension-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-scoutwatch WatchKit Extension-acknowledgements.markdown"; sourceTree = "<group>"; };
+		96465AF62B572EA6C5DF0C8E701F9504 /* NKColor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKColor.m; path = "WatchChart Extension/NKWatchChart/NKColor.m"; sourceTree = "<group>"; };
+		9D5CA95F3ACE0D2E8165983F3F58E248 /* NKRadarChart.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKRadarChart.m; path = "WatchChart Extension/NKWatchChart/NKRadarChart.m"; sourceTree = "<group>"; };
+		A683B9D861218F737BFB5098074C6445 /* NKWatchChart.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NKWatchChart.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2E63B8233F0E8C92C8A9158D84FA0F3 /* NKRadarChart.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKRadarChart.h; path = "WatchChart Extension/NKWatchChart/NKRadarChart.h"; sourceTree = "<group>"; };
+		B50590458436C1C2C398E0FA32123AC0 /* NKWatchChart-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NKWatchChart-umbrella.h"; sourceTree = "<group>"; };
+		B7AE3140B7160134C4200D5C9393FEC4 /* Pods-scoutwatch WatchKit Extension-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-scoutwatch WatchKit Extension-frameworks.sh"; sourceTree = "<group>"; };
+		B867FDD0A03D6632C4263DFF102D301E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C5967960C2F210D96773F1BA0D8A4B57 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		D488B83D45E32B1F28804C33C94532A7 /* NKLineChartData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKLineChartData.h; path = "WatchChart Extension/NKWatchChart/NKLineChartData.h"; sourceTree = "<group>"; };
+		D7F69C031E3B47457884000A8267EA56 /* Pods-scoutwatch WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-scoutwatch WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		D7FFB3821303B17E8873821A8C1E9319 /* NKLineChartDataItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKLineChartDataItem.h; path = "WatchChart Extension/NKWatchChart/NKLineChartDataItem.h"; sourceTree = "<group>"; };
+		DE61B5C1394CBD20BFBC502645510AA4 /* Pods-scoutwatch WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-scoutwatch WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
+		E2D85F49D256AB14B620552BA502E53A /* NKLineChartData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKLineChartData.m; path = "WatchChart Extension/NKWatchChart/NKLineChartData.m"; sourceTree = "<group>"; };
+		E2FA5CCF1C8DF34F7255B6C8B00B4F79 /* NKColor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NKColor.h; path = "WatchChart Extension/NKWatchChart/NKColor.h"; sourceTree = "<group>"; };
+		F1F8305DC04A7B19332D2929E9470D71 /* NKPieChart.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NKPieChart.m; path = "WatchChart Extension/NKWatchChart/NKPieChart.m"; sourceTree = "<group>"; };
+		FCEA3A97755E59188AA2B7FD5C489602 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0351923F09E40F9F1611A76B18D16975 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3054937AB1E26FCB6A9F9575731A114B /* Foundation.framework in Frameworks */,
+				EC501DEA5D1AB13BF58DC00D44B7B4AB /* UIKit.framework in Frameworks */,
+				83A3CDE9FF09BECF8AAE9896CB906161 /* WatchKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21A3DE8E1106E203ABEADAC031391808 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E290001CA9FB7F17036C9C75E433D6B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		28226A9D993332942FD43847AE7F9023 /* NKWatchChart */ = {
+			isa = PBXGroup;
+			children = (
+				02DBAA7DA9C2DD97C297184B16D45912 /* NKBarChart.h */,
+				92C41058858A4B5541DD9E68968F71B4 /* NKBarChart.m */,
+				4D8F9916C20A3D2FD9E3C3DD0FB020FD /* NKCircleChart.h */,
+				85C494CF0771802A8728E5AE1A1D403E /* NKCircleChart.m */,
+				E2FA5CCF1C8DF34F7255B6C8B00B4F79 /* NKColor.h */,
+				96465AF62B572EA6C5DF0C8E701F9504 /* NKColor.m */,
+				68048E4632D90A579C98C6E7DAB11EC0 /* NKLineChart.h */,
+				0742DB81FCC8D5761407755B68564737 /* NKLineChart.m */,
+				D488B83D45E32B1F28804C33C94532A7 /* NKLineChartData.h */,
+				E2D85F49D256AB14B620552BA502E53A /* NKLineChartData.m */,
+				D7FFB3821303B17E8873821A8C1E9319 /* NKLineChartDataItem.h */,
+				063A2A229B025AE2E7A6BC7FDF93539D /* NKLineChartDataItem.m */,
+				35CECF674DB28303F663AA9F2DEF55BB /* NKPieChart.h */,
+				F1F8305DC04A7B19332D2929E9470D71 /* NKPieChart.m */,
+				4AB97937E6FD533D40F23188422807FC /* NKPieChartDataItem.h */,
+				3B7E5ABB098FE0CC80C055DF991EE9B1 /* NKPieChartDataItem.m */,
+				B2E63B8233F0E8C92C8A9158D84FA0F3 /* NKRadarChart.h */,
+				9D5CA95F3ACE0D2E8165983F3F58E248 /* NKRadarChart.m */,
+				611D77DF73E8E9DDD7893F1EE07E3B6A /* NKRadarChartDataItem.h */,
+				1A5477047E2DBEA71C107D0536A87A16 /* NKRadarChartDataItem.m */,
+				774DABF88734DC2B32354E9FF71B0F15 /* NKWatchChart.h */,
+				715C837C093A0A0C6BD13D1B3A80AD72 /* Support Files */,
+			);
+			path = NKWatchChart;
+			sourceTree = "<group>";
+		};
+		37A28416F85E3663C01E53CEFE2DFD8C /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				C5967960C2F210D96773F1BA0D8A4B57 /* Foundation.framework */,
+				FCEA3A97755E59188AA2B7FD5C489602 /* UIKit.framework */,
+				313C84F2410DDC2E3A1972F9649C438F /* WatchKit.framework */,
+			);
+			name = watchOS;
+			sourceTree = "<group>";
+		};
+		454B0C7A39E1B0472A1038CB6E0FCA4D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A683B9D861218F737BFB5098074C6445 /* NKWatchChart.framework */,
+				8FB2A54CE4597FE8EEF61E2F240214F3 /* Pods_scoutwatch_WatchKit_Extension.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6DEA6FC47D34DCE87E984F1574DED088 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C09786BFFB21A9E77572C16FD8FB7755 /* Pods-scoutwatch WatchKit Extension */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		715C837C093A0A0C6BD13D1B3A80AD72 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				7DA8160A1E5BE653E3D073EF61990517 /* Info.plist */,
+				4EF6906E3E3579B0378FB810BC85AEA5 /* NKWatchChart.modulemap */,
+				7FC3D01F95A2D9BAF78B446C63CF823C /* NKWatchChart.xcconfig */,
+				20AF55F199FCC67A803208CBB909AA61 /* NKWatchChart-dummy.m */,
+				13D9D53DDC48BC60D1BF8318BAA77D0F /* NKWatchChart-prefix.pch */,
+				B50590458436C1C2C398E0FA32123AC0 /* NKWatchChart-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/NKWatchChart";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
+				992BAF2F0CC7484B799E641E1B2533AA /* Frameworks */,
+				BD260E47A4B668B1FE596F165E1EA7A9 /* Pods */,
+				454B0C7A39E1B0472A1038CB6E0FCA4D /* Products */,
+				6DEA6FC47D34DCE87E984F1574DED088 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		992BAF2F0CC7484B799E641E1B2533AA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				37A28416F85E3663C01E53CEFE2DFD8C /* watchOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BD260E47A4B668B1FE596F165E1EA7A9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				28226A9D993332942FD43847AE7F9023 /* NKWatchChart */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C09786BFFB21A9E77572C16FD8FB7755 /* Pods-scoutwatch WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B867FDD0A03D6632C4263DFF102D301E /* Info.plist */,
+				6E26282F9050F877BAA0F4205E70543E /* Pods-scoutwatch WatchKit Extension.modulemap */,
+				952E2C0E0382E583E9AAC93949FAC8C3 /* Pods-scoutwatch WatchKit Extension-acknowledgements.markdown */,
+				4120F3235A42477E456938ABE8A735C0 /* Pods-scoutwatch WatchKit Extension-acknowledgements.plist */,
+				7C5C4DAB7BD702D747F0049AEE67EE32 /* Pods-scoutwatch WatchKit Extension-dummy.m */,
+				B7AE3140B7160134C4200D5C9393FEC4 /* Pods-scoutwatch WatchKit Extension-frameworks.sh */,
+				699A2F6121BDF36C07E069C93C974C1F /* Pods-scoutwatch WatchKit Extension-resources.sh */,
+				10A5A474E338B609AF2340656E6A8954 /* Pods-scoutwatch WatchKit Extension-umbrella.h */,
+				D7F69C031E3B47457884000A8267EA56 /* Pods-scoutwatch WatchKit Extension.debug.xcconfig */,
+				DE61B5C1394CBD20BFBC502645510AA4 /* Pods-scoutwatch WatchKit Extension.release.xcconfig */,
+			);
+			name = "Pods-scoutwatch WatchKit Extension";
+			path = "Target Support Files/Pods-scoutwatch WatchKit Extension";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C17883491A9DAC1EAE4665E03946896D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0191C97CF2E48EB7E33B7FBB88C1BDFC /* NKBarChart.h in Headers */,
+				489CCA765F6A84561A1ABADD3DF5815B /* NKCircleChart.h in Headers */,
+				8F33606EE29230922EC97687B52C5C82 /* NKColor.h in Headers */,
+				77B29F64DE62F3DC8BF1AA7C15628AE6 /* NKLineChart.h in Headers */,
+				975412CCCDB49A3FD5E540DAEFB685B6 /* NKLineChartData.h in Headers */,
+				6EBE6811AA407952B00734906A8B7DD6 /* NKLineChartDataItem.h in Headers */,
+				78562409430841154D7DF969CAE09C57 /* NKPieChart.h in Headers */,
+				CB2D1C105C50A062BFC0CAAF74F2AAFD /* NKPieChartDataItem.h in Headers */,
+				51CAAF691E8BD5A63F973D53FF02AE0C /* NKRadarChart.h in Headers */,
+				81C6324F78A396B1AC98B8403A579180 /* NKRadarChartDataItem.h in Headers */,
+				2540EC3C7A6F45DF7EFB435E16E731CA /* NKWatchChart-umbrella.h in Headers */,
+				A364A61B67A18F222C8C3D402086DB35 /* NKWatchChart.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5063F27966387E38A256E0F0ACE4B25 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7633E8AB0669FC3231504A01514EDE23 /* Pods-scoutwatch WatchKit Extension-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		53F87CFA2FC2A56F9A42004BE273FF18 /* Pods-scoutwatch WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EEEDAE534F268158F120719BD115A928 /* Build configuration list for PBXNativeTarget "Pods-scoutwatch WatchKit Extension" */;
+			buildPhases = (
+				34BA5AB628D34FA133ABC65C2EEC5621 /* Sources */,
+				21A3DE8E1106E203ABEADAC031391808 /* Frameworks */,
+				D5063F27966387E38A256E0F0ACE4B25 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9998916DF71075012C345BF9ED696505 /* PBXTargetDependency */,
+			);
+			name = "Pods-scoutwatch WatchKit Extension";
+			productName = "Pods-scoutwatch WatchKit Extension";
+			productReference = 8FB2A54CE4597FE8EEF61E2F240214F3 /* Pods_scoutwatch_WatchKit_Extension.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7DFB3DDA21EC05C9BF634EB3CBFE2272 /* NKWatchChart */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95D1ABB37C795F45AEED9A4B77EBFB4F /* Build configuration list for PBXNativeTarget "NKWatchChart" */;
+			buildPhases = (
+				954307867B9773C2D0A526F4C576E8C9 /* Sources */,
+				0351923F09E40F9F1611A76B18D16975 /* Frameworks */,
+				C17883491A9DAC1EAE4665E03946896D /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NKWatchChart;
+			productName = NKWatchChart;
+			productReference = A683B9D861218F737BFB5098074C6445 /* NKWatchChart.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 454B0C7A39E1B0472A1038CB6E0FCA4D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7DFB3DDA21EC05C9BF634EB3CBFE2272 /* NKWatchChart */,
+				53F87CFA2FC2A56F9A42004BE273FF18 /* Pods-scoutwatch WatchKit Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		34BA5AB628D34FA133ABC65C2EEC5621 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98F2754AA8219BDE8172EDFF0AB89D76 /* Pods-scoutwatch WatchKit Extension-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		954307867B9773C2D0A526F4C576E8C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD3A8B192672007DB719E82861B4BA26 /* NKBarChart.m in Sources */,
+				F3128FC3633E5254758EF9BFD12B70CC /* NKCircleChart.m in Sources */,
+				DD51EAAB08F0060ABD73A13170EAC711 /* NKColor.m in Sources */,
+				2D0742E6949380292A79D011B7CD4EFC /* NKLineChart.m in Sources */,
+				D2AD2B3B04CF5C1FA5769F1B1B6D6C15 /* NKLineChartData.m in Sources */,
+				FD2F4E098C86B5C8A63065ECD79B6EC1 /* NKLineChartDataItem.m in Sources */,
+				53B128510A54EED6F067F2A79DB88101 /* NKPieChart.m in Sources */,
+				8848064B463EE5FDC5A7AF370DC17206 /* NKPieChartDataItem.m in Sources */,
+				0929F1BDC806D4CE13247BA0B136EED7 /* NKRadarChart.m in Sources */,
+				E98B7DFB33059A8105C5717CC2A6EFC9 /* NKRadarChartDataItem.m in Sources */,
+				76718A6873674B884C9A6A5C71EDD298 /* NKWatchChart-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9998916DF71075012C345BF9ED696505 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = NKWatchChart;
+			target = 7DFB3DDA21EC05C9BF634EB3CBFE2272 /* NKWatchChart */;
+			targetProxy = 7D31D5E781F5953B195F1A4AE0142F6E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3C53A5B125A9E642C8F22758563C2C7A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		49B97372A48ED7DA0E116DBFCD83D430 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		68D38AF5AB03B474711E08D252B45630 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7FC3D01F95A2D9BAF78B446C63CF823C /* NKWatchChart.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/NKWatchChart/NKWatchChart-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/NKWatchChart/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/NKWatchChart/NKWatchChart.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = NKWatchChart;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		78DAD3A8E2A07C9CA2BB3E01AE1B661B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DE61B5C1394CBD20BFBC502645510AA4 /* Pods-scoutwatch WatchKit Extension.release.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-scoutwatch WatchKit Extension/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-scoutwatch WatchKit Extension/Pods-scoutwatch WatchKit Extension.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_scoutwatch_WatchKit_Extension;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		973B069975F27AF10D010C6AA9E10173 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7FC3D01F95A2D9BAF78B446C63CF823C /* NKWatchChart.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/NKWatchChart/NKWatchChart-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/NKWatchChart/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/NKWatchChart/NKWatchChart.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = NKWatchChart;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		A50F64BA06CE11E237763184A8A08121 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D7F69C031E3B47457884000A8267EA56 /* Pods-scoutwatch WatchKit Extension.debug.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-scoutwatch WatchKit Extension/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-scoutwatch WatchKit Extension/Pods-scoutwatch WatchKit Extension.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_scoutwatch_WatchKit_Extension;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49B97372A48ED7DA0E116DBFCD83D430 /* Debug */,
+				3C53A5B125A9E642C8F22758563C2C7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95D1ABB37C795F45AEED9A4B77EBFB4F /* Build configuration list for PBXNativeTarget "NKWatchChart" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68D38AF5AB03B474711E08D252B45630 /* Debug */,
+				973B069975F27AF10D010C6AA9E10173 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EEEDAE534F268158F120719BD115A928 /* Build configuration list for PBXNativeTarget "Pods-scoutwatch WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A50F64BA06CE11E237763184A8A08121 /* Debug */,
+				78DAD3A8E2A07C9CA2BB3E01AE1B661B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

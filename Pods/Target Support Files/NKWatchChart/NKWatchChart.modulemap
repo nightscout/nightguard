@@ -1,0 +1,6 @@
+framework module NKWatchChart {
+  umbrella header "NKWatchChart-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,10 @@
+PODS:
+  - NKWatchChart (0.1.0)
+
+DEPENDENCIES:
+  - NKWatchChart
+
+SPEC CHECKSUMS:
+  NKWatchChart: 03dbc42f7ee7ce78368801c0e9e6d903f54cdf23
+
+COCOAPODS: 0.39.0
