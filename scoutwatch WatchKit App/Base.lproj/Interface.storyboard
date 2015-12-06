@@ -12,25 +12,45 @@
                     <items>
                         <group width="1" alignment="left" id="1AH-d7-hZo">
                             <items>
-                                <label width="64" height="37" alignment="left" text="---" textAlignment="center" id="vdn-99-EwA">
+                                <label width="80" height="37" alignment="left" text="---" textAlignment="center" id="vdn-99-EwA">
                                     <fontDescription key="font" type="system" pointSize="48"/>
                                     <variation key="device=watch42mm" width="80"/>
                                 </label>
-                                <group width="72.5" alignment="left" layout="vertical" id="2qL-lw-zuD">
+                                <group width="72.5" alignment="left" id="2qL-lw-zuD">
                                     <items>
-                                        <group width="1" alignment="left" id="7mo-kr-osX">
+                                        <label width="26.5" height="17.5" alignment="left" text="+10" id="frk-q8-3y9"/>
+                                        <group alignment="left" layout="vertical" id="7mo-kr-osX">
                                             <items>
-                                                <label width="27.5" height="17.5" alignment="left" verticalAlignment="bottom" text="+10" id="frk-q8-3y9"/>
-                                                <label width="42" height="17.5" alignment="left" verticalAlignment="bottom" text="100%" id="lz8-YE-T1d"/>
+                                                <label width="42" height="17.5" alignment="right" verticalAlignment="bottom" text="100%" textAlignment="right" id="lz8-YE-T1d"/>
+                                                <label height="17.5" alignment="right" text="--:--" id="w1H-tu-XyX"/>
                                             </items>
+                                            <variation key="default">
+                                                <mask key="items">
+                                                    <exclude reference="w1H-tu-XyX"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="device=watch42mm">
+                                                <mask key="items">
+                                                    <include reference="w1H-tu-XyX"/>
+                                                </mask>
+                                            </variation>
                                         </group>
-                                        <label height="17.5" alignment="left" text="--:--" id="w1H-tu-XyX"/>
                                     </items>
+                                    <variation key="default">
+                                        <mask key="items">
+                                            <exclude reference="frk-q8-3y9"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="device=watch42mm">
+                                        <mask key="items">
+                                            <include reference="frk-q8-3y9"/>
+                                        </mask>
+                                    </variation>
                                 </group>
                             </items>
                         </group>
                         <separator alignment="left" id="AeO-Dw-7jo"/>
-                        <imageView height="120" alignment="center" verticalAlignment="center" id="kwI-xY-joe"/>
+                        <imageView width="165" height="125" alignment="center" verticalAlignment="center" id="kwI-xY-joe"/>
                     </items>
                     <connections>
                         <outlet property="batteryLabel" destination="lz8-YE-T1d" id="a4A-hb-KFZ"/>

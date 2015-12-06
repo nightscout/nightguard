@@ -34,7 +34,8 @@
 		43647C0F1BFF6435004389F9 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647C0E1BFF6435004389F9 /* ComplicationController.swift */; };
 		43647C111BFF6435004389F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43647C101BFF6435004389F9 /* Assets.xcassets */; };
 		439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
-		B91B3777706FC85DAE6258B4 /* Pods_scoutwatch_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BD87EE67D2395296BD057E /* Pods_scoutwatch_WatchKit_Extension.framework */; };
+		439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
+		439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C391A1C0E295C00D89872 /* ChartPainterTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,7 +95,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		34BD87EE67D2395296BD057E /* Pods_scoutwatch_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_scoutwatch_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		430458E91C09008E005ED7A4 /* NKBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKBarChart.h; sourceTree = "<group>"; };
 		430458EA1C09008E005ED7A4 /* NKBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKBarChart.m; sourceTree = "<group>"; };
 		430458EB1C09008E005ED7A4 /* NKCircleChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCircleChart.h; sourceTree = "<group>"; };
@@ -143,8 +143,7 @@
 		43647C121BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43647C261BFF6445004389F9 /* scoutwatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = scoutwatch.entitlements; sourceTree = "<group>"; };
 		439C39171C0E002F00D89872 /* ChartPainter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainter.swift; sourceTree = "<group>"; };
-		9BDFA134813A1F514B9ADB07 /* Pods-scoutwatch WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-scoutwatch WatchKit Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-scoutwatch WatchKit Extension/Pods-scoutwatch WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
-		BAA94D8E8AF28E0782F03461 /* Pods-scoutwatch WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-scoutwatch WatchKit Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-scoutwatch WatchKit Extension/Pods-scoutwatch WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		439C391A1C0E295C00D89872 /* ChartPainterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainterTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,7 +172,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B91B3777706FC85DAE6258B4 /* Pods_scoutwatch_WatchKit_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,8 +223,6 @@
 				43647BF61BFF6435004389F9 /* scoutwatch WatchKit App */,
 				43647C051BFF6435004389F9 /* scoutwatch WatchKit Extension */,
 				43647BCB1BFF6435004389F9 /* Products */,
-				BB2EE4F9DA529F3F9D4034F1 /* Pods */,
-				D3C7A8271AC880ACDC95D2D8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -261,6 +257,7 @@
 			children = (
 				43647BE21BFF6435004389F9 /* scoutwatchTests.swift */,
 				43647BE41BFF6435004389F9 /* Info.plist */,
+				439C391A1C0E295C00D89872 /* ChartPainterTest.swift */,
 			);
 			path = scoutwatchTests;
 			sourceTree = "<group>";
@@ -306,23 +303,6 @@
 				43647C071BFF6435004389F9 /* PushNotificationPayload.apns */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		BB2EE4F9DA529F3F9D4034F1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				BAA94D8E8AF28E0782F03461 /* Pods-scoutwatch WatchKit Extension.debug.xcconfig */,
-				9BDFA134813A1F514B9ADB07 /* Pods-scoutwatch WatchKit Extension.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		D3C7A8271AC880ACDC95D2D8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				34BD87EE67D2395296BD057E /* Pods_scoutwatch_WatchKit_Extension.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -405,12 +385,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C151BFF6435004389F9 /* Build configuration list for PBXNativeTarget "scoutwatch WatchKit Extension" */;
 			buildPhases = (
-				BD395B7786A62D2C1907437C /* Check Pods Manifest.lock */,
 				43647BFD1BFF6435004389F9 /* Sources */,
 				43647BFE1BFF6435004389F9 /* Frameworks */,
 				43647BFF1BFF6435004389F9 /* Resources */,
-				FECF056DEF6F16D75EC795EE /* Embed Pods Frameworks */,
-				7EAAE1AA8DF469B932F982A4 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -526,54 +503,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		7EAAE1AA8DF469B932F982A4 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-scoutwatch WatchKit Extension/Pods-scoutwatch WatchKit Extension-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BD395B7786A62D2C1907437C /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		FECF056DEF6F16D75EC795EE /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-scoutwatch WatchKit Extension/Pods-scoutwatch WatchKit Extension-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		43647BC61BFF6435004389F9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -588,6 +517,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
+				439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */,
 				43647BE31BFF6435004389F9 /* scoutwatchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -758,7 +689,6 @@
 		};
 		43647C161BFF6435004389F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BAA94D8E8AF28E0782F03461 /* Pods-scoutwatch WatchKit Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				INFOPLIST_FILE = "scoutwatch WatchKit Extension/Info.plist";
@@ -774,7 +704,6 @@
 		};
 		43647C171BFF6435004389F9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9BDFA134813A1F514B9ADB07 /* Pods-scoutwatch WatchKit Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				INFOPLIST_FILE = "scoutwatch WatchKit Extension/Info.plist";

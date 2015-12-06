@@ -17,8 +17,9 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var chartImage: WKInterfaceImage!
     
-    var NKGREEN : UIColor = UIColor.init(colorLiteralRed: 0, green: 255, blue: 0, alpha: 0)
-    var NKYELLOW : UIColor = UIColor.init(colorLiteralRed: 255, green: 255, blue: 0, alpha: 0)
+    var GREEN : UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
+    var YELLOW : UIColor = UIColor.init(red: 1, green: 0.94, blue: 0, alpha: 1)
+    var RED : UIColor = UIColor.init(red: 1, green: 0.22, blue: 0.11, alpha: 1)
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -65,7 +66,9 @@ class InterfaceController: WKInterfaceController {
                 self.bgLabel.setText(String(sgv))
                 self.colorBgLabel(self.bgLabel, bg: String(sgv))
                 self.deltaLabel.setText(self.direction(bgdelta) + String(bgdelta))
+                self.colorDeltaLabel(self.deltaLabel, bgdelta: bgdelta)
                 self.timeLabel.setText(self.formatTime(time))
+                self.colorTimeLabel(self.timeLabel, lastUpdate: time)
                 self.batteryLabel.setText(String(battery) + "%")
             }
         };
@@ -79,11 +82,34 @@ class InterfaceController: WKInterfaceController {
             return;
         }
         if bgNumber > 200 {
-            bgLabel.setTextColor(UIColor.redColor())
+            bgLabel.setTextColor(RED)
         } else if bgNumber > 180 {
-            bgLabel.setTextColor(UIColor.yellowColor())
+            bgLabel.setTextColor(YELLOW)
         } else {
             bgLabel.setTextColor(UIColor.whiteColor())
+        }
+    }
+    
+    func colorDeltaLabel(deltaLabel : WKInterfaceLabel, bgdelta : NSNumber) {
+        let absoluteDelta = abs(bgdelta.intValue)
+        if (absoluteDelta >= 10) {
+            deltaLabel.setTextColor(RED)
+        } else if (absoluteDelta >= 5) {
+            deltaLabel.setTextColor(YELLOW)
+        } else {
+            deltaLabel.setTextColor(UIColor.whiteColor())
+        }
+    }
+    
+    func colorTimeLabel(timeLabel : WKInterfaceLabel, lastUpdate : NSNumber) {
+        let lastUpdateAsNSDate : NSDate = NSDate(timeIntervalSince1970: lastUpdate.doubleValue / 1000)
+        let timeInterval : Int = Int(NSDate().timeIntervalSinceDate(lastUpdateAsNSDate))
+        if (timeInterval > 7*60) {
+            timeLabel.setTextColor(YELLOW)
+        } else if (timeInterval > 15*60) {
+            timeLabel.setTextColor(RED)
+        } else {
+            timeLabel.setTextColor(UIColor.whiteColor())
         }
     }
     
@@ -95,7 +121,7 @@ class InterfaceController: WKInterfaceController {
     
     func readChartData() {
         // Get the current data from REST-Call
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: "https://dhe.my-wan.de/api/v1/entries.json?count=30")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: "https://dhe.my-wan.de/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             guard error == nil else {
@@ -125,10 +151,10 @@ class InterfaceController: WKInterfaceController {
         return ""
     }
     
-    func formatTime(secondsTil01011970 : NSNumber) -> String {
+    func formatTime(secondsSince01011970 : NSNumber) -> String {
         let timeFormatter = NSDateFormatter()
         timeFormatter.dateFormat = "HH:mm"
-        let dateString : String = timeFormatter.stringFromDate(NSDate(timeIntervalSince1970: secondsTil01011970.doubleValue / 1000))
+        let dateString : String = timeFormatter.stringFromDate(NSDate(timeIntervalSince1970: secondsSince01011970.doubleValue / 1000))
         return dateString
     }
 }

@@ -10,10 +10,14 @@ import WatchKit
 import Foundation
 
 class ChartPainter {
-    var maximumYValue = 200
+    let GREEN : UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
+    let DARK : UIColor = UIColor.init(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
     
-    var canvasWidth : Int = 312
-    var canvasHeight : Int = 120
+    var maximumYValue = 200
+    var minimumYValue = 40
+    
+    var canvasWidth : Int = 165
+    var canvasHeight : Int = 125
     var size : CGSize
     
     init() {
@@ -21,10 +25,13 @@ class ChartPainter {
     }
     
     func drawImage(bgValues : [Int]) -> UIImage {
+
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if bgValues.count <= 1 {
             return UIImage.init(named: "")!
         }
+
+        adjustMinMaxYCoordinates(bgValues)
         
         // Setup our context
         let opaque = false
@@ -35,13 +42,15 @@ class ChartPainter {
         // Setup complete, do drawing here
         // Paint the part between 80 and 180 in gray
         CGContextSetLineWidth(context, 2.0)
-        CGContextSetStrokeColorWithColor(context, UIColor.grayColor().CGColor)
-        CGContextSetFillColorWithColor(context, UIColor.grayColor().CGColor)
-        let goodPart = CGRect(origin: CGPoint.init(x: 0, y: calcYValue(180)), size: CGSize.init(width: canvasWidth, height: Int(stretchedYValue(100))))
+        CGContextSetFillColorWithColor(context, DARK.CGColor)
+        let goodPart = CGRect(origin: CGPoint.init(x: 0, y: calcYValue(180)), size: CGSize.init(width: canvasWidth, height: Int(stretchedYValue(100 + minimumYValue))))
         CGContextFillRect(context, goodPart)
+
+        //CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor)
+        //CGContextStrokeRect(context, CGRect(origin: CGPoint.init(x: 0, y: 0), size: CGSize.init(width: canvasWidth, height: canvasHeight)))
         
         // Paint the glucose data
-        CGContextSetStrokeColorWithColor(context, UIColor.greenColor().CGColor)
+        CGContextSetStrokeColorWithColor(context, GREEN.CGColor)
         CGContextBeginPath(context)
         
         let maxPoints : Int = bgValues.count
@@ -62,21 +71,31 @@ class ChartPainter {
         return image
     }
     
-    private func calcXValue(x : Int, xValuesCount : Int) -> CGFloat {
+    func adjustMinMaxYCoordinates(bgValues : [Int]) {
+        for bgValue in bgValues {
+            if bgValue < minimumYValue {
+                minimumYValue = bgValue
+            }
+            if bgValue > maximumYValue {
+                maximumYValue = bgValue
+            }
+        }
+    }
+    
+    func calcXValue(x : Int, xValuesCount : Int) -> CGFloat {
         return CGFloat.init(canvasWidth / (xValuesCount-1) * x);
     }
     
-    private func calcYValue(y : Int) -> CGFloat {
-        var adjustedYValue = y;
-        if adjustedYValue > maximumYValue {
-            adjustedYValue = maximumYValue
-        }
-        let calculatedY : Float = stretchedYValue(adjustedYValue)
+    func calcYValue(y : Int) -> CGFloat {
+
+        let calculatedY : Float = stretchedYValue(y)
         let mirroredY : Int = canvasHeight - Int(calculatedY)
-        return CGFloat.init(mirroredY)
+        let cgfloat : CGFloat = CGFloat(mirroredY)
+        
+        return cgfloat
     }
     
-    private func stretchedYValue(y : Int) -> Float {
-        return Float(canvasHeight) / Float(maximumYValue) * Float(y)
+    func stretchedYValue(y : Int) -> Float {
+        return Float(canvasHeight) / Float(maximumYValue - minimumYValue) * Float(y - minimumYValue)
     }
 }
