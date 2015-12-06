@@ -7,16 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		430458FE1C09008E005ED7A4 /* NKBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458EA1C09008E005ED7A4 /* NKBarChart.m */; };
-		430458FF1C09008E005ED7A4 /* NKCircleChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458EC1C09008E005ED7A4 /* NKCircleChart.m */; };
-		430459001C09008E005ED7A4 /* NKColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458EE1C09008E005ED7A4 /* NKColor.m */; };
-		430459011C09008E005ED7A4 /* NKLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458F01C09008E005ED7A4 /* NKLineChart.m */; };
-		430459021C09008E005ED7A4 /* NKLineChartData.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458F21C09008E005ED7A4 /* NKLineChartData.m */; };
-		430459031C09008E005ED7A4 /* NKLineChartDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458F41C09008E005ED7A4 /* NKLineChartDataItem.m */; };
-		430459041C09008E005ED7A4 /* NKPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458F61C09008E005ED7A4 /* NKPieChart.m */; };
-		430459051C09008E005ED7A4 /* NKPieChartDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458F81C09008E005ED7A4 /* NKPieChartDataItem.m */; };
-		430459061C09008E005ED7A4 /* NKRadarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458FA1C09008E005ED7A4 /* NKRadarChart.m */; };
-		430459071C09008E005ED7A4 /* NKRadarChartDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 430458FC1C09008E005ED7A4 /* NKRadarChartDataItem.m */; };
 		43647BCE1BFF6435004389F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCD1BFF6435004389F9 /* AppDelegate.swift */; };
 		43647BD01BFF6435004389F9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCF1BFF6435004389F9 /* ViewController.swift */; };
 		43647BD31BFF6435004389F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD11BFF6435004389F9 /* Main.storyboard */; };
@@ -95,27 +85,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		430458E91C09008E005ED7A4 /* NKBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKBarChart.h; sourceTree = "<group>"; };
-		430458EA1C09008E005ED7A4 /* NKBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKBarChart.m; sourceTree = "<group>"; };
-		430458EB1C09008E005ED7A4 /* NKCircleChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCircleChart.h; sourceTree = "<group>"; };
-		430458EC1C09008E005ED7A4 /* NKCircleChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKCircleChart.m; sourceTree = "<group>"; };
-		430458ED1C09008E005ED7A4 /* NKColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKColor.h; sourceTree = "<group>"; };
-		430458EE1C09008E005ED7A4 /* NKColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKColor.m; sourceTree = "<group>"; };
-		430458EF1C09008E005ED7A4 /* NKLineChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKLineChart.h; sourceTree = "<group>"; };
-		430458F01C09008E005ED7A4 /* NKLineChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKLineChart.m; sourceTree = "<group>"; };
-		430458F11C09008E005ED7A4 /* NKLineChartData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKLineChartData.h; sourceTree = "<group>"; };
-		430458F21C09008E005ED7A4 /* NKLineChartData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKLineChartData.m; sourceTree = "<group>"; };
-		430458F31C09008E005ED7A4 /* NKLineChartDataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKLineChartDataItem.h; sourceTree = "<group>"; };
-		430458F41C09008E005ED7A4 /* NKLineChartDataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKLineChartDataItem.m; sourceTree = "<group>"; };
-		430458F51C09008E005ED7A4 /* NKPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPieChart.h; sourceTree = "<group>"; };
-		430458F61C09008E005ED7A4 /* NKPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPieChart.m; sourceTree = "<group>"; };
-		430458F71C09008E005ED7A4 /* NKPieChartDataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPieChartDataItem.h; sourceTree = "<group>"; };
-		430458F81C09008E005ED7A4 /* NKPieChartDataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPieChartDataItem.m; sourceTree = "<group>"; };
-		430458F91C09008E005ED7A4 /* NKRadarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKRadarChart.h; sourceTree = "<group>"; };
-		430458FA1C09008E005ED7A4 /* NKRadarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKRadarChart.m; sourceTree = "<group>"; };
-		430458FB1C09008E005ED7A4 /* NKRadarChartDataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKRadarChartDataItem.h; sourceTree = "<group>"; };
-		430458FC1C09008E005ED7A4 /* NKRadarChartDataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKRadarChartDataItem.m; sourceTree = "<group>"; };
-		430458FD1C09008E005ED7A4 /* NKWatchChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKWatchChart.h; sourceTree = "<group>"; };
 		43647BCA1BFF6435004389F9 /* scoutwatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scoutwatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BCD1BFF6435004389F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43647BCF1BFF6435004389F9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -185,35 +154,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		430458E81C09008E005ED7A4 /* NKWatchChart */ = {
-			isa = PBXGroup;
-			children = (
-				430458E91C09008E005ED7A4 /* NKBarChart.h */,
-				430458EA1C09008E005ED7A4 /* NKBarChart.m */,
-				430458EB1C09008E005ED7A4 /* NKCircleChart.h */,
-				430458EC1C09008E005ED7A4 /* NKCircleChart.m */,
-				430458ED1C09008E005ED7A4 /* NKColor.h */,
-				430458EE1C09008E005ED7A4 /* NKColor.m */,
-				430458EF1C09008E005ED7A4 /* NKLineChart.h */,
-				430458F01C09008E005ED7A4 /* NKLineChart.m */,
-				430458F11C09008E005ED7A4 /* NKLineChartData.h */,
-				430458F21C09008E005ED7A4 /* NKLineChartData.m */,
-				430458F31C09008E005ED7A4 /* NKLineChartDataItem.h */,
-				430458F41C09008E005ED7A4 /* NKLineChartDataItem.m */,
-				430458F51C09008E005ED7A4 /* NKPieChart.h */,
-				430458F61C09008E005ED7A4 /* NKPieChart.m */,
-				430458F71C09008E005ED7A4 /* NKPieChartDataItem.h */,
-				430458F81C09008E005ED7A4 /* NKPieChartDataItem.m */,
-				430458F91C09008E005ED7A4 /* NKRadarChart.h */,
-				430458FA1C09008E005ED7A4 /* NKRadarChart.m */,
-				430458FB1C09008E005ED7A4 /* NKRadarChartDataItem.h */,
-				430458FC1C09008E005ED7A4 /* NKRadarChartDataItem.m */,
-				430458FD1C09008E005ED7A4 /* NKWatchChart.h */,
-			);
-			name = NKWatchChart;
-			path = "../../NKWatchChart/WatchChart Extension/NKWatchChart";
-			sourceTree = "<group>";
-		};
 		43647BC11BFF6435004389F9 = {
 			isa = PBXGroup;
 			children = (
@@ -284,7 +224,6 @@
 		43647C051BFF6435004389F9 /* scoutwatch WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				430458E81C09008E005ED7A4 /* NKWatchChart */,
 				43647C081BFF6435004389F9 /* InterfaceController.swift */,
 				43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */,
 				43647C0C1BFF6435004389F9 /* NotificationController.swift */,
@@ -536,20 +475,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				43647C0D1BFF6435004389F9 /* NotificationController.swift in Sources */,
-				430459001C09008E005ED7A4 /* NKColor.m in Sources */,
-				430459031C09008E005ED7A4 /* NKLineChartDataItem.m in Sources */,
 				43647C0F1BFF6435004389F9 /* ComplicationController.swift in Sources */,
-				430459021C09008E005ED7A4 /* NKLineChartData.m in Sources */,
-				430459041C09008E005ED7A4 /* NKPieChart.m in Sources */,
-				430459011C09008E005ED7A4 /* NKLineChart.m in Sources */,
 				43647C0B1BFF6435004389F9 /* ExtensionDelegate.swift in Sources */,
 				43647C091BFF6435004389F9 /* InterfaceController.swift in Sources */,
-				430459051C09008E005ED7A4 /* NKPieChartDataItem.m in Sources */,
-				430458FE1C09008E005ED7A4 /* NKBarChart.m in Sources */,
-				430458FF1C09008E005ED7A4 /* NKCircleChart.m in Sources */,
-				430459061C09008E005ED7A4 /* NKRadarChart.m in Sources */,
 				439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */,
-				430459071C09008E005ED7A4 /* NKRadarChartDataItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
