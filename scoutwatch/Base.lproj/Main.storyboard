@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -14,14 +15,62 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://my.nightscout.server.de" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aKi-Ub-2YA">
+                                <rect key="frame" x="20" y="20" width="280" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="editingChangedAction:" destination="BYZ-38-t0r" eventType="editingChanged" id="sZI-yj-Dn6"/>
+                                    <action selector="editingDidEnd:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="DMg-2L-h9l"/>
+                                    <action selector="editingDidEndAction:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="weN-WF-b4v"/>
+                                    <action selector="test:forEvent:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="dfS-cj-Sws"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the URI to your Nightscout Server here." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KP-gW-EZT">
+                                <rect key="frame" x="5" y="58" width="310" height="21"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="gxF-Zy-3b2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="E.g. 'http://my.nightscout.server.de'" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9KL-ow-hrU">
+                                <rect key="frame" x="20" y="75" width="280" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="8KP-gW-EZT" firstAttribute="centerX" secondItem="aKi-Ub-2YA" secondAttribute="centerX" id="4DT-oE-h2t"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="4" id="57R-QS-e8p"/>
+                            <constraint firstItem="8KP-gW-EZT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Mn5-t6-6e1"/>
+                            <constraint firstItem="8KP-gW-EZT" firstAttribute="top" secondItem="aKi-Ub-2YA" secondAttribute="bottom" constant="8" symbolic="YES" id="UTh-WX-x1W"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="leading" secondItem="aKi-Ub-2YA" secondAttribute="leading" id="ZRj-XN-6FO"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="8KP-gW-EZT" secondAttribute="bottom" constant="489" id="jWI-lJ-ZzZ"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mbP-7e-yzk"/>
+                            <constraint firstItem="8KP-gW-EZT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-11" id="rvv-Mf-4Ht"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="top" secondItem="aKi-Ub-2YA" secondAttribute="bottom" constant="25" id="xx4-HT-EdE"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="9KL-ow-hrU" secondAttribute="bottom" constant="472" id="zvy-iT-VJi"/>
+                        </constraints>
                     </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="hostUriTextField" destination="aKi-Ub-2YA" id="wrW-en-rdR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="226" y="290"/>
         </scene>
     </scenes>
 </document>

@@ -8,8 +8,9 @@
 
 import WatchKit
 import Foundation
+import WatchConnectivity
 
-class InterfaceController: WKInterfaceController {
+class InterfaceController: WKInterfaceController, WCSessionDelegate {
 
     @IBOutlet var bgLabel: WKInterfaceLabel!
     @IBOutlet var deltaLabel: WKInterfaceLabel!
@@ -17,9 +18,22 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var chartImage: WKInterfaceImage!
     
+    private let APP_GROUP_ID = "group.de.dhe.scoutwatch"
+    
     var GREEN : UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
     var YELLOW : UIColor = UIColor.init(red: 1, green: 0.94, blue: 0, alpha: 1)
     var RED : UIColor = UIColor.init(red: 1, green: 0.22, blue: 0.11, alpha: 1)
+    
+    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+        
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            
+            if let hostUri = applicationContext["hostUri"] as? String {
+                let defaults = NSUserDefaults(suiteName: self.APP_GROUP_ID)
+                defaults!.setValue(hostUri, forKey: "hostUri")
+            }
+        }
+    }
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -28,6 +42,12 @@ class InterfaceController: WKInterfaceController {
     }
 
     override func willActivate() {
+        if WCSession.isSupported() {
+            let session = WCSession.defaultSession()
+            session.delegate = self
+            session.activateSession()
+        }
+        
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         readCurrentDataForPebbleWatch()
@@ -40,8 +60,9 @@ class InterfaceController: WKInterfaceController {
     }
     
     func readCurrentDataForPebbleWatch() {
+        let baseUri = getBaseUri()
         // Get the current data from REST-Call
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: "https://dhe.my-wan.de/pebble")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             guard error == nil else {
@@ -120,8 +141,9 @@ class InterfaceController: WKInterfaceController {
     }
     
     func readChartData() {
+        let baseUri = getBaseUri()
         // Get the current data from REST-Call
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: "https://dhe.my-wan.de/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             guard error == nil else {
@@ -156,5 +178,16 @@ class InterfaceController: WKInterfaceController {
         timeFormatter.dateFormat = "HH:mm"
         let dateString : String = timeFormatter.stringFromDate(NSDate(timeIntervalSince1970: secondsSince01011970.doubleValue / 1000))
         return dateString
+    }
+    
+    private func getBaseUri() -> String {
+        guard let defaults = NSUserDefaults(suiteName: APP_GROUP_ID) else {
+            return ""
+        }
+
+        guard let hostUri = defaults.stringForKey("hostUri") else {
+            return ""
+        }
+        return hostUri
     }
 }
