@@ -47,9 +47,7 @@ class ViewController: UIViewController, WCSessionDelegate {
         do {
             let applicationDict = ["hostUri": hostUri]
             try WCSession.defaultSession().updateApplicationContext(applicationDict)
-        }
-            
-        catch {
+        } catch {
             print(error)
         }
     }
