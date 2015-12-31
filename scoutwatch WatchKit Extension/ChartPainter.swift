@@ -24,11 +24,11 @@ class ChartPainter {
         size = CGSize.init(width: canvasWidth, height: canvasHeight)
     }
     
-    func drawImage(bgValues : [Int]) -> UIImage {
+    func drawImage(bgValues : [Int]) -> UIImage? {
 
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if bgValues.count <= 1 {
-            return UIImage.init(named: "")!
+            return nil
         }
 
         adjustMinMaxYCoordinates(bgValues)

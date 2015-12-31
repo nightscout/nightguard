@@ -18,18 +18,59 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var chartImage: WKInterfaceImage!
     
-    private let APP_GROUP_ID = "group.de.dhe.scoutwatch"
+    @IBAction func doInfoMenuAction() {
+    self.presentControllerWithName("InfoInterfaceController", context: nil)
+    }
+    
+    @IBAction func doCloseMenuAction() {
+        // nothing to do - closes automatically
+    }
     
     var GREEN : UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
     var YELLOW : UIColor = UIColor.init(red: 1, green: 0.94, blue: 0, alpha: 1)
     var RED : UIColor = UIColor.init(red: 1, green: 0.22, blue: 0.11, alpha: 1)
+    
+    var historicBgData : [Int] = []
+    var currentBgData : BgData = BgData()
+    
+    // timer to check continuously for new bgValues
+    var timer = NSTimer()
+    // check every 30 Seconds whether new bgvalues should be retrieved
+    let timeInterval:NSTimeInterval = 30.0
+    
+    
+    // check whether new Values should be retrieved
+    func timerDidEnd(timer:NSTimer){
+        checkForNewValuesFromNightscoutServer()
+    }
+    
+    func checkForNewValuesFromNightscoutServer() {
+        
+        if currentBgData.isOlderThan5Minutes() {
+            
+            readNewValuesFromNightscoutServer()
+        }
+    }
+    
+    func readNewValuesFromNightscoutServer() {
+        ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(bgData) -> Void in
+            self.currentBgData = bgData
+            self.paintCurrentBgData(self.currentBgData)
+            DataRepository.singleton.storeCurrentBgData(bgData)
+        })
+        ServiceBoundary.singleton.readChartData({(historicBgData) -> Void in
+            self.historicBgData = historicBgData
+            self.paintChart(self.historicBgData)
+            DataRepository.singleton.storeHistoricBgData(self.historicBgData)
+        })
+    }
     
     func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
         
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             
             if let hostUri = applicationContext["hostUri"] as? String {
-                let defaults = NSUserDefaults(suiteName: self.APP_GROUP_ID)
+                let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
                 defaults!.setValue(hostUri, forKey: "hostUri")
             }
         }
@@ -38,7 +79,19 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
-        // Configure interface objects here.
+        // load old values that have been stored before
+        self.currentBgData = DataRepository.singleton.loadCurrentBgData()
+        self.historicBgData = DataRepository.singleton.loadHistoricBgData()
+    
+        // update values immediately if necessary
+        checkForNewValuesFromNightscoutServer()
+        
+        // Start the timer to retrieve new bgValues
+        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+            target: self,
+            selector: "timerDidEnd:",
+            userInfo: nil,
+            repeats: true)
     }
 
     override func willActivate() {
@@ -50,8 +103,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        readCurrentDataForPebbleWatch()
-        readChartData()
+        
+        paintChart(historicBgData)
+        paintCurrentBgData(currentBgData)
     }
 
     override func didDeactivate() {
@@ -59,45 +113,27 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         super.didDeactivate()
     }
     
-    func readCurrentDataForPebbleWatch() {
-        let baseUri = getBaseUri()
-        // Get the current data from REST-Call
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            guard error == nil else {
-                return
-            }
-            guard data != nil else {
-                return
-            }
-            
-            let json = try!NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
-            guard let jsonDict :NSDictionary = json as? NSDictionary else {
-                return
-            }
-            let bgs : NSArray = jsonDict.objectForKey("bgs") as! NSArray
-            if (bgs.count > 0) {
-                let currentBgs : NSDictionary = bgs.objectAtIndex(0) as! NSDictionary
-                let sgv : NSString = currentBgs.objectForKey("sgv") as! NSString
-                let bgdelta = currentBgs.objectForKey("bgdelta") as! NSNumber
-                let time = currentBgs.objectForKey("datetime") as! NSNumber
-                let battery = currentBgs.objectForKey("battery") as! NSString
-                
-                self.bgLabel.setText(String(sgv))
-                self.colorBgLabel(self.bgLabel, bg: String(sgv))
-                self.deltaLabel.setText(self.direction(bgdelta) + String(bgdelta))
-                self.colorDeltaLabel(self.deltaLabel, bgdelta: bgdelta)
-                self.timeLabel.setText(self.formatTime(time))
-                self.colorTimeLabel(self.timeLabel, lastUpdate: time)
-                self.batteryLabel.setText(String(battery) + "%")
-            }
-        };
-        task.resume()
+    private func paintChart(bgValues : [Int]) {
+        let chartPainter : ChartPainter = ChartPainter();
+        
+        guard let chartImage = chartPainter.drawImage(bgValues) else {
+            return
+        }
+        self.chartImage.setImage(chartImage)
+    }
+    
+    private func paintCurrentBgData(bgData : BgData) {
+        self.bgLabel.setText(bgData.sgv)
+        self.colorBgLabel(self.bgLabel, bg: bgData.sgv)
+        self.deltaLabel.setText(bgData.bgdeltaString)
+        self.colorDeltaLabel(self.deltaLabel, bgdelta: bgData.bgdelta)
+        self.timeLabel.setText(bgData.timeString)
+        self.colorTimeLabel(self.timeLabel, lastUpdate: bgData.time)
+        self.batteryLabel.setText(bgData.battery)
     }
     
     // Changes the color to red if blood glucose is bad :-/
-    func colorBgLabel(bgLabel : WKInterfaceLabel, bg : String) {
+    private func colorBgLabel(bgLabel : WKInterfaceLabel, bg : String) {
         guard let bgNumber : Int = Int(bg) else {
             bgLabel.setTextColor(UIColor.whiteColor())
             return;
@@ -111,7 +147,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
     }
     
-    func colorDeltaLabel(deltaLabel : WKInterfaceLabel, bgdelta : NSNumber) {
+    private func colorDeltaLabel(deltaLabel : WKInterfaceLabel, bgdelta : NSNumber) {
         let absoluteDelta = abs(bgdelta.intValue)
         if (absoluteDelta >= 10) {
             deltaLabel.setTextColor(RED)
@@ -122,7 +158,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
     }
     
-    func colorTimeLabel(timeLabel : WKInterfaceLabel, lastUpdate : NSNumber) {
+    private func colorTimeLabel(timeLabel : WKInterfaceLabel, lastUpdate : NSNumber) {
         let lastUpdateAsNSDate : NSDate = NSDate(timeIntervalSince1970: lastUpdate.doubleValue / 1000)
         let timeInterval : Int = Int(NSDate().timeIntervalSinceDate(lastUpdateAsNSDate))
         if (timeInterval > 7*60) {
@@ -132,62 +168,5 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         } else {
             timeLabel.setTextColor(UIColor.whiteColor())
         }
-    }
-    
-    func createChart(bgValues : [Int]) {
-        let chartPainter : ChartPainter = ChartPainter();
-
-        self.chartImage.setImage(chartPainter.drawImage(bgValues))
-    }
-    
-    func readChartData() {
-        let baseUri = getBaseUri()
-        // Get the current data from REST-Call
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            guard error == nil else {
-                return
-            }
-            guard data != nil else {
-                return
-            }
-            
-            let jsonArray : NSArray = try!NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray
-            var sgvValues = [Int]()
-            for jsonDict in jsonArray {
-                let sgv = jsonDict["sgv"] as? NSNumber
-                if sgv != nil {
-                    sgvValues.insert(Int(sgv!), atIndex: 0)
-                }
-            }
-            self.createChart(sgvValues)
-        };
-        task.resume()
-    }
-    
-    func direction(delta : NSNumber) -> String {
-        if (delta.intValue >= 0) {
-            return "+"
-        }
-        return ""
-    }
-    
-    func formatTime(secondsSince01011970 : NSNumber) -> String {
-        let timeFormatter = NSDateFormatter()
-        timeFormatter.dateFormat = "HH:mm"
-        let dateString : String = timeFormatter.stringFromDate(NSDate(timeIntervalSince1970: secondsSince01011970.doubleValue / 1000))
-        return dateString
-    }
-    
-    private func getBaseUri() -> String {
-        guard let defaults = NSUserDefaults(suiteName: APP_GROUP_ID) else {
-            return ""
-        }
-
-        guard let hostUri = defaults.stringForKey("hostUri") else {
-            return ""
-        }
-        return hostUri
     }
 }

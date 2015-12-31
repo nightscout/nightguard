@@ -21,7 +21,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         if complication.family == .CircularSmall {
             
             let template = CLKComplicationTemplateCircularSmallRingImage()
-            template.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "complication")!)
+            template.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
             let timelineEntry = CLKComplicationTimelineEntry(date: NSDate(), complicationTemplate: template)
             handler(timelineEntry)
             
