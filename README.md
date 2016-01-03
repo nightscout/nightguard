@@ -7,3 +7,6 @@ A graphical representation is shown as well:
 ![Scoutwatch Screenshot](https://github.com/dhermanns/scoutwatch/blob/master/scoutwatch-screenshot.png)
 
 The dark gray region in the chart marks the values that are between 80 and 180.
+
+This small video shows how to check the configuration and demonstrates the available Apple Watch Complication:
+http://youtu.be/CEcqNyyv_kA
