@@ -16,6 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        UITabBar.appearance().tintColor = UIColor.whiteColor()
+        
+        // This application should be called in background every 3 Minutes
+        UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(3*60)
+        
         return true
     }
 
@@ -41,6 +47,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func application(application: UIApplication,
+        performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+            
+            ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(bgData) -> Void in
+                
+                DataRepository.singleton.storeCurrentBgData(bgData)
+                if AlarmRule.isAlarmActivated(bgData) {
+                    AlarmSound.play()
+                } else {
+                    AlarmSound.stop()
+                }
+                completionHandler (.NoData)
+            })
+    }
 }
 

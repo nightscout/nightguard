@@ -9,15 +9,14 @@
 import UIKit
 import WatchConnectivity
 
-class ViewController: UIViewController, WCSessionDelegate {
-    private let APP_GROUP_ID = "group.de.dhe.scoutwatch"
+class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var hostUriTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let defaults = NSUserDefaults(suiteName: APP_GROUP_ID)
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         let hostUri = defaults?.stringForKey("hostUri")
         hostUriTextField.text = hostUri
         
@@ -28,16 +27,23 @@ class ViewController: UIViewController, WCSessionDelegate {
             session.delegate = self
             session.activateSession()
         }
+        
+        hostUriTextField.delegate = self
+        let tap = UITapGestureRecognizer(target: self, action: "onTouchGesture")
+        self.view.addGestureRecognizer(tap)
     }
 
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBAction func editingChangedAction(sender: AnyObject) {
+    @IBAction func doEditingChangedAction(sender: AnyObject) {
         
-        let defaults = NSUserDefaults(suiteName: APP_GROUP_ID)
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(hostUriTextField.text, forKey: "hostUri")
         
         sendToWatch(hostUriTextField.text!)
@@ -50,6 +56,12 @@ class ViewController: UIViewController, WCSessionDelegate {
         } catch {
             print(error)
         }
+    }
+    
+    // Remove keyboard by touching outside
+    
+    func onTouchGesture(){
+        self.view.endEditing(true)
     }
 }
 

@@ -12,17 +12,37 @@ import MediaPlayer
 import UIKit
 
 /*
- * Class that handles the playing of the alarm sound. 
+ * Class that handles the playing and the volume of the alarm sound.
  */
-class AlarmPlayer {
+class AlarmSound {
     private static let soundURL = NSBundle.mainBundle().URLForResource("alarm", withExtension: "mp3")
-    private static var audioPlayer : AVAudioPlayer? = nil
+    private static var audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOfURL: soundURL!)
+    
+    private static var mute : Bool = false
+    private static var volumeBeforeMute : Float = 0
+    
+    /*
+     * Sets the audio volume to 0.
+     */
+    static func muteVolume() {
+        mute = true;
+        volumeBeforeMute = self.audioPlayer.volume
+        self.audioPlayer.volume = 0
+    }
+    
+    /*
+     * Sets the volume of the alarm back to the volume before it has been muted.
+     */
+    static func unmuteVolume() {
+        mute = false;
+        self.audioPlayer.volume = volumeBeforeMute
+    }
     
     /*
      * Changes the alarm sound volume. 1.0 is 100% volume. 0.0 is 0% volume.
      */
     static func changeAlarmVolume(volume : Float) {
-        self.audioPlayer?.volume = volume
+        self.audioPlayer.volume = volume
         
         // change the system volume, so that sound will be played whatever system
         // settings you have
@@ -48,27 +68,19 @@ class AlarmPlayer {
         return 0
     }
     
-    static func stopAlarm() {
+    static func stop() {
         
-        if (audioPlayer == nil) {
-            return
-        }
-        
-        self.audioPlayer!.stop()
+        self.audioPlayer.stop()
     }
     
-    static func playAlarm() {
+    static func play() {
         do {
-            if self.audioPlayer == nil {
-                try self.audioPlayer = AVAudioPlayer(contentsOfURL: soundURL!)
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-                try AVAudioSession.sharedInstance().setActive(true)
-                //UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
                 
-                // Play endless loops
-                self.audioPlayer?.numberOfLoops = -1
-            }
-            self.audioPlayer!.play()
+            // Play endless loops
+            self.audioPlayer.numberOfLoops = -1
+            self.audioPlayer.play()
         } catch _ {
             print("Unable to play sound!")
         }

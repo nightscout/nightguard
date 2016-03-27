@@ -22,6 +22,15 @@ class UserDefaults {
         guard let hostUri = defaults.stringForKey("hostUri") else {
             return ""
         }
-        return hostUri
+        
+        return uriWithoutTrailingSlashes(hostUri)
+    }
+    
+    static func uriWithoutTrailingSlashes(hostUri : String) -> String {
+        if !hostUri.hasSuffix("/") {
+            return hostUri
+        }
+        
+        return hostUri.substringToIndex(hostUri.endIndex.predecessor())
     }
 }

@@ -26,10 +26,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         // nothing to do - closes automatically
     }
     
-    var GREEN : UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
-    var YELLOW : UIColor = UIColor.init(red: 1, green: 0.94, blue: 0, alpha: 1)
-    var RED : UIColor = UIColor.init(red: 1, green: 0.22, blue: 0.11, alpha: 1)
-    
     var historicBgData : [Int] = []
     var currentBgData : BgData = BgData()
     
@@ -44,7 +40,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         checkForNewValuesFromNightscoutServer()
     }
     
-    func checkForNewValuesFromNightscoutServer() {
+    private func checkForNewValuesFromNightscoutServer() {
         
         if currentBgData.isOlderThan5Minutes() {
             
@@ -52,7 +48,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         }
     }
     
-    func readNewValuesFromNightscoutServer() {
+    private func readNewValuesFromNightscoutServer() {
         ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(bgData) -> Void in
             self.currentBgData = bgData
             self.paintCurrentBgData(self.currentBgData)
@@ -114,7 +110,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     private func paintChart(bgValues : [Int]) {
-        let chartPainter : ChartPainter = ChartPainter();
+        
+        let chartPainter : ChartPainter = ChartPainter(canvasWidth: 165, canvasHeight: 125);
         
         guard let chartImage = chartPainter.drawImage(bgValues) else {
             return
@@ -124,49 +121,14 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     private func paintCurrentBgData(bgData : BgData) {
         self.bgLabel.setText(bgData.sgv)
-        self.colorBgLabel(self.bgLabel, bg: bgData.sgv)
+        self.bgLabel.setTextColor(UIColorChanger.getBgColor(bgData.sgv))
+        
         self.deltaLabel.setText(bgData.bgdeltaString)
-        self.colorDeltaLabel(self.deltaLabel, bgdelta: bgData.bgdelta)
+        self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(bgData.bgdelta))
+        
         self.timeLabel.setText(bgData.timeString)
-        self.colorTimeLabel(self.timeLabel, lastUpdate: bgData.time)
+        self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(bgData.time))
+        
         self.batteryLabel.setText(bgData.battery)
-    }
-    
-    // Changes the color to red if blood glucose is bad :-/
-    private func colorBgLabel(bgLabel : WKInterfaceLabel, bg : String) {
-        guard let bgNumber : Int = Int(bg) else {
-            bgLabel.setTextColor(UIColor.whiteColor())
-            return;
-        }
-        if bgNumber > 200 {
-            bgLabel.setTextColor(RED)
-        } else if bgNumber > 180 {
-            bgLabel.setTextColor(YELLOW)
-        } else {
-            bgLabel.setTextColor(UIColor.whiteColor())
-        }
-    }
-    
-    private func colorDeltaLabel(deltaLabel : WKInterfaceLabel, bgdelta : NSNumber) {
-        let absoluteDelta = abs(bgdelta.intValue)
-        if (absoluteDelta >= 10) {
-            deltaLabel.setTextColor(RED)
-        } else if (absoluteDelta >= 5) {
-            deltaLabel.setTextColor(YELLOW)
-        } else {
-            deltaLabel.setTextColor(UIColor.whiteColor())
-        }
-    }
-    
-    private func colorTimeLabel(timeLabel : WKInterfaceLabel, lastUpdate : NSNumber) {
-        let lastUpdateAsNSDate : NSDate = NSDate(timeIntervalSince1970: lastUpdate.doubleValue / 1000)
-        let timeInterval : Int = Int(NSDate().timeIntervalSinceDate(lastUpdateAsNSDate))
-        if (timeInterval > 7*60) {
-            timeLabel.setTextColor(YELLOW)
-        } else if (timeInterval > 15*60) {
-            timeLabel.setTextColor(RED)
-        } else {
-            timeLabel.setTextColor(UIColor.whiteColor())
-        }
     }
 }

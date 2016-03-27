@@ -7,8 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		43119B7E1C38297B00DD6D35 /* ServiceBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */; };
+		43119B801C3829AE00DD6D35 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B7F1C3829AE00DD6D35 /* MainViewController.swift */; };
+		43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
+		43119B821C382B2B00DD6D35 /* BgData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* BgData.swift */; };
+		43119B831C382BBB00DD6D35 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaults.swift */; };
+		43119B881C383CF500DD6D35 /* UIColorChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B861C383CF500DD6D35 /* UIColorChanger.swift */; };
+		43119B891C38404200DD6D35 /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F451C303E4200DB8B58 /* DataRepository.swift */; };
+		43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
+		43119B8F1C39733A00DD6D35 /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B8E1C39733A00DD6D35 /* AlarmSound.swift */; };
+		43119B911C3974C100DD6D35 /* alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43119B901C3974C100DD6D35 /* alarm.mp3 */; };
+		43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B861C383CF500DD6D35 /* UIColorChanger.swift */; };
+		43119B961C54083300DD6D35 /* BgDataHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B951C54083300DD6D35 /* BgDataHolder.swift */; };
+		43119B971C54083300DD6D35 /* BgDataHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B951C54083300DD6D35 /* BgDataHolder.swift */; };
+		43119B981C540FF300DD6D35 /* BgData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* BgData.swift */; };
+		43119B9A1C54258300DD6D35 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B991C54258300DD6D35 /* TimeService.swift */; };
+		43119B9B1C54258300DD6D35 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B991C54258300DD6D35 /* TimeService.swift */; };
+		43119B9D1C56B3D300DD6D35 /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */; };
+		43119B9E1C56B3D300DD6D35 /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */; };
 		43647BCE1BFF6435004389F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCD1BFF6435004389F9 /* AppDelegate.swift */; };
-		43647BD01BFF6435004389F9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCF1BFF6435004389F9 /* ViewController.swift */; };
+		43647BD01BFF6435004389F9 /* PrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCF1BFF6435004389F9 /* PrefsViewController.swift */; };
 		43647BD31BFF6435004389F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD11BFF6435004389F9 /* Main.storyboard */; };
 		43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */; };
 		43647BE31BFF6435004389F9 /* scoutwatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BE21BFF6435004389F9 /* scoutwatchTests.swift */; };
@@ -35,6 +53,9 @@
 		439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
 		439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
 		439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C391A1C0E295C00D89872 /* ChartPainterTest.swift */; };
+		43BF690D1C72657D00A36D61 /* GuiStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690C1C72657D00A36D61 /* GuiStateRepository.swift */; };
+		43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */; };
+		43BF69101C7269E400A36D61 /* GuiStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690C1C72657D00A36D61 /* GuiStateRepository.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -95,9 +116,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		43119B7F1C3829AE00DD6D35 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
+		43119B8E1C39733A00DD6D35 /* AlarmSound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSound.swift; sourceTree = "<group>"; };
+		43119B901C3974C100DD6D35 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm.mp3; sourceTree = "<group>"; };
+		43119B951C54083300DD6D35 /* BgDataHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BgDataHolder.swift; sourceTree = "<group>"; };
+		43119B991C54258300DD6D35 /* TimeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeService.swift; sourceTree = "<group>"; };
+		43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmRule.swift; sourceTree = "<group>"; };
 		43647BCA1BFF6435004389F9 /* scoutwatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scoutwatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BCD1BFF6435004389F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		43647BCF1BFF6435004389F9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		43647BCF1BFF6435004389F9 /* PrefsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsViewController.swift; sourceTree = "<group>"; };
 		43647BD21BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43647BD71BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43647BD91BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -130,6 +158,8 @@
 		439BADF71C24C315006BEADB /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		439C39171C0E002F00D89872 /* ChartPainter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainter.swift; sourceTree = "<group>"; };
 		439C391A1C0E295C00D89872 /* ChartPainterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainterTest.swift; sourceTree = "<group>"; };
+		43BF690C1C72657D00A36D61 /* GuiStateRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuiStateRepository.swift; sourceTree = "<group>"; };
+		43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuiStateRepositoryTest.swift; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -199,13 +229,20 @@
 		43647BCC1BFF6435004389F9 /* scoutwatch */ = {
 			isa = PBXGroup;
 			children = (
+				43119B901C3974C100DD6D35 /* alarm.mp3 */,
 				439BADE91C24BB6D006BEADB /* Media.xcassets */,
 				43647C261BFF6445004389F9 /* scoutwatch.entitlements */,
 				43647BCD1BFF6435004389F9 /* AppDelegate.swift */,
-				43647BCF1BFF6435004389F9 /* ViewController.swift */,
+				43647BCF1BFF6435004389F9 /* PrefsViewController.swift */,
 				43647BD11BFF6435004389F9 /* Main.storyboard */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
 				43647BD91BFF6435004389F9 /* Info.plist */,
+				43119B7F1C3829AE00DD6D35 /* MainViewController.swift */,
+				43119B8E1C39733A00DD6D35 /* AlarmSound.swift */,
+				43119B951C54083300DD6D35 /* BgDataHolder.swift */,
+				43119B991C54258300DD6D35 /* TimeService.swift */,
+				43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */,
+				43BF690C1C72657D00A36D61 /* GuiStateRepository.swift */,
 			);
 			path = scoutwatch;
 			sourceTree = "<group>";
@@ -217,6 +254,7 @@
 				43647BE41BFF6435004389F9 /* Info.plist */,
 				439C391A1C0E295C00D89872 /* ChartPainterTest.swift */,
 				43794F471C30482500DB8B58 /* DataRepositoryTest.swift */,
+				43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */,
 			);
 			path = scoutwatchTests;
 			sourceTree = "<group>";
@@ -258,6 +296,7 @@
 				43794F451C303E4200DB8B58 /* DataRepository.swift */,
 				43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */,
 				43794F4E1C343B9800DB8B58 /* UserDefaults.swift */,
+				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
 			);
 			path = "scoutwatch WatchKit Extension";
 			sourceTree = "<group>";
@@ -380,6 +419,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 						};
 					};
 					43647BDD1BFF6435004389F9 = {
@@ -434,6 +476,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43119B911C3974C100DD6D35 /* alarm.mp3 in Resources */,
 				43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */,
 				439BADEA1C24BB6D006BEADB /* Media.xcassets in Resources */,
 				43647BD31BFF6435004389F9 /* Main.storyboard in Resources */,
@@ -478,8 +521,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43647BD01BFF6435004389F9 /* ViewController.swift in Sources */,
+				43BF690D1C72657D00A36D61 /* GuiStateRepository.swift in Sources */,
+				43119B9A1C54258300DD6D35 /* TimeService.swift in Sources */,
+				43647BD01BFF6435004389F9 /* PrefsViewController.swift in Sources */,
+				43119B891C38404200DD6D35 /* DataRepository.swift in Sources */,
 				43647BCE1BFF6435004389F9 /* AppDelegate.swift in Sources */,
+				43119B821C382B2B00DD6D35 /* BgData.swift in Sources */,
+				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
+				43119B961C54083300DD6D35 /* BgDataHolder.swift in Sources */,
+				43119B9D1C56B3D300DD6D35 /* AlarmRule.swift in Sources */,
+				43119B7E1C38297B00DD6D35 /* ServiceBoundary.swift in Sources */,
+				43119B801C3829AE00DD6D35 /* MainViewController.swift in Sources */,
+				43119B831C382BBB00DD6D35 /* UserDefaults.swift in Sources */,
+				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
+				43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */,
+				43119B8F1C39733A00DD6D35 /* AlarmSound.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,7 +546,11 @@
 				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
 				43794F491C30489C00DB8B58 /* DataRepository.swift in Sources */,
 				43794F4A1C3048CE00DB8B58 /* BgData.swift in Sources */,
+				43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */,
 				43794F481C30482500DB8B58 /* DataRepositoryTest.swift in Sources */,
+				43119B9E1C56B3D300DD6D35 /* AlarmRule.swift in Sources */,
+				43119B9B1C54258300DD6D35 /* TimeService.swift in Sources */,
+				43BF69101C7269E400A36D61 /* GuiStateRepository.swift in Sources */,
 				43794F4B1C3049B300DB8B58 /* AppConstants.swift in Sources */,
 				439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */,
 				43647BE31BFF6435004389F9 /* scoutwatchTests.swift in Sources */,
@@ -501,7 +561,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43119B971C54083300DD6D35 /* BgDataHolder.swift in Sources */,
 				43647BEE1BFF6435004389F9 /* scoutwatchUITests.swift in Sources */,
+				43119B981C540FF300DD6D35 /* BgData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +579,7 @@
 				43647C0B1BFF6435004389F9 /* ExtensionDelegate.swift in Sources */,
 				43647C091BFF6435004389F9 /* InterfaceController.swift in Sources */,
 				43794F461C303E4200DB8B58 /* DataRepository.swift in Sources */,
+				43119B881C383CF500DD6D35 /* UIColorChanger.swift in Sources */,
 				43794F421C2F435A00DB8B58 /* AppConstants.swift in Sources */,
 				439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */,
 				43794F401C2F3F9D00DB8B58 /* ServiceBoundary.swift in Sources */,

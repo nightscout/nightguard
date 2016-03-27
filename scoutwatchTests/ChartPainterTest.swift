@@ -10,7 +10,7 @@ import XCTest
 
 class ChartPainterTest: XCTestCase {
 
-    let chartPainter : ChartPainter = ChartPainter()
+    let chartPainter : ChartPainter = ChartPainter(canvasWidth: 165, canvasHeight: 125)
 
     func testYMinAdjustementIsWorking() {
         chartPainter.adjustMinMaxYCoordinates([0])

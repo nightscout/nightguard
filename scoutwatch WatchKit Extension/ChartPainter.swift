@@ -13,15 +13,19 @@ class ChartPainter {
     let GREEN : UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
     let DARK : UIColor = UIColor.init(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
     
-    var maximumYValue = 200
-    var minimumYValue = 40
     
     var canvasWidth : Int = 165
     var canvasHeight : Int = 125
+    
+    var maximumYValue = 200
+    var minimumYValue = 40
+
     var size : CGSize
     
-    init() {
+    init(canvasWidth : Int, canvasHeight : Int) {
         size = CGSize.init(width: canvasWidth, height: canvasHeight)
+        self.canvasWidth = canvasWidth
+        self.canvasHeight = canvasHeight
     }
     
     func drawImage(bgValues : [Int]) -> UIImage? {

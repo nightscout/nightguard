@@ -1,4 +1,4 @@
-//
+	//
 //  ServiceBoundary.swift
 //  scoutwatch
 //
@@ -81,7 +81,6 @@ class ServiceBoundary {
                 bgData.sgv = String(sgv)
                 bgData.bgdeltaString = self.direction(bgdelta) + String(bgdelta)
                 bgData.bgdelta = bgdelta
-                bgData.timeString = self.formatTime(time)
                 bgData.time = time
                 bgData.battery = String(battery) + "%"
                 

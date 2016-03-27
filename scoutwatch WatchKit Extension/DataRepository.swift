@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Repository to store BgData using the NSUserDefaults
 class DataRepository {
     
     static let singleton = DataRepository()

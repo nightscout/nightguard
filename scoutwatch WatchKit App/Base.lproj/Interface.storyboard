@@ -21,18 +21,54 @@
                                         <fontDescription key="font" type="system" pointSize="46"/>
                                     </variation>
                                 </label>
-                                <group width="72.5" alignment="left" id="2qL-lw-zuD">
+                                <group width="72.5" height="1" alignment="left" layout="vertical" id="2qL-lw-zuD">
                                     <items>
-                                        <label width="26.5" height="17.5" alignment="left" text="+10" id="frk-q8-3y9">
-                                            <fontDescription key="font" type="system" pointSize="14"/>
-                                        </label>
-                                        <group height="39" alignment="left" layout="vertical" id="7mo-kr-osX">
+                                        <group width="1" alignment="left" id="yrF-or-Bnh">
+                                            <items>
+                                                <label width="26.5" height="17.5" alignment="left" text="+10" id="frk-q8-3y9">
+                                                    <fontDescription key="font" type="system" pointSize="14"/>
+                                                </label>
+                                                <label height="18.5" alignment="right" text="59min." minimumScaleFactor="0.5" id="w1H-tu-XyX"/>
+                                            </items>
+                                            <variation key="default">
+                                                <mask key="items">
+                                                    <exclude reference="frk-q8-3y9"/>
+                                                    <exclude reference="w1H-tu-XyX"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="device=watch42mm">
+                                                <mask key="items">
+                                                    <include reference="frk-q8-3y9"/>
+                                                    <include reference="w1H-tu-XyX"/>
+                                                </mask>
+                                            </variation>
+                                        </group>
+                                        <group height="18" alignment="right" id="7mo-kr-osX">
                                             <items>
                                                 <label width="42" height="17.5" alignment="right" verticalAlignment="bottom" text="100%" textAlignment="right" id="lz8-YE-T1d"/>
-                                                <label height="17.5" alignment="right" text="--:--" id="w1H-tu-XyX"/>
                                             </items>
+                                            <variation key="default">
+                                                <mask key="items">
+                                                    <exclude reference="lz8-YE-T1d"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="device=watch42mm">
+                                                <mask key="items">
+                                                    <include reference="lz8-YE-T1d"/>
+                                                </mask>
+                                            </variation>
                                         </group>
                                     </items>
+                                    <variation key="default">
+                                        <mask key="items">
+                                            <exclude reference="yrF-or-Bnh"/>
+                                        </mask>
+                                    </variation>
+                                    <variation key="device=watch42mm">
+                                        <mask key="items">
+                                            <include reference="yrF-or-Bnh"/>
+                                        </mask>
+                                    </variation>
                                 </group>
                             </items>
                         </group>
@@ -75,8 +111,7 @@
                         <label alignment="center" text="Nightscout URI:" id="ip5-bC-D8x"/>
                         <label alignment="left" id="AuT-yY-6WA"/>
                         <label width="1" alignment="center" text="http://..." textAlignment="center" numberOfLines="2" id="rQn-yu-ajp"/>
-                        <button width="1" alignment="left" title="Button" id="J0t-oX-olu">
-                            <variation key="device=watch42mm" title="Close"/>
+                        <button width="1" alignment="left" title="Close" id="J0t-oX-olu">
                             <connections>
                                 <action selector="doCloseAction" destination="wky-cb-ykJ" id="J6Y-PP-x8b"/>
                             </connections>
@@ -85,18 +120,11 @@
                     <variation key="default">
                         <mask key="items">
                             <exclude reference="AuT-yY-6WA"/>
-                            <exclude reference="J0t-oX-olu"/>
-                        </mask>
-                    </variation>
-                    <variation key="device=watch38mm">
-                        <mask key="items">
-                            <include reference="J0t-oX-olu"/>
                         </mask>
                     </variation>
                     <variation key="device=watch42mm">
                         <mask key="items">
                             <include reference="AuT-yY-6WA"/>
-                            <include reference="J0t-oX-olu"/>
                         </mask>
                     </variation>
                     <connections>

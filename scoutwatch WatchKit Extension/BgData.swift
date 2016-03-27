@@ -14,16 +14,22 @@ class BgData : NSObject, NSCoding {
     var sgv : String = "---"
     var bgdeltaString : String = "---"
     var bgdelta : NSNumber = 0.0
-    var timeString : String = "--:--"
+    var timeString : String {
+        get {
+            if time == 0 {
+                return "-min"
+            }
+            // calculate how old the current data is
+            let currentTime = Int64(NSDate().timeIntervalSince1970 * 1000)
+            let difference = (currentTime - time.longLongValue) / 60000
+            if difference > 59 {
+                return ">1Hr"
+            }
+            return String(difference) + "min"
+        }
+    }
     var time : NSNumber = 0
     var battery : String = "---"
-    
-    func isOlderThan5Minutes() -> Bool {
-        let lastUpdateAsNSDate : NSDate = NSDate(timeIntervalSince1970: time.doubleValue / 1000)
-        let timeInterval : Int = Int(NSDate().timeIntervalSinceDate(lastUpdateAsNSDate))
-        
-        return timeInterval > 5 * 60
-    }
     
     // NSCoder methods to make this class serializable
     
@@ -52,11 +58,6 @@ class BgData : NSObject, NSCoding {
         }
         self.bgdelta = bgdelta
         
-        guard let timeString = decoder.decodeObjectForKey("timeString") as? String else {
-            return
-        }
-        self.timeString = timeString
-        
         guard let time = decoder.decodeObjectForKey("time") as? NSNumber else {
             return
         }
@@ -75,8 +76,22 @@ class BgData : NSObject, NSCoding {
         aCoder.encodeObject(self.sgv, forKey: "sgv")
         aCoder.encodeObject(self.bgdeltaString, forKey: "bgdeltaString")
         aCoder.encodeObject(self.bgdelta, forKey: "bgdelta")
-        aCoder.encodeObject(self.timeString, forKey: "timeString")
         aCoder.encodeObject(self.time, forKey: "time")
         aCoder.encodeObject(self.battery, forKey: "battery")
+    }
+    
+    func isOlderThan5Minutes() -> Bool {
+        return isOlderThanXMinutes(5)
+    }
+    
+    func isOlderThan15Minutes() -> Bool {
+        return isOlderThanXMinutes(15)
+    }
+    
+    private func isOlderThanXMinutes(minutes : Int) -> Bool {
+        let lastUpdateAsNSDate : NSDate = NSDate(timeIntervalSince1970: time.doubleValue / 1000)
+        let timeInterval : Int = Int(NSDate().timeIntervalSinceDate(lastUpdateAsNSDate))
+        
+        return timeInterval > minutes * 60
     }
 }
