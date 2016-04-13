@@ -85,7 +85,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         // Start the timer to retrieve new bgValues
         timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
             target: self,
-            selector: "timerDidEnd:",
+            selector: #selector(InterfaceController.timerDidEnd(_:)),
             userInfo: nil,
             repeats: true)
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 class MainViewController: UIViewController {
     
@@ -17,8 +18,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var batteryLabel: UILabel!
     @IBOutlet weak var chartImage: UIImageView!
     @IBOutlet weak var snoozeButton: UIButton!
-    @IBOutlet weak var volumeSlider: UISlider!
     @IBOutlet weak var screenlockSwitch: UISwitch!
+    @IBOutlet weak var volumeContainerView: UIView!
     
     // timer to check continuously for new bgValues
     var timer = NSTimer()
@@ -28,6 +29,14 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {        
         super.viewDidLoad()
         
+        // Embed the Volume Slider View
+        // This way the system volume can be
+        // controlled by the user
+        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
+        volumeView.backgroundColor = UIColor.blackColor()
+        volumeView.tintColor = UIColor.grayColor()
+        volumeContainerView.addSubview(volumeView)
+        
         // snooze the alarm for 5 Seconds in order to retrieve new data
         // before playing alarm
         AlarmRule.snoozeSeconds(5)
@@ -35,7 +44,6 @@ class MainViewController: UIViewController {
         checkForNewValuesFromNightscoutServer()
         restoreGuiState()
         
-        paintVolumeSlider()
         paintScreenLockSwitch()
         paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
         paintChart(BgDataHolder.singleton.getHistoricBgData())
@@ -43,7 +51,7 @@ class MainViewController: UIViewController {
         // Start the timer to retrieve new bgValues
         timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
             target: self,
-            selector: "timerDidEnd:",
+            selector: #selector(MainViewController.timerDidEnd(_:)),
             userInfo: nil,
             repeats: true)
         // Start immediately so that the current time gets display at once
@@ -52,8 +60,6 @@ class MainViewController: UIViewController {
     }
     
     private func restoreGuiState() {
-        volumeSlider.value = GuiStateRepository.singleton.loadVolumeSliderPosition()
-        doChangeVolumeAction(self)
         
         screenlockSwitch.on = GuiStateRepository.singleton.loadScreenlockSwitchState()
         doScreenlockAction(self)
@@ -118,10 +124,6 @@ class MainViewController: UIViewController {
         })
     }
     
-    private func paintVolumeSlider() {
-        volumeSlider.value = AlarmSound.getAlarmVolume()
-    }
-    
     private func paintScreenLockSwitch() {
         screenlockSwitch.on = UIApplication.sharedApplication().idleTimerDisabled
     }
@@ -140,12 +142,6 @@ class MainViewController: UIViewController {
             
             self.batteryLabel.text = bgData.battery
         })
-    }
-    
-    @IBAction func doChangeVolumeAction(sender: AnyObject) {
-        
-        AlarmSound.changeAlarmVolume(volumeSlider.value)
-        GuiStateRepository.singleton.storeVolumeSliderPosition(volumeSlider.value)
     }
     
     @IBAction func doSnoozeAction(sender: AnyObject) {

@@ -58,7 +58,7 @@ class ChartPainter {
         CGContextBeginPath(context)
         
         let maxPoints : Int = bgValues.count
-        for (var currentPoint = 1; currentPoint < maxPoints; currentPoint++) {
+        for (var currentPoint = 1; currentPoint < maxPoints; currentPoint += 1) {
             
             CGContextMoveToPoint(context,
                 calcXValue(currentPoint-1, xValuesCount: maxPoints),

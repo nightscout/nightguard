@@ -29,7 +29,7 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         }
         
         hostUriTextField.delegate = self
-        let tap = UITapGestureRecognizer(target: self, action: "onTouchGesture")
+        let tap = UITapGestureRecognizer(target: self, action: #selector(PrefsViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
     }
 
