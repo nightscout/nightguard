@@ -13,33 +13,33 @@ class DataRepository {
     
     static let singleton = DataRepository()
     
-    func storeCurrentBgData(bgData : BgData) {
+    func storeCurrentNightscoutData(bgData : NightscoutData) {
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setObject(NSKeyedArchiver.archivedDataWithRootObject(bgData), forKey: "currentBgData")
     }
     
-    func loadCurrentBgData() -> BgData {
+    func loadCurrentNightscoutData() -> NightscoutData {
         guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             // Nothing has been stored before => return dummy-Data
-            return BgData()
+            return NightscoutData()
         }
         
         guard let data = defaults.objectForKey("currentBgData") as? NSData else {
-            return BgData()
+            return NightscoutData()
         }
-        guard let bgData : BgData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? BgData else {
-            return BgData()
+        guard let nightscoutData : NightscoutData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? NightscoutData else {
+            return NightscoutData()
         }
-        return bgData
+        return nightscoutData
     }
     
     
-    func storeHistoricBgData(historicBgData : [Int]) {
+    func storeHistoricBgData(historicBgData : [BloodSugar]) {
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setObject(NSKeyedArchiver.archivedDataWithRootObject(historicBgData), forKey: "historicBgData")
     }
     
-    func loadHistoricBgData() -> [Int] {
+    func loadHistoricBgData() -> [BloodSugar] {
         guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             // Nothing has been stored before => return dummy-Data
             return []
@@ -49,7 +49,7 @@ class DataRepository {
             return []
         }
         
-        guard let historicBgData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [Int] else {
+        guard let historicBgData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [BloodSugar] else {
             return []
         }
         return historicBgData

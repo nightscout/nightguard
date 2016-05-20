@@ -22,9 +22,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // This application should be called in background every 3 Minutes
         UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(3*60)
         
+        initializeApplicationDefaults()
+        initializeAlarmRule()
         return true
     }
 
+    func initializeAlarmRule() {
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        
+        AlarmRule.isEdgeDetectionAlarmEnabled = (defaults?.boolForKey("edgeDetectionAlarmEnabled"))!
+        AlarmRule.numberOfConsecutiveValues = (defaults?.integerForKey("numberOfConsecutiveValues"))!
+        AlarmRule.deltaAmount = (defaults?.integerForKey("deltaAmount"))!
+        
+        AlarmRule.alertIfAboveValue = (defaults?.integerForKey("alertIfAboveValue"))!
+        AlarmRule.alertIfBelowValue = (defaults?.integerForKey("alertIfBelowValue"))!
+    }
+    
+    func initializeApplicationDefaults() {
+        
+        // Setting the defaults if the users starts the application for the first time
+        let initialDefaults: NSDictionary =
+            ["edgeDetectionAlarmEnabled": false,
+             "numberOfConsecutiveValues": 3,
+             "deltaAmount": 8,
+             
+             "alertIfAboveValue": 180,
+             "alertIfBelowValue": 80
+        ]
+        NSUserDefaults.standardUserDefaults().registerDefaults(initialDefaults as! [String : AnyObject])
+    }
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -49,17 +76,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication,
         performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-            
-            ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(bgData) -> Void in
-                
-                DataRepository.singleton.storeCurrentBgData(bgData)
-                if AlarmRule.isAlarmActivated(bgData) {
-                    AlarmSound.play()
-                } else {
-                    AlarmSound.stop()
-                }
-                completionHandler (.NoData)
-            })
+        
+        // This can be used to alarm even when the app is in the background
+        // but this doesn't work very well - so removed it so far...
+//            ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(nightscoutData) -> Void in
+//                
+//                DataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
+//                if AlarmRule.isAlarmActivated(nightscoutData) {
+//                    AlarmSound.play()
+//                } else {
+//                    AlarmSound.stop()
+//                }
+//                completionHandler (.NoData)
+//            })
     }
 }
 

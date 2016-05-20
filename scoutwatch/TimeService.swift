@@ -24,4 +24,29 @@ class TimeService {
             return NSDate().timeIntervalSince1970
         }
     }
+    
+    static func getToday() -> NSDate {
+        if testTime != nil {
+            return NSDate(timeIntervalSince1970: testTime!)
+        }
+        return NSDate()
+    }
+    
+    static func getYesterday() -> NSDate {
+        let yesterday = getToday().dateByAddingTimeInterval(-24*60*60)
+
+        return yesterday
+    }
+    
+    static func isYesterday(microsSince1970 : Double) -> Bool {
+        let secondsSince1970 = microsSince1970 / 1000
+        
+        let calendar = NSCalendar.currentCalendar()
+        let startOfYesterday = calendar.startOfDayForDate(TimeService.getYesterday()).timeIntervalSince1970
+        let endOfYesterday = calendar.startOfDayForDate(TimeService.getToday()).timeIntervalSince1970
+        
+        return startOfYesterday <= secondsSince1970 &&
+            secondsSince1970 <= endOfYesterday
+        
+    }
 }

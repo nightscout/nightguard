@@ -10,7 +10,7 @@
 		43119B7E1C38297B00DD6D35 /* ServiceBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */; };
 		43119B801C3829AE00DD6D35 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B7F1C3829AE00DD6D35 /* MainViewController.swift */; };
 		43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
-		43119B821C382B2B00DD6D35 /* BgData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* BgData.swift */; };
+		43119B821C382B2B00DD6D35 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* NightscoutData.swift */; };
 		43119B831C382BBB00DD6D35 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaults.swift */; };
 		43119B881C383CF500DD6D35 /* UIColorChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B861C383CF500DD6D35 /* UIColorChanger.swift */; };
 		43119B891C38404200DD6D35 /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F451C303E4200DB8B58 /* DataRepository.swift */; };
@@ -20,11 +20,17 @@
 		43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B861C383CF500DD6D35 /* UIColorChanger.swift */; };
 		43119B961C54083300DD6D35 /* BgDataHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B951C54083300DD6D35 /* BgDataHolder.swift */; };
 		43119B971C54083300DD6D35 /* BgDataHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B951C54083300DD6D35 /* BgDataHolder.swift */; };
-		43119B981C540FF300DD6D35 /* BgData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* BgData.swift */; };
+		43119B981C540FF300DD6D35 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* NightscoutData.swift */; };
 		43119B9A1C54258300DD6D35 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B991C54258300DD6D35 /* TimeService.swift */; };
 		43119B9B1C54258300DD6D35 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B991C54258300DD6D35 /* TimeService.swift */; };
 		43119B9D1C56B3D300DD6D35 /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */; };
 		43119B9E1C56B3D300DD6D35 /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */; };
+		433AD0151CCE2E8D001A76CD /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433AD0141CCE2E8D001A76CD /* BloodSugar.swift */; };
+		433AD0171CCE3E89001A76CD /* ServiceBoundaryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433AD0161CCE3E89001A76CD /* ServiceBoundaryTest.swift */; };
+		433AD0181CCE3FCB001A76CD /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaults.swift */; };
+		433AD0191CCE431F001A76CD /* ServiceBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */; };
+		433AD01A1CCE483B001A76CD /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433AD0141CCE2E8D001A76CD /* BloodSugar.swift */; };
+		433AD01B1CCE4A6E001A76CD /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433AD0141CCE2E8D001A76CD /* BloodSugar.swift */; };
 		43647BCE1BFF6435004389F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCD1BFF6435004389F9 /* AppDelegate.swift */; };
 		43647BD01BFF6435004389F9 /* PrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCF1BFF6435004389F9 /* PrefsViewController.swift */; };
 		43647BD31BFF6435004389F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD11BFF6435004389F9 /* Main.storyboard */; };
@@ -40,11 +46,11 @@
 		43647C0F1BFF6435004389F9 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647C0E1BFF6435004389F9 /* ComplicationController.swift */; };
 		43794F401C2F3F9D00DB8B58 /* ServiceBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */; };
 		43794F421C2F435A00DB8B58 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
-		43794F441C2F4AB900DB8B58 /* BgData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* BgData.swift */; };
+		43794F441C2F4AB900DB8B58 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* NightscoutData.swift */; };
 		43794F461C303E4200DB8B58 /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F451C303E4200DB8B58 /* DataRepository.swift */; };
 		43794F481C30482500DB8B58 /* DataRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F471C30482500DB8B58 /* DataRepositoryTest.swift */; };
 		43794F491C30489C00DB8B58 /* DataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F451C303E4200DB8B58 /* DataRepository.swift */; };
-		43794F4A1C3048CE00DB8B58 /* BgData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* BgData.swift */; };
+		43794F4A1C3048CE00DB8B58 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F431C2F4AB900DB8B58 /* NightscoutData.swift */; };
 		43794F4B1C3049B300DB8B58 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
 		43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */; };
 		43794F4F1C343B9800DB8B58 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaults.swift */; };
@@ -57,6 +63,10 @@
 		43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */; };
 		43BF69101C7269E400A36D61 /* GuiStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690C1C72657D00A36D61 /* GuiStateRepository.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
+		43D6F7F01CCEA79B00CE4DCB /* YesterdayBloodSugarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6F7EF1CCEA79B00CE4DCB /* YesterdayBloodSugarService.swift */; };
+		43D6F7F11CCEB45600CE4DCB /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B991C54258300DD6D35 /* TimeService.swift */; };
+		43D6F7F41CD6A52500CE4DCB /* YesterdayBloodSugarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6F7EF1CCEA79B00CE4DCB /* YesterdayBloodSugarService.swift */; };
+		43D6F7F61CD9364900CE4DCB /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6F7F51CD9364900CE4DCB /* AlarmViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +133,8 @@
 		43119B951C54083300DD6D35 /* BgDataHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BgDataHolder.swift; sourceTree = "<group>"; };
 		43119B991C54258300DD6D35 /* TimeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeService.swift; sourceTree = "<group>"; };
 		43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmRule.swift; sourceTree = "<group>"; };
+		433AD0141CCE2E8D001A76CD /* BloodSugar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodSugar.swift; sourceTree = "<group>"; };
+		433AD0161CCE3E89001A76CD /* ServiceBoundaryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceBoundaryTest.swift; sourceTree = "<group>"; };
 		43647BCA1BFF6435004389F9 /* scoutwatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scoutwatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BCD1BFF6435004389F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43647BCF1BFF6435004389F9 /* PrefsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsViewController.swift; sourceTree = "<group>"; };
@@ -146,21 +158,23 @@
 		43647C0E1BFF6435004389F9 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		43647C121BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43647C261BFF6445004389F9 /* scoutwatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = scoutwatch.entitlements; sourceTree = "<group>"; };
-		43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceBoundary.swift; sourceTree = "<group>"; };
+		43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServiceBoundary.swift; path = "scoutwatch WatchKit Extension/ServiceBoundary.swift"; sourceTree = SOURCE_ROOT; };
 		43794F411C2F435A00DB8B58 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
-		43794F431C2F4AB900DB8B58 /* BgData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BgData.swift; sourceTree = "<group>"; };
+		43794F431C2F4AB900DB8B58 /* NightscoutData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutData.swift; path = "scoutwatch WatchKit Extension/NightscoutData.swift"; sourceTree = SOURCE_ROOT; };
 		43794F451C303E4200DB8B58 /* DataRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRepository.swift; sourceTree = "<group>"; };
 		43794F471C30482500DB8B58 /* DataRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRepositoryTest.swift; sourceTree = "<group>"; };
 		43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoInterfaceController.swift; sourceTree = "<group>"; };
-		43794F4E1C343B9800DB8B58 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		43794F4E1C343B9800DB8B58 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDefaults.swift; path = "scoutwatch WatchKit Extension/UserDefaults.swift"; sourceTree = SOURCE_ROOT; };
 		438591D91C14DC4D00F9CEE2 /* scoutwatch WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "scoutwatch WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		439BADE91C24BB6D006BEADB /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		439BADF71C24C315006BEADB /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		439C39171C0E002F00D89872 /* ChartPainter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainter.swift; sourceTree = "<group>"; };
+		439C39171C0E002F00D89872 /* ChartPainter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartPainter.swift; path = "scoutwatch WatchKit Extension/ChartPainter.swift"; sourceTree = SOURCE_ROOT; };
 		439C391A1C0E295C00D89872 /* ChartPainterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainterTest.swift; sourceTree = "<group>"; };
 		43BF690C1C72657D00A36D61 /* GuiStateRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuiStateRepository.swift; sourceTree = "<group>"; };
 		43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuiStateRepositoryTest.swift; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		43D6F7EF1CCEA79B00CE4DCB /* YesterdayBloodSugarService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YesterdayBloodSugarService.swift; sourceTree = "<group>"; };
+		43D6F7F51CD9364900CE4DCB /* AlarmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +216,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		433AD0121CCE1C8F001A76CD /* domain */ = {
+			isa = PBXGroup;
+			children = (
+				43794F431C2F4AB900DB8B58 /* NightscoutData.swift */,
+				43119B991C54258300DD6D35 /* TimeService.swift */,
+				43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */,
+				433AD0141CCE2E8D001A76CD /* BloodSugar.swift */,
+			);
+			name = domain;
+			sourceTree = "<group>";
+		};
+		433AD0131CCE1CE2001A76CD /* infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */,
+			);
+			name = infrastructure;
+			sourceTree = "<group>";
+		};
 		43647BC11BFF6435004389F9 = {
 			isa = PBXGroup;
 			children = (
@@ -229,7 +262,12 @@
 		43647BCC1BFF6435004389F9 /* scoutwatch */ = {
 			isa = PBXGroup;
 			children = (
+				433AD0131CCE1CE2001A76CD /* infrastructure */,
+				433AD0121CCE1C8F001A76CD /* domain */,
 				43119B901C3974C100DD6D35 /* alarm.mp3 */,
+				43D6F7EF1CCEA79B00CE4DCB /* YesterdayBloodSugarService.swift */,
+				439C39171C0E002F00D89872 /* ChartPainter.swift */,
+				43794F4E1C343B9800DB8B58 /* UserDefaults.swift */,
 				439BADE91C24BB6D006BEADB /* Media.xcassets */,
 				43647C261BFF6445004389F9 /* scoutwatch.entitlements */,
 				43647BCD1BFF6435004389F9 /* AppDelegate.swift */,
@@ -240,9 +278,8 @@
 				43119B7F1C3829AE00DD6D35 /* MainViewController.swift */,
 				43119B8E1C39733A00DD6D35 /* AlarmSound.swift */,
 				43119B951C54083300DD6D35 /* BgDataHolder.swift */,
-				43119B991C54258300DD6D35 /* TimeService.swift */,
-				43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */,
 				43BF690C1C72657D00A36D61 /* GuiStateRepository.swift */,
+				43D6F7F51CD9364900CE4DCB /* AlarmViewController.swift */,
 			);
 			path = scoutwatch;
 			sourceTree = "<group>";
@@ -255,6 +292,7 @@
 				439C391A1C0E295C00D89872 /* ChartPainterTest.swift */,
 				43794F471C30482500DB8B58 /* DataRepositoryTest.swift */,
 				43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */,
+				433AD0161CCE3E89001A76CD /* ServiceBoundaryTest.swift */,
 			);
 			path = scoutwatchTests;
 			sourceTree = "<group>";
@@ -289,13 +327,9 @@
 				43D213631C2214D60046C52D /* Assets.xcassets */,
 				43647C121BFF6435004389F9 /* Info.plist */,
 				43647C061BFF6435004389F9 /* Supporting Files */,
-				439C39171C0E002F00D89872 /* ChartPainter.swift */,
-				43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */,
 				43794F411C2F435A00DB8B58 /* AppConstants.swift */,
-				43794F431C2F4AB900DB8B58 /* BgData.swift */,
 				43794F451C303E4200DB8B58 /* DataRepository.swift */,
 				43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */,
-				43794F4E1C343B9800DB8B58 /* UserDefaults.swift */,
 				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
 			);
 			path = "scoutwatch WatchKit Extension";
@@ -526,7 +560,7 @@
 				43647BD01BFF6435004389F9 /* PrefsViewController.swift in Sources */,
 				43119B891C38404200DD6D35 /* DataRepository.swift in Sources */,
 				43647BCE1BFF6435004389F9 /* AppDelegate.swift in Sources */,
-				43119B821C382B2B00DD6D35 /* BgData.swift in Sources */,
+				43119B821C382B2B00DD6D35 /* NightscoutData.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
 				43119B961C54083300DD6D35 /* BgDataHolder.swift in Sources */,
 				43119B9D1C56B3D300DD6D35 /* AlarmRule.swift in Sources */,
@@ -534,7 +568,10 @@
 				43119B801C3829AE00DD6D35 /* MainViewController.swift in Sources */,
 				43119B831C382BBB00DD6D35 /* UserDefaults.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
+				433AD0151CCE2E8D001A76CD /* BloodSugar.swift in Sources */,
+				43D6F7F61CD9364900CE4DCB /* AlarmViewController.swift in Sources */,
 				43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */,
+				43D6F7F01CCEA79B00CE4DCB /* YesterdayBloodSugarService.swift in Sources */,
 				43119B8F1C39733A00DD6D35 /* AlarmSound.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -544,14 +581,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
+				433AD01A1CCE483B001A76CD /* BloodSugar.swift in Sources */,
+				433AD0171CCE3E89001A76CD /* ServiceBoundaryTest.swift in Sources */,
 				43794F491C30489C00DB8B58 /* DataRepository.swift in Sources */,
-				43794F4A1C3048CE00DB8B58 /* BgData.swift in Sources */,
+				43794F4A1C3048CE00DB8B58 /* NightscoutData.swift in Sources */,
+				433AD0181CCE3FCB001A76CD /* UserDefaults.swift in Sources */,
 				43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */,
 				43794F481C30482500DB8B58 /* DataRepositoryTest.swift in Sources */,
 				43119B9E1C56B3D300DD6D35 /* AlarmRule.swift in Sources */,
 				43119B9B1C54258300DD6D35 /* TimeService.swift in Sources */,
 				43BF69101C7269E400A36D61 /* GuiStateRepository.swift in Sources */,
 				43794F4B1C3049B300DB8B58 /* AppConstants.swift in Sources */,
+				433AD0191CCE431F001A76CD /* ServiceBoundary.swift in Sources */,
 				439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */,
 				43647BE31BFF6435004389F9 /* scoutwatchTests.swift in Sources */,
 			);
@@ -563,7 +604,7 @@
 			files = (
 				43119B971C54083300DD6D35 /* BgDataHolder.swift in Sources */,
 				43647BEE1BFF6435004389F9 /* scoutwatchUITests.swift in Sources */,
-				43119B981C540FF300DD6D35 /* BgData.swift in Sources */,
+				43119B981C540FF300DD6D35 /* NightscoutData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,12 +612,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43D6F7F11CCEB45600CE4DCB /* TimeService.swift in Sources */,
 				43647C0D1BFF6435004389F9 /* NotificationController.swift in Sources */,
 				43647C0F1BFF6435004389F9 /* ComplicationController.swift in Sources */,
-				43794F441C2F4AB900DB8B58 /* BgData.swift in Sources */,
+				43794F441C2F4AB900DB8B58 /* NightscoutData.swift in Sources */,
 				43794F4F1C343B9800DB8B58 /* UserDefaults.swift in Sources */,
 				43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */,
 				43647C0B1BFF6435004389F9 /* ExtensionDelegate.swift in Sources */,
+				433AD01B1CCE4A6E001A76CD /* BloodSugar.swift in Sources */,
+				43D6F7F41CD6A52500CE4DCB /* YesterdayBloodSugarService.swift in Sources */,
 				43647C091BFF6435004389F9 /* InterfaceController.swift in Sources */,
 				43794F461C303E4200DB8B58 /* DataRepository.swift in Sources */,
 				43119B881C383CF500DD6D35 /* UIColorChanger.swift in Sources */,

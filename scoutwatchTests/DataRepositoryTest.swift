@@ -12,12 +12,12 @@ class DataRepositoryTest: XCTestCase {
     
     func testStoreCurrentBgData() {
         // Given
-        let bgData = BgData()
-        bgData.bgdeltaString = "111"
+        let nightscoutData = NightscoutData()
+        nightscoutData.bgdeltaString = "111"
         
         // When
-        DataRepository.singleton.storeCurrentBgData(bgData)
-        let retrievedBgData = DataRepository.singleton.loadCurrentBgData()
+        DataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
+        let retrievedBgData = DataRepository.singleton.loadCurrentNightscoutData()
         
         // Then
         XCTAssertEqual(retrievedBgData.bgdeltaString, "111")
@@ -25,7 +25,12 @@ class DataRepositoryTest: XCTestCase {
     
     func testStoreHistoricBgData() {
         // Given
-        let historicBgData : [Int] = [1,2,3,4,5]
+        let historicBgData : [BloodSugar] =
+            [BloodSugar.init(value: 1,timestamp: 1),
+             BloodSugar.init(value: 2,timestamp: 2),
+             BloodSugar.init(value: 3,timestamp: 3),
+             BloodSugar.init(value: 4,timestamp: 4),
+             BloodSugar.init(value: 5,timestamp: 5)]
         
         // When
         DataRepository.singleton.storeHistoricBgData(historicBgData)

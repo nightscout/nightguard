@@ -15,31 +15,31 @@ import Foundation
 class BgDataHolder {
     static let singleton = BgDataHolder()
     
-    private var historicBgData : [Int] = []
-    private var currentBgData : BgData = BgData()
-    private var testBgData : BgData = BgData()
+    private var historicBgData : [BloodSugar] = []
+    private var currentNightscoutData = NightscoutData()
+    private var testNightscoutData = NightscoutData()
     
-    func setTestBgData(testBgData : BgData) {
-        self.testBgData = testBgData
+    func setTestBgData(testBgData : NightscoutData) {
+        self.testNightscoutData = testBgData
     }
     
-    func setHistoricBgData(historicBgData : [Int]) {
+    func setHistoricBgData(historicBgData : [BloodSugar]) {
         self.historicBgData = historicBgData
     }
     
-    func getHistoricBgData() -> [Int] {
+    func getHistoricBgData() -> [BloodSugar] {
         return historicBgData
     }
     
-    func setCurrentBgData(currentBgData : BgData) {
-        self.currentBgData = currentBgData
+    func setCurrentBgData(currentNightscoutData : NightscoutData) {
+        self.currentNightscoutData = currentNightscoutData
     }
     
-    func getCurrentBgData() -> BgData {
+    func getCurrentBgData() -> NightscoutData {
         if inTestMode() {
             return generateHighBgTestData()
         } else {
-            return currentBgData
+            return currentNightscoutData
         }
     }
     
@@ -48,8 +48,8 @@ class BgDataHolder {
         return dic["TEST"] != nil
     }
     
-    private func generateHighBgTestData() -> BgData {
-        let bgData = BgData()
+    private func generateHighBgTestData() -> NightscoutData {
+        let bgData = NightscoutData()
         bgData.sgv = "200"
         bgData.bgdelta = 0
         bgData.time = NSDate.init().timeIntervalSince1970

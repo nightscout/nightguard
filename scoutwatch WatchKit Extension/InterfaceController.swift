@@ -26,8 +26,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         // nothing to do - closes automatically
     }
     
-    var historicBgData : [Int] = []
-    var currentBgData : BgData = BgData()
+    var historicBgData : [BloodSugar] = []
+    var currentNightscoutData : NightscoutData = NightscoutData()
     
     // timer to check continuously for new bgValues
     var timer = NSTimer()
@@ -42,21 +42,24 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     private func checkForNewValuesFromNightscoutServer() {
         
-        if currentBgData.isOlderThan5Minutes() {
+        if currentNightscoutData.isOlderThan5Minutes() {
             
             readNewValuesFromNightscoutServer()
         }
     }
     
     private func readNewValuesFromNightscoutServer() {
-        ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(bgData) -> Void in
-            self.currentBgData = bgData
-            self.paintCurrentBgData(self.currentBgData)
-            DataRepository.singleton.storeCurrentBgData(bgData)
+        ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(currentNightscoutData) -> Void in
+            self.currentNightscoutData = currentNightscoutData
+            self.paintCurrentBgData(self.currentNightscoutData)
+            DataRepository.singleton.storeCurrentNightscoutData(currentNightscoutData)
         })
-        ServiceBoundary.singleton.readChartData({(historicBgData) -> Void in
+        ServiceBoundary.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
             self.historicBgData = historicBgData
-            self.paintChart(self.historicBgData)
+            self.paintChart(self.historicBgData,
+                yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
+                    BloodSugar.getMinimumTimestamp(historicBgData),
+                    to: BloodSugar.getMaximumTimestamp(historicBgData)))
             DataRepository.singleton.storeHistoricBgData(self.historicBgData)
         })
     }
@@ -69,6 +72,16 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                 let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
                 defaults!.setValue(hostUri, forKey: "hostUri")
             }
+            
+            if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Int {
+                let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+                defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
+            }
+            
+            if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Int {
+                let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+                defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
+            }
         }
     }
     
@@ -76,7 +89,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         super.awakeWithContext(context)
         
         // load old values that have been stored before
-        self.currentBgData = DataRepository.singleton.loadCurrentBgData()
+        self.currentNightscoutData = DataRepository.singleton.loadCurrentNightscoutData()
         self.historicBgData = DataRepository.singleton.loadHistoricBgData()
     
         // update values immediately if necessary
@@ -100,8 +113,11 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         
-        paintChart(historicBgData)
-        paintCurrentBgData(currentBgData)
+        paintChart(historicBgData, yesterdayValues:
+            YesterdayBloodSugarService.singleton.getYesterdaysValues(
+                BloodSugar.getMinimumTimestamp(historicBgData),
+                to: BloodSugar.getMaximumTimestamp(historicBgData)))
+        paintCurrentBgData(currentNightscoutData)
     }
 
     override func didDeactivate() {
@@ -109,26 +125,32 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         super.didDeactivate()
     }
     
-    private func paintChart(bgValues : [Int]) {
+    private func paintChart(bgValues : [BloodSugar], yesterdayValues : [BloodSugar]) {
         
-        let chartPainter : ChartPainter = ChartPainter(canvasWidth: 165, canvasHeight: 125);
+        let chartPainter : ChartPainter = ChartPainter(canvasWidth: 165, canvasHeight: 125)
         
-        guard let chartImage = chartPainter.drawImage(bgValues) else {
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        
+        guard let chartImage = chartPainter.drawImage(
+                bgValues, yesterdaysValues: yesterdayValues,
+                upperBoundGoodValue: defaults!.integerForKey("alertIfAboveValue"),
+                lowerBoundGoodValue: defaults!.integerForKey("alertIfBelowValue")
+        ) else {
             return
         }
         self.chartImage.setImage(chartImage)
     }
     
-    private func paintCurrentBgData(bgData : BgData) {
-        self.bgLabel.setText(bgData.sgv)
-        self.bgLabel.setTextColor(UIColorChanger.getBgColor(bgData.sgv))
+    private func paintCurrentBgData(currentNightscoutData : NightscoutData) {
+        self.bgLabel.setText(currentNightscoutData.sgv)
+        self.bgLabel.setTextColor(UIColorChanger.getBgColor(currentNightscoutData.sgv))
         
-        self.deltaLabel.setText(bgData.bgdeltaString)
-        self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(bgData.bgdelta))
+        self.deltaLabel.setText(currentNightscoutData.bgdeltaString)
+        self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(currentNightscoutData.bgdelta))
         
-        self.timeLabel.setText(bgData.timeString)
-        self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(bgData.time))
+        self.timeLabel.setText(currentNightscoutData.timeString)
+        self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(currentNightscoutData.time))
         
-        self.batteryLabel.setText(bgData.battery)
+        self.batteryLabel.setText(currentNightscoutData.battery)
     }
 }

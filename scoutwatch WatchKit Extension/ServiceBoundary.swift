@@ -13,6 +13,16 @@ class ServiceBoundary {
     
     static let singleton = ServiceBoundary()
     
+    var baseUri : String {
+        get {
+            if self.baseUri != "" {
+                return self.baseUri
+            } else {
+                return UserDefaults.getBaseUri()
+            }
+        }
+        set {}
+    }
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     func readChartData(resultHandler : ([Int] -> Void)) {
         
@@ -45,8 +55,70 @@ class ServiceBoundary {
         task.resume()
     }
 
+    /* Reads all data between two timestamps and limits the maximum return values to 300. */
+    func readChartDataWithinPeriodOfTime(timestamp1 : NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar] -> Void)) {
+        
+        let baseUri = UserDefaults.getBaseUri()
+        if baseUri == "" {
+            return
+        }
+        
+        let unixTimestamp1 : Double = timestamp1.timeIntervalSince1970 * 1000
+        let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
+        
+        // Get the current data from REST-Call
+        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=300"
+        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUri)!,
+                cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
+        
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            guard error == nil else {
+                return
+            }
+            guard data != nil else {
+                return
+            }
+            
+            let stringSgvData = String(data: data!, encoding: NSUTF8StringEncoding)!
+            let sgvRows = stringSgvData.componentsSeparatedByString("\n")
+            
+            var bloodSugarArray = [BloodSugar]()
+            for sgvRow in sgvRows {
+                let sgvRowArray = sgvRow.componentsSeparatedByString("\t")
+                if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
+                    let bloodSugar = BloodSugar(value: Int(sgvRowArray[2])!, timestamp: Double(sgvRowArray[1])!)
+                    bloodSugarArray.insert(bloodSugar, atIndex: 0)
+                }
+            }
+            resultHandler(bloodSugarArray)
+        };
+        task.resume()
+    }
+    
+    /* Reads all values from the day before. This is used for comparison with the current values. */
+    func readYesterdaysChartData(resultHandler : ([BloodSugar] -> Void)) {
+        
+        let calendar = NSCalendar.currentCalendar()
+        let yesterday = TimeService.getYesterday()
+        
+        let startOfYesterday = calendar.startOfDayForDate(yesterday)
+        let endOfYesterday = calendar.startOfDayForDate(TimeService.getToday())
+        
+        readChartDataWithinPeriodOfTime(startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
+    }
+    
+    /* Reads all values from the last 2 Hours before. */
+    func readLastTwoHoursChartData(resultHandler : ([BloodSugar] -> Void)) {
+        
+        let currentTime = TimeService.getToday()
+        let twoHoursBefore = currentTime.dateByAddingTimeInterval(-60*120)
+        
+        readChartDataWithinPeriodOfTime(twoHoursBefore, timestamp2: currentTime, resultHandler: resultHandler)
+    }
+    
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
-    func readCurrentDataForPebbleWatch(resultHandler : (BgData -> Void)) {
+    func readCurrentDataForPebbleWatch(resultHandler : (NightscoutData -> Void)) {
         
         let baseUri = UserDefaults.getBaseUri()
         if (baseUri == "") {
@@ -77,14 +149,14 @@ class ServiceBoundary {
                 let time = currentBgs.objectForKey("datetime") as! NSNumber
                 let battery = currentBgs.objectForKey("battery") as! NSString
                 
-                let bgData = BgData()
-                bgData.sgv = String(sgv)
-                bgData.bgdeltaString = self.direction(bgdelta) + String(bgdelta)
-                bgData.bgdelta = bgdelta
-                bgData.time = time
-                bgData.battery = String(battery) + "%"
+                let nightscoutData = NightscoutData()
+                nightscoutData.sgv = String(sgv)
+                nightscoutData.bgdeltaString = self.direction(bgdelta) + String(bgdelta)
+                nightscoutData.bgdelta = bgdelta
+                nightscoutData.time = time
+                nightscoutData.battery = String(battery) + "%"
                 
-                resultHandler(bgData)
+                resultHandler(nightscoutData)
             }
         };
         task.resume()

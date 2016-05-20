@@ -26,7 +26,17 @@ class MainViewController: UIViewController {
     // check every 10 Seconds whether new bgvalues should be retrieved
     let timeInterval:NSTimeInterval = 5.0
     
-    override func viewDidLoad() {        
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let historicBgData = BgDataHolder.singleton.getHistoricBgData()
+        paintChart(historicBgData,
+                   yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
+                    BloodSugar.getMinimumTimestamp(historicBgData),
+                    to: BloodSugar.getMaximumTimestamp(historicBgData)))
+    }
+    
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         // Embed the Volume Slider View
@@ -37,16 +47,20 @@ class MainViewController: UIViewController {
         volumeView.tintColor = UIColor.grayColor()
         volumeContainerView.addSubview(volumeView)
         
-        // snooze the alarm for 5 Seconds in order to retrieve new data
+        // snooze the alarm for 15 Seconds in order to retrieve new data
         // before playing alarm
-        AlarmRule.snoozeSeconds(5)
+        AlarmRule.snoozeSeconds(15)
         
         checkForNewValuesFromNightscoutServer()
         restoreGuiState()
         
         paintScreenLockSwitch()
         paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
-        paintChart(BgDataHolder.singleton.getHistoricBgData())
+        let historicBgData = BgDataHolder.singleton.getHistoricBgData()
+        paintChart(historicBgData,
+                   yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
+                        BloodSugar.getMinimumTimestamp(historicBgData),
+                        to: BloodSugar.getMaximumTimestamp(historicBgData)))
         
         // Start the timer to retrieve new bgValues
         timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
@@ -69,13 +83,19 @@ class MainViewController: UIViewController {
         return UIStatusBarStyle.LightContent
     }
     
-    private func paintChart(bgValues : [Int]) {
+    private func paintChart(bgValues : [BloodSugar], yesterdayValues : [BloodSugar]) {
         
         let chartPainter : ChartPainter = ChartPainter(
             canvasWidth: Int(chartImage.frame.size.width),
             canvasHeight: Int(chartImage.frame.size.height));
         
-        guard let chartImage = chartPainter.drawImage(bgValues) else {
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        
+        guard let chartImage = chartPainter.drawImage(
+                bgValues, yesterdaysValues: yesterdayValues,
+                upperBoundGoodValue: defaults!.integerForKey("alertIfAboveValue"),
+                lowerBoundGoodValue: defaults!.integerForKey("alertIfBelowValue")
+        ) else {
             return
         }
         dispatch_async(dispatch_get_main_queue(), {
@@ -87,7 +107,7 @@ class MainViewController: UIViewController {
     func timerDidEnd(timer:NSTimer) {
         
         checkForNewValuesFromNightscoutServer()
-        if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData()) {
+        if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData(), bloodValues: BgDataHolder.singleton.getHistoricBgData()) {
             AlarmSound.play()
         } else {
             AlarmSound.stop()
@@ -102,6 +122,7 @@ class MainViewController: UIViewController {
     
     private func checkForNewValuesFromNightscoutServer() {
         
+        YesterdayBloodSugarService.singleton.warmupCache()
         if BgDataHolder.singleton.getCurrentBgData().isOlderThan5Minutes() {
             
             readNewValuesFromNightscoutServer()
@@ -112,14 +133,18 @@ class MainViewController: UIViewController {
     
     private func readNewValuesFromNightscoutServer() {
         
-        ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(bgData) -> Void in
-            BgDataHolder.singleton.setCurrentBgData(bgData)
+        ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(nightscoutData) -> Void in
+            BgDataHolder.singleton.setCurrentBgData(nightscoutData)
             self.paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
-            DataRepository.singleton.storeCurrentBgData(bgData)
+            DataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
         })
-        ServiceBoundary.singleton.readChartData({(historicBgData) -> Void in
+        ServiceBoundary.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
             BgDataHolder.singleton.setHistoricBgData(historicBgData)
-            self.paintChart(BgDataHolder.singleton.getHistoricBgData())
+            self.paintChart(historicBgData, yesterdayValues:
+                YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
+                    BloodSugar.getMinimumTimestamp(historicBgData),
+                    to: BloodSugar.getMaximumTimestamp(historicBgData)))
+            
             DataRepository.singleton.storeHistoricBgData(BgDataHolder.singleton.getHistoricBgData())
         })
     }
@@ -128,19 +153,19 @@ class MainViewController: UIViewController {
         screenlockSwitch.on = UIApplication.sharedApplication().idleTimerDisabled
     }
     
-    private func paintCurrentBgData(bgData : BgData) {
+    private func paintCurrentBgData(nightscoutData : NightscoutData) {
         
         dispatch_async(dispatch_get_main_queue(), {
-            self.bgLabel.text = bgData.sgv
-            self.bgLabel.textColor = UIColorChanger.getBgColor(bgData.sgv)
+            self.bgLabel.text = nightscoutData.sgv
+            self.bgLabel.textColor = UIColorChanger.getBgColor(nightscoutData.sgv)
             
-            self.deltaLabel.text = bgData.bgdeltaString
-            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(bgData.bgdelta)
+            self.deltaLabel.text = nightscoutData.bgdeltaString
+            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(nightscoutData.bgdelta)
             
-            self.lastUpdateLabel.text = bgData.timeString
-            self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(bgData.time)
+            self.lastUpdateLabel.text = nightscoutData.timeString
+            self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(nightscoutData.time)
             
-            self.batteryLabel.text = bgData.battery
+            self.batteryLabel.text = nightscoutData.battery
         })
     }
     

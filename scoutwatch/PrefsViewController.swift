@@ -9,7 +9,9 @@
 import UIKit
 import WatchConnectivity
 
-class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDelegate {
+class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDelegate, UIPickerViewDelegate {
+    
+    let displayTimespans = ["3 Hours", "6 Hours", "Last Night", "Last Day"]
     
     @IBOutlet weak var hostUriTextField: UITextField!
     
@@ -41,6 +43,7 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     @IBAction func doEditingChangedAction(sender: AnyObject) {
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
@@ -62,6 +65,20 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     func onTouchGesture(){
         self.view.endEditing(true)
+    }
+    
+    // Picker-View methods
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return displayTimespans.count
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return displayTimespans[row]
     }
 }
 

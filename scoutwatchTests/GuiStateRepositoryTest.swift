@@ -12,13 +12,13 @@ import XCTest
 
 class GuiStateRepositoryTest: XCTestCase {
     
-    func testStoreVolumeSliderPosition() {
+    func testScreenLockStateIsSaved() {
         // Given
-        let initialPosition : Float = 12.3
+        let initialPosition : Bool = false
         
         // When
-        GuiStateRepository.singleton.storeVolumeSliderPosition(initialPosition)
-        let retrievedPosition = GuiStateRepository.singleton.loadVolumeSliderPosition()
+        GuiStateRepository.singleton.storeScreenlockSwitchState(initialPosition)
+        let retrievedPosition = GuiStateRepository.singleton.loadScreenlockSwitchState()
         
         // Then
         XCTAssertEqual(retrievedPosition, initialPosition)

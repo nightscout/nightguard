@@ -10,7 +10,7 @@ import Foundation
 
 // Contains all available information of a current Blood Glucose value.
 // This data can be stored in the user defaults.
-class BgData : NSObject, NSCoding {
+class NightscoutData : NSObject, NSCoding {
     var sgv : String = "---"
     var bgdeltaString : String = "---"
     var bgdelta : NSNumber = 0.0

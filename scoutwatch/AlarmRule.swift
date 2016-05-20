@@ -23,22 +23,33 @@ class AlarmRule {
     
     private static var snoozedUntilTimestamp = NSTimeInterval()
     
+    static var numberOfConsecutiveValues : Int = 3
+    static var deltaAmount : Int = 8
+    static var isEdgeDetectionAlarmEnabled : Bool = false
+    
+    static var alertIfAboveValue : Int = 180
+    static var alertIfBelowValue : Int = 80
+    
     /*
      * Returns true if the alarm should be played.
      * Snooze is true if the Alarm has been manually deactivated.
      * Suspended is true if the Alarm has been technically deactivated for a short period of time.
      */
-    static func isAlarmActivated(bgData : BgData) -> Bool {
+    static func isAlarmActivated(nightscoutData : NightscoutData, bloodValues : [BloodSugar]) -> Bool {
         
         if isSnoozed() {
             return false
         }
         
-        if bgData.isOlderThan15Minutes() {
+        if nightscoutData.isOlderThan15Minutes() {
             return true
         }
         
-        if isTooHighOrTooLow(Int(bgData.sgv)!) {
+        if isTooHighOrTooLow(Int(nightscoutData.sgv)!) {
+            return true
+        }
+        
+        if isEdgeDetectionAlarmEnabled && bloodValuesAreIncreasingOrDecreasingToFast(bloodValues) {
             return true
         }
         
@@ -46,7 +57,38 @@ class AlarmRule {
     }
     
     private static func isTooHighOrTooLow(bloodGlucose : Int) -> Bool {
-        return bloodGlucose > 180 || bloodGlucose < 80
+        return bloodGlucose > alertIfAboveValue || bloodGlucose < alertIfBelowValue
+    }
+    
+    private static func bloodValuesAreIncreasingOrDecreasingToFast(bloodValues : [BloodSugar]) -> Bool {
+        if bloodValues.count < numberOfConsecutiveValues {
+            return false;
+        }
+        
+        let maxItems = bloodValues.count
+        var positiveDirection : Bool? = nil
+        for index in maxItems-numberOfConsecutiveValues...maxItems {
+            
+            if abs(bloodValues[index-2].value - bloodValues[index-1].value) < deltaAmount {
+                return false
+            }
+            if (positiveDirection == nil) {
+                positiveDirection = (bloodValues[index-1].value - bloodValues[index-2].value) > 0
+            } else if positiveDirection! && newDirectionNegative(bloodValues[index-2].value, value2: bloodValues[index-1].value) {
+                return false
+            } else if !positiveDirection! && newDirectionPositive(bloodValues[index-2].value, value2: bloodValues[index-1].value) {
+                return false
+            }
+        }
+        return true;
+    }
+    
+    static func newDirectionNegative(value1 : Int, value2 : Int) -> Bool {
+        return value2 - value1 < 0
+    }
+    
+    static func newDirectionPositive(value1 : Int, value2 : Int) -> Bool {
+        return value2 - value1 > 0
     }
     
     /*
