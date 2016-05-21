@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "0710"
-   version = "2.0">
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43647BF11BFF6435004389F9"
-               BuildableName = "scoutwatch WatchKit App.app"
-               BlueprintName = "scoutwatch WatchKit App"
-               ReferencedContainer = "container:scoutwatch.xcodeproj">
+               BuildableName = "nightguard.app"
+               BlueprintName = "nightguard WatchKit App"
+               ReferencedContainer = "container:nightguard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43647BC91BFF6435004389F9"
-               BuildableName = "scoutwatch.app"
-               BlueprintName = "scoutwatch"
-               ReferencedContainer = "container:scoutwatch.xcodeproj">
+               BuildableName = "nightguard.app"
+               BlueprintName = "nightguard"
+               ReferencedContainer = "container:nightguard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43647C001BFF6435004389F9"
-               BuildableName = "scoutwatch WatchKit Extension.appex"
-               BlueprintName = "scoutwatch WatchKit Extension"
-               ReferencedContainer = "container:scoutwatch.xcodeproj">
+               BuildableName = "nightguard.appex"
+               BlueprintName = "nightguard WatchKit Extension"
+               ReferencedContainer = "container:nightguard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -56,14 +56,24 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43647BDD1BFF6435004389F9"
+               BuildableName = "nightguard.xctest"
+               BlueprintName = "nightguardTests"
+               ReferencedContainer = "container:nightguard.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
-            BuildableName = "scoutwatch WatchKit App.app"
-            BlueprintName = "scoutwatch WatchKit App"
-            ReferencedContainer = "container:scoutwatch.xcodeproj">
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard WatchKit App"
+            ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -78,9 +88,7 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES"
-      launchAutomaticallySubstyle = "8"
-      notificationPayloadFile = "scoutwatch WatchKit Extension/PushNotificationPayload.apns">
+      allowLocationSimulation = "YES">
       <RemoteRunnable
          runnableDebuggingMode = "2"
          BundleIdentifier = "com.apple.carousel"
@@ -88,18 +96,18 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
-            BuildableName = "scoutwatch WatchKit App.app"
-            BlueprintName = "scoutwatch WatchKit App"
-            ReferencedContainer = "container:scoutwatch.xcodeproj">
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard WatchKit App"
+            ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </RemoteRunnable>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
-            BuildableName = "scoutwatch WatchKit App.app"
-            BlueprintName = "scoutwatch WatchKit App"
-            ReferencedContainer = "container:scoutwatch.xcodeproj">
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard WatchKit App"
+            ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -110,9 +118,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      debugDocumentVersioning = "YES"
-      launchAutomaticallySubstyle = "8"
-      notificationPayloadFile = "scoutwatch WatchKit Extension/PushNotificationPayload.apns">
+      debugDocumentVersioning = "YES">
       <RemoteRunnable
          runnableDebuggingMode = "2"
          BundleIdentifier = "com.apple.carousel"
@@ -120,18 +126,18 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
-            BuildableName = "scoutwatch WatchKit App.app"
-            BlueprintName = "scoutwatch WatchKit App"
-            ReferencedContainer = "container:scoutwatch.xcodeproj">
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard WatchKit App"
+            ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </RemoteRunnable>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
-            BuildableName = "scoutwatch WatchKit App.app"
-            BlueprintName = "scoutwatch WatchKit App"
-            ReferencedContainer = "container:scoutwatch.xcodeproj">
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard WatchKit App"
+            ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

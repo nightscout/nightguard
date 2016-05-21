@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43647BC91BFF6435004389F9"
-               BuildableName = "scoutwatch.app"
-               BlueprintName = "scoutwatch"
-               ReferencedContainer = "container:scoutwatch.xcodeproj">
+               BuildableName = "nightguard.app"
+               BlueprintName = "nightguard"
+               ReferencedContainer = "container:nightguard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43647BDD1BFF6435004389F9"
-               BuildableName = "scoutwatchTests.xctest"
-               BlueprintName = "scoutwatchTests"
-               ReferencedContainer = "container:scoutwatch.xcodeproj">
+               BuildableName = "nightguard.xctest"
+               BlueprintName = "nightguardTests"
+               ReferencedContainer = "container:nightguard.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43647BE81BFF6435004389F9"
-               BuildableName = "scoutwatchUITests.xctest"
-               BlueprintName = "scoutwatchUITests"
-               ReferencedContainer = "container:scoutwatch.xcodeproj">
+               BuildableName = "nightguard.xctest"
+               BlueprintName = "nightguardUITests"
+               ReferencedContainer = "container:nightguard.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BC91BFF6435004389F9"
-            BuildableName = "scoutwatch.app"
-            BlueprintName = "scoutwatch"
-            ReferencedContainer = "container:scoutwatch.xcodeproj">
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard"
+            ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BC91BFF6435004389F9"
-            BuildableName = "scoutwatch.app"
-            BlueprintName = "scoutwatch"
-            ReferencedContainer = "container:scoutwatch.xcodeproj">
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard"
+            ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BC91BFF6435004389F9"
-            BuildableName = "scoutwatch.app"
-            BlueprintName = "scoutwatch"
-            ReferencedContainer = "container:scoutwatch.xcodeproj">
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard"
+            ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

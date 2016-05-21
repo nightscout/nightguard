@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:scoutwatch.xcodeproj">
+      location = "self:/Users/dirk/workspace/scoutwatch/nightguard.xcodeproj">
    </FileRef>
 </Workspace>
