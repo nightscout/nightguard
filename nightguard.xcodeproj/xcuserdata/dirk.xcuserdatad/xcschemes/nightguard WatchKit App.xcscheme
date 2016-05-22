@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0710"
+   LastUpgradeVersion = "0730"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43647BF11BFF6435004389F9"
+               BuildableName = "nightguard.app"
+               BlueprintName = "nightguard WatchKit App"
+               ReferencedContainer = "container:nightguard.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43647C001BFF6435004389F9"
+               BuildableName = "nightguard.appex"
+               BlueprintName = "nightguard WatchKit Extension"
+               ReferencedContainer = "container:nightguard.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
@@ -28,33 +56,13 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43647BDD1BFF6435004389F9"
-               BuildableName = "nightguard.xctest"
-               BlueprintName = "nightguardTests"
-               ReferencedContainer = "container:nightguard.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43647BE81BFF6435004389F9"
-               BuildableName = "nightguard.xctest"
-               BlueprintName = "nightguardUITests"
-               ReferencedContainer = "container:nightguard.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "43647BC91BFF6435004389F9"
+            BlueprintIdentifier = "43647BF11BFF6435004389F9"
             BuildableName = "nightguard.app"
-            BlueprintName = "nightguard"
+            BlueprintName = "nightguard WatchKit App"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -71,16 +79,27 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.carousel"
+         RemotePath = "/nightguard">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "43647BC91BFF6435004389F9"
+            BlueprintIdentifier = "43647BF11BFF6435004389F9"
             BuildableName = "nightguard.app"
-            BlueprintName = "nightguard"
+            BlueprintName = "nightguard WatchKit App"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "43647BF11BFF6435004389F9"
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard WatchKit App"
+            ReferencedContainer = "container:nightguard.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -90,16 +109,27 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.carousel"
+         RemotePath = "/nightguard">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "43647BC91BFF6435004389F9"
+            BlueprintIdentifier = "43647BF11BFF6435004389F9"
             BuildableName = "nightguard.app"
-            BlueprintName = "nightguard"
+            BlueprintName = "nightguard WatchKit App"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "43647BF11BFF6435004389F9"
+            BuildableName = "nightguard.app"
+            BlueprintName = "nightguard WatchKit App"
+            ReferencedContainer = "container:nightguard.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

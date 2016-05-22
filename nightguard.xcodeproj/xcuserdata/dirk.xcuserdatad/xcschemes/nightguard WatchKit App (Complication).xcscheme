@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0710"
+   LastUpgradeVersion = "0730"
    version = "2.0">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -28,9 +28,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43647BC91BFF6435004389F9"
-               BuildableName = "nightguard.app"
-               BlueprintName = "nightguard"
+               BlueprintIdentifier = "43647C001BFF6435004389F9"
+               BuildableName = "nightguard.appex"
+               BlueprintName = "nightguard WatchKit Extension"
                ReferencedContainer = "container:nightguard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,9 +42,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43647C001BFF6435004389F9"
-               BuildableName = "nightguard.appex"
-               BlueprintName = "nightguard WatchKit Extension"
+               BlueprintIdentifier = "43647BC91BFF6435004389F9"
+               BuildableName = "nightguard.app"
+               BlueprintName = "nightguard"
                ReferencedContainer = "container:nightguard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -83,7 +83,7 @@
       <RemoteRunnable
          runnableDebuggingMode = "2"
          BundleIdentifier = "com.apple.carousel"
-         RemotePath = "/scoutwatch WatchKit App">
+         RemotePath = "/nightguard">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
@@ -114,7 +114,7 @@
       <RemoteRunnable
          runnableDebuggingMode = "2"
          BundleIdentifier = "com.apple.carousel"
-         RemotePath = "/scoutwatch WatchKit App">
+         RemotePath = "/nightguard">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"

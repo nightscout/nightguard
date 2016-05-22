@@ -31,6 +31,7 @@
 		433AD0191CCE431F001A76CD /* ServiceBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F3F1C2F3F9D00DB8B58 /* ServiceBoundary.swift */; };
 		433AD01A1CCE483B001A76CD /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433AD0141CCE2E8D001A76CD /* BloodSugar.swift */; };
 		433AD01B1CCE4A6E001A76CD /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433AD0141CCE2E8D001A76CD /* BloodSugar.swift */; };
+		435BAD1B1CF234E600B5387F /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435BAD1A1CF234E600B5387F /* TestController.swift */; };
 		43647BCE1BFF6435004389F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCD1BFF6435004389F9 /* AppDelegate.swift */; };
 		43647BD01BFF6435004389F9 /* PrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BCF1BFF6435004389F9 /* PrefsViewController.swift */; };
 		43647BD31BFF6435004389F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD11BFF6435004389F9 /* Main.storyboard */; };
@@ -135,6 +136,7 @@
 		43119B9C1C56B3D300DD6D35 /* AlarmRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmRule.swift; sourceTree = "<group>"; };
 		433AD0141CCE2E8D001A76CD /* BloodSugar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodSugar.swift; sourceTree = "<group>"; };
 		433AD0161CCE3E89001A76CD /* ServiceBoundaryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceBoundaryTest.swift; sourceTree = "<group>"; };
+		435BAD1A1CF234E600B5387F /* TestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		43647BCA1BFF6435004389F9 /* nightguard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nightguard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BCD1BFF6435004389F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43647BCF1BFF6435004389F9 /* PrefsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsViewController.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				43794F451C303E4200DB8B58 /* DataRepository.swift */,
 				43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */,
 				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
+				435BAD1A1CF234E600B5387F /* TestController.swift */,
 			);
 			path = "scoutwatch WatchKit Extension";
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				43119B9D1C56B3D300DD6D35 /* AlarmRule.swift in Sources */,
 				43119B7E1C38297B00DD6D35 /* ServiceBoundary.swift in Sources */,
 				43119B801C3829AE00DD6D35 /* MainViewController.swift in Sources */,
+				435BAD1B1CF234E600B5387F /* TestController.swift in Sources */,
 				43119B831C382BBB00DD6D35 /* UserDefaults.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
 				433AD0151CCE2E8D001A76CD /* BloodSugar.swift in Sources */,

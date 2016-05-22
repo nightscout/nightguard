@@ -10,5 +10,5 @@ import Foundation
 
 // Class that contains general constants used in different classes
 class AppConstants {
-    internal static let APP_GROUP_ID = "group.de.dhe.scoutwatch"
+    internal static let APP_GROUP_ID = "group.de.my-wan.dhe.nightguard"
 }

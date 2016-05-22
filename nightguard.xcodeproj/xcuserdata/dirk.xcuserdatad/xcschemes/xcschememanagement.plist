@@ -4,22 +4,22 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Complication - scoutwatch WatchKit App.xcscheme</key>
+		<key>nightguard WatchKit App (Complication).xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>Notification - scoutwatch WatchKit App.xcscheme</key>
+		<key>nightguard WatchKit App (Notification).xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>scoutwatch WatchKit App.xcscheme</key>
+		<key>nightguard WatchKit App.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>scoutwatch.xcscheme</key>
+		<key>nightguard.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
