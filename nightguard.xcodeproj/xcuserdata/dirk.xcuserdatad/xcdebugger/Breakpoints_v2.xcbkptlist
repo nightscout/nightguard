@@ -10,13 +10,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "scoutwatch WatchKit Extension/InterfaceController.swift"
-            timestampString = "485456121.074963"
+            timestampString = "485640952.250923"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "71"
             endingLineNumber = "71"
             landmarkName = "session(_:didReceiveApplicationContext:)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "nightguard.InterfaceController.(session (__ObjC.WCSession, didReceiveApplicationContext : Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;) -&gt; ()).(closure #1)"
+                  moduleName = "nightguard"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dirk/workspace/scoutwatch/scoutwatch%20WatchKit%20Extension/InterfaceController.swift"
+                  timestampString = "485641862.821497"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "nightguard.InterfaceController.(session (__ObjC.WCSession, didReceiveApplicationContext : Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;) -&gt; ()).(closure #1)"
+                  moduleName = "nightguard"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dirk/workspace/scoutwatch/scoutwatch%20WatchKit%20Extension/InterfaceController.swift"
+                  timestampString = "485641862.821753"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "416">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

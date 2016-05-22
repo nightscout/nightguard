@@ -142,7 +142,12 @@ class ChartPainter {
         if minute < 30 {
             return cal.dateBySettingHour(hour, minute: 30, second: 0, ofDate: date, options: NSCalendarOptions())!
         } else {
-            return cal.dateBySettingHour(hour + 1, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!
+            // catch exception if going over 0:00 o'clock
+            if hour == 23 {
+                return cal.dateBySettingHour(0, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!
+            } else {
+                return cal.dateBySettingHour(hour + 1, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!
+            }
         }
     }
     
