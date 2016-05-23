@@ -15,6 +15,7 @@ class ChartPainter {
     let BLACK : UIColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
     let DARKGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.5)
     
+    let halfHour : Double = 1800
     
     var canvasWidth : Int = 165
     var canvasHeight : Int = 125
@@ -140,14 +141,9 @@ class ChartPainter {
         let minute = cal.component(NSCalendarUnit.Minute, fromDate: date)
         
         if minute < 30 {
-            return cal.dateBySettingHour(hour, minute: 30, second: 0, ofDate: date, options: NSCalendarOptions())!
+            return cal.dateBySettingHour(hour, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(halfHour)
         } else {
-            // catch exception if going over 0:00 o'clock
-            if hour == 23 {
-                return cal.dateBySettingHour(0, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!
-            } else {
-                return cal.dateBySettingHour(hour + 1, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!
-            }
+            return cal.dateBySettingHour(hour, minute: 30, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(halfHour)
         }
     }
     
@@ -206,10 +202,20 @@ class ChartPainter {
     }
     
     func stretchedXValue(x : Double) -> Double {
-        return Double(canvasWidth) / Double(maximumXValue - minimumXValue) * Double(x - minimumXValue)
+        var range = maximumXValue - minimumXValue
+        if range == 0 {
+            // prevent a division by zero
+            range = 1
+        }
+        return (Double(canvasWidth) / Double(range)) * Double(x - minimumXValue)
     }
     
     func stretchedYValue(y : Int) -> Float {
-        return Float(canvasHeight) / Float(maximumYValue - minimumYValue) * Float(y - minimumYValue)
+        var range = maximumYValue - minimumYValue
+        if range == 0 {
+            // prevent a division by zero
+            range = 1
+        }
+        return (Float(canvasHeight) / Float(range)) * Float(y - minimumYValue)
     }
 }

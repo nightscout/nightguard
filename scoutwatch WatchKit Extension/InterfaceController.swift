@@ -114,7 +114,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         super.willActivate()
         
         paintChart(historicBgData, yesterdayValues:
-            YesterdayBloodSugarService.singleton.getYesterdaysValues(
+            YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
                 BloodSugar.getMinimumTimestamp(historicBgData),
                 to: BloodSugar.getMaximumTimestamp(historicBgData)))
         paintCurrentBgData(currentNightscoutData)

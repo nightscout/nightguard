@@ -27,7 +27,9 @@ class DataRepository {
         guard let data = defaults.objectForKey("currentBgData") as? NSData else {
             return NightscoutData()
         }
-        guard let nightscoutData : NightscoutData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? NightscoutData else {
+        
+        let decodedObject : NightscoutData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! NightscoutData
+        guard let nightscoutData : NightscoutData = decodedObject as? NightscoutData else {
             return NightscoutData()
         }
         return nightscoutData
