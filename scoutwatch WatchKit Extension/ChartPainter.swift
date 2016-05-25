@@ -40,14 +40,14 @@ class ChartPainter {
      *
      * But of cause the alarming is out of the scope of this class!
      */
-    func drawImage(bgValues : [BloodSugar], yesterdaysValues : [BloodSugar], upperBoundGoodValue : Int, lowerBoundGoodValue : Int) -> UIImage? {
+    func drawImage(bgValues : [BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Int, lowerBoundNiceValue : Int) -> UIImage? {
 
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if bgValues.count <= 1 {
             return nil
         }
 
-        adjustMinMaxXYCoordinates(bgValues, yesterdaysValues: yesterdaysValues)
+        adjustMinMaxXYCoordinates(bgValues, yesterdaysValues: yesterdaysValues, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
         // Setup our context
         let opaque = false
@@ -56,11 +56,8 @@ class ChartPainter {
         let context = UIGraphicsGetCurrentContext()
         
         // Setup complete, do drawing here
-        // Paint the part between 80 and 180 in gray
-        CGContextSetLineWidth(context, 2.0)
-        CGContextSetFillColorWithColor(context, DARK.CGColor)
-        let goodPart = CGRect(origin: CGPoint.init(x: 0, y: calcYValue(upperBoundGoodValue)), size: CGSize.init(width: canvasWidth, height: Int(calcYValue(lowerBoundGoodValue) - calcYValue(upperBoundGoodValue))))
-        CGContextFillRect(context, goodPart)
+        paintNicePartArea(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
+        
 
         paintBloodValues(context!, bgValues: bgValues, foregroundColor: GREEN.CGColor)
         paintBloodValues(context!, bgValues: yesterdaysValues, foregroundColor: DARKGRAY.CGColor)
@@ -90,6 +87,35 @@ class ChartPainter {
         CGContextStrokePath(context)
     }
     
+    // Paint the part between upperBound and lowerBoundValue in gray
+    func paintNicePartArea(context : CGContext, upperBoundNiceValue : Int, lowerBoundNiceValue : Int) {
+        
+        // paint the rectangle
+        CGContextSetLineWidth(context, 2.0)
+        CGContextSetFillColorWithColor(context, DARK.CGColor)
+        let goodPart = CGRect(origin: CGPoint.init(x: 0, y: calcYValue(upperBoundNiceValue)), size: CGSize.init(width: canvasWidth, height: Int(calcYValue(lowerBoundNiceValue) - calcYValue(upperBoundNiceValue))))
+        CGContextFillRect(context, goodPart)
+        
+        // paint the upper/lower bounds text
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .Left
+        let attrs = [NSFontAttributeName: UIFont(name: "Helvetica Bold", size: 14)!,
+                     NSParagraphStyleAttributeName: paragraphStyle,
+                     NSForegroundColorAttributeName: UIColor.blackColor()]
+        
+        let upperBoundString = String(upperBoundNiceValue)
+        upperBoundString.drawWithRect(
+            CGRect(x: 5, y: CGFloat.init(calcYValue(upperBoundNiceValue)), width: 40, height: 14),
+                options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
+        
+        let lowerBoundString = String(lowerBoundNiceValue)
+        lowerBoundString.drawWithRect(
+            CGRect(x: 5, y: CGFloat.init(calcYValue(lowerBoundNiceValue)) - 15, width: 40, height: 14),
+                options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
+
+    }
+    
+    // Paints the X-Axis Text
     func paintFullHourText() {
         // Draw the time
         let paragraphStyle = NSMutableParagraphStyle()
@@ -147,11 +173,16 @@ class ChartPainter {
         }
     }
     
-    func adjustMinMaxXYCoordinates(bgValues : [BloodSugar], yesterdaysValues : [BloodSugar]) {
+    func adjustMinMaxXYCoordinates(
+            bgValues : [BloodSugar],
+            yesterdaysValues : [BloodSugar],
+            upperBoundNiceValue : Int,
+            lowerBoundNiceValue : Int) {
+        
         maximumXValue = -1 * Double.infinity
         minimumXValue = Double.infinity
-        maximumYValue = Int.min
-        minimumYValue = Int.max
+        maximumYValue = upperBoundNiceValue + 20
+        minimumYValue = lowerBoundNiceValue - 20
         
         (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(bgValues, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
         

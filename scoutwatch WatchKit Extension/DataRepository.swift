@@ -29,7 +29,7 @@ class DataRepository {
         }
         
         let decodedObject : NightscoutData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! NightscoutData
-        guard let nightscoutData : NightscoutData = decodedObject as? NightscoutData else {
+        guard let nightscoutData : NightscoutData = decodedObject as NightscoutData else {
             return NightscoutData()
         }
         return nightscoutData

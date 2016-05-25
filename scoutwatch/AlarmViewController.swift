@@ -106,4 +106,10 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
             print(error)
         }
     }
+    
+    // Remove keyboard by touching outside
+    
+    func onTouchGesture(){
+        self.view.endEditing(true)
+    }
 }
