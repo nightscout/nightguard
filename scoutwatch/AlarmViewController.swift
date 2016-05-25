@@ -45,6 +45,9 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         alertAboveSlider.value = (Float(alertIfAboveValueLabel.text!)! - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE
         alertIfBelowValueLabel.text = defaults?.stringForKey("alertIfBelowValue")
         alertBelowSlider.value = (Float(alertIfBelowValueLabel.text!)! - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
+        self.view.addGestureRecognizer(tap)
     }
     
     @IBAction func edgeDetectionSwitchChanged(sender: AnyObject) {
