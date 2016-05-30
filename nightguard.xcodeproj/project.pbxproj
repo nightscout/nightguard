@@ -357,6 +357,7 @@
 				43647BC71BFF6435004389F9 /* Frameworks */,
 				43647BC81BFF6435004389F9 /* Resources */,
 				43647C1C1BFF6435004389F9 /* Embed Watch Content */,
+				43FD71501CFCD75A005CE68B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -552,6 +553,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		43FD71501CFCD75A005CE68B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nPLISTCMD=\"Set :CFBundleVersion $(git rev-list --all|wc -l)\"\n/usr/libexec/PlistBuddy -c \"$PLISTCMD\" \"scoutwatch/Info.plist\"\n/usr/libexec/PlistBuddy -c \"$PLISTCMD\" \"scoutwatchTests/Info.plist\"\n/usr/libexec/PlistBuddy -c \"$PLISTCMD\" \"scoutwatchUITests/Info.plist\"\n/usr/libexec/PlistBuddy -c \"$PLISTCMD\" \"scoutwatch WatchKit App/Info.plist\"\n/usr/libexec/PlistBuddy -c \"$PLISTCMD\" \"scoutwatch Watchkit Extension/Info.plist\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		43647BC61BFF6435004389F9 /* Sources */ = {

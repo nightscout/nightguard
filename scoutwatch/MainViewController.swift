@@ -46,6 +46,8 @@ class MainViewController: UIViewController {
         volumeView.backgroundColor = UIColor.blackColor()
         volumeView.tintColor = UIColor.grayColor()
         volumeContainerView.addSubview(volumeView)
+        // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
+        volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
         
         // snooze the alarm for 15 Seconds in order to retrieve new data
         // before playing alarm
@@ -71,6 +73,20 @@ class MainViewController: UIViewController {
         // Start immediately so that the current time gets display at once
         // And the alarm can play if needed
         timerDidEnd(timer)
+    }
+    
+    // Resize the MPVolumeView when the parent view changes
+    // This is needed on an e.g. 4,7" iPhone. Otherwise the MPVolumeView would be too small
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+
+        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
+        volumeView.backgroundColor = UIColor.blackColor()
+        volumeView.tintColor = UIColor.grayColor()
+
+        for view in volumeContainerView.subviews {
+            view.removeFromSuperview()
+        }
+        volumeContainerView.addSubview(volumeView)
     }
     
     private func restoreGuiState() {
