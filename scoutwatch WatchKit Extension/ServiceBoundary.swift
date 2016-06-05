@@ -68,8 +68,10 @@ class ServiceBoundary {
         
         // Get the current data from REST-Call
         let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=300"
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUri)!,
-                cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
+        guard let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUri)!,
+                                                                      cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20) else {
+            return
+        }
         
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
@@ -135,28 +137,32 @@ class ServiceBoundary {
             guard data != nil else {
                 return
             }
-            
-            let json = try!NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
-            guard let jsonDict :NSDictionary = json as? NSDictionary else {
+
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
+                guard let jsonDict :NSDictionary = json as? NSDictionary else {
+                    return
+                }
+                let bgs : NSArray = jsonDict.objectForKey("bgs") as! NSArray
+                if (bgs.count > 0) {
+                    let currentBgs : NSDictionary = bgs.objectAtIndex(0) as! NSDictionary
+                    
+                    let sgv : NSString = currentBgs.objectForKey("sgv") as! NSString
+                    let bgdelta = currentBgs.objectForKey("bgdelta") as! NSNumber
+                    let time = currentBgs.objectForKey("datetime") as! NSNumber
+                    let battery = currentBgs.objectForKey("battery") as! NSString
+                    
+                    let nightscoutData = NightscoutData()
+                    nightscoutData.sgv = String(sgv)
+                    nightscoutData.bgdeltaString = self.direction(bgdelta) + String(bgdelta)
+                    nightscoutData.bgdelta = bgdelta
+                    nightscoutData.time = time
+                    nightscoutData.battery = String(battery) + "%"
+                    
+                    resultHandler(nightscoutData)
+                }
+            } catch {
                 return
-            }
-            let bgs : NSArray = jsonDict.objectForKey("bgs") as! NSArray
-            if (bgs.count > 0) {
-                let currentBgs : NSDictionary = bgs.objectAtIndex(0) as! NSDictionary
-                
-                let sgv : NSString = currentBgs.objectForKey("sgv") as! NSString
-                let bgdelta = currentBgs.objectForKey("bgdelta") as! NSNumber
-                let time = currentBgs.objectForKey("datetime") as! NSNumber
-                let battery = currentBgs.objectForKey("battery") as! NSString
-                
-                let nightscoutData = NightscoutData()
-                nightscoutData.sgv = String(sgv)
-                nightscoutData.bgdeltaString = self.direction(bgdelta) + String(bgdelta)
-                nightscoutData.bgdelta = bgdelta
-                nightscoutData.time = time
-                nightscoutData.battery = String(battery) + "%"
-                
-                resultHandler(nightscoutData)
             }
         };
         task.resume()

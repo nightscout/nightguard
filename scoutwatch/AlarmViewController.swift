@@ -86,7 +86,7 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         defaults!.setValue(alertIfAboveValueLabel.text, forKey: "alertIfAboveValue")
         
         AlarmRule.alertIfAboveValue = alertIfAboveValue
-        sendToWatch(Int(alertIfBelowValueLabel.text!)!, alertIfAboveValue: alertIfAboveValue)
+        WatchService.singleton.sendToWatch(Int(alertIfBelowValueLabel.text!)!, alertIfAboveValue: alertIfAboveValue)
     }
     
     @IBAction func belowAlertValueChanged(sender: AnyObject) {
@@ -97,17 +97,7 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
         
         AlarmRule.alertIfBelowValue = alertIfBelowValue
-        sendToWatch(alertIfBelowValue, alertIfAboveValue: Int(alertIfAboveValueLabel.text!)!)
-    }
-    
-    private func sendToWatch(alertIfBelowValue : Int, alertIfAboveValue : Int) {
-        do {
-            let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
-                                   "alertIfAboveValue" : alertIfAboveValue]
-            try WCSession.defaultSession().updateApplicationContext(applicationDict)
-        } catch {
-            print(error)
-        }
+        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: Int(alertIfAboveValueLabel.text!)!)
     }
     
     // Remove keyboard by touching outside

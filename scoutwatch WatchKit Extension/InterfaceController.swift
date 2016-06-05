@@ -19,7 +19,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBOutlet var chartImage: WKInterfaceImage!
     
     @IBAction func doInfoMenuAction() {
-    self.presentControllerWithName("InfoInterfaceController", context: nil)
+        self.presentControllerWithName("InfoInterfaceController", context: nil)
     }
     
     @IBAction func doCloseMenuAction() {

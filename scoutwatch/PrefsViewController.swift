@@ -49,16 +49,26 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(hostUriTextField.text, forKey: "hostUri")
         
-        sendToWatch(hostUriTextField.text!)
+        sendValuesToAppleWatch()
     }
     
-    private func sendToWatch(hostUri : String) {
-        do {
-            let applicationDict = ["hostUri": hostUri]
-            try WCSession.defaultSession().updateApplicationContext(applicationDict)
-        } catch {
-            print(error)
-        }
+    // Send the configuration values to the apple watch.
+    // This has to be done here, because the watch has no access to the default values.
+    // So this way we assure that the default values are submitted at least once after the
+    // iOS App started the first time.
+    //
+    // This is enough, because the user has to start the ios app at least once before starting the
+    // watch app: He has to enter the URI to the nightscout backend in the iOS app!
+    func sendValuesToAppleWatch() {
+        
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        
+        let alertIfAboveValue : Int = (defaults?.integerForKey("alertIfAboveValue"))!
+        let alertIfBelowValue : Int = (defaults?.integerForKey("alertIfBelowValue"))!
+        let hostUri : String = (defaults?.stringForKey("hostUri"))!
+        
+        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: alertIfAboveValue)
+        WatchService.singleton.sendToWatch(hostUri)
     }
     
     // Remove keyboard by touching outside
