@@ -15,9 +15,13 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     @IBOutlet weak var hostUriTextField: UITextField!
     
+    @IBOutlet weak var versionLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        displayTheApplicationVersionNumber()
+        
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         let hostUri = defaults?.stringForKey("hostUri")
         hostUriTextField.text = hostUri
@@ -35,6 +39,14 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         self.view.addGestureRecognizer(tap)
     }
 
+    func displayTheApplicationVersionNumber() {
+        
+        let versionNumber: String = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
+        let buildNumber: String = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as! String
+
+        versionLabel.text = "V\(versionNumber).\(buildNumber)"
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
