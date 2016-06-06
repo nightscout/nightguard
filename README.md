@@ -1,14 +1,16 @@
-# Scoutwatch
+# Nightguard
 This is an iPhone and Apple Watch application to display blood glucose values stored at your nightscout server.
 
 # Description
 This app displays the last 30 Values from your [nightscout] (http://www.nightscout.info) [server] (https://github.com/nightscout/cgm-remote-monitor):
 
-![Scoutwatch iOS-Screenshot](https://github.com/dhermanns/scoutwatch/blob/master/images/main-screenshot.png)
+![Nightguard Main-Screen](https://github.com/nightscout/nightguard/blob/master/images/screen1.jpg)
+![Nightguard Alarm-Screen](https://github.com/nightscout/nightguard/blob/master/images/screen2.jpg)
+![Nightguard Preferences-Screen](https://github.com/nightscout/nightguard/blob/master/images/screen3.jpg)
 
 A graphical representation is shown on the Apple Watch as well:
 
-![Scoutwatch Apple Watch Screenshot](https://github.com/dhermanns/scoutwatch/blob/master/images/scoutwatch-screenshot.png)
+![Nightguard Apple Watch Screenshot](https://github.com/nightscout/nightguard/blob/master/images/watch-screen.jpg)
 
 The dark gray region in the chart marks the values that are between 80 and 180.
 
