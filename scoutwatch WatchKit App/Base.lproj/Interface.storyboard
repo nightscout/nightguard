@@ -25,56 +25,26 @@
                                     <items>
                                         <group width="1" alignment="left" id="yrF-or-Bnh">
                                             <items>
-                                                <label width="26.5" height="17.5" alignment="left" text="+10" id="frk-q8-3y9">
-                                                    <fontDescription key="font" type="system" pointSize="14"/>
+                                                <label width="26.5" height="17.5" alignment="left" text="+10" minimumScaleFactor="0.25" id="frk-q8-3y9">
+                                                    <fontDescription key="font" style="UICTFontTextStyleBody"/>
                                                 </label>
-                                                <label height="18.5" alignment="right" text="59min." minimumScaleFactor="0.5" id="w1H-tu-XyX"/>
+                                                <label height="18.5" alignment="right" text="59min" minimumScaleFactor="0.5" id="w1H-tu-XyX"/>
                                             </items>
-                                            <variation key="default">
-                                                <mask key="items">
-                                                    <exclude reference="frk-q8-3y9"/>
-                                                    <exclude reference="w1H-tu-XyX"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="device=watch42mm">
-                                                <mask key="items">
-                                                    <include reference="frk-q8-3y9"/>
-                                                    <include reference="w1H-tu-XyX"/>
-                                                </mask>
-                                            </variation>
                                         </group>
                                         <group height="18" alignment="right" id="7mo-kr-osX">
                                             <items>
-                                                <label width="42" height="17.5" alignment="right" verticalAlignment="bottom" text="100%" textAlignment="right" id="lz8-YE-T1d"/>
+                                                <label width="42" height="17.5" alignment="right" verticalAlignment="bottom" text="100%" textAlignment="right" minimumScaleFactor="0.25" id="lz8-YE-T1d"/>
                                             </items>
-                                            <variation key="default">
-                                                <mask key="items">
-                                                    <exclude reference="lz8-YE-T1d"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="device=watch42mm">
-                                                <mask key="items">
-                                                    <include reference="lz8-YE-T1d"/>
-                                                </mask>
-                                            </variation>
                                         </group>
                                     </items>
-                                    <variation key="default">
-                                        <mask key="items">
-                                            <exclude reference="yrF-or-Bnh"/>
-                                        </mask>
-                                    </variation>
-                                    <variation key="device=watch42mm">
-                                        <mask key="items">
-                                            <include reference="yrF-or-Bnh"/>
-                                        </mask>
-                                    </variation>
+                                    <variation key="device=watch38mm" width="72.5"/>
+                                    <variation key="device=watch42mm" width="72.5"/>
                                 </group>
                             </items>
                         </group>
                         <separator alignment="left" id="AeO-Dw-7jo"/>
                         <imageView width="165" height="125" alignment="center" verticalAlignment="center" id="kwI-xY-joe">
-                            <variation key="device=watch38mm" height="115" width="165"/>
+                            <variation key="device=watch38mm" height="100" width="165"/>
                             <variation key="device=watch42mm" height="125" width="165"/>
                         </imageView>
                     </items>

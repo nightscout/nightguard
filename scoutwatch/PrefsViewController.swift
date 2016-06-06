@@ -58,10 +58,24 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     @IBAction func doEditingChangedAction(sender: AnyObject) {
         
+        storeUri()
+        sendValuesToAppleWatch()
+    }
+    
+    // Close the soft keyboard if return has been selected
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        storeUri()
+        sendValuesToAppleWatch()
+        
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // Gets the URI from the textfield and stores it using the NSUserDefaults
+    func storeUri() {
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(hostUriTextField.text, forKey: "hostUri")
-        
-        sendValuesToAppleWatch()
     }
     
     // Send the configuration values to the apple watch.
