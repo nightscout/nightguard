@@ -150,14 +150,19 @@ class ServiceBoundary {
                     let sgv : NSString = currentBgs.objectForKey("sgv") as! NSString
                     let bgdelta = currentBgs.objectForKey("bgdelta") as! NSNumber
                     let time = currentBgs.objectForKey("datetime") as! NSNumber
-                    let battery = currentBgs.objectForKey("battery") as! NSString
                     
                     let nightscoutData = NightscoutData()
+                    let battery : NSString? = currentBgs.objectForKey("battery") as? NSString
+                    if battery == nil {
+                        nightscoutData.battery = String("?")
+                    } else {
+                        nightscoutData.battery = String(battery) + "%"
+                    }
+
                     nightscoutData.sgv = String(sgv)
                     nightscoutData.bgdeltaString = self.direction(bgdelta) + String(bgdelta)
                     nightscoutData.bgdelta = bgdelta
                     nightscoutData.time = time
-                    nightscoutData.battery = String(battery) + "%"
                     
                     resultHandler(nightscoutData)
                 }
