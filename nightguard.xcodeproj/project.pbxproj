@@ -15,7 +15,6 @@
 		43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B861C383CF500DD6D35 /* UIColorChanger.swift */; };
 		433AD0171CCE3E89001A76CD /* ServiceBoundaryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433AD0161CCE3E89001A76CD /* ServiceBoundaryTest.swift */; };
 		433AD0181CCE3FCB001A76CD /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaults.swift */; };
-		4342D7D01D07592700EEBAA2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4342D7CF1D07592700EEBAA2 /* Default-568h@2x.png */; };
 		4346F9841D0773F700487541 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
 		43647BD31BFF6435004389F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD11BFF6435004389F9 /* Main.storyboard */; };
 		43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */; };
@@ -123,7 +122,6 @@
 /* Begin PBXFileReference section */
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
 		433AD0161CCE3E89001A76CD /* ServiceBoundaryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceBoundaryTest.swift; sourceTree = "<group>"; };
-		4342D7CF1D07592700EEBAA2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		43647BCA1BFF6435004389F9 /* nightguard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nightguard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BD21BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43647BD71BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -225,7 +223,6 @@
 		43647BC11BFF6435004389F9 = {
 			isa = PBXGroup;
 			children = (
-				4342D7CF1D07592700EEBAA2 /* Default-568h@2x.png */,
 				43647BCC1BFF6435004389F9 /* nightguard */,
 				43647BE11BFF6435004389F9 /* nightguardTests */,
 				43647BEC1BFF6435004389F9 /* nightguardUITests */,
@@ -513,7 +510,6 @@
 				43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */,
 				43F1E1061D07698000C329A2 /* Media.xcassets in Resources */,
 				43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */,
-				4342D7D01D07592700EEBAA2 /* Default-568h@2x.png in Resources */,
 				43647BD31BFF6435004389F9 /* Main.storyboard in Resources */,
 				43F1E1091D07698000C329A2 /* scoutwatch.entitlements in Resources */,
 			);
