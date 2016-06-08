@@ -156,7 +156,7 @@ class ServiceBoundary {
                     if battery == nil {
                         nightscoutData.battery = String("?")
                     } else {
-                        nightscoutData.battery = String(battery) + "%"
+                        nightscoutData.battery = String(battery!) + "%"
                     }
 
                     nightscoutData.sgv = String(sgv)
