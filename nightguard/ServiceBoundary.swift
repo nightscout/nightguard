@@ -148,7 +148,7 @@ class ServiceBoundary {
                     let currentBgs : NSDictionary = bgs.objectAtIndex(0) as! NSDictionary
                     
                     let sgv : NSString = currentBgs.objectForKey("sgv") as! NSString
-                    let bgdelta = Float.init(currentBgs.objectForKey("bgdelta") as! String)
+                    let bgdelta = Float(String(currentBgs.objectForKey("bgdelta")!))
                     let time = currentBgs.objectForKey("datetime") as! NSNumber
                     
                     let nightscoutData = NightscoutData()

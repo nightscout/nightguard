@@ -6,10 +6,10 @@
          contextName = "ServiceBoundary.(readCurrentDataForPebbleWatch((NightscoutData) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
          <PersistentStrings>
             <PersistentString
-               value = "currentBgs.allKeys">
+               value = "Double(currentBgs.objectForKey(&quot;bgdelta&quot;))">
             </PersistentString>
             <PersistentString
-               value = "currentBgs">
+               value = "currentBgs.objectForKey(&quot;bgdelta&quot;)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
