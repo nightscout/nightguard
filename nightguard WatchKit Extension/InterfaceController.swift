@@ -133,8 +133,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         
         guard let chartImage = chartPainter.drawImage(
                 bgValues, yesterdaysValues: yesterdayValues,
-                upperBoundNiceValue: defaults!.integerForKey("alertIfAboveValue"),
-                lowerBoundNiceValue: defaults!.integerForKey("alertIfBelowValue")
+                upperBoundNiceValue: defaults!.floatForKey("alertIfAboveValue"),
+                lowerBoundNiceValue: defaults!.floatForKey("alertIfBelowValue")
         ) else {
             return
         }

@@ -89,8 +89,8 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
-        let alertIfAboveValue : Int = (defaults?.integerForKey("alertIfAboveValue"))!
-        let alertIfBelowValue : Int = (defaults?.integerForKey("alertIfBelowValue"))!
+        let alertIfAboveValue : Float = (defaults?.floatForKey("alertIfAboveValue"))!
+        let alertIfBelowValue : Float = (defaults?.floatForKey("alertIfBelowValue"))!
         let hostUri : String = (defaults?.stringForKey("hostUri"))!
         
         WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: alertIfAboveValue)

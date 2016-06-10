@@ -89,7 +89,7 @@ class ServiceBoundary {
             for sgvRow in sgvRows {
                 let sgvRowArray = sgvRow.componentsSeparatedByString("\t")
                 if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
-                    let bloodSugar = BloodSugar(value: Int(sgvRowArray[2])!, timestamp: Double(sgvRowArray[1])!)
+                    let bloodSugar = BloodSugar(value: Float(sgvRowArray[2])!, timestamp: Double(sgvRowArray[1])!)
                     bloodSugarArray.insert(bloodSugar, atIndex: 0)
                 }
             }
@@ -148,7 +148,7 @@ class ServiceBoundary {
                     let currentBgs : NSDictionary = bgs.objectAtIndex(0) as! NSDictionary
                     
                     let sgv : NSString = currentBgs.objectForKey("sgv") as! NSString
-                    let bgdelta = currentBgs.objectForKey("bgdelta") as! NSNumber
+                    let bgdelta = Float.init(currentBgs.objectForKey("bgdelta") as! String)
                     let time = currentBgs.objectForKey("datetime") as! NSNumber
                     
                     let nightscoutData = NightscoutData()
@@ -160,8 +160,8 @@ class ServiceBoundary {
                     }
 
                     nightscoutData.sgv = String(sgv)
-                    nightscoutData.bgdeltaString = self.direction(bgdelta) + String(bgdelta)
-                    nightscoutData.bgdelta = bgdelta
+                    nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
+                    nightscoutData.bgdelta = bgdelta!
                     nightscoutData.time = time
                     
                     resultHandler(nightscoutData)
@@ -173,8 +173,8 @@ class ServiceBoundary {
         task.resume()
     }
     
-    private func direction(delta : NSNumber) -> String {
-        if (delta.intValue >= 0) {
+    private func direction(delta : Float) -> String {
+        if (delta >= 0) {
             return "+"
         }
         return ""

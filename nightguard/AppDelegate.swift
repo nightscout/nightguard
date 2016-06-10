@@ -32,10 +32,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AlarmRule.isEdgeDetectionAlarmEnabled = (defaults?.boolForKey("edgeDetectionAlarmEnabled"))!
         AlarmRule.numberOfConsecutiveValues = (defaults?.integerForKey("numberOfConsecutiveValues"))!
-        AlarmRule.deltaAmount = (defaults?.integerForKey("deltaAmount"))!
+        AlarmRule.deltaAmount = (defaults?.floatForKey("deltaAmount"))!
         
-        AlarmRule.alertIfAboveValue = (defaults?.integerForKey("alertIfAboveValue"))!
-        AlarmRule.alertIfBelowValue = (defaults?.integerForKey("alertIfBelowValue"))!
+        AlarmRule.alertIfAboveValue = (defaults?.floatForKey("alertIfAboveValue"))!
+        AlarmRule.alertIfBelowValue = (defaults?.floatForKey("alertIfBelowValue"))!
     }
     
     func initializeApplicationDefaults() {

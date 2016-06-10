@@ -13,7 +13,7 @@ class WatchService {
     
     static let singleton = WatchService()
     
-    func sendToWatch(alertIfBelowValue : Int, alertIfAboveValue : Int) {
+    func sendToWatch(alertIfBelowValue : Float, alertIfAboveValue : Float) {
         do {
             let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
                                    "alertIfAboveValue" : alertIfAboveValue]

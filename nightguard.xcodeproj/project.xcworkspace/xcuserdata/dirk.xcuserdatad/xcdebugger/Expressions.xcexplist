@@ -13,5 +13,13 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "MainViewController.((paintCurrentBgData in _6000ED01001B5B47F2258CF855F406C8)(NightscoutData) -&gt; ()).(closure #1):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(format:&quot;%.1f&quot;, nightscoutData.sgv)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -109,8 +109,8 @@ class MainViewController: UIViewController {
         
         guard let chartImage = chartPainter.drawImage(
                 bgValues, yesterdaysValues: yesterdayValues,
-                upperBoundNiceValue: defaults!.integerForKey("alertIfAboveValue"),
-                lowerBoundNiceValue: defaults!.integerForKey("alertIfBelowValue")
+                upperBoundNiceValue: defaults!.floatForKey("alertIfAboveValue"),
+                lowerBoundNiceValue: defaults!.floatForKey("alertIfBelowValue")
         ) else {
             return
         }
@@ -172,7 +172,11 @@ class MainViewController: UIViewController {
     private func paintCurrentBgData(nightscoutData : NightscoutData) {
         
         dispatch_async(dispatch_get_main_queue(), {
-            self.bgLabel.text = nightscoutData.sgv
+            if nightscoutData.sgv == "---" {
+                self.bgLabel.text = "---"
+            } else {
+                self.bgLabel.text = String(format:"%.1f", Float(nightscoutData.sgv)!)
+            }
             self.bgLabel.textColor = UIColorChanger.getBgColor(nightscoutData.sgv)
             
             self.deltaLabel.text = nightscoutData.bgdeltaString

@@ -13,7 +13,7 @@ import Foundation
 class NightscoutData : NSObject, NSCoding {
     var sgv : String = "---"
     var bgdeltaString : String = "---"
-    var bgdelta : NSNumber = 0.0
+    var bgdelta : Float = 0.0
     var timeString : String {
         get {
             if time == 0 {
@@ -53,7 +53,7 @@ class NightscoutData : NSObject, NSCoding {
         }
         self.bgdeltaString = bgdeltaString
         
-        guard let bgdelta = decoder.decodeObjectForKey("bgdelta") as? NSNumber else {
+        guard let bgdelta = decoder.decodeObjectForKey("bgdelta") as? Float else {
             return
         }
         self.bgdelta = bgdelta

@@ -22,8 +22,8 @@ class ChartPainter {
     
     var maximumXValue : Double = 0
     var minimumXValue : Double = Double.infinity
-    var maximumYValue = 200
-    var minimumYValue = 40
+    var maximumYValue : Float = 200
+    var minimumYValue : Float = 40
 
     var size : CGSize
     
@@ -40,7 +40,7 @@ class ChartPainter {
      *
      * But of cause the alarming is out of the scope of this class!
      */
-    func drawImage(bgValues : [BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Int, lowerBoundNiceValue : Int) -> UIImage? {
+    func drawImage(bgValues : [BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> UIImage? {
 
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if bgValues.count <= 1 {
@@ -88,7 +88,7 @@ class ChartPainter {
     }
     
     // Paint the part between upperBound and lowerBoundValue in gray
-    func paintNicePartArea(context : CGContext, upperBoundNiceValue : Int, lowerBoundNiceValue : Int) {
+    func paintNicePartArea(context : CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) {
         
         // paint the rectangle
         CGContextSetLineWidth(context, 2.0)
@@ -176,8 +176,8 @@ class ChartPainter {
     func adjustMinMaxXYCoordinates(
             bgValues : [BloodSugar],
             yesterdaysValues : [BloodSugar],
-            upperBoundNiceValue : Int,
-            lowerBoundNiceValue : Int) {
+            upperBoundNiceValue : Float,
+            lowerBoundNiceValue : Float) {
         
         maximumXValue = -1 * Double.infinity
         minimumXValue = Double.infinity
@@ -189,7 +189,7 @@ class ChartPainter {
         (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(yesterdaysValues, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
     }
     
-    func adjustMinMax(bgValues : [BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Int, maximumYValue : Int) -> (Double, Double, Int, Int) {
+    func adjustMinMax(bgValues : [BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -> (Double, Double, Float, Float) {
         
         var newMinXValue = minimumXValue
         var newMaxXValue = maximumXValue
@@ -220,7 +220,7 @@ class ChartPainter {
         return CGFloat.init(stretchedXValue(x));
     }
     
-    func calcYValue(y : Int) -> CGFloat {
+    func calcYValue(y : Float) -> CGFloat {
 
         var calculatedY : Float = stretchedYValue(y)
         if calculatedY > Float(Int.max) {
@@ -241,12 +241,12 @@ class ChartPainter {
         return (Double(canvasWidth) / Double(range)) * Double(x - minimumXValue)
     }
     
-    func stretchedYValue(y : Int) -> Float {
+    func stretchedYValue(y : Float) -> Float {
         var range = maximumYValue - minimumYValue
         if range == 0 {
             // prevent a division by zero
             range = 1
         }
-        return (Float(canvasHeight) / Float(range)) * Float(y - minimumYValue)
+        return (Float(canvasHeight) / Float(range)) * (y - minimumYValue)
     }
 }

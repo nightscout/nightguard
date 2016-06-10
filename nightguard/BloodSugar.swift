@@ -11,17 +11,17 @@ import Foundation
 // This class contains the Bloodsugar Value for a certain point in time.
 // this class is immutable. Recreate the object in order to change values.
 class BloodSugar : NSCoder {
-    let value : Int
+    let value : Float
     let timestamp : Double
     
-    init(value : Int, timestamp : Double) {
+    init(value : Float, timestamp : Double) {
         self.value = value
         self.timestamp = timestamp
     }
     
     required convenience init(coder decoder: NSCoder) {
         
-        self.init(value : decoder.decodeObjectForKey("value") as! Int,
+        self.init(value : decoder.decodeObjectForKey("value") as! Float,
                   timestamp : decoder.decodeObjectForKey("timestamp") as! Double)
     }
 

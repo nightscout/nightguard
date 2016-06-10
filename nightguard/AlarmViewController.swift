@@ -68,7 +68,7 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     }
     
     @IBAction func deltaEditingChanged(sender: AnyObject) {
-        guard let deltaAmount = Int(deltaAmount.text!)
+        guard let deltaAmount = Float(deltaAmount.text!)
         else {
             return
         }
@@ -79,25 +79,25 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     }
     
     @IBAction func aboveAlertValueChanged(sender: AnyObject) {
-        let alertIfAboveValue = Int(MIN_ALERT_ABOVE_VALUE + alertAboveSlider.value * MAX_ALERT_ABOVE_VALUE)
-        alertIfAboveValueLabel.text = String(alertIfAboveValue)
+        let alertIfAboveValue = Float(MIN_ALERT_ABOVE_VALUE + alertAboveSlider.value * MAX_ALERT_ABOVE_VALUE)
+        alertIfAboveValueLabel.text = String(format: "%.0f", alertIfAboveValue)
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(alertIfAboveValueLabel.text, forKey: "alertIfAboveValue")
+        defaults!.setValue(Int(alertIfAboveValueLabel.text!), forKey: "alertIfAboveValue")
         
         AlarmRule.alertIfAboveValue = alertIfAboveValue
-        WatchService.singleton.sendToWatch(Int(alertIfBelowValueLabel.text!)!, alertIfAboveValue: alertIfAboveValue)
+        WatchService.singleton.sendToWatch(Float(alertIfBelowValueLabel.text!)!, alertIfAboveValue: alertIfAboveValue)
     }
     
     @IBAction func belowAlertValueChanged(sender: AnyObject) {
-        let alertIfBelowValue = Int(MIN_ALERT_BELOW_VALUE + alertBelowSlider.value * MAX_ALERT_BELOW_VALUE)
-        alertIfBelowValueLabel.text = String(alertIfBelowValue)
+        let alertIfBelowValue = Float(MIN_ALERT_BELOW_VALUE + alertBelowSlider.value * MAX_ALERT_BELOW_VALUE)
+        alertIfBelowValueLabel.text = String(format: "%.0f", alertIfBelowValue)
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
+        defaults!.setValue(Int(alertIfBelowValue), forKey: "alertIfBelowValue")
         
         AlarmRule.alertIfBelowValue = alertIfBelowValue
-        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: Int(alertIfAboveValueLabel.text!)!)
+        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: Float(alertIfAboveValueLabel.text!)!)
     }
     
     // Remove keyboard by touching outside

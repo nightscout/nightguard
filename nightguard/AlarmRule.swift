@@ -24,11 +24,11 @@ class AlarmRule {
     private static var snoozedUntilTimestamp = NSTimeInterval()
     
     static var numberOfConsecutiveValues : Int = 3
-    static var deltaAmount : Int = 8
+    static var deltaAmount : Float = 8
     static var isEdgeDetectionAlarmEnabled : Bool = false
     
-    static var alertIfAboveValue : Int = 180
-    static var alertIfBelowValue : Int = 80
+    static var alertIfAboveValue : Float = 180
+    static var alertIfBelowValue : Float = 80
     
     /*
      * Returns true if the alarm should be played.
@@ -45,7 +45,7 @@ class AlarmRule {
             return true
         }
         
-        if isTooHighOrTooLow(Int(nightscoutData.sgv)!) {
+        if isTooHighOrTooLow(Float(nightscoutData.sgv)!) {
             return true
         }
         
@@ -56,7 +56,7 @@ class AlarmRule {
         return false
     }
     
-    private static func isTooHighOrTooLow(bloodGlucose : Int) -> Bool {
+    private static func isTooHighOrTooLow(bloodGlucose : Float) -> Bool {
         return bloodGlucose > alertIfAboveValue || bloodGlucose < alertIfBelowValue
     }
     
@@ -83,11 +83,11 @@ class AlarmRule {
         return true;
     }
     
-    static func newDirectionNegative(value1 : Int, value2 : Int) -> Bool {
+    static func newDirectionNegative(value1 : Float, value2 : Float) -> Bool {
         return value2 - value1 < 0
     }
     
-    static func newDirectionPositive(value1 : Int, value2 : Int) -> Bool {
+    static func newDirectionPositive(value1 : Float, value2 : Float) -> Bool {
         return value2 - value1 > 0
     }
     
