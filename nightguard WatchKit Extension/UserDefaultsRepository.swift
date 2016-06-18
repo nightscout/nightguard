@@ -13,9 +13,9 @@ import UIKit
  * This class provides access to general Application Data stored in the NSUserDefaults.
  * This is e.g. the Base-URI to the Nightscout Server.
  */
-class UserDefaults {
+class UserDefaultsRepository {
     
-    static func getBaseUri() -> String {
+    static func readBaseUri() -> String {
         guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             return ""
         }
@@ -32,6 +32,28 @@ class UserDefaults {
         }
         
         return trimmedUri
+    }
+    
+    static func saveBaseUri(baseUri : String) {
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(baseUri, forKey: "hostUri")
+    }
+    
+    static func readUnits() -> Units {
+        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            print("Units are not saved so for. Assuming mg/dL in this case.")
+            return Units.mgdl
+        }
+        
+        return Units(rawValue: defaults.objectForKey("units") as! String)!
+    }
+    
+    static func saveUnits(units : Units) {
+        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            return
+        }
+        
+        defaults.setObject(units.rawValue, forKey: "units")
     }
     
     private static func validateUrl(stringURL : NSString) -> Bool {

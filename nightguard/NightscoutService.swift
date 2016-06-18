@@ -9,24 +9,14 @@
 import Foundation
 
 /* All data that is read from nightscout is accessed using this boundary. */
-class ServiceBoundary {
+class NightscoutService {
     
-    static let singleton = ServiceBoundary()
+    static let singleton = NightscoutService()
     
-    var baseUri : String {
-        get {
-            if self.baseUri != "" {
-                return self.baseUri
-            } else {
-                return UserDefaults.getBaseUri()
-            }
-        }
-        set {}
-    }
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     func readChartData(resultHandler : ([Int] -> Void)) {
         
-        let baseUri = UserDefaults.getBaseUri()
+        let baseUri = UserDefaultsRepository.readBaseUri()
         if baseUri == "" {
             return
         }
@@ -55,10 +45,53 @@ class ServiceBoundary {
         task.resume()
     }
 
+    /* Reads the nightscout status of the backend. This is used to determine the configured
+       Unit, whether it's mg/dL or mmol/l */
+    func readStatus(resultHandler : (Units -> Void)) {
+        
+        let baseUri = UserDefaultsRepository.readBaseUri()
+        if baseUri == "" {
+            return
+        }
+        
+        // Get the current data from REST-Call
+        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/api/v1/status.json")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+            
+            guard error == nil else {
+                return
+            }
+            guard data != nil else {
+                return
+            }
+            
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
+                guard let jsonDict :NSDictionary = json as? NSDictionary else {
+                    return
+                }
+                let settingsDict = jsonDict.objectForKey("settings") as! NSDictionary
+                if (settingsDict.count > 0) {
+                    
+                    let unitsAsString = settingsDict.valueForKey("units") as! String
+                    if unitsAsString == "mg/dL" {
+                        resultHandler(Units.mgdl)
+                    } else {
+                        resultHandler(Units.mmol)
+                    }
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
     /* Reads all data between two timestamps and limits the maximum return values to 300. */
     func readChartDataWithinPeriodOfTime(timestamp1 : NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar] -> Void)) {
-        
-        let baseUri = UserDefaults.getBaseUri()
+
+        let baseUri = UserDefaultsRepository.readBaseUri()
         if baseUri == "" {
             return
         }
@@ -94,7 +127,7 @@ class ServiceBoundary {
                 }
             }
             resultHandler(bloodSugarArray)
-        };
+        }
         task.resume()
     }
     
@@ -121,8 +154,8 @@ class ServiceBoundary {
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatch(resultHandler : (NightscoutData -> Void)) {
-        
-        let baseUri = UserDefaults.getBaseUri()
+
+        let baseUri = UserDefaultsRepository.readBaseUri()
         if (baseUri == "") {
             return
         }

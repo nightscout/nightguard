@@ -101,14 +101,14 @@ class ChartPainter {
         paragraphStyle.alignment = .Left
         let attrs = [NSFontAttributeName: UIFont(name: "Helvetica Bold", size: 14)!,
                      NSParagraphStyleAttributeName: paragraphStyle,
-                     NSForegroundColorAttributeName: UIColor.blackColor()]
+                     NSForegroundColorAttributeName: UIColor.grayColor()]
         
-        let upperBoundString = String(upperBoundNiceValue)
+        let upperBoundString = upperBoundNiceValue.cleanValue
         upperBoundString.drawWithRect(
             CGRect(x: 5, y: CGFloat.init(calcYValue(upperBoundNiceValue)), width: 40, height: 14),
                 options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
         
-        let lowerBoundString = String(lowerBoundNiceValue)
+        let lowerBoundString = lowerBoundNiceValue.cleanValue
         lowerBoundString.drawWithRect(
             CGRect(x: 5, y: CGFloat.init(calcYValue(lowerBoundNiceValue)) - 15, width: 40, height: 14),
                 options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
@@ -120,9 +120,9 @@ class ChartPainter {
         // Draw the time
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .Center
-        let attrs = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Thin", size: 14)!,
+        let attrs = [NSFontAttributeName: UIFont(name: "Helvetica Bold", size: 14)!,
                      NSParagraphStyleAttributeName: paragraphStyle,
-                     NSForegroundColorAttributeName: UIColor.whiteColor()]
+                     NSForegroundColorAttributeName: UIColor.grayColor()]
         
         let halfHours = determineHalfHoursBetween(minimumXValue, maxTimestamp: maximumXValue)
         
@@ -181,8 +181,8 @@ class ChartPainter {
         
         maximumXValue = -1 * Double.infinity
         minimumXValue = Double.infinity
-        maximumYValue = upperBoundNiceValue + 20
-        minimumYValue = lowerBoundNiceValue - 20
+        maximumYValue = upperBoundNiceValue
+        minimumYValue = lowerBoundNiceValue
         
         (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(bgValues, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
         

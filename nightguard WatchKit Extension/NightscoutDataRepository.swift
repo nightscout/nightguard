@@ -9,9 +9,9 @@
 import Foundation
 
 // Repository to store BgData using the NSUserDefaults
-class DataRepository {
+class NightscoutDataRepository {
     
-    static let singleton = DataRepository()
+    static let singleton = NightscoutDataRepository()
     
     func storeCurrentNightscoutData(bgData : NightscoutData) {
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)

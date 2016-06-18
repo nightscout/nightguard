@@ -17,8 +17,8 @@ class DataRepositoryTest: XCTestCase {
         nightscoutData.bgdeltaString = "12"
         
         // When
-        DataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
-        let retrievedBgData = DataRepository.singleton.loadCurrentNightscoutData()
+        NightscoutDataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
+        let retrievedBgData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         
         // Then
         XCTAssertEqual(retrievedBgData.bgdeltaString, "12")
@@ -35,8 +35,8 @@ class DataRepositoryTest: XCTestCase {
              BloodSugar.init(value: 5,timestamp: 5)]
         
         // When
-        DataRepository.singleton.storeHistoricBgData(historicBgData)
-        let retrievedHistoricBgData = DataRepository.singleton.loadHistoricBgData()
+        NightscoutDataRepository.singleton.storeHistoricBgData(historicBgData)
+        let retrievedHistoricBgData = NightscoutDataRepository.singleton.loadHistoricBgData()
         
         // Then
         XCTAssertEqual(retrievedHistoricBgData.count, 5)

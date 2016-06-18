@@ -194,7 +194,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="mg/dl." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1iM-Jh-M4g">
-                                <rect key="frame" x="111" y="283" width="49" height="21"/>
+                                <rect key="frame" x="111" y="283" width="68" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -212,6 +212,7 @@
                         <outlet property="deltaAmount" destination="AVR-Ct-UEm" id="IeH-68-O3y"/>
                         <outlet property="edgeDetectionSwitch" destination="bFe-e1-Lj0" id="jIv-W9-fcv"/>
                         <outlet property="numberOfConsecutiveValues" destination="6Uz-9f-vhz" id="KqG-UD-Sfz"/>
+                        <outlet property="unitsLabel" destination="1iM-Jh-M4g" id="9u0-VZ-Wyv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PqX-bt-NeS" userLabel="First Responder" sceneMemberID="firstResponder"/>

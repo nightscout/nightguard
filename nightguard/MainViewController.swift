@@ -109,8 +109,8 @@ class MainViewController: UIViewController {
         
         guard let chartImage = chartPainter.drawImage(
                 bgValues, yesterdaysValues: yesterdayValues,
-                upperBoundNiceValue: defaults!.floatForKey("alertIfAboveValue"),
-                lowerBoundNiceValue: defaults!.floatForKey("alertIfBelowValue")
+                upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
+                lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))
         ) else {
             return
         }
@@ -149,19 +149,19 @@ class MainViewController: UIViewController {
     
     private func readNewValuesFromNightscoutServer() {
         
-        ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(nightscoutData) -> Void in
+        NightscoutService.singleton.readCurrentDataForPebbleWatch({(nightscoutData) -> Void in
             BgDataHolder.singleton.setCurrentBgData(nightscoutData)
             self.paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
-            DataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
+            NightscoutDataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
         })
-        ServiceBoundary.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
+        NightscoutService.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
             BgDataHolder.singleton.setHistoricBgData(historicBgData)
             self.paintChart(historicBgData, yesterdayValues:
                 YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
                     BloodSugar.getMinimumTimestamp(historicBgData),
                     to: BloodSugar.getMaximumTimestamp(historicBgData)))
             
-            DataRepository.singleton.storeHistoricBgData(BgDataHolder.singleton.getHistoricBgData())
+            NightscoutDataRepository.singleton.storeHistoricBgData(BgDataHolder.singleton.getHistoricBgData())
         })
     }
     
@@ -175,11 +175,11 @@ class MainViewController: UIViewController {
             if nightscoutData.sgv == "---" {
                 self.bgLabel.text = "---"
             } else {
-                self.bgLabel.text = String(format:"%.1f", Float(nightscoutData.sgv)!)
+                self.bgLabel.text = UnitsConverter.toDisplayUnits(nightscoutData.sgv)
             }
             self.bgLabel.textColor = UIColorChanger.getBgColor(nightscoutData.sgv)
             
-            self.deltaLabel.text = nightscoutData.bgdeltaString
+            self.deltaLabel.text = UnitsConverter.toDisplayUnits(nightscoutData.bgdeltaString)
             self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(nightscoutData.bgdelta)
             
             self.lastUpdateLabel.text = nightscoutData.timeString

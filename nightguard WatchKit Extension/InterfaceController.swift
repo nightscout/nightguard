@@ -49,18 +49,18 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     }
     
     private func readNewValuesFromNightscoutServer() {
-        ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(currentNightscoutData) -> Void in
+        NightscoutService.singleton.readCurrentDataForPebbleWatch({(currentNightscoutData) -> Void in
             self.currentNightscoutData = currentNightscoutData
             self.paintCurrentBgData(self.currentNightscoutData)
-            DataRepository.singleton.storeCurrentNightscoutData(currentNightscoutData)
+            NightscoutDataRepository.singleton.storeCurrentNightscoutData(currentNightscoutData)
         })
-        ServiceBoundary.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
+        NightscoutService.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
             self.historicBgData = historicBgData
             self.paintChart(self.historicBgData,
                 yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
                     BloodSugar.getMinimumTimestamp(historicBgData),
                     to: BloodSugar.getMaximumTimestamp(historicBgData)))
-            DataRepository.singleton.storeHistoricBgData(self.historicBgData)
+            NightscoutDataRepository.singleton.storeHistoricBgData(self.historicBgData)
         })
     }
     
@@ -89,8 +89,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         super.awakeWithContext(context)
         
         // load old values that have been stored before
-        self.currentNightscoutData = DataRepository.singleton.loadCurrentNightscoutData()
-        self.historicBgData = DataRepository.singleton.loadHistoricBgData()
+        self.currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
+        self.historicBgData = NightscoutDataRepository.singleton.loadHistoricBgData()
     
         // update values immediately if necessary
         checkForNewValuesFromNightscoutServer()

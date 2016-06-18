@@ -22,6 +22,6 @@ class InfoInterfaceController: WKInterfaceController {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         
-        serverUriLabel.setText(UserDefaults.getBaseUri())
+        serverUriLabel.setText(UserDefaultsRepository.readBaseUri())
     }
 }

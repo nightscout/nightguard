@@ -3,6 +3,17 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "ServiceBoundaryTest.(testReadStatus() -&gt; ()).(closure #1):ServiceBoundaryTest.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(units)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ChartPainter.adjustMinMaxXYCoordinates([BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
+      </ContextState>
+      <ContextState
          contextName = "ServiceBoundary.(readCurrentDataForPebbleWatch((NightscoutData) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
          <PersistentStrings>
             <PersistentString
@@ -14,10 +25,68 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "static UserDefaultsRepository.readUnits() -&gt; Units:UserDefaultsRepository.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "defaults.objectForKey(&quot;units&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static UnitsConverter.toDisplayUnits(Float) -&gt; Float:UnitsConverter.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "removeDecimals(value)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "MainViewController.((paintCurrentBgData in _6000ED01001B5B47F2258CF855F406C8)(NightscoutData) -&gt; ()).(closure #1):MainViewController.swift">
          <PersistentStrings>
             <PersistentString
                value = "String(format:&quot;%.1f&quot;, nightscoutData.sgv)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AlarmViewController.aboveAlertValueChanged(AnyObject) -&gt; ():AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "alertIfAboveValueLabel.text">
+            </PersistentString>
+            <PersistentString
+               value = "String(format: &quot;%.0f&quot;, convertToDisplayUnits(String(alertIfAboveValue)))">
+            </PersistentString>
+            <PersistentString
+               value = "convertToDisplayUnits(String(alertIfAboveValue))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ServiceBoundary.(readStatus((String) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
+      </ContextState>
+      <ContextState
+         contextName = "AlarmViewController.convertToDisplayUnits(String) -&gt; String:AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Float(value)">
+            </PersistentString>
+            <PersistentString
+               value = "String(floatValue)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ServiceBoundary.readStatus((String) -&gt; ()) -&gt; ():ServiceBoundary.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ChartPainter.adjustMinMax([BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -&gt; (Double, Double, Float, Float):ChartPainter.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ServiceBoundary.readChartDataWithinPeriodOfTime(NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar]) -&gt; ()) -&gt; ():ServiceBoundary.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "baseUri">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -19,7 +19,7 @@ class YesterdayBloodSugarService {
     
     func warmupCache() {
         if needsToBeRefreshed() {
-            ServiceBoundary.singleton.readYesterdaysChartData({bloodValues -> Void in
+            NightscoutService.singleton.readYesterdaysChartData({bloodValues -> Void in
                 
                 self.bloodSugarArray = bloodValues
             })
@@ -28,7 +28,7 @@ class YesterdayBloodSugarService {
     
     func getYesterdaysValues(from : Double, to : Double) -> [BloodSugar]{
         if needsToBeRefreshed() {
-            ServiceBoundary.singleton.readYesterdaysChartData({bloodValues -> Void in
+            NightscoutService.singleton.readYesterdaysChartData({bloodValues -> Void in
                 
                 self.bloodSugarArray = bloodValues
             })

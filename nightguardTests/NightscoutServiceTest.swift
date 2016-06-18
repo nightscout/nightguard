@@ -10,13 +10,15 @@ import Foundation
 
 import XCTest
 
-class ServiceBoundaryTest: XCTestCase {
+class NightscoutServiceTest: XCTestCase {
+    
+    private let BASE_URI = "https://dhe.my-wan.de:1337"
     
     func testReadYesterdaysChartDataShouldReturnData() {
         
         // Given
-        let serviceBoundary = ServiceBoundary.singleton;
-        serviceBoundary.baseUri = "http://pi2:1337"
+        let serviceBoundary = NightscoutService.singleton;
+        serviceBoundary.baseUri = BASE_URI
         let expectation = self.expectationWithDescription("Remote Call was successful!")
         
         // When
@@ -33,11 +35,30 @@ class ServiceBoundaryTest: XCTestCase {
         self.waitForExpectationsWithTimeout(3.0, handler: nil)
     }
     
+    func testReadStatus() {
+        
+        // Given
+        let nightscoutService = NightscoutService.singleton;
+        nightscoutService.baseUri = BASE_URI
+        let expectation = self.expectationWithDescription("Remote Call was successful!")
+        
+        // When
+        nightscoutService.readStatus({(units) -> Void in
+            
+            if units == Units.mgdl {
+                expectation.fulfill()
+            }
+        })
+        
+        // Then
+        self.waitForExpectationsWithTimeout(5.0, handler: nil)
+    }
+    
     func testReadLast2HoursShouldReturnData() {
         
         // Given
-        let serviceBoundary = ServiceBoundary.singleton;
-        serviceBoundary.baseUri = "http://pi2:1337"
+        let serviceBoundary = NightscoutService.singleton;
+        serviceBoundary.baseUri = BASE_URI
         let expectation = self.expectationWithDescription("Remote Call was successful!")
         
         // When

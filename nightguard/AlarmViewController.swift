@@ -27,6 +27,8 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     @IBOutlet weak var alertAboveSlider: UISlider!
     @IBOutlet weak var alertBelowSlider: UISlider!
     
+    @IBOutlet weak var unitsLabel: UILabel!
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
@@ -37,13 +39,15 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
+        updateUnits()
+        
         edgeDetectionSwitch.on = (defaults?.boolForKey("edgeDetectionAlarmEnabled"))!
         numberOfConsecutiveValues.text = defaults?.stringForKey("numberOfConsecutiveValues")
-        deltaAmount.text = defaults?.stringForKey("deltaAmount")
+        deltaAmount.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("deltaAmount"))!)
         
-        alertIfAboveValueLabel.text = defaults?.stringForKey("alertIfAboveValue")
+        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfAboveValue"))!)
         alertAboveSlider.value = (Float(alertIfAboveValueLabel.text!)! - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE
-        alertIfBelowValueLabel.text = defaults?.stringForKey("alertIfBelowValue")
+        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfBelowValue"))!)
         alertBelowSlider.value = (Float(alertIfBelowValueLabel.text!)! - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
@@ -80,28 +84,47 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     @IBAction func aboveAlertValueChanged(sender: AnyObject) {
         let alertIfAboveValue = Float(MIN_ALERT_ABOVE_VALUE + alertAboveSlider.value * MAX_ALERT_ABOVE_VALUE)
-        alertIfAboveValueLabel.text = String(format: "%.0f", alertIfAboveValue)
+        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfAboveValue))
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(Int(alertIfAboveValueLabel.text!), forKey: "alertIfAboveValue")
+        defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
         
         AlarmRule.alertIfAboveValue = alertIfAboveValue
-        WatchService.singleton.sendToWatch(Float(alertIfBelowValueLabel.text!)!, alertIfAboveValue: alertIfAboveValue)
+        WatchService.singleton.sendToWatch(convertToMgdl(alertIfBelowValueLabel.text!), alertIfAboveValue: alertIfAboveValue)
     }
     
     @IBAction func belowAlertValueChanged(sender: AnyObject) {
         let alertIfBelowValue = Float(MIN_ALERT_BELOW_VALUE + alertBelowSlider.value * MAX_ALERT_BELOW_VALUE)
-        alertIfBelowValueLabel.text = String(format: "%.0f", alertIfBelowValue)
+        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfBelowValue))
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(Int(alertIfBelowValue), forKey: "alertIfBelowValue")
+        defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
         
         AlarmRule.alertIfBelowValue = alertIfBelowValue
-        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: Float(alertIfAboveValueLabel.text!)!)
+        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: convertToMgdl(alertIfAboveValueLabel.text!))
+    }
+    
+    func convertToMgdl(value : String) -> Float {
+        let units = UserDefaultsRepository.readUnits()
+        
+        if units == Units.mgdl {
+            return Float(value)!
+        } else {
+            return Float(value)! * 18.02
+        }
+    }
+    
+    func updateUnits() {
+        let units = UserDefaultsRepository.readUnits()
+        
+        if units == Units.mmol {
+            unitsLabel.text = "mmol"
+        } else {
+            unitsLabel.text = "mg/dL"
+        }
     }
     
     // Remove keyboard by touching outside
-    
     func onTouchGesture(){
         self.view.endEditing(true)
     }

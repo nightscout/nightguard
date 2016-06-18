@@ -58,25 +58,21 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     @IBAction func doEditingChangedAction(sender: AnyObject) {
         
-        storeUri()
+        UserDefaultsRepository.saveBaseUri(hostUriTextField.text!)
         sendValuesToAppleWatch()
     }
     
     // Close the soft keyboard if return has been selected
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-        storeUri()
+        UserDefaultsRepository.saveBaseUri(hostUriTextField.text!)
         sendValuesToAppleWatch()
+        retrieveAndStoreNightscoutUnits()
         
         textField.resignFirstResponder()
         return true
     }
-    
-    // Gets the URI from the textfield and stores it using the NSUserDefaults
-    func storeUri() {
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(hostUriTextField.text, forKey: "hostUri")
-    }
+
     
     // Send the configuration values to the apple watch.
     // This has to be done here, because the watch has no access to the default values.
@@ -101,6 +97,7 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     func onTouchGesture(){
         self.view.endEditing(true)
+        retrieveAndStoreNightscoutUnits()
     }
     
     // Picker-View methods
@@ -115,6 +112,12 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return displayTimespans[row]
+    }
+    
+    func retrieveAndStoreNightscoutUnits() {
+        NightscoutService.singleton.readStatus { (units) in
+            UserDefaultsRepository.saveUnits(units)
+        }
     }
 }
 
