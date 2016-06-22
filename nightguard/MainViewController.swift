@@ -108,7 +108,7 @@ class MainViewController: UIViewController {
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
         guard let chartImage = chartPainter.drawImage(
-                bgValues, yesterdaysValues: yesterdayValues,
+                UnitsConverter.toDisplayUnits(bgValues), yesterdaysValues: UnitsConverter.toDisplayUnits(yesterdayValues),
                 upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
                 lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))
         ) else {
@@ -175,11 +175,11 @@ class MainViewController: UIViewController {
             if nightscoutData.sgv == "---" {
                 self.bgLabel.text = "---"
             } else {
-                self.bgLabel.text = UnitsConverter.toDisplayUnits(nightscoutData.sgv)
+                self.bgLabel.text = nightscoutData.sgv
             }
             self.bgLabel.textColor = UIColorChanger.getBgColor(nightscoutData.sgv)
             
-            self.deltaLabel.text = UnitsConverter.toDisplayUnits(nightscoutData.bgdeltaString)
+            self.deltaLabel.text = nightscoutData.bgdeltaString
             self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(nightscoutData.bgdelta)
             
             self.lastUpdateLabel.text = nightscoutData.timeString

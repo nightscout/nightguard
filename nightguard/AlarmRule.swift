@@ -45,7 +45,7 @@ class AlarmRule {
             return true
         }
         
-        if isTooHighOrTooLow(Float(nightscoutData.sgv)!) {
+        if isTooHighOrTooLow(UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)) {
             return true
         }
         

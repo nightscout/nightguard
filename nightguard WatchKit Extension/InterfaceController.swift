@@ -56,7 +56,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         })
         NightscoutService.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
             self.historicBgData = historicBgData
-            self.paintChart(self.historicBgData,
+            self.paintChart(UnitsConverter.toDisplayUnits(self.historicBgData),
                 yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
                     BloodSugar.getMinimumTimestamp(historicBgData),
                     to: BloodSugar.getMaximumTimestamp(historicBgData)))
@@ -132,7 +132,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
         guard let chartImage = chartPainter.drawImage(
-                bgValues, yesterdaysValues: yesterdayValues,
+                UnitsConverter.toDisplayUnits(bgValues),
+                yesterdaysValues: UnitsConverter.toDisplayUnits(yesterdayValues),
                 upperBoundNiceValue: defaults!.floatForKey("alertIfAboveValue"),
                 lowerBoundNiceValue: defaults!.floatForKey("alertIfBelowValue")
         ) else {

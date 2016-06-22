@@ -27,7 +27,7 @@ class UnitsConverter {
             return removeDecimals(value)
         }
         
-        // convert mmol/l to mg/dL
+        // convert mg/dL to mmol/l
         let floatValue : Float = Float(value)! * 0.0555
         return String(floatValue.cleanValue)
     }
@@ -35,6 +35,44 @@ class UnitsConverter {
     // Converts the internally mg/dL to mmol if thats the defined
     // Unit to be used.
     static func toDisplayUnits(value : Float) -> Float {
+        
+        let units = UserDefaultsRepository.readUnits()
+        
+        if units == Units.mgdl {
+            return removeDecimals(value)
+        }
+        
+        // convert mg/dL to mmol/l
+        return value * 0.0555
+    }
+    
+    static func toDisplayUnits(let mgValues : [BloodSugar]) -> [BloodSugar] {
+        
+        let units = UserDefaultsRepository.readUnits()
+        
+        if units == Units.mgdl {
+            return mgValues
+        }
+        
+        var mmolValues : [BloodSugar] = []
+        for value in mgValues {
+            mmolValues.append(toMmol(value))
+        }
+        
+        return mmolValues
+    }
+    
+    static func toMmol(let bloodSugar : BloodSugar) -> BloodSugar {
+        
+        return BloodSugar.init(value: toMmol(bloodSugar.value), timestamp: bloodSugar.timestamp)
+    }
+    
+    static func toMmol(let mmolValue : Float) -> Float {
+        return mmolValue * 0.0555
+    }
+    
+    // Converts the value in Display Units to Mg/dL.
+    static func toMgdl(value : Float) -> Float {
         let units = UserDefaultsRepository.readUnits()
         
         if units == Units.mgdl {
@@ -42,7 +80,16 @@ class UnitsConverter {
         }
         
         // convert mmol/l to mg/dL
-        return value * 0.0555
+        return value * 18.02
+    }
+    
+    // Converts the value in Display Units to Mg/dL.
+    static func toMgdl(value : String) -> Float {
+        
+        guard let floatValue = Float(value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())) else {
+            return 0
+        }
+        return toMgdl(floatValue)
     }
     
     // if a "." is contained, simply takes the left part of the string only

@@ -43,15 +43,24 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         
         edgeDetectionSwitch.on = (defaults?.boolForKey("edgeDetectionAlarmEnabled"))!
         numberOfConsecutiveValues.text = defaults?.stringForKey("numberOfConsecutiveValues")
-        deltaAmount.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("deltaAmount"))!)
-        
-        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfAboveValue"))!)
-        alertAboveSlider.value = (Float(alertIfAboveValueLabel.text!)! - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE
-        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfBelowValue"))!)
-        alertBelowSlider.value = (Float(alertIfBelowValueLabel.text!)! - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        
+        updateUnits()
+        
+        deltaAmount.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("deltaAmount"))!)
+        
+        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfAboveValue"))!)
+        alertAboveSlider.value = (UnitsConverter.toMgdl(alertIfAboveValueLabel.text!.floatValue) - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE
+        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfBelowValue"))!)
+        alertBelowSlider.value = (UnitsConverter.toMgdl(alertIfBelowValueLabel.text!.floatValue) - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
+
     }
     
     @IBAction func edgeDetectionSwitchChanged(sender: AnyObject) {
@@ -72,45 +81,58 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     }
     
     @IBAction func deltaEditingChanged(sender: AnyObject) {
-        guard let deltaAmount = Float(deltaAmount.text!)
-        else {
-            return
-        }
+        let deltaAmountValue = UnitsConverter.toMgdl(deltaAmount.text!)
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(deltaAmount, forKey: "deltaAmount")
-        AlarmRule.deltaAmount = deltaAmount
+        defaults!.setValue(deltaAmountValue, forKey: "deltaAmount")
+        AlarmRule.deltaAmount = deltaAmountValue
     }
     
     @IBAction func aboveAlertValueChanged(sender: AnyObject) {
-        let alertIfAboveValue = Float(MIN_ALERT_ABOVE_VALUE + alertAboveSlider.value * MAX_ALERT_ABOVE_VALUE)
+        let alertIfAboveValue = getAboveAlarmValue()
+        adjustLowerSliderValue()
         alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfAboveValue))
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
         
         AlarmRule.alertIfAboveValue = alertIfAboveValue
-        WatchService.singleton.sendToWatch(convertToMgdl(alertIfBelowValueLabel.text!), alertIfAboveValue: alertIfAboveValue)
+        WatchService.singleton.sendToWatch(UnitsConverter.toMgdl(alertIfBelowValueLabel.text!), alertIfAboveValue: alertIfAboveValue)
     }
     
     @IBAction func belowAlertValueChanged(sender: AnyObject) {
-        let alertIfBelowValue = Float(MIN_ALERT_BELOW_VALUE + alertBelowSlider.value * MAX_ALERT_BELOW_VALUE)
+        let alertIfBelowValue = getBelowAlarmValue()
+        adjustAboveSliderValue()
         alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfBelowValue))
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
         
         AlarmRule.alertIfBelowValue = alertIfBelowValue
-        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: convertToMgdl(alertIfAboveValueLabel.text!))
+        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: UnitsConverter.toMgdl(alertIfAboveValueLabel.text!))
     }
     
-    func convertToMgdl(value : String) -> Float {
-        let units = UserDefaultsRepository.readUnits()
-        
-        if units == Units.mgdl {
-            return Float(value)!
-        } else {
-            return Float(value)! * 18.02
+    func getAboveAlarmValue() -> Float {
+        return Float(MIN_ALERT_ABOVE_VALUE + alertAboveSlider.value * MAX_ALERT_ABOVE_VALUE)
+    }
+    
+    func getBelowAlarmValue() -> Float {
+        return Float(MIN_ALERT_BELOW_VALUE + alertBelowSlider.value * MAX_ALERT_BELOW_VALUE)
+    }
+    
+    func adjustLowerSliderValue() {
+        if getAboveAlarmValue() - getBelowAlarmValue() < 1 {
+            alertBelowSlider.setValue(
+                (getAboveAlarmValue() - 1 - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_BELOW_VALUE, animated: true)
+            belowAlertValueChanged(alertBelowSlider)
+        }
+    }
+    
+    func adjustAboveSliderValue() {
+        if getBelowAlarmValue() - getAboveAlarmValue() > 0 {
+            alertAboveSlider.setValue(
+                (getBelowAlarmValue() + 1 - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE, animated: true)
+            aboveAlertValueChanged(alertAboveSlider)
         }
     }
     

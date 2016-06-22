@@ -33,10 +33,37 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "static AlarmRule.isAlarmActivated(NightscoutData, bloodValues : [BloodSugar]) -&gt; Bool:AlarmRule.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AlarmViewController.adjustLowerSliderValue() -&gt; ():AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "getBelowAlarmValue()">
+            </PersistentString>
+            <PersistentString
+               value = "getAboveAlarmValue()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "static UnitsConverter.toDisplayUnits(Float) -&gt; Float:UnitsConverter.swift">
          <PersistentStrings>
             <PersistentString
                value = "removeDecimals(value)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ChartPainter.paintNicePartArea(CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "calcYValue(upperBoundNiceValue)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -77,6 +104,28 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "AlarmViewController.viewDidLoad() -&gt; ():AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "alertIfAboveValueLabel.text">
+            </PersistentString>
+            <PersistentString
+               value = "Float(&quot;10.0&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "Float(alertIfAboveValueLabel.text!)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static UnitsConverter.toMgdl(String) -&gt; Float:UnitsConverter.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Float(value)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ServiceBoundary.readStatus((String) -&gt; ()) -&gt; ():ServiceBoundary.swift">
       </ContextState>
       <ContextState
@@ -87,6 +136,31 @@
          <PersistentStrings>
             <PersistentString
                value = "baseUri">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static AlarmRule.(bloodValuesAreIncreasingOrDecreasingToFast in _2DC08F8B6434C739855808DB2507ABB9)([BloodSugar]) -&gt; Bool:AlarmRule.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "bloodValues[index-1].value">
+            </PersistentString>
+            <PersistentString
+               value = "bloodValues[index-2].value">
+            </PersistentString>
+            <PersistentString
+               value = "deltaAmount">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AlarmViewController.adjustAboveSliderValue() -&gt; ():AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "getBelowAlarmValue()">
+            </PersistentString>
+            <PersistentString
+               value = "getAboveAlarmValue()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

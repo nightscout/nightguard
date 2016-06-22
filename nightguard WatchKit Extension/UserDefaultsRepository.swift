@@ -45,7 +45,11 @@ class UserDefaultsRepository {
             return Units.mgdl
         }
         
-        return Units(rawValue: defaults.objectForKey("units") as! String)!
+        guard let units = defaults.objectForKey("units") as? String else {
+            print("Units are not saved so for. Assuming mg/dL in this case.")
+            return Units.mgdl
+        }
+        return Units(rawValue: units)!
     }
     
     static func saveUnits(units : Units) {
