@@ -155,7 +155,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         self.bgLabel.setText(currentNightscoutData.sgv)
         self.bgLabel.setTextColor(UIColorChanger.getBgColor(currentNightscoutData.sgv))
         
-        self.deltaLabel.setText(currentNightscoutData.bgdeltaString)
+        self.deltaLabel.setText(currentNightscoutData.bgdeltaString.cleanFloatValue)
         self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(currentNightscoutData.bgdelta))
         
         self.timeLabel.setText(currentNightscoutData.timeString)

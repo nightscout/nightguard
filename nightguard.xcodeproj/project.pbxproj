@@ -13,6 +13,7 @@
 		43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */; };
 		43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
 		43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B861C383CF500DD6D35 /* UIColorChanger.swift */; };
+		43288A681D1B359D00EE3999 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62EE1D17359600DD7978 /* StringExtension.swift */; };
 		432E62D71D0CC35100DD7978 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		432E62D81D0CC38C00DD7978 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
 		432E62D91D0CC3AC00DD7978 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
@@ -687,6 +688,7 @@
 				43647C091BFF6435004389F9 /* InterfaceController.swift in Sources */,
 				43794F461C303E4200DB8B58 /* NightscoutDataRepository.swift in Sources */,
 				43119B881C383CF500DD6D35 /* UIColorChanger.swift in Sources */,
+				43288A681D1B359D00EE3999 /* StringExtension.swift in Sources */,
 				43794F421C2F435A00DB8B58 /* AppConstants.swift in Sources */,
 				439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */,
 			);

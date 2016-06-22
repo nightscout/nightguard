@@ -19,4 +19,14 @@ extension String {
     func trim() -> String {
         return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
     }
+    
+    // remove the decimal part of the float if it is ".0" and trim whitespaces
+    var cleanFloatValue: String {
+        
+        if self.containsString(".") {
+            return self.substringToIndex(self.characters.indexOf(".")!)
+        }
+        
+        return self
+    }
 }

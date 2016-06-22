@@ -179,7 +179,7 @@ class MainViewController: UIViewController {
             }
             self.bgLabel.textColor = UIColorChanger.getBgColor(nightscoutData.sgv)
             
-            self.deltaLabel.text = nightscoutData.bgdeltaString
+            self.deltaLabel.text = nightscoutData.bgdeltaString.cleanFloatValue
             self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(nightscoutData.bgdelta)
             
             self.lastUpdateLabel.text = nightscoutData.timeString
