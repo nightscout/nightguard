@@ -68,19 +68,28 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             
-            if let hostUri = applicationContext["hostUri"] as? String {
-                let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-                defaults!.setValue(hostUri, forKey: "hostUri")
+            if let units = applicationContext["units"] as? String {
+                UserDefaultsRepository.saveUnits(Units(rawValue: units)!)
             }
             
-            if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Int {
+            if let hostUri = applicationContext["hostUri"] as? String {
+                UserDefaultsRepository.saveBaseUri(hostUri)
+            }
+            
+            if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
                 let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
                 defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
             }
             
-            if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Int {
+            if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
                 let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
                 defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
+                
+                // The alert values will always be send in tuples - so it's enough to paint here:
+                self.paintChart(self.historicBgData, yesterdayValues:
+                    YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
+                        BloodSugar.getMinimumTimestamp(self.historicBgData),
+                        to: BloodSugar.getMaximumTimestamp(self.historicBgData)))
             }
         }
     }
@@ -134,8 +143,8 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         guard let chartImage = chartPainter.drawImage(
                 UnitsConverter.toDisplayUnits(bgValues),
                 yesterdaysValues: UnitsConverter.toDisplayUnits(yesterdayValues),
-                upperBoundNiceValue: defaults!.floatForKey("alertIfAboveValue"),
-                lowerBoundNiceValue: defaults!.floatForKey("alertIfBelowValue")
+                upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
+                lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))
         ) else {
             return
         }

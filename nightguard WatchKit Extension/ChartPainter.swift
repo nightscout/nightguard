@@ -110,9 +110,16 @@ class ChartPainter {
         
         let lowerBoundString = lowerBoundNiceValue.cleanValue
         lowerBoundString.drawWithRect(
-            CGRect(x: 5, y: CGFloat.init(calcYValue(lowerBoundNiceValue)) - 15, width: 40, height: 14),
+            CGRect(x: 5, y: min(CGFloat.init(calcYValue(lowerBoundNiceValue)-15), value2: CGFloat.init(canvasHeight-40)), width: 40, height: 14),
                 options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
 
+    }
+    
+    func min(value1 : CGFloat, value2 : CGFloat) -> CGFloat {
+        if value1 < value2 {
+            return value1
+        }
+        return value2
     }
     
     // Paints the X-Axis Text

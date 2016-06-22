@@ -13,6 +13,15 @@ class WatchService {
     
     static let singleton = WatchService()
     
+    func sendToWatch(units : Units) {
+        do {
+            let applicationDict = ["units" : units.rawValue]
+            try WCSession.defaultSession().updateApplicationContext(applicationDict)
+        } catch {
+            print(error)
+        }
+    }
+    
     func sendToWatch(alertIfBelowValue : Float, alertIfAboveValue : Float) {
         do {
             let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,

@@ -117,6 +117,7 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     func retrieveAndStoreNightscoutUnits() {
         NightscoutService.singleton.readStatus { (units) in
             UserDefaultsRepository.saveUnits(units)
+            WatchService.singleton.sendToWatch(units)
         }
     }
 }
