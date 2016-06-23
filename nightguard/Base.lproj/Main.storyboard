@@ -101,7 +101,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l0s-GN-TIY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-369" y="478"/>
+            <point key="canvasLocation" x="-368" y="542"/>
         </scene>
         <!--Alarm-->
         <scene sceneID="9Cd-ZQ-L4J">
@@ -294,9 +294,6 @@
                                 <rect key="frame" x="57" y="393" width="263" height="31"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="Ycu-Cb-8iJ" kind="embed" id="1oy-l1-Yg0"/>
-                                </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -353,12 +350,32 @@
             </objects>
             <point key="canvasLocation" x="-368" y="-203"/>
         </scene>
+        <!--Stats-->
+        <scene sceneID="Cd6-PY-Cl5">
+            <objects>
+                <viewController id="tY7-pw-cBk" userLabel="Stats" customClass="StatsViewController" customModule="nightguard" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fgE-PI-H2z"/>
+                        <viewControllerLayoutGuide type="bottom" id="P49-JR-KR5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="quX-qv-rSf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Stats" image="StatsIcon" id="ilS-RR-ZED"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p5b-Fa-7Ux" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-805" y="-857"/>
+        </scene>
         <!--Nightscout-->
         <scene sceneID="pNU-Te-rip">
             <objects>
-                <tabBarController title="Nightscout" id="oic-Vn-yoT" sceneMemberID="viewController">
+                <tabBarController title="Nightscout" id="oic-Vn-yoT" customClass="TabBarController" customModule="nightguard" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" id="562-JL-gqp">
+                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" id="562-JL-gqp" customClass="TabBarConroller">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="selectedImageTintColor" red="0.9651752629" green="0.96381590189999999" blue="0.98756055269999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -366,6 +383,7 @@
                     <connections>
                         <segue destination="wFP-V1-Fpg" kind="relationship" relationship="viewControllers" id="tVc-wm-64g"/>
                         <segue destination="dYE-A1-O4H" kind="relationship" relationship="viewControllers" id="t3C-Dk-WG1"/>
+                        <segue destination="tY7-pw-cBk" kind="relationship" relationship="viewControllers" id="mso-w9-IO8"/>
                         <segue destination="5gg-kk-88j" kind="relationship" relationship="viewControllers" id="JsI-MD-uev"/>
                     </connections>
                 </tabBarController>
@@ -373,28 +391,12 @@
             </objects>
             <point key="canvasLocation" x="-805" y="-203"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="OU7-U1-K7B">
-            <objects>
-                <viewController id="Ycu-Cb-8iJ" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="nwg-fq-2vO"/>
-                        <viewControllerLayoutGuide type="bottom" id="cZn-ZD-4ql"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="UrV-oz-J6i">
-                        <rect key="frame" x="0.0" y="0.0" width="263" height="31"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="L1X-kP-832" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-        </scene>
     </scenes>
     <resources>
         <image name="AlarmIcon" width="29" height="29"/>
         <image name="MainIcon" width="25" height="25"/>
         <image name="PrefsIcon" width="25" height="25"/>
+        <image name="StatsIcon" width="24" height="24"/>
     </resources>
     <color key="tintColor" red="0.96517526286328037" green="0.96381590185596999" blue="0.98756055269162302" alpha="1" colorSpace="calibratedRGB"/>
 </document>

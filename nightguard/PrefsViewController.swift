@@ -17,6 +17,10 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     @IBOutlet weak var versionLabel: UILabel!
     
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -39,6 +43,11 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         self.view.addGestureRecognizer(tap)
     }
 
+    override func viewDidAppear(animated: Bool) {
+        let value = UIInterfaceOrientation.Portrait.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+    }
+    
     func displayTheApplicationVersionNumber() {
         
         let versionNumber: String = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String

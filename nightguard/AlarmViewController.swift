@@ -29,6 +29,10 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     @IBOutlet weak var unitsLabel: UILabel!
     
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
@@ -61,6 +65,11 @@ class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfBelowValue"))!)
         alertBelowSlider.value = (UnitsConverter.toMgdl(alertIfBelowValueLabel.text!.floatValue) - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
 
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        let value = UIInterfaceOrientation.Portrait.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
     }
     
     @IBAction func edgeDetectionSwitchChanged(sender: AnyObject) {

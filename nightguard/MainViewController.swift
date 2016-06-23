@@ -26,8 +26,14 @@ class MainViewController: UIViewController {
     // check every 10 Seconds whether new bgvalues should be retrieved
     let timeInterval:NSTimeInterval = 5.0
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        let value = UIInterfaceOrientation.Portrait.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
         let historicBgData = BgDataHolder.singleton.getHistoricBgData()
         paintChart(historicBgData,

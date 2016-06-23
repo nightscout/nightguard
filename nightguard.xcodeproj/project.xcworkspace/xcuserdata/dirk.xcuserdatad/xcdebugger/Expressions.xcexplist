@@ -72,6 +72,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "AppDelegate.application(UIApplication, supportedInterfaceOrientationsForWindow : UIWindow?) -&gt; UIInterfaceOrientationMask:AppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.window?.rootViewController.presentedViewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ChartPainter.paintNicePartArea(CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
          <PersistentStrings>
             <PersistentString
@@ -91,10 +99,10 @@
          contextName = "ServiceBoundary.(readCurrentDataForPebbleWatch((NightscoutData) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Double(currentBgs.objectForKey(&quot;bgdelta&quot;))">
+               value = "currentBgs.objectForKey(&quot;bgdelta&quot;)">
             </PersistentString>
             <PersistentString
-               value = "currentBgs.objectForKey(&quot;bgdelta&quot;)">
+               value = "Double(currentBgs.objectForKey(&quot;bgdelta&quot;))">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -118,13 +126,13 @@
          contextName = "static AlarmRule.(bloodValuesAreIncreasingOrDecreasingToFast in _2DC08F8B6434C739855808DB2507ABB9)([BloodSugar]) -&gt; Bool:AlarmRule.swift">
          <PersistentStrings>
             <PersistentString
-               value = "bloodValues[index-1].value">
-            </PersistentString>
-            <PersistentString
                value = "bloodValues[index-2].value">
             </PersistentString>
             <PersistentString
                value = "deltaAmount">
+            </PersistentString>
+            <PersistentString
+               value = "bloodValues[index-1].value">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
