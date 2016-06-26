@@ -17,6 +17,9 @@
          contextName = "ChartPainter.adjustMinMax([BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -&gt; (Double, Double, Float, Float):ChartPainter.swift">
       </ContextState>
       <ContextState
+         contextName = "NightscoutServiceTest.(testReadLast4Days() -&gt; ()).(closure #1):NightscoutServiceTest.swift">
+      </ContextState>
+      <ContextState
          contextName = "static UnitsConverter.toDisplayUnits(Float) -&gt; Float:UnitsConverter.swift">
          <PersistentStrings>
             <PersistentString
@@ -51,6 +54,9 @@
       </ContextState>
       <ContextState
          contextName = "ChartPainter.adjustMinMaxXYCoordinates([BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
+      </ContextState>
+      <ContextState
+         contextName = "NightscoutService.extractDays([BloodSugar]) -&gt; [[BloodSugar]]:NightscoutService.swift">
       </ContextState>
       <ContextState
          contextName = "AlarmViewController.adjustLowerSliderValue() -&gt; ():AlarmViewController.swift">
@@ -163,6 +169,14 @@
          <PersistentStrings>
             <PersistentString
                value = "defaults.objectForKey(&quot;units&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ChartPainter.durationIsMoreThan6Hours(Double, maxTimestamp : Double) -&gt; Bool:ChartPainter.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "6 * 60 * 60 * 1000 * 1000&#10;">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

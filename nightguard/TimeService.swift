@@ -32,6 +32,10 @@ class TimeService {
         return NSDate()
     }
     
+    static func get4DaysAgo() -> NSDate {
+        return getToday().dateByAddingTimeInterval(4 * -24 * 60 * 60)
+    }
+    
     static func getYesterday() -> NSDate {
         let yesterday = getToday().dateByAddingTimeInterval(-24*60*60)
 

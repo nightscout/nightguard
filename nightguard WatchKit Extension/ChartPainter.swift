@@ -14,8 +14,12 @@ class ChartPainter {
     let DARK : UIColor = UIColor.init(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
     let BLACK : UIColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
     let DARKGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.5)
+    let YELLOW : UIColor = UIColor.init(red: 1, green: 1, blue: 0, alpha: 1)
+    let RED : UIColor = UIColor.init(red: 1, green: 0, blue: 0, alpha: 1)
+    let BLUE : UIColor = UIColor.init(red: 0, green: 0, blue: 1, alpha: 1)
     
     let halfHour : Double = 1800
+    let fullHour : Double = 3600
     
     var canvasWidth : Int = 165
     var canvasHeight : Int = 125
@@ -40,14 +44,18 @@ class ChartPainter {
      *
      * But of cause the alarming is out of the scope of this class!
      */
-    func drawImage(bgValues : [BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> UIImage? {
+    func drawImage(days : [[BloodSugar]], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> UIImage? {
 
-        // we need at least 2 values - otherwise paint nothing and return empty image!
-        if bgValues.count <= 1 {
+        // we need at least one day => otherwise paint nothing
+        if days.count == 1 {
             return nil
         }
-
-        adjustMinMaxXYCoordinates(bgValues, yesterdaysValues: yesterdaysValues, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
+        // we need at least 2 values - otherwise paint nothing and return empty image!
+        if days[0].count <= 1 {
+            return nil
+        }
+        
+        adjustMinMaxXYCoordinates(days, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
         // Setup our context
         let opaque = false
@@ -58,9 +66,11 @@ class ChartPainter {
         // Setup complete, do drawing here
         paintNicePartArea(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
-
-        paintBloodValues(context!, bgValues: bgValues, foregroundColor: GREEN.CGColor)
-        paintBloodValues(context!, bgValues: yesterdaysValues, foregroundColor: DARKGRAY.CGColor)
+        var nrOfDay = 0
+        for bloodValues in days {
+            nrOfDay = nrOfDay + 1
+            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay))
+        }
         
         paintFullHourText()
         
@@ -70,12 +80,29 @@ class ChartPainter {
         return image
     }
     
+    // Returns a different Color for each different day
+    private func getColor(nrOfDay : Int) -> CGColor {
+        
+        switch nrOfDay {
+            case 2: return DARKGRAY.CGColor
+            case 3: return YELLOW.CGColor
+            case 4: return RED.CGColor
+            case 5: return BLUE.CGColor
+            
+            default: return GREEN.CGColor
+        }
+    }
+    
     func paintBloodValues(context : CGContext, bgValues : [BloodSugar], foregroundColor : CGColor) {
         CGContextSetStrokeColorWithColor(context, foregroundColor)
         CGContextBeginPath(context)
         
         let maxPoints : Int = bgValues.count
-        for (var currentPoint = 1; currentPoint < maxPoints; currentPoint += 1) {
+        if maxPoints == 0 {
+            // no values that could be painted
+            return
+        }
+        for currentPoint in 1...maxPoints-1 {
             
             CGContextMoveToPoint(context,
                                  calcXValue(bgValues[currentPoint-1].timestamp),
@@ -131,6 +158,54 @@ class ChartPainter {
                      NSParagraphStyleAttributeName: paragraphStyle,
                      NSForegroundColorAttributeName: UIColor.grayColor()]
         
+        if durationIsMoreThan6Hours(minimumXValue, maxTimestamp: maximumXValue) {
+            paintEverySecondHour(attrs)
+        } else {
+            paintHalfHourTimestamps(attrs)
+        }
+    }
+    
+    func durationIsMoreThan6Hours(minTimestamp : Double, maxTimestamp : Double) -> Bool {
+        return maxTimestamp - minTimestamp > 6 * 60 * 60 * 1000
+    }
+    
+    func paintEverySecondHour(attrs : [String : AnyObject]) {
+        let halfHours = determineEverySecondHourBetween(minimumXValue, maxTimestamp: maximumXValue)
+        
+        let hourFormat = NSDateFormatter()
+        hourFormat.dateFormat = "HH:mm"
+        for timestamp in halfHours {
+            let hourString : String = hourFormat.stringFromDate(NSDate(timeIntervalSince1970 : timestamp / 1000))
+            hourString.drawWithRect(CGRect(x: calcXValue(timestamp)-25, y: CGFloat.init(canvasHeight-20), width: 50, height: 14),
+                                    options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
+            
+        }
+    }
+    
+    func determineEverySecondHourBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
+        
+        let minDate = NSDate(timeIntervalSince1970: minTimestamp / 1000)
+        let maxDate = NSDate(timeIntervalSince1970: maxTimestamp / 1000)
+        
+        var currentDate = minDate
+        var evenHours : [Double] = []
+        var stop : Bool
+        
+        repeat {
+            let nextEvenHour = getNextEvenHour(currentDate);
+            if nextEvenHour.compare(maxDate) == .OrderedAscending {
+                evenHours.append(nextEvenHour.timeIntervalSince1970 * 1000)
+                stop = false
+            } else {
+                stop = true
+            }
+            currentDate = nextEvenHour
+        } while !stop
+        
+        return evenHours
+    }
+    
+    func paintHalfHourTimestamps(attrs : [String : AnyObject]) {
         let halfHours = determineHalfHoursBetween(minimumXValue, maxTimestamp: maximumXValue)
         
         let hourFormat = NSDateFormatter()
@@ -138,8 +213,8 @@ class ChartPainter {
         for timestamp in halfHours {
             let hourString : String = hourFormat.stringFromDate(NSDate(timeIntervalSince1970 : timestamp / 1000))
             hourString.drawWithRect(CGRect(x: calcXValue(timestamp)-25, y: CGFloat.init(canvasHeight-20), width: 50, height: 14),
-                                options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
-
+                                    options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
+            
         }
     }
     
@@ -166,6 +241,24 @@ class ChartPainter {
         return halfHours
     }
     
+    // Returns e.g. 04:00 for 02:00 o'clock.
+    func getNextEvenHour(date : NSDate) -> NSDate {
+        
+        let cal = NSCalendar.currentCalendar()
+        
+        let hour = cal.component(NSCalendarUnit.Hour, fromDate: date)
+        
+        if isEven(hour + 1) {
+            return cal.dateBySettingHour(hour, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(fullHour)
+        } else {
+            return cal.dateBySettingHour(hour + 1, minute: 00, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(fullHour)
+        }
+    }
+    
+    func isEven(hour : Int) -> Bool {
+        return hour % 2 == 0
+    }
+    
     func getNextHalfHour(date : NSDate) -> NSDate {
         
         let cal = NSCalendar.currentCalendar()
@@ -181,8 +274,7 @@ class ChartPainter {
     }
     
     func adjustMinMaxXYCoordinates(
-            bgValues : [BloodSugar],
-            yesterdaysValues : [BloodSugar],
+            days : [[BloodSugar]],
             upperBoundNiceValue : Float,
             lowerBoundNiceValue : Float) {
         
@@ -191,12 +283,10 @@ class ChartPainter {
         maximumYValue = upperBoundNiceValue
         minimumYValue = lowerBoundNiceValue
         
-        (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(bgValues, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
-        
-        (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(yesterdaysValues, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
+        (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(days, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
     }
     
-    func adjustMinMax(bgValues : [BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -> (Double, Double, Float, Float) {
+    func adjustMinMax(days : [[BloodSugar]], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -> (Double, Double, Float, Float) {
         
         var newMinXValue = minimumXValue
         var newMaxXValue = maximumXValue
@@ -204,19 +294,21 @@ class ChartPainter {
         var newMinYValue = minimumYValue
         var newMaxYValue = maximumYValue
         
-        for bgValue in bgValues {
-            if bgValue.value < newMinYValue {
-                newMinYValue = bgValue.value
-            }
-            if bgValue.value > newMaxYValue {
-                newMaxYValue = bgValue.value
-            }
+        for bgValues in days {
+            for bgValue in bgValues {
+                if bgValue.value < newMinYValue {
+                    newMinYValue = bgValue.value
+                }
+                if bgValue.value > newMaxYValue {
+                    newMaxYValue = bgValue.value
+                }
             
-            if bgValue.timestamp < newMinXValue {
-                newMinXValue = bgValue.timestamp
-            }
-            if bgValue.timestamp > newMaxXValue {
-                newMaxXValue = bgValue.timestamp
+                if bgValue.timestamp < newMinXValue {
+                    newMinXValue = bgValue.timestamp
+                }
+                if bgValue.timestamp > newMaxXValue {
+                    newMaxXValue = bgValue.timestamp
+                }
             }
         }
         

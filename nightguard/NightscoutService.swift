@@ -13,6 +13,8 @@ class NightscoutService {
     
     static let singleton = NightscoutService()
     
+    let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
+    
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     func readChartData(resultHandler : ([Int] -> Void)) {
         
@@ -100,7 +102,7 @@ class NightscoutService {
         let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
         
         // Get the current data from REST-Call
-        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=300"
+        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=1200"
         guard let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUri)!,
                                                                       cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20) else {
             return
@@ -143,13 +145,68 @@ class NightscoutService {
         readChartDataWithinPeriodOfTime(startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
     }
     
+    /* Reads all values from the last 4 days. The day part of the values is normalized to the first found day.
+       The normalizing is done to easily paint the different days in one chart later on. */
+    func readLast4DaysChartData(callbackHandler : ([[BloodSugar]] -> Void)) {
+        
+        let time4DaysAgo = TimeService.get4DaysAgo()
+ 
+        let calendar = NSCalendar.currentCalendar()
+        let startOf4DaysAgo = calendar.startOfDayForDate(time4DaysAgo)
+        
+        readChartDataWithinPeriodOfTime(startOf4DaysAgo, timestamp2: TimeService.getToday(), resultHandler: {(bgValues) -> Void in
+            callbackHandler(self.extractDaysAndSetDayPartsToFirstDayFound(bgValues))
+        })
+    }
+    
+    /* convert [BloodSugar] to [[BloodSugar]] so that each array element contains all BloodSugar the belongs
+       to the same day. */
+    func extractDaysAndSetDayPartsToFirstDayFound(bgValues : [BloodSugar]) -> [[BloodSugar]] {
+        var days : [[BloodSugar]] = []
+        let calendar = NSCalendar.currentCalendar()
+        
+        var currentDayValues : [BloodSugar] = []
+        var lastDay : Int? = nil
+        var firstDayFound : Int? = nil
+        for bgValue in bgValues {
+            
+            let day = calendar.components(.Day, fromDate: NSDate(timeIntervalSince1970: bgValue.timestamp / 1000)).day
+            if day != lastDay {
+                if firstDayFound == nil {
+                    firstDayFound = day
+                }
+                lastDay = day
+                // for the first bgValue (when lastDay is nil), we don't like to add
+                // the empty currentDayValues to the result array
+                if currentDayValues.count > 0 {
+                    let copiedValues = currentDayValues
+                    days.append(copiedValues)
+                }
+                currentDayValues = []
+            }
+            currentDayValues.append(changeDayTo(firstDayFound!, currentDay: day, bgValue: bgValue))
+        }
+        
+        days.append(currentDayValues)
+        return days
+    }
+    
+    func changeDayTo(dayToSet : Int, currentDay : Int, bgValue : BloodSugar) -> BloodSugar {
+        if dayToSet == currentDay {
+            // The day already fits => nothing to do
+            return bgValue
+        }
+        
+        return BloodSugar.init(value: bgValue.value, timestamp: bgValue.timestamp + Double(dayToSet - currentDay) * ONE_DAY_IN_MICROSECONDS)
+    }
+    
     /* Reads all values from the last 2 Hours before. */
     func readLastTwoHoursChartData(resultHandler : ([BloodSugar] -> Void)) {
         
-        let currentTime = TimeService.getToday()
-        let twoHoursBefore = currentTime.dateByAddingTimeInterval(-60*120)
+        let today = TimeService.getToday()
+        let twoHoursBefore = today.dateByAddingTimeInterval(-60*120)
         
-        readChartDataWithinPeriodOfTime(twoHoursBefore, timestamp2: currentTime, resultHandler: resultHandler)
+        readChartDataWithinPeriodOfTime(twoHoursBefore, timestamp2: today, resultHandler: resultHandler)
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */

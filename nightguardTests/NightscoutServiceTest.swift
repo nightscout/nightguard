@@ -12,13 +12,13 @@ import XCTest
 
 class NightscoutServiceTest: XCTestCase {
     
-    private let BASE_URI = "https://dhe.my-wan.de:1337"
+    private let BASE_URI = "https://mybackend:1337"
     
     func testReadYesterdaysChartDataShouldReturnData() {
         
         // Given
         let serviceBoundary = NightscoutService.singleton;
-        serviceBoundary.baseUri = BASE_URI
+        UserDefaultsRepository.saveBaseUri(BASE_URI)
         let expectation = self.expectationWithDescription("Remote Call was successful!")
         
         // When
@@ -39,7 +39,7 @@ class NightscoutServiceTest: XCTestCase {
         
         // Given
         let nightscoutService = NightscoutService.singleton;
-        nightscoutService.baseUri = BASE_URI
+        UserDefaultsRepository.saveBaseUri(BASE_URI)
         let expectation = self.expectationWithDescription("Remote Call was successful!")
         
         // When
@@ -58,7 +58,7 @@ class NightscoutServiceTest: XCTestCase {
         
         // Given
         let serviceBoundary = NightscoutService.singleton;
-        serviceBoundary.baseUri = BASE_URI
+        UserDefaultsRepository.saveBaseUri(BASE_URI)
         let expectation = self.expectationWithDescription("Remote Call was successful!")
         
         // When
@@ -76,6 +76,25 @@ class NightscoutServiceTest: XCTestCase {
                 if allExpectationsFulFilled {
                     expectation.fulfill()
                 }
+            }
+        })
+        
+        // Then
+        self.waitForExpectationsWithTimeout(3.0, handler: nil)
+    }
+    
+    func testReadLast4Days() {
+        
+        // Given
+        let serviceBoundary = NightscoutService.singleton;
+        UserDefaultsRepository.saveBaseUri(BASE_URI)
+        let expectation = self.expectationWithDescription("Remote Call was successful!")
+        
+        // When
+        serviceBoundary.readLast4DaysChartData({(days) -> Void in
+            
+            if days.count == 5 {
+                expectation.fulfill()
             }
         })
         

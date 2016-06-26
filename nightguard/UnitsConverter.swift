@@ -62,6 +62,17 @@ class UnitsConverter {
         return mmolValues
     }
     
+    static func toDisplayUnits(let days : [[BloodSugar]]) -> [[BloodSugar]] {
+        
+        var newDays : [[BloodSugar]] = []
+        
+        for day in days {
+            newDays.append(toDisplayUnits(day))
+        }
+        
+        return newDays
+    }
+    
     static func toMmol(let bloodSugar : BloodSugar) -> BloodSugar {
         
         return BloodSugar.init(value: toMmol(bloodSugar.value), timestamp: bloodSugar.timestamp)
