@@ -17,7 +17,12 @@
          contextName = "ChartPainter.adjustMinMax([BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -&gt; (Double, Double, Float, Float):ChartPainter.swift">
       </ContextState>
       <ContextState
-         contextName = "NightscoutServiceTest.(testReadLast4Days() -&gt; ()).(closure #1):NightscoutServiceTest.swift">
+         contextName = "NightscoutService.readLast4DaysChartData(([[BloodSugar]]) -&gt; ()) -&gt; ():NightscoutService.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UserDefaultsRepository.readBaseUri()">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "static UnitsConverter.toDisplayUnits(Float) -&gt; Float:UnitsConverter.swift">
@@ -29,6 +34,9 @@
       </ContextState>
       <ContextState
          contextName = "ServiceBoundary.(readStatus((String) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
+      </ContextState>
+      <ContextState
+         contextName = "NightscoutServiceTest.(testReadLast4Days() -&gt; ()).(closure #1):NightscoutServiceTest.swift">
       </ContextState>
       <ContextState
          contextName = "MainViewController.((paintCurrentBgData in _6000ED01001B5B47F2258CF855F406C8)(NightscoutData) -&gt; ()).(closure #1):MainViewController.swift">
@@ -59,13 +67,10 @@
          contextName = "NightscoutService.extractDays([BloodSugar]) -&gt; [[BloodSugar]]:NightscoutService.swift">
       </ContextState>
       <ContextState
-         contextName = "AlarmViewController.adjustLowerSliderValue() -&gt; ():AlarmViewController.swift">
+         contextName = "AppDelegate.application(UIApplication, supportedInterfaceOrientationsForWindow : UIWindow?) -&gt; UIInterfaceOrientationMask:AppDelegate.swift">
          <PersistentStrings>
             <PersistentString
-               value = "getBelowAlarmValue()">
-            </PersistentString>
-            <PersistentString
-               value = "getAboveAlarmValue()">
+               value = "self.window?.rootViewController.presentedViewController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -78,10 +83,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AppDelegate.application(UIApplication, supportedInterfaceOrientationsForWindow : UIWindow?) -&gt; UIInterfaceOrientationMask:AppDelegate.swift">
+         contextName = "AlarmViewController.adjustLowerSliderValue() -&gt; ():AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "self.window?.rootViewController.presentedViewController">
+               value = "getBelowAlarmValue()">
+            </PersistentString>
+            <PersistentString
+               value = "getAboveAlarmValue()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -135,10 +143,10 @@
                value = "bloodValues[index-2].value">
             </PersistentString>
             <PersistentString
-               value = "deltaAmount">
+               value = "bloodValues[index-1].value">
             </PersistentString>
             <PersistentString
-               value = "bloodValues[index-1].value">
+               value = "deltaAmount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -150,6 +158,14 @@
             </PersistentString>
             <PersistentString
                value = "getAboveAlarmValue()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InterfaceController.((assureThatBaseUriIsExisting in _80F56E060DDBE90405EA1F326236CC1B)() -&gt; ()).(closure #1):InterfaceController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(response.first!.1)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -177,6 +193,14 @@
          <PersistentStrings>
             <PersistentString
                value = "6 * 60 * 60 * 1000 * 1000&#10;">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AppMessageService.(requestBaseUri() -&gt; ()).(closure #1):AppMessageService.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(baseUri)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

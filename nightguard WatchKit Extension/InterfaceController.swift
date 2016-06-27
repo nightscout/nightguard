@@ -10,13 +10,17 @@ import WatchKit
 import Foundation
 import WatchConnectivity
 
-class InterfaceController: WKInterfaceController, WCSessionDelegate {
+class InterfaceController: WKInterfaceController {
 
     @IBOutlet var bgLabel: WKInterfaceLabel!
     @IBOutlet var deltaLabel: WKInterfaceLabel!
     @IBOutlet var timeLabel: WKInterfaceLabel!
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var chartImage: WKInterfaceImage!
+    
+    override func didAppear() {
+        assureThatBaseUriIsExisting()
+    }
     
     @IBAction func doInfoMenuAction() {
         self.presentControllerWithName("InfoInterfaceController", context: nil)
@@ -34,10 +38,17 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     // check every 30 Seconds whether new bgvalues should be retrieved
     let timeInterval:NSTimeInterval = 30.0
     
-    
     // check whether new Values should be retrieved
     func timerDidEnd(timer:NSTimer){
+        assureThatBaseUriIsExisting()
         checkForNewValuesFromNightscoutServer()
+    }
+    
+    private func assureThatBaseUriIsExisting() {
+        
+        if UserDefaultsRepository.readBaseUri().isEmpty {
+            AppMessageService.singleton.requestBaseUri()
+        }
     }
     
     private func checkForNewValuesFromNightscoutServer() {
@@ -64,36 +75,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         })
     }
     
-    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
-        
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            
-            if let units = applicationContext["units"] as? String {
-                UserDefaultsRepository.saveUnits(Units(rawValue: units)!)
-            }
-            
-            if let hostUri = applicationContext["hostUri"] as? String {
-                UserDefaultsRepository.saveBaseUri(hostUri)
-            }
-            
-            if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
-                let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-                defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
-            }
-            
-            if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
-                let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-                defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
-                
-                // The alert values will always be send in tuples - so it's enough to paint here:
-                self.paintChart(self.historicBgData, yesterdayValues:
-                    YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
-                        BloodSugar.getMinimumTimestamp(self.historicBgData),
-                        to: BloodSugar.getMaximumTimestamp(self.historicBgData)))
-            }
-        }
-    }
-    
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
@@ -103,24 +84,18 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
         // update values immediately if necessary
         checkForNewValuesFromNightscoutServer()
-        
-        // Start the timer to retrieve new bgValues
-        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
-            target: self,
-            selector: #selector(InterfaceController.timerDidEnd(_:)),
-            userInfo: nil,
-            repeats: true)
     }
 
     override func willActivate() {
-        if WCSession.isSupported() {
-            let session = WCSession.defaultSession()
-            session.delegate = self
-            session.activateSession()
-        }
-        
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        
+        // Start the timer to retrieve new bgValues
+        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+                                                       target: self,
+                                                       selector: #selector(InterfaceController.timerDidEnd(_:)),
+                                                       userInfo: nil,
+                                                       repeats: true)
         
         paintChart(historicBgData, yesterdayValues:
             YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(

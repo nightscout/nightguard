@@ -7,11 +7,22 @@
 //
 
 import UIKit
+import WatchConnectivity
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    // Delegate Requests from the Watch to the WatchMessageService
+    var session: WCSession? {
+        didSet {
+            if let session = session {
+                session.delegate = WatchMessageService.singleton
+                session.activateSession()
+            }
+        }
+    }
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -22,11 +33,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // This application should be called in background every 3 Minutes
         UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(3*60)
         
+        activateWatchConnectivity()
         initializeApplicationDefaults()
         initializeAlarmRule()
         return true
     }
 
+    func activateWatchConnectivity() {
+        if WCSession.isSupported() {
+            session = WCSession.defaultSession()
+        }
+    }
+    
     func initializeAlarmRule() {
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         

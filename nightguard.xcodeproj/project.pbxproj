@@ -16,6 +16,8 @@
 		43288A681D1B359D00EE3999 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62EE1D17359600DD7978 /* StringExtension.swift */; };
 		43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43288A691D1C68D400EE3999 /* StatsViewController.swift */; };
 		43288A6C1D1C893200EE3999 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43288A6B1D1C893200EE3999 /* TabBarController.swift */; };
+		43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43288A6F1D20284600EE3999 /* DoubleExtension.swift */; };
+		43288A711D2028CC00EE3999 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43288A6F1D20284600EE3999 /* DoubleExtension.swift */; };
 		432E62D71D0CC35100DD7978 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		432E62D81D0CC38C00DD7978 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
 		432E62D91D0CC3AC00DD7978 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
@@ -52,6 +54,8 @@
 		43794F4B1C3049B300DB8B58 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
 		43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */; };
 		43794F4F1C343B9800DB8B58 /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
+		438066FB1D21B2000021B618 /* WatchMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438066FA1D21B2000021B618 /* WatchMessageService.swift */; };
+		438066FE1D21C2350021B618 /* AppMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438066FD1D21C2350021B618 /* AppMessageService.swift */; };
 		439BADF81C24C315006BEADB /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 439BADF71C24C315006BEADB /* Media.xcassets */; };
 		439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
 		439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
@@ -141,6 +145,7 @@
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
 		43288A691D1C68D400EE3999 /* StatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		43288A6B1D1C893200EE3999 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		43288A6F1D20284600EE3999 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		432E62DE1D10ACD200DD7978 /* Units.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
 		432E62E61D11F61500DD7978 /* UserDefaultsRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsRepositoryTest.swift; sourceTree = "<group>"; };
 		432E62E81D143CF900DD7978 /* UnitsConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitsConverter.swift; sourceTree = "<group>"; };
@@ -170,6 +175,8 @@
 		43794F471C30482500DB8B58 /* DataRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRepositoryTest.swift; sourceTree = "<group>"; };
 		43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoInterfaceController.swift; sourceTree = "<group>"; };
 		43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDefaultsRepository.swift; path = "nightguard WatchKit Extension/UserDefaultsRepository.swift"; sourceTree = SOURCE_ROOT; };
+		438066FA1D21B2000021B618 /* WatchMessageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchMessageService.swift; sourceTree = "<group>"; };
+		438066FD1D21C2350021B618 /* AppMessageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMessageService.swift; sourceTree = "<group>"; };
 		438591D91C14DC4D00F9CEE2 /* scoutwatch WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "scoutwatch WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		439BADF71C24C315006BEADB /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		439C39171C0E002F00D89872 /* ChartPainter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartPainter.swift; path = "nightguard WatchKit Extension/ChartPainter.swift"; sourceTree = SOURCE_ROOT; };
@@ -238,6 +245,8 @@
 		432E62E21D1126CA00DD7978 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				43F1E0F21D07698000C329A2 /* AlarmSound.swift */,
+				43F1E0F51D07698000C329A2 /* BgDataHolder.swift */,
 				432E62E81D143CF900DD7978 /* UnitsConverter.swift */,
 				43F1E0FA1D07698000C329A2 /* NightscoutData.swift */,
 				43F1E0FD1D07698000C329A2 /* YesterdayBloodSugarService.swift */,
@@ -246,6 +255,8 @@
 				43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */,
 				432E62EA1D15EFC600DD7978 /* FloatExtension.swift */,
 				432E62EE1D17359600DD7978 /* StringExtension.swift */,
+				43288A6F1D20284600EE3999 /* DoubleExtension.swift */,
+				43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -254,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */,
+				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -261,6 +273,7 @@
 		433AD0131CCE1CE2001A76CD /* external */ = {
 			isa = PBXGroup;
 			children = (
+				438066FA1D21B2000021B618 /* WatchMessageService.swift */,
 				43F1E1101D076C1C00C329A2 /* NightscoutService.swift */,
 				43F1E0E91D0768EF00C329A2 /* WatchService.swift */,
 			);
@@ -302,10 +315,7 @@
 				43F1E0F31D07698000C329A2 /* AlarmViewController.swift */,
 				43288A691D1C68D400EE3999 /* StatsViewController.swift */,
 				43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */,
-				43F1E0F21D07698000C329A2 /* AlarmSound.swift */,
 				43F1E0F41D07698000C329A2 /* AppDelegate.swift */,
-				43F1E0F51D07698000C329A2 /* BgDataHolder.swift */,
-				43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */,
 				43F1E0F71D07698000C329A2 /* Info.plist */,
 				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
 				43F1E0F91D07698000C329A2 /* Media.xcassets */,
@@ -352,17 +362,17 @@
 			isa = PBXGroup;
 			children = (
 				432E62E51D11288100DD7978 /* app */,
+				438066FC1D21C1ED0021B618 /* external */,
 				43647C061BFF6435004389F9 /* Supporting Files */,
 				43647C081BFF6435004389F9 /* InterfaceController.swift */,
-				438591D91C14DC4D00F9CEE2 /* scoutwatch WatchKit Extension.entitlements */,
-				43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */,
+				43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */,
 				43647C0C1BFF6435004389F9 /* NotificationController.swift */,
 				43647C0E1BFF6435004389F9 /* ComplicationController.swift */,
-				43D213631C2214D60046C52D /* Assets.xcassets */,
-				43647C121BFF6435004389F9 /* Info.plist */,
+				43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */,
 				43794F411C2F435A00DB8B58 /* AppConstants.swift */,
-				43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */,
-				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
+				43D213631C2214D60046C52D /* Assets.xcassets */,
+				438591D91C14DC4D00F9CEE2 /* scoutwatch WatchKit Extension.entitlements */,
+				43647C121BFF6435004389F9 /* Info.plist */,
 			);
 			path = "nightguard WatchKit Extension";
 			sourceTree = "<group>";
@@ -373,6 +383,14 @@
 				43647C071BFF6435004389F9 /* PushNotificationPayload.apns */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		438066FC1D21C1ED0021B618 /* external */ = {
+			isa = PBXGroup;
+			children = (
+				438066FD1D21C2350021B618 /* AppMessageService.swift */,
+			);
+			name = external;
 			sourceTree = "<group>";
 		};
 		43F1E1181D076D2800C329A2 /* domain */ = {
@@ -622,8 +640,10 @@
 				43F1E1141D076CE200C329A2 /* YesterdayBloodSugarService.swift in Sources */,
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
 				43F1E1021D07698000C329A2 /* BgDataHolder.swift in Sources */,
+				438066FB1D21B2000021B618 /* WatchMessageService.swift in Sources */,
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
 				43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */,
+				43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
 				43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */,
@@ -660,6 +680,7 @@
 				433AD0181CCE3FCB001A76CD /* UserDefaultsRepository.swift in Sources */,
 				43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */,
 				432E62F11D188A2A00DD7978 /* UnitsConverter.swift in Sources */,
+				43288A711D2028CC00EE3999 /* DoubleExtension.swift in Sources */,
 				43794F481C30482500DB8B58 /* DataRepositoryTest.swift in Sources */,
 				43794F4B1C3049B300DB8B58 /* AppConstants.swift in Sources */,
 				439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */,
@@ -697,6 +718,7 @@
 				43794F461C303E4200DB8B58 /* NightscoutDataRepository.swift in Sources */,
 				43119B881C383CF500DD6D35 /* UIColorChanger.swift in Sources */,
 				43288A681D1B359D00EE3999 /* StringExtension.swift in Sources */,
+				438066FE1D21C2350021B618 /* AppMessageService.swift in Sources */,
 				43794F421C2F435A00DB8B58 /* AppConstants.swift in Sources */,
 				439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */,
 			);

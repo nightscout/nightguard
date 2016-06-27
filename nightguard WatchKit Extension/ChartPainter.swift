@@ -13,7 +13,8 @@ class ChartPainter {
     let GREEN :  UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
     let DARK : UIColor = UIColor.init(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
     let BLACK : UIColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
-    let DARKGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.5)
+    let LIGHTGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.5)
+    let DARKGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.1)
     let YELLOW : UIColor = UIColor.init(red: 1, green: 1, blue: 0, alpha: 1)
     let RED : UIColor = UIColor.init(red: 1, green: 0, blue: 0, alpha: 1)
     let BLUE : UIColor = UIColor.init(red: 0, green: 0, blue: 1, alpha: 1)
@@ -84,7 +85,7 @@ class ChartPainter {
     private func getColor(nrOfDay : Int) -> CGColor {
         
         switch nrOfDay {
-            case 2: return DARKGRAY.CGColor
+            case 2: return LIGHTGRAY.CGColor
             case 3: return YELLOW.CGColor
             case 4: return RED.CGColor
             case 5: return BLUE.CGColor
@@ -119,7 +120,7 @@ class ChartPainter {
         
         // paint the rectangle
         CGContextSetLineWidth(context, 2.0)
-        CGContextSetFillColorWithColor(context, DARK.CGColor)
+        CGContextSetFillColorWithColor(context, DARKGRAY.CGColor)
         let goodPart = CGRect(origin: CGPoint.init(x: 0, y: calcYValue(upperBoundNiceValue)), size: CGSize.init(width: canvasWidth, height: Int(calcYValue(lowerBoundNiceValue) - calcYValue(upperBoundNiceValue))))
         CGContextFillRect(context, goodPart)
         

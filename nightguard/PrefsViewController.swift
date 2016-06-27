@@ -67,8 +67,21 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     
     @IBAction func doEditingChangedAction(sender: AnyObject) {
         
+        hostUriTextField.text = addProtocolPartIfMissing(hostUriTextField.text!)
         UserDefaultsRepository.saveBaseUri(hostUriTextField.text!)
         sendValuesToAppleWatch()
+    }
+    
+    // adds 'https://' if a '/' but no 'http'-part is found in the uri.
+    func addProtocolPartIfMissing(uri : String) -> String {
+        
+        if (uri.containsString("/") || uri.containsString(".") || uri.containsString(":"))
+            && !uri.containsString("http") {
+            
+            return "https://" + uri
+        }
+        
+        return uri
     }
     
     // Close the soft keyboard if return has been selected
