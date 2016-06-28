@@ -180,14 +180,14 @@ class NightscoutService {
                 // the empty currentDayValues to the result array
                 if currentDayValues.count > 0 {
                     let copiedValues = currentDayValues
-                    days.append(copiedValues)
+                    days.insert(copiedValues, atIndex: 0)
                 }
                 currentDayValues = []
             }
             currentDayValues.append(changeDayTo(firstDayFound!, currentDay: day, bgValue: bgValue))
         }
         
-        days.append(currentDayValues)
+        days.insert(currentDayValues, atIndex: 0)
         return days
     }
     

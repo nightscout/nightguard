@@ -70,10 +70,12 @@ class ChartPainter {
         var nrOfDay = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
-            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay))
+            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor)
         }
         
         paintFullHourText()
+        
+        paintLegend(days.count)
         
         // Drawing complete, retrieve the finished image and cleanup
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -82,15 +84,15 @@ class ChartPainter {
     }
     
     // Returns a different Color for each different day
-    private func getColor(nrOfDay : Int) -> CGColor {
+    private func getColor(nrOfDay : Int) -> UIColor {
         
         switch nrOfDay {
-            case 2: return LIGHTGRAY.CGColor
-            case 3: return YELLOW.CGColor
-            case 4: return RED.CGColor
-            case 5: return BLUE.CGColor
+            case 2: return LIGHTGRAY
+            case 3: return YELLOW
+            case 4: return RED
+            case 5: return BLUE
             
-            default: return GREEN.CGColor
+            default: return GREEN
         }
     }
     
@@ -163,6 +165,28 @@ class ChartPainter {
             paintEverySecondHour(attrs)
         } else {
             paintHalfHourTimestamps(attrs)
+        }
+    }
+    
+    func paintLegend(nrOfNames : Int) {
+        
+        let names = ["D1", "D2", "D3", "D4"]
+        let namesToDisplay = Array(names.prefix(nrOfNames))
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .Center
+        var attrs = [NSFontAttributeName: UIFont(name: "Helvetica Bold", size: 14)!,
+                     NSParagraphStyleAttributeName: paragraphStyle,
+                     NSForegroundColorAttributeName: UIColor.grayColor()]
+        
+        var i : Int = 0
+        for name in namesToDisplay {
+            
+            i = i + 1
+            attrs.updateValue(getColor(i), forKey: NSForegroundColorAttributeName)
+            let xPosition = canvasWidth - 20 * nrOfNames + i * 20 - 20
+            name.drawWithRect(CGRect(x: xPosition, y: 0, width: 20, height: 14),
+                                options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
         }
     }
     
