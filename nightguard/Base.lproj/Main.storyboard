@@ -362,11 +362,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rrv-9c-L87">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rrv-9c-L87">
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="271"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rrv-9c-L87" firstAttribute="top" secondItem="quX-qv-rSf" secondAttribute="top" id="03S-Ec-IBm"/>
+                            <constraint firstItem="rrv-9c-L87" firstAttribute="bottom" secondItem="P49-JR-KR5" secondAttribute="top" id="M12-CO-fjJ"/>
+                            <constraint firstItem="rrv-9c-L87" firstAttribute="leading" secondItem="quX-qv-rSf" secondAttribute="leading" id="Wkq-99-yud"/>
+                            <constraint firstAttribute="trailing" secondItem="rrv-9c-L87" secondAttribute="trailing" id="kaB-Es-olN"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Stats" image="StatsIcon" id="ilS-RR-ZED"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
