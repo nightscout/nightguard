@@ -101,8 +101,8 @@ class ChartPainter {
         CGContextBeginPath(context)
         
         let maxPoints : Int = bgValues.count
-        if maxPoints == 0 {
-            // no values that could be painted
+        if maxPoints <= 1 {
+            // at least to points are needed to paint a stroke
             return
         }
         for currentPoint in 1...maxPoints-1 {
@@ -170,7 +170,7 @@ class ChartPainter {
     
     func paintLegend(nrOfNames : Int) {
         
-        let names = ["D1", "D2", "D3", "D4"]
+        let names = ["D1", "D2", "D3", "D4", "D5"]
         let namesToDisplay = Array(names.prefix(nrOfNames))
         
         let paragraphStyle = NSMutableParagraphStyle()

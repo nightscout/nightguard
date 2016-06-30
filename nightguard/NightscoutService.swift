@@ -168,12 +168,15 @@ class NightscoutService {
         var currentDayValues : [BloodSugar] = []
         var lastDay : Int? = nil
         var firstDayFound : Int? = nil
+        var numberOfDaysToSubtract = 0
         for bgValue in bgValues {
             
             let day = calendar.components(.Day, fromDate: NSDate(timeIntervalSince1970: bgValue.timestamp / 1000)).day
             if day != lastDay {
                 if firstDayFound == nil {
                     firstDayFound = day
+                } else {
+                    numberOfDaysToSubtract = numberOfDaysToSubtract + 1
                 }
                 lastDay = day
                 // for the first bgValue (when lastDay is nil), we don't like to add
@@ -184,20 +187,20 @@ class NightscoutService {
                 }
                 currentDayValues = []
             }
-            currentDayValues.append(changeDayTo(firstDayFound!, currentDay: day, bgValue: bgValue))
+            currentDayValues.append(subtractDays(day, numberOfDaysToSubtract: numberOfDaysToSubtract, bgValue: bgValue))
         }
         
         days.insert(currentDayValues, atIndex: 0)
         return days
     }
     
-    func changeDayTo(dayToSet : Int, currentDay : Int, bgValue : BloodSugar) -> BloodSugar {
-        if dayToSet == currentDay {
+    func subtractDays(currentDay : Int, numberOfDaysToSubtract : Int, bgValue : BloodSugar) -> BloodSugar {
+        if numberOfDaysToSubtract == 0 {
             // The day already fits => nothing to do
             return bgValue
         }
         
-        return BloodSugar.init(value: bgValue.value, timestamp: bgValue.timestamp + Double(dayToSet - currentDay) * ONE_DAY_IN_MICROSECONDS)
+        return BloodSugar.init(value: bgValue.value, timestamp: bgValue.timestamp - Double(numberOfDaysToSubtract) * ONE_DAY_IN_MICROSECONDS)
     }
     
     /* Reads all values from the last 2 Hours before. */

@@ -22,6 +22,9 @@
             <PersistentString
                value = "UserDefaultsRepository.readBaseUri()">
             </PersistentString>
+            <PersistentString
+               value = "TimeService.getToday()">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
