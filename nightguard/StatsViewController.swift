@@ -17,17 +17,39 @@ class StatsViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        let value = UIInterfaceOrientation.LandscapeLeft.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
-        
+    override func viewWillAppear(animated: Bool) {
+
         NightscoutService.singleton.readLast4DaysChartData { (days : [[BloodSugar]]) in
-            self.paintChart(days)
+            self.paintChart(self.displayChoosenDaysOnly(days))
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
-         
+    override func viewDidAppear(animated: Bool) {
+        
+        // force the display into horizontal orientation
+        let value = UIInterfaceOrientation.LandscapeRight.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+    }
+    
+    // Removes all days from the should not be displayed
+    // in the statistics chart
+    func displayChoosenDaysOnly(days : [[BloodSugar]]) -> [[BloodSugar]] {
+        
+        let daysToBeDisplayed = UserDefaultsRepository.readDaysToBeDisplayed()
+        
+        var i : Int = 0
+        var filteredDays : [[BloodSugar]] = []
+        for dayToBeDisplayed in daysToBeDisplayed {
+            if dayToBeDisplayed {
+                filteredDays.append(days[i])
+            } else {
+                // append empty values
+                filteredDays.append([])
+            }
+            i = i + 1
+        }
+        
+        return filteredDays
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {

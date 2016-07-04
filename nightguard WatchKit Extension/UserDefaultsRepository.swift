@@ -60,6 +60,30 @@ class UserDefaultsRepository {
         defaults.setObject(units.rawValue, forKey: "units")
     }
     
+    // Returns an array of which days should be displayed.
+    // E.g. true, false, false, false, false if only the first day should be displayed
+    // In the statistics view
+    static func readDaysToBeDisplayed() -> [Bool] {
+        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            print("NSUserDefaults can't be accessed. Assuming that all 5 days should be displayed this case.")
+            return [true, true, true, true, true]
+        }
+        
+        guard let daysToDisplay = defaults.arrayForKey("daysToBeDisplayed") as? [Bool] else {
+            print("DaysToDisplay are undefined so far. Assuming that all 5 days should be displayed this case.")
+            return [true, true, true, true, true]
+        }
+        
+        return daysToDisplay
+    }
+    
+    // Stores an array defining what days should be displayed in the statistics view
+    // E.g. [true, true, true, true, true] if all 5 days should be displayed
+    static func saveDaysToBeDisplayed(daysToBeDisplayed : [Bool]) {
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setObject(daysToBeDisplayed, forKey: "daysToBeDisplayed")
+    }
+    
     private static func validateUrl(stringURL : NSString) -> Bool {
         
         // return nil if the URL has not a valid format

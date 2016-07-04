@@ -26,6 +26,10 @@ class InterfaceController: WKInterfaceController {
         self.presentControllerWithName("InfoInterfaceController", context: nil)
     }
     
+    @IBAction func doRefreshMenuAction() {
+        willActivate()
+    }
+    
     @IBAction func doCloseMenuAction() {
         // nothing to do - closes automatically
     }

@@ -55,6 +55,11 @@
                                     <action selector="doInfoMenuAction" destination="AgC-eL-Hgc" id="4T5-gI-Vf0"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Refresh" icon="resume" id="H9g-Uj-K07" userLabel="Refresh">
+                                <connections>
+                                    <action selector="doRefreshMenuAction" destination="AgC-eL-Hgc" id="HMn-jw-Gn0"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Close" icon="decline" id="zf1-Js-157">
                                 <connections>
                                     <action selector="doCloseMenuAction" destination="AgC-eL-Hgc" id="oEX-nB-25h"/>
@@ -102,7 +107,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="132.51282051282053" y="-42.282051282051285"/>
+            <point key="canvasLocation" x="167" y="-44"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
@@ -118,14 +123,14 @@
                     </connections>
                 </notificationController>
             </objects>
-            <point key="canvasLocation" x="-69.743589743589752" y="207.92307692307693"/>
+            <point key="canvasLocation" x="-70" y="281"/>
         </scene>
         <!--Notification Controller-->
         <scene sceneID="ZPc-GJ-vnh">
             <objects>
                 <controller id="4sK-HA-Art" customClass="NotificationController" customModule="nightguard" customModuleProvider="target"/>
             </objects>
-            <point key="canvasLocation" x="130.76923076923077" y="207.92307692307693"/>
+            <point key="canvasLocation" x="167" y="281"/>
         </scene>
     </scenes>
 </document>
