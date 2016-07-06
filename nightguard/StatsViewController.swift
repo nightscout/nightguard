@@ -40,6 +40,10 @@ class StatsViewController: UIViewController {
         var i : Int = 0
         var filteredDays : [[BloodSugar]] = []
         for dayToBeDisplayed in daysToBeDisplayed {
+            if i >= days.count {
+                // not enough days could be found - so quit here
+                return filteredDays
+            }
             if dayToBeDisplayed {
                 filteredDays.append(days[i])
             } else {
