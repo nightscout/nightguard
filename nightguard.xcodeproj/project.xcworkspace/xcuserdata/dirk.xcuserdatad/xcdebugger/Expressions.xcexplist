@@ -113,6 +113,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "static TimeService.isOlderThan30Minutes(NSDate) -&gt; Bool:TimeService.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "getToday().dateByAddingTimeInterval(-30 * 60).compare(date)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ServiceBoundary.(readCurrentDataForPebbleWatch((NightscoutData) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
          <PersistentStrings>
             <PersistentString
@@ -146,10 +154,10 @@
                value = "bloodValues[index-2].value">
             </PersistentString>
             <PersistentString
-               value = "bloodValues[index-1].value">
+               value = "deltaAmount">
             </PersistentString>
             <PersistentString
-               value = "deltaAmount">
+               value = "bloodValues[index-1].value">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -198,6 +206,9 @@
                value = "6 * 60 * 60 * 1000 * 1000&#10;">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StatisticsRepository.readDay(Int) -&gt; [BloodSugar]?:StatisticsRepository.swift">
       </ContextState>
       <ContextState
          contextName = "AppMessageService.(requestBaseUri() -&gt; ()).(closure #1):AppMessageService.swift">

@@ -36,6 +36,10 @@ class TimeService {
         return getToday().dateByAddingTimeInterval(4 * -24 * 60 * 60)
     }
     
+    static func getNrOfDaysAgo(nrOfDaysAgo : Int) -> NSDate {
+        return getToday().dateByAddingTimeInterval(Double(nrOfDaysAgo) * -24 * 60 * 60)
+    }
+    
     static func getYesterday() -> NSDate {
         let yesterday = getToday().dateByAddingTimeInterval(-24*60*60)
 
@@ -52,5 +56,9 @@ class TimeService {
         return startOfYesterday <= secondsSince1970 &&
             secondsSince1970 <= endOfYesterday
         
+    }
+    
+    static func isOlderThan30Minutes(date : NSDate) -> Bool {
+        return getToday().dateByAddingTimeInterval(-30 * 60).compare(date) == NSComparisonResult.OrderedDescending
     }
 }

@@ -19,9 +19,7 @@ class StatsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
 
-        NightscoutService.singleton.readLast4DaysChartData { (days : [[BloodSugar]]) in
-            self.paintChart(self.displayChoosenDaysOnly(days))
-        }
+        paintSelectedDays()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -31,37 +29,57 @@ class StatsViewController: UIViewController {
         UIDevice.currentDevice().setValue(value, forKey: "orientation")
     }
     
-    // Removes all days from the should not be displayed
-    // in the statistics chart
-    func displayChoosenDaysOnly(days : [[BloodSugar]]) -> [[BloodSugar]] {
+    func paintSelectedDays() {
         
         let daysToBeDisplayed = UserDefaultsRepository.readDaysToBeDisplayed()
         
         var i : Int = 0
         var filteredDays : [[BloodSugar]] = []
+        
         for dayToBeDisplayed in daysToBeDisplayed {
-            if i >= days.count {
-                // not enough days could be found - so quit here
-                return filteredDays
-            }
+            
             if dayToBeDisplayed {
-                filteredDays.append(days[i])
+                if let day = StatisticsRepository.singleton.readDay(i) {
+                    filteredDays.append(day)
+                } else {
+                    NightscoutService.singleton.readDay(i, callbackHandler: {(nrOfDay, bgValues) -> Void in
+                        
+                        // store all values for an identical day/month/year
+                        // so that all values are displayed in an overlay mode
+                        let normalizedBgValues = self.setDayMonthYearTo01011971(bgValues)
+                        StatisticsRepository.singleton.saveDay(nrOfDay, bloodSugarArray: normalizedBgValues)
+                        self.paintSelectedDays()
+                    })
+
+                    filteredDays.append([])
+                }
             } else {
-                // append empty values
                 filteredDays.append([])
             }
             i = i + 1
         }
         
-        return filteredDays
+        paintChart(filteredDays)
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Landscape
-    }
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    private func setDayMonthYearTo01011971(bgValues : [BloodSugar]) -> [BloodSugar] {
+        
+        var normalizedBgValues : [BloodSugar] = []
+        let calendar = NSCalendar.currentCalendar()
+        let unitFlags: NSCalendarUnit = [.Hour, .Minute, .Second]
+        
+        for bgValue in bgValues {
+            
+            let time = NSDate(timeIntervalSince1970: bgValue.timestamp / 1000)
+            let components = calendar.components(unitFlags, fromDate: time)
+            components.setValue(1971, forComponent: .Year)
+            let normalizedTimeWithYear1971 = calendar.dateFromComponents(components)
+            
+            normalizedBgValues.insert(
+                BloodSugar.init(value: bgValue.value, timestamp: (normalizedTimeWithYear1971?.timeIntervalSince1970)! * 1000), atIndex: 0)
+        }
+        
+        return normalizedBgValues
     }
     
     private func paintChart(days : [[BloodSugar]]) {
@@ -82,5 +100,13 @@ class StatsViewController: UIViewController {
         dispatch_async(dispatch_get_main_queue(), {
             self.chartImageView.image = chartImage
         })
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Landscape
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
 }

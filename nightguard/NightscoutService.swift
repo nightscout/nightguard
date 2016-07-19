@@ -102,7 +102,7 @@ class NightscoutService {
         let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
         
         // Get the current data from REST-Call
-        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=1200"
+        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
         guard let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUri)!,
                                                                       cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20) else {
             return
@@ -119,18 +119,31 @@ class NightscoutService {
             
             let stringSgvData = String(data: data!, encoding: NSUTF8StringEncoding)!
             let sgvRows = stringSgvData.componentsSeparatedByString("\n")
+            var timestampColumn : Int = 1
+            var bloodSugarColumn : Int = 2
             
             var bloodSugarArray = [BloodSugar]()
             for sgvRow in sgvRows {
                 let sgvRowArray = sgvRow.componentsSeparatedByString("\t")
+                
                 if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
-                    let bloodSugar = BloodSugar(value: Float(sgvRowArray[2])!, timestamp: Double(sgvRowArray[1])!)
+                    // Nightscout return for some versions
+                    if self.isDateColumn(sgvRowArray[1]) {
+                        timestampColumn = 2
+                        bloodSugarColumn = 3
+                    }
+                    
+                    let bloodSugar = BloodSugar(value: Float(sgvRowArray[bloodSugarColumn])!, timestamp: Double(sgvRowArray[timestampColumn])!)
                     bloodSugarArray.insert(bloodSugar, atIndex: 0)
                 }
             }
             resultHandler(bloodSugarArray)
         }
         task.resume()
+    }
+    
+    private func isDateColumn(cell : String) -> Bool {
+        return cell.containsString("-")
     }
     
     /* Reads all values from the day before. This is used for comparison with the current values. */
@@ -145,62 +158,16 @@ class NightscoutService {
         readChartDataWithinPeriodOfTime(startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
     }
     
-    /* Reads all values from the last 4 days. The day part of the values is normalized to the first found day.
-       The normalizing is done to easily paint the different days in one chart later on. */
-    func readLast4DaysChartData(callbackHandler : ([[BloodSugar]] -> Void)) {
+    func readDay(nrOfDaysAgo : Int, callbackHandler : (nrOfDay : Int, [BloodSugar]) -> Void) {
+        let timeNrOfDaysAgo = TimeService.getNrOfDaysAgo(nrOfDaysAgo)
         
-        let time4DaysAgo = TimeService.get4DaysAgo()
- 
         let calendar = NSCalendar.currentCalendar()
-        let startOf4DaysAgo = calendar.startOfDayForDate(time4DaysAgo)
+        let startNrOfDaysAgo = calendar.startOfDayForDate(timeNrOfDaysAgo)
+        let endNrOfDaysAgo = startNrOfDaysAgo.dateByAddingTimeInterval(24 * 60 * 60)
         
-        readChartDataWithinPeriodOfTime(startOf4DaysAgo, timestamp2: TimeService.getToday(), resultHandler: {(bgValues) -> Void in
-            callbackHandler(self.extractDaysAndSetDayPartsToFirstDayFound(bgValues))
+        readChartDataWithinPeriodOfTime(startNrOfDaysAgo, timestamp2: endNrOfDaysAgo, resultHandler: {(bgValues) -> Void in
+            callbackHandler(nrOfDay: nrOfDaysAgo, bgValues)
         })
-    }
-    
-    /* convert [BloodSugar] to [[BloodSugar]] so that each array element contains all BloodSugar the belongs
-       to the same day. */
-    func extractDaysAndSetDayPartsToFirstDayFound(bgValues : [BloodSugar]) -> [[BloodSugar]] {
-        var days : [[BloodSugar]] = []
-        let calendar = NSCalendar.currentCalendar()
-        
-        var currentDayValues : [BloodSugar] = []
-        var lastDay : Int? = nil
-        var firstDayFound : Int? = nil
-        var numberOfDaysToSubtract = 0
-        for bgValue in bgValues {
-            
-            let day = calendar.components(.Day, fromDate: NSDate(timeIntervalSince1970: bgValue.timestamp / 1000)).day
-            if day != lastDay {
-                if firstDayFound == nil {
-                    firstDayFound = day
-                } else {
-                    numberOfDaysToSubtract = numberOfDaysToSubtract + 1
-                }
-                lastDay = day
-                // for the first bgValue (when lastDay is nil), we don't like to add
-                // the empty currentDayValues to the result array
-                if currentDayValues.count > 0 {
-                    let copiedValues = currentDayValues
-                    days.insert(copiedValues, atIndex: 0)
-                }
-                currentDayValues = []
-            }
-            currentDayValues.append(subtractDays(day, numberOfDaysToSubtract: numberOfDaysToSubtract, bgValue: bgValue))
-        }
-        
-        days.insert(currentDayValues, atIndex: 0)
-        return days
-    }
-    
-    func subtractDays(currentDay : Int, numberOfDaysToSubtract : Int, bgValue : BloodSugar) -> BloodSugar {
-        if numberOfDaysToSubtract == 0 {
-            // The day already fits => nothing to do
-            return bgValue
-        }
-        
-        return BloodSugar.init(value: bgValue.value, timestamp: bgValue.timestamp - Double(numberOfDaysToSubtract) * ONE_DAY_IN_MICROSECONDS)
     }
     
     /* Reads all values from the last 2 Hours before. */

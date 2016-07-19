@@ -38,6 +38,8 @@
 		433AD0181CCE3FCB001A76CD /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
 		4346F9841D0773F700487541 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
 		4351E6AE1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */; };
+		4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */; };
+		4351E6B21D2EFDFE001E4AE4 /* TimeServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */; };
 		43647BD31BFF6435004389F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD11BFF6435004389F9 /* Main.storyboard */; };
 		43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */; };
 		43647BEE1BFF6435004389F9 /* scoutwatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BED1BFF6435004389F9 /* scoutwatchUITests.swift */; };
@@ -154,6 +156,8 @@
 		432E62EE1D17359600DD7978 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		433AD0161CCE3E89001A76CD /* NightscoutServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutServiceTest.swift; sourceTree = "<group>"; };
 		4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsPrefsViewController.swift; sourceTree = "<group>"; };
+		4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsRepository.swift; sourceTree = "<group>"; };
+		4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeServiceTest.swift; sourceTree = "<group>"; };
 		43647BCA1BFF6435004389F9 /* nightguard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nightguard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BD21BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43647BD71BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -259,6 +263,7 @@
 				432E62EE1D17359600DD7978 /* StringExtension.swift */,
 				43288A6F1D20284600EE3999 /* DoubleExtension.swift */,
 				43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */,
+				4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -338,6 +343,7 @@
 				43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */,
 				433AD0161CCE3E89001A76CD /* NightscoutServiceTest.swift */,
 				432E62E61D11F61500DD7978 /* UserDefaultsRepositoryTest.swift */,
+				4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */,
 			);
 			path = nightguardTests;
 			sourceTree = "<group>";
@@ -647,6 +653,7 @@
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
 				43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */,
 				43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */,
+				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
 				43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */,
@@ -673,6 +680,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
+				4351E6B21D2EFDFE001E4AE4 /* TimeServiceTest.swift in Sources */,
 				433AD0171CCE3E89001A76CD /* NightscoutServiceTest.swift in Sources */,
 				432E62ED1D15EFF100DD7978 /* FloatExtension.swift in Sources */,
 				432E62E71D11F61500DD7978 /* UserDefaultsRepositoryTest.swift in Sources */,
