@@ -40,7 +40,7 @@ class InterfaceController: WKInterfaceController {
     // timer to check continuously for new bgValues
     var timer = NSTimer()
     // check every 30 Seconds whether new bgvalues should be retrieved
-    let timeInterval:NSTimeInterval = 30.0
+    let timeInterval : NSTimeInterval = 30.0
     
     // check whether new Values should be retrieved
     func timerDidEnd(timer:NSTimer){
@@ -95,11 +95,8 @@ class InterfaceController: WKInterfaceController {
         super.willActivate()
         
         // Start the timer to retrieve new bgValues
-        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
-                                                       target: self,
-                                                       selector: #selector(InterfaceController.timerDidEnd(_:)),
-                                                       userInfo: nil,
-                                                       repeats: true)
+        createNewTimerSingleton()
+        timer.fire()
         
         paintChart(historicBgData, yesterdayValues:
             YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
@@ -111,6 +108,18 @@ class InterfaceController: WKInterfaceController {
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
+    }
+    
+    private func createNewTimerSingleton() {
+        if !timer.valid {
+            timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+                                                       target: self,
+                                                       selector: #selector(InterfaceController.timerDidEnd(_:)),
+                                                       userInfo: nil,
+                                                       repeats: true)
+            // allow WatchOs to call this timer 30 seconds later as requested
+            timer.tolerance = timeInterval
+        }
     }
     
     private func paintChart(bgValues : [BloodSugar], yesterdayValues : [BloodSugar]) {
