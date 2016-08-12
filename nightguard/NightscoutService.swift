@@ -14,6 +14,7 @@ class NightscoutService {
     static let singleton = NightscoutService()
     
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
+    let DIRECTIONS = ["-", "↑↑", "↑", "↖︎", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     func readChartData(resultHandler : ([Int] -> Void)) {
@@ -22,7 +23,7 @@ class NightscoutService {
         if baseUri == "" {
             return
         }
-        
+
         // Get the current data from REST-Call
         let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
         let session = NSURLSession.sharedSession()
@@ -221,6 +222,7 @@ class NightscoutService {
 
                     nightscoutData.sgv = String(sgv)
                     nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
+                    nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.objectForKey("trend") as! NSNumber)
                     nightscoutData.bgdelta = bgdelta!
                     nightscoutData.time = time
                     
@@ -231,6 +233,12 @@ class NightscoutService {
             }
         };
         task.resume()
+    }
+    
+    // Converts the pebbles direction number to unicode arrow characters
+    private func getDirectionCharacter(directionNumber : NSNumber) -> String {
+        
+        return DIRECTIONS[directionNumber.integerValue]
     }
     
     private func direction(delta : Float) -> String {

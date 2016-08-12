@@ -14,6 +14,7 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var bgLabel: UILabel!
     @IBOutlet weak var deltaLabel: UILabel!
+    @IBOutlet weak var deltaArrowsLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var batteryLabel: UILabel!
@@ -21,6 +22,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var snoozeButton: UIButton!
     @IBOutlet weak var screenlockSwitch: UISwitch!
     @IBOutlet weak var volumeContainerView: UIView!
+
     
     // timer to check continuously for new bgValues
     var timer = NSTimer()
@@ -187,6 +189,7 @@ class MainViewController: UIViewController {
             self.bgLabel.textColor = UIColorChanger.getBgColor(nightscoutData.sgv)
             
             self.deltaLabel.text = nightscoutData.bgdeltaString.cleanFloatValue
+            self.deltaArrowsLabel.text = nightscoutData.bgdeltaArrow
             self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(nightscoutData.bgdelta)
             
             self.lastUpdateLabel.text = nightscoutData.timeString

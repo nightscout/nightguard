@@ -13,6 +13,7 @@ import Foundation
 class NightscoutData : NSObject, NSCoding {
     var sgv : String = "---"
     var bgdeltaString : String = "---"
+    var bgdeltaArrow : String = "-"
     var bgdelta : Float = 0.0
     var timeString : String {
         get {
@@ -53,6 +54,11 @@ class NightscoutData : NSObject, NSCoding {
         }
         self.bgdeltaString = bgdeltaString
         
+        guard let bgdeltaArrow = decoder.decodeObjectForKey("bgdeltaArrow") as? String else {
+            return
+        }
+        self.bgdeltaArrow = bgdeltaArrow
+        
         guard let bgdelta = decoder.decodeObjectForKey("bgdelta") as? Float else {
             return
         }
@@ -75,6 +81,7 @@ class NightscoutData : NSObject, NSCoding {
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.sgv, forKey: "sgv")
         aCoder.encodeObject(self.bgdeltaString, forKey: "bgdeltaString")
+        aCoder.encodeObject(self.bgdeltaArrow, forKey: "bgdeltaArrow")
         aCoder.encodeObject(self.bgdelta, forKey: "bgdelta")
         aCoder.encodeObject(self.time, forKey: "time")
         aCoder.encodeObject(self.battery, forKey: "battery")
