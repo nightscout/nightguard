@@ -14,6 +14,7 @@ class InterfaceController: WKInterfaceController {
 
     @IBOutlet var bgLabel: WKInterfaceLabel!
     @IBOutlet var deltaLabel: WKInterfaceLabel!
+    @IBOutlet var deltaArrowLabel: WKInterfaceLabel!
     @IBOutlet var timeLabel: WKInterfaceLabel!
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var chartImage: WKInterfaceImage!
@@ -143,6 +144,7 @@ class InterfaceController: WKInterfaceController {
         self.bgLabel.setTextColor(UIColorChanger.getBgColor(currentNightscoutData.sgv))
         
         self.deltaLabel.setText(currentNightscoutData.bgdeltaString.cleanFloatValue)
+        self.deltaArrowLabel.setText(currentNightscoutData.bgdeltaArrow)
         self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(currentNightscoutData.bgdelta))
         
         self.timeLabel.setText(currentNightscoutData.timeString)

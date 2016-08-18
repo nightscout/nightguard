@@ -33,6 +33,7 @@
                                         </group>
                                         <group height="18" alignment="right" id="7mo-kr-osX">
                                             <items>
+                                                <label width="26.5" height="17.5" alignment="left" text="-" minimumScaleFactor="0.25" id="nnO-nW-RbM"/>
                                                 <label width="42" height="17.5" alignment="right" verticalAlignment="bottom" text="100%" textAlignment="right" minimumScaleFactor="0.25" id="lz8-YE-T1d"/>
                                             </items>
                                         </group>
@@ -71,6 +72,7 @@
                         <outlet property="batteryLabel" destination="lz8-YE-T1d" id="a4A-hb-KFZ"/>
                         <outlet property="bgLabel" destination="vdn-99-EwA" id="Tg2-Yj-bDo"/>
                         <outlet property="chartImage" destination="kwI-xY-joe" id="5Hp-m2-R5F"/>
+                        <outlet property="deltaArrowLabel" destination="nnO-nW-RbM" id="aR3-me-buM"/>
                         <outlet property="deltaLabel" destination="frk-q8-3y9" id="KvH-er-bpE"/>
                         <outlet property="timeLabel" destination="w1H-tu-XyX" id="KWM-Y9-FDg"/>
                     </connections>

@@ -11,10 +11,23 @@ import Foundation
 // Contains all available information of a current Blood Glucose value.
 // This data can be stored in the user defaults.
 class NightscoutData : NSObject, NSCoding {
+    
     var sgv : String = "---"
     var bgdeltaString : String = "---"
     var bgdeltaArrow : String = "-"
     var bgdelta : Float = 0.0
+    var hourAndMinutes : String {
+        get {
+            if time == 0 {
+                return "??:??"
+            }
+            let formatter = NSDateFormatter.init()
+            formatter.dateFormat = "HH:mm"
+            
+            let date = NSDate.init(timeIntervalSince1970: Double(time.longLongValue / 1000))
+            return formatter.stringFromDate(date)
+        }
+    }
     var timeString : String {
         get {
             if time == 0 {
