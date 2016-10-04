@@ -142,5 +142,17 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
             WatchService.singleton.sendToWatch(units)
         }
     }
+    
+    // Methods to be implemented for the WCSessionDelegate (but aren't used right now)
+    
+    @available(iOS 9.3, *)
+    func session(session: WCSession, activationDidCompleteWithState activationState: WCSessionActivationState, error: NSError?) {
+    }
+    
+    func sessionDidBecomeInactive(session: WCSession) {
+    }
+    
+    func sessionDidDeactivate(session: WCSession) {
+    }
 }
 

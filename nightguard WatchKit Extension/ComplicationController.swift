@@ -67,6 +67,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                 
                 template.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
                 template.ringStyle = CLKComplicationRingStyle.Closed
+            default: break
             }
             
             if template != nil {
@@ -108,6 +109,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .CircularSmall:
             let template = CLKComplicationTemplateCircularSmallRingImage()
             template.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
+        default: break
         }
         handler(template)
     }

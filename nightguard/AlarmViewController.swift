@@ -9,7 +9,7 @@
 import UIKit
 import WatchConnectivity
 
-class AlarmViewController: UIViewController, WCSessionDelegate, UITextFieldDelegate {
+class AlarmViewController: UIViewController, UITextFieldDelegate {
     
     private let MAX_ALERT_ABOVE_VALUE : Float = 200
     private let MIN_ALERT_ABOVE_VALUE : Float = 80

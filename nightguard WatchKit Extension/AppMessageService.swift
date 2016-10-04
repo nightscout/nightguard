@@ -32,12 +32,12 @@ class AppMessageService : NSObject, WCSessionDelegate {
         }
     }
     
-    // Receives values that are pushed from the ios app
-    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+    @available(watchOSApplicationExtension 2.2, *)
+    func session(session: WCSession, activationDidCompleteWithState activationState: WCSessionActivationState, error: NSError?) {
         
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             
-            if let units = applicationContext["units"] as? String {
+            /*if let units = applicationContext["units"] as? String {
                 UserDefaultsRepository.saveUnits(Units(rawValue: units)!)
             }
             
@@ -53,7 +53,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
             if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
                 let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
                 defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
-            }
+            }*/
         }
     }
 }
