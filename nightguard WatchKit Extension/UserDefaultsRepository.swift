@@ -41,12 +41,12 @@ class UserDefaultsRepository {
     
     static func readUnits() -> Units {
         guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("Units are not saved so for. Assuming mg/dL in this case.")
+            print("Units are not saved so far. Assuming mg/dL in this case.")
             return Units.mgdl
         }
         
         guard let units = defaults.objectForKey("units") as? String else {
-            print("Units are not saved so for. Assuming mg/dL in this case.")
+            print("Units are not saved so far. Assuming mg/dL in this case.")
             return Units.mgdl
         }
         return Units(rawValue: units)!

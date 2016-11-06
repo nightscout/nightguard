@@ -24,10 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    @available(iOS 3.0, *)
+    func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         
         // Override point for customization after application launch.
-        
         UITabBar.appearance().tintColor = UIColor.whiteColor()
         
         // This application should be called in background every 3 Minutes
@@ -37,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initializeApplicationDefaults()
         initializeAlarmRule()
         return true
+
     }
 
     func activateWatchConnectivity() {
