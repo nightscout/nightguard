@@ -16,7 +16,7 @@ class WatchService {
     func sendToWatch(units : Units) {
         do {
             let applicationDict = ["units" : units.rawValue]
-            try WCSession.defaultSession().updateApplicationContext(applicationDict)
+            try WCSession.defaultSession().transferUserInfo(applicationDict)
         } catch {
             print(error)
         }
@@ -26,7 +26,7 @@ class WatchService {
         do {
             let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
                                    "alertIfAboveValue" : alertIfAboveValue]
-            try WCSession.defaultSession().updateApplicationContext(applicationDict)
+            try WCSession.defaultSession().transferUserInfo(applicationDict)
         } catch {
             print(error)
         }
@@ -35,7 +35,7 @@ class WatchService {
     func sendToWatch(hostUri : String) {
         do {
             let applicationDict = ["hostUri" : hostUri]
-            try WCSession.defaultSession().updateApplicationContext(applicationDict)
+            try WCSession.defaultSession().transferUserInfo(applicationDict)
         } catch {
             print(error)
         }
@@ -47,7 +47,7 @@ class WatchService {
                                    "alertIfBelowValue" : alertIfBelowValue,
                                    "alertIfAboveValue" : alertIfAboveValue,
                                    "units" : units.rawValue]
-            try WCSession.defaultSession().updateApplicationContext(applicationDict as! [String : AnyObject])
+            try WCSession.defaultSession().transferUserInfo(applicationDict as! [String : AnyObject])
         } catch {
             print(error)
         }

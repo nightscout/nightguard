@@ -21,14 +21,16 @@ class AppMessageService : NSObject, WCSessionDelegate {
             
             let session = WCSession.defaultSession()
             
-            session.sendMessage(["requestBaseUri": ""], replyHandler: { (response) -> Void in
+            if session.reachable {
+                session.sendMessage(["requestBaseUri": ""], replyHandler: { (response) -> Void in
                 
-                if let baseUri = response.first?.1 {
-                    UserDefaultsRepository.saveBaseUri(String(baseUri))
-                }
-            }, errorHandler: { (error) -> Void in
-                print(error)
-            })
+                    if let baseUri = response.first?.1 {
+                        UserDefaultsRepository.saveBaseUri(String(baseUri))
+                    }
+                    }, errorHandler: { (error) -> Void in
+                        print(error)
+                })
+            }
         }
     }
     
@@ -65,5 +67,11 @@ class AppMessageService : NSObject, WCSessionDelegate {
     @available(watchOS 2.0, *)
     func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
         updateValuesFromApplicationContext(applicationContext)
+    }
+    
+    /** Called on the delegate of the receiver. Will be called on startup if the user info finished transferring when the receiver was not running. */
+    @available(watchOS 2.0, *)
+    func session(session: WCSession, didReceiveUserInfo userInfo: [String : AnyObject]) {
+        updateValuesFromApplicationContext(userInfo)
     }
 }
