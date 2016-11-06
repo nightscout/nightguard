@@ -40,4 +40,16 @@ class WatchService {
             print(error)
         }
     }
+    
+    func sendToWatch(hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units) {
+        do {
+            let applicationDict = ["hostUri" : hostUri,
+                                   "alertIfBelowValue" : alertIfBelowValue,
+                                   "alertIfAboveValue" : alertIfAboveValue,
+                                   "units" : units.rawValue]
+            try WCSession.defaultSession().updateApplicationContext(applicationDict as! [String : AnyObject])
+        } catch {
+            print(error)
+        }
+    }
 }

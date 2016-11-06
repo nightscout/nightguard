@@ -9,7 +9,7 @@
 import UIKit
 import WatchConnectivity
 
-class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDelegate, UIPickerViewDelegate {
+class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
     
     let displayTimespans = ["3 Hours", "6 Hours", "Last Night", "Last Day"]
     
@@ -29,14 +29,6 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         let hostUri = defaults?.stringForKey("hostUri")
         hostUriTextField.text = hostUri
-        
-        // Init communication to apple watch
-        if WCSession.isSupported() {
-            
-            let session = WCSession.defaultSession()
-            session.delegate = self
-            session.activateSession()
-        }
         
         hostUriTextField.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: #selector(PrefsViewController.onTouchGesture))
@@ -109,10 +101,10 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
         
         let alertIfAboveValue : Float = (defaults?.floatForKey("alertIfAboveValue"))!
         let alertIfBelowValue : Float = (defaults?.floatForKey("alertIfBelowValue"))!
-        let hostUri : String = (defaults?.stringForKey("hostUri"))!
+        let hostUri : String = UserDefaultsRepository.readBaseUri()
+        let units : Units = UserDefaultsRepository.readUnits()
         
-        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: alertIfAboveValue)
-        WatchService.singleton.sendToWatch(hostUri)
+        WatchService.singleton.sendToWatch(hostUri, alertIfBelowValue: alertIfBelowValue, alertIfAboveValue: alertIfAboveValue, units: units)
     }
     
     // Remove keyboard by touching outside
@@ -139,20 +131,8 @@ class PrefsViewController: UIViewController, WCSessionDelegate, UITextFieldDeleg
     func retrieveAndStoreNightscoutUnits() {
         NightscoutService.singleton.readStatus { (units) in
             UserDefaultsRepository.saveUnits(units)
-            WatchService.singleton.sendToWatch(units)
+            self.sendValuesToAppleWatch()
         }
-    }
-    
-    // Methods to be implemented for the WCSessionDelegate (but aren't used right now)
-    
-    @available(iOS 9.3, *)
-    func session(session: WCSession, activationDidCompleteWithState activationState: WCSessionActivationState, error: NSError?) {
-    }
-    
-    func sessionDidBecomeInactive(session: WCSession) {
-    }
-    
-    func sessionDidDeactivate(session: WCSession) {
     }
 }
 

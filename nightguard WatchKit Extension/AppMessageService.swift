@@ -32,28 +32,38 @@ class AppMessageService : NSObject, WCSessionDelegate {
         }
     }
     
+    func updateValuesFromApplicationContext(applicationContext: [String : AnyObject]) {
+        if let units = applicationContext["units"] as? String {
+            UserDefaultsRepository.saveUnits(Units(rawValue: units)!)
+        }
+        
+        if let hostUri = applicationContext["hostUri"] as? String {
+            UserDefaultsRepository.saveBaseUri(hostUri)
+        }
+        
+        if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
+            let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+            defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
+        }
+        
+        if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
+            let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+            defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
+        }
+    }
+    
     @available(watchOSApplicationExtension 2.2, *)
     func session(session: WCSession, activationDidCompleteWithState activationState: WCSessionActivationState, error: NSError?) {
         
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             
-            /*if let units = applicationContext["units"] as? String {
-                UserDefaultsRepository.saveUnits(Units(rawValue: units)!)
-            }
-            
-            if let hostUri = applicationContext["hostUri"] as? String {
-                UserDefaultsRepository.saveBaseUri(hostUri)
-            }
-            
-            if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
-                let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-                defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
-            }
-            
-            if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
-                let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-                defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
-            }*/
+            self.updateValuesFromApplicationContext(session.receivedApplicationContext)
         }
+    }
+    
+    /** Called on the delegate of the receiver. Will be called on startup if an applicationContext is available. */
+    @available(watchOS 2.0, *)
+    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+        updateValuesFromApplicationContext(applicationContext)
     }
 }
