@@ -84,9 +84,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
         
-        // snooze the alarm for 15 Seconds in order to retrieve new data
-        // before playing alarm
-        AlarmRule.snoozeSeconds(15)
+        // If there is already a snooze active => we don't have to fear that an alarm
+        // would be played.
+        if !AlarmRule.isSnoozed() {
+            // snooze the alarm for 30 Seconds in order to retrieve new data
+            // before playing alarm
+            // Otherwise it could be the case that the app immediately plays
+            // an alarm sound without giving the app the chance to reload
+            // current data
+            AlarmRule.snoozeSeconds(30)
+        }
     }
 
     func applicationDidBecomeActive(application: UIApplication) {

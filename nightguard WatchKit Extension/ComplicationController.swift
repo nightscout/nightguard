@@ -14,9 +14,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     var oldValues : [NightscoutData] = []
     
     func getNextRequestedUpdateDateWithHandler(handler: (NSDate?) -> Void) {
-        // Update every 5 Minutes => but this is just a nice wish
+        // Update every 15 Minutes => but this is just a nice wish
         // => Apple will allow maybe just 30 minutes :(
-        handler(NSDate(timeIntervalSinceNow: 60*5))
+        handler(NSDate(timeIntervalSinceNow: 60*15))
     }
     
     // MARK: - Timeline Configuration

@@ -26,8 +26,8 @@ class MainViewController: UIViewController {
     
     // timer to check continuously for new bgValues
     var timer = NSTimer()
-    // check every 10 Seconds whether new bgvalues should be retrieved
-    let timeInterval:NSTimeInterval = 10.0
+    // check every 5 Seconds whether new bgvalues should be retrieved
+    let timeInterval:NSTimeInterval = 5.0
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.Portrait
