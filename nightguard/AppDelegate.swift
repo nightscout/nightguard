@@ -55,6 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AlarmRule.alertIfAboveValue = (defaults?.floatForKey("alertIfAboveValue"))!
         AlarmRule.alertIfBelowValue = (defaults?.floatForKey("alertIfBelowValue"))!
+        
+        AlarmRule.minutesWithoutValues = (defaults?.integerForKey("noDataAlarmAfterMinutes"))!
     }
     
     func initializeApplicationDefaults() {
@@ -66,7 +68,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              "deltaAmount": 8,
              
              "alertIfAboveValue": 180,
-             "alertIfBelowValue": 80
+             "alertIfBelowValue": 80,
+             
+             "noDataAlarmAfterMinutes": 15
         ]
         NSUserDefaults.standardUserDefaults().registerDefaults(initialDefaults as! [String : AnyObject])
     }

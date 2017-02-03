@@ -104,11 +104,7 @@ class NightscoutData : NSObject, NSCoding {
         return isOlderThanXMinutes(5)
     }
     
-    func isOlderThan15Minutes() -> Bool {
-        return isOlderThanXMinutes(15)
-    }
-    
-    private func isOlderThanXMinutes(minutes : Int) -> Bool {
+    func isOlderThanXMinutes(minutes : Int) -> Bool {
         let lastUpdateAsNSDate : NSDate = NSDate(timeIntervalSince1970: time.doubleValue / 1000)
         let timeInterval : Int = Int(NSDate().timeIntervalSinceDate(lastUpdateAsNSDate))
         

@@ -30,6 +30,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "AlarmViewController.(preselectItemInPickerView in _530B1A374ECBC7254C2100F0B4BE806D)() -&gt; ():AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "noDataAlarmButton.currentTitle">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "static UnitsConverter.toMgdl(String) -&gt; Float:UnitsConverter.swift">
          <PersistentStrings>
             <PersistentString
@@ -203,10 +211,10 @@
                value = "bloodValues[index-2].value">
             </PersistentString>
             <PersistentString
-               value = "bloodValues[index-1].value">
+               value = "deltaAmount">
             </PersistentString>
             <PersistentString
-               value = "deltaAmount">
+               value = "bloodValues[index-1].value">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

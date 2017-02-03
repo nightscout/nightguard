@@ -30,6 +30,8 @@ class AlarmRule {
     static var alertIfAboveValue : Float = 180
     static var alertIfBelowValue : Float = 80
     
+    static var minutesWithoutValues : Int = 15
+    
     /*
      * Returns true if the alarm should be played.
      * Snooze is true if the Alarm has been manually deactivated.
@@ -41,7 +43,7 @@ class AlarmRule {
             return false
         }
         
-        if nightscoutData.isOlderThan15Minutes() {
+        if nightscoutData.isOlderThanXMinutes(minutesWithoutValues) {
             return true
         }
         

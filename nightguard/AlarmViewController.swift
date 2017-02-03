@@ -9,7 +9,9 @@
 import UIKit
 import WatchConnectivity
 
-class AlarmViewController: UIViewController, UITextFieldDelegate {
+class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    var noDataAlarmOptions = ["15 Minutes", "20 Minutes", "25 Minutes", "30 Minutes", "35 Minutes", "40 Minutes", "45 Minutes"]
     
     private let MAX_ALERT_ABOVE_VALUE : Float = 200
     private let MIN_ALERT_ABOVE_VALUE : Float = 80
@@ -28,6 +30,9 @@ class AlarmViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var alertBelowSlider: UISlider!
     
     @IBOutlet weak var unitsLabel: UILabel!
+    
+    @IBOutlet weak var noDataAlarmButton: UIButton!
+    @IBOutlet weak var noDataAlarmPickerView: UIPickerView!
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.Portrait
@@ -50,6 +55,9 @@ class AlarmViewController: UIViewController, UITextFieldDelegate {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
+        
+        noDataAlarmPickerView.delegate = self
+        noDataAlarmPickerView.dataSource = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -64,7 +72,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate {
         alertAboveSlider.value = (UnitsConverter.toMgdl(alertIfAboveValueLabel.text!.floatValue) - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE
         alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfBelowValue"))!)
         alertBelowSlider.value = (UnitsConverter.toMgdl(alertIfBelowValueLabel.text!.floatValue) - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
-
+        
+        noDataAlarmButton.setTitle(defaults?.stringForKey("noDataAlarmAfterMinutes"), forState: UIControlState.Normal)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -155,8 +164,50 @@ class AlarmViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    // Remove keyboard by touching outside
+    // Remove keyboard and PickerView by touching outside
     func onTouchGesture(){
         self.view.endEditing(true)
+        self.noDataAlarmPickerView.hidden = true
+    }
+    
+    
+    // Methods for the noDataAlarmPickerView
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return noDataAlarmOptions[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return noDataAlarmOptions.count
+    }
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    @IBAction func noDataAlarmButtonPressed(sender: AnyObject) {
+        preselectItemInPickerView()
+        noDataAlarmPickerView.hidden = false
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedMinutes = toButtonText(noDataAlarmOptions[row])
+        noDataAlarmButton.setTitle(selectedMinutes, forState: UIControlState.Normal)
+        
+        // Remember the selected value by storing it as default setting
+        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(selectedMinutes, forKey: "noDataAlarmAfterMinutes")
+        
+        // Activate the new AlarmRule
+        AlarmRule.minutesWithoutValues = Int(selectedMinutes)!
+    }
+    
+    // Selects the right item that is shown in the noDataAlarmButton in the PickerView
+    private func preselectItemInPickerView() {
+        let rowOfSelectedItem : Int = noDataAlarmOptions.indexOf(noDataAlarmButton.currentTitle! + " Minutes")!
+        noDataAlarmPickerView.selectRow(rowOfSelectedItem, inComponent: 0, animated: false)
+    }
+    
+    private func toButtonText(pickerText : String) -> String {
+        return pickerText.stringByReplacingOccurrencesOfString(" Minutes", withString: "")
     }
 }
