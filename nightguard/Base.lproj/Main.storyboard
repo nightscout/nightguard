@@ -391,7 +391,7 @@
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="SLx-m6-8iP">
-                                <rect key="frame" x="185" y="48" width="55" height="35"/>
+                                <rect key="frame" x="185" y="47" width="55" height="37"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="35"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -589,28 +589,23 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="499"/>
                                 <gestureRecognizers/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ke-55-Nl1">
-                                <rect key="frame" x="0.0" y="20" width="73" height="42"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="73" id="Hxh-83-994"/>
-                                </constraints>
-                                <inset key="contentEdgeInsets" minX="5" minY="5" maxX="0.0" maxY="0.0"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4BU-pQ-U8n">
+                                <rect key="frame" x="0.0" y="0.0" width="73" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Edit.."/>
                                 <connections>
-                                    <segue destination="vA4-lm-SQ9" kind="presentation" id="ZXS-09-ORS"/>
+                                    <segue destination="vA4-lm-SQ9" kind="presentation" id="k9N-9K-vAA"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="rrv-9c-L87" firstAttribute="top" secondItem="1ke-55-Nl1" secondAttribute="top" id="6kK-gH-lko"/>
-                            <constraint firstItem="rrv-9c-L87" firstAttribute="bottom" secondItem="P49-JR-KR5" secondAttribute="top" id="dXg-03-gzn"/>
-                            <constraint firstItem="rrv-9c-L87" firstAttribute="leading" secondItem="1ke-55-Nl1" secondAttribute="leading" id="enI-Kq-zkK"/>
-                            <constraint firstItem="1ke-55-Nl1" firstAttribute="leading" secondItem="quX-qv-rSf" secondAttribute="leading" id="hYd-fY-JTm"/>
-                            <constraint firstAttribute="trailing" secondItem="rrv-9c-L87" secondAttribute="trailing" id="hfo-Ah-ddC"/>
-                            <constraint firstItem="rrv-9c-L87" firstAttribute="top" secondItem="fgE-PI-H2z" secondAttribute="bottom" id="qeh-J1-HG1"/>
-                            <constraint firstItem="P49-JR-KR5" firstAttribute="top" secondItem="1ke-55-Nl1" secondAttribute="bottom" constant="457" id="qeq-ZI-e28"/>
+                            <constraint firstItem="rrv-9c-L87" firstAttribute="top" secondItem="fgE-PI-H2z" secondAttribute="bottom" id="7Cq-UR-m2U"/>
+                            <constraint firstItem="rrv-9c-L87" firstAttribute="leading" secondItem="quX-qv-rSf" secondAttribute="leading" id="MIL-DT-ke6"/>
+                            <constraint firstItem="rrv-9c-L87" firstAttribute="bottom" secondItem="P49-JR-KR5" secondAttribute="top" id="V8X-Gi-ZRp"/>
+                            <constraint firstAttribute="trailing" secondItem="rrv-9c-L87" secondAttribute="trailing" id="XoF-7a-4cB"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Stats" image="StatsIcon" id="ilS-RR-ZED"/>
