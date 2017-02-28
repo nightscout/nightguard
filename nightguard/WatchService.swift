@@ -14,42 +14,26 @@ class WatchService {
     static let singleton = WatchService()
     
     func sendToWatch(units : Units) {
-        do {
-            let applicationDict = ["units" : units.rawValue]
-            try WCSession.defaultSession().transferUserInfo(applicationDict)
-        } catch {
-            print(error)
-        }
+        let applicationDict = ["units" : units.rawValue]
+        WCSession.defaultSession().transferUserInfo(applicationDict)
     }
     
     func sendToWatch(alertIfBelowValue : Float, alertIfAboveValue : Float) {
-        do {
-            let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
+        let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
                                    "alertIfAboveValue" : alertIfAboveValue]
-            try WCSession.defaultSession().transferUserInfo(applicationDict)
-        } catch {
-            print(error)
-        }
+        WCSession.defaultSession().transferUserInfo(applicationDict)
     }
     
     func sendToWatch(hostUri : String) {
-        do {
-            let applicationDict = ["hostUri" : hostUri]
-            try WCSession.defaultSession().transferUserInfo(applicationDict)
-        } catch {
-            print(error)
-        }
+        let applicationDict = ["hostUri" : hostUri]
+        WCSession.defaultSession().transferUserInfo(applicationDict)
     }
     
     func sendToWatch(hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units) {
-        do {
-            let applicationDict = ["hostUri" : hostUri,
-                                   "alertIfBelowValue" : alertIfBelowValue,
-                                   "alertIfAboveValue" : alertIfAboveValue,
-                                   "units" : units.rawValue]
-            try WCSession.defaultSession().transferUserInfo(applicationDict as! [String : AnyObject])
-        } catch {
-            print(error)
-        }
+        let applicationDict = ["hostUri" : hostUri,
+                                "alertIfBelowValue" : alertIfBelowValue,
+                                "alertIfAboveValue" : alertIfAboveValue,
+                                "units" : units.rawValue]
+        WCSession.defaultSession().transferUserInfo(applicationDict as! [String : AnyObject])
     }
 }
