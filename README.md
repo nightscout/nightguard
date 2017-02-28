@@ -1,6 +1,8 @@
 [![Join the chat at https://gitter.im/nightscout/nightguard](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nightscout/nightguard)
 
 # Nightguard
+
+[![Join the chat at https://gitter.im/nightscout/nightguard](https://badges.gitter.im/nightscout/nightguard.svg)](https://gitter.im/nightscout/nightguard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 This is an iPhone and Apple Watch application to display blood glucose values stored at your nightscout server.
 
 # Description
