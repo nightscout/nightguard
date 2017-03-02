@@ -26,7 +26,7 @@ class YesterdayBloodSugarService {
         }
     }
     
-    func getYesterdaysValues(from : Double, to : Double) -> [BloodSugar]{
+    func getYesterdaysValues() -> [BloodSugar]{
         if needsToBeRefreshed() {
             NightscoutService.singleton.readYesterdaysChartData({bloodValues -> Void in
                 
@@ -35,15 +35,15 @@ class YesterdayBloodSugarService {
             // temporarily return empty values => since the new values are created
             return []
         } else {
-            return filteredValues(from, to: to)
+            return bloodSugarArray
         }
     }
 
     /* Gets yesterdays blood values and transform these to the current day.
        Therefore they can be compared in one diagram. */
-    func getYesterdaysValuesTransformedToCurrentDay(from : Double, to : Double) -> [BloodSugar]{
+    func getYesterdaysValuesTransformedToCurrentDay() -> [BloodSugar] {
         
-        let yesterdaysValues = getYesterdaysValues(from, to: to)
+        let yesterdaysValues = getYesterdaysValues()
         var transformedValues : [BloodSugar] = []
         for yesterdaysValue in yesterdaysValues {
             let transformedValue = BloodSugar.init(value: yesterdaysValue.value, timestamp: yesterdaysValue.timestamp + ONE_DAY_IN_MICROSECONDS)

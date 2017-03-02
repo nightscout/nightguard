@@ -46,6 +46,12 @@ class TimeService {
         return yesterday
     }
     
+    static func getTomorrow() -> NSDate {
+        let tomorrow = getToday().dateByAddingTimeInterval(24*60*60)
+        
+        return tomorrow
+    }
+    
     static func isYesterday(microsSince1970 : Double) -> Bool {
         let secondsSince1970 = microsSince1970 / 1000
         

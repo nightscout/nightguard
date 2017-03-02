@@ -9,6 +9,7 @@
 import UIKit
 import MediaPlayer
 import WatchConnectivity
+import SpriteKit
 
 class MainViewController: UIViewController {
     
@@ -18,12 +19,12 @@ class MainViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var batteryLabel: UILabel!
-    @IBOutlet weak var chartImage: UIImageView!
     @IBOutlet weak var snoozeButton: UIButton!
     @IBOutlet weak var screenlockSwitch: UISwitch!
     @IBOutlet weak var volumeContainerView: UIView!
+    @IBOutlet weak var spriteKitView: UIView!
 
-    
+    var chartScene = ChartScene(size: CGSize(width: 320, height: 280))
     // timer to check continuously for new bgValues
     var timer = NSTimer()
     // check every 5 Seconds whether new bgvalues should be retrieved
@@ -39,10 +40,8 @@ class MainViewController: UIViewController {
         UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
         let historicBgData = BgDataHolder.singleton.getHistoricBgData()
-        paintChart(historicBgData,
-                   yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
-                    BloodSugar.getMinimumTimestamp(historicBgData),
-                    to: BloodSugar.getMaximumTimestamp(historicBgData)))
+        chartScene.paintChart(historicBgData,
+                   yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay())
     }
     
     override func viewDidLoad() {
@@ -68,10 +67,8 @@ class MainViewController: UIViewController {
         paintScreenLockSwitch()
         paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
         let historicBgData = BgDataHolder.singleton.getHistoricBgData()
-        paintChart(historicBgData,
-                   yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
-                        BloodSugar.getMinimumTimestamp(historicBgData),
-                        to: BloodSugar.getMaximumTimestamp(historicBgData)))
+        chartScene.paintChart(historicBgData,
+                   yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay())
         
         // Start the timer to retrieve new bgValues
         timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
@@ -82,6 +79,11 @@ class MainViewController: UIViewController {
         // Start immediately so that the current time gets display at once
         // And the alarm can play if needed
         timerDidEnd(timer)
+        
+        // Initialize the ChartScene
+        chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height))
+        let skView = spriteKitView as! SKView
+        skView.presentScene(chartScene)
     }
     
     // Resize the MPVolumeView when the parent view changes
@@ -106,26 +108,6 @@ class MainViewController: UIViewController {
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
-    }
-    
-    private func paintChart(bgValues : [BloodSugar], yesterdayValues : [BloodSugar]) {
-        
-        let chartPainter : ChartPainter = ChartPainter(
-            canvasWidth: Int(chartImage.frame.size.width),
-            canvasHeight: Int(chartImage.frame.size.height));
-        
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        
-        guard let chartImage = chartPainter.drawImage(
-                [UnitsConverter.toDisplayUnits(bgValues), UnitsConverter.toDisplayUnits(yesterdayValues)],
-                upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
-                lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))
-        ) else {
-            return
-        }
-        dispatch_async(dispatch_get_main_queue(), {
-            self.chartImage.image = chartImage
-        })
     }
     
     // check whether new Values should be retrieved
@@ -163,12 +145,10 @@ class MainViewController: UIViewController {
             self.paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
             NightscoutDataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
         })
-        NightscoutService.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
+        NightscoutService.singleton.readTodaysChartData({(historicBgData) -> Void in
             BgDataHolder.singleton.setHistoricBgData(historicBgData)
-            self.paintChart(historicBgData, yesterdayValues:
-                YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
-                    BloodSugar.getMinimumTimestamp(historicBgData),
-                    to: BloodSugar.getMaximumTimestamp(historicBgData)))
+            self.chartScene.paintChart(historicBgData, yesterdayValues:
+                YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay())
             
             NightscoutDataRepository.singleton.storeHistoricBgData(BgDataHolder.singleton.getHistoricBgData())
         })

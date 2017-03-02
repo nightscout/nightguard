@@ -44,16 +44,19 @@ class ChartPainter {
      * Values out of this area will cause an alarm signal to be played!
      *
      * But of cause the alarming is out of the scope of this class!
+     
+     * The position of the current value is returned as the second tuple element.
+     * It is used to show the current value in the viewport.
      */
-    func drawImage(days : [[BloodSugar]], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> UIImage? {
+    func drawImage(days : [[BloodSugar]], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> (UIImage?, Int) {
 
         // we need at least one day => otherwise paint nothing
         if days.count == 1 {
-            return nil
+            return (nil, 0)
         }
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if days[0].count <= 1 {
-            return nil
+            return (nil, 0)
         }
         
         adjustMinMaxXYCoordinates(days, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
@@ -68,9 +71,14 @@ class ChartPainter {
         paintNicePartArea(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
         var nrOfDay = 0
+        var positionOfCurrentValue = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
             paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor)
+            
+            if nrOfDay == 1 {
+                positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
+            }
         }
         
         paintFullHourText()
@@ -80,7 +88,7 @@ class ChartPainter {
         // Drawing complete, retrieve the finished image and cleanup
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return image
+        return (image, positionOfCurrentValue)
     }
     
     // Returns a different Color for each different day
@@ -161,10 +169,10 @@ class ChartPainter {
                      NSParagraphStyleAttributeName: paragraphStyle,
                      NSForegroundColorAttributeName: UIColor.grayColor()]
         
-        if durationIsMoreThan6Hours(minimumXValue, maxTimestamp: maximumXValue) {
+        if durationIsMoreThan6Hours(minimumXValue, maxTimestamp: maximumXValue) && canvasWidth < 1920 {
             paintEverySecondHour(attrs)
         } else {
-            paintHalfHourTimestamps(attrs)
+            paintHourTimestamps(attrs)
         }
     }
     
@@ -230,20 +238,19 @@ class ChartPainter {
         return evenHours
     }
     
-    func paintHalfHourTimestamps(attrs : [String : AnyObject]) {
-        let halfHours = determineHalfHoursBetween(minimumXValue, maxTimestamp: maximumXValue)
+    func paintHourTimestamps(attrs : [String : AnyObject]) {
+        let hours = determineHoursBetween(minimumXValue, maxTimestamp: maximumXValue)
         
         let hourFormat = NSDateFormatter()
         hourFormat.dateFormat = "HH:mm"
-        for timestamp in halfHours {
+        for timestamp in hours {
             let hourString : String = hourFormat.stringFromDate(NSDate(timeIntervalSince1970 : timestamp / 1000))
             hourString.drawWithRect(CGRect(x: calcXValue(timestamp)-25, y: CGFloat.init(canvasHeight-20), width: 50, height: 14),
                                     options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
-            
         }
     }
     
-    func determineHalfHoursBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
+    func determineHoursBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
         
         let minDate = NSDate(timeIntervalSince1970: minTimestamp / 1000)
         let maxDate = NSDate(timeIntervalSince1970: maxTimestamp / 1000)
@@ -253,14 +260,14 @@ class ChartPainter {
         var stop : Bool
         
         repeat {
-            let nextHalfHour = getNextHalfHour(currentDate);
-            if nextHalfHour.compare(maxDate) == .OrderedAscending {
-                halfHours.append(nextHalfHour.timeIntervalSince1970 * 1000)
+            let nextHour = getNextHour(currentDate);
+            if nextHour.compare(maxDate) == .OrderedAscending {
+                halfHours.append(nextHour.timeIntervalSince1970 * 1000)
                 stop = false
             } else {
                 stop = true
             }
-            currentDate = nextHalfHour
+            currentDate = nextHour
         } while !stop
         
         return halfHours
@@ -284,18 +291,13 @@ class ChartPainter {
         return hour % 2 == 0
     }
     
-    func getNextHalfHour(date : NSDate) -> NSDate {
+    func getNextHour(date : NSDate) -> NSDate {
         
         let cal = NSCalendar.currentCalendar()
         
         let hour = cal.component(NSCalendarUnit.Hour, fromDate: date)
-        let minute = cal.component(NSCalendarUnit.Minute, fromDate: date)
         
-        if minute < 30 {
-            return cal.dateBySettingHour(hour, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(halfHour)
-        } else {
-            return cal.dateBySettingHour(hour, minute: 30, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(halfHour)
-        }
+        return cal.dateBySettingHour(hour, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(fullHour)
     }
     
     func adjustMinMaxXYCoordinates(

@@ -73,9 +73,7 @@ class InterfaceController: WKInterfaceController {
         NightscoutService.singleton.readLastTwoHoursChartData({(historicBgData) -> Void in
             self.historicBgData = historicBgData
             self.paintChart(UnitsConverter.toDisplayUnits(self.historicBgData),
-                yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
-                    BloodSugar.getMinimumTimestamp(historicBgData),
-                    to: BloodSugar.getMaximumTimestamp(historicBgData)))
+                yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay())
             NightscoutDataRepository.singleton.storeHistoricBgData(self.historicBgData)
         })
     }
@@ -100,9 +98,7 @@ class InterfaceController: WKInterfaceController {
         timer.fire()
         
         paintChart(historicBgData, yesterdayValues:
-            YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay(
-                BloodSugar.getMinimumTimestamp(historicBgData),
-                to: BloodSugar.getMaximumTimestamp(historicBgData)))
+            YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay())
         paintCurrentBgData(currentNightscoutData)
     }
 
@@ -129,7 +125,7 @@ class InterfaceController: WKInterfaceController {
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
-        guard let chartImage = chartPainter.drawImage(
+        guard case let (chartImage?, _) = chartPainter.drawImage(
                 [UnitsConverter.toDisplayUnits(bgValues), UnitsConverter.toDisplayUnits(yesterdayValues)],
                 upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
                 lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))

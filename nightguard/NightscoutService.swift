@@ -104,8 +104,10 @@ class NightscoutService {
         
         // Get the current data from REST-Call
         let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
-        guard let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: requestUri)!,
-                                                                      cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20) else {
+        guard let request : NSMutableURLRequest =
+            NSMutableURLRequest(URL: NSURL(string: requestUri)!,
+                            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
+        else {
             return
         }
         
@@ -157,6 +159,18 @@ class NightscoutService {
         let endOfYesterday = calendar.startOfDayForDate(TimeService.getToday())
         
         readChartDataWithinPeriodOfTime(startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
+    }
+    
+    /* Reads all values from the current day. */
+    func readTodaysChartData(resultHandler : ([BloodSugar] -> Void)) {
+        
+        let calendar = NSCalendar.currentCalendar()
+        let today = TimeService.getToday()
+        
+        let beginOfDay = calendar.startOfDayForDate(today)
+        let endOfDay = calendar.startOfDayForDate(TimeService.getTomorrow())
+        
+        readChartDataWithinPeriodOfTime(beginOfDay, timestamp2: endOfDay, resultHandler: resultHandler)
     }
     
     func readDay(nrOfDaysAgo : Int, callbackHandler : (nrOfDay : Int, [BloodSugar]) -> Void) {

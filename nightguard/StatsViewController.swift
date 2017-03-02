@@ -90,12 +90,12 @@ class StatsViewController: UIViewController {
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
-        guard let chartImage = chartPainter.drawImage(
+        guard case let (chartImage?, _) = chartPainter.drawImage(
             UnitsConverter.toDisplayUnits(days),
             upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
             lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))
-            ) else {
-                return
+        ) else {
+            return
         }
         dispatch_async(dispatch_get_main_queue(), {
             self.chartImageView.image = chartImage
