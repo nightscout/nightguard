@@ -24,6 +24,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var spriteKitView: UIView!
 
+    // the way that has already been moved during a pan gesture
+    var oldXTranslation : CGFloat = 0
+    
     var chartScene = ChartScene(size: CGSize(width: 320, height: 280))
     // timer to check continuously for new bgValues
     var timer = NSTimer()
@@ -39,9 +42,11 @@ class MainViewController: UIViewController {
         let value = UIInterfaceOrientation.Portrait.rawValue
         UIDevice.currentDevice().setValue(value, forKey: "orientation")
         
-        let historicBgData = BgDataHolder.singleton.getHistoricBgData()
-        chartScene.paintChart(historicBgData,
-                   yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay())
+        let historicBgData = BgDataHolder.singleton.getTodaysBgData()
+        YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
+            self.chartScene.paintChart(historicBgData,
+                   yesterdayValues: yesterdaysValues)
+        }
     }
     
     override func viewDidLoad() {
@@ -66,9 +71,12 @@ class MainViewController: UIViewController {
         
         paintScreenLockSwitch()
         paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
-        let historicBgData = BgDataHolder.singleton.getHistoricBgData()
-        chartScene.paintChart(historicBgData,
-                   yesterdayValues: YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay())
+        let historicBgData = BgDataHolder.singleton.getTodaysBgData()
+        
+        YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdayValues in
+            self.chartScene.paintChart(historicBgData,
+                    yesterdayValues: yesterdayValues)
+        }
         
         // Start the timer to retrieve new bgValues
         timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
@@ -84,6 +92,44 @@ class MainViewController: UIViewController {
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height))
         let skView = spriteKitView as! SKView
         skView.presentScene(chartScene)
+        
+        // Register Gesture Recognizer so that the user can scroll
+        // through the charts
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(MainViewController.panGesture(_:)))
+        skView.addGestureRecognizer(panGesture)
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+ 
+        chartScene.stopSwipeAction()
+    }
+
+    
+    func panGesture(recognizer : UIPanGestureRecognizer) {
+        
+        if recognizer.state == UIGestureRecognizerState.Began {
+            oldXTranslation = 0
+
+            // The user just touched the display
+            // So we use this to stop eventually running actions
+            chartScene.stopSwipeAction()
+        }
+        let translation = recognizer.translationInView(spriteKitView)
+
+        chartScene.draggedByATouch(translation.x - oldXTranslation)
+        oldXTranslation = translation.x
+        
+        if (recognizer.state == UIGestureRecognizerState.Ended) {
+            let velocity = recognizer.velocityInView(spriteKitView)
+            
+            if (velocity.x < -100) {
+                // Left Swipe detected
+                chartScene.swipeChart(velocity.x)
+            } else if (velocity.x > 100) {
+                // Right Swipe detected
+                chartScene.swipeChart(velocity.x)
+            }
+        }
     }
     
     // Resize the MPVolumeView when the parent view changes
@@ -114,7 +160,7 @@ class MainViewController: UIViewController {
     func timerDidEnd(timer:NSTimer) {
         
         checkForNewValuesFromNightscoutServer()
-        if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData(), bloodValues: BgDataHolder.singleton.getHistoricBgData()) {
+        if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData(), bloodValues: BgDataHolder.singleton.getTodaysBgData()) {
             AlarmSound.play()
         } else {
             AlarmSound.stop()
@@ -146,11 +192,15 @@ class MainViewController: UIViewController {
             NightscoutDataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
         })
         NightscoutService.singleton.readTodaysChartData({(historicBgData) -> Void in
-            BgDataHolder.singleton.setHistoricBgData(historicBgData)
-            self.chartScene.paintChart(historicBgData, yesterdayValues:
-                YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay())
             
-            NightscoutDataRepository.singleton.storeHistoricBgData(BgDataHolder.singleton.getHistoricBgData())
+            BgDataHolder.singleton.setTodaysBgData(historicBgData)
+            if BgDataHolder.singleton.hasNewValues {
+                YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdayValues in
+                    self.chartScene.paintChart(historicBgData, yesterdayValues: yesterdayValues)
+                }
+            }
+            
+            NightscoutDataRepository.singleton.storeHistoricBgData(BgDataHolder.singleton.getTodaysBgData())
         })
     }
     

@@ -24,6 +24,9 @@ class ChartPainter {
     
     var canvasWidth : Int = 165
     var canvasHeight : Int = 125
+    // the height that can be used to paint the lines
+    // this way the lines can't cross the x-axis labels
+    var paintableHeight : Int = 100
     
     var maximumXValue : Double = 0
     var minimumXValue : Double = Double.infinity
@@ -36,6 +39,7 @@ class ChartPainter {
         size = CGSize.init(width: canvasWidth, height: canvasHeight)
         self.canvasWidth = canvasWidth
         self.canvasHeight = canvasHeight
+        self.paintableHeight = canvasHeight - 30
     }
     
     /* 
@@ -70,6 +74,8 @@ class ChartPainter {
         // Setup complete, do drawing here
         paintNicePartArea(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
+        paintFullHourText(context!)
+        
         var nrOfDay = 0
         var positionOfCurrentValue = 0
         for bloodValues in days {
@@ -81,9 +87,9 @@ class ChartPainter {
             }
         }
         
-        paintFullHourText()
-        
         paintLegend(days.count)
+        
+        paintUpperLowerBoundLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
         // Drawing complete, retrieve the finished image and cleanup
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -104,7 +110,7 @@ class ChartPainter {
         }
     }
     
-    func paintBloodValues(context : CGContext, bgValues : [BloodSugar], foregroundColor : CGColor) {
+    private func paintBloodValues(context : CGContext, bgValues : [BloodSugar], foregroundColor : CGColor) {
         CGContextSetStrokeColorWithColor(context, foregroundColor)
         CGContextBeginPath(context)
         
@@ -114,25 +120,32 @@ class ChartPainter {
             return
         }
         for currentPoint in 1...maxPoints-1 {
-            
-            CGContextMoveToPoint(context,
-                                 calcXValue(bgValues[currentPoint-1].timestamp),
-                                 calcYValue(bgValues[currentPoint-1].value))
-            CGContextAddLineToPoint(context,
-                                    calcXValue(bgValues[currentPoint].timestamp),
-                                    calcYValue(bgValues[currentPoint].value))
+            drawLine(context,
+                     x1: calcXValue(bgValues[currentPoint-1].timestamp),
+                     y1: calcYValue(bgValues[currentPoint-1].value),
+                     x2: calcXValue(bgValues[currentPoint].timestamp),
+                     y2: calcYValue(bgValues[currentPoint].value))
         }
         CGContextStrokePath(context)
     }
     
+    private func drawLine(context : CGContext, x1 : CGFloat, y1 : CGFloat, x2 : CGFloat, y2 : CGFloat) {
+        
+        CGContextMoveToPoint(context, x1, y1)
+        CGContextAddLineToPoint(context, x2, y2)
+    }
+    
     // Paint the part between upperBound and lowerBoundValue in gray
-    func paintNicePartArea(context : CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) {
+    private func paintNicePartArea(context : CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) {
         
         // paint the rectangle
         CGContextSetLineWidth(context, 2.0)
         CGContextSetFillColorWithColor(context, DARKGRAY.CGColor)
         let goodPart = CGRect(origin: CGPoint.init(x: 0, y: calcYValue(upperBoundNiceValue)), size: CGSize.init(width: canvasWidth, height: Int(calcYValue(lowerBoundNiceValue) - calcYValue(upperBoundNiceValue))))
         CGContextFillRect(context, goodPart)
+    }
+    
+    private func paintUpperLowerBoundLabels(context : CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) {
         
         // paint the upper/lower bounds text
         let paragraphStyle = NSMutableParagraphStyle()
@@ -141,19 +154,23 @@ class ChartPainter {
                      NSParagraphStyleAttributeName: paragraphStyle,
                      NSForegroundColorAttributeName: UIColor.grayColor()]
         
-        let upperBoundString = upperBoundNiceValue.cleanValue
-        upperBoundString.drawWithRect(
-            CGRect(x: 5, y: CGFloat.init(calcYValue(upperBoundNiceValue)), width: 40, height: 14),
+        var x = 5
+        while (x < canvasWidth) {
+            let upperBoundString = upperBoundNiceValue.cleanValue
+            upperBoundString.drawWithRect(
+                CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(upperBoundNiceValue)), width: 40, height: 14),
                 options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
-        
-        let lowerBoundString = lowerBoundNiceValue.cleanValue
-        lowerBoundString.drawWithRect(
-            CGRect(x: 5, y: min(CGFloat.init(calcYValue(lowerBoundNiceValue)-15), value2: CGFloat.init(canvasHeight-40)), width: 40, height: 14),
+            
+            let lowerBoundString = lowerBoundNiceValue.cleanValue
+            lowerBoundString.drawWithRect(
+                CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(lowerBoundNiceValue))-15, width: 40, height: 14),
                 options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
-
+            
+            x = x + 200
+        }
     }
     
-    func min(value1 : CGFloat, value2 : CGFloat) -> CGFloat {
+    private func min(value1 : CGFloat, value2 : CGFloat) -> CGFloat {
         if value1 < value2 {
             return value1
         }
@@ -161,7 +178,7 @@ class ChartPainter {
     }
     
     // Paints the X-Axis Text
-    func paintFullHourText() {
+    private func paintFullHourText(context : CGContext) {
         // Draw the time
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .Center
@@ -170,13 +187,13 @@ class ChartPainter {
                      NSForegroundColorAttributeName: UIColor.grayColor()]
         
         if durationIsMoreThan6Hours(minimumXValue, maxTimestamp: maximumXValue) && canvasWidth < 1920 {
-            paintEverySecondHour(attrs)
+            paintEverySecondHour(context, attrs: attrs)
         } else {
-            paintHourTimestamps(attrs)
+            paintHourTimestamps(context, attrs: attrs)
         }
     }
     
-    func paintLegend(nrOfNames : Int) {
+    private func paintLegend(nrOfNames : Int) {
         
         let names = ["D1", "D2", "D3", "D4", "D5"]
         let namesToDisplay = Array(names.prefix(nrOfNames))
@@ -198,11 +215,11 @@ class ChartPainter {
         }
     }
     
-    func durationIsMoreThan6Hours(minTimestamp : Double, maxTimestamp : Double) -> Bool {
+    private func durationIsMoreThan6Hours(minTimestamp : Double, maxTimestamp : Double) -> Bool {
         return maxTimestamp - minTimestamp > 6 * 60 * 60 * 1000
     }
     
-    func paintEverySecondHour(attrs : [String : AnyObject]) {
+    private func paintEverySecondHour(context : CGContext, attrs : [String : AnyObject]) {
         let halfHours = determineEverySecondHourBetween(minimumXValue, maxTimestamp: maximumXValue)
         
         let hourFormat = NSDateFormatter()
@@ -215,7 +232,7 @@ class ChartPainter {
         }
     }
     
-    func determineEverySecondHourBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
+    private func determineEverySecondHourBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
         
         let minDate = NSDate(timeIntervalSince1970: minTimestamp / 1000)
         let maxDate = NSDate(timeIntervalSince1970: maxTimestamp / 1000)
@@ -238,19 +255,26 @@ class ChartPainter {
         return evenHours
     }
     
-    func paintHourTimestamps(attrs : [String : AnyObject]) {
+    private func paintHourTimestamps(context : CGContext, attrs : [String : AnyObject]) {
         let hours = determineHoursBetween(minimumXValue, maxTimestamp: maximumXValue)
         
         let hourFormat = NSDateFormatter()
         hourFormat.dateFormat = "HH:mm"
+        
+        CGContextSetStrokeColorWithColor(context, BLACK.CGColor)
         for timestamp in hours {
             let hourString : String = hourFormat.stringFromDate(NSDate(timeIntervalSince1970 : timestamp / 1000))
-            hourString.drawWithRect(CGRect(x: calcXValue(timestamp)-25, y: CGFloat.init(canvasHeight-20), width: 50, height: 14),
+            let x = calcXValue(timestamp)
+            hourString.drawWithRect(CGRect(x: x-25, y: CGFloat.init(canvasHeight-20), width: 50, height: 14),
                                     options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
+            
+            CGContextBeginPath(context)
+            drawLine(context, x1: x, y1: 0, x2: x, y2: CGFloat(canvasHeight) - 20)
+            CGContextStrokePath(context)
         }
     }
     
-    func determineHoursBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
+    private func determineHoursBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
         
         let minDate = NSDate(timeIntervalSince1970: minTimestamp / 1000)
         let maxDate = NSDate(timeIntervalSince1970: maxTimestamp / 1000)
@@ -274,7 +298,7 @@ class ChartPainter {
     }
     
     // Returns e.g. 04:00 for 02:00 o'clock.
-    func getNextEvenHour(date : NSDate) -> NSDate {
+    private func getNextEvenHour(date : NSDate) -> NSDate {
         
         let cal = NSCalendar.currentCalendar()
         
@@ -287,11 +311,11 @@ class ChartPainter {
         }
     }
     
-    func isEven(hour : Int) -> Bool {
+    private func isEven(hour : Int) -> Bool {
         return hour % 2 == 0
     }
     
-    func getNextHour(date : NSDate) -> NSDate {
+    private func getNextHour(date : NSDate) -> NSDate {
         
         let cal = NSCalendar.currentCalendar()
         
@@ -300,7 +324,7 @@ class ChartPainter {
         return cal.dateBySettingHour(hour, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(fullHour)
     }
     
-    func adjustMinMaxXYCoordinates(
+    private func adjustMinMaxXYCoordinates(
             days : [[BloodSugar]],
             upperBoundNiceValue : Float,
             lowerBoundNiceValue : Float) {
@@ -313,7 +337,7 @@ class ChartPainter {
         (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(days, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
     }
     
-    func adjustMinMax(days : [[BloodSugar]], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -> (Double, Double, Float, Float) {
+    private func adjustMinMax(days : [[BloodSugar]], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -> (Double, Double, Float, Float) {
         
         var newMinXValue = minimumXValue
         var newMaxXValue = maximumXValue
@@ -342,23 +366,24 @@ class ChartPainter {
         return (newMinXValue, newMaxXValue, newMinYValue, newMaxYValue)
 
     }
-    func calcXValue(x : Double) -> CGFloat {
+    
+    private func calcXValue(x : Double) -> CGFloat {
         return CGFloat.init(stretchedXValue(x));
     }
     
-    func calcYValue(y : Float) -> CGFloat {
+    private func calcYValue(y : Float) -> CGFloat {
 
         var calculatedY : Float = stretchedYValue(y)
         if calculatedY > Float(Int.max) {
             calculatedY = Float(Int.max)
         }
-        let mirroredY : Int = canvasHeight - Int(calculatedY)
+        let mirroredY : Int = paintableHeight - Int(calculatedY)
         let cgfloat : CGFloat = CGFloat(mirroredY)
         
         return cgfloat
     }
     
-    func stretchedXValue(x : Double) -> Double {
+    private func stretchedXValue(x : Double) -> Double {
         var range = maximumXValue - minimumXValue
         if range == 0 {
             // prevent a division by zero
@@ -367,12 +392,12 @@ class ChartPainter {
         return (Double(canvasWidth) / Double(range)) * Double(x - minimumXValue)
     }
     
-    func stretchedYValue(y : Float) -> Float {
+    private func stretchedYValue(y : Float) -> Float {
         var range = maximumYValue - minimumYValue
         if range == 0 {
             // prevent a division by zero
             range = 1
         }
-        return (Float(canvasHeight) / Float(range)) * (y - minimumYValue)
+        return (Float(paintableHeight) / Float(range)) * (y - minimumYValue)
     }
 }

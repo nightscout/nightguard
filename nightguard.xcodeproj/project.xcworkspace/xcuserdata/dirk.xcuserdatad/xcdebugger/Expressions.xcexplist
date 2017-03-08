@@ -11,6 +11,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "ChartScene.(isTooMuchLeft in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; Bool:ChartScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "canvasWidth">
+            </PersistentString>
+            <PersistentString
+               value = "size.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "AlarmViewController.(preselectItemInPickerView in _530B1A374ECBC7254C2100F0B4BE806D)() -&gt; ():AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -36,6 +47,9 @@
                value = "self.window?.rootViewController.presentedViewController">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InterfaceController.(paintCurrentBgData in _80F56E060DDBE90405EA1F326236CC1B)(NightscoutData) -&gt; ():InterfaceController.swift">
       </ContextState>
       <ContextState
          contextName = "static UnitsConverter.toMgdl(String) -&gt; Float:UnitsConverter.swift">
@@ -172,6 +186,14 @@
          contextName = "ServiceBoundary.(readStatus((String) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
       </ContextState>
       <ContextState
+         contextName = "ChartScene.swipeChart(CGFloat) -&gt; ():ChartScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "chartNode.position.x">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ChartPainter.adjustMinMaxXYCoordinates([BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
       </ContextState>
       <ContextState
@@ -202,6 +224,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "InterfaceController.willActivate() -&gt; ():InterfaceController.swift">
+      </ContextState>
+      <ContextState
          contextName = "ServiceBoundary.readStatus((String) -&gt; ()) -&gt; ():ServiceBoundary.swift">
       </ContextState>
       <ContextState
@@ -209,6 +234,14 @@
          <PersistentStrings>
             <PersistentString
                value = "removeDecimals(value)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.((readNewValuesFromNightscoutServer in _6000ED01001B5B47F2258CF855F406C8)() -&gt; ()).(closure #2):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "BgDataHolder.singleton">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -239,6 +272,9 @@
                value = "convertToDisplayUnits(String(alertIfAboveValue))">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ChartScene.(moveXTranslationPosition in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; ():ChartScene.swift">
       </ContextState>
       <ContextState
          contextName = "ComplicationController.(getCurrentTimelineEntryForComplication(CLKComplication, withHandler : (CLKComplicationTimelineEntry?) -&gt; ()) -&gt; ()).(closure #1):ComplicationController.swift">

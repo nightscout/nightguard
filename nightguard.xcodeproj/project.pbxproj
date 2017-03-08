@@ -66,6 +66,7 @@
 		43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
+		43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0E91D0768EF00C329A2 /* WatchService.swift */; };
 		43F1E0EE1D07693300C329A2 /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
@@ -718,6 +719,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4346F9841D0773F700487541 /* TimeService.swift in Sources */,
+				43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */,
 				432E62EC1D15EFEC00DD7978 /* FloatExtension.swift in Sources */,
 				43F1E1151D076CE700C329A2 /* YesterdayBloodSugarService.swift in Sources */,
 				43647C0D1BFF6435004389F9 /* NotificationController.swift in Sources */,

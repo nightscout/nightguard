@@ -13,11 +13,17 @@ class ChartScene : SKScene {
     
     var chartNode = SKSpriteNode()
     var lastXTranslation : CGFloat = 0
+    var canvasWidth : CGFloat = 0
+    // Maximum right position of the chart
+    var maxXPosition : CGFloat = 0
+    // Minimum (left) position of the chart
+    var minXPosition : CGFloat = 0
     
     override init(size: CGSize) {
         super.init(size: size)
         
         self.size = size
+        self.backgroundColor = UIColor.blackColor()
         initialPlacingOfChart()
         
         paintChart([], yesterdayValues: [])
@@ -29,9 +35,12 @@ class ChartScene : SKScene {
     
     func paintChart(bgValues : [BloodSugar], yesterdayValues : [BloodSugar]) {
         
-        let canvasWidth = Int(size.width * 6)
+        canvasWidth = CGFloat(size.width * 6)
+        maxXPosition = 0
+        minXPosition = size.width - canvasWidth
+        
         let chartPainter : ChartPainter = ChartPainter(
-            canvasWidth: canvasWidth,
+            canvasWidth: Int(canvasWidth),
             canvasHeight: Int(size.height));
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
@@ -47,7 +56,12 @@ class ChartScene : SKScene {
         let chartTexture = SKTexture(image: chartImage)
         self.chartNode.texture = chartTexture
         self.chartNode.size = chartImage.size
-        self.chartNode.position = CGPointMake(-CGFloat(displayPosition) + CGFloat(size.width * 2 / 3), 0)
+        
+        let moveToNewValue = SKAction.moveTo(
+            CGPointMake(
+                normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width * 2 / 3)),
+                0), duration: 1)
+        self.chartNode.runAction(moveToNewValue)
     }
     
     private func initialPlacingOfChart() {
@@ -69,33 +83,86 @@ class ChartScene : SKScene {
         return retval
     }
     
-    private func panForTranslation(translation: CGPoint) {
-        
-        let aNewPosition = CGPoint(x: chartNode.position.x + translation.x, y: chartNode.position.y)
-        chartNode.position = aNewPosition
+    func stopSwipeAction() {
+        chartNode.removeAllActions()
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        for touch: AnyObject in touches {
-            let positionInScene = touch.locationInNode(self)
-            let previousPosition = touch.previousLocationInNode(self)
-            lastXTranslation = positionInScene.x - previousPosition.x
-            let translation = CGPoint(x: lastXTranslation, y: positionInScene.y - previousPosition.y)
-            
-            panForTranslation(translation)
+    func draggedByATouch(xtranslation : CGFloat) {
+        
+        moveXTranslationPosition(xtranslation)
+    }
+    
+    func swipeChart(x : CGFloat) {
+        
+        let newXPosition = chartNode.position.x + CGFloat(x)
+        if isTooMuchLeft(newXPosition) {
+            let modifiedXPosition = -canvasWidth + size.width - 25
+            let reducedSwipeAction = SKAction.moveTo(CGPoint(x: modifiedXPosition, y: 0), duration: min(1, abs(Double((chartNode.position.x + canvasWidth + size.width + 25) / x))))
+            wooberBackToRight(chartNode, action: reducedSwipeAction)
+        } else if isTooMuchRight(newXPosition) {
+            let reducedSwipeAction = SKAction.moveTo(CGPoint(x: 0+25, y: 0), duration: abs(Double(chartNode.position.x / x)))
+            wooberBackToLeft(chartNode, action: reducedSwipeAction)
+        } else {
+            let swipeAction = SKAction.moveByX(x, y: 0, duration: 1)
+            swipeAction.timingMode = SKActionTimingMode.EaseOut
+            chartNode.runAction(swipeAction, withKey: "swipe")
         }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        chartNode.removeAllActions()
-        lastXTranslation = 0
+    func moveChart(x : Double) {
+        
+        moveXTranslationPosition(CGFloat(x))
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    // Leaves the position as is - but the min or max Position if the 
+    // chart would be outside of the screen
+    private func normalizedXPosition(x : CGFloat) -> CGFloat {
+
+        if isTooMuchLeft(x) {
+            return minXPosition
+        } else if isTooMuchRight(x) {
+            return maxXPosition
+        } else {
+            return x
+        }
+    }
+    
+    private func moveXTranslationPosition(x : CGFloat) {
+    
+        let newXPosition = chartNode.position.x + CGFloat(x)
+        chartNode.position = CGPoint(x: normalizedXPosition(newXPosition), y: chartNode.position.y)
+    }
+    
+    private func isTooMuchLeft(newXPosition : CGFloat) -> Bool {
+        return newXPosition < minXPosition
+    }
+    
+    private func isTooMuchRight(newXPosition: CGFloat) -> Bool {
+        return newXPosition > maxXPosition
+    }
+    
+    private func wooberBackToRight(chartNode : SKNode, action : SKAction?) {
+        let moveActionToLeft = SKAction.moveByX(35, y: 0, duration: 0.2);
+        let moveActionBackToMaxXPosition = SKAction.moveTo(CGPoint(x: -canvasWidth + size.width, y: 0), duration: 0.2)
         
-        let moveAction = SKAction.moveByX(lastXTranslation * 20, y: 0, duration: abs(Double(lastXTranslation) / 10));
-        moveAction.timingMode = SKActionTimingMode.EaseOut
+        chartNode.removeAllActions()
+        var actions = [moveActionToLeft, moveActionBackToMaxXPosition]
+        if action != nil {
+            actions.insert(action!, atIndex: 0)
+        }
+        chartNode.runAction(SKAction.sequence(actions))
+    }
+    
+    private func wooberBackToLeft(chartNode : SKNode, action : SKAction?) {
+        let moveActionToRight = SKAction.moveByX(-35, y: 0, duration: 0.2);
+        let moveActionBackToMinXPosition = SKAction.moveTo(CGPoint(x: 0, y: 0), duration: 0.2)
+        moveActionBackToMinXPosition.timingMode = SKActionTimingMode.EaseOut
         
-        chartNode.runAction(moveAction)
+        chartNode.removeAllActions()
+        var actions = [moveActionToRight, moveActionBackToMinXPosition]
+        if action != nil {
+            actions.insert(action!, atIndex: 0)
+        }
+        chartNode.runAction(SKAction.sequence(actions))
     }
 }

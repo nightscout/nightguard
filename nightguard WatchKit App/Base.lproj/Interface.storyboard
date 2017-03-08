@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch42" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10032"/>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11508"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -44,10 +48,7 @@
                             </items>
                         </group>
                         <separator alignment="left" id="AeO-Dw-7jo"/>
-                        <imageView width="165" height="125" alignment="center" verticalAlignment="center" id="kwI-xY-joe">
-                            <variation key="device=watch38mm" height="100" width="165"/>
-                            <variation key="device=watch42mm" height="125" width="165"/>
-                        </imageView>
+                        <spriteKitScene width="155" height="125" alignment="left" id="HJ3-mD-NFS"/>
                     </items>
                     <menu key="menu" id="YiW-tI-jRp">
                         <items>
@@ -71,14 +72,14 @@
                     <connections>
                         <outlet property="batteryLabel" destination="lz8-YE-T1d" id="a4A-hb-KFZ"/>
                         <outlet property="bgLabel" destination="vdn-99-EwA" id="Tg2-Yj-bDo"/>
-                        <outlet property="chartImage" destination="kwI-xY-joe" id="5Hp-m2-R5F"/>
                         <outlet property="deltaArrowLabel" destination="nnO-nW-RbM" id="aR3-me-buM"/>
                         <outlet property="deltaLabel" destination="frk-q8-3y9" id="KvH-er-bpE"/>
+                        <outlet property="spriteKitView" destination="HJ3-mD-NFS" id="hnU-4D-1mD"/>
                         <outlet property="timeLabel" destination="w1H-tu-XyX" id="KWM-Y9-FDg"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="-69.743589743589752" y="-42.282051282051285"/>
+            <point key="canvasLocation" x="-70.615384615384613" y="-43.153846153846153"/>
         </scene>
         <!--InfoInterfaceController-->
         <scene sceneID="uNG-cf-2tk">

@@ -15,20 +15,24 @@ import Foundation
 class BgDataHolder {
     static let singleton = BgDataHolder()
     
-    private var historicBgData : [BloodSugar] = []
+    private var todaysBgData : [BloodSugar] = []
     private var currentNightscoutData = NightscoutData()
     private var testNightscoutData = NightscoutData()
+    var hasNewValues : Bool = false
     
     func setTestBgData(testBgData : NightscoutData) {
         self.testNightscoutData = testBgData
     }
     
-    func setHistoricBgData(historicBgData : [BloodSugar]) {
-        self.historicBgData = historicBgData
+    func setTodaysBgData(todaysBgData : [BloodSugar]) {
+        let oldBgData = self.todaysBgData
+        hasNewValues = determineIfNewDataWasReceived(oldBgData, new: todaysBgData)
+        
+        self.todaysBgData = todaysBgData
     }
     
-    func getHistoricBgData() -> [BloodSugar] {
-        return historicBgData
+    func getTodaysBgData() -> [BloodSugar] {
+        return todaysBgData
     }
     
     func setCurrentBgData(currentNightscoutData : NightscoutData) {
@@ -46,6 +50,19 @@ class BgDataHolder {
     func inTestMode() -> Bool {
         let dic = NSProcessInfo.processInfo().environment
         return dic["TEST"] != nil
+    }
+    
+    private func determineIfNewDataWasReceived(old : [BloodSugar], new : [BloodSugar]) -> Bool {
+        
+        if old.count != new.count {
+            return true
+        } else if old.count == 0 {
+            return false
+        }
+        
+        // if both have the same length they are considered different, if the
+        // last item differs
+        return old.last?.timestamp != new.last?.timestamp
     }
     
     private func generateHighBgTestData() -> NightscoutData {
