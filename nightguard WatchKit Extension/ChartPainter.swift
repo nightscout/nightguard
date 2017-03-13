@@ -226,9 +226,13 @@ class ChartPainter {
         hourFormat.dateFormat = "HH:mm"
         for timestamp in halfHours {
             let hourString : String = hourFormat.stringFromDate(NSDate(timeIntervalSince1970 : timestamp / 1000))
-            hourString.drawWithRect(CGRect(x: calcXValue(timestamp)-25, y: CGFloat.init(canvasHeight-20), width: 50, height: 14),
+            let x = calcXValue(timestamp)
+            hourString.drawWithRect(CGRect(x: x-25, y: CGFloat.init(canvasHeight-20), width: 50, height: 14),
                                     options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
             
+            CGContextBeginPath(context)
+            drawLine(context, x1: x, y1: 0, x2: x, y2: CGFloat(canvasHeight) - 20)
+            CGContextStrokePath(context)
         }
     }
     
