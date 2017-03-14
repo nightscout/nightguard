@@ -590,12 +590,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rrv-9c-L87">
-                                <rect key="frame" x="0.0" y="20" width="320" height="499"/>
-                                <gestureRecognizers/>
-                            </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="arQ-OX-Zjf" customClass="SKView">
+                                <rect key="frame" x="0.0" y="46" width="320" height="473"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4BU-pQ-U8n">
-                                <rect key="frame" x="0.0" y="0.0" width="73" height="38"/>
+                                <rect key="frame" x="0.0" y="20" width="73" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Edit.."/>
@@ -606,16 +607,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstItem="rrv-9c-L87" firstAttribute="top" secondItem="fgE-PI-H2z" secondAttribute="bottom" id="7Cq-UR-m2U"/>
-                            <constraint firstItem="rrv-9c-L87" firstAttribute="leading" secondItem="quX-qv-rSf" secondAttribute="leading" id="MIL-DT-ke6"/>
-                            <constraint firstItem="rrv-9c-L87" firstAttribute="bottom" secondItem="P49-JR-KR5" secondAttribute="top" id="V8X-Gi-ZRp"/>
-                            <constraint firstAttribute="trailing" secondItem="rrv-9c-L87" secondAttribute="trailing" id="XoF-7a-4cB"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Stats" image="StatsIcon" id="ilS-RR-ZED"/>
                     <connections>
-                        <outlet property="chartImageView" destination="rrv-9c-L87" id="VH7-BO-jYj"/>
+                        <outlet property="chartSpriteKitView" destination="arQ-OX-Zjf" id="FmN-nz-CxK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p5b-Fa-7Ux" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -26,16 +26,18 @@ class ChartScene : SKScene {
         self.backgroundColor = UIColor.blackColor()
         initialPlacingOfChart()
         
-        paintChart([], yesterdayValues: [])
+        paintChart([[], []], canvasWidth: 0, maxYDisplayValue: 250)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func paintChart(bgValues : [BloodSugar], yesterdayValues : [BloodSugar]) {
+    // maxYDisplayValue is the maximum Value that will be displayed in the chart.
+    // Blood values that are higher will be set to maxYDisplayValue instead.
+    func paintChart(days : [[BloodSugar]], canvasWidth : CGFloat, maxYDisplayValue : CGFloat) {
         
-        canvasWidth = CGFloat(size.width * 6)
+        self.canvasWidth = canvasWidth
         maxXPosition = 0
         minXPosition = size.width - canvasWidth
         
@@ -46,7 +48,7 @@ class ChartScene : SKScene {
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
         guard case let (chartImage?, displayPosition) = chartPainter.drawImage(
-            [UnitsConverter.toDisplayUnits(bgValues), UnitsConverter.toDisplayUnits(yesterdayValues)],
+            days, maxYDisplayValue: maxYDisplayValue,
             upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
             lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))
         ) else {

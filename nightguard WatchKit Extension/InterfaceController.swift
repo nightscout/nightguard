@@ -84,6 +84,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     private func readNewValuesFromNightscoutServer() {
+        
+        let bounds = WKInterfaceDevice.currentDevice().screenBounds
+        
         NightscoutService.singleton.readCurrentDataForPebbleWatch({(currentNightscoutData) -> Void in
             self.currentNightscoutData = currentNightscoutData
             self.paintCurrentBgData(self.currentNightscoutData)
@@ -92,8 +95,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         NightscoutService.singleton.readTodaysChartData({(historicBgData) -> Void in
             self.historicBgData = historicBgData
             YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
-                self.chartScene!.paintChart(UnitsConverter.toDisplayUnits(self.historicBgData),
-                    yesterdayValues: yesterdaysValues)
+                self.chartScene!.paintChart(
+                    [historicBgData,yesterdaysValues],
+                    canvasWidth: bounds.width, maxYDisplayValue: 250)
             }
             NightscoutDataRepository.singleton.storeHistoricBgData(self.historicBgData)
         })
@@ -113,11 +117,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         crownSequencer.delegate = self
         
         // Initialize the ChartScene
-        chartScene = ChartScene(size: CGSize(width: 156, height: 130))
+        let bounds = WKInterfaceDevice.currentDevice().screenBounds
+        chartScene = ChartScene(size: CGSize(width: bounds.width, height: 130))
         spriteKitView.presentScene(chartScene)
         
         YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
-            self.chartScene!.paintChart(self.historicBgData, yesterdayValues: yesterdaysValues)
+            self.chartScene!.paintChart(
+                [self.historicBgData, yesterdaysValues], canvasWidth: bounds.width, maxYDisplayValue: 250)
         }
     }
 

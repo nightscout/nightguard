@@ -44,8 +44,8 @@ class MainViewController: UIViewController {
         
         let historicBgData = BgDataHolder.singleton.getTodaysBgData()
         YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
-            self.chartScene.paintChart(historicBgData,
-                   yesterdayValues: yesterdaysValues)
+            self.chartScene.paintChart([historicBgData, yesterdaysValues],
+                   canvasWidth: self.spriteKitView.bounds.width * 6, maxYDisplayValue: 250)
         }
     }
     
@@ -74,8 +74,10 @@ class MainViewController: UIViewController {
         let historicBgData = BgDataHolder.singleton.getTodaysBgData()
         
         YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdayValues in
-            self.chartScene.paintChart(historicBgData,
-                    yesterdayValues: yesterdayValues)
+            self.chartScene.paintChart(
+                    [historicBgData, yesterdayValues],
+                    canvasWidth: self.spriteKitView.bounds.width * 6,
+                    maxYDisplayValue: 250)
         }
         
         // Start the timer to retrieve new bgValues
@@ -196,7 +198,10 @@ class MainViewController: UIViewController {
             BgDataHolder.singleton.setTodaysBgData(historicBgData)
             if BgDataHolder.singleton.hasNewValues {
                 YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdayValues in
-                    self.chartScene.paintChart(historicBgData, yesterdayValues: yesterdayValues)
+                    self.chartScene.paintChart(
+                        [historicBgData, yesterdayValues],
+                        canvasWidth: self.spriteKitView.bounds.width * 6,
+                        maxYDisplayValue: 250)
                 }
             }
             

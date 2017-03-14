@@ -11,13 +11,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ChartScene.(isTooMuchLeft in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; Bool:ChartScene.swift">
+         contextName = "AlarmViewController.viewDidLoad() -&gt; ():AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "canvasWidth">
+               value = "alertIfAboveValueLabel.text">
             </PersistentString>
             <PersistentString
-               value = "size.width">
+               value = "Float(&quot;10.0&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "Float(alertIfAboveValueLabel.text!)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -123,6 +126,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "StatsViewController.(updateChartScene in _EA34A49FF12FA0A082DB26ACD83DB1B6)() -&gt; ():StatsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "chartSpriteKitView.bounds.width">
+            </PersistentString>
+            <PersistentString
+               value = "chartSpriteKitView.bounds.height">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "NightscoutServiceTest.(testReadLast4Days() -&gt; ()).(closure #1):NightscoutServiceTest.swift">
       </ContextState>
       <ContextState
@@ -175,10 +189,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MainViewController.((paintChart in _6000ED01001B5B47F2258CF855F406C8)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ()).(closure #1):MainViewController.swift">
+         contextName = "ChartScene.swipeChart(CGFloat) -&gt; ():ChartScene.swift">
          <PersistentStrings>
             <PersistentString
-               value = "chartImage.size">
+               value = "chartNode.position.x">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -186,10 +200,10 @@
          contextName = "ServiceBoundary.(readStatus((String) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
       </ContextState>
       <ContextState
-         contextName = "ChartScene.swipeChart(CGFloat) -&gt; ():ChartScene.swift">
+         contextName = "MainViewController.((paintChart in _6000ED01001B5B47F2258CF855F406C8)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ()).(closure #1):MainViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "chartNode.position.x">
+               value = "chartImage.size">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -252,10 +266,10 @@
                value = "bloodValues[index-2].value">
             </PersistentString>
             <PersistentString
-               value = "bloodValues[index-1].value">
+               value = "deltaAmount">
             </PersistentString>
             <PersistentString
-               value = "deltaAmount">
+               value = "bloodValues[index-1].value">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -288,6 +302,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "ChartScene.(isTooMuchLeft in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; Bool:ChartScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "canvasWidth">
+            </PersistentString>
+            <PersistentString
+               value = "size.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "AlarmViewController.convertToDisplayUnits(String) -&gt; String:AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -295,20 +320,6 @@
             </PersistentString>
             <PersistentString
                value = "String(floatValue)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "AlarmViewController.viewDidLoad() -&gt; ():AlarmViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "alertIfAboveValueLabel.text">
-            </PersistentString>
-            <PersistentString
-               value = "Float(&quot;10.0&quot;)">
-            </PersistentString>
-            <PersistentString
-               value = "Float(alertIfAboveValueLabel.text!)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

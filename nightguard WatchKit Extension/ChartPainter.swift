@@ -52,7 +52,7 @@ class ChartPainter {
      * The position of the current value is returned as the second tuple element.
      * It is used to show the current value in the viewport.
      */
-    func drawImage(days : [[BloodSugar]], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> (UIImage?, Int) {
+    func drawImage(days : [[BloodSugar]], maxYDisplayValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> (UIImage?, Int) {
 
         // we need at least one day => otherwise paint nothing
         if days.count == 1 {
@@ -63,7 +63,7 @@ class ChartPainter {
             return (nil, 0)
         }
         
-        adjustMinMaxXYCoordinates(days, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
+        adjustMinMaxXYCoordinates(days, maxYDisplayValue: maxYDisplayValue, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
         // Setup our context
         let opaque = false
@@ -80,7 +80,7 @@ class ChartPainter {
         var positionOfCurrentValue = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
-            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor)
+            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor, maxYDisplayValue: 250)
             
             if nrOfDay == 1 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
@@ -110,7 +110,7 @@ class ChartPainter {
         }
     }
     
-    private func paintBloodValues(context : CGContext, bgValues : [BloodSugar], foregroundColor : CGColor) {
+    private func paintBloodValues(context : CGContext, bgValues : [BloodSugar], foregroundColor : CGColor, maxYDisplayValue : CGFloat) {
         CGContextSetStrokeColorWithColor(context, foregroundColor)
         CGContextBeginPath(context)
         
@@ -122,9 +122,9 @@ class ChartPainter {
         for currentPoint in 1...maxPoints-1 {
             drawLine(context,
                      x1: calcXValue(bgValues[currentPoint-1].timestamp),
-                     y1: calcYValue(bgValues[currentPoint-1].value),
+                     y1: calcYValue(Float(min(CGFloat(bgValues[currentPoint-1].value), value2: maxYDisplayValue))),
                      x2: calcXValue(bgValues[currentPoint].timestamp),
-                     y2: calcYValue(bgValues[currentPoint].value))
+                     y2: calcYValue(Float(min(CGFloat(bgValues[currentPoint].value), value2: maxYDisplayValue))))
         }
         CGContextStrokePath(context)
     }
@@ -330,6 +330,7 @@ class ChartPainter {
     
     private func adjustMinMaxXYCoordinates(
             days : [[BloodSugar]],
+            maxYDisplayValue : CGFloat,
             upperBoundNiceValue : Float,
             lowerBoundNiceValue : Float) {
         
@@ -338,16 +339,16 @@ class ChartPainter {
         maximumYValue = upperBoundNiceValue
         minimumYValue = lowerBoundNiceValue
         
-        (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(days, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
+        (minimumXValue, maximumXValue, minimumYValue, maximumYValue) = adjustMinMax(days, maxYDisplayValue: maxYDisplayValue, minimumXValue: minimumXValue, maximumXValue: maximumXValue, minimumYValue: minimumYValue, maximumYValue: maximumYValue)
     }
     
-    private func adjustMinMax(days : [[BloodSugar]], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -> (Double, Double, Float, Float) {
+    private func adjustMinMax(days : [[BloodSugar]], maxYDisplayValue: CGFloat, minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -> (Double, Double, Float, Float) {
         
         var newMinXValue = minimumXValue
         var newMaxXValue = maximumXValue
         
         var newMinYValue = minimumYValue
-        var newMaxYValue = maximumYValue
+        var newMaxYValue = Float(min(CGFloat(maximumYValue), value2: maxYDisplayValue))
         
         for bgValues in days {
             for bgValue in bgValues {
@@ -355,7 +356,7 @@ class ChartPainter {
                     newMinYValue = bgValue.value
                 }
                 if bgValue.value > newMaxYValue {
-                    newMaxYValue = bgValue.value
+                    newMaxYValue = Float(min(CGFloat(bgValue.value), value2: maxYDisplayValue))
                 }
             
                 if bgValue.timestamp < newMinXValue {

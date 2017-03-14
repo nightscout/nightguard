@@ -8,13 +8,20 @@
 
 import UIKit
 import WatchConnectivity
+import SpriteKit
 
 class StatsViewController: UIViewController {
     
-    @IBOutlet weak var chartImageView: UIImageView!
+    @IBOutlet weak var chartSpriteKitView: UIView!
+    
+    var chartScene = ChartScene(size: CGSize(width: 320, height: 280))
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        chartSpriteKitView.autoresizingMask = [
+            .FlexibleHeight,
+            .FlexibleWidth]
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -84,21 +91,8 @@ class StatsViewController: UIViewController {
     
     private func paintChart(days : [[BloodSugar]]) {
         
-        let chartPainter : ChartPainter = ChartPainter(
-            canvasWidth: Int(chartImageView.frame.size.width),
-            canvasHeight: Int(chartImageView.frame.size.height));
-        
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        
-        guard case let (chartImage?, _) = chartPainter.drawImage(
-            UnitsConverter.toDisplayUnits(days),
-            upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
-            lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))
-        ) else {
-            return
-        }
         dispatch_async(dispatch_get_main_queue(), {
-            self.chartImageView.image = chartImage
+            self.chartScene.paintChart(days, canvasWidth: self.chartSpriteKitView.bounds.width, maxYDisplayValue: 250)
         })
     }
     
@@ -108,5 +102,18 @@ class StatsViewController: UIViewController {
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
+    }
+    
+    private func updateChartScene(size : CGSize) {
+        // Initialize the ChartScene
+        chartScene = ChartScene(size: size)
+        let skView = chartSpriteKitView as! SKView
+        skView.presentScene(chartScene)
+        paintSelectedDays()
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+        updateChartScene(size)
     }
 }
