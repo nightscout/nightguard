@@ -39,13 +39,20 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        let value = UIInterfaceOrientation.Portrait.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeRight.rawValue, forKey: "orientation")
+        UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
+        
+        chartScene.size = CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height)
         
         let historicBgData = BgDataHolder.singleton.getTodaysBgData()
-        YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
-            self.chartScene.paintChart([historicBgData, yesterdaysValues],
-                   canvasWidth: self.spriteKitView.bounds.width * 6, maxYDisplayValue: 250)
+        // only if currentDay values are there, it makes sence to display them here
+        // otherwise, wait to get this data and display it using the running timer
+        if historicBgData.count > 0 {
+            YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
+            
+                self.chartScene.paintChart([historicBgData, yesterdaysValues],
+                    canvasWidth: self.spriteKitView.bounds.width * 6, maxYDisplayValue: 250)
+            }
         }
     }
     
@@ -71,14 +78,6 @@ class MainViewController: UIViewController {
         
         paintScreenLockSwitch()
         paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
-        let historicBgData = BgDataHolder.singleton.getTodaysBgData()
-        
-        YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdayValues in
-            self.chartScene.paintChart(
-                    [historicBgData, yesterdayValues],
-                    canvasWidth: self.spriteKitView.bounds.width * 6,
-                    maxYDisplayValue: 250)
-        }
         
         // Start the timer to retrieve new bgValues
         timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,

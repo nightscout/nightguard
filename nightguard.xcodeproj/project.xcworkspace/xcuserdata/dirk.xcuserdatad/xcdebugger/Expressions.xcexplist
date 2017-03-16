@@ -11,16 +11,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AlarmViewController.viewDidLoad() -&gt; ():AlarmViewController.swift">
+         contextName = "AlarmViewController.convertToDisplayUnits(String) -&gt; String:AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "alertIfAboveValueLabel.text">
+               value = "Float(value)">
             </PersistentString>
             <PersistentString
-               value = "Float(&quot;10.0&quot;)">
-            </PersistentString>
-            <PersistentString
-               value = "Float(alertIfAboveValueLabel.text!)">
+               value = "String(floatValue)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -104,6 +101,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "ChartPainter.drawImage([[BloodSugar]], maxYDisplayValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; (UIImage?, Int):ChartPainter.swift">
+      </ContextState>
+      <ContextState
          contextName = "BgDataHolder.getCurrentBgData() -&gt; NightscoutData:BgDataHolder.swift">
       </ContextState>
       <ContextState
@@ -118,14 +118,6 @@
          contextName = "ChartPainter.adjustMinMax([BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -&gt; (Double, Double, Float, Float):ChartPainter.swift">
       </ContextState>
       <ContextState
-         contextName = "InterfaceController.(paintChart in _80F56E060DDBE90405EA1F326236CC1B)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ():InterfaceController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "UnitsConverter.toDisplayUnits(defaults!.floatForKey(&quot;alertIfAboveValue&quot;))">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "StatsViewController.(updateChartScene in _EA34A49FF12FA0A082DB26ACD83DB1B6)() -&gt; ():StatsViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -137,10 +129,26 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "InterfaceController.(paintChart in _80F56E060DDBE90405EA1F326236CC1B)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ():InterfaceController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UnitsConverter.toDisplayUnits(defaults!.floatForKey(&quot;alertIfAboveValue&quot;))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "NightscoutServiceTest.(testReadLast4Days() -&gt; ()).(closure #1):NightscoutServiceTest.swift">
       </ContextState>
       <ContextState
          contextName = "StatisticsRepository.readDay(Int) -&gt; [BloodSugar]?:StatisticsRepository.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.(viewDidAppear(Bool) -&gt; ()).(closure #1):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.spriteKitView.bounds.width">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "AlarmViewController.adjustLowerSliderValue() -&gt; ():AlarmViewController.swift">
@@ -181,12 +189,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AppMessageService.(requestBaseUri() -&gt; ()).(closure #1):AppMessageService.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "String(baseUri)">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "StatsViewController.(updateChartScene in _EA34A49FF12FA0A082DB26ACD83DB1B6)(CGSize) -&gt; ():StatsViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "StatsViewController.viewWillTransitionToSize(CGSize, withTransitionCoordinator : UIViewControllerTransitionCoordinator) -&gt; ():StatsViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ServiceBoundary.(readStatus((String) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
       </ContextState>
       <ContextState
          contextName = "ChartScene.swipeChart(CGFloat) -&gt; ():ChartScene.swift">
@@ -195,9 +204,6 @@
                value = "chartNode.position.x">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ServiceBoundary.(readStatus((String) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
       </ContextState>
       <ContextState
          contextName = "MainViewController.((paintChart in _6000ED01001B5B47F2258CF855F406C8)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ()).(closure #1):MainViewController.swift">
@@ -227,6 +233,25 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "ChartScene.paintChart([[BloodSugar]], canvasWidth : CGFloat, maxYDisplayValue : CGFloat) -&gt; ():ChartScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width * 2 / 3))">
+            </PersistentString>
+            <PersistentString
+               value = "moveToNewValue">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AppMessageService.(requestBaseUri() -&gt; ()).(closure #1):AppMessageService.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(baseUri)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ComplicationController.getCurrentTimelineEntryForComplication(CLKComplication, withHandler : (CLKComplicationTimelineEntry?) -&gt; ()) -&gt; ():ComplicationController.swift">
       </ContextState>
       <ContextState
@@ -242,6 +267,14 @@
       </ContextState>
       <ContextState
          contextName = "ServiceBoundary.readStatus((String) -&gt; ()) -&gt; ():ServiceBoundary.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.(viewDidLoad() -&gt; ()).(closure #1):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.spriteKitView.bounds.width">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "static UnitsConverter.toDisplayUnits(Float) -&gt; Float:UnitsConverter.swift">
@@ -266,10 +299,10 @@
                value = "bloodValues[index-2].value">
             </PersistentString>
             <PersistentString
-               value = "deltaAmount">
+               value = "bloodValues[index-1].value">
             </PersistentString>
             <PersistentString
-               value = "bloodValues[index-1].value">
+               value = "deltaAmount">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -313,13 +346,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AlarmViewController.convertToDisplayUnits(String) -&gt; String:AlarmViewController.swift">
+         contextName = "AlarmViewController.viewDidLoad() -&gt; ():AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Float(value)">
+               value = "alertIfAboveValueLabel.text">
             </PersistentString>
             <PersistentString
-               value = "String(floatValue)">
+               value = "Float(&quot;10.0&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "Float(alertIfAboveValueLabel.text!)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

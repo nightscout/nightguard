@@ -59,7 +59,7 @@ class ChartPainter {
             return (nil, 0)
         }
         // we need at least 2 values - otherwise paint nothing and return empty image!
-        if days[0].count <= 1 {
+        if justOneOrLessValuesPerDiagram(days) {
             return (nil, 0)
         }
         
@@ -67,7 +67,7 @@ class ChartPainter {
         
         // Setup our context
         let opaque = false
-        let scale: CGFloat = 0
+        let scale: CGFloat = 2
         UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
         let context = UIGraphicsGetCurrentContext()
         
@@ -82,7 +82,7 @@ class ChartPainter {
             nrOfDay = nrOfDay + 1
             paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor, maxYDisplayValue: 250)
             
-            if nrOfDay == 1 {
+            if nrOfDay == 1 && bloodValues.count > 0 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
             }
         }
@@ -95,6 +95,16 @@ class ChartPainter {
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return (image, positionOfCurrentValue)
+    }
+    
+    private func justOneOrLessValuesPerDiagram(days : [[BloodSugar]]) -> Bool {
+        for bloodValues in days {
+            if bloodValues.count > 1 {
+                // at least one diagram will have a line, painting makes sense
+                return false
+            }
+        }
+        return true
     }
     
     // Returns a different Color for each different day

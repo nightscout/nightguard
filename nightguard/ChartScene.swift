@@ -26,7 +26,7 @@ class ChartScene : SKScene {
         self.backgroundColor = UIColor.blackColor()
         initialPlacingOfChart()
         
-        paintChart([[], []], canvasWidth: 0, maxYDisplayValue: 250)
+        paintChart([[], []], canvasWidth: size.width, maxYDisplayValue: 250)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,22 +47,24 @@ class ChartScene : SKScene {
         
         let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
-        guard case let (chartImage?, displayPosition) = chartPainter.drawImage(
+        let (chartImage, displayPosition) = chartPainter.drawImage(
             days, maxYDisplayValue: maxYDisplayValue,
             upperBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfAboveValue")),
             lowerBoundNiceValue: UnitsConverter.toDisplayUnits(defaults!.floatForKey("alertIfBelowValue"))
-        ) else {
+        )
+        
+        if chartImage == nil {
             return
         }
         
-        let chartTexture = SKTexture(image: chartImage)
+        let chartTexture = SKTexture(image: chartImage!)
         self.chartNode.texture = chartTexture
-        self.chartNode.size = chartImage.size
+        self.chartNode.size = chartImage!.size
         
+        let newXPosition = normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width * 2 / 3))
         let moveToNewValue = SKAction.moveTo(
-            CGPointMake(
-                normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width * 2 / 3)),
-                0), duration: 1)
+            CGPointMake(newXPosition, 0),
+            duration: 1)
         self.chartNode.runAction(moveToNewValue)
     }
     

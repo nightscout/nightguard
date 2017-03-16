@@ -26,14 +26,16 @@ class StatsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
 
-        paintSelectedDays()
+        
     }
     
     override func viewDidAppear(animated: Bool) {
         
         // force the display into horizontal orientation
-        let value = UIInterfaceOrientation.LandscapeRight.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
+        UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeRight.rawValue, forKey: "orientation")
+        
+        paintSelectedDays()
     }
     
     func paintSelectedDays() {
@@ -91,9 +93,7 @@ class StatsViewController: UIViewController {
     
     private func paintChart(days : [[BloodSugar]]) {
         
-        dispatch_async(dispatch_get_main_queue(), {
-            self.chartScene.paintChart(days, canvasWidth: self.chartSpriteKitView.bounds.width, maxYDisplayValue: 250)
-        })
+        self.chartScene.paintChart(days, canvasWidth: self.chartSpriteKitView.bounds.width, maxYDisplayValue: 250)
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {

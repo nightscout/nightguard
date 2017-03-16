@@ -39,6 +39,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createNewTimerSingleton()
         timer.fire()
         
+        checkForNewValuesFromNightscoutServer()
         paintCurrentBgData(currentNightscoutData)
     }
     
@@ -97,7 +98,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
                 self.chartScene!.paintChart(
                     [historicBgData,yesterdaysValues],
-                    canvasWidth: bounds.width, maxYDisplayValue: 250)
+                    canvasWidth: bounds.width * 6, maxYDisplayValue: 250)
             }
             NightscoutDataRepository.singleton.storeHistoricBgData(self.historicBgData)
         })
@@ -123,7 +124,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
             self.chartScene!.paintChart(
-                [self.historicBgData, yesterdaysValues], canvasWidth: bounds.width, maxYDisplayValue: 250)
+                [self.historicBgData, yesterdaysValues], canvasWidth: bounds.width * 6, maxYDisplayValue: 250)
         }
     }
 
