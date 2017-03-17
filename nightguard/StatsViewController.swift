@@ -14,19 +14,20 @@ class StatsViewController: UIViewController {
     
     @IBOutlet weak var chartSpriteKitView: UIView!
     
-    var chartScene = ChartScene(size: CGSize(width: 320, height: 280))
+    var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        chartSpriteKitView.autoresizingMask = [
-            .FlexibleHeight,
-            .FlexibleWidth]
+//        chartSpriteKitView.autoresizingMask = [
+//            .FlexibleHeight,
+//            .FlexibleWidth]
     }
     
     override func viewWillAppear(animated: Bool) {
-
+        super.viewWillAppear(animated)
         
+        updateChartScene(CGSize(width: chartSpriteKitView.bounds.width, height: chartSpriteKitView.bounds.height))
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -34,6 +35,8 @@ class StatsViewController: UIViewController {
         // force the display into horizontal orientation
         UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
         UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeRight.rawValue, forKey: "orientation")
+        
+        chartScene.size = CGSize(width: chartSpriteKitView.bounds.width, height: chartSpriteKitView.bounds.height)
         
         paintSelectedDays()
     }
@@ -71,6 +74,11 @@ class StatsViewController: UIViewController {
         paintChart(filteredDays)
     }
     
+    private func paintChart(days : [[BloodSugar]]) {
+        
+        self.chartScene.paintChart(days, newCanvasWidth: min(self.maximumDeviceTextureWidth(), self.chartSpriteKitView.bounds.width), maxYDisplayValue: 250)
+    }
+    
     private func setDayMonthYearTo01011971(bgValues : [BloodSugar]) -> [BloodSugar] {
         
         var normalizedBgValues : [BloodSugar] = []
@@ -91,11 +99,6 @@ class StatsViewController: UIViewController {
         return normalizedBgValues
     }
     
-    private func paintChart(days : [[BloodSugar]]) {
-        
-        self.chartScene.paintChart(days, canvasWidth: self.chartSpriteKitView.bounds.width, maxYDisplayValue: 250)
-    }
-    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.Landscape
     }
@@ -105,11 +108,14 @@ class StatsViewController: UIViewController {
     }
     
     private func updateChartScene(size : CGSize) {
-        // Initialize the ChartScene
-        chartScene = ChartScene(size: size)
-        let skView = chartSpriteKitView as! SKView
-        skView.presentScene(chartScene)
-        paintSelectedDays()
+        
+        if chartSpriteKitView != nil {
+            // Initialize the ChartScene
+            chartScene = ChartScene(size: size, newCanvasWidth: min(self.maximumDeviceTextureWidth(), size.width))
+            let skView = chartSpriteKitView as! SKView
+            skView.presentScene(chartScene)
+            paintSelectedDays()
+        }
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {

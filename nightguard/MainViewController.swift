@@ -27,7 +27,7 @@ class MainViewController: UIViewController {
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
     
-    var chartScene = ChartScene(size: CGSize(width: 320, height: 280))
+    var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     // timer to check continuously for new bgValues
     var timer = NSTimer()
     // check every 5 Seconds whether new bgvalues should be retrieved
@@ -35,25 +35,6 @@ class MainViewController: UIViewController {
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.Portrait
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        
-        UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeRight.rawValue, forKey: "orientation")
-        UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
-        
-        chartScene.size = CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height)
-        
-        let historicBgData = BgDataHolder.singleton.getTodaysBgData()
-        // only if currentDay values are there, it makes sence to display them here
-        // otherwise, wait to get this data and display it using the running timer
-        if historicBgData.count > 0 {
-            YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
-            
-                self.chartScene.paintChart([historicBgData, yesterdaysValues],
-                    canvasWidth: self.spriteKitView.bounds.width * 6, maxYDisplayValue: 250)
-            }
-        }
     }
     
     override func viewDidLoad() {
@@ -81,16 +62,17 @@ class MainViewController: UIViewController {
         
         // Start the timer to retrieve new bgValues
         timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
-            target: self,
-            selector: #selector(MainViewController.timerDidEnd(_:)),
-            userInfo: nil,
-            repeats: true)
+                                                       target: self,
+                                                       selector: #selector(MainViewController.timerDidEnd(_:)),
+                                                       userInfo: nil,
+                                                       repeats: true)
         // Start immediately so that the current time gets display at once
         // And the alarm can play if needed
         timerDidEnd(timer)
         
         // Initialize the ChartScene
-        chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height))
+        chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
+                                newCanvasWidth: self.maximumDeviceTextureWidth())
         let skView = spriteKitView as! SKView
         skView.presentScene(chartScene)
         
@@ -98,6 +80,25 @@ class MainViewController: UIViewController {
         // through the charts
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(MainViewController.panGesture(_:)))
         skView.addGestureRecognizer(panGesture)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeRight.rawValue, forKey: "orientation")
+        UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
+        
+        chartScene.size = CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height)
+        
+        let historicBgData = BgDataHolder.singleton.getTodaysBgData()
+        // only if currentDay values are there, it makes sence to display them here
+        // otherwise, wait to get this data and display it using the running timer
+        if historicBgData.count > 0 {
+            YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
+            
+                self.chartScene.paintChart([historicBgData, yesterdaysValues],
+                    newCanvasWidth: self.maximumDeviceTextureWidth(), maxYDisplayValue: 250)
+            }
+        }
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -199,7 +200,7 @@ class MainViewController: UIViewController {
                 YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdayValues in
                     self.chartScene.paintChart(
                         [historicBgData, yesterdayValues],
-                        canvasWidth: self.spriteKitView.bounds.width * 6,
+                        newCanvasWidth: self.maximumDeviceTextureWidth(),
                         maxYDisplayValue: 250)
                 }
             }

@@ -19,14 +19,14 @@ class ChartScene : SKScene {
     // Minimum (left) position of the chart
     var minXPosition : CGFloat = 0
     
-    override init(size: CGSize) {
+    init(size: CGSize, newCanvasWidth : CGFloat) {
         super.init(size: size)
         
         self.size = size
         self.backgroundColor = UIColor.blackColor()
         initialPlacingOfChart()
         
-        paintChart([[], []], canvasWidth: size.width, maxYDisplayValue: 250)
+        paintChart([[], []], newCanvasWidth: newCanvasWidth, maxYDisplayValue: 250)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,9 +35,9 @@ class ChartScene : SKScene {
     
     // maxYDisplayValue is the maximum Value that will be displayed in the chart.
     // Blood values that are higher will be set to maxYDisplayValue instead.
-    func paintChart(days : [[BloodSugar]], canvasWidth : CGFloat, maxYDisplayValue : CGFloat) {
+    func paintChart(days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat) {
         
-        self.canvasWidth = canvasWidth
+        canvasWidth = newCanvasWidth
         maxXPosition = 0
         minXPosition = size.width - canvasWidth
         

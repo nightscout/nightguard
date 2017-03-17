@@ -98,7 +98,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
                 self.chartScene!.paintChart(
                     [historicBgData,yesterdaysValues],
-                    canvasWidth: bounds.width * 6, maxYDisplayValue: 250)
+                    newCanvasWidth: bounds.width * 6, maxYDisplayValue: 250)
             }
             NightscoutDataRepository.singleton.storeHistoricBgData(self.historicBgData)
         })
@@ -119,12 +119,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         // Initialize the ChartScene
         let bounds = WKInterfaceDevice.currentDevice().screenBounds
-        chartScene = ChartScene(size: CGSize(width: bounds.width, height: 130))
+        chartScene = ChartScene(size: CGSize(width: bounds.width, height: 130), newCanvasWidth: bounds.width * 6)
         spriteKitView.presentScene(chartScene)
         
         YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
             self.chartScene!.paintChart(
-                [self.historicBgData, yesterdaysValues], canvasWidth: bounds.width * 6, maxYDisplayValue: 250)
+                [self.historicBgData, yesterdaysValues], newCanvasWidth: bounds.width * 6, maxYDisplayValue: 250)
         }
     }
 

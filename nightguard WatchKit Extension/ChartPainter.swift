@@ -67,7 +67,7 @@ class ChartPainter {
         
         // Setup our context
         let opaque = false
-        let scale: CGFloat = 2
+        let scale: CGFloat = 0
         UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
         let context = UIGraphicsGetCurrentContext()
         

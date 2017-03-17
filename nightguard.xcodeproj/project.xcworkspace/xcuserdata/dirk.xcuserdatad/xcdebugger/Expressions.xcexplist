@@ -11,13 +11,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "AlarmViewController.convertToDisplayUnits(String) -&gt; String:AlarmViewController.swift">
+         contextName = "AlarmViewController.viewDidLoad() -&gt; ():AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "Float(value)">
+               value = "alertIfAboveValueLabel.text">
             </PersistentString>
             <PersistentString
-               value = "String(floatValue)">
+               value = "Float(&quot;10.0&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "Float(alertIfAboveValueLabel.text!)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -181,15 +184,23 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "StatsViewController.(updateChartScene in _EA34A49FF12FA0A082DB26ACD83DB1B6)(CGSize) -&gt; ():StatsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "chartSpriteKitView">
+            </PersistentString>
+            <PersistentString
+               value = "self.maximumDeviceTextureWidth()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "static UserDefaultsRepository.readUnits() -&gt; Units:UserDefaultsRepository.swift">
          <PersistentStrings>
             <PersistentString
                value = "defaults.objectForKey(&quot;units&quot;)">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "StatsViewController.(updateChartScene in _EA34A49FF12FA0A082DB26ACD83DB1B6)(CGSize) -&gt; ():StatsViewController.swift">
       </ContextState>
       <ContextState
          contextName = "StatsViewController.viewWillTransitionToSize(CGSize, withTransitionCoordinator : UIViewControllerTransitionCoordinator) -&gt; ():StatsViewController.swift">
@@ -299,10 +310,10 @@
                value = "bloodValues[index-2].value">
             </PersistentString>
             <PersistentString
-               value = "bloodValues[index-1].value">
+               value = "deltaAmount">
             </PersistentString>
             <PersistentString
-               value = "deltaAmount">
+               value = "bloodValues[index-1].value">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -335,6 +346,17 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "AlarmViewController.convertToDisplayUnits(String) -&gt; String:AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Float(value)">
+            </PersistentString>
+            <PersistentString
+               value = "String(floatValue)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ChartScene.(isTooMuchLeft in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; Bool:ChartScene.swift">
          <PersistentStrings>
             <PersistentString
@@ -342,20 +364,6 @@
             </PersistentString>
             <PersistentString
                value = "size.width">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "AlarmViewController.viewDidLoad() -&gt; ():AlarmViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "alertIfAboveValueLabel.text">
-            </PersistentString>
-            <PersistentString
-               value = "Float(&quot;10.0&quot;)">
-            </PersistentString>
-            <PersistentString
-               value = "Float(alertIfAboveValueLabel.text!)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
