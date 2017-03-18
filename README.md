@@ -14,7 +14,7 @@ This app displays the last 30 Values from your [nightscout] (http://www.nightsco
 
 A graphical representation is shown on the Apple Watch as well:
 
-![Nightguard Apple Watch Screenshot](https://github.com/nightscout/nightguard/blob/master/images/watch-screen.jpg)
+![Nightguard Apple Watch Screenshot](https://github.com/nightscout/nightguard/blob/master/images/nightguardOnWatch.gif)
 
 The dark gray region in the chart marks the values that are between 80 and 180.
 
