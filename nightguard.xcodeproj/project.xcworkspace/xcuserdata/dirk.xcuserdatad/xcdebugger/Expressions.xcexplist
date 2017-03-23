@@ -3,10 +3,156 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "ServiceBoundaryTest.(testReadStatus() -&gt; ()).(closure #1):ServiceBoundaryTest.swift">
+         contextName = "ChartScene.(moveXTranslationPosition in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; ():ChartScene.swift">
+      </ContextState>
+      <ContextState
+         contextName = "NightscoutService.(readChartDataWithinPeriodOfTime(NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar]) -&gt; ()) -&gt; ()).(closure #1):NightscoutService.swift">
+      </ContextState>
+      <ContextState
+         contextName = "StatsViewController.viewWillTransitionToSize(CGSize, withTransitionCoordinator : UIViewControllerTransitionCoordinator) -&gt; ():StatsViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ChartPainter.adjustMinMaxXYCoordinates([BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
+      </ContextState>
+      <ContextState
+         contextName = "AlarmViewController.convertToDisplayUnits(String) -&gt; String:AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "String(units)">
+               value = "Float(value)">
+            </PersistentString>
+            <PersistentString
+               value = "String(floatValue)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ServiceBoundary.(readStatus((String) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ChartScene.(isTooMuchLeft in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; Bool:ChartScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "canvasWidth">
+            </PersistentString>
+            <PersistentString
+               value = "size.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.((paintCurrentBgData in _6000ED01001B5B47F2258CF855F406C8)(NightscoutData) -&gt; ()).(closure #1):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(format:&quot;%.1f&quot;, nightscoutData.sgv)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "BgDataHolder.getCurrentBgData() -&gt; NightscoutData:BgDataHolder.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static UnitsConverter.toDisplayUnits(Float) -&gt; Float:UnitsConverter.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "removeDecimals(value)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InterfaceController.(paintChart in _80F56E060DDBE90405EA1F326236CC1B)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ():InterfaceController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UnitsConverter.toDisplayUnits(defaults!.floatForKey(&quot;alertIfAboveValue&quot;))">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InterfaceController.willActivate() -&gt; ():InterfaceController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "AppDelegate.application(UIApplication, supportedInterfaceOrientationsForWindow : UIWindow?) -&gt; UIInterfaceOrientationMask:AppDelegate.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.window?.rootViewController.presentedViewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.(viewDidAppear(Bool) -&gt; ()).(closure #1):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.spriteKitView.bounds.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StatisticsRepository.readDay(Int) -&gt; [BloodSugar]?:StatisticsRepository.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static AlarmRule.(bloodValuesAreIncreasingOrDecreasingToFast in _2DC08F8B6434C739855808DB2507ABB9)([BloodSugar]) -&gt; Bool:AlarmRule.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "bloodValues[index-2].value">
+            </PersistentString>
+            <PersistentString
+               value = "bloodValues[index-1].value">
+            </PersistentString>
+            <PersistentString
+               value = "deltaAmount">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InterfaceController.((assureThatBaseUriIsExisting in _80F56E060DDBE90405EA1F326236CC1B)() -&gt; ()).(closure #1):InterfaceController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(response.first!.1)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.(viewDidLoad() -&gt; ()).(closure #1):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.spriteKitView.bounds.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NightscoutServiceTest.(testReadLast4Days() -&gt; ()).(closure #1):NightscoutServiceTest.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "days.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.pinchGesture(UIPinchGestureRecognizer) -&gt; ():MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "NSUserDefaults.standardUserDefaults().floatForKey(&quot;maximumBloodGlucoseDisplayed&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "recognizer.scale">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.((paintChart in _6000ED01001B5B47F2258CF855F406C8)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ()).(closure #1):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "chartImage.size">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ServiceBoundary.readStatus((String) -&gt; ()) -&gt; ():ServiceBoundary.swift">
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.((readNewValuesFromNightscoutServer in _6000ED01001B5B47F2258CF855F406C8)() -&gt; ()).(closure #2):MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "BgDataHolder.singleton">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -25,186 +171,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ChartScene.scale(CGFloat) -&gt; ():ChartScene.swift">
+         contextName = "ChartPainter.durationIsMoreThan6Hours(Double, maxTimestamp : Double) -&gt; Bool:ChartPainter.swift">
          <PersistentStrings>
             <PersistentString
-               value = "UnitsConverter.toDisplayUnits(600)">
+               value = "6 * 60 * 60 * 1000 * 1000&#10;">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MainViewController.pinchGesture(UIPinchGestureRecognizer) -&gt; ():MainViewController.swift">
+         contextName = "static UserDefaultsRepository.readUnits() -&gt; Units:UserDefaultsRepository.swift">
          <PersistentStrings>
             <PersistentString
-               value = "NSUserDefaults.standardUserDefaults().floatForKey(&quot;maximumBloodGlucoseDisplayed&quot;)">
-            </PersistentString>
-            <PersistentString
-               value = "recognizer.scale">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "AlarmViewController.(preselectItemInPickerView in _530B1A374ECBC7254C2100F0B4BE806D)() -&gt; ():AlarmViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "noDataAlarmButton.currentTitle">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "NightscoutService.extractDays([BloodSugar]) -&gt; [[BloodSugar]]:NightscoutService.swift">
-      </ContextState>
-      <ContextState
-         contextName = "MainViewController.((paintCurrentBgData in _6000ED01001B5B47F2258CF855F406C8)(NightscoutData) -&gt; ()).(closure #1):MainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "String(format:&quot;%.1f&quot;, nightscoutData.sgv)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "AppDelegate.application(UIApplication, supportedInterfaceOrientationsForWindow : UIWindow?) -&gt; UIInterfaceOrientationMask:AppDelegate.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.window?.rootViewController.presentedViewController">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "InterfaceController.(paintCurrentBgData in _80F56E060DDBE90405EA1F326236CC1B)(NightscoutData) -&gt; ():InterfaceController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ChartScene.paintChart([[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool) -&gt; ():ChartScene.swift">
-      </ContextState>
-      <ContextState
-         contextName = "static UnitsConverter.toMgdl(String) -&gt; Float:UnitsConverter.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Float(value)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "InterfaceController.((assureThatBaseUriIsExisting in _80F56E060DDBE90405EA1F326236CC1B)() -&gt; ()).(closure #1):InterfaceController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "String(response.first!.1)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "AlarmViewController.adjustAboveSliderValue() -&gt; ():AlarmViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "getBelowAlarmValue()">
-            </PersistentString>
-            <PersistentString
-               value = "getAboveAlarmValue()">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ComplicationController.getAgeOfDataInMinutes(NSNumber) -&gt; Float:ComplicationController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "time.intValue">
-            </PersistentString>
-            <PersistentString
-               value = "NSDate().timeIntervalSince1970">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ServiceBoundary.(readCurrentDataForPebbleWatch((NightscoutData) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "currentBgs.objectForKey(&quot;bgdelta&quot;)">
-            </PersistentString>
-            <PersistentString
-               value = "Double(currentBgs.objectForKey(&quot;bgdelta&quot;))">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "NightscoutService.(readChartDataWithinPeriodOfTime(NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar]) -&gt; ()) -&gt; ()).(closure #1):NightscoutService.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ChartPainter.drawImage([[BloodSugar]], maxYDisplayValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; (UIImage?, Int):ChartPainter.swift">
-      </ContextState>
-      <ContextState
-         contextName = "BgDataHolder.getCurrentBgData() -&gt; NightscoutData:BgDataHolder.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ServiceBoundary.readChartDataWithinPeriodOfTime(NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar]) -&gt; ()) -&gt; ():ServiceBoundary.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "baseUri">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ChartPainter.adjustMinMax([BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -&gt; (Double, Double, Float, Float):ChartPainter.swift">
-      </ContextState>
-      <ContextState
-         contextName = "StatsViewController.(updateChartScene in _EA34A49FF12FA0A082DB26ACD83DB1B6)() -&gt; ():StatsViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "chartSpriteKitView.bounds.width">
-            </PersistentString>
-            <PersistentString
-               value = "chartSpriteKitView.bounds.height">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "InterfaceController.(paintChart in _80F56E060DDBE90405EA1F326236CC1B)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ():InterfaceController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "UnitsConverter.toDisplayUnits(defaults!.floatForKey(&quot;alertIfAboveValue&quot;))">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "NightscoutServiceTest.(testReadLast4Days() -&gt; ()).(closure #1):NightscoutServiceTest.swift">
-      </ContextState>
-      <ContextState
-         contextName = "StatisticsRepository.readDay(Int) -&gt; [BloodSugar]?:StatisticsRepository.swift">
-      </ContextState>
-      <ContextState
-         contextName = "MainViewController.(viewDidAppear(Bool) -&gt; ()).(closure #1):MainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.spriteKitView.bounds.width">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "AlarmViewController.adjustLowerSliderValue() -&gt; ():AlarmViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "getBelowAlarmValue()">
-            </PersistentString>
-            <PersistentString
-               value = "getAboveAlarmValue()">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ChartPainter.paintNicePartArea(CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "calcYValue(upperBoundNiceValue)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "NightscoutService.readLast4DaysChartData(([[BloodSugar]]) -&gt; ()) -&gt; ():NightscoutService.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "UserDefaultsRepository.readBaseUri()">
-            </PersistentString>
-            <PersistentString
-               value = "TimeService.getToday()">
+               value = "defaults.objectForKey(&quot;units&quot;)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -220,20 +198,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "static UserDefaultsRepository.readUnits() -&gt; Units:UserDefaultsRepository.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "defaults.objectForKey(&quot;units&quot;)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "StatsViewController.viewWillTransitionToSize(CGSize, withTransitionCoordinator : UIViewControllerTransitionCoordinator) -&gt; ():StatsViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ServiceBoundary.(readStatus((String) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
-      </ContextState>
-      <ContextState
          contextName = "ChartScene.swipeChart(CGFloat) -&gt; ():ChartScene.swift">
          <PersistentStrings>
             <PersistentString
@@ -242,29 +206,164 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "MainViewController.((paintChart in _6000ED01001B5B47F2258CF855F406C8)([BloodSugar], yesterdayValues : [BloodSugar]) -&gt; ()).(closure #1):MainViewController.swift">
+         contextName = "AlarmViewController.aboveAlertValueChanged(AnyObject) -&gt; ():AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "chartImage.size">
+               value = "alertIfAboveValueLabel.text">
+            </PersistentString>
+            <PersistentString
+               value = "String(format: &quot;%.0f&quot;, convertToDisplayUnits(String(alertIfAboveValue)))">
+            </PersistentString>
+            <PersistentString
+               value = "convertToDisplayUnits(String(alertIfAboveValue))">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ChartPainter.adjustMinMaxXYCoordinates([BloodSugar], yesterdaysValues : [BloodSugar], upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
+         contextName = "ChartPainter.adjustMinMax([BloodSugar], minimumXValue : Double, maximumXValue : Double, minimumYValue : Float, maximumYValue : Float) -&gt; (Double, Double, Float, Float):ChartPainter.swift">
       </ContextState>
       <ContextState
-         contextName = "ChartPainter.durationIsMoreThan6Hours(Double, maxTimestamp : Double) -&gt; Bool:ChartPainter.swift">
+         contextName = "ServiceBoundary.(readCurrentDataForPebbleWatch((NightscoutData) -&gt; ()) -&gt; ()).(closure #1):ServiceBoundary.swift">
          <PersistentStrings>
             <PersistentString
-               value = "6 * 60 * 60 * 1000 * 1000&#10;">
+               value = "currentBgs.objectForKey(&quot;bgdelta&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "Double(currentBgs.objectForKey(&quot;bgdelta&quot;))">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StatsViewController.(updateChartScene in _EA34A49FF12FA0A082DB26ACD83DB1B6)() -&gt; ():StatsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "chartSpriteKitView.bounds.width">
+            </PersistentString>
+            <PersistentString
+               value = "chartSpriteKitView.bounds.height">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ComplicationController.getCurrentTimelineEntryForComplication(CLKComplication, withHandler : (CLKComplicationTimelineEntry?) -&gt; ()) -&gt; ():ComplicationController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static AlarmRule.isAlarmActivated(NightscoutData, bloodValues : [BloodSugar]) -&gt; Bool:AlarmRule.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ChartPainter.drawImage([[BloodSugar]], maxYDisplayValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; (UIImage?, Int):ChartPainter.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ChartScene.paintChart([[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool) -&gt; ():ChartScene.swift">
       </ContextState>
       <ContextState
          contextName = "static TimeService.isOlderThan30Minutes(NSDate) -&gt; Bool:TimeService.swift">
          <PersistentStrings>
             <PersistentString
                value = "getToday().dateByAddingTimeInterval(-30 * 60).compare(date)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ComplicationController.(getCurrentTimelineEntryForComplication(CLKComplication, withHandler : (CLKComplicationTimelineEntry?) -&gt; ()) -&gt; ()).(closure #1):ComplicationController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.getAgeOfDataInMinutes(currentNightscoutData.time)">
+            </PersistentString>
+            <PersistentString
+               value = "currentNightscoutData.">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ServiceBoundaryTest.(testReadStatus() -&gt; ()).(closure #1):ServiceBoundaryTest.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(units)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static UnitsConverter.toMgdl(String) -&gt; Float:UnitsConverter.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Float(value)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AlarmViewController.adjustAboveSliderValue() -&gt; ():AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "getBelowAlarmValue()">
+            </PersistentString>
+            <PersistentString
+               value = "getAboveAlarmValue()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NightscoutService.readLast4DaysChartData(([[BloodSugar]]) -&gt; ()) -&gt; ():NightscoutService.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UserDefaultsRepository.readBaseUri()">
+            </PersistentString>
+            <PersistentString
+               value = "TimeService.getToday()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AlarmViewController.adjustLowerSliderValue() -&gt; ():AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "getBelowAlarmValue()">
+            </PersistentString>
+            <PersistentString
+               value = "getAboveAlarmValue()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "InterfaceController.(paintCurrentBgData in _80F56E060DDBE90405EA1F326236CC1B)(NightscoutData) -&gt; ():InterfaceController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ChartScene.scale(CGFloat) -&gt; ():ChartScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UnitsConverter.toDisplayUnits(600)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ChartPainter.paintNicePartArea(CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; ():ChartPainter.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "calcYValue(upperBoundNiceValue)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AlarmViewController.(preselectItemInPickerView in _530B1A374ECBC7254C2100F0B4BE806D)() -&gt; ():AlarmViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "noDataAlarmButton.currentTitle">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ComplicationController.getAgeOfDataInMinutes(NSNumber) -&gt; Float:ComplicationController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "time.intValue">
+            </PersistentString>
+            <PersistentString
+               value = "NSDate().timeIntervalSince1970">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -288,107 +387,13 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ComplicationController.getCurrentTimelineEntryForComplication(CLKComplication, withHandler : (CLKComplicationTimelineEntry?) -&gt; ()) -&gt; ():ComplicationController.swift">
+         contextName = "NightscoutService.extractDays([BloodSugar]) -&gt; [[BloodSugar]]:NightscoutService.swift">
       </ContextState>
       <ContextState
-         contextName = "static AlarmRule.isAlarmActivated(NightscoutData, bloodValues : [BloodSugar]) -&gt; Bool:AlarmRule.swift">
+         contextName = "ServiceBoundary.readChartDataWithinPeriodOfTime(NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar]) -&gt; ()) -&gt; ():ServiceBoundary.swift">
          <PersistentStrings>
             <PersistentString
-               value = "UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "InterfaceController.willActivate() -&gt; ():InterfaceController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ServiceBoundary.readStatus((String) -&gt; ()) -&gt; ():ServiceBoundary.swift">
-      </ContextState>
-      <ContextState
-         contextName = "MainViewController.(viewDidLoad() -&gt; ()).(closure #1):MainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.spriteKitView.bounds.width">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "static UnitsConverter.toDisplayUnits(Float) -&gt; Float:UnitsConverter.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "removeDecimals(value)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "MainViewController.((readNewValuesFromNightscoutServer in _6000ED01001B5B47F2258CF855F406C8)() -&gt; ()).(closure #2):MainViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "BgDataHolder.singleton">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "static AlarmRule.(bloodValuesAreIncreasingOrDecreasingToFast in _2DC08F8B6434C739855808DB2507ABB9)([BloodSugar]) -&gt; Bool:AlarmRule.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "bloodValues[index-2].value">
-            </PersistentString>
-            <PersistentString
-               value = "deltaAmount">
-            </PersistentString>
-            <PersistentString
-               value = "bloodValues[index-1].value">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "AlarmViewController.aboveAlertValueChanged(AnyObject) -&gt; ():AlarmViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "alertIfAboveValueLabel.text">
-            </PersistentString>
-            <PersistentString
-               value = "String(format: &quot;%.0f&quot;, convertToDisplayUnits(String(alertIfAboveValue)))">
-            </PersistentString>
-            <PersistentString
-               value = "convertToDisplayUnits(String(alertIfAboveValue))">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ChartScene.(moveXTranslationPosition in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; ():ChartScene.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ComplicationController.(getCurrentTimelineEntryForComplication(CLKComplication, withHandler : (CLKComplicationTimelineEntry?) -&gt; ()) -&gt; ()).(closure #1):ComplicationController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.getAgeOfDataInMinutes(currentNightscoutData.time)">
-            </PersistentString>
-            <PersistentString
-               value = "currentNightscoutData.">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "AlarmViewController.convertToDisplayUnits(String) -&gt; String:AlarmViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Float(value)">
-            </PersistentString>
-            <PersistentString
-               value = "String(floatValue)">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ChartScene.(isTooMuchLeft in _5D540E8640102E8EC57E1BFB4A76ABAD)(CGFloat) -&gt; Bool:ChartScene.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "canvasWidth">
-            </PersistentString>
-            <PersistentString
-               value = "size.width">
+               value = "baseUri">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

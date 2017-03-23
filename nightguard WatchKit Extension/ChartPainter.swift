@@ -288,7 +288,7 @@ class ChartPainter {
         }
     }
     
-    private func determineHoursBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
+    func determineHoursBetween(minTimestamp : Double, maxTimestamp : Double) -> [Double] {
         
         let minDate = NSDate(timeIntervalSince1970: minTimestamp / 1000)
         let maxDate = NSDate(timeIntervalSince1970: maxTimestamp / 1000)
@@ -338,7 +338,7 @@ class ChartPainter {
         return cal.dateBySettingHour(hour, minute: 0, second: 0, ofDate: date, options: NSCalendarOptions())!.dateByAddingTimeInterval(fullHour)
     }
     
-    private func adjustMinMaxXYCoordinates(
+    func adjustMinMaxXYCoordinates(
             days : [[BloodSugar]],
             maxYDisplayValue : CGFloat,
             upperBoundNiceValue : Float,
@@ -386,7 +386,7 @@ class ChartPainter {
         return CGFloat.init(stretchedXValue(x));
     }
     
-    private func calcYValue(y : Float) -> CGFloat {
+    func calcYValue(y : Float) -> CGFloat {
 
         var calculatedY : Float = stretchedYValue(y)
         if calculatedY > Float(Int.max) {
@@ -398,7 +398,7 @@ class ChartPainter {
         return cgfloat
     }
     
-    private func stretchedXValue(x : Double) -> Double {
+    func stretchedXValue(x : Double) -> Double {
         var range = maximumXValue - minimumXValue
         if range == 0 {
             // prevent a division by zero
@@ -407,7 +407,7 @@ class ChartPainter {
         return (Double(canvasWidth) / Double(range)) * Double(x - minimumXValue)
     }
     
-    private func stretchedYValue(y : Float) -> Float {
+    func stretchedYValue(y : Float) -> Float {
         var range = maximumYValue - minimumYValue
         if range == 0 {
             // prevent a division by zero
