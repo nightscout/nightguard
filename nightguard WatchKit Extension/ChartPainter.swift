@@ -80,7 +80,7 @@ class ChartPainter {
         var positionOfCurrentValue = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
-            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor, maxYDisplayValue: 250)
+            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor, maxYDisplayValue: maxYDisplayValue)
             
             if nrOfDay == 1 && bloodValues.count > 0 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
@@ -166,12 +166,12 @@ class ChartPainter {
         
         var x = 5
         while (x < canvasWidth) {
-            let upperBoundString = upperBoundNiceValue.cleanValue
+            let upperBoundString = UnitsConverter.toDisplayUnits(upperBoundNiceValue.cleanValue)
             upperBoundString.drawWithRect(
                 CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(upperBoundNiceValue)), width: 40, height: 14),
                 options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
             
-            let lowerBoundString = lowerBoundNiceValue.cleanValue
+            let lowerBoundString = UnitsConverter.toDisplayUnits(lowerBoundNiceValue.cleanValue)
             lowerBoundString.drawWithRect(
                 CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(lowerBoundNiceValue))-15, width: 40, height: 14),
                 options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)

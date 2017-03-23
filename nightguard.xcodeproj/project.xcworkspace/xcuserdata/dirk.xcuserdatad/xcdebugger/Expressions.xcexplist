@@ -25,6 +25,25 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "ChartScene.scale(CGFloat) -&gt; ():ChartScene.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UnitsConverter.toDisplayUnits(600)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "MainViewController.pinchGesture(UIPinchGestureRecognizer) -&gt; ():MainViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "NSUserDefaults.standardUserDefaults().floatForKey(&quot;maximumBloodGlucoseDisplayed&quot;)">
+            </PersistentString>
+            <PersistentString
+               value = "recognizer.scale">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "AlarmViewController.(preselectItemInPickerView in _530B1A374ECBC7254C2100F0B4BE806D)() -&gt; ():AlarmViewController.swift">
          <PersistentStrings>
             <PersistentString
@@ -53,6 +72,9 @@
       </ContextState>
       <ContextState
          contextName = "InterfaceController.(paintCurrentBgData in _80F56E060DDBE90405EA1F326236CC1B)(NightscoutData) -&gt; ():InterfaceController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ChartScene.paintChart([[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool) -&gt; ():ChartScene.swift">
       </ContextState>
       <ContextState
          contextName = "static UnitsConverter.toMgdl(String) -&gt; Float:UnitsConverter.swift">
@@ -102,6 +124,9 @@
                value = "Double(currentBgs.objectForKey(&quot;bgdelta&quot;))">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NightscoutService.(readChartDataWithinPeriodOfTime(NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar]) -&gt; ()) -&gt; ()).(closure #1):NightscoutService.swift">
       </ContextState>
       <ContextState
          contextName = "ChartPainter.drawImage([[BloodSugar]], maxYDisplayValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -&gt; (UIImage?, Int):ChartPainter.swift">

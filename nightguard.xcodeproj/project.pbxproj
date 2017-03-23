@@ -256,6 +256,7 @@
 		432E62E21D1126CA00DD7978 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				43E89E561E659102005B0A65 /* ChartScene.swift */,
 				43F1E0F21D07698000C329A2 /* AlarmSound.swift */,
 				43F1E0F51D07698000C329A2 /* BgDataHolder.swift */,
 				432E62E81D143CF900DD7978 /* UnitsConverter.swift */,
@@ -336,7 +337,6 @@
 				43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
 				43288A6B1D1C893200EE3999 /* TabBarController.swift */,
-				43E89E561E659102005B0A65 /* ChartScene.swift */,
 			);
 			path = nightguard;
 			sourceTree = "<group>";

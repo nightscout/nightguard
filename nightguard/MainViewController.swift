@@ -79,7 +79,10 @@ class MainViewController: UIViewController {
         // Register Gesture Recognizer so that the user can scroll
         // through the charts
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(MainViewController.panGesture(_:)))
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(MainViewController.pinchGesture(_:)))
+        
         skView.addGestureRecognizer(panGesture)
+        skView.addGestureRecognizer(pinchGesture)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -95,8 +98,11 @@ class MainViewController: UIViewController {
         if historicBgData.count > 0 {
             YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
             
-                self.chartScene.paintChart([historicBgData, yesterdaysValues],
-                    newCanvasWidth: self.maximumDeviceTextureWidth(), maxYDisplayValue: 250)
+                self.chartScene.paintChart(
+                    [historicBgData, yesterdaysValues],
+                    newCanvasWidth: self.maximumDeviceTextureWidth(),
+                    maxYDisplayValue: CGFloat(NSUserDefaults.standardUserDefaults().floatForKey("maximumBloodGlucoseDisplayed")),
+                    moveToLatestValue: true)
             }
         }
     }
@@ -105,7 +111,6 @@ class MainViewController: UIViewController {
  
         chartScene.stopSwipeAction()
     }
-
     
     func panGesture(recognizer : UIPanGestureRecognizer) {
         
@@ -131,6 +136,17 @@ class MainViewController: UIViewController {
                 // Right Swipe detected
                 chartScene.swipeChart(velocity.x)
             }
+        }
+    }
+    
+    // This gesture is used to zoom in and out by changing the maximum
+    // Blood Glucose value that is displayed in the chart.
+    func pinchGesture(recognizer : UIPinchGestureRecognizer) {
+        
+        if recognizer.state == UIGestureRecognizerState.Ended {
+            chartScene.scale(recognizer.scale, keepScale: true)
+        } else {
+            chartScene.scale(recognizer.scale, keepScale: false)
         }
     }
     
@@ -201,7 +217,8 @@ class MainViewController: UIViewController {
                     self.chartScene.paintChart(
                         [historicBgData, yesterdayValues],
                         newCanvasWidth: self.maximumDeviceTextureWidth(),
-                        maxYDisplayValue: 250)
+                        maxYDisplayValue: CGFloat(NSUserDefaults.standardUserDefaults().floatForKey("maximumBloodGlucoseDisplayed")),
+                        moveToLatestValue: true)
                 }
             }
             

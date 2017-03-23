@@ -76,7 +76,11 @@ class StatsViewController: UIViewController {
     
     private func paintChart(days : [[BloodSugar]]) {
         
-        self.chartScene.paintChart(days, newCanvasWidth: min(self.maximumDeviceTextureWidth(), self.chartSpriteKitView.bounds.width), maxYDisplayValue: 250)
+        self.chartScene.paintChart(days,
+                newCanvasWidth: min(self.maximumDeviceTextureWidth(),
+                self.chartSpriteKitView.bounds.width),
+                maxYDisplayValue: 250,
+                moveToLatestValue: false)
     }
     
     private func setDayMonthYearTo01011971(bgValues : [BloodSugar]) -> [BloodSugar] {

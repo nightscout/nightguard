@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // Converts mg/dL Unit to be displayed as mmol/l
 // Internally, everything is handled as mg/dL, but the nightscout
@@ -44,6 +45,11 @@ class UnitsConverter {
         
         // convert mg/dL to mmol/l
         return value * 0.0555
+    }
+    
+    static func toDisplayUnits(value : CGFloat) -> CGFloat {
+        
+        return CGFloat(toDisplayUnits(Float(value)))
     }
     
     static func toDisplayUnits(let mgValues : [BloodSugar]) -> [BloodSugar] {

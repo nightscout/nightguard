@@ -69,6 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              
              "alertIfAboveValue": 180,
              "alertIfBelowValue": 80,
+             "maximumBloodGlucoseDisplayed": 250,
              
              "noDataAlarmAfterMinutes": 15
         ]

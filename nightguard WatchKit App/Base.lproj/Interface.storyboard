@@ -50,25 +50,7 @@
                         <separator alignment="left" id="AeO-Dw-7jo"/>
                         <spriteKitScene width="155" height="125" alignment="left" id="HJ3-mD-NFS"/>
                     </items>
-                    <menu key="menu" id="YiW-tI-jRp">
-                        <items>
-                            <menuItem title="Info" icon="info" id="QYJ-NG-r8U" userLabel="Info">
-                                <connections>
-                                    <action selector="doInfoMenuAction" destination="AgC-eL-Hgc" id="4T5-gI-Vf0"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Refresh" icon="resume" id="H9g-Uj-K07" userLabel="Refresh">
-                                <connections>
-                                    <action selector="doRefreshMenuAction" destination="AgC-eL-Hgc" id="HMn-jw-Gn0"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Close" icon="decline" id="zf1-Js-157">
-                                <connections>
-                                    <action selector="doCloseMenuAction" destination="AgC-eL-Hgc" id="oEX-nB-25h"/>
-                                </connections>
-                            </menuItem>
-                        </items>
-                    </menu>
+                    <menu key="menu" id="YiW-tI-jRp"/>
                     <connections>
                         <outlet property="batteryLabel" destination="lz8-YE-T1d" id="a4A-hb-KFZ"/>
                         <outlet property="bgLabel" destination="vdn-99-EwA" id="Tg2-Yj-bDo"/>
