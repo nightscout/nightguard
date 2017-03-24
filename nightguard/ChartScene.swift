@@ -40,6 +40,11 @@ class ChartScene : SKScene {
     // Blood values that are higher will be set to maxYDisplayValue instead.
     func paintChart(days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool) {
         
+        let defaults = NSUserDefaults.standardUserDefaults()
+
+//        let maxYDisplayValue : CGFloat = 250
+//        defaults.setFloat(Float(maxYDisplayValue), forKey: "maximumBloodGlucoseDisplayed")
+        
         self.oldBloodSugarDays = days
         self.maxYDisplayValue = maxYDisplayValue
         self.canvasWidth = newCanvasWidth
@@ -50,12 +55,10 @@ class ChartScene : SKScene {
             canvasWidth: Int(canvasWidth),
             canvasHeight: Int(size.height));
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        
         let (chartImage, displayPosition) = chartPainter.drawImage(
-            days, maxYDisplayValue: maxYDisplayValue,
-            upperBoundNiceValue: defaults!.floatForKey("alertIfAboveValue"),
-            lowerBoundNiceValue: defaults!.floatForKey("alertIfBelowValue")
+            days, maxBgValue: maxYDisplayValue,
+            upperBoundNiceValue: defaults.floatForKey("alertIfAboveValue"),
+            lowerBoundNiceValue: defaults.floatForKey("alertIfBelowValue")
         )
         
         if chartImage == nil {
@@ -135,9 +138,7 @@ class ChartScene : SKScene {
             // take care to avoid a division by zero
             scaleUnequalZero = 0.01
         }
-        let newMaxYDisplayValue = max(min(maxYDisplayValue * 1 / scaleUnequalZero,
-            UnitsConverter.toDisplayUnits(400)),
-            UnitsConverter.toDisplayUnits(180))
+        let newMaxYDisplayValue = max(min(maxYDisplayValue * 1 / scaleUnequalZero, 400), 180)
         
         if newMaxYDisplayValue == oldValue {
             // scale is still the same -> nothing to do

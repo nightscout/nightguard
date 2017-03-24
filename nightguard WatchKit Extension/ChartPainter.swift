@@ -52,7 +52,7 @@ class ChartPainter {
      * The position of the current value is returned as the second tuple element.
      * It is used to show the current value in the viewport.
      */
-    func drawImage(days : [[BloodSugar]], maxYDisplayValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> (UIImage?, Int) {
+    func drawImage(days : [[BloodSugar]], maxBgValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> (UIImage?, Int) {
 
         // we need at least one day => otherwise paint nothing
         if days.count == 1 {
@@ -63,7 +63,7 @@ class ChartPainter {
             return (nil, 0)
         }
         
-        adjustMinMaxXYCoordinates(days, maxYDisplayValue: maxYDisplayValue, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
+        adjustMinMaxXYCoordinates(days, maxYDisplayValue: maxBgValue, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
         // Setup our context
         let opaque = false
@@ -80,7 +80,7 @@ class ChartPainter {
         var positionOfCurrentValue = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
-            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor, maxBgValue: maxYDisplayValue)
+            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor, maxBgValue: maxBgValue)
             
             if nrOfDay == 1 && bloodValues.count > 0 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
@@ -89,7 +89,7 @@ class ChartPainter {
         
         paintLegend(days.count)
         
-        paintUpperLowerBoundLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
+        paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: maxBgValue)
         
         // Drawing complete, retrieve the finished image and cleanup
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -183,7 +183,7 @@ class ChartPainter {
         CGContextFillRect(context, goodPart)
     }
     
-    private func paintUpperLowerBoundLabels(context : CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) {
+    private func paintBGValueLabels(context : CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float, maxBgValue : CGFloat) {
         
         // paint the upper/lower bounds text
         let paragraphStyle = NSMutableParagraphStyle()
@@ -194,6 +194,17 @@ class ChartPainter {
         
         var x = 5
         while (x < canvasWidth) {
+            let maxBgValueAsFloat = Float(maxBgValue)
+            
+            // paint the maximum BGValue Label only if it has enought space and doesn't intersect with
+            // the upper bound BGValue
+            if maxBgValueAsFloat > upperBoundNiceValue + 25 {
+                let maxBgValueString = UnitsConverter.toDisplayUnits(maxBgValueAsFloat.cleanValue)
+                maxBgValueString.drawWithRect(
+                    CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(maxBgValueAsFloat)) + 3, width: 40, height: 14),
+                    options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
+            }
+            
             let upperBoundString = UnitsConverter.toDisplayUnits(upperBoundNiceValue.cleanValue)
             upperBoundString.drawWithRect(
                 CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(upperBoundNiceValue)), width: 40, height: 14),
