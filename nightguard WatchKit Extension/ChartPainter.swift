@@ -80,7 +80,7 @@ class ChartPainter {
         var positionOfCurrentValue = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
-            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor, maxYDisplayValue: maxYDisplayValue)
+            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).CGColor, maxBgValue: maxYDisplayValue)
             
             if nrOfDay == 1 && bloodValues.count > 0 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
@@ -120,7 +120,7 @@ class ChartPainter {
         }
     }
     
-    private func paintBloodValues(context : CGContext, bgValues : [BloodSugar], foregroundColor : CGColor, maxYDisplayValue : CGFloat) {
+    private func paintBloodValues(context : CGContext, bgValues : [BloodSugar], foregroundColor : CGColor, maxBgValue : CGFloat) {
         CGContextSetStrokeColorWithColor(context, foregroundColor)
         CGContextBeginPath(context)
         
@@ -130,13 +130,41 @@ class ChartPainter {
             return
         }
         for currentPoint in 1...maxPoints-1 {
+            
+            let beginOfLineYValue = calcYValue(Float(min(CGFloat(bgValues[currentPoint-1].value), value2: maxBgValue)))
+            let endOfLineYValue = calcYValue(Float(min(CGFloat(bgValues[currentPoint].value), value2: maxBgValue)))
+    
+            let maxYValue = calcYValue(Float(maxBgValue))
+            
+            useRedColorIfLineWillBeReducedToMaxYValue(
+                context, beginOfLineYValue: beginOfLineYValue, endOfLineYValue: endOfLineYValue,
+                maxYDisplayValue: maxYValue, color: foregroundColor)
+            
             drawLine(context,
                      x1: calcXValue(bgValues[currentPoint-1].timestamp),
-                     y1: calcYValue(Float(min(CGFloat(bgValues[currentPoint-1].value), value2: maxYDisplayValue))),
+                     y1: beginOfLineYValue,
                      x2: calcXValue(bgValues[currentPoint].timestamp),
-                     y2: calcYValue(Float(min(CGFloat(bgValues[currentPoint].value), value2: maxYDisplayValue))))
+                     y2: endOfLineYValue)
         }
         CGContextStrokePath(context)
+    }
+    
+    private func useRedColorIfLineWillBeReducedToMaxYValue(context : CGContext,
+                                                           beginOfLineYValue : CGFloat, endOfLineYValue : CGFloat,
+                                                           maxYDisplayValue : CGFloat, color : CGColor) {
+        
+        let intMaxYDisplayValue = Int(maxYDisplayValue)
+        
+        if Int(beginOfLineYValue) == intMaxYDisplayValue &&
+            Int(endOfLineYValue) == intMaxYDisplayValue &&
+            CGColorEqualToColor(color, GREEN.CGColor) {
+            
+            CGContextStrokePath(context);
+            CGContextBeginPath(context);
+            CGContextSetStrokeColorWithColor(context, RED.CGColor)
+        } else {
+            CGContextSetStrokeColorWithColor(context, color)
+        }
     }
     
     private func drawLine(context : CGContext, x1 : CGFloat, y1 : CGFloat, x2 : CGFloat, y2 : CGFloat) {
