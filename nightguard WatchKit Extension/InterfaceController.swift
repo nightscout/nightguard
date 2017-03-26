@@ -162,11 +162,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             self.historicBgData = historicBgData
             YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
                 
-                let defaults = NSUserDefaults.standardUserDefaults()
+                let (upperBound, _) = UserDefaultsRepository.readUpperLowerBounds()
                 self.chartScene!.paintChart(
                     [historicBgData,yesterdaysValues],
                     newCanvasWidth: bounds.width * 6,
-                    maxYDisplayValue: CGFloat(defaults.floatForKey("maximumBloodGlucoseDisplayed")),
+                    maxYDisplayValue: CGFloat(upperBound),
                     moveToLatestValue: true)
             }
             NightscoutDataRepository.singleton.storeHistoricBgData(self.historicBgData)

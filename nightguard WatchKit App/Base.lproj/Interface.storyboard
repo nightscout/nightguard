@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch42" orientation="portrait">
+    <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -19,7 +19,7 @@
                                 <label width="80" height="37" alignment="left" text="---" textAlignment="center" minimumScaleFactor="0.5" id="vdn-99-EwA">
                                     <fontDescription key="font" type="system" pointSize="48"/>
                                     <variation key="device=watch38mm" width="60">
-                                        <fontDescription key="font" type="system" pointSize="42"/>
+                                        <fontDescription key="font" type="system" pointSize="40"/>
                                     </variation>
                                     <variation key="device=watch42mm" width="80">
                                         <fontDescription key="font" type="system" pointSize="46"/>
@@ -48,7 +48,9 @@
                             </items>
                         </group>
                         <separator alignment="left" id="AeO-Dw-7jo"/>
-                        <spriteKitScene width="155" height="125" alignment="left" id="HJ3-mD-NFS"/>
+                        <spriteKitScene width="155" height="125" alignment="left" id="HJ3-mD-NFS">
+                            <variation key="device=watch38mm" height="105"/>
+                        </spriteKitScene>
                     </items>
                     <menu key="menu" id="YiW-tI-jRp"/>
                     <connections>

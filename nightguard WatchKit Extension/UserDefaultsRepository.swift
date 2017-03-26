@@ -84,6 +84,48 @@ class UserDefaultsRepository {
         defaults!.setObject(daysToBeDisplayed, forKey: "daysToBeDisplayed")
     }
     
+    // Reads the defined value. The user would like to be alerted if the blood glucose
+    // levels are above or below this range.
+    static func readUpperLowerBounds() -> (upperBound : Float, lowerBound : Float) {
+        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            print("Units are not saved so far. Assuming (180,80) in this case.")
+            return (180, 80)
+        }
+        
+        let upperBound = defaults.floatForKey("alertIfAboveValue")
+        let lowerBound = defaults.floatForKey("alertIfBelowValue")
+        
+        return (upperBound, lowerBound)
+    }
+    
+    static func saveUpperLowerBounds(upperBounds : Float, lowerBounds : Float) {
+        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            print("Upper/Lower Bounds can't be saved -> this should never happen!")
+            return
+        }
+        
+        defaults.setFloat(upperBounds, forKey: "alertIfAboveValue")
+        defaults.setFloat(lowerBounds, forKey: "alertIfBelowValue")
+    }
+    
+    static func saveMaximumBloodGlucoseDisplayed(maximumBloodGlucoseDisplayed : Float) {
+        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            print("maximumBloodGlucoseDisplayedcan't be saved -> this should never happen!")
+            return
+        }
+        
+        defaults.setFloat(maximumBloodGlucoseDisplayed, forKey: "maximumBloodGlucoseDisplayed")
+    }
+    
+    static func readMaximumBloodGlucoseDisplayed() -> Float {
+        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 250 in this case.")
+            return 250
+        }
+        
+        return defaults.floatForKey("maximumBloodGlucoseDisplayed")
+    }
+    
     private static func validateUrl(stringURL : NSString) -> Bool {
         
         // return nil if the URL has not a valid format

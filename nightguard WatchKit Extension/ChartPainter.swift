@@ -258,8 +258,8 @@ class ChartPainter {
             
             i = i + 1
             attrs.updateValue(getColor(i), forKey: NSForegroundColorAttributeName)
-            let xPosition = canvasWidth - 20 * nrOfNames + i * 20 - 20
-            name.drawWithRect(CGRect(x: xPosition, y: 0, width: 20, height: 14),
+            let xPosition = canvasWidth - 22 * nrOfNames + i * 20 - 20
+            name.drawWithRect(CGRect(x: xPosition, y: 20, width: 20, height: 14),
                                 options: .UsesLineFragmentOrigin, attributes: attrs, context: nil)
         }
     }
