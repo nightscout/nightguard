@@ -12,11 +12,11 @@ class TimeServiceTest : XCTestCase {
     
     func testMinus29MinutesIsNotOlderThan30Minutes() {
         
-        XCTAssertFalse(TimeService.isOlderThan30Minutes(NSDate.init().dateByAddingTimeInterval(-60 * 29)))
+        XCTAssertFalse(TimeService.isOlderThan30Minutes(Date.init().addingTimeInterval(-60 * 29)))
     }
     
     func testMinus31MinutesIsOlderThan30Minutes() {
         
-        XCTAssertTrue(TimeService.isOlderThan30Minutes(NSDate.init().dateByAddingTimeInterval(-60 * 31)))
+        XCTAssertTrue(TimeService.isOlderThan30Minutes(Date.init().addingTimeInterval(-60 * 31)))
     }
 }

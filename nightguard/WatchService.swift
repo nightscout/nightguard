@@ -13,27 +13,28 @@ class WatchService {
     
     static let singleton = WatchService()
     
-    func sendToWatch(units : Units) {
+    func sendToWatch(_ units : Units) {
         let applicationDict = ["units" : units.rawValue]
-        WCSession.defaultSession().transferUserInfo(applicationDict)
+        WCSession.default().transferUserInfo(applicationDict)
     }
     
-    func sendToWatch(alertIfBelowValue : Float, alertIfAboveValue : Float) {
+    func sendToWatch(_ alertIfBelowValue : Float, alertIfAboveValue : Float) {
         let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
                                    "alertIfAboveValue" : alertIfAboveValue]
-        WCSession.defaultSession().transferUserInfo(applicationDict)
+        WCSession.default().transferUserInfo(applicationDict)
     }
     
-    func sendToWatch(hostUri : String) {
+    func sendToWatch(_ hostUri : String) {
         let applicationDict = ["hostUri" : hostUri]
-        WCSession.defaultSession().transferUserInfo(applicationDict)
+        WCSession.default().transferUserInfo(applicationDict)
     }
     
-    func sendToWatch(hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units) {
-        let applicationDict = ["hostUri" : hostUri,
-                                "alertIfBelowValue" : alertIfBelowValue,
-                                "alertIfAboveValue" : alertIfAboveValue,
-                                "units" : units.rawValue]
-        WCSession.defaultSession().transferUserInfo(applicationDict as! [String : AnyObject])
+    func sendToWatch(_ hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units) {
+        let applicationDict : [String : Any] =
+            ["hostUri" : hostUri,
+             "alertIfBelowValue" : alertIfBelowValue,
+             "alertIfAboveValue" : alertIfAboveValue,
+             "units" : units.rawValue]
+        WCSession.default().transferUserInfo(applicationDict as [String : AnyObject])
     }
 }

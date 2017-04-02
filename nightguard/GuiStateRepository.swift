@@ -13,18 +13,18 @@ class GuiStateRepository {
     
     static let singleton = GuiStateRepository()
 
-    func storeScreenlockSwitchState(let isActivated : Bool) {
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setObject(isActivated, forKey: "screenlockSwitchState")
+    func storeScreenlockSwitchState(_ isActivated : Bool) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.set(isActivated, forKey: "screenlockSwitchState")
     }
     
     func loadScreenlockSwitchState() -> Bool {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             // Nothing has been stored before => screenlock should be deactivated
             return false
         }
         
-        guard let isActivated = defaults.objectForKey("screenlockSwitchState") as? Bool else {
+        guard let isActivated = defaults.object(forKey: "screenlockSwitchState") as? Bool else {
             return false
         }
         return isActivated

@@ -12,8 +12,8 @@ extension Float {
     
     // remove the decimal part of the float if it is ".0" and trim whitespaces
     var cleanValue: String {
-        return self % 1 == 0
-            ? String(format: "%5.0f", self).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-            : String(format: "%5.1f", self).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        return self.truncatingRemainder(dividingBy: 1) == 0
+            ? String(format: "%5.0f", self).trimmingCharacters(in: CharacterSet.whitespaces)
+            : String(format: "%5.1f", self).trimmingCharacters(in: CharacterSet.whitespaces)
     }
 }

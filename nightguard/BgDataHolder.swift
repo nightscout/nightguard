@@ -15,16 +15,16 @@ import Foundation
 class BgDataHolder {
     static let singleton = BgDataHolder()
     
-    private var todaysBgData : [BloodSugar] = []
-    private var currentNightscoutData = NightscoutData()
-    private var testNightscoutData = NightscoutData()
+    fileprivate var todaysBgData : [BloodSugar] = []
+    fileprivate var currentNightscoutData = NightscoutData()
+    fileprivate var testNightscoutData = NightscoutData()
     var hasNewValues : Bool = false
     
-    func setTestBgData(testBgData : NightscoutData) {
+    func setTestBgData(_ testBgData : NightscoutData) {
         self.testNightscoutData = testBgData
     }
     
-    func setTodaysBgData(todaysBgData : [BloodSugar]) {
+    func setTodaysBgData(_ todaysBgData : [BloodSugar]) {
         let oldBgData = self.todaysBgData
         hasNewValues = determineIfNewDataWasReceived(oldBgData, new: todaysBgData)
         
@@ -35,7 +35,7 @@ class BgDataHolder {
         return todaysBgData
     }
     
-    func setCurrentBgData(currentNightscoutData : NightscoutData) {
+    func setCurrentBgData(_ currentNightscoutData : NightscoutData) {
         self.currentNightscoutData = currentNightscoutData
     }
     
@@ -48,11 +48,11 @@ class BgDataHolder {
     }
     
     func inTestMode() -> Bool {
-        let dic = NSProcessInfo.processInfo().environment
+        let dic = ProcessInfo.processInfo.environment
         return dic["TEST"] != nil
     }
     
-    private func determineIfNewDataWasReceived(old : [BloodSugar], new : [BloodSugar]) -> Bool {
+    fileprivate func determineIfNewDataWasReceived(_ old : [BloodSugar], new : [BloodSugar]) -> Bool {
         
         if old.count != new.count {
             return true
@@ -65,11 +65,11 @@ class BgDataHolder {
         return old.last?.timestamp != new.last?.timestamp
     }
     
-    private func generateHighBgTestData() -> NightscoutData {
+    fileprivate func generateHighBgTestData() -> NightscoutData {
         let bgData = NightscoutData()
         bgData.sgv = "200"
         bgData.bgdelta = 0
-        bgData.time = NSDate.init().timeIntervalSince1970
+        bgData.time = NSNumber(value: Date.init().timeIntervalSince1970)
         
         return bgData
     }

@@ -29,12 +29,12 @@ class MainViewController: UIViewController {
     
     var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     // timer to check continuously for new bgValues
-    var timer = NSTimer()
+    var timer = Timer()
     // check every 5 Seconds whether new bgvalues should be retrieved
-    let timeInterval:NSTimeInterval = 5.0
+    let timeInterval:TimeInterval = 5.0
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
     
     override func viewDidLoad() {
@@ -44,8 +44,8 @@ class MainViewController: UIViewController {
         // This way the system volume can be
         // controlled by the user
         let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
-        volumeView.backgroundColor = UIColor.blackColor()
-        volumeView.tintColor = UIColor.grayColor()
+        volumeView.backgroundColor = UIColor.black
+        volumeView.tintColor = UIColor.gray
         volumeContainerView.addSubview(volumeView)
         // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
         volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
@@ -61,7 +61,7 @@ class MainViewController: UIViewController {
         paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
         
         // Start the timer to retrieve new bgValues
-        timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+        timer = Timer.scheduledTimer(timeInterval: timeInterval,
                                                        target: self,
                                                        selector: #selector(MainViewController.timerDidEnd(_:)),
                                                        userInfo: nil,
@@ -85,10 +85,10 @@ class MainViewController: UIViewController {
         skView.addGestureRecognizer(pinchGesture)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
-        UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeRight.rawValue, forKey: "orientation")
-        UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
+        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         
         chartScene.size = CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height)
         
@@ -101,33 +101,33 @@ class MainViewController: UIViewController {
                 self.chartScene.paintChart(
                     [historicBgData, yesterdaysValues],
                     newCanvasWidth: self.maximumDeviceTextureWidth(),
-                    maxYDisplayValue: CGFloat(NSUserDefaults.standardUserDefaults().floatForKey("maximumBloodGlucoseDisplayed")),
+                    maxYDisplayValue: CGFloat(UserDefaults.standard.float(forKey: "maximumBloodGlucoseDisplayed")),
                     moveToLatestValue: true)
             }
         }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
  
         chartScene.stopSwipeAction()
     }
     
-    func panGesture(recognizer : UIPanGestureRecognizer) {
+    func panGesture(_ recognizer : UIPanGestureRecognizer) {
         
-        if recognizer.state == UIGestureRecognizerState.Began {
+        if recognizer.state == UIGestureRecognizerState.began {
             oldXTranslation = 0
 
             // The user just touched the display
             // So we use this to stop eventually running actions
             chartScene.stopSwipeAction()
         }
-        let translation = recognizer.translationInView(spriteKitView)
+        let translation = recognizer.translation(in: spriteKitView)
 
         chartScene.draggedByATouch(translation.x - oldXTranslation)
         oldXTranslation = translation.x
         
-        if (recognizer.state == UIGestureRecognizerState.Ended) {
-            let velocity = recognizer.velocityInView(spriteKitView)
+        if (recognizer.state == UIGestureRecognizerState.ended) {
+            let velocity = recognizer.velocity(in: spriteKitView)
             
             if (velocity.x < -100) {
                 // Left Swipe detected
@@ -141,9 +141,9 @@ class MainViewController: UIViewController {
     
     // This gesture is used to zoom in and out by changing the maximum
     // Blood Glucose value that is displayed in the chart.
-    func pinchGesture(recognizer : UIPinchGestureRecognizer) {
+    func pinchGesture(_ recognizer : UIPinchGestureRecognizer) {
         
-        if recognizer.state == UIGestureRecognizerState.Ended {
+        if recognizer.state == UIGestureRecognizerState.ended {
             chartScene.scale(recognizer.scale, keepScale: true)
         } else {
             chartScene.scale(recognizer.scale, keepScale: false)
@@ -152,11 +152,11 @@ class MainViewController: UIViewController {
     
     // Resize the MPVolumeView when the parent view changes
     // This is needed on an e.g. 4,7" iPhone. Otherwise the MPVolumeView would be too small
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 
         let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
-        volumeView.backgroundColor = UIColor.blackColor()
-        volumeView.tintColor = UIColor.grayColor()
+        volumeView.backgroundColor = UIColor.black
+        volumeView.tintColor = UIColor.gray
 
         for view in volumeContainerView.subviews {
             view.removeFromSuperview()
@@ -164,18 +164,18 @@ class MainViewController: UIViewController {
         volumeContainerView.addSubview(volumeView)
     }
     
-    private func restoreGuiState() {
+    fileprivate func restoreGuiState() {
         
-        screenlockSwitch.on = GuiStateRepository.singleton.loadScreenlockSwitchState()
+        screenlockSwitch.isOn = GuiStateRepository.singleton.loadScreenlockSwitchState()
         doScreenlockAction(self)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     // check whether new Values should be retrieved
-    func timerDidEnd(timer:NSTimer) {
+    func timerDidEnd(_ timer:Timer) {
         
         checkForNewValuesFromNightscoutServer()
         if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData(), bloodValues: BgDataHolder.singleton.getTodaysBgData()) {
@@ -191,7 +191,7 @@ class MainViewController: UIViewController {
         paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
     }
     
-    private func checkForNewValuesFromNightscoutServer() {
+    fileprivate func checkForNewValuesFromNightscoutServer() {
         
         YesterdayBloodSugarService.singleton.warmupCache()
         if BgDataHolder.singleton.getCurrentBgData().isOlderThan5Minutes() {
@@ -202,7 +202,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    private func readNewValuesFromNightscoutServer() {
+    fileprivate func readNewValuesFromNightscoutServer() {
         
         NightscoutService.singleton.readCurrentDataForPebbleWatch({(nightscoutData) -> Void in
             BgDataHolder.singleton.setCurrentBgData(nightscoutData)
@@ -217,7 +217,7 @@ class MainViewController: UIViewController {
                     self.chartScene.paintChart(
                         [historicBgData, yesterdayValues],
                         newCanvasWidth: self.maximumDeviceTextureWidth(),
-                        maxYDisplayValue: CGFloat(NSUserDefaults.standardUserDefaults().floatForKey("maximumBloodGlucoseDisplayed")),
+                        maxYDisplayValue: CGFloat(UserDefaults.standard.float(forKey: "maximumBloodGlucoseDisplayed")),
                         moveToLatestValue: true)
                 }
             }
@@ -226,13 +226,13 @@ class MainViewController: UIViewController {
         })
     }
     
-    private func paintScreenLockSwitch() {
-        screenlockSwitch.on = UIApplication.sharedApplication().idleTimerDisabled
+    fileprivate func paintScreenLockSwitch() {
+        screenlockSwitch.isOn = UIApplication.shared.isIdleTimerDisabled
     }
     
-    private func paintCurrentBgData(nightscoutData : NightscoutData) {
+    fileprivate func paintCurrentBgData(_ nightscoutData : NightscoutData) {
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             if nightscoutData.sgv == "---" {
                 self.bgLabel.text = "---"
             } else {
@@ -242,8 +242,8 @@ class MainViewController: UIViewController {
             
             self.deltaLabel.text = nightscoutData.bgdeltaString.cleanFloatValue
             self.deltaArrowsLabel.text = nightscoutData.bgdeltaArrow
-            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(nightscoutData.bgdelta)
-            self.deltaArrowsLabel.textColor = UIColorChanger.getDeltaLabelColor(nightscoutData.bgdelta)
+            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(NSNumber(value: nightscoutData.bgdelta))
+            self.deltaArrowsLabel.textColor = UIColorChanger.getDeltaLabelColor(NSNumber(value: nightscoutData.bgdelta))
             
             self.lastUpdateLabel.text = nightscoutData.timeString
             self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(nightscoutData.time)
@@ -252,11 +252,11 @@ class MainViewController: UIViewController {
         })
     }
     
-    @IBAction func doSnoozeAction(sender: AnyObject) {
+    @IBAction func doSnoozeAction(_ sender: AnyObject) {
         
         if AlarmRule.isSnoozed() {
             AlarmRule.disableSnooze()
-            snoozeButton.setTitle("Snooze", forState: UIControlState.Normal)
+            snoozeButton.setTitle("Snooze", for: UIControlState())
         } else {
             // stop the alarm immediatly here not to disturb others
             AlarmSound.muteVolume()
@@ -264,45 +264,45 @@ class MainViewController: UIViewController {
         }
     }
     
-    private func showSnoozePopup() {
+    fileprivate func showSnoozePopup() {
         let alert = UIAlertController(title: "Snooze",
             message: "How long should the alarm be ignored?",
-            preferredStyle: UIAlertControllerStyle.Alert)
+            preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "30 Minutes",
-            style: UIAlertActionStyle.Default,
+            style: UIAlertActionStyle.default,
             handler: {(alert: UIAlertAction!) in
                 
                 self.snoozeMinutes(30)
         }))
         alert.addAction(UIAlertAction(title: "1 Hour",
-            style: UIAlertActionStyle.Default,
+            style: UIAlertActionStyle.default,
             handler: {(alert: UIAlertAction!) in
                 
                 self.snoozeMinutes(60)
         }))
         alert.addAction(UIAlertAction(title: "2 Hours",
-            style: UIAlertActionStyle.Default,
+            style: UIAlertActionStyle.default,
             handler: {(alert: UIAlertAction!) in
                 
                 self.snoozeMinutes(120)
         }))
         alert.addAction(UIAlertAction(title: "1 Day",
-            style: UIAlertActionStyle.Default,
+            style: UIAlertActionStyle.default,
             handler: {(alert: UIAlertAction!) in
                 
                 self.snoozeMinutes(24 * 60)
         }))
         alert.addAction(UIAlertAction(title: "Cancel",
-            style: UIAlertActionStyle.Default,
+            style: UIAlertActionStyle.default,
             handler: {(alert: UIAlertAction!) in
                 
                 AlarmSound.unmuteVolume()
         }))
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
-    private func snoozeMinutes(minutes : Int) {
+    fileprivate func snoozeMinutes(_ minutes : Int) {
         
         AlarmRule.snooze(minutes)
         
@@ -311,45 +311,45 @@ class MainViewController: UIViewController {
         self.updateSnoozeButtonText()
     }
     
-    private func updateSnoozeButtonText() {
+    fileprivate func updateSnoozeButtonText() {
         
         if AlarmRule.isSnoozed() {
-            snoozeButton.setTitle("Snoozed for " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min", forState: UIControlState.Normal)
+            snoozeButton.setTitle("Snoozed for " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min", for: UIControlState())
         } else {
-            snoozeButton.setTitle("Snooze", forState: UIControlState.Normal)
+            snoozeButton.setTitle("Snooze", for: UIControlState())
         }
     }
     
-    @IBAction func doScreenlockAction(sender: AnyObject) {
-        if screenlockSwitch.on {
-            UIApplication.sharedApplication().idleTimerDisabled = true
+    @IBAction func doScreenlockAction(_ sender: AnyObject) {
+        if screenlockSwitch.isOn {
+            UIApplication.shared.isIdleTimerDisabled = true
             GuiStateRepository.singleton.storeScreenlockSwitchState(true)
             
             displayScreenlockInfoMessageOnlyOnce()
         } else {
-            UIApplication.sharedApplication().idleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = false
             GuiStateRepository.singleton.storeScreenlockSwitchState(false)
         }
     }
     
-    private func displayScreenlockInfoMessageOnlyOnce() {
-        let screenlockMessageShowed = NSUserDefaults.standardUserDefaults().boolForKey("screenlockMessageShowed")
+    fileprivate func displayScreenlockInfoMessageOnlyOnce() {
+        let screenlockMessageShowed = UserDefaults.standard.bool(forKey: "screenlockMessageShowed")
         
         if !screenlockMessageShowed {
             
-            let alertController = UIAlertController(title: "Keep the screen active", message: "Turn this switch to disable the screenlock and prevent the app to get stopped!", preferredStyle: .Alert)
-            let actionOk = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            let alertController = UIAlertController(title: "Keep the screen active", message: "Turn this switch to disable the screenlock and prevent the app to get stopped!", preferredStyle: .alert)
+            let actionOk = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(actionOk)
-            presentViewController(alertController, animated: true, completion: nil)
+            present(alertController, animated: true, completion: nil)
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "screenlockMessageShowed")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(true, forKey: "screenlockMessageShowed")
+            UserDefaults.standard.synchronize()
         }
     }
     
-    private func paintCurrentTime() {
-        let formatter = NSDateFormatter()
+    fileprivate func paintCurrentTime() {
+        let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
-        self.timeLabel.text = formatter.stringFromDate(NSDate())
+        self.timeLabel.text = formatter.string(from: Date())
     }
 }

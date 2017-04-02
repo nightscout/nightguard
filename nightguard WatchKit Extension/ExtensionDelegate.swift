@@ -15,7 +15,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         didSet {
             if let session = session {
                 session.delegate = AppMessageService.singleton
-                session.activateSession()
+                session.activate()
             }
         }
     }
@@ -27,7 +27,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func activateWatchConnectivity() {
         if WCSession.isSupported() {
-            session = WCSession.defaultSession()
+            session = WCSession.default()
         }
     }
     
@@ -44,6 +44,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         
         // Setting the defaults if the users starts the application for the first time
         let initialDefaults: NSDictionary = ["maximumBloodGlucoseDisplayed": 250]
-        NSUserDefaults.standardUserDefaults().registerDefaults(initialDefaults as! [String : AnyObject])
+        UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
     }
 }

@@ -10,10 +10,10 @@ import Foundation
 
 class TimeService {
     
-    private static var testTime : Double? = nil
-    private static var testMode : Bool = false
+    fileprivate static var testTime : Double? = nil
+    fileprivate static var testMode : Bool = false
     
-    static func setTestTime(testTime : Double) {
+    static func setTestTime(_ testTime : Double) {
         self.testTime = testTime;
     }
     
@@ -21,50 +21,50 @@ class TimeService {
         if testTime != nil {
             return testTime!
         } else {
-            return NSDate().timeIntervalSince1970
+            return Date().timeIntervalSince1970
         }
     }
     
-    static func getToday() -> NSDate {
+    static func getToday() -> Date {
         if testTime != nil {
-            return NSDate(timeIntervalSince1970: testTime!)
+            return Date(timeIntervalSince1970: testTime!)
         }
-        return NSDate()
+        return Date()
     }
     
-    static func get4DaysAgo() -> NSDate {
-        return getToday().dateByAddingTimeInterval(4 * -24 * 60 * 60)
+    static func get4DaysAgo() -> Date {
+        return getToday().addingTimeInterval(4 * -24 * 60 * 60)
     }
     
-    static func getNrOfDaysAgo(nrOfDaysAgo : Int) -> NSDate {
-        return getToday().dateByAddingTimeInterval(Double(nrOfDaysAgo) * -24 * 60 * 60)
+    static func getNrOfDaysAgo(_ nrOfDaysAgo : Int) -> Date {
+        return getToday().addingTimeInterval(Double(nrOfDaysAgo) * -24 * 60 * 60)
     }
     
-    static func getYesterday() -> NSDate {
-        let yesterday = getToday().dateByAddingTimeInterval(-24*60*60)
+    static func getYesterday() -> Date {
+        let yesterday = getToday().addingTimeInterval(-24*60*60)
 
         return yesterday
     }
     
-    static func getTomorrow() -> NSDate {
-        let tomorrow = getToday().dateByAddingTimeInterval(24*60*60)
+    static func getTomorrow() -> Date {
+        let tomorrow = getToday().addingTimeInterval(24*60*60)
         
         return tomorrow
     }
     
-    static func isYesterday(microsSince1970 : Double) -> Bool {
+    static func isYesterday(_ microsSince1970 : Double) -> Bool {
         let secondsSince1970 = microsSince1970 / 1000
         
-        let calendar = NSCalendar.currentCalendar()
-        let startOfYesterday = calendar.startOfDayForDate(TimeService.getYesterday()).timeIntervalSince1970
-        let endOfYesterday = calendar.startOfDayForDate(TimeService.getToday()).timeIntervalSince1970
+        let calendar = Calendar.current
+        let startOfYesterday = calendar.startOfDay(for: TimeService.getYesterday()).timeIntervalSince1970
+        let endOfYesterday = calendar.startOfDay(for: TimeService.getToday()).timeIntervalSince1970
         
         return startOfYesterday <= secondsSince1970 &&
             secondsSince1970 <= endOfYesterday
         
     }
     
-    static func isOlderThan30Minutes(date : NSDate) -> Bool {
-        return getToday().dateByAddingTimeInterval(-30 * 60).compare(date) == NSComparisonResult.OrderedDescending
+    static func isOlderThan30Minutes(_ date : Date) -> Bool {
+        return getToday().addingTimeInterval(-30 * 60).compare(date) == ComparisonResult.orderedDescending
     }
 }

@@ -12,14 +12,14 @@ class StatisticsRepository {
     
     static let singleton = StatisticsRepository()
 
-    var lastSave : NSDate?
+    var lastSave : Date?
     
     var cachedDays : [[BloodSugar]] = [[], [], [], [], [], []]
     
     
     // Reads the day starting with day 0 (current day).
     // If the day is not available or older than 30 Minutes, nil will be returned
-    func readDay(nr : Int) -> [BloodSugar]? {
+    func readDay(_ nr : Int) -> [BloodSugar]? {
         
         if lastSave == nil || TimeService.isOlderThan30Minutes(lastSave!) {
             return nil
@@ -37,7 +37,7 @@ class StatisticsRepository {
     }
     
     
-    func saveDay(nr : Int, bloodSugarArray : [BloodSugar]) {
+    func saveDay(_ nr : Int, bloodSugarArray : [BloodSugar]) {
         
         lastSave = TimeService.getToday()
         

@@ -24,17 +24,17 @@ class StatsViewController: UIViewController {
 //            .FlexibleWidth]
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         updateChartScene(CGSize(width: chartSpriteKitView.bounds.width, height: chartSpriteKitView.bounds.height))
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
         // force the display into horizontal orientation
-        UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
-        UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeRight.rawValue, forKey: "orientation")
+        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
         
         chartScene.size = CGSize(width: chartSpriteKitView.bounds.width, height: chartSpriteKitView.bounds.height)
         
@@ -74,7 +74,7 @@ class StatsViewController: UIViewController {
         paintChart(filteredDays)
     }
     
-    private func paintChart(days : [[BloodSugar]]) {
+    fileprivate func paintChart(_ days : [[BloodSugar]]) {
         
         self.chartScene.paintChart(days,
                 newCanvasWidth: min(self.maximumDeviceTextureWidth(),
@@ -83,35 +83,35 @@ class StatsViewController: UIViewController {
                 moveToLatestValue: false)
     }
     
-    private func setDayMonthYearTo01011971(bgValues : [BloodSugar]) -> [BloodSugar] {
+    fileprivate func setDayMonthYearTo01011971(_ bgValues : [BloodSugar]) -> [BloodSugar] {
         
         var normalizedBgValues : [BloodSugar] = []
-        let calendar = NSCalendar.currentCalendar()
-        let unitFlags: NSCalendarUnit = [.Hour, .Minute, .Second]
+        let calendar = Calendar.current
+        let unitFlags: NSCalendar.Unit = [.hour, .minute, .second]
         
         for bgValue in bgValues {
             
-            let time = NSDate(timeIntervalSince1970: bgValue.timestamp / 1000)
-            let components = calendar.components(unitFlags, fromDate: time)
-            components.setValue(1971, forComponent: .Year)
-            let normalizedTimeWithYear1971 = calendar.dateFromComponents(components)
+            let time = Date(timeIntervalSince1970: bgValue.timestamp / 1000)
+            let components = (calendar as NSCalendar).components(unitFlags, from: time)
+            (components as NSDateComponents).setValue(1971, forComponent: .year)
+            let normalizedTimeWithYear1971 = calendar.date(from: components)
             
             normalizedBgValues.insert(
-                BloodSugar.init(value: bgValue.value, timestamp: (normalizedTimeWithYear1971?.timeIntervalSince1970)! * 1000), atIndex: 0)
+                BloodSugar.init(value: bgValue.value, timestamp: (normalizedTimeWithYear1971?.timeIntervalSince1970)! * 1000), at: 0)
         }
         
         return normalizedBgValues
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Landscape
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.landscape
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
-    private func updateChartScene(size : CGSize) {
+    fileprivate func updateChartScene(_ size : CGSize) {
         
         if chartSpriteKitView != nil {
             // Initialize the ChartScene
@@ -122,7 +122,7 @@ class StatsViewController: UIViewController {
         }
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
         updateChartScene(size)
     }

@@ -15,6 +15,6 @@ extension UIViewController {
     // So take care, that this is not exceeded. Otherwise we get nothing but a
     // black texture.
     func maximumDeviceTextureWidth() -> CGFloat {
-        return 4096 / UIScreen.mainScreen().scale
+        return 4096 / UIScreen.main.scale
     }
 }

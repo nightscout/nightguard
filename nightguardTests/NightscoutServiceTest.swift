@@ -12,14 +12,14 @@ import XCTest
 
 class NightscoutServiceTest: XCTestCase {
     
-    private let BASE_URI = "http://dhe.my-wan.de:1337"
+    fileprivate let BASE_URI = "http://dhe.my-wan.de:1337"
     
     func testReadYesterdaysChartDataShouldReturnData() {
         
         // Given
         let serviceBoundary = NightscoutService.singleton;
         UserDefaultsRepository.saveBaseUri(BASE_URI)
-        let expectation = self.expectationWithDescription("Remote Call was successful!")
+        let expectation = self.expectation(withDescription: "Remote Call was successful!")
         
         // When
         serviceBoundary.readYesterdaysChartData({(bloodSugarArray) -> Void in
@@ -32,7 +32,7 @@ class NightscoutServiceTest: XCTestCase {
         })
         
         // Then
-        self.waitForExpectationsWithTimeout(3.0, handler: nil)
+        self.waitForExpectations(withTimeout: 3.0, handler: nil)
     }
     
     func testReadStatus() {
@@ -40,7 +40,7 @@ class NightscoutServiceTest: XCTestCase {
         // Given
         let nightscoutService = NightscoutService.singleton;
         UserDefaultsRepository.saveBaseUri(BASE_URI)
-        let expectation = self.expectationWithDescription("Remote Call was successful!")
+        let expectation = self.expectation(withDescription: "Remote Call was successful!")
         
         // When
         nightscoutService.readStatus({(units) -> Void in
@@ -51,7 +51,7 @@ class NightscoutServiceTest: XCTestCase {
         })
         
         // Then
-        self.waitForExpectationsWithTimeout(5.0, handler: nil)
+        self.waitForExpectations(withTimeout: 5.0, handler: nil)
     }
     
     func testReadLast2HoursShouldReturnData() {
@@ -59,13 +59,13 @@ class NightscoutServiceTest: XCTestCase {
         // Given
         let serviceBoundary = NightscoutService.singleton;
         UserDefaultsRepository.saveBaseUri(BASE_URI)
-        let expectation = self.expectationWithDescription("Remote Call was successful!")
+        let expectation = self.expectation(withDescription: "Remote Call was successful!")
         
         // When
         serviceBoundary.readLastTwoHoursChartData({(bloodSugarArray) -> Void in
             
             if bloodSugarArray.count > 0 {
-                let twoHoursBefore = TimeService.getToday().dateByAddingTimeInterval(-60*120).timeIntervalSince1970
+                let twoHoursBefore = TimeService.getToday().addingTimeInterval(-60*120).timeIntervalSince1970
                 var allExpectationsFulFilled : Bool = true
                 for bloodSugar in bloodSugarArray {
                     if !(twoHoursBefore < bloodSugar.timestamp) {
@@ -80,6 +80,6 @@ class NightscoutServiceTest: XCTestCase {
         })
         
         // Then
-        self.waitForExpectationsWithTimeout(3.0, handler: nil)
+        self.waitForExpectations(withTimeout: 3.0, handler: nil)
     }
 }

@@ -65,12 +65,12 @@ class ChartPainterTest: XCTestCase {
     
     func testHalfHoursBetweenADayShiftAreCalculatedCorrectly() {
 
-        let today = NSDate()
-        let tomorrow = NSCalendar.currentCalendar().dateByAddingUnit(
-            .Day,
+        let today = Date()
+        let tomorrow = (Calendar.current as NSCalendar).date(
+            byAdding: .day,
             value: 1,
-            toDate: today,
-            options: NSCalendarOptions(rawValue: 0))
+            to: today,
+            options: NSCalendar.Options(rawValue: 0))
             
         let minTimestamp : Double = today.timeIntervalSince1970 * 1000
         let maxTimestamp : Double = (tomorrow?.timeIntervalSince1970)! * 1000

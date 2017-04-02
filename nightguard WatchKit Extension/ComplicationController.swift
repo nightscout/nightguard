@@ -13,33 +13,33 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     var oldValues : [NightscoutData] = []
     
-    func getNextRequestedUpdateDateWithHandler(handler: (NSDate?) -> Void) {
+    func getNextRequestedUpdateDate(handler: @escaping (Date?) -> Void) {
         // Update every 15 Minutes => but this is just a nice wish
         // => Apple will allow maybe just 30 minutes :(
-        handler(NSDate(timeIntervalSinceNow: 60*15))
+        handler(Date(timeIntervalSinceNow: 60*15))
     }
     
     // MARK: - Timeline Configuration
     
-    func getSupportedTimeTravelDirectionsForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTimeTravelDirections) -> Void) {
-        handler([.None])
+    func getSupportedTimeTravelDirections(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimeTravelDirections) -> Void) {
+        handler(CLKComplicationTimeTravelDirections())
     }
     
-    func getCurrentTimelineEntryForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTimelineEntry?) -> Void) {
+    func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
         
         NightscoutService.singleton.readCurrentDataForPebbleWatch({(currentNightscoutData) -> Void in
 
-            self.oldValues.insert(currentNightscoutData, atIndex: 0)
+            self.oldValues.insert(currentNightscoutData, at: 0)
             var template : CLKComplicationTemplate? = nil
             
             switch complication.family {
-            case .ModularSmall:
+            case .modularSmall:
                 let modTemplate = CLKComplicationTemplateModularSmallStackText()
                 
                 modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
                 modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)\(currentNightscoutData.bgdeltaString.cleanFloatValue)\(currentNightscoutData.bgdeltaArrow)")
                 template = modTemplate
-            case .ModularLarge:
+            case .modularLarge:
                 let modTemplate = CLKComplicationTemplateModularLargeStandardBody()
                 
                 modTemplate.headerTextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldValues[0]))
@@ -52,41 +52,41 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                     modTemplate.body2TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldValues[2]))
                 }
                 template = modTemplate
-            case .UtilitarianSmall:
+            case .utilitarianSmall:
                 let modTemplate = CLKComplicationTemplateUtilitarianSmallFlat()
                 modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
                 template = modTemplate
-            case .UtilitarianLarge:
+            case .utilitarianLarge:
                 let modTemplate = CLKComplicationTemplateUtilitarianLargeFlat()
                 modTemplate.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
                 modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
                 template = modTemplate
-            case .CircularSmall:
+            case .circularSmall:
                 let template = CLKComplicationTemplateCircularSmallRingText()
                 template.textProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
                 
                 template.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
-                template.ringStyle = CLKComplicationRingStyle.Closed
+                template.ringStyle = CLKComplicationRingStyle.closed
             default: break
             }
             
             if template != nil {
-                let timelineEntry = CLKComplicationTimelineEntry(date: NSDate(), complicationTemplate: template!)
+                let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template!)
                 handler(timelineEntry)
             }
         })
     }
     
     // Display 11:24 113+2
-    func getOneBigLine(data : NightscoutData) -> String {
+    func getOneBigLine(_ data : NightscoutData) -> String {
         return "\(data.hourAndMinutes) \(data.sgv)\(data.bgdeltaString.cleanFloatValue)\(data.bgdeltaArrow)"
     }
     
     // If the age is older than 59 minutes => return 60 in that case
-    func getAgeOfDataInMinutes(time : NSNumber) -> Float {
+    func getAgeOfDataInMinutes(_ time : NSNumber) -> Float {
         
-        let currentTime = Int64(NSDate().timeIntervalSince1970 * 1000)
-        let difference = (currentTime - time.longLongValue) / 60000
+        let currentTime = Int64(Date().timeIntervalSince1970 * 1000)
+        let difference = (currentTime - time.int64Value) / 60000
         if difference > 59 {
             return 60
         }
@@ -95,18 +95,18 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     // MARK: - Placeholder Templates
     
-    func getPlaceholderTemplateForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
+    func getPlaceholderTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Void) {
         var template: CLKComplicationTemplate? = nil
         switch complication.family {
-        case .ModularSmall:
+        case .modularSmall:
             template = nil
-        case .ModularLarge:
+        case .modularLarge:
             template = nil
-        case .UtilitarianSmall:
+        case .utilitarianSmall:
             template = nil
-        case .UtilitarianLarge:
+        case .utilitarianLarge:
             template = nil
-        case .CircularSmall:
+        case .circularSmall:
             let template = CLKComplicationTemplateCircularSmallRingImage()
             template.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
         default: break

@@ -21,11 +21,11 @@ class NightscoutData : NSObject, NSCoding {
             if time == 0 {
                 return "??:??"
             }
-            let formatter = NSDateFormatter.init()
+            let formatter = DateFormatter.init()
             formatter.dateFormat = "HH:mm"
             
-            let date = NSDate.init(timeIntervalSince1970: Double(time.longLongValue / 1000))
-            return formatter.stringFromDate(date)
+            let date = Date.init(timeIntervalSince1970: Double(time.int64Value / 1000))
+            return formatter.string(from: date)
         }
     }
     var timeString : String {
@@ -34,8 +34,8 @@ class NightscoutData : NSObject, NSCoding {
                 return "-min"
             }
             // calculate how old the current data is
-            let currentTime = Int64(NSDate().timeIntervalSince1970 * 1000)
-            let difference = (currentTime - time.longLongValue) / 60000
+            let currentTime = Int64(Date().timeIntervalSince1970 * 1000)
+            let difference = (currentTime - time.int64Value) / 60000
             if difference > 59 {
                 return ">1Hr"
             }
@@ -57,32 +57,32 @@ class NightscoutData : NSObject, NSCoding {
     */
     required init(coder decoder: NSCoder) {
 
-        guard let sgv = decoder.decodeObjectForKey("sgv") as? String else {
+        guard let sgv = decoder.decodeObject(forKey: "sgv") as? String else {
             return
         }
         self.sgv = sgv
         
-        guard let bgdeltaString = decoder.decodeObjectForKey("bgdeltaString") as? String else {
+        guard let bgdeltaString = decoder.decodeObject(forKey: "bgdeltaString") as? String else {
             return
         }
         self.bgdeltaString = bgdeltaString
         
-        guard let bgdeltaArrow = decoder.decodeObjectForKey("bgdeltaArrow") as? String else {
+        guard let bgdeltaArrow = decoder.decodeObject(forKey: "bgdeltaArrow") as? String else {
             return
         }
         self.bgdeltaArrow = bgdeltaArrow
         
-        guard let bgdelta = decoder.decodeObjectForKey("bgdelta") as? Float else {
+        guard let bgdelta = decoder.decodeObject(forKey: "bgdelta") as? Float else {
             return
         }
         self.bgdelta = bgdelta
         
-        guard let time = decoder.decodeObjectForKey("time") as? NSNumber else {
+        guard let time = decoder.decodeObject(forKey: "time") as? NSNumber else {
             return
         }
         self.time = time
         
-        guard let battery = decoder.decodeObjectForKey("battery") as? String else {
+        guard let battery = decoder.decodeObject(forKey: "battery") as? String else {
             return
         }
         self.battery = battery
@@ -91,22 +91,22 @@ class NightscoutData : NSObject, NSCoding {
     /*
         Code to serialize the BgData to store them in UserDefaults.
     */
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.sgv, forKey: "sgv")
-        aCoder.encodeObject(self.bgdeltaString, forKey: "bgdeltaString")
-        aCoder.encodeObject(self.bgdeltaArrow, forKey: "bgdeltaArrow")
-        aCoder.encodeObject(self.bgdelta, forKey: "bgdelta")
-        aCoder.encodeObject(self.time, forKey: "time")
-        aCoder.encodeObject(self.battery, forKey: "battery")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.sgv, forKey: "sgv")
+        aCoder.encode(self.bgdeltaString, forKey: "bgdeltaString")
+        aCoder.encode(self.bgdeltaArrow, forKey: "bgdeltaArrow")
+        aCoder.encode(self.bgdelta, forKey: "bgdelta")
+        aCoder.encode(self.time, forKey: "time")
+        aCoder.encode(self.battery, forKey: "battery")
     }
     
     func isOlderThan5Minutes() -> Bool {
         return isOlderThanXMinutes(5)
     }
     
-    func isOlderThanXMinutes(minutes : Int) -> Bool {
-        let lastUpdateAsNSDate : NSDate = NSDate(timeIntervalSince1970: time.doubleValue / 1000)
-        let timeInterval : Int = Int(NSDate().timeIntervalSinceDate(lastUpdateAsNSDate))
+    func isOlderThanXMinutes(_ minutes : Int) -> Bool {
+        let lastUpdateAsNSDate : Date = Date(timeIntervalSince1970: time.doubleValue / 1000)
+        let timeInterval : Int = Int(Date().timeIntervalSince(lastUpdateAsNSDate))
         
         return timeInterval > minutes * 60
     }

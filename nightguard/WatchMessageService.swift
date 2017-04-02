@@ -16,17 +16,17 @@ class WatchMessageService : NSObject, WCSessionDelegate {
     static let singleton = WatchMessageService()
     
     // This method gets called when the watch requests the baseUri from the Nightscout Backend
-    func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         replyHandler(["baseUri": UserDefaultsRepository.readBaseUri()])
     }
     
     @available(iOS 9.3, *)
-    func session(session: WCSession, activationDidCompleteWithState activationState: WCSessionActivationState, error: NSError?) {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
     }
     
-    func sessionDidBecomeInactive(session: WCSession) {
+    func sessionDidBecomeInactive(_ session: WCSession) {
     }
     
-    func sessionDidDeactivate(session: WCSession) {
+    func sessionDidDeactivate(_ session: WCSession) {
     }
 }

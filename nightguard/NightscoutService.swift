@@ -17,7 +17,7 @@ class NightscoutService {
     let DIRECTIONS = ["-", "↑↑", "↑", "↖︎", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
-    func readChartData(resultHandler : ([Int] -> Void)) {
+    func readChartData(_ resultHandler : @escaping (([Int]) -> Void)) {
         
         let baseUri = UserDefaultsRepository.readBaseUri()
         if baseUri == "" {
@@ -25,9 +25,9 @@ class NightscoutService {
         }
 
         // Get the current data from REST-Call
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
+        let request = URLRequest(url: URL(string: baseUri + "/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
             guard error == nil else {
                 return
             }
@@ -35,22 +35,21 @@ class NightscoutService {
                 return
             }
             
-            let jsonArray : NSArray = try!NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray
+            let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
             var sgvValues = [Int]()
-            for jsonDict in jsonArray {
-                let sgv = jsonDict["sgv"] as? NSNumber
-                if sgv != nil {
-                    sgvValues.insert(Int(sgv!), atIndex: 0)
+            for (key, value) in jsonArray {
+                if key == "sqv" {
+                    sgvValues.insert(value as! Int, at: 0)
                 }
             }
             resultHandler(sgvValues)
-        };
+        }) ;
         task.resume()
     }
 
     /* Reads the nightscout status of the backend. This is used to determine the configured
        Unit, whether it's mg/dL or mmol/l */
-    func readStatus(resultHandler : (Units -> Void)) {
+    func readStatus(_ resultHandler : @escaping ((Units) -> Void)) {
         
         let baseUri = UserDefaultsRepository.readBaseUri()
         if baseUri == "" {
@@ -58,9 +57,9 @@ class NightscoutService {
         }
         
         // Get the current data from REST-Call
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/api/v1/status.json")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+        let request = URLRequest(url: URL(string: baseUri + "/api/v1/status.json")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             
             guard error == nil else {
                 return
@@ -70,14 +69,14 @@ class NightscoutService {
             }
             
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
+                let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
                 guard let jsonDict :NSDictionary = json as? NSDictionary else {
                     return
                 }
-                let settingsDict = jsonDict.objectForKey("settings") as! NSDictionary
+                let settingsDict = jsonDict.object(forKey: "settings") as! NSDictionary
                 if (settingsDict.count > 0) {
                     
-                    let unitsAsString = settingsDict.valueForKey("units") as! String
+                    let unitsAsString = settingsDict.value(forKey: "units") as! String
                     if unitsAsString == "mg/dL" {
                         resultHandler(Units.mgdl)
                     } else {
@@ -87,12 +86,12 @@ class NightscoutService {
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-        }
+        }) 
         task.resume()
     }
     
     /* Reads all data between two timestamps and limits the maximum return values to 300. */
-    func readChartDataWithinPeriodOfTime(timestamp1 : NSDate, timestamp2 : NSDate, resultHandler : ([BloodSugar] -> Void)) {
+    func readChartDataWithinPeriodOfTime(_ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
 
         let baseUri = UserDefaultsRepository.readBaseUri()
         if baseUri == "" {
@@ -104,15 +103,12 @@ class NightscoutService {
         
         // Get the current data from REST-Call
         let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
-        guard let request : NSMutableURLRequest =
-            NSMutableURLRequest(URL: NSURL(string: requestUri)!,
-                            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
-        else {
-            return
-        }
+        let request =
+            URLRequest(url: URL(string: requestUri)!,
+                            cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
             guard error == nil else {
                 return
             }
@@ -120,14 +116,14 @@ class NightscoutService {
                 return
             }
             
-            let stringSgvData = String(data: data!, encoding: NSUTF8StringEncoding)!
-            let sgvRows = stringSgvData.componentsSeparatedByString("\n")
+            let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
+            let sgvRows = stringSgvData.components(separatedBy: "\n")
             var timestampColumn : Int = 1
             var bloodSugarColumn : Int = 2
             
             var bloodSugarArray = [BloodSugar]()
             for sgvRow in sgvRows {
-                let sgvRowArray = sgvRow.componentsSeparatedByString("\t")
+                let sgvRowArray = sgvRow.components(separatedBy: "\t")
                 
                 if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
                     // Nightscout return for some versions
@@ -137,65 +133,65 @@ class NightscoutService {
                     }
                     
                     let bloodSugar = BloodSugar(value: Float(sgvRowArray[bloodSugarColumn])!, timestamp: Double(sgvRowArray[timestampColumn])!)
-                    bloodSugarArray.insert(bloodSugar, atIndex: 0)
+                    bloodSugarArray.insert(bloodSugar, at: 0)
                 }
             }
             resultHandler(bloodSugarArray)
-        }
+        }) 
         task.resume()
     }
     
-    private func isDateColumn(cell : String) -> Bool {
-        return cell.containsString("-")
+    fileprivate func isDateColumn(_ cell : String) -> Bool {
+        return cell.contains("-")
     }
     
     /* Reads all values from the day before. This is used for comparison with the current values. */
-    func readYesterdaysChartData(resultHandler : ([BloodSugar] -> Void)) {
+    func readYesterdaysChartData(_ resultHandler : @escaping (([BloodSugar]) -> Void)) {
         
-        let calendar = NSCalendar.currentCalendar()
+        let calendar = Calendar.current
         let yesterday = TimeService.getYesterday()
         
-        let startOfYesterday = calendar.startOfDayForDate(yesterday)
-        let endOfYesterday = calendar.startOfDayForDate(TimeService.getToday())
+        let startOfYesterday = calendar.startOfDay(for: yesterday)
+        let endOfYesterday = calendar.startOfDay(for: TimeService.getToday())
         
         readChartDataWithinPeriodOfTime(startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
     }
     
     /* Reads all values from the current day. */
-    func readTodaysChartData(resultHandler : ([BloodSugar] -> Void)) {
+    func readTodaysChartData(_ resultHandler : @escaping (([BloodSugar]) -> Void)) {
         
-        let calendar = NSCalendar.currentCalendar()
+        let calendar = Calendar.current
         let today = TimeService.getToday()
         
-        let beginOfDay = calendar.startOfDayForDate(today)
-        let endOfDay = calendar.startOfDayForDate(TimeService.getTomorrow())
+        let beginOfDay = calendar.startOfDay(for: today)
+        let endOfDay = calendar.startOfDay(for: TimeService.getTomorrow())
         
         readChartDataWithinPeriodOfTime(beginOfDay, timestamp2: endOfDay, resultHandler: resultHandler)
     }
     
-    func readDay(nrOfDaysAgo : Int, callbackHandler : (nrOfDay : Int, [BloodSugar]) -> Void) {
+    func readDay(_ nrOfDaysAgo : Int, callbackHandler : @escaping (_ nrOfDay : Int, [BloodSugar]) -> Void) {
         let timeNrOfDaysAgo = TimeService.getNrOfDaysAgo(nrOfDaysAgo)
         
-        let calendar = NSCalendar.currentCalendar()
-        let startNrOfDaysAgo = calendar.startOfDayForDate(timeNrOfDaysAgo)
-        let endNrOfDaysAgo = startNrOfDaysAgo.dateByAddingTimeInterval(24 * 60 * 60)
+        let calendar = Calendar.current
+        let startNrOfDaysAgo = calendar.startOfDay(for: timeNrOfDaysAgo)
+        let endNrOfDaysAgo = startNrOfDaysAgo.addingTimeInterval(24 * 60 * 60)
         
         readChartDataWithinPeriodOfTime(startNrOfDaysAgo, timestamp2: endNrOfDaysAgo, resultHandler: {(bgValues) -> Void in
-            callbackHandler(nrOfDay: nrOfDaysAgo, bgValues)
+            callbackHandler(nrOfDaysAgo, bgValues)
         })
     }
     
     /* Reads all values from the last 2 Hours before. */
-    func readLastTwoHoursChartData(resultHandler : ([BloodSugar] -> Void)) {
+    func readLastTwoHoursChartData(_ resultHandler : @escaping (([BloodSugar]) -> Void)) {
         
         let today = TimeService.getToday()
-        let twoHoursBefore = today.dateByAddingTimeInterval(-60*120)
+        let twoHoursBefore = today.addingTimeInterval(-60*120)
         
         readChartDataWithinPeriodOfTime(twoHoursBefore, timestamp2: today, resultHandler: resultHandler)
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
-    func readCurrentDataForPebbleWatch(resultHandler : (NightscoutData -> Void)) {
+    func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData) -> Void)) {
 
         let baseUri = UserDefaultsRepository.readBaseUri()
         if (baseUri == "") {
@@ -203,9 +199,9 @@ class NightscoutService {
         }
         
         // Get the current data from REST-Call
-        let request : NSMutableURLRequest = NSMutableURLRequest(URL: NSURL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 20)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
+        let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
             guard error == nil else {
                 return
             }
@@ -214,20 +210,20 @@ class NightscoutService {
             }
 
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
+                let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
                 guard let jsonDict :NSDictionary = json as? NSDictionary else {
                     return
                 }
-                let bgs : NSArray = jsonDict.objectForKey("bgs") as! NSArray
+                let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
                 if (bgs.count > 0) {
-                    let currentBgs : NSDictionary = bgs.objectAtIndex(0) as! NSDictionary
+                    let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
                     
-                    let sgv : NSString = currentBgs.objectForKey("sgv") as! NSString
-                    let bgdelta = Float(String(currentBgs.objectForKey("bgdelta")!))
-                    let time = currentBgs.objectForKey("datetime") as! NSNumber
+                    let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
+                    let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
+                    let time = currentBgs.object(forKey: "datetime") as! NSNumber
                     
                     let nightscoutData = NightscoutData()
-                    let battery : NSString? = currentBgs.objectForKey("battery") as? NSString
+                    let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
                     if battery == nil {
                         nightscoutData.battery = String("?")
                     } else {
@@ -236,7 +232,7 @@ class NightscoutService {
 
                     nightscoutData.sgv = String(sgv)
                     nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
-                    nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.objectForKey("trend") as! NSNumber)
+                    nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
                     nightscoutData.bgdelta = bgdelta!
                     nightscoutData.time = time
                     
@@ -245,27 +241,27 @@ class NightscoutService {
             } catch {
                 return
             }
-        };
+        }) ;
         task.resume()
     }
     
     // Converts the pebbles direction number to unicode arrow characters
-    private func getDirectionCharacter(directionNumber : NSNumber) -> String {
+    fileprivate func getDirectionCharacter(_ directionNumber : NSNumber) -> String {
         
-        return DIRECTIONS[directionNumber.integerValue]
+        return DIRECTIONS[directionNumber.intValue]
     }
     
-    private func direction(delta : Float) -> String {
+    fileprivate func direction(_ delta : Float) -> String {
         if (delta >= 0) {
             return "+"
         }
         return ""
     }
     
-    private func formatTime(secondsSince01011970 : NSNumber) -> String {
-        let timeFormatter = NSDateFormatter()
+    fileprivate func formatTime(_ secondsSince01011970 : NSNumber) -> String {
+        let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"
-        let dateString : String = timeFormatter.stringFromDate(NSDate(timeIntervalSince1970: secondsSince01011970.doubleValue / 1000))
+        let dateString : String = timeFormatter.string(from: Date(timeIntervalSince1970: secondsSince01011970.doubleValue / 1000))
         return dateString
     }
 }

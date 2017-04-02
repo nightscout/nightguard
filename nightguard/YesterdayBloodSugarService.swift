@@ -26,7 +26,7 @@ class YesterdayBloodSugarService {
         }
     }
     
-    func getYesterdaysValues(resultHandler : ([BloodSugar] -> Void)) {
+    func getYesterdaysValues(_ resultHandler : @escaping (([BloodSugar]) -> Void)) {
         if needsToBeRefreshed() {
             NightscoutService.singleton.readYesterdaysChartData({bloodValues -> Void in
                 
@@ -40,7 +40,7 @@ class YesterdayBloodSugarService {
 
     /* Gets yesterdays blood values and transform these to the current day.
        Therefore they can be compared in one diagram. */
-    func getYesterdaysValuesTransformedToCurrentDay(resultHandler : ([BloodSugar] -> Void)) {
+    func getYesterdaysValuesTransformedToCurrentDay(_ resultHandler : @escaping (([BloodSugar]) -> Void)) {
         
         getYesterdaysValues() { yesterdaysValues in
             
@@ -54,7 +54,7 @@ class YesterdayBloodSugarService {
         }
     }
     
-    func filteredValues(from : Double, to : Double) -> [BloodSugar] {
+    func filteredValues(_ from : Double, to : Double) -> [BloodSugar] {
         var filteredValues : [BloodSugar] = []
         
         for bloodSugar in bloodSugarArray {
@@ -66,7 +66,7 @@ class YesterdayBloodSugarService {
         return filteredValues
     }
     
-    private func isInRangeRegardingHoursAndMinutes(bloodSugar : BloodSugar, from : Double, to : Double) -> Bool {
+    fileprivate func isInRangeRegardingHoursAndMinutes(_ bloodSugar : BloodSugar, from : Double, to : Double) -> Bool {
         
         // set from / to time one day back in time
         // so the time is the only that is compared
@@ -77,7 +77,7 @@ class YesterdayBloodSugarService {
         return yesterdayFrom <= bloodSugar.timestamp && bloodSugar.timestamp <= yesterdayTo
     }
     
-    private func needsToBeRefreshed() -> Bool {
+    fileprivate func needsToBeRefreshed() -> Bool {
         if bloodSugarArray.count == 0 {
             return true
         }

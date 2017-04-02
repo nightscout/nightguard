@@ -21,7 +21,7 @@ import Foundation
  */
 class AlarmRule {
     
-    private static var snoozedUntilTimestamp = NSTimeInterval()
+    fileprivate static var snoozedUntilTimestamp = TimeInterval()
     
     static var numberOfConsecutiveValues : Int = 3
     static var deltaAmount : Float = 8
@@ -37,7 +37,7 @@ class AlarmRule {
      * Snooze is true if the Alarm has been manually deactivated.
      * Suspended is true if the Alarm has been technically deactivated for a short period of time.
      */
-    static func isAlarmActivated(nightscoutData : NightscoutData, bloodValues : [BloodSugar]) -> Bool {
+    static func isAlarmActivated(_ nightscoutData : NightscoutData, bloodValues : [BloodSugar]) -> Bool {
         
         if isSnoozed() {
             return false
@@ -58,11 +58,11 @@ class AlarmRule {
         return false
     }
     
-    private static func isTooHighOrTooLow(bloodGlucose : Float) -> Bool {
+    fileprivate static func isTooHighOrTooLow(_ bloodGlucose : Float) -> Bool {
         return bloodGlucose > alertIfAboveValue || bloodGlucose < alertIfBelowValue
     }
     
-    private static func bloodValuesAreIncreasingOrDecreasingToFast(bloodValues : [BloodSugar]) -> Bool {
+    fileprivate static func bloodValuesAreIncreasingOrDecreasingToFast(_ bloodValues : [BloodSugar]) -> Bool {
         if bloodValues.count < numberOfConsecutiveValues {
             return false;
         }
@@ -85,41 +85,41 @@ class AlarmRule {
         return true;
     }
     
-    static func newDirectionNegative(value1 : Float, value2 : Float) -> Bool {
+    static func newDirectionNegative(_ value1 : Float, value2 : Float) -> Bool {
         return value2 - value1 < 0
     }
     
-    static func newDirectionPositive(value1 : Float, value2 : Float) -> Bool {
+    static func newDirectionPositive(_ value1 : Float, value2 : Float) -> Bool {
         return value2 - value1 > 0
     }
     
     /*
      * Snoozes all alarms for the next x minutes.
      */
-    static func snooze(minutes : Int) {
-        snoozedUntilTimestamp = NSDate().timeIntervalSince1970 + Double(60 * minutes)
+    static func snooze(_ minutes : Int) {
+        snoozedUntilTimestamp = Date().timeIntervalSince1970 + Double(60 * minutes)
     }
     
     /*
      * This is used to snooze just a few seconds on startup in order to retrieve
      * new values. Otherwise the alarm would play at once which makes no sense on startup.
      */
-    static func snoozeSeconds(seconds : Int) {
-        snoozedUntilTimestamp = NSDate().timeIntervalSince1970 + Double(seconds)
+    static func snoozeSeconds(_ seconds : Int) {
+        snoozedUntilTimestamp = Date().timeIntervalSince1970 + Double(seconds)
     }
     
     /*
      * An eventually activated snooze will be disabled again.
      */
     static func disableSnooze() {
-        snoozedUntilTimestamp = NSTimeInterval()
+        snoozedUntilTimestamp = TimeInterval()
     }
     
     /*
      * Returns true if the alarms are currently snoozed.
      */
     static func isSnoozed() -> Bool {
-        let currentTimestamp = NSDate().timeIntervalSince1970
+        let currentTimestamp = Date().timeIntervalSince1970
         return currentTimestamp < snoozedUntilTimestamp
     }
     

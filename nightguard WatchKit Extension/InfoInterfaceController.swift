@@ -14,7 +14,7 @@ class InfoInterfaceController: WKInterfaceController {
     @IBOutlet var serverUriLabel: WKInterfaceLabel!
     
     @IBAction func doCloseAction() {
-        self.dismissController()
+        self.dismiss()
     }
     
     override func willActivate() {

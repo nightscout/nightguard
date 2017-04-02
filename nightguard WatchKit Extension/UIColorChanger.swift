@@ -20,42 +20,42 @@ class UIColorChanger {
     static var RED : UIColor = UIColor.init(red: 1, green: 0.22, blue: 0.11, alpha: 1)
     
     // Changes the color to red if blood glucose is bad :-/
-    static func getBgColor(bg : String) -> UIColor {
+    static func getBgColor(_ bg : String) -> UIColor {
         
         guard let bgNumber : Int = Int(bg) else {
-            return UIColor.whiteColor()
+            return UIColor.white
         }
         if bgNumber > 200 {
             return RED
         } else if bgNumber > 180 {
             return YELLOW
         } else {
-            return UIColor.whiteColor()
+            return UIColor.white
         }
     }
     
-    static func getDeltaLabelColor(bgdelta : NSNumber) -> UIColor {
+    static func getDeltaLabelColor(_ bgdelta : NSNumber) -> UIColor {
         
-        let absoluteDelta = abs(bgdelta.intValue)
+        let absoluteDelta = abs(bgdelta.int32Value)
         if (absoluteDelta >= 10) {
             return RED
         } else if (absoluteDelta >= 5) {
             return YELLOW
         } else {
-            return UIColor.whiteColor()
+            return UIColor.white
         }
     }
     
-    static func getTimeLabelColor(lastUpdate : NSNumber) -> UIColor {
+    static func getTimeLabelColor(_ lastUpdate : NSNumber) -> UIColor {
         
-        let lastUpdateAsNSDate : NSDate = NSDate(timeIntervalSince1970: lastUpdate.doubleValue / 1000)
-        let timeInterval : Int = Int(NSDate().timeIntervalSinceDate(lastUpdateAsNSDate))
+        let lastUpdateAsNSDate : Date = Date(timeIntervalSince1970: lastUpdate.doubleValue / 1000)
+        let timeInterval : Int = Int(Date().timeIntervalSince(lastUpdateAsNSDate))
         if (timeInterval > 15*60) {
             return RED
         } else if (timeInterval > 7*60) {
             return YELLOW
         } else {
-            return UIColor.whiteColor()
+            return UIColor.white
         }
     }
 }

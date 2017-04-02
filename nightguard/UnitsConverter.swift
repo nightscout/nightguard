@@ -16,7 +16,7 @@ class UnitsConverter {
     
     // Converts the internally mg/dL to mmol if thats the defined
     // Unit to be used.
-    static func toDisplayUnits(value : String) -> String {
+    static func toDisplayUnits(_ value : String) -> String {
         
         if value == "---" {
             return value
@@ -35,7 +35,7 @@ class UnitsConverter {
     
     // Converts the internally mg/dL to mmol if thats the defined
     // Unit to be used.
-    static func toDisplayUnits(value : Float) -> Float {
+    static func toDisplayUnits(_ value : Float) -> Float {
         
         let units = UserDefaultsRepository.readUnits()
         
@@ -47,12 +47,12 @@ class UnitsConverter {
         return value * 0.0555
     }
     
-    static func toDisplayUnits(value : CGFloat) -> CGFloat {
+    static func toDisplayUnits(_ value : CGFloat) -> CGFloat {
         
         return CGFloat(toDisplayUnits(Float(value)))
     }
     
-    static func toDisplayUnits(let mgValues : [BloodSugar]) -> [BloodSugar] {
+    static func toDisplayUnits(_ mgValues : [BloodSugar]) -> [BloodSugar] {
         
         let units = UserDefaultsRepository.readUnits()
         
@@ -68,7 +68,7 @@ class UnitsConverter {
         return mmolValues
     }
     
-    static func toDisplayUnits(let days : [[BloodSugar]]) -> [[BloodSugar]] {
+    static func toDisplayUnits(_ days : [[BloodSugar]]) -> [[BloodSugar]] {
         
         var newDays : [[BloodSugar]] = []
         
@@ -79,17 +79,17 @@ class UnitsConverter {
         return newDays
     }
     
-    static func toMmol(let bloodSugar : BloodSugar) -> BloodSugar {
+    static func toMmol(_ bloodSugar : BloodSugar) -> BloodSugar {
         
         return BloodSugar.init(value: toMmol(bloodSugar.value), timestamp: bloodSugar.timestamp)
     }
     
-    static func toMmol(let mmolValue : Float) -> Float {
+    static func toMmol(_ mmolValue : Float) -> Float {
         return mmolValue * 0.0555
     }
     
     // Converts the value in Display Units to Mg/dL.
-    static func toMgdl(value : Float) -> Float {
+    static func toMgdl(_ value : Float) -> Float {
         let units = UserDefaultsRepository.readUnits()
         
         if units == Units.mgdl {
@@ -101,24 +101,24 @@ class UnitsConverter {
     }
     
     // Converts the value in Display Units to Mg/dL.
-    static func toMgdl(value : String) -> Float {
+    static func toMgdl(_ value : String) -> Float {
         
-        guard let floatValue = Float(value.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())) else {
+        guard let floatValue = Float(value.trimmingCharacters(in: CharacterSet.whitespaces)) else {
             return 0
         }
         return toMgdl(floatValue)
     }
     
     // if a "." is contained, simply takes the left part of the string only
-    static private func removeDecimals(value : String) -> String {
-        if !value.containsString(".") {
+    static fileprivate func removeDecimals(_ value : String) -> String {
+        if !value.contains(".") {
             return value
         }
         
-        return value.substringToIndex(value.characters.indexOf(".")!)
+        return value.substring(to: value.characters.index(of: ".")!)
     }
     
-    static private func removeDecimals(value : Float) -> Float {
+    static fileprivate func removeDecimals(_ value : Float) -> Float {
         return Float(Int(value))
     }
 }

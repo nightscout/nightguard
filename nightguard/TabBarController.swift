@@ -11,11 +11,11 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         
         if let selectedViewController = self.selectedViewController {
-            return selectedViewController.supportedInterfaceOrientations()
+            return selectedViewController.supportedInterfaceOrientations
         }
-        return .AllButUpsideDown
+        return .allButUpsideDown
     }
 }

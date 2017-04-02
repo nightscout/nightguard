@@ -16,16 +16,16 @@ import UIKit
 class UserDefaultsRepository {
     
     static func readBaseUri() -> String {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             return ""
         }
         
-        guard let hostUri = defaults.stringForKey("hostUri") else {
+        guard let hostUri = defaults.string(forKey: "hostUri") else {
             return ""
         }
         
-        let trimmedUri = uriWithoutTrailingSlashes(hostUri).stringByTrimmingCharactersInSet(
-            NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        let trimmedUri = uriWithoutTrailingSlashes(hostUri).trimmingCharacters(
+            in: CharacterSet.whitespacesAndNewlines)
         
         if (!validateUrl(trimmedUri)) {
             return ""
@@ -34,42 +34,42 @@ class UserDefaultsRepository {
         return trimmedUri
     }
     
-    static func saveBaseUri(baseUri : String) {
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+    static func saveBaseUri(_ baseUri : String) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(baseUri, forKey: "hostUri")
     }
     
     static func readUnits() -> Units {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             print("Units are not saved so far. Assuming mg/dL in this case.")
             return Units.mgdl
         }
         
-        guard let units = defaults.objectForKey("units") as? String else {
+        guard let units = defaults.object(forKey: "units") as? String else {
             print("Units are not saved so far. Assuming mg/dL in this case.")
             return Units.mgdl
         }
         return Units(rawValue: units)!
     }
     
-    static func saveUnits(units : Units) {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+    static func saveUnits(_ units : Units) {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             return
         }
         
-        defaults.setObject(units.rawValue, forKey: "units")
+        defaults.set(units.rawValue, forKey: "units")
     }
     
     // Returns an array of which days should be displayed.
     // E.g. true, false, false, false, false if only the first day should be displayed
     // In the statistics view
     static func readDaysToBeDisplayed() -> [Bool] {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             print("NSUserDefaults can't be accessed. Assuming that all 5 days should be displayed this case.")
             return [true, true, true, true, true]
         }
         
-        guard let daysToDisplay = defaults.arrayForKey("daysToBeDisplayed") as? [Bool] else {
+        guard let daysToDisplay = defaults.array(forKey: "daysToBeDisplayed") as? [Bool] else {
             print("DaysToDisplay are undefined so far. Assuming that all 5 days should be displayed this case.")
             return [true, true, true, true, true]
         }
@@ -79,66 +79,66 @@ class UserDefaultsRepository {
     
     // Stores an array defining what days should be displayed in the statistics view
     // E.g. [true, true, true, true, true] if all 5 days should be displayed
-    static func saveDaysToBeDisplayed(daysToBeDisplayed : [Bool]) {
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setObject(daysToBeDisplayed, forKey: "daysToBeDisplayed")
+    static func saveDaysToBeDisplayed(_ daysToBeDisplayed : [Bool]) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.set(daysToBeDisplayed, forKey: "daysToBeDisplayed")
     }
     
     // Reads the defined value. The user would like to be alerted if the blood glucose
     // levels are above or below this range.
     static func readUpperLowerBounds() -> (upperBound : Float, lowerBound : Float) {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             print("Units are not saved so far. Assuming (180,80) in this case.")
             return (180, 80)
         }
         
-        let upperBound = defaults.floatForKey("alertIfAboveValue")
-        let lowerBound = defaults.floatForKey("alertIfBelowValue")
+        let upperBound = defaults.float(forKey: "alertIfAboveValue")
+        let lowerBound = defaults.float(forKey: "alertIfBelowValue")
         
         return (upperBound, lowerBound)
     }
     
-    static func saveUpperLowerBounds(upperBounds : Float, lowerBounds : Float) {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+    static func saveUpperLowerBounds(_ upperBounds : Float, lowerBounds : Float) {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             print("Upper/Lower Bounds can't be saved -> this should never happen!")
             return
         }
         
-        defaults.setFloat(upperBounds, forKey: "alertIfAboveValue")
-        defaults.setFloat(lowerBounds, forKey: "alertIfBelowValue")
+        defaults.set(upperBounds, forKey: "alertIfAboveValue")
+        defaults.set(lowerBounds, forKey: "alertIfBelowValue")
     }
     
-    static func saveMaximumBloodGlucoseDisplayed(maximumBloodGlucoseDisplayed : Float) {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+    static func saveMaximumBloodGlucoseDisplayed(_ maximumBloodGlucoseDisplayed : Float) {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             print("maximumBloodGlucoseDisplayedcan't be saved -> this should never happen!")
             return
         }
         
-        defaults.setFloat(maximumBloodGlucoseDisplayed, forKey: "maximumBloodGlucoseDisplayed")
+        defaults.set(maximumBloodGlucoseDisplayed, forKey: "maximumBloodGlucoseDisplayed")
     }
     
     static func readMaximumBloodGlucoseDisplayed() -> Float {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 250 in this case.")
             return 250
         }
         
-        return defaults.floatForKey("maximumBloodGlucoseDisplayed")
+        return defaults.float(forKey: "maximumBloodGlucoseDisplayed")
     }
     
-    private static func validateUrl(stringURL : NSString) -> Bool {
+    fileprivate static func validateUrl(_ stringURL : String) -> Bool {
         
         // return nil if the URL has not a valid format
-        let url : NSURL? = NSURL.init(string: stringURL as String)
+        let url : URL? = URL.init(string: stringURL)
         
         return url != nil
     }
     
-    static func uriWithoutTrailingSlashes(hostUri : String) -> String {
+    static func uriWithoutTrailingSlashes(_ hostUri : String) -> String {
         if !hostUri.hasSuffix("/") {
             return hostUri
         }
         
-        return hostUri.substringToIndex(hostUri.endIndex.predecessor())
+        return hostUri.substring(to: hostUri.characters.index(before: hostUri.endIndex))
     }
 }

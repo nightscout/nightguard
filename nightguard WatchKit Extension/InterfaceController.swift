@@ -27,15 +27,15 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     var currentNightscoutData : NightscoutData = NightscoutData()
     
     // timer to check continuously for new bgValues
-    var timer = NSTimer()
+    var timer = Timer()
     // check every 30 Seconds whether new bgvalues should be retrieved
-    let timeInterval : NSTimeInterval = 30.0
+    let timeInterval : TimeInterval = 30.0
     
     var zoomingIsActive : Bool = false
     var nrOfCrownRotations : Int = 0
     
-    override func awakeWithContext(context: AnyObject?) {
-        super.awakeWithContext(context)
+    override func awake(withContext context: Any?) {
+        super.awake(withContext: context)
         
         // load old values that have been stored before
         self.currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
@@ -48,7 +48,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         crownSequencer.delegate = self
         
         // Initialize the ChartScene
-        let bounds = WKInterfaceDevice.currentDevice().screenBounds
+        let bounds = WKInterfaceDevice.current().screenBounds
         chartScene = ChartScene(size: CGSize(width: bounds.width, height: 130), newCanvasWidth: bounds.width * 6)
         spriteKitView.presentScene(chartScene)
         
@@ -85,7 +85,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         super.didDeactivate()
     }
     
-    func crownDidRotate(crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
+    func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
         
         if zoomingIsActive {
             nrOfCrownRotations += 1
@@ -100,7 +100,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     func doInfoMenuAction() {
-        self.presentControllerWithName("InfoInterfaceController", context: nil)
+        self.presentController(withName: "InfoInterfaceController", context: nil)
     }
     
     func doRefreshMenuAction() {
@@ -117,29 +117,29 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     // check whether new Values should be retrieved
-    func timerDidEnd(timer:NSTimer){
+    func timerDidEnd(_ timer:Timer){
         assureThatBaseUriIsExisting()
         checkForNewValuesFromNightscoutServer()
     }
     
     // this has to be created programmatically, since only this way
     // the item Zoom/Scroll can be toggled
-    private func createMenuItems() {
+    fileprivate func createMenuItems() {
         self.clearAllMenuItems()
-        self.addMenuItemWithItemIcon(WKMenuItemIcon.Info, title: "Info", action: #selector(InterfaceController.doInfoMenuAction))
-        self.addMenuItemWithItemIcon(WKMenuItemIcon.Resume, title: "Refresh", action: #selector(InterfaceController.doRefreshMenuAction))
-        self.addMenuItemWithItemIcon(WKMenuItemIcon.More, title: zoomingIsActive ? "Scroll" : "Zoom", action: #selector(InterfaceController.doToogleZoomScrollAction))
-        self.addMenuItemWithItemIcon(WKMenuItemIcon.Decline, title: "Close", action: #selector(InterfaceController.doCloseMenuAction))
+        self.addMenuItem(with: WKMenuItemIcon.info, title: "Info", action: #selector(InterfaceController.doInfoMenuAction))
+        self.addMenuItem(with: WKMenuItemIcon.resume, title: "Refresh", action: #selector(InterfaceController.doRefreshMenuAction))
+        self.addMenuItem(with: WKMenuItemIcon.more, title: zoomingIsActive ? "Scroll" : "Zoom", action: #selector(InterfaceController.doToogleZoomScrollAction))
+        self.addMenuItem(with: WKMenuItemIcon.decline, title: "Close", action: #selector(InterfaceController.doCloseMenuAction))
     }
     
-    private func assureThatBaseUriIsExisting() {
+    fileprivate func assureThatBaseUriIsExisting() {
         
         if UserDefaultsRepository.readBaseUri().isEmpty {
             AppMessageService.singleton.requestBaseUri()
         }
     }
     
-    private func checkForNewValuesFromNightscoutServer() {
+    fileprivate func checkForNewValuesFromNightscoutServer() {
         
         if currentNightscoutData.isOlderThan5Minutes() {
             
@@ -147,9 +147,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    private func readNewValuesFromNightscoutServer() {
+    fileprivate func readNewValuesFromNightscoutServer() {
         
-        let bounds = WKInterfaceDevice.currentDevice().screenBounds
+        let bounds = WKInterfaceDevice.current().screenBounds
         
         NightscoutService.singleton.readCurrentDataForPebbleWatch({(currentNightscoutData) -> Void in
             self.currentNightscoutData = currentNightscoutData
@@ -171,9 +171,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         })
     }
     
-    private func createNewTimerSingleton() {
-        if !timer.valid {
-            timer = NSTimer.scheduledTimerWithTimeInterval(timeInterval,
+    fileprivate func createNewTimerSingleton() {
+        if !timer.isValid {
+            timer = Timer.scheduledTimer(timeInterval: timeInterval,
                                                        target: self,
                                                        selector: #selector(InterfaceController.timerDidEnd(_:)),
                                                        userInfo: nil,
@@ -183,13 +183,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    private func paintCurrentBgData(currentNightscoutData : NightscoutData) {
+    fileprivate func paintCurrentBgData(_ currentNightscoutData : NightscoutData) {
         self.bgLabel.setText(currentNightscoutData.sgv)
         self.bgLabel.setTextColor(UIColorChanger.getBgColor(currentNightscoutData.sgv))
         
         self.deltaLabel.setText(currentNightscoutData.bgdeltaString.cleanFloatValue)
         self.deltaArrowLabel.setText(currentNightscoutData.bgdeltaArrow)
-        self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(currentNightscoutData.bgdelta))
+        self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(NSNumber(value : currentNightscoutData.bgdelta)))
         
         self.timeLabel.setText(currentNightscoutData.timeString)
         self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(currentNightscoutData.time))

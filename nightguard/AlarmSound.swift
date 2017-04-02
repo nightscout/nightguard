@@ -15,11 +15,11 @@ import UIKit
  * Class that handles the playing and the volume of the alarm sound.
  */
 class AlarmSound {
-    private static let soundURL = NSBundle.mainBundle().URLForResource("alarm", withExtension: "mp3")
-    private static var audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOfURL: soundURL!)
+    fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")
+    fileprivate static var audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOf: soundURL!)
     
-    private static var mute : Bool = false
-    private static var volumeBeforeMute : Float = 0
+    fileprivate static var mute : Bool = false
+    fileprivate static var volumeBeforeMute : Float = 0
     
     /*
      * Sets the audio volume to 0.

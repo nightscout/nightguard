@@ -13,11 +13,11 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     var noDataAlarmOptions = ["15 Minutes", "20 Minutes", "25 Minutes", "30 Minutes", "35 Minutes", "40 Minutes", "45 Minutes"]
     
-    private let MAX_ALERT_ABOVE_VALUE : Float = 200
-    private let MIN_ALERT_ABOVE_VALUE : Float = 80
+    fileprivate let MAX_ALERT_ABOVE_VALUE : Float = 200
+    fileprivate let MIN_ALERT_ABOVE_VALUE : Float = 80
     
-    private let MAX_ALERT_BELOW_VALUE : Float = 150
-    private let MIN_ALERT_BELOW_VALUE : Float = 50
+    fileprivate let MAX_ALERT_BELOW_VALUE : Float = 150
+    fileprivate let MIN_ALERT_BELOW_VALUE : Float = 50
     
     @IBOutlet weak var edgeDetectionSwitch: UISwitch!
     @IBOutlet weak var numberOfConsecutiveValues: UITextField!
@@ -34,24 +34,24 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     @IBOutlet weak var noDataAlarmButton: UIButton!
     @IBOutlet weak var noDataAlarmPickerView: UIPickerView!
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
         updateUnits()
         
-        edgeDetectionSwitch.on = (defaults?.boolForKey("edgeDetectionAlarmEnabled"))!
-        numberOfConsecutiveValues.text = defaults?.stringForKey("numberOfConsecutiveValues")
+        edgeDetectionSwitch.isOn = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
+        numberOfConsecutiveValues.text = defaults?.string(forKey: "numberOfConsecutiveValues")
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
@@ -60,70 +60,70 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         noDataAlarmPickerView.dataSource = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
         updateUnits()
         
-        deltaAmount.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("deltaAmount"))!)
+        deltaAmount.text = UnitsConverter.toDisplayUnits((defaults?.string(forKey: "deltaAmount"))!)
         
-        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfAboveValue"))!)
+        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.string(forKey: "alertIfAboveValue"))!)
         alertAboveSlider.value = (UnitsConverter.toMgdl(alertIfAboveValueLabel.text!.floatValue) - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE
-        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.stringForKey("alertIfBelowValue"))!)
+        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.string(forKey: "alertIfBelowValue"))!)
         alertBelowSlider.value = (UnitsConverter.toMgdl(alertIfBelowValueLabel.text!.floatValue) - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
         
-        noDataAlarmButton.setTitle(defaults?.stringForKey("noDataAlarmAfterMinutes"), forState: UIControlState.Normal)
+        noDataAlarmButton.setTitle(defaults?.string(forKey: "noDataAlarmAfterMinutes"), for: UIControlState())
     }
     
-    override func viewDidAppear(animated: Bool) {
-        let value = UIInterfaceOrientation.Portrait.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+    override func viewDidAppear(_ animated: Bool) {
+        let value = UIInterfaceOrientation.portrait.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
-    @IBAction func edgeDetectionSwitchChanged(sender: AnyObject) {
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(edgeDetectionSwitch.on, forKey: "edgeDetectionAlarmEnabled")
-        AlarmRule.isEdgeDetectionAlarmEnabled = edgeDetectionSwitch.on
+    @IBAction func edgeDetectionSwitchChanged(_ sender: AnyObject) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(edgeDetectionSwitch.isOn, forKey: "edgeDetectionAlarmEnabled")
+        AlarmRule.isEdgeDetectionAlarmEnabled = edgeDetectionSwitch.isOn
     }
     
-    @IBAction func valuesEditingChanged(sender: AnyObject) {
+    @IBAction func valuesEditingChanged(_ sender: AnyObject) {
         guard let numberOfConsecutiveValues = Int(numberOfConsecutiveValues.text!)
         else {
             return
         }
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(numberOfConsecutiveValues, forKey: "numberOfConsecutiveValues")
         AlarmRule.numberOfConsecutiveValues = numberOfConsecutiveValues
     }
     
-    @IBAction func deltaEditingChanged(sender: AnyObject) {
+    @IBAction func deltaEditingChanged(_ sender: AnyObject) {
         let deltaAmountValue = UnitsConverter.toMgdl(deltaAmount.text!)
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(deltaAmountValue, forKey: "deltaAmount")
         AlarmRule.deltaAmount = deltaAmountValue
     }
     
-    @IBAction func aboveAlertValueChanged(sender: AnyObject) {
+    @IBAction func aboveAlertValueChanged(_ sender: AnyObject) {
         let alertIfAboveValue = getAboveAlarmValue()
         adjustLowerSliderValue()
         alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfAboveValue))
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
         
         AlarmRule.alertIfAboveValue = alertIfAboveValue
         WatchService.singleton.sendToWatch(UnitsConverter.toMgdl(alertIfBelowValueLabel.text!), alertIfAboveValue: alertIfAboveValue)
     }
     
-    @IBAction func belowAlertValueChanged(sender: AnyObject) {
+    @IBAction func belowAlertValueChanged(_ sender: AnyObject) {
         let alertIfBelowValue = getBelowAlarmValue()
         adjustAboveSliderValue()
         alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfBelowValue))
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
         
         AlarmRule.alertIfBelowValue = alertIfBelowValue
@@ -167,34 +167,34 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     // Remove keyboard and PickerView by touching outside
     func onTouchGesture(){
         self.view.endEditing(true)
-        self.noDataAlarmPickerView.hidden = true
+        self.noDataAlarmPickerView.isHidden = true
     }
     
     
     // Methods for the noDataAlarmPickerView
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return noDataAlarmOptions[row]
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return noDataAlarmOptions.count
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    @IBAction func noDataAlarmButtonPressed(sender: AnyObject) {
+    @IBAction func noDataAlarmButtonPressed(_ sender: AnyObject) {
         preselectItemInPickerView()
-        noDataAlarmPickerView.hidden = false
+        noDataAlarmPickerView.isHidden = false
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedMinutes = toButtonText(noDataAlarmOptions[row])
-        noDataAlarmButton.setTitle(selectedMinutes, forState: UIControlState.Normal)
+        noDataAlarmButton.setTitle(selectedMinutes, for: UIControlState())
         
         // Remember the selected value by storing it as default setting
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(selectedMinutes, forKey: "noDataAlarmAfterMinutes")
         
         // Activate the new AlarmRule
@@ -202,12 +202,12 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     // Selects the right item that is shown in the noDataAlarmButton in the PickerView
-    private func preselectItemInPickerView() {
-        let rowOfSelectedItem : Int = noDataAlarmOptions.indexOf(noDataAlarmButton.currentTitle! + " Minutes")!
+    fileprivate func preselectItemInPickerView() {
+        let rowOfSelectedItem : Int = noDataAlarmOptions.index(of: noDataAlarmButton.currentTitle! + " Minutes")!
         noDataAlarmPickerView.selectRow(rowOfSelectedItem, inComponent: 0, animated: false)
     }
     
-    private func toButtonText(pickerText : String) -> String {
-        return pickerText.stringByReplacingOccurrencesOfString(" Minutes", withString: "")
+    fileprivate func toButtonText(_ pickerText : String) -> String {
+        return pickerText.replacingOccurrences(of: " Minutes", with: "")
     }
 }

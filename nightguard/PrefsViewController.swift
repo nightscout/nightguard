@@ -17,8 +17,8 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @IBOutlet weak var versionLabel: UILabel!
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
     
     override func viewDidLoad() {
@@ -26,8 +26,8 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
 
         displayTheApplicationVersionNumber()
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        let hostUri = defaults?.stringForKey("hostUri")
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let hostUri = defaults?.string(forKey: "hostUri")
         hostUriTextField.text = hostUri
         
         hostUriTextField.delegate = self
@@ -35,21 +35,21 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         self.view.addGestureRecognizer(tap)
     }
 
-    override func viewDidAppear(animated: Bool) {
-        let value = UIInterfaceOrientation.Portrait.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+    override func viewDidAppear(_ animated: Bool) {
+        let value = UIInterfaceOrientation.portrait.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
     func displayTheApplicationVersionNumber() {
         
-        let versionNumber: String = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
-        let buildNumber: String = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as! String
+        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let buildNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
 
         versionLabel.text = "V\(versionNumber).\(buildNumber)"
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     override func didReceiveMemoryWarning() {
@@ -57,7 +57,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func doEditingChangedAction(sender: AnyObject) {
+    @IBAction func doEditingChangedAction(_ sender: AnyObject) {
         
         hostUriTextField.text = addProtocolPartIfMissing(hostUriTextField.text!)
         UserDefaultsRepository.saveBaseUri(hostUriTextField.text!)
@@ -65,10 +65,10 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     // adds 'https://' if a '/' but no 'http'-part is found in the uri.
-    func addProtocolPartIfMissing(uri : String) -> String {
+    func addProtocolPartIfMissing(_ uri : String) -> String {
         
-        if (uri.containsString("/") || uri.containsString(".") || uri.containsString(":"))
-            && !uri.containsString("http") {
+        if (uri.contains("/") || uri.contains(".") || uri.contains(":"))
+            && !uri.contains("http") {
             
             return "https://" + uri
         }
@@ -77,7 +77,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     // Close the soft keyboard if return has been selected
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         UserDefaultsRepository.saveBaseUri(hostUriTextField.text!)
         sendValuesToAppleWatch()
@@ -97,10 +97,10 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     // watch app: He has to enter the URI to the nightscout backend in the iOS app!
     func sendValuesToAppleWatch() {
         
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
-        let alertIfAboveValue : Float = (defaults?.floatForKey("alertIfAboveValue"))!
-        let alertIfBelowValue : Float = (defaults?.floatForKey("alertIfBelowValue"))!
+        let alertIfAboveValue : Float = (defaults?.float(forKey: "alertIfAboveValue"))!
+        let alertIfBelowValue : Float = (defaults?.float(forKey: "alertIfBelowValue"))!
         let hostUri : String = UserDefaultsRepository.readBaseUri()
         let units : Units = UserDefaultsRepository.readUnits()
         
@@ -116,15 +116,15 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     // Picker-View methods
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return displayTimespans.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return displayTimespans[row]
     }
     

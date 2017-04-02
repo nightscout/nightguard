@@ -16,31 +16,31 @@ class StatsPrefsViewController : UIViewController {
     @IBOutlet weak var day4IsActivatedSwitch: UISwitch!
     @IBOutlet weak var day5IsActivatedSwitch: UISwitch!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         let daysToBeDisplayed = UserDefaultsRepository.readDaysToBeDisplayed()
         
-        day1IsActivatedSwitch.on = daysToBeDisplayed[0]
-        day2IsActivatedSwitch.on = daysToBeDisplayed[1]
-        day3IsActivatedSwitch.on = daysToBeDisplayed[2]
-        day4IsActivatedSwitch.on = daysToBeDisplayed[3]
-        day5IsActivatedSwitch.on = daysToBeDisplayed[4]
+        day1IsActivatedSwitch.isOn = daysToBeDisplayed[0]
+        day2IsActivatedSwitch.isOn = daysToBeDisplayed[1]
+        day3IsActivatedSwitch.isOn = daysToBeDisplayed[2]
+        day4IsActivatedSwitch.isOn = daysToBeDisplayed[3]
+        day5IsActivatedSwitch.isOn = daysToBeDisplayed[4]
     }
     
-    @IBAction func returnToMainView(sender: AnyObject) {
+    @IBAction func returnToMainView(_ sender: AnyObject) {
         
         UserDefaultsRepository.saveDaysToBeDisplayed(
-            [day1IsActivatedSwitch.on,
-                day2IsActivatedSwitch.on,
-                day3IsActivatedSwitch.on,
-                day4IsActivatedSwitch.on,
-                day5IsActivatedSwitch.on])
+            [day1IsActivatedSwitch.isOn,
+                day2IsActivatedSwitch.isOn,
+                day3IsActivatedSwitch.isOn,
+                day4IsActivatedSwitch.isOn,
+                day5IsActivatedSwitch.isOn])
         
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    override var preferredStatusBarStyle : UIStatusBarStyle {
         
-        return UIStatusBarStyle.LightContent
+        return UIStatusBarStyle.lightContent
     }
 }

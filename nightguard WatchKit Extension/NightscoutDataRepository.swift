@@ -13,45 +13,41 @@ class NightscoutDataRepository {
     
     static let singleton = NightscoutDataRepository()
     
-    func storeCurrentNightscoutData(bgData : NightscoutData) {
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setObject(NSKeyedArchiver.archivedDataWithRootObject(bgData), forKey: "currentBgData")
+    func storeCurrentNightscoutData(_ bgData : NightscoutData) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.set(NSKeyedArchiver.archivedData(withRootObject: bgData), forKey: "currentBgData")
     }
     
     func loadCurrentNightscoutData() -> NightscoutData {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             // Nothing has been stored before => return dummy-Data
             return NightscoutData()
         }
         
-        guard let data = defaults.objectForKey("currentBgData") as? NSData else {
+        guard let data = defaults.object(forKey: "currentBgData") as? Data else {
             return NightscoutData()
         }
         
-        let decodedObject : NightscoutData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! NightscoutData
-        guard let nightscoutData : NightscoutData = decodedObject as NightscoutData else {
-            return NightscoutData()
-        }
-        return nightscoutData
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as! NightscoutData
     }
     
     
-    func storeHistoricBgData(historicBgData : [BloodSugar]) {
-        let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setObject(NSKeyedArchiver.archivedDataWithRootObject(historicBgData), forKey: "historicBgData")
+    func storeHistoricBgData(_ historicBgData : [BloodSugar]) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.set(NSKeyedArchiver.archivedData(withRootObject: historicBgData), forKey: "historicBgData")
     }
     
     func loadHistoricBgData() -> [BloodSugar] {
-        guard let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             // Nothing has been stored before => return dummy-Data
             return []
         }
         
-        guard let data = defaults.objectForKey("historicBgData") as? NSData else {
+        guard let data = defaults.object(forKey: "historicBgData") as? Data else {
             return []
         }
         
-        guard let historicBgData = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [BloodSugar] else {
+        guard let historicBgData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [BloodSugar] else {
             return []
         }
         return historicBgData

@@ -19,13 +19,13 @@ class AppMessageService : NSObject, WCSessionDelegate {
         
         if WCSession.isSupported() {
             
-            let session = WCSession.defaultSession()
+            let session = WCSession.default()
             
-            if session.reachable {
+            if session.isReachable {
                 session.sendMessage(["requestBaseUri": ""], replyHandler: { (response) -> Void in
                 
                     if let baseUri = response.first?.1 {
-                        UserDefaultsRepository.saveBaseUri(String(baseUri))
+                        UserDefaultsRepository.saveBaseUri(String(describing: baseUri))
                     }
                     }, errorHandler: { (error) -> Void in
                         print(error)
@@ -34,7 +34,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
         }
     }
     
-    func updateValuesFromApplicationContext(applicationContext: [String : AnyObject]) {
+    func updateValuesFromApplicationContext(_ applicationContext: [String : AnyObject]) {
         if let units = applicationContext["units"] as? String {
             UserDefaultsRepository.saveUnits(Units(rawValue: units)!)
         }
@@ -44,34 +44,34 @@ class AppMessageService : NSObject, WCSessionDelegate {
         }
         
         if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
-            let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
             defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
         }
         
         if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
-            let defaults = NSUserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
             defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
         }
     }
     
     @available(watchOSApplicationExtension 2.2, *)
-    func session(session: WCSession, activationDidCompleteWithState activationState: WCSessionActivationState, error: NSError?) {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        DispatchQueue.main.async { () -> Void in
             
-            self.updateValuesFromApplicationContext(session.receivedApplicationContext)
+            self.updateValuesFromApplicationContext(session.receivedApplicationContext as [String : AnyObject])
         }
     }
     
     /** Called on the delegate of the receiver. Will be called on startup if an applicationContext is available. */
     @available(watchOS 2.0, *)
-    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
-        updateValuesFromApplicationContext(applicationContext)
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        updateValuesFromApplicationContext(applicationContext as [String : AnyObject])
     }
     
     /** Called on the delegate of the receiver. Will be called on startup if the user info finished transferring when the receiver was not running. */
     @available(watchOS 2.0, *)
-    func session(session: WCSession, didReceiveUserInfo userInfo: [String : AnyObject]) {
-        updateValuesFromApplicationContext(userInfo)
+    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any]) {
+        updateValuesFromApplicationContext(userInfo as [String : AnyObject])
     }
 }
