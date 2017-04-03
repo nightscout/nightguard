@@ -39,6 +39,19 @@ class UserDefaultsRepository {
         defaults!.setValue(baseUri, forKey: "hostUri")
     }
     
+    // Returns true if the units (mmol or mg/dL) have already been retrieved
+    // from the nightscout backend
+    static func areUnitsDefined() -> Bool {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            return false
+        }
+        
+        guard let _ = defaults.object(forKey: "units") as? String else {
+            return false
+        }
+        return true
+    }
+    
     static func readUnits() -> Units {
         guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             print("Units are not saved so far. Assuming mg/dL in this case.")
@@ -93,6 +106,11 @@ class UserDefaultsRepository {
         }
         
         let upperBound = defaults.float(forKey: "alertIfAboveValue")
+        if upperBound == 0 {
+            // no values so for from the ios app received
+            // => assume a default value in this case
+            return (180, 80)
+        }
         let lowerBound = defaults.float(forKey: "alertIfBelowValue")
         
         return (upperBound, lowerBound)
@@ -119,11 +137,16 @@ class UserDefaultsRepository {
     
     static func readMaximumBloodGlucoseDisplayed() -> Float {
         guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 250 in this case.")
-            return 250
+            print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 350 in this case.")
+            return 350
         }
         
-        return defaults.float(forKey: "maximumBloodGlucoseDisplayed")
+        let value = defaults.float(forKey: "maximumBloodGlucoseDisplayed")
+        if value == 0 {
+            print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 350 in this case.")
+            return 350
+        }
+        return value
     }
     
     fileprivate static func validateUrl(_ stringURL : String) -> Bool {

@@ -20,7 +20,7 @@ class ChartScene : SKScene {
     var minXPosition : CGFloat = 0
     var oldBloodSugarDays : [[BloodSugar]] = []
     // the maximum blood glucose value that will be displayed in the chart
-    var maxYDisplayValue : CGFloat = 250
+    var maxYDisplayValue : CGFloat = 350
     
     init(size: CGSize, newCanvasWidth : CGFloat) {
         super.init(size: size)
@@ -29,7 +29,7 @@ class ChartScene : SKScene {
         self.backgroundColor = UIColor.black
         initialPlacingOfChart()
         
-        paintChart([[], []], newCanvasWidth: newCanvasWidth, maxYDisplayValue: 250, moveToLatestValue: false)
+        paintChart([[], []], newCanvasWidth: newCanvasWidth, maxYDisplayValue: 350, moveToLatestValue: false)
     }
     
     required init?(coder aDecoder: NSCoder) {

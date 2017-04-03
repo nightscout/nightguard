@@ -43,7 +43,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     func initializeApplicationDefaults() {
         
         // Setting the defaults if the users starts the application for the first time
-        let initialDefaults: NSDictionary = ["maximumBloodGlucoseDisplayed": 250]
+        let initialDefaults: NSDictionary = ["maximumBloodGlucoseDisplayed": 350]
         UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
     }
 }

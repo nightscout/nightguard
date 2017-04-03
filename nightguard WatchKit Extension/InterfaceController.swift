@@ -141,6 +141,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func checkForNewValuesFromNightscoutServer() {
         
+        if !UserDefaultsRepository.areUnitsDefined() {
+            // try to determine whether the user wishes to see value in mmol or mg/dL
+            NightscoutService.singleton.readStatus { (units) in
+                UserDefaultsRepository.saveUnits(units)
+            }
+        }
+        
         if currentNightscoutData.isOlderThan5Minutes() {
             
             readNewValuesFromNightscoutServer()

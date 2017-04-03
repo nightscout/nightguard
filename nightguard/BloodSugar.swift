@@ -20,9 +20,17 @@ class BloodSugar : NSCoder {
     }
     
     required convenience init(coder decoder: NSCoder) {
+
+        // only initialize if base values could be decoded
+        if let  value = decoder.decodeObject(forKey: "value") as? Float {
+            if let timestamp = decoder.decodeObject(forKey: "timestamp") as? Double {
+                self.init(value : value, timestamp :  timestamp)
+                return
+            }
+        }
         
-        self.init(value : decoder.decodeObject(forKey: "value") as! Float,
-                  timestamp : decoder.decodeObject(forKey: "timestamp") as! Double)
+        // otherwise initialize with (0,0) => just to have a not nil value
+        self.init(value : 0, timestamp :  0)
     }
 
     func encodeWithCoder(_ coder: NSCoder) {

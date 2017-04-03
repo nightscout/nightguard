@@ -89,7 +89,7 @@ class ChartPainter {
         
         paintLegend(days.count)
         
-        paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: maxBgValue)
+        paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
         
         // Drawing complete, retrieve the finished image and cleanup
         let image = UIGraphicsGetImageFromCurrentImageContext()

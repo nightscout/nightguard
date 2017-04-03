@@ -79,7 +79,7 @@ class StatsViewController: UIViewController {
         self.chartScene.paintChart(days,
                 newCanvasWidth: min(self.maximumDeviceTextureWidth(),
                 self.chartSpriteKitView.bounds.width),
-                maxYDisplayValue: 250,
+                maxYDisplayValue: 300,
                 moveToLatestValue: false)
     }
     
