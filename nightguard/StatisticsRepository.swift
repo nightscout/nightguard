@@ -14,7 +14,7 @@ class StatisticsRepository {
 
     var lastSave : Date?
     
-    var cachedDays : [[BloodSugar]] = [[], [], [], [], [], []]
+    var cachedDays : [[BloodSugar]?] = [nil, nil, nil, nil, nil, nil]
     
     
     // Reads the day starting with day 0 (current day).
@@ -29,7 +29,7 @@ class StatisticsRepository {
             return []
         }
         
-        if cachedDays[nr].count == 0 {
+        if cachedDays[nr] == nil {
             // no values have been read so far => signal with nil that they have to be read once more
             return nil
         }
