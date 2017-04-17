@@ -101,7 +101,7 @@ class MainViewController: UIViewController {
                 self.chartScene.paintChart(
                     [historicBgData, yesterdaysValues],
                     newCanvasWidth: self.maximumDeviceTextureWidth(),
-                    maxYDisplayValue: CGFloat(UserDefaults.standard.float(forKey: "maximumBloodGlucoseDisplayed")),
+                    maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
                     moveToLatestValue: true)
             }
         }
@@ -217,7 +217,7 @@ class MainViewController: UIViewController {
                     self.chartScene.paintChart(
                         [historicBgData, yesterdayValues],
                         newCanvasWidth: self.maximumDeviceTextureWidth(),
-                        maxYDisplayValue: CGFloat(UserDefaults.standard.float(forKey: "maximumBloodGlucoseDisplayed")),
+                        maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
                         moveToLatestValue: true)
                 }
             }
