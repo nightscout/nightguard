@@ -87,13 +87,12 @@ class StatsViewController: UIViewController {
         
         var normalizedBgValues : [BloodSugar] = []
         let calendar = Calendar.current
-        let unitFlags: NSCalendar.Unit = [.hour, .minute, .second]
         
         for bgValue in bgValues {
             
             let time = Date(timeIntervalSince1970: bgValue.timestamp / 1000)
-            let components = (calendar as NSCalendar).components(unitFlags, from: time)
-            (components as NSDateComponents).setValue(1971, forComponent: .year)
+            var components = calendar.dateComponents([.hour, .minute, .second], from: time)
+            components.setValue(1971, for: .year)
             let normalizedTimeWithYear1971 = calendar.date(from: components)
             
             normalizedBgValues.insert(
