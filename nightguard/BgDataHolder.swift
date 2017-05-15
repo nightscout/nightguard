@@ -52,6 +52,13 @@ class BgDataHolder {
         return dic["TEST"] != nil
     }
     
+    // Remove all cached data and retrieve them new
+    // This will be called when the URI to the backend has changed
+    func reset() {
+        todaysBgData = []
+        currentNightscoutData = NightscoutData()
+    }
+    
     fileprivate func determineIfNewDataWasReceived(_ old : [BloodSugar], new : [BloodSugar]) -> Bool {
         
         if old.count != new.count {

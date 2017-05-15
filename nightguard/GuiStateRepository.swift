@@ -29,4 +29,21 @@ class GuiStateRepository {
         }
         return isActivated
     }
+    
+    func storeNightscoutUris(nightscoutUris : [String]) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.set(nightscoutUris, forKey: "nightscoutUris")
+    }
+    
+    func loadNightscoutUris() -> [String] {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            // Nothing has been stored before => screenlock should be deactivated
+            return []
+        }
+        
+        guard let nightscoutUris = defaults.object(forKey: "nightscoutUris") as? [String] else {
+            return []
+        }
+        return nightscoutUris
+    }
 }

@@ -17,6 +17,8 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @IBOutlet weak var versionLabel: UILabel!
     
+    @IBOutlet weak var uriPickerView: UIPickerView!
+    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -84,9 +86,36 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         retrieveAndStoreNightscoutUnits()
         
         textField.resignFirstResponder()
+        uriPickerView.isHidden = true
+        BgDataHolder.singleton.reset()
+        addUriEntryToPickerView(hostUri: hostUriTextField.text!)
+        
         return true
     }
 
+    func addUriEntryToPickerView(hostUri : String) {
+        
+        if hostUri == "" {
+            // ignore empty values => don't add them to the history of Uris
+            return
+        }
+        
+        var nightscoutUris = GuiStateRepository.singleton.loadNightscoutUris()
+        if !nightscoutUris.contains(hostUri) {
+            nightscoutUris.insert(hostUri, at: 0)
+            nightscoutUris = limitAmountOfUrisToFive(nightscoutUris: nightscoutUris)
+            GuiStateRepository.singleton.storeNightscoutUris(nightscoutUris: nightscoutUris)
+            uriPickerView.reloadAllComponents()
+        }
+    }
+    
+    func limitAmountOfUrisToFive(nightscoutUris : [String]) -> [String] {
+        var uris = nightscoutUris
+        while uris.count > 5 {
+            uris.removeLast()
+        }
+        return uris
+    }
     
     // Send the configuration values to the apple watch.
     // This has to be done here, because the watch has no access to the default values.
@@ -111,7 +140,15 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     func onTouchGesture(){
         self.view.endEditing(true)
+        uriPickerView.isHidden = true
+        BgDataHolder.singleton.reset()
         retrieveAndStoreNightscoutUnits()
+    }
+    
+    @IBAction func touchDownInsideUriTextfield(_ sender: Any) {
+        if GuiStateRepository.singleton.loadNightscoutUris().count > 1 {
+            uriPickerView.isHidden = false
+        }
     }
     
     // Picker-View methods
@@ -121,11 +158,16 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return displayTimespans.count
+        return GuiStateRepository.singleton.loadNightscoutUris().count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return displayTimespans[row]
+        return GuiStateRepository.singleton.loadNightscoutUris()[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        hostUriTextField.text = GuiStateRepository.singleton.loadNightscoutUris()[row]
+        BgDataHolder.singleton.reset()
     }
     
     func retrieveAndStoreNightscoutUnits() {
