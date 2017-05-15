@@ -44,39 +44,39 @@
                                 <color key="textColor" red="0.9651752629" green="0.96381590189999999" blue="0.98756055269999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ivy-QP-fyl" userLabel="UriPickerView">
-                                <rect key="frame" x="0.0" y="371" width="320" height="148"/>
-                                <color key="backgroundColor" red="0.85923865619546247" green="0.85923865619546247" blue="0.85923865619546247" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="148" id="sxf-SJ-7J1"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="delegate" destination="5gg-kk-88j" id="Cpa-0w-Hud"/>
-                                </connections>
-                            </pickerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="bottomRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="V0.0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OT-uH-zv0">
                                 <rect key="frame" x="20" y="490" width="280" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ivy-QP-fyl" userLabel="UriPickerView">
+                                <rect key="frame" x="0.0" y="109" width="320" height="148"/>
+                                <color key="backgroundColor" red="0.85923865619546247" green="0.85923865619546247" blue="0.85923865619546247" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="148" id="xy2-dz-PbG"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="5gg-kk-88j" id="Cpa-0w-Hud"/>
+                                </connections>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="S7A-b7-cEN" firstAttribute="centerX" secondItem="8KP-gW-EZT" secondAttribute="centerX" id="02F-oq-1Dg"/>
-                            <constraint firstItem="ivy-QP-fyl" firstAttribute="centerX" secondItem="0OT-uH-zv0" secondAttribute="centerX" id="2gM-nY-SOO"/>
-                            <constraint firstItem="8KP-gW-EZT" firstAttribute="centerX" secondItem="9KL-ow-hrU" secondAttribute="centerX" id="70c-40-yFe"/>
-                            <constraint firstItem="9KL-ow-hrU" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leadingMargin" constant="4" id="Aoi-Hd-3Zg"/>
-                            <constraint firstItem="9KL-ow-hrU" firstAttribute="leading" secondItem="0OT-uH-zv0" secondAttribute="leading" id="JDL-R8-UcP"/>
-                            <constraint firstItem="th1-mw-RcZ" firstAttribute="top" secondItem="0OT-uH-zv0" secondAttribute="bottom" constant="8" symbolic="YES" id="R1x-sJ-lNo"/>
-                            <constraint firstItem="9KL-ow-hrU" firstAttribute="top" secondItem="S7A-b7-cEN" secondAttribute="bottom" constant="28" id="RbV-wi-7CO"/>
-                            <constraint firstItem="ivy-QP-fyl" firstAttribute="bottom" secondItem="th1-mw-RcZ" secondAttribute="top" id="Sgj-YR-a6a"/>
-                            <constraint firstItem="S7A-b7-cEN" firstAttribute="top" secondItem="eYN-Ag-GMp" secondAttribute="bottom" constant="7" id="Ta4-mM-u6K"/>
-                            <constraint firstItem="8KP-gW-EZT" firstAttribute="top" secondItem="S7A-b7-cEN" secondAttribute="bottom" constant="13" id="UEm-gG-QGo"/>
-                            <constraint firstItem="ivy-QP-fyl" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leading" id="cSP-g4-acI"/>
-                            <constraint firstItem="9KL-ow-hrU" firstAttribute="trailing" secondItem="0OT-uH-zv0" secondAttribute="trailing" id="lUV-k8-UW1"/>
-                            <constraint firstItem="S7A-b7-cEN" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leadingMargin" constant="-10" id="uCt-lu-laN"/>
+                            <constraint firstItem="ivy-QP-fyl" firstAttribute="top" secondItem="8KP-gW-EZT" secondAttribute="bottom" constant="23" id="5FJ-kM-CYQ"/>
+                            <constraint firstItem="8KP-gW-EZT" firstAttribute="top" secondItem="S7A-b7-cEN" secondAttribute="bottom" constant="13" id="5Zj-9c-sPq"/>
+                            <constraint firstItem="th1-mw-RcZ" firstAttribute="top" secondItem="0OT-uH-zv0" secondAttribute="bottom" constant="8" symbolic="YES" id="Akb-gD-vAM"/>
+                            <constraint firstItem="S7A-b7-cEN" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leadingMargin" constant="-10" id="BLv-xq-93i"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leadingMargin" constant="4" id="Cak-0s-Jat"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="trailing" secondItem="0OT-uH-zv0" secondAttribute="trailing" id="CcE-0D-3u7"/>
+                            <constraint firstItem="ivy-QP-fyl" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leading" id="HF1-oj-msF"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="leading" secondItem="0OT-uH-zv0" secondAttribute="leading" id="S3w-gh-KNI"/>
+                            <constraint firstItem="S7A-b7-cEN" firstAttribute="top" secondItem="eYN-Ag-GMp" secondAttribute="bottom" constant="7" id="TTe-QN-kv6"/>
+                            <constraint firstItem="8KP-gW-EZT" firstAttribute="centerX" secondItem="9KL-ow-hrU" secondAttribute="centerX" id="cx5-7Q-MKR"/>
+                            <constraint firstItem="S7A-b7-cEN" firstAttribute="centerX" secondItem="8KP-gW-EZT" secondAttribute="centerX" id="n88-i4-1rn"/>
+                            <constraint firstItem="ivy-QP-fyl" firstAttribute="top" secondItem="9KL-ow-hrU" secondAttribute="bottom" constant="8" symbolic="YES" id="w9B-dP-bPc"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="centerX" secondItem="ivy-QP-fyl" secondAttribute="centerX" id="yvi-rZ-zio"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Preferences" image="PrefsIcon" id="Cx1-Xp-6o8"/>
