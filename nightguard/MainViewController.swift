@@ -37,6 +37,12 @@ class MainViewController: UIViewController {
         return UIInterfaceOrientationMask.portrait
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        // snooze the alarm for 15 Seconds in order to retrieve new data
+        // before playing alarm
+        AlarmRule.snoozeSeconds(15)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,10 +55,6 @@ class MainViewController: UIViewController {
         volumeContainerView.addSubview(volumeView)
         // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
         volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
-        
-        // snooze the alarm for 15 Seconds in order to retrieve new data
-        // before playing alarm
-        AlarmRule.snoozeSeconds(15)
         
         checkForNewValuesFromNightscoutServer()
         restoreGuiState()
