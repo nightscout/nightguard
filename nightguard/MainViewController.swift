@@ -181,7 +181,12 @@ class MainViewController: UIViewController {
         
         checkForNewValuesFromNightscoutServer()
         if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData(), bloodValues: BgDataHolder.singleton.getTodaysBgData()) {
-            AlarmSound.play()
+            // Play the sound only if foreground => otherwise this won't work at all
+            // and the sound will only play right when opening the application :-/
+            let state = UIApplication.shared.applicationState
+            if state == UIApplicationState.active {
+                AlarmSound.play()
+            }
         } else {
             AlarmSound.stop()
         }

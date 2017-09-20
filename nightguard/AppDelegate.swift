@@ -30,8 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         UITabBar.appearance().tintColor = UIColor.white
         
-        // This application should be called in background every 3 Minutes
-        UIApplication.shared.setMinimumBackgroundFetchInterval(3*60)
+        // This application should be called in background every 5 Minutes
+        UIApplication.shared.setMinimumBackgroundFetchInterval(5*60)
         
         activateWatchConnectivity()
         initializeApplicationDefaults()
