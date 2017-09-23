@@ -19,7 +19,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
         
         if WCSession.isSupported() {
             
-            let session = WCSession.default()
+            let session = WCSession.default
             
             if session.isReachable {
                 session.sendMessage(["requestBaseUri": ""], replyHandler: { (response) -> Void in

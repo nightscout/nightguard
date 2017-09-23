@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func activateWatchConnectivity() {
         if WCSession.isSupported() {
-            session = WCSession.default()
+            session = WCSession.default
         }
     }
     

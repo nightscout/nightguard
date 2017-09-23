@@ -33,7 +33,7 @@ class BloodSugar : NSCoder {
         self.init(value : 0, timestamp :  0)
     }
 
-    func encodeWithCoder(_ coder: NSCoder) {
+    @objc func encodeWithCoder(_ coder: NSCoder) {
         coder.encode(self.value, forKey: "value")
         coder.encode(self.timestamp, forKey: "timestamp")
     }

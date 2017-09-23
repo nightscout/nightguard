@@ -15,18 +15,18 @@ class WatchService {
     
     func sendToWatch(_ units : Units) {
         let applicationDict = ["units" : units.rawValue]
-        WCSession.default().transferUserInfo(applicationDict)
+        WCSession.default.transferUserInfo(applicationDict)
     }
     
     func sendToWatch(_ alertIfBelowValue : Float, alertIfAboveValue : Float) {
         let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
                                    "alertIfAboveValue" : alertIfAboveValue]
-        WCSession.default().transferUserInfo(applicationDict)
+        WCSession.default.transferUserInfo(applicationDict)
     }
     
     func sendToWatch(_ hostUri : String) {
         let applicationDict = ["hostUri" : hostUri]
-        WCSession.default().transferUserInfo(applicationDict)
+        WCSession.default.transferUserInfo(applicationDict)
     }
     
     func sendToWatch(_ hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units) {
@@ -35,6 +35,6 @@ class WatchService {
              "alertIfBelowValue" : alertIfBelowValue,
              "alertIfAboveValue" : alertIfAboveValue,
              "units" : units.rawValue]
-        WCSession.default().transferUserInfo(applicationDict as [String : AnyObject])
+        WCSession.default.transferUserInfo(applicationDict as [String : AnyObject])
     }
 }

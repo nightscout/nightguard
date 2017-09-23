@@ -138,7 +138,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     // Remove keyboard by touching outside
     
-    func onTouchGesture(){
+    @objc func onTouchGesture(){
         self.view.endEditing(true)
         uriPickerView.isHidden = true
         BgDataHolder.singleton.reset()
@@ -153,11 +153,11 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     // Picker-View methods
     
-    func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
+    @objc func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    @objc func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return GuiStateRepository.singleton.loadNightscoutUris().count
     }
     

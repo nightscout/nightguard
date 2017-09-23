@@ -99,25 +99,25 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    func doInfoMenuAction() {
+    @objc func doInfoMenuAction() {
         self.presentController(withName: "InfoInterfaceController", context: nil)
     }
     
-    func doRefreshMenuAction() {
+    @objc func doRefreshMenuAction() {
         willActivate()
     }
     
-    func doToogleZoomScrollAction() {
+    @objc func doToogleZoomScrollAction() {
         zoomingIsActive = !zoomingIsActive
         createMenuItems()
     }
     
-    func doCloseMenuAction() {
+    @objc func doCloseMenuAction() {
         // nothing to do - closes automatically
     }
     
     // check whether new Values should be retrieved
-    func timerDidEnd(_ timer:Timer){
+    @objc func timerDidEnd(_ timer:Timer){
         assureThatBaseUriIsExisting()
         checkForNewValuesFromNightscoutServer()
     }

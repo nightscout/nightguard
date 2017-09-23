@@ -114,7 +114,7 @@ class MainViewController: UIViewController {
         chartScene.stopSwipeAction()
     }
     
-    func panGesture(_ recognizer : UIPanGestureRecognizer) {
+    @objc func panGesture(_ recognizer : UIPanGestureRecognizer) {
         
         if recognizer.state == UIGestureRecognizerState.began {
             oldXTranslation = 0
@@ -143,7 +143,7 @@ class MainViewController: UIViewController {
     
     // This gesture is used to zoom in and out by changing the maximum
     // Blood Glucose value that is displayed in the chart.
-    func pinchGesture(_ recognizer : UIPinchGestureRecognizer) {
+    @objc func pinchGesture(_ recognizer : UIPinchGestureRecognizer) {
         
         if recognizer.state == UIGestureRecognizerState.ended {
             chartScene.scale(recognizer.scale, keepScale: true)
@@ -177,7 +177,7 @@ class MainViewController: UIViewController {
     }
     
     // check whether new Values should be retrieved
-    func timerDidEnd(_ timer:Timer) {
+    @objc func timerDidEnd(_ timer:Timer) {
         
         checkForNewValuesFromNightscoutServer()
         if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData(), bloodValues: BgDataHolder.singleton.getTodaysBgData()) {

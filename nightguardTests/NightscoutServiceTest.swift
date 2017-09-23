@@ -19,7 +19,7 @@ class NightscoutServiceTest: XCTestCase {
         // Given
         let serviceBoundary = NightscoutService.singleton;
         UserDefaultsRepository.saveBaseUri(BASE_URI)
-        let expectation = self.expectation(withDescription: "Remote Call was successful!")
+        let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
         serviceBoundary.readYesterdaysChartData({(bloodSugarArray) -> Void in
@@ -32,7 +32,7 @@ class NightscoutServiceTest: XCTestCase {
         })
         
         // Then
-        self.waitForExpectations(withTimeout: 3.0, handler: nil)
+        self.waitForExpectations(timeout: 3.0, handler: nil)
     }
     
     func testReadStatus() {
@@ -40,7 +40,7 @@ class NightscoutServiceTest: XCTestCase {
         // Given
         let nightscoutService = NightscoutService.singleton;
         UserDefaultsRepository.saveBaseUri(BASE_URI)
-        let expectation = self.expectation(withDescription: "Remote Call was successful!")
+        let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
         nightscoutService.readStatus({(units) -> Void in
@@ -51,7 +51,7 @@ class NightscoutServiceTest: XCTestCase {
         })
         
         // Then
-        self.waitForExpectations(withTimeout: 5.0, handler: nil)
+        self.waitForExpectations(timeout: 5.0, handler: nil)
     }
     
     func testReadLast2HoursShouldReturnData() {
@@ -59,7 +59,7 @@ class NightscoutServiceTest: XCTestCase {
         // Given
         let serviceBoundary = NightscoutService.singleton;
         UserDefaultsRepository.saveBaseUri(BASE_URI)
-        let expectation = self.expectation(withDescription: "Remote Call was successful!")
+        let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
         serviceBoundary.readLastTwoHoursChartData({(bloodSugarArray) -> Void in
@@ -80,6 +80,6 @@ class NightscoutServiceTest: XCTestCase {
         })
         
         // Then
-        self.waitForExpectations(withTimeout: 3.0, handler: nil)
+        self.waitForExpectations(timeout: 3.0, handler: nil)
     }
 }

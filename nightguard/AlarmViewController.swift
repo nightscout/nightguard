@@ -165,7 +165,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     // Remove keyboard and PickerView by touching outside
-    func onTouchGesture(){
+    @objc func onTouchGesture(){
         self.view.endEditing(true)
         self.noDataAlarmPickerView.isHidden = true
     }

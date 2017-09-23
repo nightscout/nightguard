@@ -27,7 +27,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func activateWatchConnectivity() {
         if WCSession.isSupported() {
-            session = WCSession.default()
+            session = WCSession.default
         }
     }
     

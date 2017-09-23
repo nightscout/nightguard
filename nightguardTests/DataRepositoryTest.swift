@@ -40,6 +40,6 @@ class DataRepositoryTest: XCTestCase {
         
         // Then
         XCTAssertEqual(retrievedHistoricBgData.count, 5)
-        XCTAssertEqual(retrievedHistoricBgData[0], 1)
+        XCTAssertEqual(retrievedHistoricBgData[0].value, 1)
     }
 }
