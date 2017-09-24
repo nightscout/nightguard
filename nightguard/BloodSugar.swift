@@ -19,7 +19,7 @@ class BloodSugar : NSCoder {
         self.timestamp = timestamp
     }
     
-    required convenience init(coder decoder: NSCoder) {
+    @objc required convenience init(coder decoder: NSCoder) {
 
         // only initialize if base values could be decoded
         if let  value = decoder.decodeObject(forKey: "value") as? Float {
