@@ -44,9 +44,6 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // update values immediately if necessary
         checkForNewValuesFromNightscoutServer()
         
-        crownSequencer.focus()
-        crownSequencer.delegate = self
-        
         // Initialize the ChartScene
         let bounds = WKInterfaceDevice.current().screenBounds
         chartScene = ChartScene(size: CGSize(width: bounds.width, height: 130), newCanvasWidth: bounds.width * 6)
@@ -64,17 +61,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createMenuItems()
     }
     
-    override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
-        super.willActivate()
-        
-        // Start the timer to retrieve new bgValues
-        createNewTimerSingleton()
-        timer.fire()
-        
-        checkForNewValuesFromNightscoutServer()
-        paintCurrentBgData(currentNightscoutData)
-    }
+w
     
     override func didAppear() {
         assureThatBaseUriIsExisting()
@@ -85,6 +72,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         super.didDeactivate()
     }
     
+    // called when the crown rotates, rotationalDelta is the change since the last call (sign indicates direction).
     func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
         
         if zoomingIsActive {
