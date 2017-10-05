@@ -37,12 +37,6 @@ class MainViewController: UIViewController {
         return UIInterfaceOrientationMask.portrait
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        // snooze the alarm for 15 Seconds in order to retrieve new data
-        // before playing alarm
-        AlarmRule.snoozeSeconds(15)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,9 +62,6 @@ class MainViewController: UIViewController {
                                                        selector: #selector(MainViewController.timerDidEnd(_:)),
                                                        userInfo: nil,
                                                        repeats: true)
-        // Start immediately so that the current time gets display at once
-        // And the alarm can play if needed
-        timerDidEnd(timer)
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -88,6 +79,10 @@ class MainViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        // Start immediately so that the current time gets display at once
+        // And the alarm can play if needed
+        timerDidEnd(timer)
         
         UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")

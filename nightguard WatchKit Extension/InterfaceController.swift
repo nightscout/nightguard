@@ -61,7 +61,20 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createMenuItems()
     }
     
-w
+    override func willActivate() {
+        // This method is called when watch view controller is about to be visible to user
+        super.willActivate()
+
+        crownSequencer.focus()
+        crownSequencer.delegate = self
+        
+        // Start the timer to retrieve new bgValues
+        createNewTimerSingleton()
+        timer.fire()
+        
+        checkForNewValuesFromNightscoutServer()
+        paintCurrentBgData(currentNightscoutData)
+    }
     
     override func didAppear() {
         assureThatBaseUriIsExisting()

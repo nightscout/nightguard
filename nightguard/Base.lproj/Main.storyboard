@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,13 +23,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="E.g. 'http://my.nightscout.server.de'" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9KL-ow-hrU">
-                                <rect key="frame" x="20" y="85" width="280" height="16"/>
+                                <rect key="frame" x="24" y="85" width="272" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://my.nightscout.server.de" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S7A-b7-cEN">
-                                <rect key="frame" x="6" y="27" width="308" height="30"/>
+                                <rect key="frame" x="6" y="27" width="306" height="30"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -38,14 +38,11 @@
                                     <action selector="touchDownInsideUriTextfield:" destination="5gg-kk-88j" eventType="touchDown" id="D2Y-mE-e8W"/>
                                 </connections>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the URI to your Nightscout Server here." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KP-gW-EZT">
-                                <rect key="frame" x="23" y="70" width="274" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" red="0.9651752629" green="0.96381590189999999" blue="0.98756055269999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="bottomRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="V0.0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OT-uH-zv0">
-                                <rect key="frame" x="20" y="490" width="280" height="21"/>
+                                <rect key="frame" x="32" y="498" width="272" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="272" id="rSJ-wh-UZt"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -55,28 +52,34 @@
                                 <color key="backgroundColor" red="0.85923865619546247" green="0.85923865619546247" blue="0.85923865619546247" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="148" id="xy2-dz-PbG"/>
+                                    <constraint firstAttribute="height" constant="148" id="LBj-AC-wKd"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="delegate" destination="5gg-kk-88j" id="Cpa-0w-Hud"/>
                                 </connections>
                             </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the URI to your Nightscout Server here." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KP-gW-EZT">
+                                <rect key="frame" x="22" y="65" width="274" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.9651752629" green="0.96381590189999999" blue="0.98756055269999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ivy-QP-fyl" firstAttribute="top" secondItem="8KP-gW-EZT" secondAttribute="bottom" constant="23" id="5FJ-kM-CYQ"/>
-                            <constraint firstItem="8KP-gW-EZT" firstAttribute="top" secondItem="S7A-b7-cEN" secondAttribute="bottom" constant="13" id="5Zj-9c-sPq"/>
-                            <constraint firstItem="th1-mw-RcZ" firstAttribute="top" secondItem="0OT-uH-zv0" secondAttribute="bottom" constant="8" symbolic="YES" id="Akb-gD-vAM"/>
-                            <constraint firstItem="S7A-b7-cEN" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leadingMargin" constant="-10" id="BLv-xq-93i"/>
-                            <constraint firstItem="9KL-ow-hrU" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leadingMargin" constant="4" id="Cak-0s-Jat"/>
-                            <constraint firstItem="9KL-ow-hrU" firstAttribute="trailing" secondItem="0OT-uH-zv0" secondAttribute="trailing" id="CcE-0D-3u7"/>
-                            <constraint firstItem="ivy-QP-fyl" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leading" id="HF1-oj-msF"/>
-                            <constraint firstItem="9KL-ow-hrU" firstAttribute="leading" secondItem="0OT-uH-zv0" secondAttribute="leading" id="S3w-gh-KNI"/>
-                            <constraint firstItem="S7A-b7-cEN" firstAttribute="top" secondItem="eYN-Ag-GMp" secondAttribute="bottom" constant="7" id="TTe-QN-kv6"/>
-                            <constraint firstItem="8KP-gW-EZT" firstAttribute="centerX" secondItem="9KL-ow-hrU" secondAttribute="centerX" id="cx5-7Q-MKR"/>
-                            <constraint firstItem="S7A-b7-cEN" firstAttribute="centerX" secondItem="8KP-gW-EZT" secondAttribute="centerX" id="n88-i4-1rn"/>
-                            <constraint firstItem="ivy-QP-fyl" firstAttribute="top" secondItem="9KL-ow-hrU" secondAttribute="bottom" constant="8" symbolic="YES" id="w9B-dP-bPc"/>
-                            <constraint firstItem="9KL-ow-hrU" firstAttribute="centerX" secondItem="ivy-QP-fyl" secondAttribute="centerX" id="yvi-rZ-zio"/>
+                            <constraint firstItem="S7A-b7-cEN" firstAttribute="top" secondItem="eYN-Ag-GMp" secondAttribute="bottom" constant="7" id="0vr-e0-BuI"/>
+                            <constraint firstItem="ivy-QP-fyl" firstAttribute="top" secondItem="9KL-ow-hrU" secondAttribute="bottom" constant="8" symbolic="YES" id="1CE-7Q-XgY"/>
+                            <constraint firstItem="0OT-uH-zv0" firstAttribute="bottom" secondItem="th1-mw-RcZ" secondAttribute="top" id="2L3-pr-3JG"/>
+                            <constraint firstAttribute="trailing" secondItem="ivy-QP-fyl" secondAttribute="trailing" id="2ok-L1-5P3"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="centerX" secondItem="ivy-QP-fyl" secondAttribute="centerX" id="2vC-G1-F1p"/>
+                            <constraint firstItem="S7A-b7-cEN" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leadingMargin" constant="-10" id="Gul-Dw-bJ4"/>
+                            <constraint firstItem="S7A-b7-cEN" firstAttribute="centerX" secondItem="8KP-gW-EZT" secondAttribute="centerX" id="KcM-Fm-qpR"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="S7A-b7-cEN" secondAttribute="trailing" constant="-8" id="L4c-nO-TOi"/>
+                            <constraint firstItem="8KP-gW-EZT" firstAttribute="top" secondItem="S7A-b7-cEN" secondAttribute="bottom" constant="8" symbolic="YES" id="Qah-40-0eb"/>
+                            <constraint firstItem="ivy-QP-fyl" firstAttribute="leading" secondItem="MsJ-Nm-uEe" secondAttribute="leading" id="ZlQ-kD-ljw"/>
+                            <constraint firstItem="8KP-gW-EZT" firstAttribute="trailing" secondItem="9KL-ow-hrU" secondAttribute="trailing" id="fdR-fB-mty"/>
+                            <constraint firstItem="0OT-uH-zv0" firstAttribute="trailing" secondItem="MsJ-Nm-uEe" secondAttribute="trailingMargin" id="k6V-xz-bti"/>
+                            <constraint firstItem="9KL-ow-hrU" firstAttribute="top" secondItem="8KP-gW-EZT" secondAttribute="bottom" constant="4" id="pOp-Fx-XOS"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Preferences" image="PrefsIcon" id="Cx1-Xp-6o8"/>
@@ -88,7 +91,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l0s-GN-TIY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1089.375" y="560.91549295774644"/>
+            <point key="canvasLocation" x="-1089.84375" y="560.7421875"/>
         </scene>
         <!--Alarm-->
         <scene sceneID="9Cd-ZQ-L4J">

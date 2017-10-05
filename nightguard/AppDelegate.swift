@@ -92,12 +92,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If there is already a snooze active => we don't have to fear that an alarm
         // would be played.
         if !AlarmRule.isSnoozed() {
-            // snooze the alarm for 30 Seconds in order to retrieve new data
+            // snooze the alarm for 15 Seconds in order to retrieve new data
             // before playing alarm
             // Otherwise it could be the case that the app immediately plays
             // an alarm sound without giving the app the chance to reload
             // current data
-            AlarmRule.snoozeSeconds(30)
+            AlarmRule.snoozeSeconds(15)
         }
     }
 
