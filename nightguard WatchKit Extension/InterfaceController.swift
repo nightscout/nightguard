@@ -64,13 +64,6 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-
-        crownSequencer.focus()
-        crownSequencer.delegate = self
-        
-        // Start the timer to retrieve new bgValues
-        createNewTimerSingleton()
-        timer.fire()
         
         checkForNewValuesFromNightscoutServer()
         paintCurrentBgData(currentNightscoutData)
@@ -78,6 +71,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     override func didAppear() {
         assureThatBaseUriIsExisting()
+        
+        // Start the timer to retrieve new bgValues
+        createNewTimerSingleton()
+        timer.fire()
+        
+        crownSequencer.focus()
+        crownSequencer.delegate = self
     }
     
     override func didDeactivate() {
