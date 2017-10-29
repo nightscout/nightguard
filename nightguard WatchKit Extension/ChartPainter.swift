@@ -1,4 +1,4 @@
-//
+	//
 //  ChartPainter.swift
 //  scoutwatch
 //
@@ -374,7 +374,16 @@ class ChartPainter {
         
         let hour = (cal as NSCalendar).component(NSCalendar.Unit.hour, from: date)
         
-        return (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!.addingTimeInterval(fullHour)
+        let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!
+        var nextHour = currentHour.addingTimeInterval(fullHour)
+        
+        // During daylight-savings the next hour can be the still the same
+        // We need to jump to the next hour in this case
+        if nextHour == date {
+            nextHour = currentHour.addingTimeInterval(fullHour * 2)
+        }
+        
+        return nextHour
     }
     
     func adjustMinMaxXYCoordinates(
