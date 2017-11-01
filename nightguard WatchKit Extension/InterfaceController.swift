@@ -34,6 +34,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     var zoomingIsActive : Bool = false
     var nrOfCrownRotations : Int = 0
     
+    var willActivateWasCalled : Bool = false
+    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
@@ -62,6 +64,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     override func willActivate() {
+        
+        // We will have to take care if this method has been called
+        // since apple doesn't assure that this happens
+        willActivateWasCalled = true
+        
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         
@@ -70,6 +77,15 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     override func didAppear() {
+        
+        // Do the update of the UI here, if Apple decided that willActivate will not
+        // be called...
+        if !willActivateWasCalled {
+            checkForNewValuesFromNightscoutServer()
+            paintCurrentBgData(currentNightscoutData)
+        }
+        willActivateWasCalled = false
+        
         assureThatBaseUriIsExisting()
         
         // Start the timer to retrieve new bgValues
