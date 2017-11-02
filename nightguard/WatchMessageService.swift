@@ -9,7 +9,7 @@
 import UIKit
 import WatchConnectivity
 
-// This class receieves Watch Request for the baseUri.
+// This class receives Watch Request for the baseUri.
 // The functionality is activated in the AppDelegate.
 class WatchMessageService : NSObject, WCSessionDelegate {
     

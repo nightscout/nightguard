@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "nightguard WatchKit Extension/ChartPainter.swift"
-            timestampString = "531262022.867006"
+            timestampString = "531262101.01558"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
             endingLineNumber = "66"
             landmarkName = "drawImage(_:maxBgValue:upperBoundNiceValue:lowerBoundNiceValue:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "nightguard/NightscoutService.swift"
+            timestampString = "531354021.988965"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "readChartData(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -43,22 +43,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         self.historicBgData = NightscoutDataRepository.singleton.loadHistoricBgData()
         
-        // update values immediately if necessary
-        checkForNewValuesFromNightscoutServer()
-        
         // Initialize the ChartScene
         let bounds = WKInterfaceDevice.current().screenBounds
         chartScene = ChartScene(size: CGSize(width: bounds.width, height: 130), newCanvasWidth: bounds.width * 6)
         spriteKitView.presentScene(chartScene)
-        
-        YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
-            
-            self.chartScene!.paintChart(
-                [self.historicBgData, yesterdaysValues],
-                newCanvasWidth: bounds.width * 6,
-                maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
-                moveToLatestValue: true)
-        }
         
         createMenuItems()
     }
@@ -99,6 +87,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
+        
+        timer.invalidate();
     }
     
     // called when the crown rotates, rotationalDelta is the change since the last call (sign indicates direction).

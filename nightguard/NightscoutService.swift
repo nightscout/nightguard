@@ -47,7 +47,7 @@ class NightscoutService {
         task.resume()
     }
 
-    /* Reads the nightscout status of the backend. This is used to determine the configured
+    /* Reads the nightscout status from the backend. This is used to determine the configured
        Unit, whether it's mg/dL or mmol/l */
     func readStatus(_ resultHandler : @escaping ((Units) -> Void)) {
         

@@ -69,6 +69,7 @@
             <objects>
                 <controller identifier="InfoInterfaceController" id="wky-cb-ykJ" customClass="InfoInterfaceController" customModule="nightguard">
                     <items>
+                        <label alignment="right" text="V?.?.???" textAlignment="right" id="VJk-AO-PXu" userLabel="Version Label"/>
                         <label alignment="center" text="Nightscout URI:" id="ip5-bC-D8x"/>
                         <label alignment="left" id="AuT-yY-6WA"/>
                         <label width="1" alignment="center" text="http://..." textAlignment="center" numberOfLines="2" id="rQn-yu-ajp"/>
@@ -90,6 +91,7 @@
                     </variation>
                     <connections>
                         <outlet property="serverUriLabel" destination="rQn-yu-ajp" id="chR-Cb-I8J"/>
+                        <outlet property="versionLabel" destination="VJk-AO-PXu" id="9Je-rN-Q8U"/>
                     </connections>
                 </controller>
             </objects>

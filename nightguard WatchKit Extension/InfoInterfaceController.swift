@@ -11,6 +11,7 @@ import WatchKit
 
 class InfoInterfaceController: WKInterfaceController {
     
+    @IBOutlet var versionLabel: WKInterfaceLabel!
     @IBOutlet var serverUriLabel: WKInterfaceLabel!
     
     @IBAction func doCloseAction() {
@@ -22,6 +23,15 @@ class InfoInterfaceController: WKInterfaceController {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         
+        displayTheApplicationVersionNumber()
         serverUriLabel.setText(UserDefaultsRepository.readBaseUri())
+    }
+    
+    func displayTheApplicationVersionNumber() {
+        
+        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let buildNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        
+        versionLabel.setText("V\(versionNumber).\(buildNumber)")
     }
 }
