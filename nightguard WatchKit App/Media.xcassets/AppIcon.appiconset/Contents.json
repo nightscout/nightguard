@@ -63,8 +63,9 @@
       "subtype" : "42mm"
     },
     {
-      "idiom" : "watch-marketing",
       "size" : "1024x1024",
+      "idiom" : "watch-marketing",
+      "filename" : "Nightscout1024NoAlpha.png",
       "scale" : "1x"
     }
   ],

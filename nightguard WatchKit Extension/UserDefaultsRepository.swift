@@ -162,6 +162,6 @@ class UserDefaultsRepository {
             return hostUri
         }
         
-        return String(hostUri[..<hostUri.characters.index(before: hostUri.endIndex)])
+        return String(hostUri[..<hostUri.index(before: hostUri.endIndex)])
     }
 }

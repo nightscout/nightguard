@@ -35,14 +35,16 @@ class NightscoutService {
                 return
             }
             
-            let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
-            var sgvValues = [Int]()
-            for (key, value) in jsonArray {
-                if key == "sqv" {
-                    sgvValues.insert(value as! Int, at: 0)
+            DispatchQueue.main.async {
+                let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
+                var sgvValues = [Int]()
+                for (key, value) in jsonArray {
+                    if key == "sqv" {
+                        sgvValues.insert(value as! Int, at: 0)
+                    }
                 }
+                resultHandler(sgvValues)
             }
-            resultHandler(sgvValues)
         }) ;
         task.resume()
     }
@@ -68,23 +70,25 @@ class NightscoutService {
                 return
             }
             
-            do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                guard let jsonDict :NSDictionary = json as? NSDictionary else {
-                    return
-                }
-                let settingsDict = jsonDict.object(forKey: "settings") as! NSDictionary
-                if (settingsDict.count > 0) {
-                    
-                    let unitsAsString = settingsDict.value(forKey: "units") as! String
-                    if unitsAsString.lowercased() == "mg/dl" {
-                        resultHandler(Units.mgdl)
-                    } else {
-                        resultHandler(Units.mmol)
+            DispatchQueue.main.async {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                    guard let jsonDict :NSDictionary = json as? NSDictionary else {
+                        return
                     }
+                    let settingsDict = jsonDict.object(forKey: "settings") as! NSDictionary
+                    if (settingsDict.count > 0) {
+                        
+                        let unitsAsString = settingsDict.value(forKey: "units") as! String
+                        if unitsAsString.lowercased() == "mg/dl" {
+                            resultHandler(Units.mgdl)
+                        } else {
+                            resultHandler(Units.mmol)
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
                 }
-            } catch let error as NSError {
-                print(error.localizedDescription)
             }
         }) 
         task.resume()
@@ -109,29 +113,30 @@ class NightscoutService {
         
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
+            
             guard error == nil else {
                 return
             }
             guard data != nil else {
                 return
             }
-            
+        
             let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
             let sgvRows = stringSgvData.components(separatedBy: "\n")
             var timestampColumn : Int = 1
             var bloodSugarColumn : Int = 2
-            
+        
             var bloodSugarArray = [BloodSugar]()
             for sgvRow in sgvRows {
                 let sgvRowArray = sgvRow.components(separatedBy: "\t")
-                
+            
                 if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
                     // Nightscout return for some versions
                     if self.isDateColumn(sgvRowArray[1]) {
                         timestampColumn = 2
                         bloodSugarColumn = 3
                     }
-                    
+                
                     let bloodSugar = BloodSugar(value: Float(sgvRowArray[bloodSugarColumn])!, timestamp: Double(sgvRowArray[timestampColumn])!)
                     bloodSugarArray.insert(bloodSugar, at: 0)
                 }
@@ -202,44 +207,47 @@ class NightscoutService {
         let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
-            guard error == nil else {
-                return
-            }
-            guard data != nil else {
-                return
-            }
-
-            do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                guard let jsonDict :NSDictionary = json as? NSDictionary else {
+            
+            DispatchQueue.main.async {
+                guard error == nil else {
                     return
                 }
-                let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
-                if (bgs.count > 0) {
-                    let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
-                    
-                    let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
-                    let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
-                    let time = currentBgs.object(forKey: "datetime") as! NSNumber
-                    
-                    let nightscoutData = NightscoutData()
-                    let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
-                    if battery == nil {
-                        nightscoutData.battery = String("?")
-                    } else {
-                        nightscoutData.battery = String(battery!) + "%"
-                    }
-
-                    nightscoutData.sgv = String(sgv)
-                    nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
-                    nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
-                    nightscoutData.bgdelta = bgdelta!
-                    nightscoutData.time = time
-                    
-                    resultHandler(nightscoutData)
+                guard data != nil else {
+                    return
                 }
-            } catch {
-                return
+
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                    guard let jsonDict :NSDictionary = json as? NSDictionary else {
+                        return
+                    }
+                    let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
+                    if (bgs.count > 0) {
+                        let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
+                        
+                        let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
+                        let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
+                        let time = currentBgs.object(forKey: "datetime") as! NSNumber
+                        
+                        let nightscoutData = NightscoutData()
+                        let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
+                        if battery == nil {
+                            nightscoutData.battery = String("?")
+                        } else {
+                            nightscoutData.battery = String(battery!) + "%"
+                        }
+
+                        nightscoutData.sgv = String(sgv)
+                        nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
+                        nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
+                        nightscoutData.bgdelta = bgdelta!
+                        nightscoutData.time = time
+                        
+                        resultHandler(nightscoutData)
+                    }
+                } catch {
+                    return
+                }
             }
         }) ;
         task.resume()

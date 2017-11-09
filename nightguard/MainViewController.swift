@@ -224,7 +224,7 @@ class MainViewController: UIViewController {
                 }
             }
             
-            NightscoutDataRepository.singleton.storeHistoricBgData(BgDataHolder.singleton.getTodaysBgData())
+            NightscoutDataRepository.singleton.storeTodaysBgData(BgDataHolder.singleton.getTodaysBgData())
         })
     }
     

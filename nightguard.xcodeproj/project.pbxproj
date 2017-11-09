@@ -14,6 +14,7 @@
 		43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */; };
 		43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
 		43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B861C383CF500DD6D35 /* UIColorChanger.swift */; };
+		4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		43288A681D1B359D00EE3999 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62EE1D17359600DD7978 /* StringExtension.swift */; };
 		43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43288A691D1C68D400EE3999 /* StatsViewController.swift */; };
 		43288A6C1D1C893200EE3999 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43288A6B1D1C893200EE3999 /* TabBarController.swift */; };
@@ -150,6 +151,7 @@
 /* Begin PBXFileReference section */
 		430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
+		4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutCacheService.swift; sourceTree = "<group>"; };
 		43288A691D1C68D400EE3999 /* StatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
 		43288A6B1D1C893200EE3999 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		43288A6F1D20284600EE3999 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
@@ -253,6 +255,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4317D2F01FB0E811004F964B /* persistence */ = {
+			isa = PBXGroup;
+			children = (
+				43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */,
+			);
+			name = persistence;
+			sourceTree = "<group>";
+		};
 		432E62E21D1126CA00DD7978 /* app */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,7 +288,6 @@
 		432E62E51D11288100DD7978 /* app */ = {
 			isa = PBXGroup;
 			children = (
-				43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */,
 				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
 			);
 			name = app;
@@ -379,6 +388,7 @@
 			children = (
 				432E62E51D11288100DD7978 /* app */,
 				438066FC1D21C1ED0021B618 /* external */,
+				4317D2F01FB0E811004F964B /* persistence */,
 				43647C061BFF6435004389F9 /* Supporting Files */,
 				43647C081BFF6435004389F9 /* InterfaceController.swift */,
 				43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */,
@@ -405,6 +415,7 @@
 			isa = PBXGroup;
 			children = (
 				438066FD1D21C2350021B618 /* AppMessageService.swift */,
+				4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */,
 			);
 			name = external;
 			sourceTree = "<group>";
@@ -737,6 +748,7 @@
 				43F1E1121D076C4500C329A2 /* NightscoutService.swift in Sources */,
 				43647C0F1BFF6435004389F9 /* ComplicationController.swift in Sources */,
 				43794F4F1C343B9800DB8B58 /* UserDefaultsRepository.swift in Sources */,
+				4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */,
 				43F1E10B1D076B1D00C329A2 /* BloodSugar.swift in Sources */,
 				43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */,
 				432E62E11D10AF3900DD7978 /* Units.swift in Sources */,

@@ -21,27 +21,22 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var spriteKitView: WKInterfaceSKScene!
 
-    var chartScene : ChartScene? = nil
-    
-    var historicBgData : [BloodSugar] = []
-    var currentNightscoutData : NightscoutData = NightscoutData()
+    fileprivate var chartScene : ChartScene? = nil
     
     // timer to check continuously for new bgValues
-    var timer = Timer()
+    fileprivate var timer = Timer()
     // check every 30 Seconds whether new bgvalues should be retrieved
-    let timeInterval : TimeInterval = 30.0
+    fileprivate let timeInterval : TimeInterval = 30.0
     
-    var zoomingIsActive : Bool = false
-    var nrOfCrownRotations : Int = 0
+    fileprivate var zoomingIsActive : Bool = false
+    fileprivate var nrOfCrownRotations : Int = 0
     
-    var willActivateWasCalled : Bool = false
+    // Old values that have been read before
+    fileprivate var cachedTodaysBgValues : [BloodSugar] = []
+    fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
-        // load old values that have been stored before
-        self.currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
-        self.historicBgData = NightscoutDataRepository.singleton.loadHistoricBgData()
         
         // Initialize the ChartScene
         let bounds = WKInterfaceDevice.current().screenBounds
@@ -51,37 +46,25 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createMenuItems()
     }
     
-    override func willActivate() {
-        
-        // We will have to take care if this method has been called
-        // since apple doesn't assure that this happens
-        willActivateWasCalled = true
-        
-        // This method is called when watch view controller is about to be visible to user
-        super.willActivate()
-        
-        checkForNewValuesFromNightscoutServer()
-        paintCurrentBgData(currentNightscoutData)
-    }
-    
     override func didAppear() {
         
-        // Do the update of the UI here, if Apple decided that willActivate will not
-        // be called...
-        if !willActivateWasCalled {
-            checkForNewValuesFromNightscoutServer()
-            paintCurrentBgData(currentNightscoutData)
+        // manually refresh the gui by fireing the timer
+        timerDidEnd(timer)
+        
+        // Ask to get 8 minutes of cpu runtime to get the next values if
+        // the app stays in frontmost state
+        if #available(watchOSApplicationExtension 4.0, *) {
+            WKExtension.shared().isFrontmostTimeoutExtended = true
         }
-        willActivateWasCalled = false
         
         assureThatBaseUriIsExisting()
         
-        // Start the timer to retrieve new bgValues
-        createNewTimerSingleton()
-        timer.fire()
-        
         crownSequencer.focus()
         crownSequencer.delegate = self
+        
+        // Start the timer to retrieve new bgValues and update the ui periodically
+        // if the user keeps the display active for a longer time
+        createNewTimerSingleton()
     }
     
     override func didDeactivate() {
@@ -111,7 +94,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     @objc func doRefreshMenuAction() {
-        willActivate()
+        NightscoutCacheService.singleton.resetCache()
+        
+        loadAndPaintCurrentBgData()
+        loadAndPaintChartData(forceRepaint: true)
     }
     
     @objc func doToogleZoomScrollAction() {
@@ -123,15 +109,31 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // nothing to do - closes automatically
     }
     
+    fileprivate func createNewTimerSingleton() {
+        if !timer.isValid {
+            timer = Timer.scheduledTimer(timeInterval: timeInterval,
+                                         target: self,
+                                         selector: #selector(InterfaceController.timerDidEnd(_:)),
+                                         userInfo: nil,
+                                         repeats: true)
+            // allow WatchOs to call this timer 30 seconds later as requested
+            timer.tolerance = timeInterval
+        }
+    }
+    
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer){
         assureThatBaseUriIsExisting()
-        checkForNewValuesFromNightscoutServer()
+        assureThatDisplayUnitsIsDefined()
+        
+        loadAndPaintCurrentBgData()
+        loadAndPaintChartData(forceRepaint: false)
     }
     
     // this has to be created programmatically, since only this way
     // the item Zoom/Scroll can be toggled
     fileprivate func createMenuItems() {
+        
         self.clearAllMenuItems()
         self.addMenuItem(with: WKMenuItemIcon.info, title: "Info", action: #selector(InterfaceController.doInfoMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.resume, title: "Refresh", action: #selector(InterfaceController.doRefreshMenuAction))
@@ -146,7 +148,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    fileprivate func checkForNewValuesFromNightscoutServer() {
+    fileprivate func assureThatDisplayUnitsIsDefined() {
         
         if !UserDefaultsRepository.areUnitsDefined() {
             // try to determine whether the user wishes to see value in mmol or mg/dL
@@ -154,50 +156,59 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
                 UserDefaultsRepository.saveUnits(units)
             }
         }
+    }
+    
+    fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
         
-        if currentNightscoutData.isOlderThan5Minutes() {
+        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
-            readNewValuesFromNightscoutServer()
+            self.cachedTodaysBgValues = newTodaysData
+            self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues)
+        })
+        let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
+            
+            self.cachedYesterdaysBgValues = newYesterdaysData
+            self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData)
+        })
+        
+        // this does a fast paint of eventually cached data
+        if forceRepaint ||
+            valuesChanged(newCachedTodaysBgValues: newCachedTodaysBgValues, newCachedYesterdaysBgValues: newCachedYesterdaysBgValues) {
+            
+            cachedTodaysBgValues = newCachedTodaysBgValues
+            cachedYesterdaysBgValues = newCachedYesterdaysBgValues
+            paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues)
         }
     }
     
-    fileprivate func readNewValuesFromNightscoutServer() {
+    // Returns true, if the size of one array changed
+    fileprivate func valuesChanged(newCachedTodaysBgValues : [BloodSugar], newCachedYesterdaysBgValues : [BloodSugar]) -> Bool {
+        
+        return newCachedTodaysBgValues.count != cachedTodaysBgValues.count ||
+                newCachedYesterdaysBgValues.count != cachedYesterdaysBgValues.count
+    }
+    
+    fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {
         
         let bounds = WKInterfaceDevice.current().screenBounds
-        
-        NightscoutService.singleton.readCurrentDataForPebbleWatch({(currentNightscoutData) -> Void in
-            self.currentNightscoutData = currentNightscoutData
-            self.paintCurrentBgData(self.currentNightscoutData)
-            NightscoutDataRepository.singleton.storeCurrentNightscoutData(currentNightscoutData)
-        })
-        
-        NightscoutService.singleton.readTodaysChartData({(historicBgData) -> Void in
-            self.historicBgData = historicBgData
-            YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
-                
-                self.chartScene!.paintChart(
-                    [historicBgData,yesterdaysValues],
-                    newCanvasWidth: bounds.width * 6,
-                    maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
-                    moveToLatestValue: true)
-            }
-            NightscoutDataRepository.singleton.storeHistoricBgData(self.historicBgData)
-        })
+        self.chartScene!.paintChart(
+            [todaysData, yesterdaysData],
+            newCanvasWidth: bounds.width * 6,
+            maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
+            moveToLatestValue: true)
     }
     
-    fileprivate func createNewTimerSingleton() {
-        if !timer.isValid {
-            timer = Timer.scheduledTimer(timeInterval: timeInterval,
-                                                       target: self,
-                                                       selector: #selector(InterfaceController.timerDidEnd(_:)),
-                                                       userInfo: nil,
-                                                       repeats: true)
-            // allow WatchOs to call this timer 30 seconds later as requested
-            timer.tolerance = timeInterval
-        }
+    fileprivate func loadAndPaintCurrentBgData() {
+        
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData) -> Void in
+            self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+        })
+        
+        paintCurrentBgData(currentNightscoutData: currentNightscoutData)
     }
     
-    fileprivate func paintCurrentBgData(_ currentNightscoutData : NightscoutData) {
+    fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
+        
         self.bgLabel.setText(currentNightscoutData.sgv)
         self.bgLabel.setTextColor(UIColorChanger.getBgColor(currentNightscoutData.sgv))
         

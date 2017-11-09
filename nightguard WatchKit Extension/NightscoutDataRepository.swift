@@ -14,11 +14,13 @@ class NightscoutDataRepository {
     static let singleton = NightscoutDataRepository()
     
     func storeCurrentNightscoutData(_ bgData : NightscoutData) {
+        
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.set(NSKeyedArchiver.archivedData(withRootObject: bgData), forKey: "currentBgData")
     }
     
     func loadCurrentNightscoutData() -> NightscoutData {
+        
         guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             // Nothing has been stored before => return dummy-Data
             return NightscoutData()
@@ -31,25 +33,60 @@ class NightscoutDataRepository {
         return NSKeyedUnarchiver.unarchiveObject(with: data) as! NightscoutData
     }
     
-    
-    func storeHistoricBgData(_ historicBgData : [BloodSugar]) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(NSKeyedArchiver.archivedData(withRootObject: historicBgData), forKey: "historicBgData")
+    func storeTodaysBgData(_ todaysBgData : [BloodSugar]) {
+        
+        storeBgData(keyName: "todaysBgData", todaysBgData)
     }
     
-    func loadHistoricBgData() -> [BloodSugar] {
+    func loadTodaysBgData() -> [BloodSugar] {
+        
+        return loadBgData(keyName: "todaysBgData")
+    }
+    
+    func storeYesterdaysBgData(_ yesterdaysBgData : [BloodSugar]) {
+        
+        storeBgData(keyName: "yesterdaysBgData", yesterdaysBgData)
+    }
+    
+    func loadYesterdaysBgData() -> [BloodSugar] {
+        
+        return loadBgData(keyName: "yesterdaysBgData")
+    }
+    
+    func loadYesterdaysDayOfTheYear() -> Int {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+            // Nothing has been stored before => return dummy-Data
+            return -1
+        }
+        
+        return defaults.integer(forKey: "yesterdaysDayOfTheYear")
+    }
+    
+    func storeYesterdaysDayOfTheYear(yesterdaysDayOfTheYear : Int) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.set(yesterdaysDayOfTheYear, forKey: "yesterdaysDayOfTheYear")
+    }
+    
+    fileprivate func storeBgData(keyName : String, _ todaysBgData : [BloodSugar]) {
+        
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.set(NSKeyedArchiver.archivedData(withRootObject: todaysBgData), forKey: keyName)
+    }
+    
+    fileprivate func loadBgData(keyName : String) -> [BloodSugar] {
+        
         guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
             // Nothing has been stored before => return dummy-Data
             return []
         }
         
-        guard let data = defaults.object(forKey: "historicBgData") as? Data else {
+        guard let data = defaults.object(forKey: keyName) as? Data else {
             return []
         }
         
-        guard let historicBgData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [BloodSugar] else {
+        guard let todaysBgData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [BloodSugar] else {
             return []
         }
-        return historicBgData
+        return todaysBgData
     }
 }
