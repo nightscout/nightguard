@@ -224,11 +224,41 @@ class NightscoutService {
                     
                     let nightscoutData = NightscoutData()
                     let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
+                    
+                    //Get Insulin On Board from Nightscout
+                    let iob : NSString? = currentBgs.object(forKey: "iob") as? NSString
+                    
+                    //Define a variable to hold what will be displayed in the app (battery and iob)
+                    var batteryIobDisplay : String = ""
+                    
+                    //If user has battery data in nightscout then add it to what's going to be displayed
+                    if battery != nil {
+                        batteryIobDisplay = batteryIobDisplay + String(battery!) + "%"
+                    }
+                    
+                    //If user has battery data and iob in nightscout then add a separator between the two
+                    if battery != nil && iob != nil {
+                        batteryIobDisplay = batteryIobDisplay + " / "
+                    }
+                    
+                    //If user has iob data in nightscout then add it to what's going to be displayed
+                    if iob != nil {
+                        batteryIobDisplay = batteryIobDisplay + String(iob!) + "U"
+                    }
+                    
                     if battery == nil {
                         nightscoutData.battery = String("?")
                     } else {
                         nightscoutData.battery = String(battery!) + "%"
                     }
+                    
+                    //Save iob data
+                    if iob != nil {
+                        nightscoutData.iob = String(iob!)
+                    }
+                    
+                    //Save display data
+                    nightscoutData.batteryIobDisplay = batteryIobDisplay
 
                     nightscoutData.sgv = String(sgv)
                     nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
