@@ -202,6 +202,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.timeLabel.setText(currentNightscoutData.timeString)
         self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(currentNightscoutData.time))
         
-        self.batteryLabel.setText(currentNightscoutData.battery)
+        //Display battery + iob instead of only battery
+        self.batteryLabel.setText(currentNightscoutData.batteryIobDisplay)
+        //self.batteryLabel.setText(currentNightscoutData.battery)
     }
 }

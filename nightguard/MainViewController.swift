@@ -250,7 +250,9 @@ class MainViewController: UIViewController {
             self.lastUpdateLabel.text = nightscoutData.timeString
             self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(nightscoutData.time)
             
-            self.batteryLabel.text = nightscoutData.battery
+            //Display battery + iob instead of only battery
+            self.batteryLabel.text = nightscoutData.batteryIobDisplay
+            //self.batteryLabel.text = nightscoutData.battery
         })
     }
     
