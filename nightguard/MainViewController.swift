@@ -33,6 +33,10 @@ class MainViewController: UIViewController {
     // check every 5 Seconds whether new bgvalues should be retrieved
     let timeInterval:TimeInterval = 5.0
     
+    // Old values that have been read before
+    fileprivate var cachedTodaysBgValues : [BloodSugar] = []
+    fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
+    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -50,11 +54,8 @@ class MainViewController: UIViewController {
         // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
         volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
         
-        checkForNewValuesFromNightscoutServer()
         restoreGuiState()
-        
         paintScreenLockSwitch()
-        paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
         
         // Start the timer to retrieve new bgValues
         timer = Timer.scheduledTimer(timeInterval: timeInterval,
@@ -88,20 +89,6 @@ class MainViewController: UIViewController {
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         
         chartScene.size = CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height)
-        
-        let historicBgData = BgDataHolder.singleton.getTodaysBgData()
-        // only if currentDay values are there, it makes sence to display them here
-        // otherwise, wait to get this data and display it using the running timer
-        if historicBgData.count > 0 {
-            YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdaysValues in
-            
-                self.chartScene.paintChart(
-                    [historicBgData, yesterdaysValues],
-                    newCanvasWidth: self.maximumDeviceTextureWidth(),
-                    maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
-                    moveToLatestValue: true)
-            }
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -174,7 +161,6 @@ class MainViewController: UIViewController {
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer) {
         
-        checkForNewValuesFromNightscoutServer()
         if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData(), bloodValues: BgDataHolder.singleton.getTodaysBgData()) {
             // Play the sound only if foreground => otherwise this won't work at all
             // and the sound will only play right when opening the application :-/
@@ -190,70 +176,12 @@ class MainViewController: UIViewController {
         paintCurrentTime()
         // paint here is need if the server doesn't respond
         // => in that case the user has to know that the values are old!
-        paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
-    }
-    
-    fileprivate func checkForNewValuesFromNightscoutServer() {
-        
-        YesterdayBloodSugarService.singleton.warmupCache()
-        if BgDataHolder.singleton.getCurrentBgData().isOlderThan5Minutes() {
-            
-            readNewValuesFromNightscoutServer()
-        } else {
-            paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
-        }
-    }
-    
-    fileprivate func readNewValuesFromNightscoutServer() {
-        
-        NightscoutService.singleton.readCurrentDataForPebbleWatch({(nightscoutData) -> Void in
-            BgDataHolder.singleton.setCurrentBgData(nightscoutData)
-            self.paintCurrentBgData(BgDataHolder.singleton.getCurrentBgData())
-            NightscoutDataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
-        })
-        NightscoutService.singleton.readTodaysChartData({(historicBgData) -> Void in
-            
-            BgDataHolder.singleton.setTodaysBgData(historicBgData)
-            if BgDataHolder.singleton.hasNewValues {
-                YesterdayBloodSugarService.singleton.getYesterdaysValuesTransformedToCurrentDay() { yesterdayValues in
-                    self.chartScene.paintChart(
-                        [historicBgData, yesterdayValues],
-                        newCanvasWidth: self.maximumDeviceTextureWidth(),
-                        maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
-                        moveToLatestValue: true)
-                }
-            }
-            
-            NightscoutDataRepository.singleton.storeTodaysBgData(BgDataHolder.singleton.getTodaysBgData())
-        })
+        loadAndPaintCurrentBgData()
+        loadAndPaintChartData(forceRepaint: false)
     }
     
     fileprivate func paintScreenLockSwitch() {
         screenlockSwitch.isOn = UIApplication.shared.isIdleTimerDisabled
-    }
-    
-    fileprivate func paintCurrentBgData(_ nightscoutData : NightscoutData) {
-        
-        DispatchQueue.main.async(execute: {
-            if nightscoutData.sgv == "---" {
-                self.bgLabel.text = "---"
-            } else {
-                self.bgLabel.text = nightscoutData.sgv
-            }
-            self.bgLabel.textColor = UIColorChanger.getBgColor(nightscoutData.sgv)
-            
-            self.deltaLabel.text = nightscoutData.bgdeltaString.cleanFloatValue
-            self.deltaArrowsLabel.text = nightscoutData.bgdeltaArrow
-            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(NSNumber(value: nightscoutData.bgdelta))
-            self.deltaArrowsLabel.textColor = UIColorChanger.getDeltaLabelColor(NSNumber(value: nightscoutData.bgdelta))
-            
-            self.lastUpdateLabel.text = nightscoutData.timeString
-            self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(nightscoutData.time)
-            
-            //Display battery + iob instead of only battery
-            self.batteryLabel.text = nightscoutData.batteryIobDisplay
-            //self.batteryLabel.text = nightscoutData.battery
-        })
     }
     
     @IBAction func doSnoozeAction(_ sender: AnyObject) {
@@ -355,5 +283,76 @@ class MainViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         self.timeLabel.text = formatter.string(from: Date())
+    }
+    
+    fileprivate func loadAndPaintCurrentBgData() {
+        
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData) -> Void in
+            self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+        })
+        
+        paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+    }
+    
+    fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
+        
+        DispatchQueue.main.async(execute: {
+            if currentNightscoutData.sgv == "---" {
+                self.bgLabel.text = "---"
+            } else {
+                self.bgLabel.text = currentNightscoutData.sgv
+            }
+            self.bgLabel.textColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+            
+            self.deltaLabel.text = currentNightscoutData.bgdeltaString.cleanFloatValue
+            self.deltaArrowsLabel.text = currentNightscoutData.bgdeltaArrow
+            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(NSNumber(value: currentNightscoutData.bgdelta))
+            self.deltaArrowsLabel.textColor = UIColorChanger.getDeltaLabelColor(NSNumber(value: currentNightscoutData.bgdelta))
+            
+            self.lastUpdateLabel.text = currentNightscoutData.timeString
+            self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(currentNightscoutData.time)
+            
+            //Display battery + iob instead of only battery
+            self.batteryLabel.text = currentNightscoutData.batteryIobDisplay
+        })
+    }
+    
+    fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
+        
+        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
+            
+            self.cachedTodaysBgValues = newTodaysData
+            self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues)
+        })
+        let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
+            
+            self.cachedYesterdaysBgValues = newYesterdaysData
+            self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData)
+        })
+        
+        // this does a fast paint of eventually cached data
+        if forceRepaint ||
+            valuesChanged(newCachedTodaysBgValues: newCachedTodaysBgValues, newCachedYesterdaysBgValues: newCachedYesterdaysBgValues) {
+            
+            cachedTodaysBgValues = newCachedTodaysBgValues
+            cachedYesterdaysBgValues = newCachedYesterdaysBgValues
+            paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues)
+        }
+    }
+    
+    fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {
+        
+        self.chartScene.paintChart(
+            [todaysData, yesterdaysData],
+            newCanvasWidth: self.maximumDeviceTextureWidth(),
+            maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
+            moveToLatestValue: true)
+    }
+    
+    // Returns true, if the size of one array changed
+    fileprivate func valuesChanged(newCachedTodaysBgValues : [BloodSugar], newCachedYesterdaysBgValues : [BloodSugar]) -> Bool {
+        
+        return newCachedTodaysBgValues.count != cachedTodaysBgValues.count ||
+            newCachedYesterdaysBgValues.count != cachedYesterdaysBgValues.count
     }
 }
