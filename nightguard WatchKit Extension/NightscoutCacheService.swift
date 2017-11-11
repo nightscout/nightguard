@@ -26,6 +26,8 @@ class NightscoutCacheService {
         yesterdaysBgData = nil
         yesterdaysDayOfTheYear = nil
         currentNightscoutData = nil
+        
+        NightscoutDataRepository.singleton.clearAll()
     }
     
     func loadCurrentNightscoutData(_ resultHandler : @escaping ((NightscoutData) -> Void))
@@ -53,6 +55,7 @@ class NightscoutCacheService {
             NightscoutService.singleton.readTodaysChartData({(todaysBgData) -> Void in
                 
                 self.todaysBgData = todaysBgData
+                NightscoutDataRepository.singleton.storeTodaysBgData(todaysBgData)
                 resultHandler(todaysBgData)
             })
         }

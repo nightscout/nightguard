@@ -208,46 +208,75 @@ class NightscoutService {
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
-            DispatchQueue.main.async {
-                guard error == nil else {
-                    return
-                }
-                guard data != nil else {
-                    return
-                }
+            guard error == nil else {
+                return
+            }
 
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                    guard let jsonDict :NSDictionary = json as? NSDictionary else {
-                        return
-                    }
-                    let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
-                    if (bgs.count > 0) {
-                        let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
-                        
-                        let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
-                        let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
-                        let time = currentBgs.object(forKey: "datetime") as! NSNumber
-                        
-                        let nightscoutData = NightscoutData()
-                        let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
-                        if battery == nil {
-                            nightscoutData.battery = String("?")
-                        } else {
-                            nightscoutData.battery = String(battery!) + "%"
-                        }
+            guard data != nil else {
+                return
+            }
 
-                        nightscoutData.sgv = String(sgv)
-                        nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
-                        nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
-                        nightscoutData.bgdelta = bgdelta!
-                        nightscoutData.time = time
-                        
-                        resultHandler(nightscoutData)
-                    }
-                } catch {
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                guard let jsonDict :NSDictionary = json as? NSDictionary else {
                     return
                 }
+                let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
+                if (bgs.count > 0) {
+                    let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
+                    
+                    let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
+                    let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
+                    let time = currentBgs.object(forKey: "datetime") as! NSNumber
+                    
+                    let nightscoutData = NightscoutData()
+                    let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
+                    
+                    //Get Insulin On Board from Nightscout
+                    let iob : NSString? = currentBgs.object(forKey: "iob") as? NSString
+                    
+                    //Define a variable to hold what will be displayed in the app (battery and iob)
+                    var batteryIobDisplay : String = ""
+                    
+                    //If user has battery data in nightscout then add it to what's going to be displayed
+                    if battery != nil {
+                        batteryIobDisplay = batteryIobDisplay + String(battery!) + "%"
+                    }
+                    
+                    //If user has battery data and iob in nightscout then add a separator between the two
+                    if battery != nil && iob != nil {
+                        batteryIobDisplay = batteryIobDisplay + " / "
+                    }
+                    
+                    //If user has iob data in nightscout then add it to what's going to be displayed
+                    if iob != nil {
+                        batteryIobDisplay = batteryIobDisplay + String(iob!) + "U"
+                    }
+                    
+                    if battery == nil {
+                        nightscoutData.battery = String("?")
+                    } else {
+                        nightscoutData.battery = String(battery!) + "%"
+                    }
+                    
+                    //Save iob data
+                    if iob != nil {
+                        nightscoutData.iob = String(iob!)
+                    }
+                    
+                    //Save display data
+                    nightscoutData.batteryIobDisplay = batteryIobDisplay
+
+                    nightscoutData.sgv = String(sgv)
+                    nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
+                    nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
+                    nightscoutData.bgdelta = bgdelta!
+                    nightscoutData.time = time
+                
+                    resultHandler(nightscoutData)
+                }
+            } catch {
+                return
             }
         }) ;
         task.resume()

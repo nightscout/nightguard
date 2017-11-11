@@ -44,9 +44,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         spriteKitView.presentScene(chartScene)
         
         createMenuItems()
+        
+        // Start the timer to retrieve new bgValues and update the ui periodically
+        // if the user keeps the display active for a longer time
+        createNewTimerSingleton()
     }
     
-    override func didAppear() {
+    override func willActivate() {
         
         // manually refresh the gui by fireing the timer
         timerDidEnd(timer)
@@ -57,14 +61,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             WKExtension.shared().isFrontmostTimeoutExtended = true
         }
         
-        assureThatBaseUriIsExisting()
+        crownSequencer.focus()
+        crownSequencer.delegate = self
+    }
+    
+    override func didAppear() {
         
         crownSequencer.focus()
         crownSequencer.delegate = self
-        
-        // Start the timer to retrieve new bgValues and update the ui periodically
-        // if the user keeps the display active for a longer time
-        createNewTimerSingleton()
     }
     
     override func didDeactivate() {
@@ -219,6 +223,6 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.timeLabel.setText(currentNightscoutData.timeString)
         self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(currentNightscoutData.time))
         
-        self.batteryLabel.setText(currentNightscoutData.battery)
+        self.batteryLabel.setText(currentNightscoutData.batteryIobDisplay)
     }
 }
