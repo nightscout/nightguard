@@ -87,7 +87,10 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         
         textField.resignFirstResponder()
         uriPickerView.isHidden = true
-        BgDataHolder.singleton.reset()
+        NightscoutCacheService.singleton.resetCache()
+        NightscoutDataRepository.singleton.storeTodaysBgData([])
+        NightscoutDataRepository.singleton.storeYesterdaysBgData([])
+        NightscoutDataRepository.singleton.storeCurrentNightscoutData(NightscoutData())
         addUriEntryToPickerView(hostUri: hostUriTextField.text!)
         
         return true
@@ -141,7 +144,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     @objc func onTouchGesture(){
         self.view.endEditing(true)
         uriPickerView.isHidden = true
-        BgDataHolder.singleton.reset()
+        NightscoutCacheService.singleton.resetCache()
         retrieveAndStoreNightscoutUnits()
     }
     
@@ -167,7 +170,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         hostUriTextField.text = GuiStateRepository.singleton.loadNightscoutUris()[row]
-        BgDataHolder.singleton.reset()
+        NightscoutCacheService.singleton.resetCache()
     }
     
     func retrieveAndStoreNightscoutUnits() {

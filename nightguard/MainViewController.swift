@@ -33,10 +33,6 @@ class MainViewController: UIViewController {
     // check every 5 Seconds whether new bgvalues should be retrieved
     let timeInterval:TimeInterval = 5.0
     
-    // Old values that have been read before
-    fileprivate var cachedTodaysBgValues : [BloodSugar] = []
-    fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
-    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -161,7 +157,8 @@ class MainViewController: UIViewController {
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer) {
         
-        if AlarmRule.isAlarmActivated(BgDataHolder.singleton.getCurrentBgData(), bloodValues: BgDataHolder.singleton.getTodaysBgData()) {
+        if AlarmRule.isAlarmActivated(NightscoutCacheService.singleton.getCurrentNightscoutData(), bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) {
+            
             // Play the sound only if foreground => otherwise this won't work at all
             // and the sound will only play right when opening the application :-/
             let state = UIApplication.shared.applicationState
@@ -321,22 +318,20 @@ class MainViewController: UIViewController {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
-            self.cachedTodaysBgValues = newTodaysData
-            self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues)
+            let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
+            self.paintChartData(todaysData: newTodaysData, yesterdaysData: cachedYesterdaysData)
         })
         let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
             
-            self.cachedYesterdaysBgValues = newYesterdaysData
-            self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData)
+            let cachedTodaysBgData = NightscoutCacheService.singleton.getTodaysBgData()
+            self.paintChartData(todaysData: cachedTodaysBgData, yesterdaysData: newYesterdaysData)
         })
         
         // this does a fast paint of eventually cached data
         if forceRepaint ||
-            valuesChanged(newCachedTodaysBgValues: newCachedTodaysBgValues, newCachedYesterdaysBgValues: newCachedYesterdaysBgValues) {
+            NightscoutCacheService.singleton.valuesChanged() {
             
-            cachedTodaysBgValues = newCachedTodaysBgValues
-            cachedYesterdaysBgValues = newCachedYesterdaysBgValues
-            paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues)
+            paintChartData(todaysData: newCachedTodaysBgValues, yesterdaysData: newCachedYesterdaysBgValues)
         }
     }
     
@@ -347,12 +342,5 @@ class MainViewController: UIViewController {
             newCanvasWidth: self.maximumDeviceTextureWidth(),
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: true)
-    }
-    
-    // Returns true, if the size of one array changed
-    fileprivate func valuesChanged(newCachedTodaysBgValues : [BloodSugar], newCachedYesterdaysBgValues : [BloodSugar]) -> Bool {
-        
-        return newCachedTodaysBgValues.count != cachedTodaysBgValues.count ||
-            newCachedYesterdaysBgValues.count != cachedYesterdaysBgValues.count
     }
 }

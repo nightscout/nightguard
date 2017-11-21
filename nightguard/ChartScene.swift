@@ -65,8 +65,10 @@ class ChartScene : SKScene {
         }
         
         let chartTexture = SKTexture(image: chartImage!)
-        self.chartNode.texture = chartTexture
+        let changeTextureAction : SKAction = SKAction.setTexture(chartTexture)
+        self.chartNode.run(changeTextureAction)
         self.chartNode.size = chartImage!.size
+        self.chartNode.zPosition = 1
         
         if moveToLatestValue {
             let newXPosition = normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width * 2 / 3))

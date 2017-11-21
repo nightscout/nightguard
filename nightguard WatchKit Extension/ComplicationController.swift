@@ -11,7 +11,7 @@ import ClockKit
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
     
-    var oldValues : [NightscoutData] = []
+    var oldNightscoutData : [NightscoutData] = []
     
     func getNextRequestedUpdateDate(handler: @escaping (Date?) -> Void) {
         // Update every 15 Minutes => but this is just a nice wish
@@ -27,54 +27,69 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
         
-        NightscoutService.singleton.readCurrentDataForPebbleWatch({(currentNightscoutData) -> Void in
-
-            self.oldValues.insert(currentNightscoutData, at: 0)
-            var template : CLKComplicationTemplate? = nil
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        eventuallyAddToOldNightscoutData(newNightscoutData: currentNightscoutData)
+        
+        var template : CLKComplicationTemplate? = nil
             
-            switch complication.family {
-            case .modularSmall:
-                let modTemplate = CLKComplicationTemplateModularSmallStackText()
-                
-                modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
-                modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)\(currentNightscoutData.bgdeltaString.cleanFloatValue)\(currentNightscoutData.bgdeltaArrow)")
-                template = modTemplate
-            case .modularLarge:
-                let modTemplate = CLKComplicationTemplateModularLargeStandardBody()
-                
-                modTemplate.headerTextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldValues[0]))
-                modTemplate.body1TextProvider = CLKSimpleTextProvider(text: "")
-                modTemplate.body2TextProvider = CLKSimpleTextProvider(text: "")
-                if self.oldValues.count > 1 {
-                    modTemplate.body1TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldValues[1]))
-                }
-                if self.oldValues.count > 2 {
-                    modTemplate.body2TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldValues[2]))
-                }
-                template = modTemplate
-            case .utilitarianSmall:
-                let modTemplate = CLKComplicationTemplateUtilitarianSmallFlat()
-                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-                template = modTemplate
-            case .utilitarianLarge:
-                let modTemplate = CLKComplicationTemplateUtilitarianLargeFlat()
-                modTemplate.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
-                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-                template = modTemplate
-            case .circularSmall:
-                let template = CLKComplicationTemplateCircularSmallRingText()
-                template.textProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
-                
-                template.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
-                template.ringStyle = CLKComplicationRingStyle.closed
-            default: break
-            }
+        switch complication.family {
+        case .modularSmall:
+            let modTemplate = CLKComplicationTemplateModularSmallStackText()
             
-            if template != nil {
-                let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template!)
-                handler(timelineEntry)
+            modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
+            modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)\(currentNightscoutData.bgdeltaString.cleanFloatValue)\(currentNightscoutData.bgdeltaArrow)")
+            template = modTemplate
+        case .modularLarge:
+            let modTemplate = CLKComplicationTemplateModularLargeStandardBody()
+            
+            modTemplate.headerTextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+            modTemplate.body1TextProvider = CLKSimpleTextProvider(text: "")
+            modTemplate.body2TextProvider = CLKSimpleTextProvider(text: "")
+            if self.oldNightscoutData.count > 1 {
+                modTemplate.body1TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[1]))
             }
-        })
+            if self.oldNightscoutData.count > 2 {
+                modTemplate.body2TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[2]))
+            }
+            template = modTemplate
+        case .utilitarianSmall:
+            let modTemplate = CLKComplicationTemplateUtilitarianSmallFlat()
+            modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+            template = modTemplate
+        case .utilitarianLarge:
+            let modTemplate = CLKComplicationTemplateUtilitarianLargeFlat()
+            modTemplate.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
+            modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+            template = modTemplate
+        case .circularSmall:
+            let template = CLKComplicationTemplateCircularSmallRingText()
+            template.textProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
+            
+            template.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
+            template.ringStyle = CLKComplicationRingStyle.closed
+        default: break
+        }
+        
+        if template != nil {
+            let timelineEntry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template!)
+            handler(timelineEntry)
+        }
+    }
+    
+    // if new data was received => put it to the list of old data
+    fileprivate func eventuallyAddToOldNightscoutData(newNightscoutData : NightscoutData) {
+        
+        if oldNightscoutData.count == 0 || newNightscoutData.time != oldNightscoutData[0].time {
+            oldNightscoutData.insert(newNightscoutData, at: 0)
+            
+            removeDummyNightscoutData()
+        }
+    }
+    
+    // Removes the dummy entry "??:??" which has been appended if no data was available at all
+    fileprivate func removeDummyNightscoutData() {
+        
+        oldNightscoutData = oldNightscoutData.filter{!$0.hourAndMinutes.contains("?")}
     }
     
     // Display 11:24 113+2

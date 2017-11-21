@@ -9,7 +9,7 @@
 import Foundation
 
 // This is a facade in front of the nightscout service. It is used to reduce the
-// amount of turnarounds to the real backend to a minimum
+// amount of turnarounds to the real backend to a minimum.
 class NightscoutCacheService {
     
     static let singleton = NightscoutCacheService()
@@ -19,6 +19,7 @@ class NightscoutCacheService {
     fileprivate var yesterdaysDayOfTheYear : Int? = nil
     fileprivate var currentNightscoutData : NightscoutData? = nil
     
+    fileprivate var newDataReceived : Bool = false
     fileprivate let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     
     func resetCache() {
@@ -28,6 +29,39 @@ class NightscoutCacheService {
         currentNightscoutData = nil
         
         NightscoutDataRepository.singleton.clearAll()
+    }
+    
+    func getCurrentNightscoutData() -> NightscoutData {
+        
+        if (currentNightscoutData == nil) {
+            return NightscoutData.init()
+        }
+        return currentNightscoutData!
+    }
+    
+    func getTodaysBgData() -> [BloodSugar] {
+        if todaysBgData == nil {
+            return []
+        }
+        return todaysBgData!
+    }
+    
+    func getYesterdaysBgData() -> [BloodSugar] {
+        if yesterdaysBgData == nil {
+            return []
+        }
+        return yesterdaysBgData!
+    }
+    
+    // Returns true, if the size of one array changed
+    func valuesChanged() -> Bool {
+        
+        if newDataReceived {
+            newDataReceived = false;
+            return true
+        }
+        
+        return false
     }
     
     func loadCurrentNightscoutData(_ resultHandler : @escaping ((NightscoutData) -> Void))
@@ -50,16 +84,36 @@ class NightscoutCacheService {
            todaysBgData = NightscoutDataRepository.singleton.loadTodaysBgData()
         }
         
+        todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData!)
+            
         if todaysBgData!.count == 0 || currentNightscoutData == nil || currentNightscoutData!.isOlderThan5Minutes() {
             
-            NightscoutService.singleton.readTodaysChartData({(todaysBgData) -> Void in
+            NightscoutService.singleton.readTodaysChartData(oldValues : todaysBgData!, {(todaysBgData) -> Void in
+                
+                self.newDataReceived = true
                 
                 self.todaysBgData = todaysBgData
                 NightscoutDataRepository.singleton.storeTodaysBgData(todaysBgData)
+                
                 resultHandler(todaysBgData)
             })
         }
         return todaysBgData!
+    }
+    
+    fileprivate func removeYesterdaysEntries(bgValues : [BloodSugar]) -> [BloodSugar] {
+        
+        var todaysValues : [BloodSugar] = []
+        
+        let startOfCurrentDay = TimeService.getStartOfCurrentDay()
+        
+        for bgValue in bgValues {
+            if bgValue.timestamp > startOfCurrentDay {
+                todaysValues.append(bgValue)
+            }
+        }
+        
+        return todaysValues
     }
     
     // Reads the blood glucose data from yesterday
@@ -74,6 +128,8 @@ class NightscoutCacheService {
         if yesterdaysBgData!.count == 0 || currentNightscoutData == nil || yesterdaysValuesAreOutdated() {
             
             NightscoutService.singleton.readYesterdaysChartData({(yesterdaysValues) -> Void in
+                
+                self.newDataReceived = true
                 
                 // transform the yesterdays values to the current day, so that they can be easily displayed in
                 // one diagram

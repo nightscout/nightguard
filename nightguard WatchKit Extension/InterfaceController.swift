@@ -44,13 +44,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         spriteKitView.presentScene(chartScene)
         
         createMenuItems()
+    }
+    
+    override func willActivate() {
         
         // Start the timer to retrieve new bgValues and update the ui periodically
         // if the user keeps the display active for a longer time
         createNewTimerSingleton()
-    }
-    
-    override func willActivate() {
         
         // manually refresh the gui by fireing the timer
         timerDidEnd(timer)
@@ -172,7 +172,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate func loadAndPaintCurrentBgData() {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData) -> Void in
-            self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+            
+            DispatchQueue.main.async {
+                self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+            }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
@@ -197,13 +200,17 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
-            self.cachedTodaysBgValues = newTodaysData
-            self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues)
+            DispatchQueue.main.async {
+                self.cachedTodaysBgValues = newTodaysData
+                self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues, moveToLatestValue: true)
+            }
         })
         let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
             
-            self.cachedYesterdaysBgValues = newYesterdaysData
-            self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData)
+            DispatchQueue.main.async {
+                self.cachedYesterdaysBgValues = newYesterdaysData
+                self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData, moveToLatestValue: false)
+            }
         })
         
         // this does a fast paint of eventually cached data
@@ -212,18 +219,18 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             
             cachedTodaysBgValues = newCachedTodaysBgValues
             cachedYesterdaysBgValues = newCachedYesterdaysBgValues
-            paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues)
+            paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: false)
         }
     }
     
-    fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {
+    fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
         
         let bounds = WKInterfaceDevice.current().screenBounds
         self.chartScene.paintChart(
             [todaysData, yesterdaysData],
             newCanvasWidth: bounds.width * 6,
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
-            moveToLatestValue: true)
+            moveToLatestValue: moveToLatestValue)
     }
 
 }

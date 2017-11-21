@@ -46,4 +46,22 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         let initialDefaults: NSDictionary = ["maximumBloodGlucoseDisplayed": 350]
         UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
     }
+    
+    @available(watchOSApplicationExtension 3.0, *)
+    public func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
+        
+        for task : WKRefreshBackgroundTask in backgroundTasks {
+            print("received background task: ", task)
+            // only handle these while running in the background
+            if (WKExtension.shared().applicationState == .background) {
+                if task is WKApplicationRefreshBackgroundTask {
+                    // this task is completed below, our app will then suspend while the download session runs
+                    print("application task received, start URL session")
+                    let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData({_ in })
+                }
+            }
+            // make sure to complete all tasks, even ones you don't handle
+            task.setTaskCompleted()
+        }
+    }
 }

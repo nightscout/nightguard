@@ -95,7 +95,7 @@ class NightscoutService {
     }
     
     /* Reads all data between two timestamps and limits the maximum return values to 300. */
-    func readChartDataWithinPeriodOfTime(_ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
+    func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
 
         let baseUri = UserDefaultsRepository.readBaseUri()
         if baseUri == "" {
@@ -106,7 +106,7 @@ class NightscoutService {
         let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
         
         // Get the current data from REST-Call
-        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gte]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
+        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gt]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
         let request =
             URLRequest(url: URL(string: requestUri)!,
                             cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
@@ -115,9 +115,11 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
+                print(error!)
                 return
             }
             guard data != nil else {
+                print("The received data was nil...")
                 return
             }
         
@@ -141,9 +143,46 @@ class NightscoutService {
                     bloodSugarArray.insert(bloodSugar, at: 0)
                 }
             }
+            
+            bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
             resultHandler(bloodSugarArray)
         }) 
         task.resume()
+    }
+    
+    // append the oldvalues but leave duplicates
+    fileprivate func mergeInTheNewData(oldValues : [BloodSugar], newValues : [BloodSugar]) -> [BloodSugar] {
+        
+        var mergedValues = oldValues
+        for valueToInsert in newValues {
+            
+            if let index = mergedValues.index(where: { $0.timestamp > valueToInsert.timestamp }) {
+                mergedValues.insert(valueToInsert, at: index)
+            } else {
+                // the new value is later than all other values => just append
+                mergedValues.append(valueToInsert)
+            }
+        }
+        return mergedValues
+    }
+    
+    // appends the new value after the first value, which time is before the timestamp of newValue
+    fileprivate func appendSingleValue(oldValues : [BloodSugar], newValue : BloodSugar) -> [BloodSugar] {
+        
+        if oldValues.count == 0 {
+            return [newValue]
+        }
+        
+        let reversedOldValues = Array(oldValues.reversed())
+        var mergedValues = oldValues
+        for (index, mergeValue) in reversedOldValues.enumerated() {
+            if (mergeValue.timestamp < newValue.timestamp) {
+                mergedValues.insert(newValue, at: index)
+                return mergedValues
+            }
+        }
+        
+        return mergedValues
     }
     
     fileprivate func isDateColumn(_ cell : String) -> Bool {
@@ -159,19 +198,33 @@ class NightscoutService {
         let startOfYesterday = calendar.startOfDay(for: yesterday)
         let endOfYesterday = calendar.startOfDay(for: TimeService.getToday())
         
-        readChartDataWithinPeriodOfTime(startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
+        readChartDataWithinPeriodOfTime(oldValues: [], startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
     }
     
-    /* Reads all values from the current day. */
-    func readTodaysChartData(_ resultHandler : @escaping (([BloodSugar]) -> Void)) {
+    /* Reads all values from the current day. Beginning is 00:00 or
+       the lastReceivedTime if this time is later than the current day at 00:00. */
+    func readTodaysChartData(oldValues : [BloodSugar], _ resultHandler : @escaping (([BloodSugar]) -> Void)) {
         
         let calendar = Calendar.current
         let today = TimeService.getToday()
         
-        let beginOfDay = calendar.startOfDay(for: today)
+        var beginOfDay = calendar.startOfDay(for: today)
         let endOfDay = calendar.startOfDay(for: TimeService.getTomorrow())
         
-        readChartDataWithinPeriodOfTime(beginOfDay, timestamp2: endOfDay, resultHandler: resultHandler)
+        // use the current time so that we have to load the new values only
+        let lastReceivedTime = determineTheLatestValueOf(oldValues: oldValues)
+        if lastReceivedTime > beginOfDay {
+            beginOfDay = lastReceivedTime
+        }
+        readChartDataWithinPeriodOfTime(oldValues : oldValues, beginOfDay, timestamp2: endOfDay, resultHandler: resultHandler)
+    }
+    
+    fileprivate func determineTheLatestValueOf(oldValues : [BloodSugar]) -> Date {
+        if oldValues.count == 0 || oldValues.last == nil {
+            return Date.init(timeIntervalSince1970: 0)
+        }
+        
+        return Date.init(timeIntervalSince1970: oldValues.first!.timestamp / 1000)
     }
     
     func readDay(_ nrOfDaysAgo : Int, callbackHandler : @escaping (_ nrOfDay : Int, [BloodSugar]) -> Void) {
@@ -181,7 +234,7 @@ class NightscoutService {
         let startNrOfDaysAgo = calendar.startOfDay(for: timeNrOfDaysAgo)
         let endNrOfDaysAgo = startNrOfDaysAgo.addingTimeInterval(24 * 60 * 60)
         
-        readChartDataWithinPeriodOfTime(startNrOfDaysAgo, timestamp2: endNrOfDaysAgo, resultHandler: {(bgValues) -> Void in
+        readChartDataWithinPeriodOfTime(oldValues: [], startNrOfDaysAgo, timestamp2: endNrOfDaysAgo, resultHandler: {(bgValues) -> Void in
             callbackHandler(nrOfDaysAgo, bgValues)
         })
     }
@@ -192,7 +245,7 @@ class NightscoutService {
         let today = TimeService.getToday()
         let twoHoursBefore = today.addingTimeInterval(-60*120)
         
-        readChartDataWithinPeriodOfTime(twoHoursBefore, timestamp2: today, resultHandler: resultHandler)
+        readChartDataWithinPeriodOfTime(oldValues : [], twoHoursBefore, timestamp2: today, resultHandler: resultHandler)
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */

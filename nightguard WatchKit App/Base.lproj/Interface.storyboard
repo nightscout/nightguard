@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13196" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13529" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13507"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -70,7 +70,7 @@
                 <controller identifier="InfoInterfaceController" id="wky-cb-ykJ" customClass="InfoInterfaceController" customModule="nightguard">
                     <items>
                         <label alignment="right" text="V?.?.???" textAlignment="right" id="VJk-AO-PXu" userLabel="Version Label"/>
-                        <label alignment="center" text="Nightscout URI:" id="ip5-bC-D8x"/>
+                        <label alignment="center" text="2Nightscout URI:" id="ip5-bC-D8x"/>
                         <label alignment="left" id="AuT-yY-6WA"/>
                         <label width="1" alignment="center" text="http://..." textAlignment="center" numberOfLines="2" id="rQn-yu-ajp"/>
                         <button width="1" alignment="left" title="Close" id="J0t-oX-olu">

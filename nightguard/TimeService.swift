@@ -13,6 +13,15 @@ class TimeService {
     fileprivate static var testTime : Double? = nil
     fileprivate static var testMode : Bool = false
     
+    static func getStartOfCurrentDay() -> Double {
+        
+        let date = Date()
+        let cal = Calendar(identifier: .gregorian)
+        let startOfCurrentDay = cal.startOfDay(for: date)
+        
+        return Double(startOfCurrentDay.timeIntervalSince1970 * 1000)
+    }
+    
     static func setTestTime(_ testTime : Double) {
         self.testTime = testTime;
     }

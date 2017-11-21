@@ -78,7 +78,6 @@
 		43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F21D07698000C329A2 /* AlarmSound.swift */; };
 		43F1E1001D07698000C329A2 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F31D07698000C329A2 /* AlarmViewController.swift */; };
 		43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F41D07698000C329A2 /* AppDelegate.swift */; };
-		43F1E1021D07698000C329A2 /* BgDataHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F51D07698000C329A2 /* BgDataHolder.swift */; };
 		43F1E1031D07698000C329A2 /* GuiStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */; };
 		43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F81D07698000C329A2 /* MainViewController.swift */; };
 		43F1E1061D07698000C329A2 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43F1E0F91D07698000C329A2 /* Media.xcassets */; };
@@ -203,7 +202,6 @@
 		43F1E0F21D07698000C329A2 /* AlarmSound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmSound.swift; path = nightguard/AlarmSound.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F31D07698000C329A2 /* AlarmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmViewController.swift; path = nightguard/AlarmViewController.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F41D07698000C329A2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = nightguard/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0F51D07698000C329A2 /* BgDataHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BgDataHolder.swift; path = nightguard/BgDataHolder.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GuiStateRepository.swift; path = nightguard/GuiStateRepository.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F71D07698000C329A2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = nightguard/Info.plist; sourceTree = SOURCE_ROOT; };
 		43F1E0F81D07698000C329A2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = nightguard/MainViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -259,7 +257,6 @@
 			children = (
 				43E89E561E659102005B0A65 /* ChartScene.swift */,
 				43F1E0F21D07698000C329A2 /* AlarmSound.swift */,
-				43F1E0F51D07698000C329A2 /* BgDataHolder.swift */,
 				432E62E81D143CF900DD7978 /* UnitsConverter.swift */,
 				43F1E0FA1D07698000C329A2 /* NightscoutData.swift */,
 				43F1E11A1D076D9700C329A2 /* TimeService.swift */,
@@ -669,7 +666,6 @@
 				43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
-				43F1E1021D07698000C329A2 /* BgDataHolder.swift in Sources */,
 				438066FB1D21B2000021B618 /* WatchMessageService.swift in Sources */,
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
 				43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */,
