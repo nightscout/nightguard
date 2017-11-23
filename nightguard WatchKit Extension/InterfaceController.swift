@@ -48,6 +48,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     override func willActivate() {
         
+        spriteKitView.isPaused = false
+        
         // Start the timer to retrieve new bgValues and update the ui periodically
         // if the user keeps the display active for a longer time
         createNewTimerSingleton()
@@ -67,8 +69,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     override func didAppear() {
         
+        spriteKitView.isPaused = false
+        
         crownSequencer.focus()
         crownSequencer.delegate = self
+    }
+    
+    override func willDisappear() {
+        spriteKitView.isPaused = true
     }
     
     override func didDeactivate() {
@@ -76,6 +84,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         super.didDeactivate()
         
         timer.invalidate();
+        spriteKitView.isPaused = true
     }
     
     // called when the crown rotates, rotationalDelta is the change since the last call (sign indicates direction).
