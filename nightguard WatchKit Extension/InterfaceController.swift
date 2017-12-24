@@ -184,10 +184,18 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             
             DispatchQueue.main.async {
                 self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                self.updateComplication()
             }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+    }
+    
+    fileprivate func updateComplication() {
+        let complicationServer = CLKComplicationServer.sharedInstance()
+        for complication in complicationServer.activeComplications! {
+            complicationServer.reloadTimeline(for: complication)
+        }
     }
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {

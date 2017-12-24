@@ -67,6 +67,8 @@
 		439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
 		439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
 		439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C391A1C0E295C00D89872 /* ChartPainterTest.swift */; };
+		439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
+		439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
@@ -192,6 +194,7 @@
 		439BADF71C24C315006BEADB /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		439C39171C0E002F00D89872 /* ChartPainter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartPainter.swift; path = "nightguard WatchKit Extension/ChartPainter.swift"; sourceTree = SOURCE_ROOT; };
 		439C391A1C0E295C00D89872 /* ChartPainterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainterTest.swift; sourceTree = "<group>"; };
+		439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundUrlSessionWrapper.swift; sourceTree = "<group>"; };
 		43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuiStateRepositoryTest.swift; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
@@ -265,6 +268,7 @@
 				432E62EE1D17359600DD7978 /* StringExtension.swift */,
 				43288A6F1D20284600EE3999 /* DoubleExtension.swift */,
 				430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */,
+				439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -668,6 +672,7 @@
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
 				438066FB1D21B2000021B618 /* WatchMessageService.swift in Sources */,
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
+				439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */,
 				43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */,
 				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
@@ -735,6 +740,7 @@
 			files = (
 				4346F9841D0773F700487541 /* TimeService.swift in Sources */,
 				43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */,
+				439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				432E62EC1D15EFEC00DD7978 /* FloatExtension.swift in Sources */,
 				437EEDC41FB7180000694EAD /* NightscoutDataRepository.swift in Sources */,
 				43647C0D1BFF6435004389F9 /* NotificationController.swift in Sources */,

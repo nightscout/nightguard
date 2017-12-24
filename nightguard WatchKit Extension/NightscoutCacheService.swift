@@ -10,7 +10,7 @@ import Foundation
 
 // This is a facade in front of the nightscout service. It is used to reduce the
 // amount of turnarounds to the real backend to a minimum.
-class NightscoutCacheService {
+class NightscoutCacheService: NSObject {
     
     static let singleton = NightscoutCacheService()
     
@@ -21,6 +21,12 @@ class NightscoutCacheService {
     
     fileprivate var newDataReceived : Bool = false
     fileprivate let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
+    
+    // During background updates, this value is modified from the ExtensionDelegate
+    func updateCurrentNightscoutData(newNightscoutData : NightscoutData) {
+        currentNightscoutData = newNightscoutData
+        NightscoutDataRepository.singleton.storeCurrentNightscoutData(newNightscoutData)
+    }
     
     func resetCache() {
         todaysBgData = nil
@@ -66,14 +72,23 @@ class NightscoutCacheService {
     
     func loadCurrentNightscoutData(_ resultHandler : @escaping ((NightscoutData) -> Void))
         -> NightscoutData {
+            
+            if currentNightscoutData == nil {
+                currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
+            }
+            
+            checkIfRefreshIsNeeded(resultHandler, inBackground: false)
+            
+            return currentNightscoutData!
+    }
+    
+    func loadCurrentNightscoutDataInBackground() {
         
         if currentNightscoutData == nil {
             currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         }
         
-        checkIfRefreshIsNeeded(resultHandler)
-        
-        return currentNightscoutData!
+        checkIfRefreshIsNeeded({_ in }, inBackground: true)
     }
     
     // Reads the blood glucose data from today
@@ -163,16 +178,20 @@ class NightscoutCacheService {
         return transformedValues
     }
     
-    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping ((NightscoutData) -> Void)) {
+    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping ((NightscoutData) -> Void), inBackground : Bool) {
         
-        if currentNightscoutData!.isOlderThan5Minutes() {
-            NightscoutService.singleton.readCurrentDataForPebbleWatch({ (newNightscoutData) in
-                
-                self.currentNightscoutData = newNightscoutData
-                NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData!)
-                
-                resultHandler(newNightscoutData)
-            })
+        if true /*currentNightscoutData!.isOlderThan5Minutes()*/ {
+            if inBackground {
+                NightscoutService.singleton.readCurrentDataForPebbleWatchInBackground()
+            } else {
+                NightscoutService.singleton.readCurrentDataForPebbleWatch({ (newNightscoutData) in
+                    
+                    self.currentNightscoutData = newNightscoutData
+                    NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData!)
+                    
+                    resultHandler(newNightscoutData)
+                })
+            }
         }
     }
 }

@@ -13,16 +13,18 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     var oldNightscoutData : [NightscoutData] = []
     
+    /*
     func getNextRequestedUpdateDate(handler: @escaping (Date?) -> Void) {
-        // Update every 15 Minutes => but this is just a nice wish
+        // Update every 10 Minutes => but this is just a nice wish
         // => Apple will allow maybe just 30 minutes :(
-        handler(Date(timeIntervalSinceNow: 60*15))
-    }
+        handler(Date(timeIntervalSinceNow: 60*10))
+    }*/
     
     // MARK: - Timeline Configuration
     
+    // No Timetravel supported
     func getSupportedTimeTravelDirections(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimeTravelDirections) -> Void) {
-        handler(CLKComplicationTimeTravelDirections())
+        handler([])
     }
     
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
