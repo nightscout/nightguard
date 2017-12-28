@@ -19,6 +19,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var batteryLabel: UILabel!
+    @IBOutlet weak var iobLabel: UILabel!
     @IBOutlet weak var snoozeButton: UIButton!
     @IBOutlet weak var screenlockSwitch: UISwitch!
     @IBOutlet weak var volumeContainerView: UIView!
@@ -309,8 +310,8 @@ class MainViewController: UIViewController {
             self.lastUpdateLabel.text = currentNightscoutData.timeString
             self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(currentNightscoutData.time)
             
-            //Display battery + iob instead of only battery
-            self.batteryLabel.text = currentNightscoutData.batteryIobDisplay
+            self.batteryLabel.text = currentNightscoutData.battery
+            self.iobLabel.text = currentNightscoutData.iob
         })
     }
     

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13529" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13771" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13507"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13756"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -14,7 +14,7 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="nightguard">
                     <items>
-                        <group width="1" alignment="left" id="1AH-d7-hZo">
+                        <group width="1" height="50" alignment="left" id="1AH-d7-hZo">
                             <items>
                                 <label width="80" height="37" alignment="left" text="---" textAlignment="center" minimumScaleFactor="0.5" id="vdn-99-EwA">
                                     <fontDescription key="font" type="system" pointSize="48"/>
@@ -27,28 +27,39 @@
                                 </label>
                                 <group width="72.5" height="1" alignment="left" layout="vertical" id="2qL-lw-zuD">
                                     <items>
-                                        <group width="1" alignment="left" id="yrF-or-Bnh">
+                                        <group width="1" height="17" alignment="left" id="yrF-or-Bnh">
                                             <items>
-                                                <label width="26.5" height="17.5" alignment="left" text="+10" minimumScaleFactor="0.25" id="frk-q8-3y9">
-                                                    <fontDescription key="font" style="UICTFontTextStyleBody"/>
+                                                <label width="26.5" height="17.5" alignment="left" text="+10" minimumScaleFactor="0.20000000000000001" id="frk-q8-3y9">
+                                                    <fontDescription key="font" type="system" pointSize="16"/>
                                                 </label>
-                                                <label height="18.5" alignment="right" text="59min" minimumScaleFactor="0.5" id="w1H-tu-XyX"/>
+                                                <label height="18.5" alignment="right" text="59min" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
+                                                    <fontDescription key="font" type="system" pointSize="16"/>
+                                                </label>
                                             </items>
                                         </group>
-                                        <group height="18" alignment="right" id="7mo-kr-osX">
+                                        <group height="10" alignment="right" id="7mo-kr-osX">
                                             <items>
-                                                <label width="26.5" height="17.5" alignment="left" text="-" minimumScaleFactor="0.25" id="nnO-nW-RbM"/>
-                                                <label width="42" height="17.5" alignment="right" verticalAlignment="bottom" text="100%" textAlignment="right" minimumScaleFactor="0.25" id="lz8-YE-T1d"/>
+                                                <label width="26.5" height="12" alignment="left" text="-" minimumScaleFactor="0.20000000000000001" id="nnO-nW-RbM">
+                                                    <fontDescription key="font" type="system" pointSize="16"/>
+                                                </label>
+                                                <label width="42" height="10" alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
+                                                    <fontDescription key="font" type="system" pointSize="13"/>
+                                                </label>
+                                            </items>
+                                        </group>
+                                        <group height="10" alignment="right" id="HZw-Hn-d6o">
+                                            <items>
+                                                <label width="42" height="9" alignment="right" text="0.05U" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
+                                                    <fontDescription key="font" type="system" pointSize="13"/>
+                                                </label>
                                             </items>
                                         </group>
                                     </items>
-                                    <variation key="device=watch38mm" width="72.5"/>
-                                    <variation key="device=watch42mm" width="72.5"/>
                                 </group>
                             </items>
                         </group>
-                        <spriteKitScene width="155" height="133" alignment="left" id="HJ3-mD-NFS">
-                            <variation key="device=watch38mm" height="110"/>
+                        <spriteKitScene width="155" height="130" alignment="left" id="HJ3-mD-NFS">
+                            <variation key="device=watch38mm" height="115"/>
                         </spriteKitScene>
                     </items>
                     <menu key="menu" id="YiW-tI-jRp"/>
@@ -57,6 +68,7 @@
                         <outlet property="bgLabel" destination="vdn-99-EwA" id="Tg2-Yj-bDo"/>
                         <outlet property="deltaArrowLabel" destination="nnO-nW-RbM" id="aR3-me-buM"/>
                         <outlet property="deltaLabel" destination="frk-q8-3y9" id="KvH-er-bpE"/>
+                        <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="fNu-BR-2Ss"/>
                         <outlet property="spriteKitView" destination="HJ3-mD-NFS" id="hnU-4D-1mD"/>
                         <outlet property="timeLabel" destination="w1H-tu-XyX" id="KWM-Y9-FDg"/>
                     </connections>

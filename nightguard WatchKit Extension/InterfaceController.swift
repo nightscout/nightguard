@@ -20,7 +20,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var timeLabel: WKInterfaceLabel!
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var spriteKitView: WKInterfaceSKScene!
-
+    @IBOutlet var iobLabel: WKInterfaceLabel!
+    
     fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     
     // timer to check continuously for new bgValues
@@ -40,10 +41,23 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         // Initialize the ChartScene
         let bounds = WKInterfaceDevice.current().screenBounds
-        chartScene = ChartScene(size: CGSize(width: bounds.width, height: 130), newCanvasWidth: bounds.width * 6)
+        let chartSceneHeight = determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
+        chartScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6)
         spriteKitView.presentScene(chartScene)
         
         createMenuItems()
+    }
+    
+    fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
+        
+        if (interfaceBounds.height == 195.0) {
+            // Apple Watch 42mm
+            return 130.0
+        }
+        
+        // interfaceBounds.height == 170.0
+        // Apple Watch 38mm
+        return 110.0
     }
     
     override func willActivate() {
@@ -210,7 +224,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.timeLabel.setText(currentNightscoutData.timeString)
         self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(currentNightscoutData.time))
         
-        self.batteryLabel.setText(currentNightscoutData.batteryIobDisplay)
+        self.batteryLabel.setText(currentNightscoutData.battery)
+        self.iobLabel.setText(currentNightscoutData.iob)
     }
     
     fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
