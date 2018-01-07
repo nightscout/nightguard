@@ -57,7 +57,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         // interfaceBounds.height == 170.0
         // Apple Watch 38mm
-        return 110.0
+        return 95.0
     }
     
     override func willActivate() {
