@@ -56,7 +56,7 @@
                                 </group>
                             </items>
                         </group>
-                        <spriteKitScene width="155" height="115" alignment="left" id="HJ3-mD-NFS">
+                        <spriteKitScene width="155" height="125" alignment="left" id="HJ3-mD-NFS">
                             <variation key="device=watch38mm" height="98"/>
                         </spriteKitScene>
                     </items>
