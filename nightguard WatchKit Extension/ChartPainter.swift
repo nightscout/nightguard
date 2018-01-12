@@ -87,7 +87,10 @@ class ChartPainter {
             }
         }
         
-        paintLegend(days.count)
+        // Don't paint the Legend on the small apple watch
+        if (size.height > 300) {
+            paintLegend(days.count)
+        }
         
         paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
         
