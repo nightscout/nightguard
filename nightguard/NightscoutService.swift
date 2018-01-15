@@ -315,7 +315,7 @@ class NightscoutService {
                 let iob : NSString? = currentBgs.object(forKey: "iob") as? NSString
                 
                 if battery == nil {
-                    nightscoutData.battery = String("?")
+                    nightscoutData.battery = ""
                 } else {
                     nightscoutData.battery = String(battery!) + "%"
                 }
