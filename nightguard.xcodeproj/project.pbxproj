@@ -69,6 +69,7 @@
 		439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C391A1C0E295C00D89872 /* ChartPainterTest.swift */; };
 		439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
+		43B16087200D37560058198B /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
@@ -715,6 +716,7 @@
 				432E62DA1D0CC3DE00DD7978 /* TimeService.swift in Sources */,
 				432E62DC1D0CC4A900DD7978 /* GuiStateRepository.swift in Sources */,
 				433AD0181CCE3FCB001A76CD /* UserDefaultsRepository.swift in Sources */,
+				43B16087200D37560058198B /* BackgroundUrlSessionWrapper.swift in Sources */,
 				43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */,
 				432E62F11D188A2A00DD7978 /* UnitsConverter.swift in Sources */,
 				43288A711D2028CC00EE3999 /* DoubleExtension.swift in Sources */,

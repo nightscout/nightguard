@@ -1,4 +1,4 @@
-	//
+//
 //  ServiceBoundary.swift
 //  scoutwatch
 //
@@ -312,7 +312,7 @@ class NightscoutService {
                 let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
                 
                 //Get Insulin On Board from Nightscout
-                let iob : NSString? = currentBgs.object(forKey: "iob") as? NSString
+                var iob : NSString? = currentBgs.object(forKey: "iob") as? NSString
                 
                 if battery == nil {
                     nightscoutData.battery = ""
@@ -321,6 +321,10 @@ class NightscoutService {
                 }
                 
                 //Save Insulin-On-Board data
+                if iob == "0" {
+                    // make iob invisible, if nothing is on board
+                    iob = nil
+                }
                 if iob != nil {
                     nightscoutData.iob = String(iob!) + "U"
                 }
