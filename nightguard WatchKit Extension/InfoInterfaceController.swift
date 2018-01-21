@@ -13,6 +13,7 @@ class InfoInterfaceController: WKInterfaceController {
     
     @IBOutlet var versionLabel: WKInterfaceLabel!
     @IBOutlet var serverUriLabel: WKInterfaceLabel!
+    @IBOutlet var cachedValuesLabel: WKInterfaceLabel!
     
     @IBAction func doCloseAction() {
         self.dismiss()
@@ -33,5 +34,10 @@ class InfoInterfaceController: WKInterfaceController {
         let buildNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
         
         versionLabel.setText("V\(versionNumber).\(buildNumber)")
+        
+        let todaysBgData = NightscoutDataRepository.singleton.loadTodaysBgData()
+        let yesterdaysBgData = NightscoutDataRepository.singleton.loadYesterdaysBgData()
+        
+        cachedValuesLabel.setText("\(todaysBgData.count) / \(yesterdaysBgData.count)")
     }
 }

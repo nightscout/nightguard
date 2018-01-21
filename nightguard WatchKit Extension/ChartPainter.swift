@@ -52,7 +52,7 @@ class ChartPainter {
      * The position of the current value is returned as the second tuple element.
      * It is used to show the current value in the viewport.
      */
-    func drawImage(_ days : [[BloodSugar]], maxBgValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) -> (UIImage?, Int) {
+    func drawImage(_ days : [[BloodSugar]], maxBgValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float, displayDaysLegend : Bool) -> (UIImage?, Int) {
 
         // we need at least one day => otherwise paint nothing
         if days.count == 1 {
@@ -87,8 +87,8 @@ class ChartPainter {
             }
         }
         
-        // Don't paint the Legend on the small apple watch
-        if (size.height > 300) {
+        // Don't paint the Legend on the small apple watch - so there displayDaysLegend is set to false
+        if (displayDaysLegend) {
             paintLegend(days.count)
         }
         

@@ -83,6 +83,8 @@
                         <label alignment="center" text="Nightscout URI:" id="ip5-bC-D8x"/>
                         <label alignment="left" id="AuT-yY-6WA"/>
                         <label width="1" alignment="center" text="http://..." textAlignment="center" numberOfLines="2" id="rQn-yu-ajp"/>
+                        <label alignment="center" text="Caches Values:" textAlignment="left" id="E26-VQ-ttI"/>
+                        <label alignment="center" text="0" id="IeJ-DT-Wcg"/>
                         <button width="1" alignment="left" title="Close" id="J0t-oX-olu">
                             <connections>
                                 <action selector="doCloseAction" destination="wky-cb-ykJ" id="J6Y-PP-x8b"/>
@@ -100,6 +102,7 @@
                         </mask>
                     </variation>
                     <connections>
+                        <outlet property="cachedValuesLabel" destination="IeJ-DT-Wcg" id="edG-OD-P0g"/>
                         <outlet property="serverUriLabel" destination="rQn-yu-ajp" id="chR-Cb-I8J"/>
                         <outlet property="versionLabel" destination="VJk-AO-PXu" id="9Je-rN-Q8U"/>
                     </connections>

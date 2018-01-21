@@ -262,7 +262,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             [todaysData, yesterdaysData],
             newCanvasWidth: bounds.width * 6,
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
-            moveToLatestValue: moveToLatestValue)
+            moveToLatestValue: moveToLatestValue,
+            displayDaysLegend: false)
     }
 
 }

@@ -38,10 +38,10 @@ class ChartScene : SKScene {
     
     // maxYDisplayValue is the maximum Value that will be displayed in the chart.
     // Blood values that are higher will be set to maxYDisplayValue instead.
-    func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool) {
+    func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool, displayDaysLegend : Bool) {
 
-//        let maxYDisplayValue : CGFloat = 250
-//        defaults.setFloat(Float(maxYDisplayValue), forKey: "maximumBloodGlucoseDisplayed")
+        //        let maxYDisplayValue : CGFloat = 250
+        //        defaults.setFloat(Float(maxYDisplayValue), forKey: "maximumBloodGlucoseDisplayed")
         
         self.oldBloodSugarDays = days
         self.maxYDisplayValue = maxYDisplayValue
@@ -57,7 +57,8 @@ class ChartScene : SKScene {
         let (chartImage, displayPosition) = chartPainter.drawImage(
             days, maxBgValue: maxYDisplayValue,
             upperBoundNiceValue: upper,
-            lowerBoundNiceValue: lower
+            lowerBoundNiceValue: lower,
+            displayDaysLegend: displayDaysLegend
         )
         
         if chartImage == nil {
@@ -77,6 +78,13 @@ class ChartScene : SKScene {
                 duration: 1)
             self.chartNode.run(moveToNewValue)
         }
+    }
+        
+    // maxYDisplayValue is the maximum Value that will be displayed in the chart.
+    // Blood values that are higher will be set to maxYDisplayValue instead.
+    func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool) {
+
+        paintChart(days, newCanvasWidth: newCanvasWidth, maxYDisplayValue: maxYDisplayValue, moveToLatestValue: moveToLatestValue, displayDaysLegend: true)
     }
     
     fileprivate func initialPlacingOfChart() {
