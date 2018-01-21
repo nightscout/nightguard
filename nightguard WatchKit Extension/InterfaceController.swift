@@ -52,12 +52,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         if (interfaceBounds.height == 195.0) {
             // Apple Watch 42mm
-            return 135.0
+            return 145.0
         }
         
         // interfaceBounds.height == 170.0
         // Apple Watch 38mm
-        return 95.0
+        return 115.0
     }
     
     override func willActivate() {
