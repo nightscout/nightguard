@@ -66,7 +66,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, URLSessionDelegate {
                     case _ as WKApplicationRefreshBackgroundTask:
                         // this task is completed below, our app will then suspend while the download session runs
                         print("WKApplicationRefreshBackgroundTask received, start URL session")
-                        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutDataInBackground()
+                        //let _ = NightscoutCacheService.singleton.loadCurrentNightscoutDataInBackground()
                         task.setTaskCompleted()
                     case let sessionTask as WKURLSessionRefreshBackgroundTask:
                         

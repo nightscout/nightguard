@@ -273,7 +273,6 @@ class MainViewController: UIViewController {
             present(alertController, animated: true, completion: nil)
             
             UserDefaults.standard.set(true, forKey: "screenlockMessageShowed")
-            UserDefaults.standard.synchronize()
         }
     }
     

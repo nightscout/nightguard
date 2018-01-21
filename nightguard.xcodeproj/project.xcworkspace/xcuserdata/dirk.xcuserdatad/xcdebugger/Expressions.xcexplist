@@ -137,10 +137,10 @@
                value = "bloodValues[index-2].value">
             </PersistentString>
             <PersistentString
-               value = "bloodValues[index-1].value">
+               value = "deltaAmount">
             </PersistentString>
             <PersistentString
-               value = "deltaAmount">
+               value = "bloodValues[index-1].value">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -339,6 +339,14 @@
       </ContextState>
       <ContextState
          contextName = "NightscoutCacheService.yesterdaysValuesAreOutdated():NightscoutCacheService.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static UserDefaultsRepository.readMaximumBloodGlucoseDisplayed():UserDefaultsRepository.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "defaults.float(forKey: &quot;maximumBloodGlucoseDisplayed&quot;)">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "ComplicationController.(getCurrentTimelineEntryForComplication(CLKComplication, withHandler : (CLKComplicationTimelineEntry?) -&gt; ()) -&gt; ()).(closure #1):ComplicationController.swift">

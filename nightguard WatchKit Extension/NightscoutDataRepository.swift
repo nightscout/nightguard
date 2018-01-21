@@ -26,6 +26,8 @@ class NightscoutDataRepository {
         defaults?.removeObject(forKey: Constants.todaysBgData)
         defaults?.removeObject(forKey: Constants.yesterdaysBgData)
         defaults?.removeObject(forKey: Constants.yesterdaysDayOfTheYear)
+        // this shouldn't be necessary anymore - remove it later
+        defaults?.synchronize()
     }
     
     func storeCurrentNightscoutData(_ bgData : NightscoutData) {
@@ -83,6 +85,8 @@ class NightscoutDataRepository {
     }
     
     fileprivate func storeBgData(keyName : String, _ bgData : [BloodSugar]) {
+        
+        print("Storing \(bgData.count) using key \(keyName)")
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.set(NSKeyedArchiver.archivedData(withRootObject: bgData), forKey: keyName)

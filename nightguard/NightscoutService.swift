@@ -224,7 +224,7 @@ class NightscoutService {
             return Date.init(timeIntervalSince1970: 0)
         }
         
-        return Date.init(timeIntervalSince1970: oldValues.first!.timestamp / 1000)
+        return Date.init(timeIntervalSince1970: oldValues.last!.timestamp / 1000)
     }
     
     func readDay(_ nrOfDaysAgo : Int, callbackHandler : @escaping (_ nrOfDay : Int, [BloodSugar]) -> Void) {
