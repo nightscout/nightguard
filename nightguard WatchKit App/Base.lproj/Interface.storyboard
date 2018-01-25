@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13771" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch42" orientation="portrait">
+    <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -79,28 +79,42 @@
             <objects>
                 <controller identifier="InfoInterfaceController" fullScreen="YES" id="wky-cb-ykJ" customClass="InfoInterfaceController" customModule="nightguard">
                     <items>
-                        <label alignment="right" text="V?.?.???" textAlignment="right" id="VJk-AO-PXu" userLabel="Version Label"/>
-                        <label alignment="center" text="Nightscout URI:" id="ip5-bC-D8x"/>
-                        <label alignment="left" id="AuT-yY-6WA"/>
-                        <label width="1" alignment="center" text="http://..." textAlignment="center" numberOfLines="2" id="rQn-yu-ajp"/>
-                        <label alignment="center" text="Caches Values:" textAlignment="left" id="E26-VQ-ttI"/>
-                        <label alignment="center" text="0" id="IeJ-DT-Wcg"/>
-                        <button width="1" alignment="left" title="Close" id="J0t-oX-olu">
+                        <label alignment="right" text="V?.?.???" textAlignment="right" id="VJk-AO-PXu" userLabel="Version Label">
+                            <fontDescription key="font" type="system" pointSize="14"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="12"/>
+                            </variation>
+                        </label>
+                        <label alignment="center" text="Nightscout URI:" id="ip5-bC-D8x">
+                            <fontDescription key="font" type="system" pointSize="16"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="14"/>
+                            </variation>
+                        </label>
+                        <label width="1" alignment="center" text="http://..." textAlignment="center" numberOfLines="3" minimumScaleFactor="0.10000000000000001" id="rQn-yu-ajp">
+                            <fontDescription key="font" type="system" pointSize="12"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="10"/>
+                            </variation>
+                        </label>
+                        <label alignment="center" text="Caches Values:" textAlignment="left" id="E26-VQ-ttI">
+                            <fontDescription key="font" type="system" pointSize="16"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="14"/>
+                            </variation>
+                        </label>
+                        <label alignment="center" text="0" id="IeJ-DT-Wcg">
+                            <fontDescription key="font" type="system" pointSize="12"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="10"/>
+                            </variation>
+                        </label>
+                        <button width="1" height="31" alignment="left" title="Close" id="J0t-oX-olu">
                             <connections>
                                 <action selector="doCloseAction" destination="wky-cb-ykJ" id="J6Y-PP-x8b"/>
                             </connections>
                         </button>
                     </items>
-                    <variation key="default">
-                        <mask key="items">
-                            <exclude reference="AuT-yY-6WA"/>
-                        </mask>
-                    </variation>
-                    <variation key="device=watch42mm">
-                        <mask key="items">
-                            <include reference="AuT-yY-6WA"/>
-                        </mask>
-                    </variation>
                     <connections>
                         <outlet property="cachedValuesLabel" destination="IeJ-DT-Wcg" id="edG-OD-P0g"/>
                         <outlet property="serverUriLabel" destination="rQn-yu-ajp" id="chR-Cb-I8J"/>
@@ -108,7 +122,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="167" y="-44"/>
+            <point key="canvasLocation" x="166.51282051282053" y="-44.025641025641029"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
