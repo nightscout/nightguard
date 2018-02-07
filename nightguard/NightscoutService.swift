@@ -8,24 +8,77 @@
 
 import Foundation
 
+
+// https://stackoverflow.com/a/44806984
+extension URL {
+    func valueOf(_ queryParamaterName: String) -> String? {
+        guard let url = URLComponents(string: self.absoluteString) else { return nil }
+        return url.queryItems?.first(where: { $0.name == queryParamaterName })?.value
+    }
+}
+
+
 /* All data that is read from nightscout is accessed using this boundary. */
 class NightscoutService {
-    
+
     static let singleton = NightscoutService()
     
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
+    var url: URL?
+    var token: String?
+
+    private init() {
+        parseBaseUri()
+    }
+    
+    /* Parses the URI entered in the UI and extracts the token if one is present. */
+    fileprivate func parseBaseUri() -> Void {
+        url = nil
+        token = nil
+        let urlString = UserDefaultsRepository.readBaseUri()
+        if !urlString.isEmpty {
+            url = URL(string: urlString)!
+            let tokenString = url?.valueOf("token")
+            if ((tokenString) != nil) {
+                token = String(describing: tokenString!)
+                print(token!)
+            }
+        }
+    }
+
+    /* Construct the url from the URL entered in the UI, creates the URL from URLComponents and
+       sets query parameters according to the passed in dictionary. */
+    fileprivate func getUrlWithPathAndQueryParameters(path: String, queryParams: Dictionary<String, String>) -> URL? {
+        parseBaseUri()
+        guard url != nil else {
+            return nil
+        }
+        var requestUri = url!
+        requestUri.appendPathComponent(path, isDirectory: false)
+        var urlComponents = URLComponents(string: String(describing: requestUri))!
+        urlComponents.queryItems = []
+        for (queryParam, queryValue) in queryParams {
+            urlComponents.queryItems?.append(URLQueryItem(name: queryParam, value: queryValue))
+        }
+        
+        if (token != nil) {
+            urlComponents.queryItems?.append(URLQueryItem(name: "token", value: String(describing: token!)))
+        }
+        print(urlComponents.url!)
+        return urlComponents.url!
+    }
+    
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     func readChartData(_ resultHandler : @escaping (([Int]) -> Void)) {
-        
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if baseUri == "" {
+        // Get the current data from REST-Call
+        let url = getUrlWithPathAndQueryParameters(path: "api/v1/entries.json", queryParams: ["count": "20"])
+        guard url != nil else {
             return
         }
 
-        // Get the current data from REST-Call
-        let request = URLRequest(url: URL(string: baseUri + "/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
+        let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             guard error == nil else {
@@ -52,14 +105,12 @@ class NightscoutService {
     /* Reads the nightscout status from the backend. This is used to determine the configured
        Unit, whether it's mg/dL or mmol/l */
     func readStatus(_ resultHandler : @escaping ((Units) -> Void)) {
-        
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if baseUri == "" {
+        // Get the current data from REST-Call
+        let url = getUrlWithPathAndQueryParameters(path: "api/v1/status.json", queryParams: [:])
+        guard url != nil else {
             return
         }
-        
-        // Get the current data from REST-Call
-        let request = URLRequest(url: URL(string: baseUri + "/api/v1/status.json")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             
@@ -93,22 +144,24 @@ class NightscoutService {
         }) 
         task.resume()
     }
-    
-    /* Reads all data between two timestamps and limits the maximum return values to 300. */
-    func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
 
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if baseUri == "" {
-            return
-        }
-        
+    /* Reads all data between two timestamps and limits the maximum return values to 400. */
+    func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
         let unixTimestamp1 : Double = timestamp1.timeIntervalSince1970 * 1000
         let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
         
-        // Get the current data from REST-Call
-        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gt]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
+        let chartDataWithinPeriodOfTimeQueryParams = [
+            "find[date][$gt]"   : "\(unixTimestamp1)",
+            "find[date][$lte]"  : "\(unixTimestamp2)",
+            "count"             : "400",
+        ]
+        
+        let url = getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
+        guard url != nil else {
+            return
+        }
         let request =
-            URLRequest(url: URL(string: requestUri)!,
+            URLRequest(url: url!,
                             cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let session = URLSession.shared
@@ -122,8 +175,13 @@ class NightscoutService {
                 print("The received data was nil...")
                 return
             }
-        
+            
             let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
+            guard !stringSgvData.contains("<html") else {
+                print("Invalid data with html received")  // TODO: pop an error alert
+                return
+            }
+            
             let sgvRows = stringSgvData.components(separatedBy: "\n")
             var timestampColumn : Int = 1
             var bloodSugarColumn : Int = 2
@@ -250,14 +308,12 @@ class NightscoutService {
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData) -> Void)) {
-
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if (baseUri == "") {
+        // Get the current data from REST-Call
+        let url = getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        guard url != nil else {
             return
         }
-        
-        // Get the current data from REST-Call
-        let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let session : URLSession = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
@@ -280,14 +336,12 @@ class NightscoutService {
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatchInBackground() {
-        
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if (baseUri == "") {
+        // Get the current data from REST-Call
+        let url = getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        guard url != nil else {
             return
         }
-        
-        // Get the current data from REST-Call
-        let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let task = BackgroundUrlSessionWrapper.urlSession.downloadTask(with: request);
         task.resume()
