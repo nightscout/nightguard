@@ -199,10 +199,37 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             DispatchQueue.main.async {
                 self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
                 self.updateComplication()
+                self.playAlarm(currentNightscoutData: newNightscoutData)
             }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+    }
+    
+    fileprivate func playAlarm(currentNightscoutData : NightscoutData) {
+        
+        guard let soundToPlay = determineSoundToPlay(currentNightscoutData: currentNightscoutData) else {
+            return
+        }
+        WKInterfaceDevice.current().play(soundToPlay)
+    }
+    
+    fileprivate func determineSoundToPlay(currentNightscoutData : NightscoutData) -> WKHapticType? {
+        
+        let (upperBound, lowerBound) = UserDefaultsRepository.readUpperLowerBounds()
+        if currentNightscoutData.sgv == "---" {
+            return nil
+        }
+        guard let sgvFloat = Float(currentNightscoutData.sgv) else {
+            return nil
+        }
+        if sgvFloat > upperBound {
+            return .directionUp
+        }
+        if sgvFloat < lowerBound {
+            return .directionDown
+        }
+        return nil
     }
     
     fileprivate func updateComplication() {
