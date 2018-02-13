@@ -46,11 +46,13 @@ class AppMessageService : NSObject, WCSessionDelegate {
         if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
             let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
             defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
+            AlarmRule.alertIfAboveValue = alertIfAboveValue
         }
         
         if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
             let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
             defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
+            AlarmRule.alertIfBelowValue = alertIfBelowValue
         }
     }
     

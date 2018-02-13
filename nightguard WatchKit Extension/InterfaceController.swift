@@ -87,6 +87,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         crownSequencer.focus()
         crownSequencer.delegate = self
+        
+        paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: false)
     }
     
     override func willDisappear() {
@@ -109,7 +111,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             // only recognize every third rotation => Otherwise the watch will crash
             // because of too many calls a second
             if nrOfCrownRotations % 5 == 0 && abs(rotationalDelta) > 0.01 {
-                chartScene.scale(1 + CGFloat(rotationalDelta), keepScale: true)
+                chartScene.scale(1 + CGFloat(rotationalDelta), keepScale: true, infoLabelText: determineInfoLabel())
             }
         } else {
             chartScene.moveChart(rotationalDelta * 200)
@@ -118,6 +120,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     @objc func doInfoMenuAction() {
         self.presentController(withName: "InfoInterfaceController", context: nil)
+    }
+    
+    @objc func doSnoozeMenuAction() {
+        self.presentController(withName: "SnoozeInterfaceController", context: nil)
+        loadAndPaintChartData(forceRepaint : true)
     }
     
     @objc func doRefreshMenuAction() {
@@ -155,6 +162,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         loadAndPaintCurrentBgData()
         loadAndPaintChartData(forceRepaint: false)
+        AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
+        AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
     
     // this has to be created programmatically, since only this way
@@ -164,8 +173,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.clearAllMenuItems()
         self.addMenuItem(with: WKMenuItemIcon.info, title: "Info", action: #selector(InterfaceController.doInfoMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.resume, title: "Refresh", action: #selector(InterfaceController.doRefreshMenuAction))
+        self.addMenuItem(with: WKMenuItemIcon.block, title: "Snooze", action: #selector(InterfaceController.doSnoozeMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.more, title: zoomingIsActive ? "Scroll" : "Zoom", action: #selector(InterfaceController.doToogleZoomScrollAction))
-        self.addMenuItem(with: WKMenuItemIcon.decline, title: "Close", action: #selector(InterfaceController.doCloseMenuAction))
     }
     
     fileprivate func assureThatBaseUriIsExisting() {
@@ -204,32 +213,15 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+        self.playAlarm(currentNightscoutData: currentNightscoutData)
     }
     
     fileprivate func playAlarm(currentNightscoutData : NightscoutData) {
         
-        guard let soundToPlay = determineSoundToPlay(currentNightscoutData: currentNightscoutData) else {
-            return
+        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({ ([BloodSugar]) -> Void in })
+        if AlarmRule.isAlarmActivated(currentNightscoutData, bloodValues: newCachedTodaysBgValues) {
+            WKInterfaceDevice.current().play(.notification)
         }
-        WKInterfaceDevice.current().play(soundToPlay)
-    }
-    
-    fileprivate func determineSoundToPlay(currentNightscoutData : NightscoutData) -> WKHapticType? {
-        
-        let (upperBound, lowerBound) = UserDefaultsRepository.readUpperLowerBounds()
-        if currentNightscoutData.sgv == "---" {
-            return nil
-        }
-        guard let sgvFloat = Float(currentNightscoutData.sgv) else {
-            return nil
-        }
-        if sgvFloat > upperBound {
-            return .directionUp
-        }
-        if sgvFloat < lowerBound {
-            return .directionDown
-        }
-        return nil
     }
     
     fileprivate func updateComplication() {
@@ -290,7 +282,17 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             newCanvasWidth: bounds.width * 6,
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: moveToLatestValue,
-            displayDaysLegend: false)
+            displayDaysLegend: false,
+            infoLabel: determineInfoLabel())
+    }
+    
+    fileprivate func determineInfoLabel() -> String {
+        
+        if !AlarmRule.isSnoozed() {
+            return ""
+        }
+        
+        return "Snoozed " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min"
     }
 
 }

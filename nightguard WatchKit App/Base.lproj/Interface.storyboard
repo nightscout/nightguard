@@ -124,6 +124,42 @@
             </objects>
             <point key="canvasLocation" x="166.51282051282053" y="-44.025641025641029"/>
         </scene>
+        <!--SnoozeInterfaceController-->
+        <scene sceneID="Wo6-eU-PUk">
+            <objects>
+                <controller identifier="SnoozeInterfaceController" fullScreen="YES" id="W3J-ff-Ny6" customClass="SnoozeInterfaceController" customModule="nightguard">
+                    <items>
+                        <button width="1" height="38" alignment="left" title="Stop Snoozing" id="vBI-uK-ui8">
+                            <fontDescription key="font" type="system" pointSize="15"/>
+                            <connections>
+                                <action selector="doCancelSnoozeAction" destination="W3J-ff-Ny6" id="lvF-Qh-uHJ"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="30min" id="LmY-nN-0PP">
+                            <connections>
+                                <action selector="doSnooze30Minutes" destination="W3J-ff-Ny6" id="ahC-xB-tbj"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="1h" id="B6w-zl-nKO">
+                            <connections>
+                                <action selector="doSnooze1Hour" destination="W3J-ff-Ny6" id="0e8-ga-rbR"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="2h" id="AjC-71-s7w">
+                            <connections>
+                                <action selector="doSnooze2Hours" destination="W3J-ff-Ny6" id="rVZ-fg-vmz"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="1d" id="E2D-TG-Tr3">
+                            <connections>
+                                <action selector="doSnooze1Day" destination="W3J-ff-Ny6" id="pSU-0P-fte"/>
+                            </connections>
+                        </button>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="409" y="-44"/>
+        </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
             <objects>

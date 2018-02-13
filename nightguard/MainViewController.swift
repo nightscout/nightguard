@@ -125,9 +125,9 @@ class MainViewController: UIViewController {
     @objc func pinchGesture(_ recognizer : UIPinchGestureRecognizer) {
         
         if recognizer.state == UIGestureRecognizerState.ended {
-            chartScene.scale(recognizer.scale, keepScale: true)
+            chartScene.scale(recognizer.scale, keepScale: true, infoLabelText: "")
         } else {
-            chartScene.scale(recognizer.scale, keepScale: false)
+            chartScene.scale(recognizer.scale, keepScale: false, infoLabelText: "")
         }
     }
     

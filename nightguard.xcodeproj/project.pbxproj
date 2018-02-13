@@ -71,7 +71,9 @@
 		439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		43B16087200D37560058198B /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */; };
+		43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
+		43D28A0620321AAF003859DE /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0E91D0768EF00C329A2 /* WatchService.swift */; };
@@ -197,6 +199,7 @@
 		439C391A1C0E295C00D89872 /* ChartPainterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainterTest.swift; sourceTree = "<group>"; };
 		439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundUrlSessionWrapper.swift; sourceTree = "<group>"; };
 		43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuiStateRepositoryTest.swift; sourceTree = "<group>"; };
+		43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeInterfaceController.swift; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
 		43F1E0E91D0768EF00C329A2 /* WatchService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WatchService.swift; path = nightguard/WatchService.swift; sourceTree = SOURCE_ROOT; };
@@ -382,6 +385,7 @@
 				43647C061BFF6435004389F9 /* Supporting Files */,
 				43647C081BFF6435004389F9 /* InterfaceController.swift */,
 				43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */,
+				43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */,
 				43647C0C1BFF6435004389F9 /* NotificationController.swift */,
 				43647C0E1BFF6435004389F9 /* ComplicationController.swift */,
 				43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */,
@@ -747,9 +751,11 @@
 				437EEDC41FB7180000694EAD /* NightscoutDataRepository.swift in Sources */,
 				43647C0D1BFF6435004389F9 /* NotificationController.swift in Sources */,
 				432E62F01D188A2400DD7978 /* UnitsConverter.swift in Sources */,
+				43D28A0620321AAF003859DE /* AlarmRule.swift in Sources */,
 				43F1E10C1D076B4100C329A2 /* NightscoutData.swift in Sources */,
 				43F1E1121D076C4500C329A2 /* NightscoutService.swift in Sources */,
 				43647C0F1BFF6435004389F9 /* ComplicationController.swift in Sources */,
+				43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */,
 				4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */,
 				43F1E10B1D076B1D00C329A2 /* BloodSugar.swift in Sources */,
 				43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */,
