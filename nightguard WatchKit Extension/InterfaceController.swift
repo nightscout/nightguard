@@ -79,6 +79,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         crownSequencer.focus()
         crownSequencer.delegate = self
+        
+        paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: false)
     }
     
     override func didAppear() {
@@ -86,10 +88,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         spriteKitView.isPaused = false
         
         crownSequencer.focus()
-        crownSequencer.delegate = self
-        
-        paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: false)
-    }
+        crownSequencer.delegate = self    }
     
     override func willDisappear() {
         spriteKitView.isPaused = true

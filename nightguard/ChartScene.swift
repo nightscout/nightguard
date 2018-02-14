@@ -103,7 +103,7 @@ class ChartScene : SKScene {
         self.chartNode.anchorPoint = CGPoint(x: 0, y: 0)
         self.chartNode.position = CGPoint(x: 0, y: 0)
         
-        self.infoLabelNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+        self.infoLabelNode.position = CGPoint(x: self.size.width / 2, y: 20)
         
         self.removeAllChildren()
         self.insertChild(self.chartNode, at: 0)
