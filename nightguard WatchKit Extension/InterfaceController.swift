@@ -21,6 +21,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var spriteKitView: WKInterfaceSKScene!
     @IBOutlet var iobLabel: WKInterfaceLabel!
+    @IBOutlet var feedbackLabel: WKInterfaceLabel!
+    @IBOutlet var feedbackGroup: WKInterfaceGroup!
     
     fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     
@@ -217,9 +219,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             
             DispatchQueue.main.async {
                 
-                if let _ = error {
-                    self.iobLabel.setText("⚠")
+                if let error = error {
+                    self.feedbackLabel.setText("❌ \(error.localizedDescription)")
+                    self.feedbackLabel.setTextColor(.red)
+                    self.feedbackGroup.setHidden(false)
                 } else if let newNightscoutData = newNightscoutData {
+                    self.feedbackGroup.setHidden(true)
                     self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
                     self.updateComplication()
                     self.playAlarm(currentNightscoutData: newNightscoutData)
@@ -231,7 +236,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.playAlarm(currentNightscoutData: currentNightscoutData)
         
         // signal that we're loading new nightscout data...
-        self.iobLabel.setText("Loading...")
+        self.feedbackLabel.setText("Loading...")
+        self.feedbackLabel.setTextColor(.black)
+        self.feedbackGroup.setHidden(false)
     }
     
     fileprivate func playAlarm(currentNightscoutData : NightscoutData) {
