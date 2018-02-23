@@ -165,6 +165,17 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
     
+    @IBAction func onDoubleTapped(_ sender: Any) {
+        
+        // Start the timer to retrieve new bgValues and update the ui periodically
+        // if the user keeps the display active for a longer time
+        createNewTimerSingleton()
+        
+        // manually refresh the gui by fireing the timer
+        timerDidEnd(timer)
+    }
+    
+    
     // this has to be created programmatically, since only this way
     // the item Zoom/Scroll can be toggled
     fileprivate func createMenuItems() {
@@ -202,17 +213,25 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func loadAndPaintCurrentBgData() {
         
-        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData) -> Void in
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
             DispatchQueue.main.async {
-                self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
-                self.updateComplication()
-                self.playAlarm(currentNightscoutData: newNightscoutData)
+                
+                if let _ = error {
+                    self.iobLabel.setText("⚠")
+                } else if let newNightscoutData = newNightscoutData {
+                    self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                    self.updateComplication()
+                    self.playAlarm(currentNightscoutData: newNightscoutData)
+                }
             }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
         self.playAlarm(currentNightscoutData: currentNightscoutData)
+        
+        // signal that we're loading new nightscout data...
+        self.iobLabel.setText("Loading...")
     }
     
     fileprivate func playAlarm(currentNightscoutData : NightscoutData) {

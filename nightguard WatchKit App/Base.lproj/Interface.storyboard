@@ -32,7 +32,7 @@
                                                 </label>
                                             </items>
                                         </group>
-                                        <group height="10" alignment="right" id="7mo-kr-osX">
+                                        <group height="10" alignment="left" id="7mo-kr-osX">
                                             <items>
                                                 <label width="45" height="18.5" alignment="right" text="59min" textAlignment="right" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
                                                     <fontDescription key="font" type="system" pointSize="13"/>
@@ -42,9 +42,9 @@
                                                 </label>
                                             </items>
                                         </group>
-                                        <group height="10" alignment="right" id="HZw-Hn-d6o">
+                                        <group height="10" alignment="left" id="HZw-Hn-d6o">
                                             <items>
-                                                <label width="42" height="9" alignment="right" text="0.05U" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
+                                                <label width="42" height="9" alignment="left" text="0.05U" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
                                                     <fontDescription key="font" type="system" pointSize="13"/>
                                                 </label>
                                                 <label height="10" alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
@@ -57,6 +57,13 @@
                             </items>
                         </group>
                         <spriteKitScene width="155" height="140" alignment="left" id="HJ3-mD-NFS">
+                            <gestureRecognizers>
+                                <tapGestureRecognizer numberOfTapsRequired="2" id="Njy-aE-O1r">
+                                    <connections>
+                                        <action selector="onDoubleTapped:" destination="AgC-eL-Hgc" id="rV9-up-4OT"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                            </gestureRecognizers>
                             <variation key="device=watch38mm" height="115"/>
                         </spriteKitScene>
                     </items>
