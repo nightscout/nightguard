@@ -165,6 +165,17 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
     
+    @IBAction func onDoubleTapped(_ sender: Any) {
+        
+        // Start the timer to retrieve new bgValues and update the ui periodically
+        // if the user keeps the display active for a longer time
+        createNewTimerSingleton()
+        
+        // manually refresh the gui by fireing the timer
+        timerDidEnd(timer)
+    }
+    
+    
     // this has to be created programmatically, since only this way
     // the item Zoom/Scroll can be toggled
     fileprivate func createMenuItems() {
