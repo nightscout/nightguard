@@ -289,11 +289,19 @@ class MainViewController: UIViewController {
     
     fileprivate func loadAndPaintCurrentBgData() {
         
-        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData) -> Void in
-            self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
+            
+            if let error = error {
+                self.iobLabel.text = "⚠"
+            } else if let newNightscoutData = newNightscoutData {
+                self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+            }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+        
+        // signal that we're loading new nightscout data...
+        self.iobLabel.text = "Loading..."
     }
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {

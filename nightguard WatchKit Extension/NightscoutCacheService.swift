@@ -70,7 +70,7 @@ class NightscoutCacheService: NSObject {
         return false
     }
     
-    func loadCurrentNightscoutData(_ resultHandler : @escaping ((NightscoutData) -> Void))
+    func loadCurrentNightscoutData(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void))
         -> NightscoutData {
             
             if currentNightscoutData == nil {
@@ -88,7 +88,7 @@ class NightscoutCacheService: NSObject {
             currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         }
         
-        checkIfRefreshIsNeeded({_ in }, inBackground: true)
+        checkIfRefreshIsNeeded({_,_ in }, inBackground: true)
     }
     
     // Reads the blood glucose data from today
@@ -178,18 +178,20 @@ class NightscoutCacheService: NSObject {
         return transformedValues
     }
     
-    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping ((NightscoutData) -> Void), inBackground : Bool) {
+    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void), inBackground : Bool) {
         
         if true /*currentNightscoutData!.isOlderThan5Minutes()*/ {
             if inBackground {
                 NightscoutService.singleton.readCurrentDataForPebbleWatchInBackground()
             } else {
-                NightscoutService.singleton.readCurrentDataForPebbleWatch({ (newNightscoutData) in
+                NightscoutService.singleton.readCurrentDataForPebbleWatch({ [unowned self] (newNightscoutData, error) in
                     
-                    self.currentNightscoutData = newNightscoutData
-                    NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData!)
+                    if let newNightscoutData = newNightscoutData {
+                        self.currentNightscoutData = newNightscoutData
+                        NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData!)
+                    }
                     
-                    resultHandler(newNightscoutData)
+                    resultHandler(newNightscoutData, error)
                 })
             }
         }
