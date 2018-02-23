@@ -249,7 +249,7 @@ class NightscoutService {
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
-    func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData) -> Void)) {
+    func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
 
         let baseUri = UserDefaultsRepository.readBaseUri()
         if (baseUri == "") {
@@ -265,11 +265,14 @@ class NightscoutService {
             guard error == nil else {
                 print("Error receiving Pepple Watch Data.")
                 print(error!)
+                resultHandler(nil, error)
                 return
             }
 
             guard data != nil else {
                 print("Pebble Watch Data was nil.")
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data Received from Pebble Watch API"])
+                resultHandler(nil, error)
                 return
             }
 
@@ -293,11 +296,13 @@ class NightscoutService {
         task.resume()
     }
     
-    public func extractData(data : Data, _ resultHandler : @escaping ((NightscoutData) -> Void)) {
+    public func extractData(data : Data, _ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
         
         do {
             let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
             guard let jsonDict :NSDictionary = json as? NSDictionary else {
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON received from Pebble Watch API"])
+                resultHandler(nil, error)
                 return
             }
             let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
@@ -335,10 +340,12 @@ class NightscoutService {
                 nightscoutData.bgdelta = bgdelta!
                 nightscoutData.time = time
                 
-                resultHandler(nightscoutData)
+                resultHandler(nightscoutData, nil)
             }
         } catch {
             print("Catched unknown exception.")
+            let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error while extracting data from Pebble Watch API"])
+            resultHandler(nil, error)
             return
         }
     }

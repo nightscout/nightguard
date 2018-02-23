@@ -114,7 +114,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, URLSessionDelegate {
         print("Background download was finished.")
         
         let nightscoutData = NSData(contentsOf: location as URL)
-        NightscoutService.singleton.extractData(data: nightscoutData! as Data, {(newNightscoutData) -> Void in
+        NightscoutService.singleton.extractData(data: nightscoutData! as Data, {(newNightscoutData, error) -> Void in
+            
+            guard let newNightscoutData = newNightscoutData else {
+                return
+            }
             
             NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: newNightscoutData)
             self.updateComplication()
