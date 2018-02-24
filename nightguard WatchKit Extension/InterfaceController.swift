@@ -46,6 +46,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         let chartSceneHeight = determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
         chartScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6)
         spriteKitView.presentScene(chartScene)
+        feedbackGroup.setHidden(true)
         
         createMenuItems()
     }
