@@ -66,6 +66,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     override func willActivate() {
+        super.willActivate()
         
         isActive = true
         spriteKitView.isPaused = false
@@ -90,6 +91,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     override func didAppear() {
+        super.didAppear()
         
         spriteKitView.isPaused = false
         
@@ -97,6 +99,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         crownSequencer.delegate = self    }
     
     override func willDisappear() {
+        super.willDisappear()
+        
         spriteKitView.isPaused = true
     }
     
