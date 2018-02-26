@@ -232,6 +232,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             
             DispatchQueue.main.async { [unowned self] in
                 
+                // stop & hide the activity indicator
                 self.activityIndicatorImage.stopAnimating()
                 self.activityIndicatorImage.setHidden(true)
                 
@@ -257,10 +258,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
         self.playAlarm(currentNightscoutData: currentNightscoutData)
         
-        // signal that we're loading new nightscout data...
+        // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
         self.errorGroup.setHidden(true)
-        self.activityIndicatorImage.setHidden(false)
         self.iobLabel.setText(nil)
+        self.deltaArrowLabel.setText(nil)
+        
+        self.activityIndicatorImage.setHidden(false)
         self.activityIndicatorImage.startAnimatingWithImages(in: NSRange(1...15), duration: 1.0, repeatCount: 0)
     }
     

@@ -58,7 +58,7 @@
                                         </group>
                                         <group width="1" alignment="left" verticalAlignment="bottom" layout="vertical" id="MZW-91-Uu2">
                                             <items>
-                                                <imageView width="12" height="12" alignment="left" verticalAlignment="bottom" image="Activity1" id="THf-20-AM2"/>
+                                                <imageView width="24" height="24" alignment="left" verticalAlignment="bottom" image="Activity1" id="THf-20-AM2"/>
                                             </items>
                                         </group>
                                     </items>
