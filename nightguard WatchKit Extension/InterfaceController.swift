@@ -38,6 +38,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate var cachedTodaysBgValues : [BloodSugar] = []
     fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
     
+    fileprivate var isActive: Bool = false
+    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
@@ -64,7 +66,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     override func willActivate() {
+        super.willActivate()
         
+        isActive = true
         spriteKitView.isPaused = false
         
         // Start the timer to retrieve new bgValues and update the ui periodically
@@ -87,6 +91,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     override func didAppear() {
+        super.didAppear()
         
         spriteKitView.isPaused = false
         
@@ -94,6 +99,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         crownSequencer.delegate = self    }
     
     override func willDisappear() {
+        super.willDisappear()
+        
         spriteKitView.isPaused = true
     }
     
@@ -101,7 +108,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
         
-        timer.invalidate();
+        isActive = false
+        timer.invalidate()
         spriteKitView.isPaused = true
     }
     
@@ -218,12 +226,19 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [unowned self] in
                 
                 if let error = error {
-                    self.feedbackLabel.setText("❌ \(error.localizedDescription)")
-                    self.feedbackLabel.setTextColor(.red)
-                    self.feedbackGroup.setHidden(false)
+                    
+                    // show errors ONLY when the interface is active (connection errors can be received while it is inactive... don't know for the moment why)
+                    // NOTE: actually, the whole UI should be updated only when the interface is active...
+                    if self.isActive {
+                        self.feedbackLabel.setText("❌ \(error.localizedDescription)")
+                        self.feedbackLabel.setTextColor(.red)
+                        self.feedbackGroup.setHidden(false)
+                    } else {
+                        self.feedbackGroup.setHidden(true)
+                    }
                 } else if let newNightscoutData = newNightscoutData {
                     self.feedbackGroup.setHidden(true)
                     self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
