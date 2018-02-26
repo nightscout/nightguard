@@ -44,6 +44,13 @@
                                             <edgeInsets key="margins" left="1" right="2" top="1" bottom="1"/>
                                         </group>
                                     </items>
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer numberOfTapsRequired="2" id="X9O-cg-2Gb">
+                                            <connections>
+                                                <action selector="onBgGroupDoubleTapped:" destination="AgC-eL-Hgc" id="TxA-yG-OpY"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
                                     <variation key="device=watch42mm" width="80"/>
                                 </group>
                                 <group alignment="left" layout="overlap" id="rvs-oN-6yu">
@@ -95,7 +102,7 @@
                                     <gestureRecognizers>
                                         <tapGestureRecognizer numberOfTapsRequired="2" id="Njy-aE-O1r">
                                             <connections>
-                                                <action selector="onDoubleTapped:" destination="AgC-eL-Hgc" id="rV9-up-4OT"/>
+                                                <action selector="onSpriteKitViewDoubleTapped:" destination="AgC-eL-Hgc" id="rV9-up-4OT"/>
                                             </connections>
                                         </tapGestureRecognizer>
                                     </gestureRecognizers>
@@ -129,6 +136,9 @@
                         <outlet property="errorGroup" destination="dXq-O8-Nm3" id="oox-bn-71F"/>
                         <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="JRC-e5-KcA"/>
                         <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="fNu-BR-2Ss"/>
+                        <outlet property="rawValuesGroup" destination="1pi-M7-12E" id="DSq-be-TK7"/>
+                        <outlet property="rawbgLabel" destination="zeh-B2-2k7" id="9WF-fI-jiV"/>
+                        <outlet property="signalLevelLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
                         <outlet property="spriteKitView" destination="HJ3-mD-NFS" id="hnU-4D-1mD"/>
                         <outlet property="timeLabel" destination="w1H-tu-XyX" id="KWM-Y9-FDg"/>
                     </connections>

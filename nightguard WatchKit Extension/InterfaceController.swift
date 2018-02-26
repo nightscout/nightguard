@@ -25,6 +25,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var errorGroup: WKInterfaceGroup!
     @IBOutlet var activityIndicatorImage: WKInterfaceImage!
     
+    @IBOutlet var rawbgLabel: WKInterfaceLabel!
+    @IBOutlet var signalLevelLabel: WKInterfaceLabel!
+    @IBOutlet var rawValuesGroup: WKInterfaceGroup!
+    
     fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     
     // timer to check continuously for new bgValues
@@ -40,6 +44,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
     
     fileprivate var isActive: Bool = false
+    fileprivate var isRawValuesGroupHidden: Bool = false
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -180,7 +185,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
     
-    @IBAction func onDoubleTapped(_ sender: Any) {
+    @IBAction func onSpriteKitViewDoubleTapped(_ sender: Any) {
         
         // Start the timer to retrieve new bgValues and update the ui periodically
         // if the user keeps the display active for a longer time
@@ -188,6 +193,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         // manually refresh the gui by fireing the timer
         timerDidEnd(timer)
+    }
+    
+    @IBAction func onBgGroupDoubleTapped(_ sender: Any) {
+        isRawValuesGroupHidden = !isRawValuesGroupHidden
+        rawValuesGroup.setHidden(isRawValuesGroupHidden)
     }
     
     
@@ -296,6 +306,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         self.batteryLabel.setText(currentNightscoutData.battery)
         self.iobLabel.setText(currentNightscoutData.iob)
+        
+        self.rawbgLabel.setText(currentNightscoutData.sgv) // TODO: take real raw bg values!
     }
     
     fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
