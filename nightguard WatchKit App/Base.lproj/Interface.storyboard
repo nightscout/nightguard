@@ -59,7 +59,7 @@
                                             <items>
                                                 <group width="1" height="17" alignment="left" id="yrF-or-Bnh">
                                                     <items>
-                                                        <label height="17.5" alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
+                                                        <label alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
                                                             <fontDescription key="font" type="system" pointSize="16"/>
                                                         </label>
                                                     </items>
@@ -70,7 +70,7 @@
                                                             <fontDescription key="font" type="system" pointSize="12"/>
                                                         </label>
                                                         <label alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.20000000000000001" id="nnO-nW-RbM">
-                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                            <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
                                                         </label>
                                                     </items>
                                                 </group>
@@ -89,8 +89,9 @@
                                         </group>
                                         <group alignment="left" verticalAlignment="bottom" id="Ro7-EH-y39">
                                             <items>
-                                                <imageView width="24" height="24" alignment="left" id="8b4-VL-pZs"/>
+                                                <imageView width="30" height="30" alignment="left" id="8b4-VL-pZs"/>
                                             </items>
+                                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
                                         </group>
                                     </items>
                                 </group>
