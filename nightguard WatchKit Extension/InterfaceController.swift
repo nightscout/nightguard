@@ -26,7 +26,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var activityIndicatorImage: WKInterfaceImage!
     
     @IBOutlet var rawbgLabel: WKInterfaceLabel!
-    @IBOutlet var signalLevelLabel: WKInterfaceLabel!
+    @IBOutlet var noiseLabel: WKInterfaceLabel!
     @IBOutlet var rawValuesGroup: WKInterfaceGroup!
     
     fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
@@ -307,7 +307,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.batteryLabel.setText(currentNightscoutData.battery)
         self.iobLabel.setText(currentNightscoutData.iob)
         
-        self.rawbgLabel.setText(currentNightscoutData.sgv) // TODO: take real raw bg values!
+        self.rawbgLabel.setText(currentNightscoutData.rawbg)
+        self.noiseLabel.setText(currentNightscoutData.noise)
     }
     
     fileprivate func loadAndPaintChartData(forceRepaint : Bool) {

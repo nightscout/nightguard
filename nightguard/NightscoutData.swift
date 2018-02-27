@@ -45,6 +45,8 @@ class NightscoutData : NSObject, NSCoding {
     var time : NSNumber = 0
     var battery : String = "---"
     var iob : String = ""
+    var rawbg: String = "---"
+    var noise: String = "---"
     
     // NSCoder methods to make this class serializable
     
@@ -92,6 +94,16 @@ class NightscoutData : NSObject, NSCoding {
             return
         }
         self.iob = iob
+        
+        guard let rawbg = decoder.decodeObject(forKey: "rawbg") as? String else {
+            return
+        }
+        self.rawbg = rawbg
+        
+        guard let noise = decoder.decodeObject(forKey: "noise") as? String else {
+            return
+        }
+        self.noise = noise
     }
     
     /*
@@ -105,6 +117,8 @@ class NightscoutData : NSObject, NSCoding {
         aCoder.encode(self.time, forKey: "time")
         aCoder.encode(self.battery, forKey: "battery")
         aCoder.encode(self.iob, forKey: "iob")
+        aCoder.encode(self.rawbg, forKey: "rawbg")
+        aCoder.encode(self.noise, forKey: "noise")
     }
     
     func isOlderThan5Minutes() -> Bool {

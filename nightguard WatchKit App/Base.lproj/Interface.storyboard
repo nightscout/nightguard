@@ -136,9 +136,9 @@
                         <outlet property="errorGroup" destination="dXq-O8-Nm3" id="oox-bn-71F"/>
                         <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="JRC-e5-KcA"/>
                         <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="fNu-BR-2Ss"/>
+                        <outlet property="noiseLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
                         <outlet property="rawValuesGroup" destination="1pi-M7-12E" id="DSq-be-TK7"/>
                         <outlet property="rawbgLabel" destination="zeh-B2-2k7" id="9WF-fI-jiV"/>
-                        <outlet property="signalLevelLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
                         <outlet property="spriteKitView" destination="HJ3-mD-NFS" id="hnU-4D-1mD"/>
                         <outlet property="timeLabel" destination="w1H-tu-XyX" id="KWM-Y9-FDg"/>
                     </connections>
