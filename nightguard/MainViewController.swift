@@ -24,8 +24,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var screenlockSwitch: UISwitch!
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var spriteKitView: UIView!
-    @IBOutlet weak var feedbackPanelView: UIView!
-    @IBOutlet weak var feedbackLabel: UILabel!
+    @IBOutlet weak var errorPanelView: UIView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
@@ -77,7 +77,7 @@ class MainViewController: UIViewController {
         skView.addGestureRecognizer(panGesture)
         skView.addGestureRecognizer(pinchGesture)
         
-        feedbackPanelView.isHidden = true
+        errorPanelView.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -292,23 +292,17 @@ class MainViewController: UIViewController {
             
             DispatchQueue.main.async {
                 if let error = error {
-                    self.feedbackLabel.text = "❌ \(error.localizedDescription)"
-                    self.feedbackLabel.textColor = .red
-                    self.feedbackPanelView.isHidden = false
+                    self.errorLabel.text = "❌ \(error.localizedDescription)"
+                    self.errorLabel.textColor = .red
+                    self.errorPanelView.isHidden = false
                 } else if let newNightscoutData = newNightscoutData {
-                    self.feedbackPanelView.isHidden = true
+                    self.errorPanelView.isHidden = true
                     self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
                 }
             }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
-        
-        // signal that we're loading new nightscout data...
-        // actually, it is NOT needed on phone app because we're updating data every 5 seconds
-//        self.feedbackLabel.text = "Loading..."
-//        self.feedbackLabel.textColor = .black
-//        self.feedbackPanelView.isHidden = false
     }
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
