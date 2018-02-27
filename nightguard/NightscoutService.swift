@@ -94,7 +94,7 @@ class NightscoutService {
         task.resume()
     }
     
-    /* Reads all data between two timestamps and limits the maximum return values to 300. */
+    /* Reads all data between two timestamps and limits the maximum return values to 400. */
     func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
 
         let baseUri = UserDefaultsRepository.readBaseUri()
@@ -139,8 +139,12 @@ class NightscoutService {
                         bloodSugarColumn = 3
                     }
                 
-                    let bloodSugar = BloodSugar(value: Float(sgvRowArray[bloodSugarColumn])!, timestamp: Double(sgvRowArray[timestampColumn])!)
-                    bloodSugarArray.insert(bloodSugar, at: 0)
+                    if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
+                        if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
+                            let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
+                            bloodSugarArray.insert(bloodSugar, at: 0)
+                        }
+                    }
                 }
             }
             

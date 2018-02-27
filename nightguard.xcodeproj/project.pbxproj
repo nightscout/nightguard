@@ -333,13 +333,13 @@
 				43288A691D1C68D400EE3999 /* StatsViewController.swift */,
 				4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */,
 				43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */,
+				43288A6B1D1C893200EE3999 /* TabBarController.swift */,
 				43F1E0F41D07698000C329A2 /* AppDelegate.swift */,
 				43F1E0F71D07698000C329A2 /* Info.plist */,
 				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
 				43F1E0F91D07698000C329A2 /* Media.xcassets */,
 				43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
-				43288A6B1D1C893200EE3999 /* TabBarController.swift */,
 			);
 			path = nightguard;
 			sourceTree = "<group>";

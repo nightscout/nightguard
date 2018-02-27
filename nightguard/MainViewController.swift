@@ -194,6 +194,11 @@ class MainViewController: UIViewController {
         } else {
             // stop the alarm immediatly here not to disturb others
             AlarmSound.muteVolume()
+            // For safety reasons: Unmute sound after 1 minute
+            // This prevents an unlimited snooze if the snooze button was touched accidentally.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
+                AlarmSound.unmuteVolume()
+            })
             showSnoozePopup()
         }
     }
