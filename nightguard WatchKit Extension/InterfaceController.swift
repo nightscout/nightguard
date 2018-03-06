@@ -78,8 +78,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // if the user keeps the display active for a longer time
         createNewTimerSingleton()
         
-        // manually refresh the gui by fireing the timer
-        timerDidEnd(timer)
+        // manually refresh the gui by fireing the timer (if we have old data!)
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        if currentNightscoutData.isOlderThan5Minutes() {
+            timerDidEnd(timer)
+        } else {
+            paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+        }
         
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state

@@ -180,6 +180,8 @@ class MainViewController: UIViewController {
         // => in that case the user has to know that the values are old!
         loadAndPaintCurrentBgData()
         loadAndPaintChartData(forceRepaint: false)
+        
+        WatchService.singleton.updateWatchComplicationIfPossible()
     }
     
     fileprivate func paintScreenLockSwitch() {

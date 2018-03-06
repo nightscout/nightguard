@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import WatchKit
 import WatchConnectivity
 
 // This class handles values that are passed from the ios app.
@@ -74,6 +75,12 @@ class AppMessageService : NSObject, WCSessionDelegate {
     /** Called on the delegate of the receiver. Will be called on startup if the user info finished transferring when the receiver was not running. */
     @available(watchOS 2.0, *)
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any]) {
-        updateValuesFromApplicationContext(userInfo as [String : AnyObject])
+        if let _ = userInfo["nightscoutData"] {
+            if let extensionDelegate = WKExtension.shared().delegate as? ExtensionDelegate {
+                extensionDelegate.handleNightscoutDataMessage(userInfo)
+            }
+        } else {
+            updateValuesFromApplicationContext(userInfo as [String : AnyObject])
+        }
     }
 }
