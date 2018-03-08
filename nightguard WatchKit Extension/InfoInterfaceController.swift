@@ -45,15 +45,17 @@ class InfoInterfaceController: WKInterfaceController {
         // background updates
         if let ext = WKExtension.shared().delegate as? ExtensionDelegate {
             
-            var text = "Total updates: \(ext.ndUpdatesSucceded)/\(ext.ndUpdates) from which: \n-background refresh (request phone data): \(ext.ndResponses)/\(ext.ndRequests)\n-all the rest are phone initiated complication updates"
-            
-            if ext.ndOldUpdateData > 0 {
-                text += "\n\n\(ext.ndOldUpdateData) updates with older data than current watch data."
+            var text = "Complication updates (initiated from phone app): \(ext.successfullPhoneUpdates)/\(ext.phoneUpdates)"
+            if ext.phoneUpdatesWithOldData > 0 {
+                text += "\n\(ext.phoneUpdatesWithOldData) updates had older data than current watch data."
             }
             
-            if !ext.ndRequestErrorMessages.isEmpty {
-                text += "Request errors: \n" + ext.ndRequestErrorMessages.joined(separator: "\n")
-            }
+            text += "\n\nBackground refreshes: \(ext.successfulBackgroundURLSessions)/\(ext.backgroundURLSessions)"
+            
+            
+//            if !ext.ndRequestErrorMessages.isEmpty {
+//                text += "Request errors: \n" + ext.ndRequestErrorMessages.joined(separator: "\n")
+//            }
             
             backgroundUpdatesLabel.setText(text)
         }

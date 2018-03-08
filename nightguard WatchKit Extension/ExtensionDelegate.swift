@@ -25,14 +25,16 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     }
     
     var watchConnectivityBackgroundTasks: [Any] = []
+//    var pendingBackgroundURLTask: Any?
+    var savedTask: Any?
+    var backgroundSession: URLSession?
     
-    // debugging info for background refresh
-    var ndRequests: Int = 0
-    var ndResponses: Int = 0
-    var ndRequestErrorMessages: [String] = []
-    var ndUpdates: Int = 0
-    var ndUpdatesSucceded: Int = 0
-    var ndOldUpdateData: Int = 0
+    // debugging info (stats) for background refresh
+    var backgroundURLSessions: Int = 0
+    var successfulBackgroundURLSessions: Int = 0
+    var phoneUpdates: Int = 0
+    var successfullPhoneUpdates: Int = 0
+    var phoneUpdatesWithOldData: Int = 0
 
     func applicationDidFinishLaunching() {
         
@@ -95,14 +97,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 handleSnapshotTask(snapshotTask)
             } else if let sessionTask = task as? WKURLSessionRefreshBackgroundTask {
                 handleSessionTask(sessionTask)
+                return
             } else if let refreshTask = task as? WKApplicationRefreshBackgroundTask {
                 handleRefreshTask(refreshTask)
             } else {
-//                // not handled!
-//                task.setTaskCompleted()
-                
-                // do a refresh
-                handleRefreshTask(task)
+                // not handled!
+                task.setTaskCompleted()
             }
         }
         
@@ -146,21 +146,31 @@ extension ExtensionDelegate {
         
         print("WKApplicationRefreshBackgroundTask received")
         
-        // request data from phone app only if watch data is old (do not consume app's background refresh quota)
-        if NightscoutCacheService.singleton.getCurrentNightscoutData().isOlderThan5Minutes() {
-            requestNightscoutDataFromPhoneApp()
-        }
+//        // request data from phone app only if watch data is old (do not consume app's background refresh quota)
+//        if NightscoutCacheService.singleton.getCurrentNightscoutData().isOlderThan5Minutes() {
+//            requestNightscoutDataFromPhoneApp()
+//        }
+        
+//        let _ = BackgroundUrlSessionWrapper.singleton
+//        NightscoutService.singleton.readCurrentDataForPebbleWatchInBackground()
+        
+        scheduleURLSession()
         
         // schedule the next background refresh
         scheduleBackgroundRefresh()
         
-        task.setTaskCompleted()
+//        task.setTaskCompleted()
+        self.savedTask = task
     }
     
     @available(watchOSApplicationExtension 3.0, *)
     func handleSessionTask(_ sessionTask: WKURLSessionRefreshBackgroundTask) {
         
         print("WKURLSessionRefreshTaskReceived, start URL session")
+        
+        let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: sessionTask.sessionIdentifier)
+        self.backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
+        print("Rejoining session ", backgroundSession)
         
 //        let backgroundSession = BackgroundUrlSessionWrapper.singleton
 //        let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: sessionTask.sessionIdentifier)
@@ -178,13 +188,14 @@ extension ExtensionDelegate {
         //                    sessionTask.setTaskCompleted()
         //                }
 
-        sessionTask.setTaskCompleted()
+//        self.pendingBackgroundURLTask = sessionTask
+        //        sessionTask.setTaskCompleted()
     }
     
     @discardableResult
     func handleNightscoutDataMessage(_ message: [String: Any]) -> Bool {
         
-        ndUpdates += 1
+        phoneUpdates += 1
         guard let data = message["nightscoutData"] as? Data, let nightscoutData = try? JSONDecoder().decode(NightscoutData.self, from: data) else {
             print("Invalid nightscout data received from phone app!")
             return false
@@ -196,7 +207,7 @@ extension ExtensionDelegate {
             
             // Old data was received from phone app! This can happen because the watch can have newer data than the phone app (phone app background fetch is once in 5 minutes) or because the delivery is not instantaneous and ... and the watch can update its data in between (when the app enters foreground)
             print("Received older nightscout data from phone app than watch has!")
-            ndOldUpdateData += 1
+            phoneUpdatesWithOldData += 1
             return false
         } else if currentNightscoutData.time.doubleValue == nightscoutData.time.doubleValue {
             // already have this data...
@@ -205,7 +216,7 @@ extension ExtensionDelegate {
         
         print("Nightscout data was received from phone app!")
         NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: nightscoutData)
-        ndUpdatesSucceded += 1
+        successfullPhoneUpdates += 1
         updateComplication()
         return true
     }
@@ -217,8 +228,35 @@ extension ExtensionDelegate {
         
         print("Schedule Background Refresh...\n")
         
+        // will do it around x:00, x:15, x:30 and x:45
+        let now = Date()
+        let unitFlags:Set<Calendar.Component> = [
+            .hour, .day, .month,
+            .year,.minute,.hour,.second,
+            .calendar]
+        var dateComponents = Calendar.current.dateComponents(unitFlags, from: now)
+        
+        var incrementHour = false
+        if let minute = dateComponents.minute {
+            if (0..<15).contains(minute) {
+                dateComponents.minute = 15
+            } else if (15..<30).contains(minute) {
+                dateComponents.minute = 30
+            } else if (30..<45).contains(minute) {
+                dateComponents.minute = 45
+            } else {
+                dateComponents.minute = 0
+                incrementHour = true
+            }
+        }
+        
+        var scheduleTime = Calendar.current.date(from: dateComponents)!
+        if incrementHour {
+            scheduleTime = Calendar.current.date(byAdding: .hour, value: 1, to: scheduleTime)!
+        }
+        
         // Schedule a new refresh task in 15 Minutes (only 50 Updates are guaranteed from watchos per day :-/
-        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: Date(timeIntervalSinceNow: 60 * 15), userInfo: nil) { (error: Error?) in
+        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
             
             if let error = error {
                 print("Error occurred while scheduling background refresh: \(error.localizedDescription)")
@@ -226,27 +264,27 @@ extension ExtensionDelegate {
         }
     }
     
-    fileprivate func requestNightscoutDataFromPhoneApp() {
-        
-        guard let session = self.session, session.isReachable else {
-            print("Session is not reachable... cannot request nightscout data from phone app...")
-            return
-        }
-        
-        ndRequests += 1
-        session.sendMessage(
-            ["requestNightscoutData": ""],
-            replyHandler: { [weak self] response in
-                if self?.handleNightscoutDataMessage(response) == true {
-                    self?.ndResponses += 1
-                    self?.updateComplication()
-                }
-            },
-            errorHandler: { [weak self] error in
-                print(error)
-                self?.ndRequestErrorMessages.append(error.localizedDescription)
-        })
-    }
+//    fileprivate func requestNightscoutDataFromPhoneApp() {
+//
+//        guard let session = self.session, session.isReachable else {
+//            print("Session is not reachable... cannot request nightscout data from phone app...")
+//            return
+//        }
+//
+//        ndRequests += 1
+//        session.sendMessage(
+//            ["requestNightscoutData": ""],
+//            replyHandler: { [weak self] response in
+//                if self?.handleNightscoutDataMessage(response) == true {
+//                    self?.ndResponses += 1
+//                    self?.updateComplication()
+//                }
+//            },
+//            errorHandler: { [weak self] error in
+//                print(error)
+//                self?.ndRequestErrorMessages.append(error.localizedDescription)
+//        })
+//    }
     
     fileprivate func updateComplication() {
         
@@ -257,13 +295,13 @@ extension ExtensionDelegate {
     }
 }
 
-extension ExtensionDelegate: URLSessionDelegate {
+extension ExtensionDelegate: URLSessionDownloadDelegate {
     
-    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("Background download was finished.")
         
         let nightscoutData = NSData(contentsOf: location as URL)
-        NightscoutService.singleton.extractData(data: nightscoutData! as Data, {(newNightscoutData, error) -> Void in
+        NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] (newNightscoutData, error) -> Void in
             
             guard let newNightscoutData = newNightscoutData else {
                 return
@@ -271,6 +309,45 @@ extension ExtensionDelegate: URLSessionDelegate {
             
             NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: newNightscoutData)
             self.updateComplication()
+            
+            self.successfulBackgroundURLSessions += 1
         })
+        
+        completePendingURLSessionTask()
+    }
+    
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        completePendingURLSessionTask()
+    }
+    
+    fileprivate func completePendingURLSessionTask() {
+        
+//        if #available(watchOSApplicationExtension 3.0, *) {
+//            (self.pendingBackgroundURLTask as? WKURLSessionRefreshBackgroundTask)?.setTaskCompleted()
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//        self.pendingBackgroundURLTask = nil
+        
+        self.backgroundSession = nil
+        if #available(watchOSApplicationExtension 3.0, *) {
+            (self.savedTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
+        } else {
+            // Fallback on earlier versions
+        }
+        self.savedTask = nil
+
+    }
+    
+    func scheduleURLSession() {
+        let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: NSUUID().uuidString)
+        backgroundConfigObject.sessionSendsLaunchEvents = true
+        let backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
+        
+        let downloadURL = URL(string: UserDefaultsRepository.readBaseUri() + "/pebble")!
+        let downloadTask = backgroundSession.downloadTask(with: downloadURL)
+        downloadTask.resume()
+        
+        backgroundURLSessions += 1
     }
 }
