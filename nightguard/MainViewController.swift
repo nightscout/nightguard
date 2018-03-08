@@ -180,8 +180,6 @@ class MainViewController: UIViewController {
         // => in that case the user has to know that the values are old!
         loadAndPaintCurrentBgData()
         loadAndPaintChartData(forceRepaint: false)
-        
-        WatchService.singleton.updateWatchComplicationIfPossible()
     }
     
     fileprivate func paintScreenLockSwitch() {
@@ -305,6 +303,8 @@ class MainViewController: UIViewController {
                 } else if let newNightscoutData = newNightscoutData {
                     self.feedbackPanelView.isHidden = true
                     self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                    
+                    WatchService.singleton.updateWatchComplicationIfPossible()
                 }
             }
         })
