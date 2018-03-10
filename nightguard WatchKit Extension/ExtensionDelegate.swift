@@ -25,13 +25,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     }
     
     var watchConnectivityBackgroundTasks: [Any] = []
-//    var pendingBackgroundURLTask: Any?
-    var savedTask: Any?
+    var pendingBackgroundURLTask: Any?
     var backgroundSession: URLSession?
     
     // debugging info (stats) for background refresh
     var backgroundURLSessions: Int = 0
     var successfulBackgroundURLSessions: Int = 0
+    var backgroundURLSessionUpdatesWithOldData: Int = 0
     var phoneUpdates: Int = 0
     var successfullPhoneUpdates: Int = 0
     var phoneUpdatesWithOldData: Int = 0
@@ -96,7 +96,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             } else if let snapshotTask = task as? WKSnapshotRefreshBackgroundTask {
                 handleSnapshotTask(snapshotTask)
             } else if let sessionTask = task as? WKURLSessionRefreshBackgroundTask {
-                handleSessionTask(sessionTask)
+                handleURLSessionTask(sessionTask)
                 return
             } else if let refreshTask = task as? WKApplicationRefreshBackgroundTask {
                 handleRefreshTask(refreshTask)
@@ -146,50 +146,27 @@ extension ExtensionDelegate {
         
         print("WKApplicationRefreshBackgroundTask received")
         
-//        // request data from phone app only if watch data is old (do not consume app's background refresh quota)
-//        if NightscoutCacheService.singleton.getCurrentNightscoutData().isOlderThan5Minutes() {
-//            requestNightscoutDataFromPhoneApp()
-//        }
+        // schedule an URL session..
+        self.backgroundSession = scheduleURLSession()
+        backgroundURLSessions += 1
         
-//        let _ = BackgroundUrlSessionWrapper.singleton
-//        NightscoutService.singleton.readCurrentDataForPebbleWatchInBackground()
-        
-        scheduleURLSession()
-        
-        // schedule the next background refresh
+        // ...and schedule the next background refresh
         scheduleBackgroundRefresh()
         
-//        task.setTaskCompleted()
-        self.savedTask = task
+        task.setTaskCompleted()
     }
     
     @available(watchOSApplicationExtension 3.0, *)
-    func handleSessionTask(_ sessionTask: WKURLSessionRefreshBackgroundTask) {
+    func handleURLSessionTask(_ sessionTask: WKURLSessionRefreshBackgroundTask) {
         
         print("WKURLSessionRefreshTaskReceived, start URL session")
         
         let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: sessionTask.sessionIdentifier)
-        self.backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
+        let backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
         print("Rejoining session ", backgroundSession)
-        
-//        let backgroundSession = BackgroundUrlSessionWrapper.singleton
-//        let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: sessionTask.sessionIdentifier)
-//        let backgroundSession = URLSession(
-//            configuration: backgroundConfigObject,
-//            delegate: self as URLSessionDelegate,
-//            delegateQueue: nil)
-        
-        //                print("Rejoining session ", backgroundSession)
-        //                scheduleBackgroundUpdate()
-        //                if #available(watchOSApplicationExtension 4.0, *) {
-        //                    sessionTask.setTaskCompletedWithSnapshot(true)
-        //                } else {
-        //                    // Fallback on earlier versions
-        //                    sessionTask.setTaskCompleted()
-        //                }
 
-//        self.pendingBackgroundURLTask = sessionTask
-        //        sessionTask.setTaskCompleted()
+        // keep the session background task, it will be ended later... (https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
+        self.pendingBackgroundURLTask = sessionTask
     }
     
     @discardableResult
@@ -201,24 +178,18 @@ extension ExtensionDelegate {
             return false
         }
         
-        // check the data that already exists on the watch... maybe is newer that the received data
-        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        if currentNightscoutData.time.doubleValue > nightscoutData.time.doubleValue {
-            
-            // Old data was received from phone app! This can happen because the watch can have newer data than the phone app (phone app background fetch is once in 5 minutes) or because the delivery is not instantaneous and ... and the watch can update its data in between (when the app enters foreground)
-            print("Received older nightscout data from phone app than watch has!")
+        let updateResult = updateNightscoutData(nightscoutData)
+        switch updateResult {
+        case .updateDataIsOld:
             phoneUpdatesWithOldData += 1
-            return false
-        } else if currentNightscoutData.time.doubleValue == nightscoutData.time.doubleValue {
-            // already have this data...
-            return true
+        case .updated:
+            successfullPhoneUpdates += 1
+        default:
+            break
+
         }
         
-        print("Nightscout data was received from phone app!")
-        NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: nightscoutData)
-        successfullPhoneUpdates += 1
-        updateComplication()
-        return true
+        return updateResult != .updateDataIsOld
     }
     
     // MARK:- Internals
@@ -264,34 +235,48 @@ extension ExtensionDelegate {
         }
     }
     
-//    fileprivate func requestNightscoutDataFromPhoneApp() {
-//
-//        guard let session = self.session, session.isReachable else {
-//            print("Session is not reachable... cannot request nightscout data from phone app...")
-//            return
-//        }
-//
-//        ndRequests += 1
-//        session.sendMessage(
-//            ["requestNightscoutData": ""],
-//            replyHandler: { [weak self] response in
-//                if self?.handleNightscoutDataMessage(response) == true {
-//                    self?.ndResponses += 1
-//                    self?.updateComplication()
-//                }
-//            },
-//            errorHandler: { [weak self] error in
-//                print(error)
-//                self?.ndRequestErrorMessages.append(error.localizedDescription)
-//        })
-//    }
-    
     fileprivate func updateComplication() {
         
         let complicationServer = CLKComplicationServer.sharedInstance()
         for complication in complicationServer.activeComplications ?? [] {
             complicationServer.reloadTimeline(for: complication)
         }
+    }
+    
+    fileprivate enum UpdateResult {
+        
+        // update succeeded
+        case updated
+        
+        // update data already exists (is the current nightscout data) - no need to update!
+        case updateDataAlreadyExists
+        
+        // update data is older than current nightscout data
+        case updateDataIsOld
+    }
+    fileprivate func updateNightscoutData(_ newNightscoutData: NightscoutData) -> UpdateResult {
+        
+        // check the data that already exists on the watch... maybe is newer that the received data
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        if currentNightscoutData.time.doubleValue > newNightscoutData.time.doubleValue {
+            
+            // Old data was received from remote (phone app or URL session)! This can happen because:
+            //      1. if receiving data from phone app: the watch can have newer data than the phone app (phone app background fetch is once in 5 minutes) or because the delivery is not instantaneous and ... and the watch can update its data in between (when the app enters foreground)
+            //      2. if receiving data from a URL session: the session can complete later, when there are resources available on the watch to execute it... so there is a posibility than the watch app update itself till then
+            print("Received older nightscout data than current watch nightscout data!")
+            return .updateDataIsOld
+            
+        } else if currentNightscoutData.time.doubleValue == newNightscoutData.time.doubleValue {
+            
+            // already have this data...
+            return .updateDataAlreadyExists
+        }
+        
+        print("Nightscout data was received from remote (phone app or URL session)!")
+        NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: newNightscoutData)
+        updateComplication()
+        
+        return .updated
     }
 }
 
@@ -307,39 +292,45 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
                 return
             }
             
-            NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: newNightscoutData)
-            self.updateComplication()
-            
-            self.successfulBackgroundURLSessions += 1
+            let updateResult = self.updateNightscoutData(newNightscoutData)
+            switch updateResult {
+            case .updateDataIsOld:
+                self.backgroundURLSessionUpdatesWithOldData += 1
+            case .updated:
+                self.successfulBackgroundURLSessions += 1
+            default:
+                break
+            }
         })
         
         completePendingURLSessionTask()
     }
     
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        print("Background url session completed with error: \(error)")
+        completePendingURLSessionTask()
+    }
+    
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        print("Background url session did finish events")
         completePendingURLSessionTask()
     }
     
     fileprivate func completePendingURLSessionTask() {
         
-//        if #available(watchOSApplicationExtension 3.0, *) {
-//            (self.pendingBackgroundURLTask as? WKURLSessionRefreshBackgroundTask)?.setTaskCompleted()
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//        self.pendingBackgroundURLTask = nil
-        
+        self.backgroundSession?.invalidateAndCancel()
         self.backgroundSession = nil
         if #available(watchOSApplicationExtension 3.0, *) {
-            (self.savedTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
+            (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
         } else {
             // Fallback on earlier versions
         }
-        self.savedTask = nil
+        self.pendingBackgroundURLTask = nil
 
     }
     
-    func scheduleURLSession() {
+    func scheduleURLSession() -> URLSession {
+        
         let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: NSUUID().uuidString)
         backgroundConfigObject.sessionSendsLaunchEvents = true
         let backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
@@ -348,6 +339,6 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         let downloadTask = backgroundSession.downloadTask(with: downloadURL)
         downloadTask.resume()
         
-        backgroundURLSessions += 1
+        return backgroundSession
     }
 }

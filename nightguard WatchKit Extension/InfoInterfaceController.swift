@@ -47,11 +47,13 @@ class InfoInterfaceController: WKInterfaceController {
             
             var text = "Complication updates (initiated from phone app): \(ext.successfullPhoneUpdates)/\(ext.phoneUpdates)"
             if ext.phoneUpdatesWithOldData > 0 {
-                text += "\n\(ext.phoneUpdatesWithOldData) updates had older data than current watch data."
+                text += "\n\(ext.phoneUpdatesWithOldData) phone app updates had older data than current watch data."
             }
             
             text += "\n\nBackground refreshes: \(ext.successfulBackgroundURLSessions)/\(ext.backgroundURLSessions)"
-            
+            if ext.backgroundURLSessionUpdatesWithOldData > 0 {
+                text += "\n\(ext.backgroundURLSessionUpdatesWithOldData) URL session updates had older data than current watch data."
+            }
             
 //            if !ext.ndRequestErrorMessages.isEmpty {
 //                text += "Request errors: \n" + ext.ndRequestErrorMessages.joined(separator: "\n")
