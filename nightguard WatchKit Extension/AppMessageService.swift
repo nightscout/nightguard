@@ -76,8 +76,12 @@ class AppMessageService : NSObject, WCSessionDelegate {
     @available(watchOS 2.0, *)
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any]) {
         if let _ = userInfo["nightscoutData"] {
-            if let extensionDelegate = WKExtension.shared().delegate as? ExtensionDelegate {
-                extensionDelegate.handleNightscoutDataMessage(userInfo)
+            if #available(watchOSApplicationExtension 3.0, *) {
+                if let extensionDelegate = WKExtension.shared().rootInterfaceController as? InterfaceController {
+                    extensionDelegate.handleNightscoutDataMessage(userInfo)
+                }
+            } else {
+                // Fallback on earlier versions
             }
         } else {
             updateValuesFromApplicationContext(userInfo as [String : AnyObject])

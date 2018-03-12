@@ -41,6 +41,34 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate var isActive: Bool = false
     
+    
+    var session: WCSession? {
+        didSet {
+            if let session = session {
+                session.delegate = AppMessageService.singleton
+                session.activate()
+                
+                // https://developer.apple.com/library/content/samplecode/QuickSwitch/Listings/QuickSwitch_WatchKit_Extension_ExtensionDelegate_swift.html
+                session.addObserver(self, forKeyPath: "activationState", options: [], context: nil)
+                session.addObserver(self, forKeyPath: "hasContentPending", options: [], context: nil)
+            }
+        }
+    }
+    
+    var watchConnectivityBackgroundTasks: [Any] = []
+    var pendingBackgroundURLTask: Any?
+    var backgroundSession: URLSession?
+    
+    // debugging info (stats) for background refresh
+    var backgroundURLSessions: Int = 0
+    var backgroundURLSessionUpdatesWithNewData: Int = 0
+    var backgroundURLSessionUpdatesWithSameData: Int = 0
+    var backgroundURLSessionUpdatesWithOldData: Int = 0
+    var phoneUpdates: Int = 0
+    var phoneUpdatesWithNewData: Int = 0
+    var phoneUpdatesWithSameData: Int = 0
+    var phoneUpdatesWithOldData: Int = 0
+    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
@@ -54,6 +82,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         errorGroup.setHidden(true)
         
         createMenuItems()
+        
+        // Configure interface objects here.
+        WKExtension.shared().delegate = self
     }
     
     fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
@@ -71,6 +102,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     override func willActivate() {
         super.willActivate()
         
+        guard WKExtension.shared().applicationState == .active else {
+            return
+        }
+        
         isActive = true
         spriteKitView.isPaused = false
         
@@ -79,12 +114,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createNewTimerSingleton()
         
         // manually refresh the gui by fireing the timer (if we have old data!)
-        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        if currentNightscoutData.isOlderThan5Minutes() {
+//        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+//        if currentNightscoutData.isOlderThan5Minutes() {
             timerDidEnd(timer)
-        } else {
-            paintCurrentBgData(currentNightscoutData: currentNightscoutData)
-        }
+//        } else {
+//            paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+//        }
         
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state

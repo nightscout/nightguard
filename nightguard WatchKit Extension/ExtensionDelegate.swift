@@ -10,32 +10,11 @@ import WatchKit
 import WatchConnectivity
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
+}
 
-    var session: WCSession? {
-        didSet {
-            if let session = session {
-                session.delegate = AppMessageService.singleton
-                session.activate()
-                
-                // https://developer.apple.com/library/content/samplecode/QuickSwitch/Listings/QuickSwitch_WatchKit_Extension_ExtensionDelegate_swift.html
-                session.addObserver(self, forKeyPath: "activationState", options: [], context: nil)
-                session.addObserver(self, forKeyPath: "hasContentPending", options: [], context: nil)
-            }
-        }
-    }
+@available(watchOSApplicationExtension 3.0, *)
+extension InterfaceController: WKExtensionDelegate {
     
-    var watchConnectivityBackgroundTasks: [Any] = []
-    var pendingBackgroundURLTask: Any?
-    var backgroundSession: URLSession?
-    
-    // debugging info (stats) for background refresh
-    var backgroundURLSessions: Int = 0
-    var successfulBackgroundURLSessions: Int = 0
-    var backgroundURLSessionUpdatesWithOldData: Int = 0
-    var phoneUpdates: Int = 0
-    var successfullPhoneUpdates: Int = 0
-    var phoneUpdatesWithOldData: Int = 0
-
     func applicationDidFinishLaunching() {
         
         // Initialize the BackgroundUrlSession. This has to be an singleton that is used throughout the whole app
@@ -71,15 +50,15 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        DispatchQueue.main.async {
-            if #available(watchOSApplicationExtension 3, *) {
-                self.completeAllTasksIfReady()
-            } else {
-                // Fallback on earlier versions
-            }
-        }
-    }
+//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+//        DispatchQueue.main.async {
+//            if #available(watchOSApplicationExtension 3, *) {
+//                self.completeAllTasksIfReady()
+//            } else {
+//                // Fallback on earlier versions
+//            }
+//        }
+//    }
 
     @available(watchOSApplicationExtension 3.0, *)
     public func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
@@ -124,7 +103,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     }
 }
 
-extension ExtensionDelegate {
+@available(watchOSApplicationExtension 3.0, *)
+extension InterfaceController {
     
     // MARK:- Background update methods
     
@@ -182,10 +162,10 @@ extension ExtensionDelegate {
         switch updateResult {
         case .updateDataIsOld:
             phoneUpdatesWithOldData += 1
+        case .updateDataAlreadyExists:
+            phoneUpdatesWithSameData += 1
         case .updated:
-            successfullPhoneUpdates += 1
-        default:
-            break
+            phoneUpdatesWithNewData += 1
 
         }
         
@@ -280,28 +260,33 @@ extension ExtensionDelegate {
     }
 }
 
-extension ExtensionDelegate: URLSessionDownloadDelegate {
+@available(watchOSApplicationExtension 3.0, *)
+extension InterfaceController: URLSessionDownloadDelegate {
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("Background download was finished.")
         
         let nightscoutData = NSData(contentsOf: location as URL)
-        NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] (newNightscoutData, error) -> Void in
-            
-            guard let newNightscoutData = newNightscoutData else {
-                return
-            }
-            
-            let updateResult = self.updateNightscoutData(newNightscoutData)
-            switch updateResult {
-            case .updateDataIsOld:
-                self.backgroundURLSessionUpdatesWithOldData += 1
-            case .updated:
-                self.successfulBackgroundURLSessions += 1
-            default:
-                break
-            }
-        })
+        
+        // extract data on main thead
+        DispatchQueue.main.sync { [unowned self] in
+            NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] (newNightscoutData, error) -> Void in
+                
+                guard let newNightscoutData = newNightscoutData else {
+                    return
+                }
+                
+                let updateResult = self.updateNightscoutData(newNightscoutData)
+                switch updateResult {
+                case .updateDataIsOld:
+                    self.backgroundURLSessionUpdatesWithOldData += 1
+                case .updateDataAlreadyExists:
+                    self.backgroundURLSessionUpdatesWithSameData += 1
+                case .updated:
+                    self.backgroundURLSessionUpdatesWithNewData += 1
+                }
+            })
+        }
         
         completePendingURLSessionTask()
     }
@@ -318,7 +303,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
     
     fileprivate func completePendingURLSessionTask() {
         
-        self.backgroundSession?.invalidateAndCancel()
+//        self.backgroundSession?.invalidateAndCancel()
         self.backgroundSession = nil
         if #available(watchOSApplicationExtension 3.0, *) {
             (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()

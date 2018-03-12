@@ -43,23 +43,24 @@ class InfoInterfaceController: WKInterfaceController {
         cachedValuesLabel.setText("\(todaysBgData.count) / \(yesterdaysBgData.count)")
         
         // background updates
-        if let ext = WKExtension.shared().delegate as? ExtensionDelegate {
-            
-            var text = "Complication updates (initiated from phone app): \(ext.successfullPhoneUpdates)/\(ext.phoneUpdates)"
-            if ext.phoneUpdatesWithOldData > 0 {
-                text += "\n\(ext.phoneUpdatesWithOldData) phone app updates had older data than current watch data."
+        if #available(watchOSApplicationExtension 3.0, *) {
+            if let ext = WKExtension.shared().rootInterfaceController as? InterfaceController {
+                
+                var text = "Complication updates (initiated from phone app): \(ext.phoneUpdates)"
+                text += "\nNew data: \(ext.phoneUpdatesWithNewData), existing: \(ext.phoneUpdatesWithSameData), old: \(ext.phoneUpdatesWithOldData)\n"
+                
+                text += "\nBackground refreshes (background URL session started): \(ext.backgroundURLSessions)"
+                text += "\nNew data: \(ext.backgroundURLSessionUpdatesWithNewData), existing: \(ext.backgroundURLSessionUpdatesWithSameData), old: \(ext.backgroundURLSessionUpdatesWithOldData)\n"
+                
+                //            if !ext.ndRequestErrorMessages.isEmpty {
+                //                text += "Request errors: \n" + ext.ndRequestErrorMessages.joined(separator: "\n")
+                //            }
+                
+                backgroundUpdatesLabel.setText(text)
             }
-            
-            text += "\n\nBackground refreshes: \(ext.successfulBackgroundURLSessions)/\(ext.backgroundURLSessions)"
-            if ext.backgroundURLSessionUpdatesWithOldData > 0 {
-                text += "\n\(ext.backgroundURLSessionUpdatesWithOldData) URL session updates had older data than current watch data."
-            }
-            
-//            if !ext.ndRequestErrorMessages.isEmpty {
-//                text += "Request errors: \n" + ext.ndRequestErrorMessages.joined(separator: "\n")
-//            }
-            
-            backgroundUpdatesLabel.setText(text)
+        } else {
+            // Fallback on earlier versions
+            backgroundUpdatesLabel.setText("NO")
         }
     }
 }
