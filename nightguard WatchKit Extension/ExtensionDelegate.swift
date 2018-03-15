@@ -199,22 +199,14 @@ extension InterfaceController {
         // reset second
         dateComponents.second = 0
         
-        var incrementHour = false
-        if let minute = dateComponents.minute {
-            if (0..<15).contains(minute) {
-                dateComponents.minute = 15
-            } else if (15..<30).contains(minute) {
-                dateComponents.minute = 30
-            } else if (30..<45).contains(minute) {
-                dateComponents.minute = 45
-            } else {
-                dateComponents.minute = 0
-                incrementHour = true
-            }
-        }
+        let refreshRate = 12  // number of refreshes per hour
+        let refreshPeriod = 60 / refreshRate
+        
+        let nextRefreshMinute = ((dateComponents.minute! / refreshPeriod) + 1) * refreshPeriod
+        dateComponents.minute = nextRefreshMinute % 60
         
         var scheduleTime = Calendar.current.date(from: dateComponents)!
-        if incrementHour {
+        if nextRefreshMinute >= 60 {
             scheduleTime = Calendar.current.date(byAdding: .hour, value: 1, to: scheduleTime)!
         }
         
