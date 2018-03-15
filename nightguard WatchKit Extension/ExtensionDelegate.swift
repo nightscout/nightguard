@@ -199,7 +199,7 @@ extension InterfaceController {
         // reset second
         dateComponents.second = 0
         
-        let refreshRate = 12  // number of refreshes per hour
+        let refreshRate = 12  // number of refreshes per hour (change to 4/6/12.. etc)
         let refreshPeriod = 60 / refreshRate
         
         let nextRefreshMinute = ((dateComponents.minute! / refreshPeriod) + 1) * refreshPeriod
