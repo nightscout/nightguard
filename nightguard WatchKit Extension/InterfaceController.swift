@@ -58,8 +58,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     var watchConnectivityBackgroundTasks: [Any] = []
     var pendingBackgroundURLTask: Any?
     var backgroundSession: URLSession?
+    var downloadTask: URLSessionDownloadTask?
     
     // debugging info (stats) for background refresh
+    var nextBackgroundRefreshTime: Date?
     var backgroundURLSessions: Int = 0
     var backgroundURLSessionUpdatesWithNewData: Int = 0
     var backgroundURLSessionUpdatesWithSameData: Int = 0
@@ -68,6 +70,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     var phoneUpdatesWithNewData: Int = 0
     var phoneUpdatesWithSameData: Int = 0
     var phoneUpdatesWithOldData: Int = 0
+    var backgroundTasksLog: [String] = []
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)

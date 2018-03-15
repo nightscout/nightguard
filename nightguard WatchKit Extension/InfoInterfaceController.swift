@@ -52,6 +52,9 @@ class InfoInterfaceController: WKInterfaceController {
                 text += "\nBackground refreshes (background URL session started): \(ext.backgroundURLSessions)"
                 text += "\nNew data: \(ext.backgroundURLSessionUpdatesWithNewData), existing: \(ext.backgroundURLSessionUpdatesWithSameData), old: \(ext.backgroundURLSessionUpdatesWithOldData)\n"
                 
+                text += "\nBackground tasks log:\n"
+                text += ext.backgroundTasksLog.joined(separator: "\n")
+                
                 //            if !ext.ndRequestErrorMessages.isEmpty {
                 //                text += "Request errors: \n" + ext.ndRequestErrorMessages.joined(separator: "\n")
                 //            }
