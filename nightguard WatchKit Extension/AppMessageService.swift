@@ -75,6 +75,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
     /** Called on the delegate of the receiver. Will be called on startup if the user info finished transferring when the receiver was not running. */
     @available(watchOS 2.0, *)
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any]) {
+        
         if let _ = userInfo["nightscoutData"] {
             if #available(watchOSApplicationExtension 3.0, *) {
                 if let extensionDelegate = WKExtension.shared().rootInterfaceController as? InterfaceController {

@@ -118,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 completionHandler(.failed)
             } else {
                 completionHandler(.newData)
-//                WatchService.singleton.updateWatchComplicationIfPossible()
+                WatchService.singleton.updateWatchComplicationIfPossible()
             }
         }
         

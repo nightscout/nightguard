@@ -9,6 +9,7 @@
 import WatchKit
 import WatchConnectivity
 
+// fake, not used... the WKExtensionDelegate protocol was implemented by InterfaceController (https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
 }
 
@@ -38,9 +39,7 @@ extension InterfaceController: WKExtensionDelegate {
         // Use this method to pause ongoing tasks, disable timers, etc.
         
         print("Application will resign active.")
-        if #available(watchOSApplicationExtension 3.0, *) {
-            scheduleBackgroundRefresh()
-        }
+        BackgroundRefreshScheduler.instance.schedule()
     }
     
     func initializeApplicationDefaults() {
@@ -49,16 +48,6 @@ extension InterfaceController: WKExtensionDelegate {
         let initialDefaults: NSDictionary = ["maximumBloodGlucoseDisplayed": 350]
         UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
     }
-    
-//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-//        DispatchQueue.main.async {
-//            if #available(watchOSApplicationExtension 3, *) {
-//                self.completeAllTasksIfReady()
-//            } else {
-//                // Fallback on earlier versions
-//            }
-//        }
-//    }
 
     @available(watchOSApplicationExtension 3.0, *)
     public func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
@@ -84,22 +73,6 @@ extension InterfaceController: WKExtensionDelegate {
                 task.setTaskCompleted()
             }
         }
-        
-        completeAllTasksIfReady()
-    }
-    
-    @available(watchOSApplicationExtension 3.0, *)
-    func completeAllTasksIfReady() {
-        
-        guard let session = self.session else {
-            return
-        }
-        
-        // the session's properties only have valid values if the session is activated, so check that first
-        if session.activationState == .activated && !session.hasContentPending {
-            watchConnectivityBackgroundTasks.forEach { ($0 as! WKWatchConnectivityRefreshBackgroundTask).setTaskCompleted() }
-            watchConnectivityBackgroundTasks.removeAll()
-        }
     }
 }
 
@@ -108,51 +81,50 @@ extension InterfaceController {
     
     // MARK:- Background update methods
     
-    @available(watchOSApplicationExtension 3.0, *)
     func handleWatchConnectivityBackgroundTask (_ watchConnectivityBackgroundTask: WKWatchConnectivityRefreshBackgroundTask) {
-        self.watchConnectivityBackgroundTasks.append(watchConnectivityBackgroundTask)
+    
+        print("WKWatchConnectivityRefreshBackgroundTask received, what can I do now?!?")
+        watchConnectivityBackgroundTask.setTaskCompleted()
     }
     
-    @available(watchOSApplicationExtension 3.0, *)
     func handleSnapshotTask(_ snapshotTask : WKSnapshotRefreshBackgroundTask) {
         
-        // implement this if needed...
+        print("WKSnapshotRefreshBackgroundTask received")
+        
+        if BackgroundRefreshScheduler.instance.alternateSnaphotRefreshes {
+            
+            // implement this exactly as a refresh task... by scheduling an URL session..
+            scheduleURLSessionIfNeeded()
+            BackgroundRefreshScheduler.instance.lastScheduledWasSnapshotRefresh = true
+        }
+        
+        // schedule the next background refresh
+        BackgroundRefreshScheduler.instance.schedule()
         
         snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
     }
     
-    @available(watchOSApplicationExtension 3.0, *)
     func handleRefreshTask(_ task : WKRefreshBackgroundTask) {
         
         print("WKApplicationRefreshBackgroundTask received")
         
-        // schedule an URL session..
-        if self.backgroundSession == nil {
-            let (backgroundSession, downloadTask) = scheduleURLSession()
-            self.backgroundSession = backgroundSession
-            self.downloadTask = downloadTask
-            backgroundURLSessions += 1
-            log("URL session started")
-        } else {
-            log("URL session already exists, cannot start new one!")
-        }
+        scheduleURLSessionIfNeeded()
+        BackgroundRefreshScheduler.instance.lastScheduledWasSnapshotRefresh = false
         
-        
-        // ...and schedule the next background refresh
-        scheduleBackgroundRefresh()
+        // schedule the next background refresh
+        BackgroundRefreshScheduler.instance.schedule()
         
         task.setTaskCompleted()
     }
     
-    @available(watchOSApplicationExtension 3.0, *)
     func handleURLSessionTask(_ sessionTask: WKURLSessionRefreshBackgroundTask) {
         
-        print("WKURLSessionRefreshTaskReceived, start URL session")
+        print("WKURLSessionRefreshTaskReceived received, starting URL session!")
         
         let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: sessionTask.sessionIdentifier)
         let backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
         print("Rejoining session ", backgroundSession)
-        log("WKURLSessionRefreshBackgroundTask received")
+        BackgroundRefreshLogger.info("WKURLSessionRefreshBackgroundTask received")
 
         // keep the session background task, it will be ended later... (https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
         self.pendingBackgroundURLTask = sessionTask
@@ -161,7 +133,7 @@ extension InterfaceController {
     @discardableResult
     func handleNightscoutDataMessage(_ message: [String: Any]) -> Bool {
         
-        phoneUpdates += 1
+        BackgroundRefreshLogger.phoneUpdates += 1
         guard let data = message["nightscoutData"] as? Data, let nightscoutData = try? JSONDecoder().decode(NightscoutData.self, from: data) else {
             print("Invalid nightscout data received from phone app!")
             return false
@@ -170,65 +142,17 @@ extension InterfaceController {
         let updateResult = updateNightscoutData(nightscoutData)
         switch updateResult {
         case .updateDataIsOld:
-            phoneUpdatesWithOldData += 1
+            BackgroundRefreshLogger.phoneUpdatesWithOldData += 1
         case .updateDataAlreadyExists:
-            phoneUpdatesWithSameData += 1
+            BackgroundRefreshLogger.phoneUpdatesWithSameData += 1
         case .updated:
-            phoneUpdatesWithNewData += 1
-
+            BackgroundRefreshLogger.phoneUpdatesWithNewData += 1
         }
         
         return updateResult != .updateDataIsOld
     }
     
     // MARK:- Internals
-    
-    @available(watchOSApplicationExtension 3.0, *)
-    fileprivate func scheduleBackgroundRefresh() {
-        
-        print("Schedule Background Refresh...\n")
-        
-        // will do it around x:00, x:15, x:30 and x:45
-        let now = Date()
-        let unitFlags:Set<Calendar.Component> = [
-            .hour, .day, .month,
-            .year,.minute,.hour,.second,
-            .calendar]
-        var dateComponents = Calendar.current.dateComponents(unitFlags, from: now)
-        
-        // reset second
-        dateComponents.second = 0
-        
-        let refreshRate = 12  // number of refreshes per hour (change to 4/6/12.. etc)
-        let refreshPeriod = 60 / refreshRate
-        
-        let nextRefreshMinute = ((dateComponents.minute! / refreshPeriod) + 1) * refreshPeriod
-        dateComponents.minute = nextRefreshMinute % 60
-        
-        var scheduleTime = Calendar.current.date(from: dateComponents)!
-        if nextRefreshMinute >= 60 {
-            scheduleTime = Calendar.current.date(byAdding: .hour, value: 1, to: scheduleTime)!
-        }
-        
-        // Schedule a new refresh task in 15 Minutes (only 50 Updates are guaranteed from watchos per day :-/
-        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
-            
-            if self.nextBackgroundRefreshTime != scheduleTime {
-                self.nextBackgroundRefreshTime = scheduleTime
-                
-                // log it!
-                let timeFormatter = DateFormatter()
-                timeFormatter.dateFormat = "HH:mm:ss"
-                let dateString = timeFormatter.string(from: scheduleTime)
-                self.log("Scheduled next background refresh at \(dateString)")
-            }
-            
-            if let error = error {
-                print("Error occurred while scheduling background refresh: \(error.localizedDescription)")
-                self.log("Error occurred while scheduling background refresh: \(error.localizedDescription)")
-            }
-        }
-    }
     
     fileprivate func updateComplication() {
         
@@ -274,12 +198,28 @@ extension InterfaceController {
         return .updated
     }
     
-    fileprivate func log(_ text : String) {
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "HH:mm:ss"
-        let dateString = timeFormatter.string(from: Date())
+    fileprivate func scheduleURLSessionIfNeeded() {
         
-        backgroundTasksLog.append(dateString + " " + text)
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        guard currentNightscoutData.isOlderThan5Minutes() else {
+            BackgroundRefreshLogger.info("Recent nightscout data, skipping URL session!")
+            return
+        }
+        
+        guard self.backgroundSession == nil else {
+            BackgroundRefreshLogger.info("URL session already exists, cannot start new one!")
+            return
+        }
+        
+        guard let (backgroundSession, downloadTask) = scheduleURLSession() else {
+            BackgroundRefreshLogger.info("URL session cannot be created, probably base uri is not configured!")
+            return
+        }
+        
+        self.backgroundSession = backgroundSession
+        self.downloadTask = downloadTask
+        BackgroundRefreshLogger.backgroundURLSessions += 1
+        BackgroundRefreshLogger.info("URL session started")
     }
 }
 
@@ -302,14 +242,14 @@ extension InterfaceController: URLSessionDownloadDelegate {
                 let updateResult = self.updateNightscoutData(newNightscoutData)
                 switch updateResult {
                 case .updateDataIsOld:
-                    self.backgroundURLSessionUpdatesWithOldData += 1
-                    self.log("URL session data: OLD")
+                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData += 1
+                    BackgroundRefreshLogger.info("URL session data: OLD")
                 case .updateDataAlreadyExists:
-                    self.backgroundURLSessionUpdatesWithSameData += 1
-                    self.log("URL session data: EXISTING")
+                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData += 1
+                    BackgroundRefreshLogger.info("URL session data: EXISTING")
                 case .updated:
-                    self.backgroundURLSessionUpdatesWithNewData += 1
-                    self.log("URL session data: NEW")
+                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData += 1
+                    BackgroundRefreshLogger.info("URL session data: NEW")
                 }
             })
         }
@@ -320,14 +260,13 @@ extension InterfaceController: URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         print("Background url session completed with error: \(error)")
         if let error = error {
-            log("URL session did complete with error: \(error)")
+            BackgroundRefreshLogger.info("URL session did complete with error: \(error)")
         }
         completePendingURLSessionTask()
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        print("Background url session did finish events")
-        log("URL session did finish events")
+        BackgroundRefreshLogger.info("URL session did finish events")
         completePendingURLSessionTask()
     }
     
@@ -336,17 +275,13 @@ extension InterfaceController: URLSessionDownloadDelegate {
         self.backgroundSession?.invalidateAndCancel()
         self.backgroundSession = nil
         self.downloadTask = nil
-        if #available(watchOSApplicationExtension 3.0, *) {
-            (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
-        } else {
-            // Fallback on earlier versions
-        }
+        (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
         self.pendingBackgroundURLTask = nil
 
-        self.log("URL session COMPLETED")
+        BackgroundRefreshLogger.info("URL session COMPLETED")
     }
     
-    func scheduleURLSession() -> (URLSession, URLSessionDownloadTask) {
+    func scheduleURLSession() -> (URLSession, URLSessionDownloadTask)? {
         
         let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: NSUUID().uuidString)
         backgroundConfigObject.sessionSendsLaunchEvents = true
@@ -354,7 +289,12 @@ extension InterfaceController: URLSessionDownloadDelegate {
 //        backgroundConfigObject.timeoutIntervalForResource = 15 // the same for retry interval (no retries!)
         let backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
         
-        let downloadURL = URL(string: UserDefaultsRepository.readBaseUri() + "/pebble")!
+        let baseUri = UserDefaultsRepository.readBaseUri()
+        if baseUri == "" {
+            return nil
+        }
+        
+        let downloadURL = URL(string: baseUri + "/pebble")!
         let downloadTask = backgroundSession.downloadTask(with: downloadURL)
         downloadTask.resume()
         

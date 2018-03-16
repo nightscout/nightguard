@@ -44,7 +44,7 @@ class WatchService {
     func updateWatchComplicationIfPossible() {
         
         let calendar = Calendar.current
-        if let lastWatchComplicationUpdateTime = self.lastWatchComplicationUpdateTime, calendar.date(byAdding: .minute, value: self.watchComplicationUpdateRate, to: lastWatchComplicationUpdateTime)! > Date() {
+        if let lastWatchComplicationUpdateTime = self.lastWatchComplicationUpdateTime, calendar.date(byAdding: .minute, value: self.watchComplicationUpdateRate, to: lastWatchComplicationUpdateTime)! >= Date() {
             
             // last watch complication update was more recent than update rate, will skip updating it now!
             return

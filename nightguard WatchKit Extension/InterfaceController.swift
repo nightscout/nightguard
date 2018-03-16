@@ -42,35 +42,21 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate var isActive: Bool = false
     
     
+    /////////////////////////////////////////////////////////////
+    // WKExtensionDelegate data (the WKExtensionDelegate protocol was implemented by InterfaceController -  https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
     var session: WCSession? {
         didSet {
             if let session = session {
                 session.delegate = AppMessageService.singleton
                 session.activate()
-                
-                // https://developer.apple.com/library/content/samplecode/QuickSwitch/Listings/QuickSwitch_WatchKit_Extension_ExtensionDelegate_swift.html
-                session.addObserver(self, forKeyPath: "activationState", options: [], context: nil)
-                session.addObserver(self, forKeyPath: "hasContentPending", options: [], context: nil)
             }
         }
     }
     
-    var watchConnectivityBackgroundTasks: [Any] = []
     var pendingBackgroundURLTask: Any?
     var backgroundSession: URLSession?
     var downloadTask: URLSessionDownloadTask?
-    
-    // debugging info (stats) for background refresh
-    var nextBackgroundRefreshTime: Date?
-    var backgroundURLSessions: Int = 0
-    var backgroundURLSessionUpdatesWithNewData: Int = 0
-    var backgroundURLSessionUpdatesWithSameData: Int = 0
-    var backgroundURLSessionUpdatesWithOldData: Int = 0
-    var phoneUpdates: Int = 0
-    var phoneUpdatesWithNewData: Int = 0
-    var phoneUpdatesWithSameData: Int = 0
-    var phoneUpdatesWithOldData: Int = 0
-    var backgroundTasksLog: [String] = []
+    /////////////////////////////////////////////////////////////
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -86,8 +72,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         createMenuItems()
         
-        // Configure interface objects here.
+        // the trick: make myself the WKExtensionDelegate (https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
         WKExtension.shared().delegate = self
+        // and one more: we have to manually call this protocol method (just this), the framework will not call it for us anymore (probably because we changed the delegate instance...)
+        applicationDidFinishLaunching()
     }
     
     fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {

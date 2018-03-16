@@ -43,27 +43,14 @@ class InfoInterfaceController: WKInterfaceController {
         cachedValuesLabel.setText("\(todaysBgData.count) / \(yesterdaysBgData.count)")
         
         // background updates
-        if #available(watchOSApplicationExtension 3.0, *) {
-            if let ext = WKExtension.shared().rootInterfaceController as? InterfaceController {
-                
-                var text = "Complication updates (initiated from phone app): \(ext.phoneUpdates)"
-                text += "\nNew data: \(ext.phoneUpdatesWithNewData), existing: \(ext.phoneUpdatesWithSameData), old: \(ext.phoneUpdatesWithOldData)\n"
-                
-                text += "\nBackground refreshes (background URL session started): \(ext.backgroundURLSessions)"
-                text += "\nNew data: \(ext.backgroundURLSessionUpdatesWithNewData), existing: \(ext.backgroundURLSessionUpdatesWithSameData), old: \(ext.backgroundURLSessionUpdatesWithOldData)\n"
-                
-                text += "\nBackground tasks log:\n"
-                text += ext.backgroundTasksLog.joined(separator: "\n")
-                
-                //            if !ext.ndRequestErrorMessages.isEmpty {
-                //                text += "Request errors: \n" + ext.ndRequestErrorMessages.joined(separator: "\n")
-                //            }
-                
-                backgroundUpdatesLabel.setText(text)
-            }
-        } else {
-            // Fallback on earlier versions
-            backgroundUpdatesLabel.setText("NO")
-        }
+        var text = "Complication updates (initiated from phone app): \(BackgroundRefreshLogger.phoneUpdates)"
+        text += "\nNew data: \(BackgroundRefreshLogger.phoneUpdatesWithNewData), existing: \(BackgroundRefreshLogger.phoneUpdatesWithSameData), old: \(BackgroundRefreshLogger.phoneUpdatesWithOldData)\n"
+        
+        text += "\nBackground refreshes (background URL session started): \(BackgroundRefreshLogger.backgroundURLSessions)"
+        text += "\nNew data: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData), existing: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData), old: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData)\n"
+        
+        text += "\nBackground tasks log:\n"
+        text += BackgroundRefreshLogger.logs.joined(separator: "\n")
+        backgroundUpdatesLabel.setText(text)
     }
 }
