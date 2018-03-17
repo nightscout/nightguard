@@ -42,13 +42,18 @@ class BackgroundRefreshLogger {
     }
     
     static var formattedBackgroundRefreshesStartingURLSessions: String {
-        return String(format: "%.2f%%", backgroundRefreshesStartingURLSessions)
+        return "\(Int(backgroundRefreshesStartingURLSessions * 100))%"
     }
     
     private static var logStartTime: Date?
+    private static let showLogs = (Bundle.main.infoDictionary?["ShowLogsFromBackgroundRefreshTasks"] as? Bool) ?? false
     
     static func info(_ text: String) {
         resetStatsDataIfNeeded()
+        
+        guard showLogs else {
+            return
+        }
         
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm:ss"

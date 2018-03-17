@@ -51,8 +51,11 @@ class InfoInterfaceController: WKInterfaceController {
         
         text += "\nNew data: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData), existing: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData), old: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData)\n"
         
-        text += "\nBackground tasks log:\n"
-        text += BackgroundRefreshLogger.logs.joined(separator: "\n")
+        if !BackgroundRefreshLogger.logs.isEmpty {
+            text += "\nLogs from background tasks:\n"
+            text += BackgroundRefreshLogger.logs.joined(separator: "\n")
+        }
+        
         backgroundUpdatesLabel.setText(text)
     }
 }
