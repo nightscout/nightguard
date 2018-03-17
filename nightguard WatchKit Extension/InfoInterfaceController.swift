@@ -46,7 +46,9 @@ class InfoInterfaceController: WKInterfaceController {
         var text = "Complication updates (initiated from phone app): \(BackgroundRefreshLogger.phoneUpdates)"
         text += "\nNew data: \(BackgroundRefreshLogger.phoneUpdatesWithNewData), existing: \(BackgroundRefreshLogger.phoneUpdatesWithSameData), old: \(BackgroundRefreshLogger.phoneUpdatesWithOldData)\n"
         
-        text += "\nBackground refreshes (background URL session started): \(BackgroundRefreshLogger.backgroundURLSessions)"
+        text += "\nBackground refreshes: \(BackgroundRefreshLogger.backgroundRefreshes) (\(BackgroundRefreshLogger.formattedBackgroundRefreshesPerHour) per hour)"
+        text += "\nBackground URL sessions: \(BackgroundRefreshLogger.backgroundURLSessions) (\(BackgroundRefreshLogger.formattedBackgroundRefreshesStartingURLSessions))"
+        
         text += "\nNew data: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData), existing: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData), old: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData)\n"
         
         text += "\nBackground tasks log:\n"

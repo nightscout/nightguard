@@ -19,7 +19,7 @@ extension InterfaceController: WKExtensionDelegate {
     func applicationDidFinishLaunching() {
         
         // Initialize the BackgroundUrlSession. This has to be an singleton that is used throughout the whole app
-        BackgroundUrlSessionWrapper.setup(delegate: self)
+//        BackgroundUrlSessionWrapper.setup(delegate: self)
         // Perform any final initialization of your application.
         activateWatchConnectivity()
     }
@@ -92,6 +92,7 @@ extension InterfaceController {
         print("WKSnapshotRefreshBackgroundTask received")
         
         if BackgroundRefreshScheduler.instance.alternateSnaphotRefreshes {
+            BackgroundRefreshLogger.backgroundRefreshes += 1
             
             // implement this exactly as a refresh task... by scheduling an URL session..
             scheduleURLSessionIfNeeded()
@@ -108,6 +109,7 @@ extension InterfaceController {
         
         print("WKApplicationRefreshBackgroundTask received")
         
+        BackgroundRefreshLogger.backgroundRefreshes += 1
         scheduleURLSessionIfNeeded()
         BackgroundRefreshScheduler.instance.lastScheduledWasSnapshotRefresh = false
         
