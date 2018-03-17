@@ -304,6 +304,7 @@ class MainViewController: UIViewController {
                     self.feedbackPanelView.isHidden = true
                     self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
                     
+                    WatchService.singleton.sendToWatchCurrentNightwatchData()
                     WatchService.singleton.updateWatchComplicationIfPossible()
                 }
             }

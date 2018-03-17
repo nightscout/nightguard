@@ -13,6 +13,7 @@ class WatchService {
     
     static let singleton = WatchService()
     
+    private var lastSentNightscoutDataTime: NSNumber?
     private var lastWatchComplicationUpdateTime: Date?
     private let watchComplicationUpdateRate: Int = 30 // minutes (50 update per day guaranteed by Apple...)
     
@@ -39,6 +40,19 @@ class WatchService {
              "alertIfAboveValue" : alertIfAboveValue,
              "units" : units.rawValue]
         WCSession.default.transferUserInfo(applicationDict as [String : AnyObject])
+    }
+    
+    func sendToWatchCurrentNightwatchData() {
+        
+//        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+//        if lastSentNightscoutDataTime != nightscoutData.time {
+//
+//            try? WCSession.default.updateApplicationContext(
+//                WatchMessageService.singleton.currentNightscoutDataAsMessage
+//            )
+//
+//            self.lastSentNightscoutDataTime = nightscoutData.time
+//        }
     }
     
     func updateWatchComplicationIfPossible() {

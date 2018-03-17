@@ -118,6 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 completionHandler(.failed)
             } else {
                 completionHandler(.newData)
+                WatchService.singleton.sendToWatchCurrentNightwatchData()
                 WatchService.singleton.updateWatchComplicationIfPossible()
             }
         }
