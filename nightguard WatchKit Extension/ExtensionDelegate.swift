@@ -89,7 +89,7 @@ extension InterfaceController {
     
     func handleSnapshotTask(_ snapshotTask : WKSnapshotRefreshBackgroundTask) {
         
-        print("WKSnapshotRefreshBackgroundTask received")
+        BackgroundRefreshLogger.info("WKSnapshotRefreshBackgroundTask received")
         
         if BackgroundRefreshScheduler.instance.alternateSnaphotRefreshes {
             BackgroundRefreshLogger.backgroundRefreshes += 1
@@ -107,8 +107,7 @@ extension InterfaceController {
     
     func handleRefreshTask(_ task : WKRefreshBackgroundTask) {
         
-        print("WKApplicationRefreshBackgroundTask received")
-        
+        BackgroundRefreshLogger.info("WKApplicationRefreshBackgroundTask received")
         BackgroundRefreshLogger.backgroundRefreshes += 1
         scheduleURLSessionIfNeeded()
         BackgroundRefreshScheduler.instance.lastScheduledWasSnapshotRefresh = false
@@ -121,12 +120,11 @@ extension InterfaceController {
     
     func handleURLSessionTask(_ sessionTask: WKURLSessionRefreshBackgroundTask) {
         
-        print("WKURLSessionRefreshTaskReceived received, starting URL session!")
+        BackgroundRefreshLogger.info("WKURLSessionRefreshBackgroundTask received")
         
         let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: sessionTask.sessionIdentifier)
         let backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
         print("Rejoining session ", backgroundSession)
-        BackgroundRefreshLogger.info("WKURLSessionRefreshBackgroundTask received")
 
         // keep the session background task, it will be ended later... (https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
         self.pendingBackgroundURLTask = sessionTask
@@ -274,13 +272,17 @@ extension InterfaceController: URLSessionDownloadDelegate {
     
     fileprivate func completePendingURLSessionTask() {
         
+        if self.backgroundSession != nil {
+            
+            // log only ONCE, as this method can be called more than once
+             BackgroundRefreshLogger.info("URL session COMPLETED")
+        }
+        
         self.backgroundSession?.invalidateAndCancel()
         self.backgroundSession = nil
         self.downloadTask = nil
         (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
         self.pendingBackgroundURLTask = nil
-
-        BackgroundRefreshLogger.info("URL session COMPLETED")
     }
     
     func scheduleURLSession() -> (URLSession, URLSessionDownloadTask)? {

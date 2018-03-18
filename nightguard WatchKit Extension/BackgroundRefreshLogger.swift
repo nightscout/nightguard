@@ -51,15 +51,15 @@ class BackgroundRefreshLogger {
     static func info(_ text: String) {
         resetStatsDataIfNeeded()
         
-        guard showLogs else {
-            return
-        }
-        
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm:ss"
         let dateString = timeFormatter.string(from: Date())
+        let logEntry = dateString + " " + text
+        NSLog(logEntry)
         
-        logs.append(dateString + " " + text)
+        if showLogs {
+            logs.append(logEntry)
+        }
     }
     
     private static func resetStatsDataIfNeeded() {
