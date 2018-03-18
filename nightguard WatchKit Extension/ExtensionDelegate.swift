@@ -59,13 +59,16 @@ extension InterfaceController: WKExtensionDelegate {
         }
         
         for task in backgroundTasks {
+            
+            // crash solving trick: acces the task user info to avoid a rare, but weird crash.. (https://forums.developer.apple.com/thread/96504 and https://stackoverflow.com/questions/46464660/wkrefreshbackgroundtask-cleanupstorage-error-attempting-to-reach-file)
+            userInfoAccess = task.userInfo
+            
             if let watchConnectivityBackgroundTask = task as? WKWatchConnectivityRefreshBackgroundTask {
                 handleWatchConnectivityBackgroundTask(watchConnectivityBackgroundTask)
             } else if let snapshotTask = task as? WKSnapshotRefreshBackgroundTask {
                 handleSnapshotTask(snapshotTask)
             } else if let sessionTask = task as? WKURLSessionRefreshBackgroundTask {
                 handleURLSessionTask(sessionTask)
-//                return
             } else if let refreshTask = task as? WKApplicationRefreshBackgroundTask {
                 handleRefreshTask(refreshTask)
             } else {
@@ -254,7 +257,7 @@ extension InterfaceController: URLSessionDownloadDelegate {
             })
         }
         
-        completePendingURLSessionTask()
+//        completePendingURLSessionTask()
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
@@ -262,7 +265,7 @@ extension InterfaceController: URLSessionDownloadDelegate {
         if let error = error {
             BackgroundRefreshLogger.info("URL session did complete with error: \(error)")
         }
-        completePendingURLSessionTask()
+//        completePendingURLSessionTask()
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {

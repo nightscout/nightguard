@@ -56,6 +56,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     var pendingBackgroundURLTask: Any?
     var backgroundSession: URLSession?
     var downloadTask: URLSessionDownloadTask?
+    var userInfoAccess: NSSecureCoding?
     /////////////////////////////////////////////////////////////
     
     override func awake(withContext context: Any?) {
