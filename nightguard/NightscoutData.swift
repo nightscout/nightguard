@@ -138,8 +138,6 @@ class NightscoutData : NSObject, NSCoding, Codable {
         self.time = NSNumber(floatLiteral: try container.decode(Double.self, forKey: .time))
         self.battery = try container.decode(String.self, forKey: .battery)
         self.iob = try container.decode(String.self, forKey: .iob)
-        self.rawbg = try container.decode(String.self, forKey: .rawbg)
-        self.noise = try container.decode(String.self, forKey: .noise)
     }
     
     /// Encodes this value into the given encoder.
@@ -160,8 +158,6 @@ class NightscoutData : NSObject, NSCoding, Codable {
         try container.encode(self.time.doubleValue, forKey: .time)
         try container.encode(self.battery, forKey: .battery)
         try container.encode(self.iob, forKey: .iob)
-        try container.encode(self.rawbg, forKey: .rawbg)
-        try container.encode(self.noise, forKey: .noise)
     }
     
     func isOlderThan5Minutes() -> Bool {

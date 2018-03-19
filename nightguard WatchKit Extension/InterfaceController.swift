@@ -40,7 +40,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
     
     fileprivate var isActive: Bool = false
-    
+    fileprivate var isFirstActivation: Bool = true    
     
     /////////////////////////////////////////////////////////////
     // WKExtensionDelegate data (the WKExtensionDelegate protocol was implemented by InterfaceController -  https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
@@ -106,13 +106,17 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // if the user keeps the display active for a longer time
         createNewTimerSingleton()
         
-        // manually refresh the gui by fireing the timer (if we have old data!)
-//        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-//        if currentNightscoutData.isOlderThan5Minutes() {
+        // check if we have old nightscout data...
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        if isFirstActivation || currentNightscoutData.isOlderThan5Minutes() {
+            
+            // if yes, manually refresh the gui by fireing the timer
             timerDidEnd(timer)
-//        } else {
-//            paintCurrentBgData(currentNightscoutData: currentNightscoutData)
-//        }
+        } else {
+            
+            // otwherwise just update the gui with current data (will update the time, etc., but will not display the activity indicator & error panel)
+            updateInterface(withNightscoutData: currentNightscoutData, error: nil)
+        }
         
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state
@@ -124,6 +128,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         crownSequencer.delegate = self
         
         paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: false)
+        
+        // reset the first activation flag!
+        isFirstActivation = false
     }
     
     override func didAppear() {
