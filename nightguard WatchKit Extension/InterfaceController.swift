@@ -40,7 +40,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
     
     fileprivate var isActive: Bool = false
-    fileprivate var isFirstActivation: Bool = true    
+    fileprivate var isFirstActivation: Bool = true
     
     /////////////////////////////////////////////////////////////
     // WKExtensionDelegate data (the WKExtensionDelegate protocol was implemented by InterfaceController -  https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
