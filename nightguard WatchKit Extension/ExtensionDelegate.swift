@@ -9,12 +9,26 @@
 import WatchKit
 import WatchConnectivity
 
-// fake, not used... the WKExtensionDelegate protocol was implemented by InterfaceController (https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
-}
-
-@available(watchOSApplicationExtension 3.0, *)
-extension InterfaceController: WKExtensionDelegate {
+    
+    // trick: keep the extension delegate ALIVE (because it seems it hangs when the watch app moves in the backround and will stop processing background tasks)
+    // the idea came from this solution (https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
+    private(set) static var singleton: ExtensionDelegate!
+    
+    var session: WCSession? {
+        didSet {
+            if let session = session {
+                session.delegate = AppMessageService.singleton
+                session.activate()
+            }
+        }
+    }
+    
+    var pendingBackgroundURLTask: Any?
+    var backgroundSession: URLSession?
+    var downloadTask: URLSessionDownloadTask?
+    var sessionError: Error?
+    var userInfoAccess: NSSecureCoding?
     
     func applicationDidFinishLaunching() {
         
@@ -22,6 +36,9 @@ extension InterfaceController: WKExtensionDelegate {
 //        BackgroundUrlSessionWrapper.setup(delegate: self)
         // Perform any final initialization of your application.
         activateWatchConnectivity()
+        
+        // keep myself in class property (see above why...)
+        ExtensionDelegate.singleton = self
     }
 
     func activateWatchConnectivity() {
@@ -39,7 +56,9 @@ extension InterfaceController: WKExtensionDelegate {
         // Use this method to pause ongoing tasks, disable timers, etc.
         
         print("Application will resign active.")
-        scheduleBackgroundRefresh()
+        if #available(watchOSApplicationExtension 3.0, *) {
+            scheduleBackgroundRefresh()
+        }
     }
     
     func initializeApplicationDefaults() {
@@ -52,12 +71,6 @@ extension InterfaceController: WKExtensionDelegate {
     @available(watchOSApplicationExtension 3.0, *)
     public func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         
-        // only handle these while running in the background
-        guard WKExtension.shared().applicationState == .background else {
-            backgroundTasks.forEach { $0.setTaskCompleted() }
-            return
-        }
-        
         for task in backgroundTasks {
             
             // crash solving trick: acces the task user info to avoid a rare, but weird crash.. (https://forums.developer.apple.com/thread/96504 and https://stackoverflow.com/questions/46464660/wkrefreshbackgroundtask-cleanupstorage-error-attempting-to-reach-file)
@@ -69,7 +82,7 @@ extension InterfaceController: WKExtensionDelegate {
                 handleSnapshotTask(snapshotTask)
             } else if let sessionTask = task as? WKURLSessionRefreshBackgroundTask {
                 handleURLSessionTask(sessionTask)
-            } else if let refreshTask = task as? WKApplicationRefreshBackgroundTask {
+            } else if let refreshTask = task as? WKApplicationRefreshBackgroundTask, WKExtension.shared().applicationState == .background {
                 handleRefreshTask(refreshTask)
             } else {
                 // not handled!
@@ -79,17 +92,18 @@ extension InterfaceController: WKExtensionDelegate {
     }
 }
 
-@available(watchOSApplicationExtension 3.0, *)
-extension InterfaceController {
+extension ExtensionDelegate {
     
     // MARK:- Background update methods
     
+    @available(watchOSApplicationExtension 3.0, *)
     func handleWatchConnectivityBackgroundTask (_ watchConnectivityBackgroundTask: WKWatchConnectivityRefreshBackgroundTask) {
     
         print("WKWatchConnectivityRefreshBackgroundTask received, what can I do now?!?")
         watchConnectivityBackgroundTask.setTaskCompleted()
     }
     
+    @available(watchOSApplicationExtension 3.0, *)
     func handleSnapshotTask(_ snapshotTask : WKSnapshotRefreshBackgroundTask) {
         
         BackgroundRefreshLogger.info("WKSnapshotRefreshBackgroundTask received")
@@ -102,6 +116,7 @@ extension InterfaceController {
         snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
     }
     
+    @available(watchOSApplicationExtension 3.0, *)
     func handleRefreshTask(_ task : WKRefreshBackgroundTask) {
         
         BackgroundRefreshLogger.info("WKApplicationRefreshBackgroundTask received")
@@ -115,6 +130,7 @@ extension InterfaceController {
         task.setTaskCompleted()
     }
     
+    @available(watchOSApplicationExtension 3.0, *)
     func handleURLSessionTask(_ sessionTask: WKURLSessionRefreshBackgroundTask) {
         
         BackgroundRefreshLogger.info("WKURLSessionRefreshBackgroundTask received")
@@ -151,22 +167,24 @@ extension InterfaceController {
     
     // MARK:- Internals
     
+    @available(watchOSApplicationExtension 3.0, *)
     fileprivate func scheduleBackgroundRefresh() {
         BackgroundRefreshScheduler.instance.schedule()
     }
     
-    fileprivate func scheduleSnapshotRefresh() {
-        
-        let scheduleTime = Date(timeIntervalSinceNow: 1) // do it now!
-        WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
-
-            BackgroundRefreshLogger.info("Scheduled next snapshot refresh (NOW!)")
-
-            if let error = error {
-                BackgroundRefreshLogger.info("Error occurred while scheduling snapshot refresh: \(error.localizedDescription)")
-            }
-        }
-    }
+//    @available(watchOSApplicationExtension 3.0, *)
+//    fileprivate func scheduleSnapshotRefresh() {
+//
+//        let scheduleTime = Date(timeIntervalSinceNow: 10) // do it now!
+//        WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
+//
+//            BackgroundRefreshLogger.info("Scheduled next snapshot refresh (NOW!)")
+//
+//            if let error = error {
+//                BackgroundRefreshLogger.info("Error occurred while scheduling snapshot refresh: \(error.localizedDescription)")
+//            }
+//        }
+//    }
     
     fileprivate func updateComplication() {
         
@@ -207,7 +225,9 @@ extension InterfaceController {
         
         print("Nightscout data was received from remote (phone app or URL session)!")
         NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: newNightscoutData)
-        scheduleSnapshotRefresh()
+//        if #available(watchOSApplicationExtension 3.0, *) {
+//            scheduleSnapshotRefresh()
+//        }
         updateComplication()
         
         return .updated
@@ -238,8 +258,7 @@ extension InterfaceController {
     }
 }
 
-@available(watchOSApplicationExtension 3.0, *)
-extension InterfaceController: URLSessionDownloadDelegate {
+extension ExtensionDelegate: URLSessionDownloadDelegate {
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("Background download was finished.")
@@ -306,7 +325,9 @@ extension InterfaceController: URLSessionDownloadDelegate {
         self.backgroundSession?.invalidateAndCancel()
         self.backgroundSession = nil
         self.downloadTask = nil
-        (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
+        if #available(watchOSApplicationExtension 3.0, *) {
+            (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
+        }
         self.pendingBackgroundURLTask = nil
     }
     
