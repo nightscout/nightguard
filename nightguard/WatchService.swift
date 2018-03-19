@@ -57,6 +57,19 @@ class WatchService {
     
     func updateWatchComplicationIfPossible() {
         
+        // update ONLY if the phone app has new nightscout data
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        guard !currentNightscoutData.isOlderThan5Minutes() else {
+            return
+        }
+        
+        if #available(iOS 9.3, *) {
+            guard WCSession.default.activationState == .activated && WCSession.default.isComplicationEnabled else {
+                return
+            }
+        }
+        
+        // respect the update rate, do it from time to time (30 minutes)
         let calendar = Calendar.current
         if let lastWatchComplicationUpdateTime = self.lastWatchComplicationUpdateTime, calendar.date(byAdding: .minute, value: self.watchComplicationUpdateRate, to: lastWatchComplicationUpdateTime)! >= Date() {
             
@@ -64,20 +77,12 @@ class WatchService {
             return
         }
         
-        var shouldUpdate = true
-        if #available(iOS 9.3, *) {
-            shouldUpdate = WCSession.default.activationState == .activated && WCSession.default.isComplicationEnabled
-        }
+        // update!
+        WCSession.default.transferCurrentComplicationUserInfo(
+            WatchMessageService.singleton.currentNightscoutDataAsMessage
+        )
         
-        if shouldUpdate {
-                
-            // update!
-            WCSession.default.transferCurrentComplicationUserInfo(
-                WatchMessageService.singleton.currentNightscoutDataAsMessage
-            )
-            
-            // and keep the update time
-            self.lastWatchComplicationUpdateTime = Date()
-        }
+        // and keep the update time
+        self.lastWatchComplicationUpdateTime = Date()
     }
 }
