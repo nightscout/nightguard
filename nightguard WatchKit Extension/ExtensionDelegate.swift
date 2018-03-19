@@ -39,7 +39,7 @@ extension InterfaceController: WKExtensionDelegate {
         // Use this method to pause ongoing tasks, disable timers, etc.
         
         print("Application will resign active.")
-        BackgroundRefreshScheduler.instance.schedule()
+        scheduleBackgroundRefresh()
     }
     
     func initializeApplicationDefaults() {
@@ -94,16 +94,10 @@ extension InterfaceController {
         
         BackgroundRefreshLogger.info("WKSnapshotRefreshBackgroundTask received")
         
-        if BackgroundRefreshScheduler.instance.alternateSnaphotRefreshes {
-            BackgroundRefreshLogger.backgroundRefreshes += 1
-            
-            // implement this exactly as a refresh task... by scheduling an URL session..
-            scheduleURLSessionIfNeeded()
-            BackgroundRefreshScheduler.instance.lastScheduledWasSnapshotRefresh = true
-        }
-        
-        // schedule the next background refresh
-        BackgroundRefreshScheduler.instance.schedule()
+        // update user interface with current nightscout data (or error)
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController
+        interfaceController?.updateInterface(withNightscoutData: currentNightscoutData, error: self.sessionError)
         
         snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
     }
@@ -112,8 +106,8 @@ extension InterfaceController {
         
         BackgroundRefreshLogger.info("WKApplicationRefreshBackgroundTask received")
         BackgroundRefreshLogger.backgroundRefreshes += 1
+        
         scheduleURLSessionIfNeeded()
-        BackgroundRefreshScheduler.instance.lastScheduledWasSnapshotRefresh = false
         
         // schedule the next background refresh
         BackgroundRefreshScheduler.instance.schedule()
@@ -157,6 +151,23 @@ extension InterfaceController {
     
     // MARK:- Internals
     
+    fileprivate func scheduleBackgroundRefresh() {
+        BackgroundRefreshScheduler.instance.schedule()
+    }
+    
+    fileprivate func scheduleSnapshotRefresh() {
+        
+        let scheduleTime = Date(timeIntervalSinceNow: 1) // do it now!
+        WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
+
+            BackgroundRefreshLogger.info("Scheduled next snapshot refresh (NOW!)")
+
+            if let error = error {
+                BackgroundRefreshLogger.info("Error occurred while scheduling snapshot refresh: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     fileprivate func updateComplication() {
         
         let complicationServer = CLKComplicationServer.sharedInstance()
@@ -196,6 +207,7 @@ extension InterfaceController {
         
         print("Nightscout data was received from remote (phone app or URL session)!")
         NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: newNightscoutData)
+        scheduleSnapshotRefresh()
         updateComplication()
         
         return .updated
@@ -203,11 +215,11 @@ extension InterfaceController {
     
     fileprivate func scheduleURLSessionIfNeeded() {
         
-        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        guard currentNightscoutData.isOlderThan5Minutes() else {
-            BackgroundRefreshLogger.info("Recent nightscout data, skipping URL session!")
-            return
-        }
+//        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+//        guard currentNightscoutData.isOlderThan5Minutes() else {
+//            BackgroundRefreshLogger.info("Recent nightscout data, skipping URL session!")
+//            return
+//        }
         
         guard self.backgroundSession == nil else {
             BackgroundRefreshLogger.info("URL session already exists, cannot start new one!")
@@ -232,11 +244,17 @@ extension InterfaceController: URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("Background download was finished.")
         
+        // reset the session error
+        self.sessionError = nil
+        
         let nightscoutData = NSData(contentsOf: location as URL)
         
         // extract data on main thead
         DispatchQueue.main.sync { [unowned self] in
             NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] (newNightscoutData, error) -> Void in
+                
+                // keep the error (if any)
+                self.sessionError = error
                 
                 guard let newNightscoutData = newNightscoutData else {
                     return
@@ -257,7 +275,7 @@ extension InterfaceController: URLSessionDownloadDelegate {
             })
         }
         
-//        completePendingURLSessionTask()
+        completePendingURLSessionTask()
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
@@ -265,7 +283,11 @@ extension InterfaceController: URLSessionDownloadDelegate {
         if let error = error {
             BackgroundRefreshLogger.info("URL session did complete with error: \(error)")
         }
-//        completePendingURLSessionTask()
+        
+        // keep the session error (if any!)
+        self.sessionError = error
+        
+        completePendingURLSessionTask()
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {

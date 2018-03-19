@@ -56,6 +56,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     var pendingBackgroundURLTask: Any?
     var backgroundSession: URLSession?
     var downloadTask: URLSessionDownloadTask?
+    var sessionError: Error?
     var userInfoAccess: NSSecureCoding?
     /////////////////////////////////////////////////////////////
     
@@ -258,29 +259,35 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
                 newCachedYesterdaysBgValues.count != cachedYesterdaysBgValues.count
     }
     
+    func updateInterface(withNightscoutData nightscoutData: NightscoutData?, error: Error?) {
+        
+        // stop & hide the activity indicator
+        self.activityIndicatorImage.stopAnimating()
+        self.activityIndicatorImage.setHidden(true)
+        
+        if let error = error {
+            
+            // show errors ONLY when the interface is active (connection errors can be received while it is inactive... don't know for the moment why)
+            // NOTE: actually, the whole UI should be updated only when the interface is active...
+            if self.isActive {
+                self.errorLabel.setText("❌ \(error.localizedDescription)")
+                self.errorGroup.setHidden(false)
+            } else {
+                self.errorGroup.setHidden(true)
+            }
+        } else if let nightscoutData = nightscoutData {
+            self.errorGroup.setHidden(true)
+            self.paintCurrentBgData(currentNightscoutData: nightscoutData)
+        }
+    }
+    
     fileprivate func loadAndPaintCurrentBgData() {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
             DispatchQueue.main.async { [unowned self] in
-                
-                // stop & hide the activity indicator
-                self.activityIndicatorImage.stopAnimating()
-                self.activityIndicatorImage.setHidden(true)
-                
-                if let error = error {
-                    
-                    // show errors ONLY when the interface is active (connection errors can be received while it is inactive... don't know for the moment why)
-                    // NOTE: actually, the whole UI should be updated only when the interface is active...
-                    if self.isActive {
-                        self.errorLabel.setText("❌ \(error.localizedDescription)")
-                        self.errorGroup.setHidden(false)
-                    } else {
-                        self.errorGroup.setHidden(true)
-                    }
-                } else if let newNightscoutData = newNightscoutData {
-                    self.errorGroup.setHidden(true)
-                    self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                self.updateInterface(withNightscoutData: newNightscoutData, error: error)
+                if let newNightscoutData = newNightscoutData {
                     self.updateComplication()
                     self.playAlarm(currentNightscoutData: newNightscoutData)
                 }

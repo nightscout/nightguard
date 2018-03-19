@@ -9,8 +9,8 @@
 import Foundation
 import WatchKit
 
-/// This class is responsible with scheduling the next refreshes (background and snapshot). It will trigger a
-/// background (or snapshot) refresh as configured by the refreshRate property, the exact refresh moment will
+/// This class is responsible with scheduling the next background refreshes. It will trigger a
+/// background refresh as configured by the refreshRate property, the exact refresh moment will
 /// be determined by dividing the hour in periods (starting from 0 minutes -> 60 minutes), the most apropiate
 /// period start will be the next scheduled value.
 ///
@@ -23,12 +23,8 @@ class BackgroundRefreshScheduler {
     static let instance = BackgroundRefreshScheduler()
     
     // number of refreshes per hour (for e.g, if refreshRate = 6, it will trigger a refresh every 10 minute)
-    var refreshRate: Int = 12 // every 5 minutes by default (even if the watchOS will not do it that often...)
+    var refreshRate: Int = 12 // every 10 minutes by default (even if the watchOS will not do it that often...)
     
-    // alternate background refreshes with snapshot refreshes
-    var alternateSnaphotRefreshes = true
-    
-    var lastScheduledWasSnapshotRefresh = false
     private var lastScheduledTime: Date?
     
     private init() {
@@ -36,42 +32,21 @@ class BackgroundRefreshScheduler {
     
     func schedule() {
         
-        // obtain base refresh time
+        // obtain the refresh time
         let scheduleTime = nextScheduleTime(refreshRate: self.refreshRate)
-        
-        // if the background refresh alternates with the snapshot refresh, the second schedule time will be the current schedule time delayed with a period (5 more minutes if the period is 5 minutes); if using only background refreshes, then still schedule snapshot refreshes every 15 minutes... just for triggering another schedule for the background refreshes (because some background refreshes can be skipped and the refresh scheduling will not be called anymore!)
-        let refreshPeriod = 60 / refreshRate
-        let secondScheduleTime = alternateSnaphotRefreshes ? Calendar.current.date(byAdding: .minute, value: refreshPeriod, to: scheduleTime)! : nextScheduleTime(refreshRate: 4)
         
         // log ONLY once
         let logRefreshTime = self.lastScheduledTime != scheduleTime
         self.lastScheduledTime = scheduleTime
         
-        var backgroundRefreshTime = scheduleTime
-        var snapshotRefreshTime = secondScheduleTime
-        if alternateSnaphotRefreshes && !lastScheduledWasSnapshotRefresh {
-            swap(&backgroundRefreshTime, &snapshotRefreshTime)
-        }
-        
-        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: backgroundRefreshTime, userInfo: nil) { (error: Error?) in
+        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
             
             if logRefreshTime {
-                BackgroundRefreshLogger.info("Scheduled next background refresh at \(self.formatted(scheduleTime: backgroundRefreshTime))")
+                BackgroundRefreshLogger.info("Scheduled next background refresh at \(self.formatted(scheduleTime: scheduleTime))")
             }
             
             if let error = error {
                 BackgroundRefreshLogger.info("Error occurred while scheduling background refresh: \(error.localizedDescription)")
-            }
-        }
-        
-        WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: snapshotRefreshTime, userInfo: nil) { (error: Error?) in
-            
-            if logRefreshTime {
-                BackgroundRefreshLogger.info("Scheduled next snapshot refresh at \(self.formatted(scheduleTime: snapshotRefreshTime))")
-            }
-            
-            if let error = error {
-                BackgroundRefreshLogger.info("Error occurred while scheduling snapshot refresh: \(error.localizedDescription)")
             }
         }
     }
