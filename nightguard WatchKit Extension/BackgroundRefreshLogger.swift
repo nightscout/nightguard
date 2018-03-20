@@ -8,6 +8,7 @@
 
 import Foundation
 
+// A debugging tool that keeps info about the nightscout data updates obtained through background tasks (URL sessions) or updates received from the phone app (that also relies on background fetch for refreshing its data).
 class BackgroundRefreshLogger {
     
     static var logs: [String] = []
@@ -118,6 +119,7 @@ class BackgroundRefreshLogger {
             
             // reset log data
             logs.removeAll()
+            receivedData.removeAll()
             
             backgroundRefreshes = 0
             backgroundURLSessions = 0
