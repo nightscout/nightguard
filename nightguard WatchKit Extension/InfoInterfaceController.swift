@@ -43,13 +43,19 @@ class InfoInterfaceController: WKInterfaceController {
         cachedValuesLabel.setText("\(todaysBgData.count) / \(yesterdaysBgData.count)")
         
         // background updates
-        var text = "Complication updates (initiated from phone app): \(BackgroundRefreshLogger.phoneUpdates)"
+        var text = "📱Updates initiated by phone app: \(BackgroundRefreshLogger.phoneUpdates)"
         text += "\nNew data: \(BackgroundRefreshLogger.phoneUpdatesWithNewData), existing: \(BackgroundRefreshLogger.phoneUpdatesWithSameData), old: \(BackgroundRefreshLogger.phoneUpdatesWithOldData)\n"
         
-        text += "\nBackground refreshes: \(BackgroundRefreshLogger.backgroundRefreshes) (\(BackgroundRefreshLogger.formattedBackgroundRefreshesPerHour) per hour)"
+        text += "\n⌚Background updates: \(BackgroundRefreshLogger.backgroundRefreshes) (\(BackgroundRefreshLogger.formattedBackgroundRefreshesPerHour) per hour)"
         text += "\nBackground URL sessions: \(BackgroundRefreshLogger.backgroundURLSessions) (\(BackgroundRefreshLogger.formattedBackgroundRefreshesStartingURLSessions))"
         
         text += "\nNew data: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData), existing: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData), old: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData)\n"
+        
+        if !BackgroundRefreshLogger.receivedData.isEmpty {
+            text += "\nReceived data:\n"
+            text += BackgroundRefreshLogger.receivedData.joined(separator: "\n")
+            text += "\n"
+        }
         
         if !BackgroundRefreshLogger.logs.isEmpty {
             text += "\nLogs from background tasks:\n"

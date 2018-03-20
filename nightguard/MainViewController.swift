@@ -305,7 +305,6 @@ class MainViewController: UIViewController {
                     self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
                     
                     WatchService.singleton.sendToWatchCurrentNightwatchData()
-                    WatchService.singleton.updateWatchComplicationIfPossible()
                 }
             }
         })

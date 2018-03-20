@@ -127,7 +127,11 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         return Float(difference)
     }
     
-    func getRelativeDateTextProvider(for time: NSNumber) -> CLKRelativeDateTextProvider {
+    func getRelativeDateTextProvider(for time: NSNumber) -> CLKTextProvider {
+        
+        guard time.doubleValue > 0 else {
+            return CLKSimpleTextProvider(text: "???")
+        }
         
         let date: Date = Date(timeIntervalSince1970: time.doubleValue / 1000)
         

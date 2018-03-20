@@ -59,7 +59,9 @@ class AppMessageService : NSObject, WCSessionDelegate {
         if let _ = applicationContext["nightscoutData"] {
             if #available(watchOSApplicationExtension 3.0, *) {
                 if let extensionDelegate = WKExtension.shared().delegate as? ExtensionDelegate {
-                    extensionDelegate.handleNightscoutDataMessage(applicationContext)
+                    DispatchQueue.main.async {
+                        extensionDelegate.handleNightscoutDataMessage(applicationContext)
+                    }
                 }
             }
         }

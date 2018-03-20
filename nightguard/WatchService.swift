@@ -44,45 +44,49 @@ class WatchService {
     
     func sendToWatchCurrentNightwatchData() {
         
-//        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-//        if lastSentNightscoutDataTime != nightscoutData.time {
-//
-//            try? WCSession.default.updateApplicationContext(
-//                WatchMessageService.singleton.currentNightscoutDataAsMessage
-//            )
-//
-//            self.lastSentNightscoutDataTime = nightscoutData.time
-//        }
-    }
-    
-    func updateWatchComplicationIfPossible() {
-        
-        // update ONLY if the phone app has new nightscout data
-        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        guard !currentNightscoutData.isOlderThan5Minutes() else {
+        // send ONLY if the phone app has new nightscout data
+        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        guard !nightscoutData.isOlderThan5Minutes() else {
             return
         }
         
+        // the session must be active in order to send data
         if #available(iOS 9.3, *) {
-            guard WCSession.default.activationState == .activated && WCSession.default.isComplicationEnabled else {
+            guard WCSession.default.activationState == .activated else {
                 return
             }
         }
         
-        // respect the update rate, do it from time to time (30 minutes)
-        let calendar = Calendar.current
-        if let lastWatchComplicationUpdateTime = self.lastWatchComplicationUpdateTime, calendar.date(byAdding: .minute, value: self.watchComplicationUpdateRate, to: lastWatchComplicationUpdateTime)! >= Date() {
-            
-            // last watch complication update was more recent than update rate, will skip updating it now!
-            return
+        // send ONCE as application context!
+        if lastSentNightscoutDataTime != nightscoutData.time {
+
+            try? WCSession.default.updateApplicationContext(
+                WatchMessageService.singleton.currentNightscoutDataAsMessage
+            )
+
+            self.lastSentNightscoutDataTime = nightscoutData.time
         }
         
-        // update!
-        WCSession.default.transferCurrentComplicationUserInfo(
-            WatchMessageService.singleton.currentNightscoutDataAsMessage
-        )
+        // NOTE: complication update is not needed anymore, as we provide data from 5 in 5 minutes on application context (if we send complication updates also, both updates will arrive at the same time... so useless to do it!)
         
-        // and keep the update time
-        self.lastWatchComplicationUpdateTime = Date()
+//        // update complication also (but respect the update rate - 30 minutes)
+//        if WCSession.default.isComplicationEnabled {
+//
+//            if let lastWatchComplicationUpdateTime = self.lastWatchComplicationUpdateTime, Calendar.current.date(byAdding: .minute, value: self.watchComplicationUpdateRate, to: lastWatchComplicationUpdateTime)! >= Date() {
+//
+//                // do nothing, last watch complication update was more recent than update rate, will skip updating it now!
+//            } else {
+//
+//                // send in user info along the nightscout data a flag to signal that we want to update complications also
+//                var userInfo = WatchMessageService.singleton.currentNightscoutDataAsMessage
+//                userInfo["updateComplication"] = true
+//
+//                // update!
+//                WCSession.default.transferCurrentComplicationUserInfo(userInfo)
+//
+//                // and keep the update time
+//                self.lastWatchComplicationUpdateTime = Date()
+//            }
+//        }
     }
 }

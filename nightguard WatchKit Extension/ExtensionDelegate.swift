@@ -99,7 +99,7 @@ extension ExtensionDelegate {
     @available(watchOSApplicationExtension 3.0, *)
     func handleWatchConnectivityBackgroundTask (_ watchConnectivityBackgroundTask: WKWatchConnectivityRefreshBackgroundTask) {
     
-        print("WKWatchConnectivityRefreshBackgroundTask received, what can I do now?!?")
+        BackgroundRefreshLogger.info("WKWatchConnectivityRefreshBackgroundTask received")
         watchConnectivityBackgroundTask.setTaskCompleted()
     }
     
@@ -152,7 +152,11 @@ extension ExtensionDelegate {
             return false
         }
         
-        let updateResult = updateNightscoutData(nightscoutData)
+        let updateComplication = message["updateComplication"] as? Bool ?? false
+        BackgroundRefreshLogger.info("📱Updating nightscout data (update complication: \(updateComplication))")
+        
+        let updateResult = updateNightscoutData(nightscoutData, updateComplication: true) // always update complication!
+        BackgroundRefreshLogger.nightscoutDataReceived(nightscoutData, updateResult: updateResult, updateSource: .phoneApp)
         switch updateResult {
         case .updateDataIsOld:
             BackgroundRefreshLogger.phoneUpdatesWithOldData += 1
@@ -194,7 +198,16 @@ extension ExtensionDelegate {
         }
     }
     
-    fileprivate enum UpdateResult {
+    enum UpdateSource {
+        
+        // the update was initiated by phone app
+        case phoneApp
+        
+        // the update was initiated by watch (background URL session)
+        case urlSession
+    }
+    
+    enum UpdateResult {
         
         // update succeeded
         case updated
@@ -205,7 +218,7 @@ extension ExtensionDelegate {
         // update data is older than current nightscout data
         case updateDataIsOld
     }
-    fileprivate func updateNightscoutData(_ newNightscoutData: NightscoutData) -> UpdateResult {
+    fileprivate func updateNightscoutData(_ newNightscoutData: NightscoutData, updateComplication: Bool = true) -> UpdateResult {
         
         // check the data that already exists on the watch... maybe is newer that the received data
         let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
@@ -228,7 +241,10 @@ extension ExtensionDelegate {
 //        if #available(watchOSApplicationExtension 3.0, *) {
 //            scheduleSnapshotRefresh()
 //        }
-        updateComplication()
+        
+        if updateComplication {
+            self.updateComplication()
+        }
         
         return .updated
     }
@@ -280,6 +296,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
                 }
                 
                 let updateResult = self.updateNightscoutData(newNightscoutData)
+                BackgroundRefreshLogger.nightscoutDataReceived(newNightscoutData, updateResult: updateResult, updateSource: .urlSession)
                 switch updateResult {
                 case .updateDataIsOld:
                     BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData += 1
@@ -301,26 +318,19 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         print("Background url session completed with error: \(error)")
         if let error = error {
             BackgroundRefreshLogger.info("URL session did complete with error: \(error)")
+            completePendingURLSessionTask()
         }
         
         // keep the session error (if any!)
         self.sessionError = error
-        
-        completePendingURLSessionTask()
     }
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         BackgroundRefreshLogger.info("URL session did finish events")
-        completePendingURLSessionTask()
+//        completePendingURLSessionTask()
     }
     
     fileprivate func completePendingURLSessionTask() {
-        
-        if self.backgroundSession != nil {
-            
-            // log only ONCE, as this method can be called more than once
-             BackgroundRefreshLogger.info("URL session COMPLETED")
-        }
         
         self.backgroundSession?.invalidateAndCancel()
         self.backgroundSession = nil
@@ -329,20 +339,22 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
             (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
         }
         self.pendingBackgroundURLTask = nil
+        
+        BackgroundRefreshLogger.info("URL session COMPLETED")
     }
     
     func scheduleURLSession() -> (URLSession, URLSessionDownloadTask)? {
-        
-        let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: NSUUID().uuidString)
-        backgroundConfigObject.sessionSendsLaunchEvents = true
-//        backgroundConfigObject.timeoutIntervalForRequest = 15 // 10 seconds timeout for request (after 15 seconds, the task is finished and a crash occurs, so... we have to stop it somehow!)
-//        backgroundConfigObject.timeoutIntervalForResource = 15 // the same for retry interval (no retries!)
-        let backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
         
         let baseUri = UserDefaultsRepository.readBaseUri()
         if baseUri == "" {
             return nil
         }
+        
+        let backgroundConfigObject = URLSessionConfiguration.background(withIdentifier: NSUUID().uuidString)
+        backgroundConfigObject.sessionSendsLaunchEvents = true
+//        backgroundConfigObject.timeoutIntervalForRequest = 15 // 15 seconds timeout for request (after 15 seconds, the task is finished and a crash occurs, so... we have to stop it somehow!)
+//        backgroundConfigObject.timeoutIntervalForResource = 15 // the same for retry interval (no retries!)
+        let backgroundSession = URLSession(configuration: backgroundConfigObject, delegate: self, delegateQueue: nil)
         
         let downloadURL = URL(string: baseUri + "/pebble")!
         let downloadTask = backgroundSession.downloadTask(with: downloadURL)

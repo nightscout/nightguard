@@ -83,18 +83,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // if the user keeps the display active for a longer time
         createNewTimerSingleton()
         
-        // check if we have old nightscout data...
-        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        if isFirstActivation || currentNightscoutData.isOlderThan5Minutes() {
-            
-            // if yes, manually refresh the gui by fireing the timer
-            timerDidEnd(timer)
-        } else {
-            
-            // otwherwise just update the gui with current data (will update the time, etc., but will not display the activity indicator & error panel)
-            updateInterface(withNightscoutData: currentNightscoutData, error: nil)
-        }
-        
+        // manually refresh the gui by fireing the timer
+        updateNightscoutData(forceRefresh: isFirstActivation)
+                
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state
         if #available(watchOSApplicationExtension 4.0, *) {
@@ -186,27 +177,35 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    // check whether new Values should be retrieved
-    @objc func timerDidEnd(_ timer:Timer){
+    fileprivate func updateNightscoutData(forceRefresh: Bool) {
         assureThatBaseUriIsExisting()
         assureThatDisplayUnitsIsDefined()
         
-        loadAndPaintCurrentBgData()
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        if forceRefresh || currentNightscoutData.isOlderThan5Minutes() {
+            
+            // load current bg data, we probably have old data...
+            loadAndPaintCurrentBgData()
+        } else {
+            
+            // otwherwise just update the gui with current data (will update the time, etc., but will not display the activity indicator & error panel)
+            updateInterface(withNightscoutData: currentNightscoutData, error: nil)
+            playAlarm(currentNightscoutData: currentNightscoutData)
+        }
+        
         loadAndPaintChartData(forceRepaint: false)
         AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
     
-    @IBAction func onDoubleTapped(_ sender: Any) {
-        
-        // Start the timer to retrieve new bgValues and update the ui periodically
-        // if the user keeps the display active for a longer time
-        createNewTimerSingleton()
-        
-        // manually refresh the gui by fireing the timer
-        timerDidEnd(timer)
+    // check whether new Values should be retrieved
+    @objc func timerDidEnd(_ timer:Timer){
+        updateNightscoutData(forceRefresh: false)
     }
     
+    @IBAction func onSpriteKitViewDoubleTapped(_ sender: Any) {
+        updateNightscoutData(forceRefresh: true)
+    }
     
     // this has to be created programmatically, since only this way
     // the item Zoom/Scroll can be toggled
