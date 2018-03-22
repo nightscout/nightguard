@@ -13,9 +13,15 @@ class WatchService {
     
     static let singleton = WatchService()
     
+    // watch app update frequency (when have new nightscout data)
+    var watchUpdateRate: Int = 5 // minutes
+    
+    // watch app complication update (when have new nightscout data)
+    var watchComplicationUpdateRate: Int = 30 // minutes (50 complication update per day guaranteed by Apple...)
+    
     private var lastSentNightscoutDataTime: NSNumber?
+    private var lastWatchUpdateTime: Date?
     private var lastWatchComplicationUpdateTime: Date?
-    private let watchComplicationUpdateRate: Int = 30 // minutes (50 update per day guaranteed by Apple...)
     
     func sendToWatch(_ units : Units) {
         let applicationDict = ["units" : units.rawValue]
@@ -57,14 +63,22 @@ class WatchService {
             }
         }
         
-        // send ONCE as application context!
         if lastSentNightscoutDataTime != nightscoutData.time {
+            // Assuring we are sending ONLY once a nightscout data...
+            // ... and respecting the update rate!
+            if let lastWatchUpdateTime = self.lastWatchUpdateTime, Calendar.current.date(byAdding: .minute, value: self.watchUpdateRate, to: lastWatchUpdateTime)! >= Date() {
+                
+                // do nothing, last watch update was more recent than update rate, will skip updating it now!
+            } else {
+                
+                // do update!
+                try? WCSession.default.updateApplicationContext(
+                    WatchMessageService.singleton.currentNightscoutDataAsMessage
+                )
 
-            try? WCSession.default.updateApplicationContext(
-                WatchMessageService.singleton.currentNightscoutDataAsMessage
-            )
-
-            self.lastSentNightscoutDataTime = nightscoutData.time
+                self.lastSentNightscoutDataTime = nightscoutData.time
+                self.lastWatchUpdateTime = Date()
+            }
         }
         
         // NOTE: complication update is not needed anymore, as we provide data from 5 in 5 minutes on application context (if we send complication updates also, both updates will arrive at the same time... so useless to do it!)

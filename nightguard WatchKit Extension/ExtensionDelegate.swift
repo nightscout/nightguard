@@ -262,6 +262,11 @@ extension ExtensionDelegate {
             return
         }
         
+//        if self.backgroundSession != nil {
+//            BackgroundRefreshLogger.info("URL session still exists, we'll kill it and start a new one!")
+//            completePendingURLSessionTask()
+//        }
+        
         guard let (backgroundSession, downloadTask) = scheduleURLSession() else {
             BackgroundRefreshLogger.info("URL session cannot be created, probably base uri is not configured!")
             return
