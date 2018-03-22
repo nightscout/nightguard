@@ -32,7 +32,7 @@ class BackgroundRefreshScheduler {
     func schedule() {
         
         guard BackgroundRefreshSettings.enableBackgroundTasks else {
-            BackgroundRefreshLogger.info("Background tasks are DISABLED")
+            print("Background tasks are disabled!")
             return
         }
         
