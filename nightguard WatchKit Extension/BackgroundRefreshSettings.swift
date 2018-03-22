@@ -8,8 +8,11 @@
 
 import Foundation
 
-/// All the configurable aspects related to background updates.
+/// All the configurable aspects related to background updates, used in phone & watch apps.
 class BackgroundRefreshSettings {
+    
+    // the minimum background fetch interval for updating nightscout data while the phone app is in background (used in phone app)
+    static let backgroundFetchInterval: Int = 5 /* minutes */
     
     // enable background tasks in watch app that will schedule the URL sessions for requesting new nightscout data (used in watch app)
     static let enableBackgroundTasks: Bool = true
@@ -22,7 +25,7 @@ class BackgroundRefreshSettings {
     static let enableWatchUpdate: Bool = true
     
     // watch app update frequency, initiated by phone app when receives new nightscout data (used in phone app)
-    static let watchUpdateRate: Int = 5 /* minutes */
+    static let watchUpdateRate: Int = 0 /* minutes - if 0, then no update rate is used, the watch is updated each time a new nightscout data appears */
     
     // enable watch complication updates from phone app when receives new nightscout data (used in phone app)
     // NOTE: complication update is not really needed anymore if using regular watch updates (because both updates will arrive at same time, providing the same nightscout data - consuming only the watch app's background quota...)
