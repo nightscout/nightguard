@@ -48,7 +48,7 @@ class BackgroundRefreshLogger {
     }
     
     private static var logStartTime: Date?
-    private static let showLogs = (Bundle.main.infoDictionary?["ShowLogsFromBackgroundRefreshTasks"] as? Bool) ?? false
+    private static let showLogs = BackgroundRefreshSettings.showBackgroundTasksLogs
     
     static func info(_ text: String) {
         resetStatsDataIfNeeded()

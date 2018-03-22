@@ -14,10 +14,10 @@ class WatchService {
     static let singleton = WatchService()
     
     // watch app update frequency (when have new nightscout data)
-    var watchUpdateRate: Int = 5 // minutes
+    private let watchUpdateRate: Int = BackgroundRefreshSettings.watchUpdateRate
     
     // watch app complication update (when have new nightscout data)
-    var watchComplicationUpdateRate: Int = 30 // minutes (50 complication update per day guaranteed by Apple...)
+    private let watchComplicationUpdateRate: Int = BackgroundRefreshSettings.watchComplicationUpdateRate
     
     private var lastSentNightscoutDataTime: NSNumber?
     private var lastWatchUpdateTime: Date?
@@ -63,25 +63,48 @@ class WatchService {
             }
         }
         
-        if lastSentNightscoutDataTime != nightscoutData.time {
-            // Assuring we are sending ONLY once a nightscout data...
-            // ... and respecting the update rate!
-            if let lastWatchUpdateTime = self.lastWatchUpdateTime, Calendar.current.date(byAdding: .minute, value: self.watchUpdateRate, to: lastWatchUpdateTime)! >= Date() {
-                
-                // do nothing, last watch update was more recent than update rate, will skip updating it now!
-            } else {
-                
-                // do update!
-                try? WCSession.default.updateApplicationContext(
-                    WatchMessageService.singleton.currentNightscoutDataAsMessage
-                )
+        // update watch (if configured so)
+        if BackgroundRefreshSettings.enableWatchUpdate {
+            
+            if lastSentNightscoutDataTime != nightscoutData.time {
+                // Assuring we are sending ONLY once a nightscout data...
+                // ... and respecting the update rate!
+                if let lastWatchUpdateTime = self.lastWatchUpdateTime, Calendar.current.date(byAdding: .minute, value: self.watchUpdateRate, to: lastWatchUpdateTime)! >= Date() {
+                    
+                    // do nothing, last watch update was more recent than update rate, will skip updating it now!
+                } else {
+                    
+                    // do update!
+                    try? WCSession.default.updateApplicationContext(
+                        WatchMessageService.singleton.currentNightscoutDataAsMessage
+                    )
 
-                self.lastSentNightscoutDataTime = nightscoutData.time
-                self.lastWatchUpdateTime = Date()
+                    self.lastSentNightscoutDataTime = nightscoutData.time
+                    self.lastWatchUpdateTime = Date()
+                }
             }
         }
         
-        // NOTE: complication update is not needed anymore, as we provide data from 5 in 5 minutes on application context (if we send complication updates also, both updates will arrive at the same time... so useless to do it!)
+        // update watch complication (if configured so)
+        if BackgroundRefreshSettings.enableWatchComplicationUpdate && WCSession.default.isComplicationEnabled {
+
+            if let lastWatchComplicationUpdateTime = self.lastWatchComplicationUpdateTime, Calendar.current.date(byAdding: .minute, value: self.watchComplicationUpdateRate, to: lastWatchComplicationUpdateTime)! >= Date() {
+
+                // do nothing, last watch complication update was more recent than update rate, will skip updating it now!
+            } else {
+
+                // send in user info along the nightscout data a flag to signal that we want to update complications also
+                var userInfo = WatchMessageService.singleton.currentNightscoutDataAsMessage
+                userInfo["updateComplication"] = true
+
+                // update!
+                WCSession.default.transferCurrentComplicationUserInfo(userInfo)
+
+                // and keep the update time
+                self.lastWatchComplicationUpdateTime = Date()
+            }
+        }
+    }
         
 //        // update complication also (but respect the update rate - 30 minutes)
 //        if WCSession.default.isComplicationEnabled {

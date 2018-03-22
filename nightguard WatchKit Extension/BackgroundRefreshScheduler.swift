@@ -23,14 +23,18 @@ class BackgroundRefreshScheduler {
     
     static let instance = BackgroundRefreshScheduler()
     
-    var refreshRate: Int = 10 // every 10 minutes by default (even if the watchOS will not do it that often...)
-    
+    private let refreshRate: Int = BackgroundRefreshSettings.backgroundTaskScheduleRate
     private var lastScheduledTime: Date?
     
     private init() {
     }
     
     func schedule() {
+        
+        guard BackgroundRefreshSettings.enableBackgroundTasks else {
+            BackgroundRefreshLogger.info("Background tasks are DISABLED")
+            return
+        }
         
         // obtain the refresh time
         let scheduleTime = nextScheduleTime(refreshRate: self.refreshRate)
