@@ -117,8 +117,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let _ = error {
                 completionHandler(.failed)
             } else {
-                completionHandler(.newData)
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
+                completionHandler(.newData)
             }
         }
         
