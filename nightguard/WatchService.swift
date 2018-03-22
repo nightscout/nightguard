@@ -52,7 +52,7 @@ class WatchService {
         
         // send ONLY if the phone app has new nightscout data
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        guard !nightscoutData.isOlderThan5Minutes() else {
+        guard !nightscoutData.isOlderThanXMinutes(15) else {
             return
         }
         
