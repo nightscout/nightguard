@@ -27,8 +27,6 @@ class WatchMessageService : NSObject, WCSessionDelegate {
         
         if message["requestBaseUri"] != nil {
             replyHandler(["baseUri": UserDefaultsRepository.readBaseUri()])
-        } else if message["requestNightscoutData"] != nil {            
-            replyHandler(currentNightscoutDataAsMessage)
         }
     }
     
