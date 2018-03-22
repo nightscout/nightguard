@@ -152,6 +152,11 @@ extension ExtensionDelegate {
             return false
         }
         
+        guard !nightscoutData.isOlderThanXMinutes(60) else {
+            BackgroundRefreshLogger.info("📱Rejected nightscout data (>1hr old!)")
+            return false
+        }
+
         let updateComplication = message["updateComplication"] as? Bool ?? false
         BackgroundRefreshLogger.info("📱Updating nightscout data (update complication: \(updateComplication))")
         
