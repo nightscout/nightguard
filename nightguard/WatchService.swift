@@ -105,25 +105,4 @@ class WatchService {
             }
         }
     }
-        
-//        // update complication also (but respect the update rate - 30 minutes)
-//        if WCSession.default.isComplicationEnabled {
-//
-//            if let lastWatchComplicationUpdateTime = self.lastWatchComplicationUpdateTime, Calendar.current.date(byAdding: .minute, value: self.watchComplicationUpdateRate, to: lastWatchComplicationUpdateTime)! >= Date() {
-//
-//                // do nothing, last watch complication update was more recent than update rate, will skip updating it now!
-//            } else {
-//
-//                // send in user info along the nightscout data a flag to signal that we want to update complications also
-//                var userInfo = WatchMessageService.singleton.currentNightscoutDataAsMessage
-//                userInfo["updateComplication"] = true
-//
-//                // update!
-//                WCSession.default.transferCurrentComplicationUserInfo(userInfo)
-//
-//                // and keep the update time
-//                self.lastWatchComplicationUpdateTime = Date()
-//            }
-//        }
-    }
 }
