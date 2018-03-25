@@ -48,15 +48,13 @@ class BackgroundRefreshLogger {
     }
     
     private static var logStartTime: Date?
+    private static var appStartTime: Date?
     private static let showLogs = BackgroundRefreshSettings.showBackgroundTasksLogs
     
     static func info(_ text: String) {
         resetStatsDataIfNeeded()
         
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "HH:mm:ss"
-        let dateString = timeFormatter.string(from: Date())
-        let logEntry = dateString + " " + text
+        let logEntry = formattedTime(Date()) + " " + text
         NSLog(logEntry)
         
         if showLogs {
@@ -66,10 +64,6 @@ class BackgroundRefreshLogger {
     
     
     static func nightscoutDataReceived(_ nightscoutData: NightscoutData, updateResult: ExtensionDelegate.UpdateResult, updateSource: ExtensionDelegate.UpdateSource) {
-        
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "HH:mm:ss"
-        let dateString = timeFormatter.string(from: Date())
         
         var updateSourceString = ""
         switch updateSource {
@@ -90,10 +84,9 @@ class BackgroundRefreshLogger {
         }
         
         let nightscoutDataTime = Date(timeIntervalSince1970: nightscoutData.time.doubleValue / 1000)
-        timeFormatter.dateFormat = "HH:mm"
-        let nightscoutDataTimeString = timeFormatter.string(from: nightscoutDataTime)
+        let nightscoutDataTimeString = formattedTime(nightscoutDataTime, showSeconds: false)
         
-        let logEntry = dateString + " " + updateSourceString + updateResultString + " (\(nightscoutData.sgv)@\(nightscoutDataTimeString))"
+        let logEntry = formattedTime(Date()) + " " + updateSourceString + updateResultString + " (\(nightscoutData.sgv)@\(nightscoutDataTimeString))"
         NSLog(logEntry)
         
         if showLogs {
@@ -104,12 +97,15 @@ class BackgroundRefreshLogger {
     
     private static func resetStatsDataIfNeeded() {
         
-        guard let logStartTime = BackgroundRefreshLogger.logStartTime else {
-            BackgroundRefreshLogger.logStartTime = Date()
+        let now = Date()
+        
+        guard let appStartTime = BackgroundRefreshLogger.appStartTime, let logStartTime = BackgroundRefreshLogger.logStartTime else {
+            BackgroundRefreshLogger.appStartTime = now
+            BackgroundRefreshLogger.logStartTime = now
+            info("App started!")
             return
         }
         
-        let now = Date()
         let unitFlags:Set<Calendar.Component> = [.day]
         let nowDateComponents = Calendar.current.dateComponents(unitFlags, from: logStartTime)
         let logStartDateComponents = Calendar.current.dateComponents(unitFlags, from: now)
@@ -117,19 +113,28 @@ class BackgroundRefreshLogger {
         // keep log data only for one day (from 00:00 until 23:59)
         if logStartDateComponents.day != nowDateComponents.day {
             
+            BackgroundRefreshLogger.logStartTime = now
+            
             // reset log data
             logs.removeAll()
+            info("Reseting logs (new day), but continuing stats from app start (\(formattedTime(appStartTime)))")
             receivedData.removeAll()
             
-            backgroundRefreshes = 0
-            backgroundURLSessions = 0
-            backgroundURLSessionUpdatesWithNewData = 0
-            backgroundURLSessionUpdatesWithSameData = 0
-            backgroundURLSessionUpdatesWithOldData = 0
-            phoneUpdates = 0
-            phoneUpdatesWithNewData = 0
-            phoneUpdatesWithSameData = 0
-            phoneUpdatesWithOldData = 0
+//            backgroundRefreshes = 0
+//            backgroundURLSessions = 0
+//            backgroundURLSessionUpdatesWithNewData = 0
+//            backgroundURLSessionUpdatesWithSameData = 0
+//            backgroundURLSessionUpdatesWithOldData = 0
+//            phoneUpdates = 0
+//            phoneUpdatesWithNewData = 0
+//            phoneUpdatesWithSameData = 0
+//            phoneUpdatesWithOldData = 0
         }
+    }
+    
+    private static func formattedTime(_ time: Date, showSeconds: Bool = true) -> String {
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = showSeconds ? "HH:mm:ss" : "HH:mm"
+        return timeFormatter.string(from: Date())
     }
 }
