@@ -147,6 +147,18 @@
                                 <fontDescription key="font" type="system" pointSize="10"/>
                             </variation>
                         </label>
+                        <label alignment="center" text="Background updates:" textAlignment="left" id="Gob-MJ-hux">
+                            <fontDescription key="font" type="system" pointSize="15"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="13"/>
+                            </variation>
+                        </label>
+                        <label alignment="center" text="0" numberOfLines="0" id="XcE-eq-aUV">
+                            <fontDescription key="font" type="system" pointSize="12"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="10"/>
+                            </variation>
+                        </label>
                         <button width="1" height="31" alignment="left" title="Close" id="J0t-oX-olu">
                             <connections>
                                 <action selector="doCloseAction" destination="wky-cb-ykJ" id="J6Y-PP-x8b"/>
@@ -154,6 +166,7 @@
                         </button>
                     </items>
                     <connections>
+                        <outlet property="backgroundUpdatesLabel" destination="XcE-eq-aUV" id="i3o-WH-bxk"/>
                         <outlet property="cachedValuesLabel" destination="IeJ-DT-Wcg" id="edG-OD-P0g"/>
                         <outlet property="serverUriLabel" destination="rQn-yu-ajp" id="chR-Cb-I8J"/>
                         <outlet property="versionLabel" destination="VJk-AO-PXu" id="9Je-rN-Q8U"/>
