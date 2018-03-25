@@ -39,6 +39,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         
         // keep myself in class property (see above why...)
         ExtensionDelegate.singleton = self
+        
+        BackgroundRefreshLogger.info("Application did finish launching")
+        if #available(watchOSApplicationExtension 3.0, *) {
+            scheduleBackgroundRefresh()
+        }
     }
 
     func activateWatchConnectivity() {
