@@ -15,9 +15,19 @@ class WatchMessageService : NSObject, WCSessionDelegate {
     
     static let singleton = WatchMessageService()
     
+    var currentNightscoutDataAsMessage: [String : Any] {
+        
+        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        let encodedNightscoutData = try? JSONEncoder().encode(nightscoutData)
+        return ["nightscoutData": encodedNightscoutData ?? Data()]
+    }
+    
     // This method gets called when the watch requests the baseUri from the Nightscout Backend
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-        replyHandler(["baseUri": UserDefaultsRepository.readBaseUri()])
+        
+        if message["requestBaseUri"] != nil {
+            replyHandler(["baseUri": UserDefaultsRepository.readBaseUri()])
+        }
     }
     
     @available(iOS 9.3, *)

@@ -25,6 +25,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var errorGroup: WKInterfaceGroup!
     @IBOutlet var activityIndicatorImage: WKInterfaceImage!
     
+    @IBOutlet var rawbgLabel: WKInterfaceLabel!
+    @IBOutlet var noiseLabel: WKInterfaceLabel!
+    @IBOutlet var rawValuesGroup: WKInterfaceGroup!
+    
     fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     
     // timer to check continuously for new bgValues
@@ -40,6 +44,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
     
     fileprivate var isActive: Bool = false
+    fileprivate var isFirstActivation: Bool = true
+    fileprivate var isRawValuesGroupHidden: Bool = false
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -71,6 +77,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     override func willActivate() {
         super.willActivate()
         
+        guard WKExtension.shared().applicationState == .active else {
+            return
+        }
+        
         isActive = true
         spriteKitView.isPaused = false
         
@@ -79,8 +89,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createNewTimerSingleton()
         
         // manually refresh the gui by fireing the timer
-        timerDidEnd(timer)
-        
+        updateNightscoutData(forceRefresh: isFirstActivation)
+                
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state
         if #available(watchOSApplicationExtension 4.0, *) {
@@ -91,6 +101,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         crownSequencer.delegate = self
         
         paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: false)
+        
+        // reset the first activation flag!
+        isFirstActivation = false
     }
     
     override func didAppear() {
@@ -169,27 +182,40 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    // check whether new Values should be retrieved
-    @objc func timerDidEnd(_ timer:Timer){
+    fileprivate func updateNightscoutData(forceRefresh: Bool) {
         assureThatBaseUriIsExisting()
         assureThatDisplayUnitsIsDefined()
         
-        loadAndPaintCurrentBgData()
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        if forceRefresh || currentNightscoutData.isOlderThan5Minutes() {
+            
+            // load current bg data, we probably have old data...
+            loadAndPaintCurrentBgData()
+        } else {
+            
+            // otwherwise just update the gui with current data (will update the time, etc., but will not display the activity indicator & error panel)
+            updateInterface(withNightscoutData: currentNightscoutData, error: nil)
+            playAlarm(currentNightscoutData: currentNightscoutData)
+        }
+        
         loadAndPaintChartData(forceRepaint: false)
         AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
     
-    @IBAction func onDoubleTapped(_ sender: Any) {
-        
-        // Start the timer to retrieve new bgValues and update the ui periodically
-        // if the user keeps the display active for a longer time
-        createNewTimerSingleton()
-        
-        // manually refresh the gui by fireing the timer
-        timerDidEnd(timer)
+    @IBAction func onBgGroupDoubleTapped(_ sender: Any) {
+        isRawValuesGroupHidden = !isRawValuesGroupHidden
+        rawValuesGroup.setHidden(isRawValuesGroupHidden)
     }
     
+    // check whether new Values should be retrieved
+    @objc func timerDidEnd(_ timer:Timer){
+        updateNightscoutData(forceRefresh: false)
+    }
+    
+    @IBAction func onSpriteKitViewDoubleTapped(_ sender: Any) {
+        updateNightscoutData(forceRefresh: true)
+    }
     
     // this has to be created programmatically, since only this way
     // the item Zoom/Scroll can be toggled
@@ -226,29 +252,35 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
                 newCachedYesterdaysBgValues.count != cachedYesterdaysBgValues.count
     }
     
+    func updateInterface(withNightscoutData nightscoutData: NightscoutData?, error: Error?) {
+        
+        // stop & hide the activity indicator
+        self.activityIndicatorImage.stopAnimating()
+        self.activityIndicatorImage.setHidden(true)
+        
+        if let error = error {
+            
+            // show errors ONLY when the interface is active (connection errors can be received while it is inactive... don't know for the moment why)
+            // NOTE: actually, the whole UI should be updated only when the interface is active...
+            if self.isActive {
+                self.errorLabel.setText("❌ \(error.localizedDescription)")
+                self.errorGroup.setHidden(false)
+            } else {
+                self.errorGroup.setHidden(true)
+            }
+        } else if let nightscoutData = nightscoutData {
+            self.errorGroup.setHidden(true)
+            self.paintCurrentBgData(currentNightscoutData: nightscoutData)
+        }
+    }
+    
     fileprivate func loadAndPaintCurrentBgData() {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
             DispatchQueue.main.async { [unowned self] in
-                
-                // stop & hide the activity indicator
-                self.activityIndicatorImage.stopAnimating()
-                self.activityIndicatorImage.setHidden(true)
-                
-                if let error = error {
-                    
-                    // show errors ONLY when the interface is active (connection errors can be received while it is inactive... don't know for the moment why)
-                    // NOTE: actually, the whole UI should be updated only when the interface is active...
-                    if self.isActive {
-                        self.errorLabel.setText("❌ \(error.localizedDescription)")
-                        self.errorGroup.setHidden(false)
-                    } else {
-                        self.errorGroup.setHidden(true)
-                    }
-                } else if let newNightscoutData = newNightscoutData {
-                    self.errorGroup.setHidden(true)
-                    self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                self.updateInterface(withNightscoutData: newNightscoutData, error: error)
+                if let newNightscoutData = newNightscoutData {
                     self.updateComplication()
                     self.playAlarm(currentNightscoutData: newNightscoutData)
                 }
@@ -296,6 +328,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         self.batteryLabel.setText(currentNightscoutData.battery)
         self.iobLabel.setText(currentNightscoutData.iob)
+        
+        self.rawbgLabel.setText(currentNightscoutData.rawbg)
+        self.noiseLabel.setText(currentNightscoutData.noise)
     }
     
     fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
