@@ -7,11 +7,14 @@
 //
 
 import ClockKit
-
+import WatchKit
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
     
     var oldNightscoutData : [NightscoutData] = []
+    
+    // this is a setting that can migrate in app settings screen: the user can preffer relative or absolute time as complication data (relative time is automatically updated by watchOS)
+    let useRelativeTimeWhenPossible: Bool = true
     
     /*
     func getNextRequestedUpdateDate(handler: @escaping (Date?) -> Void) {
@@ -38,22 +41,50 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .modularSmall:
             let modTemplate = CLKComplicationTemplateModularSmallStackText()
             
-            modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
-            modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)\(currentNightscoutData.bgdeltaString.cleanFloatValue)\(currentNightscoutData.bgdeltaArrow)")
+            if useRelativeTimeWhenPossible {
+                modTemplate.line1TextProvider = CLKSimpleTextProvider(text: getSgvAndArrow(currentNightscoutData))
+                modTemplate.line2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
+            } else {
+                modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
+                modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)\(currentNightscoutData.bgdeltaString.cleanFloatValue)\(currentNightscoutData.bgdeltaArrow)")
+            }
             template = modTemplate
         case .modularLarge:
-            let modTemplate = CLKComplicationTemplateModularLargeStandardBody()
-            
-            modTemplate.headerTextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-            modTemplate.body1TextProvider = CLKSimpleTextProvider(text: "")
-            modTemplate.body2TextProvider = CLKSimpleTextProvider(text: "")
-            if self.oldNightscoutData.count > 1 {
-                modTemplate.body1TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[1]))
+            if useRelativeTimeWhenPossible {
+                let modTemplate = CLKComplicationTemplateModularLargeColumns()
+                
+                modTemplate.row1Column1TextProvider = CLKSimpleTextProvider(text: getOneLine(currentNightscoutData))
+                modTemplate.row1Column2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
+                modTemplate.row2Column1TextProvider = CLKSimpleTextProvider(text: "")
+                modTemplate.row2Column2TextProvider = CLKSimpleTextProvider(text: "")
+                modTemplate.row3Column1TextProvider = CLKSimpleTextProvider(text: "")
+                modTemplate.row3Column2TextProvider = CLKSimpleTextProvider(text: "")
+                if self.oldNightscoutData.count > 1 {
+                    let nightscoutData = self.oldNightscoutData[1]
+                    modTemplate.row2Column1TextProvider = CLKSimpleTextProvider(text: getOneLine(nightscoutData))
+                    modTemplate.row2Column2TextProvider = getRelativeDateTextProvider(for: nightscoutData.time)
+                }
+                if self.oldNightscoutData.count > 2 {
+                    let nightscoutData = self.oldNightscoutData[2]
+                    modTemplate.row3Column1TextProvider = CLKSimpleTextProvider(text: getOneLine(nightscoutData))
+                    modTemplate.row3Column2TextProvider = getRelativeDateTextProvider(for: nightscoutData.time)
+                }
+                
+                template = modTemplate
+            } else {
+                let modTemplate = CLKComplicationTemplateModularLargeStandardBody()
+                
+                modTemplate.headerTextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                modTemplate.body1TextProvider = CLKSimpleTextProvider(text: "")
+                modTemplate.body2TextProvider = CLKSimpleTextProvider(text: "")
+                if self.oldNightscoutData.count > 1 {
+                    modTemplate.body1TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[1]))
+                }
+                if self.oldNightscoutData.count > 2 {
+                    modTemplate.body2TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[2]))
+                }
+                template = modTemplate
             }
-            if self.oldNightscoutData.count > 2 {
-                modTemplate.body2TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[2]))
-            }
-            template = modTemplate
         case .utilitarianSmall:
             let modTemplate = CLKComplicationTemplateUtilitarianSmallFlat()
             modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
@@ -99,6 +130,24 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         return "\(data.hourAndMinutes) \(data.sgv)\(data.bgdeltaString.cleanFloatValue)\(data.bgdeltaArrow)"
     }
     
+    // Displays 113 ↗ +2
+    func getOneLine(_ data : NightscoutData) -> String {
+        return "\(getSgvAndArrow(data))\t\(data.bgdeltaString.cleanFloatValue)"
+    }
+    
+    func getSgvAndArrow(_ data: NightscoutData) -> String {
+        
+        // compact arrow to one character (space requirements!)
+        var bgdeltaArrow = data.bgdeltaArrow
+        if bgdeltaArrow == "↑↑" {
+            bgdeltaArrow = "⇈"
+        } else if bgdeltaArrow == "↓↓" {
+            bgdeltaArrow = "⇊"
+        }
+        
+        return [data.sgv, bgdeltaArrow].joined(separator: " ")
+    }
+    
     // If the age is older than 59 minutes => return 60 in that case
     func getAgeOfDataInMinutes(_ time : NSNumber) -> Float {
         
@@ -108,6 +157,22 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             return 60
         }
         return Float(difference)
+    }
+    
+    func getRelativeDateTextProvider(for time: NSNumber) -> CLKTextProvider {
+        
+        guard time.doubleValue > 0 else {
+            return CLKSimpleTextProvider(text: "???")
+        }
+        
+        let date: Date = Date(timeIntervalSince1970: time.doubleValue / 1000)
+        
+        // trick: we'll adjust the time with one minute to keep the complication relative time in sync with the minutes shown in the app
+        let calendar = Calendar.current
+        let adjustedDate = calendar.date(byAdding: .minute, value: 1, to: date)!
+        
+        let isOlderThanTwoHours = getAgeOfDataInMinutes(time) >= 120
+        return CLKRelativeDateTextProvider(date: adjustedDate, style: .natural, units: isOlderThanTwoHours ? .hour : .minute)
     }
     
     // MARK: - Placeholder Templates

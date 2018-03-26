@@ -314,7 +314,6 @@ class NightscoutService {
                 let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
                 
                 let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
-                let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
                 let time = currentBgs.object(forKey: "datetime") as! NSNumber
                 
                 let nightscoutData = NightscoutData()
@@ -339,10 +338,18 @@ class NightscoutService {
                 }
                 
                 nightscoutData.sgv = String(sgv)
-                nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
-                nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
-                nightscoutData.bgdelta = bgdelta!
                 nightscoutData.time = time
+                nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
+                
+                guard let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
+                else {
+                    nightscoutData.bgdeltaString = "?"
+                    nightscoutData.bgdelta = 0
+                    resultHandler(nightscoutData, nil)
+                    return
+                }
+                nightscoutData.bgdeltaString = self.direction(bgdelta) + String(format: "%.1f", bgdelta)
+                nightscoutData.bgdelta = bgdelta
                 
                 let cals = jsonDict.object(forKey: "cals") as? NSArray
                 let currentCals = cals?.firstObject as? NSDictionary

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import WatchKit
 import WatchConnectivity
 
 // This class handles values that are passed from the ios app.
@@ -53,6 +54,16 @@ class AppMessageService : NSObject, WCSessionDelegate {
             let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
             defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
             AlarmRule.alertIfBelowValue = alertIfBelowValue
+        }
+        
+        if let _ = applicationContext["nightscoutData"] {
+            if #available(watchOSApplicationExtension 3.0, *) {
+                if let extensionDelegate = WKExtension.shared().delegate as? ExtensionDelegate {
+                    DispatchQueue.main.async {
+                        extensionDelegate.handleNightscoutDataMessage(applicationContext)
+                    }
+                }
+            }
         }
     }
     
