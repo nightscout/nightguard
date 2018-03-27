@@ -101,7 +101,7 @@ class NightscoutCacheService: NSObject {
         
         todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData!)
             
-        if todaysBgData!.count == 0 || currentNightscoutData == nil || currentNightscoutData!.isOlderThan5Minutes() {
+        if todaysBgData!.count == 0 || currentNightscoutData == nil || currentNightscoutData!.isOlderThan5Minutes() || (currentNightscoutData!.time.doubleValue > (todaysBgData!.last?.timestamp ?? 0)) /* consider also the case when the current nightscout data is newer than newest "todays data" (are out of sync because probably the ns data was obtained while the app was in background) */ {
             
             NightscoutService.singleton.readTodaysChartData(oldValues : todaysBgData!, {(todaysBgData) -> Void in
                 
