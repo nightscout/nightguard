@@ -28,6 +28,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     var backgroundSession: URLSession?
     var downloadTask: URLSessionDownloadTask?
     var sessionError: Error?
+    var sessionStartTime: Date?
     var userInfoAccess: NSSecureCoding?
     
     func applicationDidFinishLaunching() {
@@ -269,21 +270,27 @@ extension ExtensionDelegate {
 //            return
 //        }
         
-        guard self.backgroundSession == nil else {
-            BackgroundRefreshLogger.info("URL session already exists, cannot start new one!")
-            return
+        if self.backgroundSession != nil {
+            
+            if let sessionStartTime = self.sessionStartTime, Calendar.current.date(byAdding: .minute, value: BackgroundRefreshSettings.urlSessionTaskTimeout, to: sessionStartTime)! > Date() {
+                
+                // URL session running.. we'll let it do its work!
+                BackgroundRefreshLogger.info("URL session already exists, cannot start a new one!")
+                return
+            } else {
+                
+                // timeout reached for URL session, we'll start a new one!
+                BackgroundRefreshLogger.info("URL session timeout exceeded, finishing current and starting a new one!")
+                completePendingURLSessionTask()
+            }
         }
-        
-//        if self.backgroundSession != nil {
-//            BackgroundRefreshLogger.info("URL session still exists, we'll kill it and start a new one!")
-//            completePendingURLSessionTask()
-//        }
         
         guard let (backgroundSession, downloadTask) = scheduleURLSession() else {
             BackgroundRefreshLogger.info("URL session cannot be created, probably base uri is not configured!")
             return
         }
         
+        self.sessionStartTime = Date()
         self.backgroundSession = backgroundSession
         self.downloadTask = downloadTask
         BackgroundRefreshLogger.backgroundURLSessions += 1
@@ -352,6 +359,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         self.backgroundSession?.invalidateAndCancel()
         self.backgroundSession = nil
         self.downloadTask = nil
+        self.sessionStartTime = nil
         if #available(watchOSApplicationExtension 3.0, *) {
             (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
         }
