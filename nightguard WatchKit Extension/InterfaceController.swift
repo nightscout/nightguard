@@ -55,6 +55,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         errorGroup.setHidden(true)
         
         createMenuItems()
+        
+        BackgroundRefreshLogger.info("InterfaceController is awake!")
     }
     
     fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
