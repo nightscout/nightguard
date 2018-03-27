@@ -44,6 +44,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         if #available(watchOSApplicationExtension 3.0, *) {
             scheduleBackgroundRefresh()
         }
+        AppMessageService.singleton.keepAwakePhoneApp()
     }
 
     func activateWatchConnectivity() {
@@ -64,6 +65,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         if #available(watchOSApplicationExtension 3.0, *) {
             scheduleBackgroundRefresh()
         }
+        AppMessageService.singleton.keepAwakePhoneApp()
     }
     
     func initializeApplicationDefaults() {
