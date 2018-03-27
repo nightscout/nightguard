@@ -102,7 +102,7 @@ class NightscoutCacheService: NSObject {
         todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData!)
             
         if todaysBgData!.count == 0 || currentNightscoutData == nil || currentNightscoutData!.isOlderThan5Minutes() 
-            || currentNightscoutWasFetchedInBackground(todaysBgData!) {
+            || currentNightscoutWasFetchedInBackground(todaysBgData: todaysBgData!) {
             
             NightscoutService.singleton.readTodaysChartData(oldValues : todaysBgData!, {(todaysBgData) -> Void in
                 
@@ -117,7 +117,7 @@ class NightscoutCacheService: NSObject {
         return todaysBgData!
     }
     
-    fileprivate func currentNightscoutWasFetchedInBackground(bgValues: todaysBgData!) -> Bool {
+    fileprivate func currentNightscoutWasFetchedInBackground(todaysBgData : [BloodSugar]) -> Bool {
         
         // consider also the case when the current nightscout data is newer than newest 
         // "todays data" (are out of sync because probably the ns data was obtained 
