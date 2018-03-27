@@ -35,6 +35,21 @@ class AppMessageService : NSObject, WCSessionDelegate {
         }
     }
     
+    func keepAwakePhoneApp() {
+        
+        // send a dummy message to keep the phone app awake (start the app if is not started)
+        if WCSession.isSupported() {
+            
+            let session = WCSession.default
+            if session.isReachable {
+                session.sendMessage(["keepAwake": ""], replyHandler: nil) { error in
+                    print(error)
+                    BackgroundRefreshLogger.info("Error received while trying to awake phone app: \(error)")
+                }
+            }
+        }
+    }
+    
     func updateValuesFromApplicationContext(_ applicationContext: [String : AnyObject]) {
         if let units = applicationContext["units"] as? String {
             UserDefaultsRepository.saveUnits(Units(rawValue: units)!)

@@ -26,11 +26,11 @@ class BackgroundRefreshLogger {
     static var phoneUpdatesWithOldData: Int = 0
     
     static var backgroundRefreshesPerHour: Double {
-        guard let logStartTime = BackgroundRefreshLogger.logStartTime else {
+        guard let appStartTime = BackgroundRefreshLogger.appStartTime else {
             return 0
         }
         
-        let minutes: Double = Date().timeIntervalSince(logStartTime) / 60
+        let minutes: Double = Date().timeIntervalSince(appStartTime) / 60
         let refreshesPerMinute = Double(backgroundRefreshes) / minutes
         return refreshesPerMinute * 60
     }
@@ -135,6 +135,6 @@ class BackgroundRefreshLogger {
     private static func formattedTime(_ time: Date, showSeconds: Bool = true) -> String {
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = showSeconds ? "HH:mm:ss" : "HH:mm"
-        return timeFormatter.string(from: Date())
+        return timeFormatter.string(from: time)
     }
 }
