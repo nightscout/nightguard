@@ -339,7 +339,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        print("Background url session completed with error: \(error)")
+        print("Background url session completed with error: \(String(describing: error))")
         if let error = error {
             BackgroundRefreshLogger.info("URL session did complete with error: \(error)")
             completePendingURLSessionTask()
