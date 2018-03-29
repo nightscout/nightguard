@@ -59,16 +59,35 @@ class AppMessageService : NSObject, WCSessionDelegate {
             UserDefaultsRepository.saveBaseUri(hostUri)
         }
         
+        var shouldRepaintCharts = false
         if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
             let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
             defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
             AlarmRule.alertIfAboveValue = alertIfAboveValue
+            
+            shouldRepaintCharts = true
         }
         
         if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
             let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
             defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
             AlarmRule.alertIfBelowValue = alertIfBelowValue
+            
+            shouldRepaintCharts = true
+        }
+        
+        if shouldRepaintCharts {
+            if #available(watchOSApplicationExtension 3.0, *) {
+                if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
+                    if WKExtension.shared().applicationState == .active {
+                        DispatchQueue.main.async {
+                            interfaceController.loadAndPaintChartData(forceRepaint: true)
+                        }
+                    } else {
+                        interfaceController.shouldRepaintChartsOnActivation = true
+                    }
+                }
+            }
         }
         
         if let _ = applicationContext["nightscoutData"] {
@@ -101,5 +120,15 @@ class AppMessageService : NSObject, WCSessionDelegate {
     @available(watchOS 2.0, *)
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any]) {
         updateValuesFromApplicationContext(userInfo as [String : AnyObject])
+    }
+    
+    @available(watchOS 2.0, *)
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        updateValuesFromApplicationContext(message as [String : AnyObject])
+    }
+    
+    @available(watchOS 2.0, *)
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Swift.Void) {
+        updateValuesFromApplicationContext(message as [String : AnyObject])
     }
 }
