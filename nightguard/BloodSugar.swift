@@ -19,6 +19,11 @@ class BloodSugar : NSCoder {
         self.timestamp = timestamp
     }
     
+    // when the noise is very strong, values are not computable... and we should exclude them from any logic & presentation
+    var isValid: Bool {
+        return self.value > 10
+    }
+    
     @objc required convenience init(coder decoder: NSCoder) {
 
         // only initialize if base values could be decoded
