@@ -24,19 +24,20 @@ class WatchService {
     private var lastWatchComplicationUpdateTime: Date?
     
     func sendToWatch(_ units : Units) {
+        
         let applicationDict = ["units" : units.rawValue]
-        WCSession.default.transferUserInfo(applicationDict)
+        sendOrTransmitToWatch(applicationDict)
     }
     
     func sendToWatch(_ alertIfBelowValue : Float, alertIfAboveValue : Float) {
         let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
                                    "alertIfAboveValue" : alertIfAboveValue]
-        WCSession.default.transferUserInfo(applicationDict)
+        sendOrTransmitToWatch(applicationDict)
     }
     
     func sendToWatch(_ hostUri : String) {
         let applicationDict = ["hostUri" : hostUri]
-        WCSession.default.transferUserInfo(applicationDict)
+        sendOrTransmitToWatch(applicationDict)
     }
     
     func sendToWatch(_ hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units) {
@@ -45,7 +46,7 @@ class WatchService {
              "alertIfBelowValue" : alertIfBelowValue,
              "alertIfAboveValue" : alertIfAboveValue,
              "units" : units.rawValue]
-        WCSession.default.transferUserInfo(applicationDict as [String : AnyObject])
+        sendOrTransmitToWatch(applicationDict)
     }
     
     func sendToWatchCurrentNightwatchData() {
@@ -103,6 +104,25 @@ class WatchService {
                 // and keep the update time
                 self.lastWatchComplicationUpdateTime = Date()
             }
+        }
+    }
+    
+    private func sendOrTransmitToWatch(_ message: [String : Any]) {
+        
+        // send message if watch is reachable
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(message, replyHandler: { data in
+                print("Received data: \(data)")
+            }, errorHandler: { error in
+                print(error)
+                
+                // transmit message on failure
+                try? WCSession.default.updateApplicationContext(message)
+            })
+        } else {
+            
+            // otherwise, transmit application context
+            try? WCSession.default.updateApplicationContext(message)
         }
     }
 }

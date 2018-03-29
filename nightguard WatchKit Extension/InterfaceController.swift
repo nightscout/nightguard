@@ -29,6 +29,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var noiseLabel: WKInterfaceLabel!
     @IBOutlet var rawValuesGroup: WKInterfaceGroup!
     
+    // set by AppMessageService when receiving data from phone app and charts should be repainted
+    var shouldRepaintChartsOnActivation = false
+    
     fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     
     // timer to check continuously for new bgValues
@@ -91,7 +94,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createNewTimerSingleton()
         
         // manually refresh the gui by fireing the timer
-        updateNightscoutData(forceRefresh: isFirstActivation)
+        updateNightscoutData(forceRefresh: isFirstActivation, forceRepaintCharts: shouldRepaintChartsOnActivation)
                 
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state
@@ -106,6 +109,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         // reset the first activation flag!
         isFirstActivation = false
+        // ... and the "should repaint charts" flag
+        shouldRepaintChartsOnActivation = false
     }
     
     override func didAppear() {
@@ -184,7 +189,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    fileprivate func updateNightscoutData(forceRefresh: Bool) {
+    fileprivate func updateNightscoutData(forceRefresh: Bool, forceRepaintCharts: Bool) {
         assureThatBaseUriIsExisting()
         assureThatDisplayUnitsIsDefined()
         
@@ -200,7 +205,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             playAlarm(currentNightscoutData: currentNightscoutData)
         }
         
-        loadAndPaintChartData(forceRepaint: false)
+        loadAndPaintChartData(forceRepaint: forceRepaintCharts)
         AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
@@ -212,11 +217,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer){
-        updateNightscoutData(forceRefresh: false)
+        updateNightscoutData(forceRefresh: false, forceRepaintCharts: false)
     }
     
     @IBAction func onSpriteKitViewDoubleTapped(_ sender: Any) {
-        updateNightscoutData(forceRefresh: true)
+        updateNightscoutData(forceRefresh: true, forceRepaintCharts: false)
     }
     
     // this has to be created programmatically, since only this way
@@ -335,7 +340,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.noiseLabel.setText(currentNightscoutData.noise)
     }
     
-    fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
+    /*fileprivate*/ func loadAndPaintChartData(forceRepaint : Bool) {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
