@@ -145,8 +145,12 @@ class NightscoutService {
                         bloodSugarColumn = 3
                     }
                 
-                    let bloodSugar = BloodSugar(value: Float(sgvRowArray[bloodSugarColumn])!, timestamp: Double(sgvRowArray[timestampColumn])!)
-                    bloodSugarArray.insert(bloodSugar, at: 0)
+                    if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
+                        if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
+                            let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
+                            bloodSugarArray.insert(bloodSugar, at: 0)
+                        }
+                    }
                 }
             }
             
@@ -255,7 +259,7 @@ class NightscoutService {
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
-    func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData) -> Void)) {
+    func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
         // Get the current data from REST-Call
         let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
         guard url != nil else {
@@ -269,11 +273,14 @@ class NightscoutService {
             guard error == nil else {
                 print("Error receiving Pepple Watch Data.")
                 print(error!)
+                resultHandler(nil, error)
                 return
             }
 
             guard data != nil else {
                 print("Pebble Watch Data was nil.")
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data Received from Pebble Watch API"])
+                resultHandler(nil, error)
                 return
             }
 
@@ -295,19 +302,25 @@ class NightscoutService {
         task.resume()
     }
     
-    public func extractData(data : Data, _ resultHandler : @escaping ((NightscoutData) -> Void)) {
+    public func extractData(data : Data, _ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
         
         do {
             let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
             guard let jsonDict :NSDictionary = json as? NSDictionary else {
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON received from Pebble Watch API"])
+                resultHandler(nil, error)
                 return
             }
-            let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
-            if (bgs.count > 0) {
-                let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
+            let bgs = jsonDict.object(forKey: "bgs") as? NSArray
+            guard bgs != nil else {
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. "])
+                resultHandler(nil, error)
+                return
+            }
+            if ((bgs?.count)! > 0) {
+                let currentBgs : NSDictionary = bgs!.object(at: 0) as! NSDictionary
                 
                 let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
-                let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
                 let time = currentBgs.object(forKey: "datetime") as! NSNumber
                 
                 let nightscoutData = NightscoutData()
@@ -332,15 +345,25 @@ class NightscoutService {
                 }
                 
                 nightscoutData.sgv = String(sgv)
-                nightscoutData.bgdeltaString = self.direction(bgdelta!) + String(format: "%.1f", bgdelta!)
-                nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
-                nightscoutData.bgdelta = bgdelta!
                 nightscoutData.time = time
+                nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
                 
-                resultHandler(nightscoutData)
+                guard let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
+                else {
+                    nightscoutData.bgdeltaString = "?"
+                    nightscoutData.bgdelta = 0
+                    resultHandler(nightscoutData, nil)
+                    return
+                }
+                nightscoutData.bgdeltaString = self.direction(bgdelta) + String(format: "%.1f", bgdelta)
+                nightscoutData.bgdelta = bgdelta
+                
+                resultHandler(nightscoutData, nil)
             }
         } catch {
             print("Catched unknown exception.")
+            let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error while extracting data from Pebble Watch API"])
+            resultHandler(nil, error)
             return
         }
     }

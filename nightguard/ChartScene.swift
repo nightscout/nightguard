@@ -21,12 +21,19 @@ class ChartScene : SKScene {
     var oldBloodSugarDays : [[BloodSugar]] = []
     // the maximum blood glucose value that will be displayed in the chart
     var maxYDisplayValue : CGFloat = 350
+    var infoLabelNode = SKLabelNode()
     
     init(size: CGSize, newCanvasWidth : CGFloat) {
-        super.init(size: size)
         
+        super.init(size: size)
+
         self.size = size
         self.backgroundColor = UIColor.black
+        
+        infoLabelNode.fontColor = UIColor.red
+        infoLabelNode.fontSize = CGFloat(15)
+        infoLabelNode.fontName = "System-Bold"
+
         initialPlacingOfChart()
         
         paintChart([[], []], newCanvasWidth: newCanvasWidth, maxYDisplayValue: 350, moveToLatestValue: false)
@@ -38,7 +45,8 @@ class ChartScene : SKScene {
     
     // maxYDisplayValue is the maximum Value that will be displayed in the chart.
     // Blood values that are higher will be set to maxYDisplayValue instead.
-    func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool, displayDaysLegend : Bool) {
+    func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool,
+                    displayDaysLegend : Bool, infoLabel : String) {
 
         //        let maxYDisplayValue : CGFloat = 250
         //        defaults.setFloat(Float(maxYDisplayValue), forKey: "maximumBloodGlucoseDisplayed")
@@ -66,10 +74,13 @@ class ChartScene : SKScene {
         }
         
         let chartTexture = SKTexture(image: chartImage!)
-        let changeTextureAction : SKAction = SKAction.setTexture(chartTexture)
+        let changeTextureAction = SKAction.setTexture(chartTexture)
         self.chartNode.run(changeTextureAction)
         self.chartNode.size = chartImage!.size
         self.chartNode.zPosition = 1
+        
+        infoLabelNode.text = infoLabel
+        infoLabelNode.zPosition = 1000
         
         if moveToLatestValue {
             let newXPosition = normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width * 2 / 3))
@@ -84,16 +95,21 @@ class ChartScene : SKScene {
     // Blood values that are higher will be set to maxYDisplayValue instead.
     func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool) {
 
-        paintChart(days, newCanvasWidth: newCanvasWidth, maxYDisplayValue: maxYDisplayValue, moveToLatestValue: moveToLatestValue, displayDaysLegend: true)
+        paintChart(days, newCanvasWidth: newCanvasWidth, maxYDisplayValue: maxYDisplayValue, moveToLatestValue: moveToLatestValue, displayDaysLegend: true, infoLabel: "")
     }
     
     fileprivate func initialPlacingOfChart() {
+        
         self.chartNode.anchorPoint = CGPoint(x: 0, y: 0)
         self.chartNode.position = CGPoint(x: 0, y: 0)
+        
+        self.infoLabelNode.position = CGPoint(x: self.size.width / 2, y: 23)
         
         self.removeAllChildren()
         self.insertChild(self.chartNode, at: 0)
         self.chartNode.zPosition = -1
+        self.addChild(infoLabelNode)
+        self.infoLabelNode.zPosition = 1000
     }
     
     fileprivate func boundLayerPos(_ aNewPosition: CGPoint) -> CGPoint {
@@ -139,7 +155,7 @@ class ChartScene : SKScene {
     
     // Called when the user pinches the display. Used to scale the maximum blood glucose value up
     // or down. This effectively zoom in or out on the chart.
-    func scale(_ scale : CGFloat, keepScale : Bool) {
+    func scale(_ scale : CGFloat, keepScale : Bool, infoLabelText : String) {
         
         let oldValue = maxYDisplayValue
         var scaleUnequalZero = scale
@@ -154,7 +170,7 @@ class ChartScene : SKScene {
             return
         }
         
-        paintChart(oldBloodSugarDays, newCanvasWidth: canvasWidth, maxYDisplayValue: newMaxYDisplayValue, moveToLatestValue: false)
+        paintChart(oldBloodSugarDays, newCanvasWidth: canvasWidth, maxYDisplayValue: newMaxYDisplayValue, moveToLatestValue: false, displayDaysLegend: false, infoLabel: infoLabelText)
         
         if keepScale {
             

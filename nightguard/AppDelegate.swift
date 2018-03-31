@@ -30,8 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         UITabBar.appearance().tintColor = UIColor.white
         
-        // This application should be called in background every 5 Minutes
-        UIApplication.shared.setMinimumBackgroundFetchInterval(5*60)
+        // This application should be called in background every X Minutes
+        UIApplication.shared.setMinimumBackgroundFetchInterval(
+            TimeInterval(BackgroundRefreshSettings.backgroundFetchInterval * 60)
+        )
         
         activateWatchConnectivity()
         initializeApplicationDefaults()
@@ -111,6 +113,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
         performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+        // just refresh the current nightscout data
+        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { _, error in
+            if let _ = error {
+                completionHandler(.failed)
+            } else {
+                WatchService.singleton.sendToWatchCurrentNightwatchData()
+                completionHandler(.newData)
+            }
+        }
         
         // This can be used to alarm even when the app is in the background
         // but this doesn't work very well - so removed it so far...

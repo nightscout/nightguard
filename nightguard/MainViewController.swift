@@ -24,7 +24,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var screenlockSwitch: UISwitch!
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var spriteKitView: UIView!
-
+    @IBOutlet weak var feedbackPanelView: UIView!
+    @IBOutlet weak var feedbackLabel: UILabel!
+    
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
     
@@ -74,6 +76,8 @@ class MainViewController: UIViewController {
         
         skView.addGestureRecognizer(panGesture)
         skView.addGestureRecognizer(pinchGesture)
+        
+        feedbackPanelView.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -125,9 +129,9 @@ class MainViewController: UIViewController {
     @objc func pinchGesture(_ recognizer : UIPinchGestureRecognizer) {
         
         if recognizer.state == UIGestureRecognizerState.ended {
-            chartScene.scale(recognizer.scale, keepScale: true)
+            chartScene.scale(recognizer.scale, keepScale: true, infoLabelText: "")
         } else {
-            chartScene.scale(recognizer.scale, keepScale: false)
+            chartScene.scale(recognizer.scale, keepScale: false, infoLabelText: "")
         }
     }
     
@@ -190,6 +194,11 @@ class MainViewController: UIViewController {
         } else {
             // stop the alarm immediatly here not to disturb others
             AlarmSound.muteVolume()
+            // For safety reasons: Unmute sound after 1 minute
+            // This prevents an unlimited snooze if the snooze button was touched accidentally.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
+                AlarmSound.unmuteVolume()
+            })
             showSnoozePopup()
         }
     }
@@ -284,11 +293,29 @@ class MainViewController: UIViewController {
     
     fileprivate func loadAndPaintCurrentBgData() {
         
-        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData) -> Void in
-            self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
+            
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.feedbackLabel.text = "❌ \(error.localizedDescription)"
+                    self.feedbackLabel.textColor = .red
+                    self.feedbackPanelView.isHidden = false
+                } else if let newNightscoutData = newNightscoutData {
+                    self.feedbackPanelView.isHidden = true
+                    self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                    
+                    WatchService.singleton.sendToWatchCurrentNightwatchData()
+                }
+            }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+        
+        // signal that we're loading new nightscout data...
+        // actually, it is NOT needed on phone app because we're updating data every 5 seconds
+//        self.feedbackLabel.text = "Loading..."
+//        self.feedbackLabel.textColor = .black
+//        self.feedbackPanelView.isHidden = false
     }
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {

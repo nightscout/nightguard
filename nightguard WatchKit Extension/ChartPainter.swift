@@ -134,8 +134,16 @@ class ChartPainter {
         }
         for currentPoint in 1...maxPoints-1 {
             
-            let beginOfLineYValue = calcYValue(Float(min(CGFloat(bgValues[currentPoint-1].value), value2: maxBgValue)))
-            let endOfLineYValue = calcYValue(Float(min(CGFloat(bgValues[currentPoint].value), value2: maxBgValue)))
+            let beginBGValue = bgValues[currentPoint-1]
+            let endBGValue = bgValues[currentPoint]
+            
+            // skip drawing lines if at least one BG value is invalid
+            guard beginBGValue.isValid && endBGValue.isValid else {
+                continue
+            }
+            
+            let beginOfLineYValue = calcYValue(Float(min(CGFloat(beginBGValue.value), value2: maxBgValue)))
+            let endOfLineYValue = calcYValue(Float(min(CGFloat(endBGValue.value), value2: maxBgValue)))
     
             let maxYValue = calcYValue(Float(maxBgValue))
             
@@ -413,6 +421,11 @@ class ChartPainter {
         
         for bgValues in days {
             for bgValue in bgValues {
+                
+                guard bgValue.isValid else {
+                    continue
+                }
+                
                 if bgValue.value < newMinYValue {
                     newMinYValue = bgValue.value
                 }

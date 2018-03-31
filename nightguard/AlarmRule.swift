@@ -63,7 +63,9 @@ class AlarmRule {
     }
     
     fileprivate static func bloodValuesAreIncreasingOrDecreasingToFast(_ bloodValues : [BloodSugar]) -> Bool {
-        if bloodValues.count < numberOfConsecutiveValues {
+        
+        // we need at least these number of values, in order to prevent an out of bounds exception
+        if bloodValues.count < numberOfConsecutiveValues + 2 {
             return false;
         }
         

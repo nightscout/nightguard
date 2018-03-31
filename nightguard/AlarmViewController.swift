@@ -19,6 +19,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     fileprivate let MAX_ALERT_BELOW_VALUE : Float = 150
     fileprivate let MIN_ALERT_BELOW_VALUE : Float = 50
     
+    fileprivate let SNAP_INCREMENT = 10
+    
     @IBOutlet weak var edgeDetectionSwitch: UISwitch!
     @IBOutlet weak var numberOfConsecutiveValues: UITextField!
     @IBOutlet weak var deltaAmount: UITextField!
@@ -107,35 +109,27 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     @IBAction func aboveAlertValueChanged(_ sender: AnyObject) {
-        let alertIfAboveValue = getAboveAlarmValue()
-        adjustLowerSliderValue()
-        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfAboveValue))
-        
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
-        
-        AlarmRule.alertIfAboveValue = alertIfAboveValue
-        WatchService.singleton.sendToWatch(UnitsConverter.toMgdl(alertIfBelowValueLabel.text!), alertIfAboveValue: alertIfAboveValue)
+        aboveSliderValueChanged(commitChanges: false)
+    }
+    
+    @IBAction func aboveAlertTouchUp(_ sender: Any) {
+        aboveSliderValueChanged(commitChanges: true)
     }
     
     @IBAction func belowAlertValueChanged(_ sender: AnyObject) {
-        let alertIfBelowValue = getBelowAlarmValue()
-        adjustAboveSliderValue()
-        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfBelowValue))
-        
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
-        
-        AlarmRule.alertIfBelowValue = alertIfBelowValue
-        WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: UnitsConverter.toMgdl(alertIfAboveValueLabel.text!))
+        belowSliderValueChanged(commitChanges: false)
+    }
+    
+    @IBAction func belowAlertTouchUp(_ sender: Any) {
+        belowSliderValueChanged(commitChanges: true)
     }
     
     func getAboveAlarmValue() -> Float {
-        return Float(MIN_ALERT_ABOVE_VALUE + alertAboveSlider.value * MAX_ALERT_ABOVE_VALUE)
+        return Float(MIN_ALERT_ABOVE_VALUE + alertAboveSlider.value * MAX_ALERT_ABOVE_VALUE).rounded()
     }
     
     func getBelowAlarmValue() -> Float {
-        return Float(MIN_ALERT_BELOW_VALUE + alertBelowSlider.value * MAX_ALERT_BELOW_VALUE)
+        return Float(MIN_ALERT_BELOW_VALUE + alertBelowSlider.value * MAX_ALERT_BELOW_VALUE).rounded()
     }
     
     func adjustLowerSliderValue() {
@@ -151,6 +145,72 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
             alertAboveSlider.setValue(
                 (getBelowAlarmValue() + 1 - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE, animated: true)
             aboveAlertValueChanged(alertAboveSlider)
+        }
+    }
+
+    func snapAboveSliderValue() {
+        
+        guard UserDefaultsRepository.readUnits() == .mgdl else {
+            
+            // don't know how to snap mol units...
+            return
+        }
+
+        let alertIfAboveValue = Int(getAboveAlarmValue())
+        let snapValue = alertIfAboveValue % SNAP_INCREMENT
+        
+        let extraIncrement = (snapValue >= (SNAP_INCREMENT/2)) ? SNAP_INCREMENT : 0
+        let sliderValue = (Float(alertIfAboveValue - snapValue + extraIncrement).rounded() - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE
+        
+        alertAboveSlider.setValue(sliderValue, animated: true)
+    }
+    
+    func snapBelowSliderValue() {
+        
+        guard UserDefaultsRepository.readUnits() == .mgdl else {
+
+            // don't know how to snap mol units...
+            return
+        }
+        
+        let alertIfBelowValue = Int(getBelowAlarmValue())
+        let snapValue = alertIfBelowValue % SNAP_INCREMENT
+        
+        let extraIncrement = (snapValue >= (SNAP_INCREMENT/2)) ? SNAP_INCREMENT : 0
+        let sliderValue = (Float(alertIfBelowValue - snapValue + extraIncrement).rounded() - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_BELOW_VALUE
+        
+        alertBelowSlider.setValue(sliderValue, animated: true)
+    }
+    
+    func aboveSliderValueChanged(commitChanges: Bool) {
+        snapAboveSliderValue()
+        let alertIfAboveValue = getAboveAlarmValue()
+        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfAboveValue))
+        
+        if commitChanges {
+            adjustLowerSliderValue()
+            
+            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+            defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
+            
+            AlarmRule.alertIfAboveValue = alertIfAboveValue
+            WatchService.singleton.sendToWatch(UnitsConverter.toMgdl(alertIfBelowValueLabel.text!), alertIfAboveValue: alertIfAboveValue)
+        }
+    }
+    
+    func belowSliderValueChanged(commitChanges: Bool) {
+        snapBelowSliderValue()
+        let alertIfBelowValue = getBelowAlarmValue()
+        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfBelowValue))
+        
+        if commitChanges {
+            adjustAboveSliderValue()
+            
+            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+            defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
+            
+            AlarmRule.alertIfBelowValue = alertIfBelowValue
+            WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: UnitsConverter.toMgdl(alertIfAboveValueLabel.text!))
         }
     }
     

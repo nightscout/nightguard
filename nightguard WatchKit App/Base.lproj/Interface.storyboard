@@ -23,49 +23,87 @@
                                     </variation>
                                     <variation key="device=watch42mm" width="80"/>
                                 </label>
-                                <group width="72.5" height="1" alignment="left" layout="vertical" id="2qL-lw-zuD">
+                                <group alignment="left" layout="overlap" id="pYj-hp-PHS">
                                     <items>
-                                        <group width="70" height="17" alignment="left" id="yrF-or-Bnh">
+                                        <group width="72.5" height="1" alignment="left" layout="vertical" id="2qL-lw-zuD">
                                             <items>
-                                                <label width="26.5" height="17.5" alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
-                                                    <fontDescription key="font" type="system" pointSize="16"/>
-                                                </label>
+                                                <group width="70" height="17" alignment="left" id="yrF-or-Bnh">
+                                                    <items>
+                                                        <label width="26.5" height="17.5" alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
+                                                            <fontDescription key="font" type="system" pointSize="16"/>
+                                                        </label>
+                                                    </items>
+                                                </group>
+                                                <group height="10" alignment="left" id="7mo-kr-osX">
+                                                    <items>
+                                                        <label width="45" height="18.5" alignment="right" text="59min" textAlignment="right" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
+                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                        </label>
+                                                        <label width="26.5" height="12" alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.20000000000000001" id="nnO-nW-RbM">
+                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                        </label>
+                                                    </items>
+                                                </group>
+                                                <group height="10" alignment="left" id="HZw-Hn-d6o">
+                                                    <items>
+                                                        <label width="42" height="9" alignment="left" text="0.05U" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
+                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                        </label>
+                                                        <label height="10" alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
+                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                        </label>
+                                                    </items>
+                                                </group>
                                             </items>
                                         </group>
-                                        <group height="10" alignment="right" id="7mo-kr-osX">
+                                        <group width="1" alignment="left" verticalAlignment="bottom" layout="vertical" id="MZW-91-Uu2">
                                             <items>
-                                                <label width="45" height="18.5" alignment="right" text="59min" textAlignment="right" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
-                                                    <fontDescription key="font" type="system" pointSize="13"/>
-                                                </label>
-                                                <label width="26.5" height="12" alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.20000000000000001" id="nnO-nW-RbM">
-                                                    <fontDescription key="font" type="system" pointSize="13"/>
-                                                </label>
-                                            </items>
-                                        </group>
-                                        <group height="10" alignment="right" id="HZw-Hn-d6o">
-                                            <items>
-                                                <label width="42" height="9" alignment="right" text="0.05U" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
-                                                    <fontDescription key="font" type="system" pointSize="13"/>
-                                                </label>
-                                                <label height="10" alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
-                                                    <fontDescription key="font" type="system" pointSize="13"/>
-                                                </label>
+                                                <imageView width="24" height="24" alignment="left" verticalAlignment="bottom" image="Activity1" id="THf-20-AM2"/>
                                             </items>
                                         </group>
                                     </items>
                                 </group>
                             </items>
                         </group>
-                        <spriteKitScene width="155" height="140" alignment="left" id="HJ3-mD-NFS">
-                            <variation key="device=watch38mm" height="115"/>
-                        </spriteKitScene>
+                        <group width="1" alignment="left" layout="overlap" id="Umr-m9-d1K">
+                            <items>
+                                <spriteKitScene width="155" height="140" alignment="left" id="HJ3-mD-NFS">
+                                    <gestureRecognizers>
+                                        <tapGestureRecognizer numberOfTapsRequired="2" id="Njy-aE-O1r">
+                                            <connections>
+                                                <action selector="onDoubleTapped:" destination="AgC-eL-Hgc" id="rV9-up-4OT"/>
+                                            </connections>
+                                        </tapGestureRecognizer>
+                                    </gestureRecognizers>
+                                    <variation key="device=watch38mm" height="115"/>
+                                </spriteKitScene>
+                                <group width="1" height="1" alignment="left" id="JGS-42-dt6">
+                                    <items>
+                                        <group alignment="center" initiallyAnimated="NO" radius="3" id="dXq-O8-Nm3">
+                                            <items>
+                                                <label alignment="center" verticalAlignment="center" text="❌ Some error message..." textAlignment="left" numberOfLines="0" id="Wmf-Dw-L3A">
+                                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="font" type="system" pointSize="11"/>
+                                                </label>
+                                            </items>
+                                            <color key="backgroundColor" white="1" alpha="0.74585295376712324" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <edgeInsets key="margins" left="6" right="6" top="3" bottom="3"/>
+                                        </group>
+                                    </items>
+                                    <edgeInsets key="margins" left="0.0" right="0.0" top="4" bottom="0.0"/>
+                                </group>
+                            </items>
+                        </group>
                     </items>
                     <menu key="menu" id="YiW-tI-jRp"/>
                     <connections>
+                        <outlet property="activityIndicatorImage" destination="THf-20-AM2" id="0KZ-Ud-x7j"/>
                         <outlet property="batteryLabel" destination="lz8-YE-T1d" id="a4A-hb-KFZ"/>
                         <outlet property="bgLabel" destination="vdn-99-EwA" id="Tg2-Yj-bDo"/>
                         <outlet property="deltaArrowLabel" destination="nnO-nW-RbM" id="aR3-me-buM"/>
                         <outlet property="deltaLabel" destination="frk-q8-3y9" id="KvH-er-bpE"/>
+                        <outlet property="errorGroup" destination="dXq-O8-Nm3" id="olA-tz-soY"/>
+                        <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="O5p-uD-eWO"/>
                         <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="fNu-BR-2Ss"/>
                         <outlet property="spriteKitView" destination="HJ3-mD-NFS" id="hnU-4D-1mD"/>
                         <outlet property="timeLabel" destination="w1H-tu-XyX" id="KWM-Y9-FDg"/>
@@ -109,6 +147,18 @@
                                 <fontDescription key="font" type="system" pointSize="10"/>
                             </variation>
                         </label>
+                        <label alignment="center" text="Background updates:" textAlignment="left" id="Gob-MJ-hux">
+                            <fontDescription key="font" type="system" pointSize="15"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="13"/>
+                            </variation>
+                        </label>
+                        <label alignment="center" text="0" numberOfLines="0" id="XcE-eq-aUV">
+                            <fontDescription key="font" type="system" pointSize="12"/>
+                            <variation key="device=watch38mm">
+                                <fontDescription key="font" type="system" pointSize="10"/>
+                            </variation>
+                        </label>
                         <button width="1" height="31" alignment="left" title="Close" id="J0t-oX-olu">
                             <connections>
                                 <action selector="doCloseAction" destination="wky-cb-ykJ" id="J6Y-PP-x8b"/>
@@ -116,6 +166,7 @@
                         </button>
                     </items>
                     <connections>
+                        <outlet property="backgroundUpdatesLabel" destination="XcE-eq-aUV" id="i3o-WH-bxk"/>
                         <outlet property="cachedValuesLabel" destination="IeJ-DT-Wcg" id="edG-OD-P0g"/>
                         <outlet property="serverUriLabel" destination="rQn-yu-ajp" id="chR-Cb-I8J"/>
                         <outlet property="versionLabel" destination="VJk-AO-PXu" id="9Je-rN-Q8U"/>
@@ -123,6 +174,42 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="166.51282051282053" y="-44.025641025641029"/>
+        </scene>
+        <!--SnoozeInterfaceController-->
+        <scene sceneID="Wo6-eU-PUk">
+            <objects>
+                <controller identifier="SnoozeInterfaceController" fullScreen="YES" id="W3J-ff-Ny6" customClass="SnoozeInterfaceController" customModule="nightguard">
+                    <items>
+                        <button width="1" height="38" alignment="left" title="Stop Snoozing" id="vBI-uK-ui8">
+                            <fontDescription key="font" type="system" pointSize="15"/>
+                            <connections>
+                                <action selector="doCancelSnoozeAction" destination="W3J-ff-Ny6" id="lvF-Qh-uHJ"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="30min" id="LmY-nN-0PP">
+                            <connections>
+                                <action selector="doSnooze30Minutes" destination="W3J-ff-Ny6" id="ahC-xB-tbj"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="1h" id="B6w-zl-nKO">
+                            <connections>
+                                <action selector="doSnooze1Hour" destination="W3J-ff-Ny6" id="0e8-ga-rbR"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="2h" id="AjC-71-s7w">
+                            <connections>
+                                <action selector="doSnooze2Hours" destination="W3J-ff-Ny6" id="rVZ-fg-vmz"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="1d" id="E2D-TG-Tr3">
+                            <connections>
+                                <action selector="doSnooze1Day" destination="W3J-ff-Ny6" id="pSU-0P-fte"/>
+                            </connections>
+                        </button>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="409" y="-44"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">

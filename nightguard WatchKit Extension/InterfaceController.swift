@@ -21,6 +21,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var spriteKitView: WKInterfaceSKScene!
     @IBOutlet var iobLabel: WKInterfaceLabel!
+    @IBOutlet var errorLabel: WKInterfaceLabel!
+    @IBOutlet var errorGroup: WKInterfaceGroup!
+    @IBOutlet var activityIndicatorImage: WKInterfaceImage!
+    
+    
+    // set by AppMessageService when receiving data from phone app and charts should be repainted
+    var shouldRepaintChartsOnActivation = false
     
     fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     
@@ -36,6 +43,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate var cachedTodaysBgValues : [BloodSugar] = []
     fileprivate var cachedYesterdaysBgValues : [BloodSugar] = []
     
+    fileprivate var isActive: Bool = false
+    fileprivate var isFirstActivation: Bool = true
+    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
@@ -45,7 +55,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         chartScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6)
         spriteKitView.presentScene(chartScene)
         
+        activityIndicatorImage.setImageNamed("Activity")
+        errorGroup.setHidden(true)
+        
         createMenuItems()
+        
+        BackgroundRefreshLogger.info("InterfaceController is awake!")
     }
     
     fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
@@ -61,7 +76,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     override func willActivate() {
+        super.willActivate()
         
+        guard WKExtension.shared().applicationState == .active else {
+            return
+        }
+        
+        isActive = true
         spriteKitView.isPaused = false
         
         // Start the timer to retrieve new bgValues and update the ui periodically
@@ -69,8 +90,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createNewTimerSingleton()
         
         // manually refresh the gui by fireing the timer
-        timerDidEnd(timer)
-        
+        updateNightscoutData(forceRefresh: isFirstActivation, forceRepaintCharts: shouldRepaintChartsOnActivation)
+                
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state
         if #available(watchOSApplicationExtension 4.0, *) {
@@ -79,9 +100,17 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         crownSequencer.focus()
         crownSequencer.delegate = self
+        
+        paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: false)
+        
+        // reset the first activation flag!
+        isFirstActivation = false
+        // ... and the "should repaint charts" flag
+        shouldRepaintChartsOnActivation = false
     }
     
     override func didAppear() {
+        super.didAppear()
         
         spriteKitView.isPaused = false
         
@@ -90,6 +119,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     override func willDisappear() {
+        super.willDisappear()
+        
         spriteKitView.isPaused = true
     }
     
@@ -97,7 +128,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
         
-        timer.invalidate();
+        isActive = false
+        timer.invalidate()
         spriteKitView.isPaused = true
     }
     
@@ -109,7 +141,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             // only recognize every third rotation => Otherwise the watch will crash
             // because of too many calls a second
             if nrOfCrownRotations % 5 == 0 && abs(rotationalDelta) > 0.01 {
-                chartScene.scale(1 + CGFloat(rotationalDelta), keepScale: true)
+                chartScene.scale(1 + CGFloat(rotationalDelta), keepScale: true, infoLabelText: determineInfoLabel())
             }
         } else {
             chartScene.moveChart(rotationalDelta * 200)
@@ -118,6 +150,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     @objc func doInfoMenuAction() {
         self.presentController(withName: "InfoInterfaceController", context: nil)
+    }
+    
+    @objc func doSnoozeMenuAction() {
+        self.presentController(withName: "SnoozeInterfaceController", context: nil)
+        loadAndPaintChartData(forceRepaint : true)
     }
     
     @objc func doRefreshMenuAction() {
@@ -148,13 +185,34 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    // check whether new Values should be retrieved
-    @objc func timerDidEnd(_ timer:Timer){
+    fileprivate func updateNightscoutData(forceRefresh: Bool, forceRepaintCharts: Bool) {
         assureThatBaseUriIsExisting()
         assureThatDisplayUnitsIsDefined()
         
-        loadAndPaintCurrentBgData()
-        loadAndPaintChartData(forceRepaint: false)
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        if forceRefresh || currentNightscoutData.isOlderThan5Minutes() {
+            
+            // load current bg data, we probably have old data...
+            loadAndPaintCurrentBgData()
+        } else {
+            
+            // otwherwise just update the gui with current data (will update the time, etc., but will not display the activity indicator & error panel)
+            updateInterface(withNightscoutData: currentNightscoutData, error: nil)
+            playAlarm(currentNightscoutData: currentNightscoutData)
+        }
+        
+        loadAndPaintChartData(forceRepaint: forceRepaintCharts)
+        AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
+        AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
+    }
+    
+    // check whether new Values should be retrieved
+    @objc func timerDidEnd(_ timer:Timer){
+        updateNightscoutData(forceRefresh: false, forceRepaintCharts: false)
+    }
+    
+    @IBAction func onSpriteKitViewDoubleTapped(_ sender: Any) {
+        updateNightscoutData(forceRefresh: true, forceRepaintCharts: false)
     }
     
     // this has to be created programmatically, since only this way
@@ -164,8 +222,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.clearAllMenuItems()
         self.addMenuItem(with: WKMenuItemIcon.info, title: "Info", action: #selector(InterfaceController.doInfoMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.resume, title: "Refresh", action: #selector(InterfaceController.doRefreshMenuAction))
+        self.addMenuItem(with: WKMenuItemIcon.block, title: "Snooze", action: #selector(InterfaceController.doSnoozeMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.more, title: zoomingIsActive ? "Scroll" : "Zoom", action: #selector(InterfaceController.doToogleZoomScrollAction))
-        self.addMenuItem(with: WKMenuItemIcon.decline, title: "Close", action: #selector(InterfaceController.doCloseMenuAction))
     }
     
     fileprivate func assureThatBaseUriIsExisting() {
@@ -192,17 +250,59 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
                 newCachedYesterdaysBgValues.count != cachedYesterdaysBgValues.count
     }
     
+    func updateInterface(withNightscoutData nightscoutData: NightscoutData?, error: Error?) {
+        
+        // stop & hide the activity indicator
+        self.activityIndicatorImage.stopAnimating()
+        self.activityIndicatorImage.setHidden(true)
+        
+        if let error = error {
+            
+            // show errors ONLY when the interface is active (connection errors can be received while it is inactive... don't know for the moment why)
+            // NOTE: actually, the whole UI should be updated only when the interface is active...
+            if self.isActive {
+                self.errorLabel.setText("❌ \(error.localizedDescription)")
+                self.errorGroup.setHidden(false)
+            } else {
+                self.errorGroup.setHidden(true)
+            }
+        } else if let nightscoutData = nightscoutData {
+            self.errorGroup.setHidden(true)
+            self.paintCurrentBgData(currentNightscoutData: nightscoutData)
+        }
+    }
+    
     fileprivate func loadAndPaintCurrentBgData() {
         
-        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData) -> Void in
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
-            DispatchQueue.main.async {
-                self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
-                self.updateComplication()
+            DispatchQueue.main.async { [unowned self] in
+                self.updateInterface(withNightscoutData: newNightscoutData, error: error)
+                if let newNightscoutData = newNightscoutData {
+                    self.updateComplication()
+                    self.playAlarm(currentNightscoutData: newNightscoutData)
+                }
             }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+        self.playAlarm(currentNightscoutData: currentNightscoutData)
+        
+        // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
+        self.errorGroup.setHidden(true)
+        self.iobLabel.setText(nil)
+        self.deltaArrowLabel.setText(nil)
+        
+        self.activityIndicatorImage.setHidden(false)
+        self.activityIndicatorImage.startAnimatingWithImages(in: NSRange(1...15), duration: 1.0, repeatCount: 0)
+    }
+    
+    fileprivate func playAlarm(currentNightscoutData : NightscoutData) {
+        
+        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({ ([BloodSugar]) -> Void in })
+        if AlarmRule.isAlarmActivated(currentNightscoutData, bloodValues: newCachedTodaysBgValues) {
+            WKInterfaceDevice.current().play(.notification)
+        }
     }
     
     fileprivate func updateComplication() {
@@ -228,7 +328,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.iobLabel.setText(currentNightscoutData.iob)
     }
     
-    fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
+    /*fileprivate*/ func loadAndPaintChartData(forceRepaint : Bool) {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
@@ -263,7 +363,17 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             newCanvasWidth: bounds.width * 6,
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: moveToLatestValue,
-            displayDaysLegend: false)
+            displayDaysLegend: false,
+            infoLabel: determineInfoLabel())
+    }
+    
+    fileprivate func determineInfoLabel() -> String {
+        
+        if !AlarmRule.isSnoozed() {
+            return ""
+        }
+        
+        return "Snoozed " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min"
     }
 
 }

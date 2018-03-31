@@ -87,6 +87,9 @@
                                 <rect key="frame" x="-2" y="57" width="324" height="31"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
+                                    <action selector="aboveAlertTouchUp:" destination="dYE-A1-O4H" eventType="touchUpInside" id="9GK-ff-UbI"/>
+                                    <action selector="aboveAlertTouchUp:" destination="dYE-A1-O4H" eventType="touchUpOutside" id="TeQ-Es-FxJ"/>
+                                    <action selector="aboveAlertTouchUp:" destination="dYE-A1-O4H" eventType="touchCancel" id="fub-xV-6pX"/>
                                     <action selector="aboveAlertValueChanged:" destination="dYE-A1-O4H" eventType="valueChanged" id="0Dz-cG-QX6"/>
                                 </connections>
                             </slider>
@@ -122,6 +125,9 @@
                                 <rect key="frame" x="-2" y="118" width="324" height="31"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
+                                    <action selector="belowAlertTouchUp:" destination="dYE-A1-O4H" eventType="touchUpInside" id="Hfm-6e-ygv"/>
+                                    <action selector="belowAlertTouchUp:" destination="dYE-A1-O4H" eventType="touchCancel" id="UN0-be-JKo"/>
+                                    <action selector="belowAlertTouchUp:" destination="dYE-A1-O4H" eventType="touchUpOutside" id="qFp-jT-f95"/>
                                     <action selector="belowAlertValueChanged:" destination="dYE-A1-O4H" eventType="valueChanged" id="p3o-dM-obe"/>
                                 </connections>
                             </slider>
@@ -315,6 +321,29 @@
                                 <rect key="frame" x="0.0" y="129" width="320" height="257"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1rF-Wm-FbJ">
+                                <rect key="frame" x="122.5" y="137" width="75.5" height="24"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tea-wl-rpX">
+                                        <rect key="frame" x="8" y="4" width="59.5" height="16"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="0.74973244863013699" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Tea-wl-rpX" firstAttribute="leading" secondItem="1rF-Wm-FbJ" secondAttribute="leading" constant="8" id="M1N-xe-UJR"/>
+                                    <constraint firstItem="Tea-wl-rpX" firstAttribute="top" secondItem="1rF-Wm-FbJ" secondAttribute="top" constant="4" id="TYP-Ph-Uqx"/>
+                                    <constraint firstAttribute="trailing" secondItem="Tea-wl-rpX" secondAttribute="trailing" constant="8" id="YUt-cY-Xnx"/>
+                                    <constraint firstAttribute="bottom" secondItem="Tea-wl-rpX" secondAttribute="bottom" constant="4" id="pk1-eW-dXR"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" label="Preferences"/>
@@ -338,12 +367,16 @@
                             <constraint firstAttribute="trailing" secondItem="YvM-WS-hyk" secondAttribute="trailing" id="ZaS-mp-7KI"/>
                             <constraint firstAttribute="trailingMargin" secondItem="FFv-EO-ylg" secondAttribute="trailing" constant="-17" id="Zqj-5S-1ga"/>
                             <constraint firstItem="sxg-9W-FFR" firstAttribute="trailing" secondItem="dot-Yq-gkc" secondAttribute="trailing" id="azj-u0-EL6"/>
+                            <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1rF-Wm-FbJ" secondAttribute="trailing" constant="8" id="c6M-Au-Dvt"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="trailing" secondItem="4hs-Gk-Xl6" secondAttribute="trailing" id="cOB-ib-EJM"/>
                             <constraint firstItem="QxI-Mz-c2E" firstAttribute="top" secondItem="4hs-Gk-Xl6" secondAttribute="bottom" constant="1" id="dpg-K8-gKu"/>
+                            <constraint firstItem="1rF-Wm-FbJ" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="top" constant="8" id="ey0-DD-59f"/>
                             <constraint firstItem="FFv-EO-ylg" firstAttribute="centerY" secondItem="SLx-m6-8iP" secondAttribute="centerY" id="hsF-RL-wkV"/>
                             <constraint firstItem="FFv-EO-ylg" firstAttribute="top" secondItem="7OG-w8-xXQ" secondAttribute="bottom" id="iI6-4c-ihC"/>
                             <constraint firstItem="ZrP-ql-0RC" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="bottom" constant="8" symbolic="YES" id="iJ8-oB-edM"/>
                             <constraint firstItem="YvM-WS-hyk" firstAttribute="trailing" secondItem="3ZI-eY-05Z" secondAttribute="trailing" id="ijO-Iq-J77"/>
+                            <constraint firstItem="1rF-Wm-FbJ" firstAttribute="centerX" secondItem="tZK-nt-kLA" secondAttribute="centerX" id="lmD-nm-DFz"/>
+                            <constraint firstItem="1rF-Wm-FbJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="npe-dG-XUz"/>
                             <constraint firstItem="SLx-m6-8iP" firstAttribute="leading" secondItem="FFv-EO-ylg" secondAttribute="leading" id="puC-C3-kyx"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="leading" secondItem="ZrP-ql-0RC" secondAttribute="leading" id="uwV-Xw-Ci3"/>
                             <constraint firstItem="aNX-u1-teT" firstAttribute="leading" secondItem="dot-Yq-gkc" secondAttribute="leading" id="wDC-DG-u2U"/>
@@ -364,6 +397,8 @@
                         <outlet property="bgLabel" destination="aNX-u1-teT" id="miL-Ac-Dj8"/>
                         <outlet property="deltaArrowsLabel" destination="SLx-m6-8iP" id="t6g-8R-QAw"/>
                         <outlet property="deltaLabel" destination="7OG-w8-xXQ" id="S7C-cg-gQ2"/>
+                        <outlet property="feedbackLabel" destination="Tea-wl-rpX" id="8d9-Eq-xOZ"/>
+                        <outlet property="feedbackPanelView" destination="1rF-Wm-FbJ" id="VhD-o3-WnA"/>
                         <outlet property="iobLabel" destination="sxg-9W-FFR" id="DEM-gT-C3j"/>
                         <outlet property="lastUpdateLabel" destination="FFv-EO-ylg" id="KqE-n5-OYo"/>
                         <outlet property="screenlockSwitch" destination="ZrP-ql-0RC" id="nb2-uc-4nL"/>
