@@ -9,15 +9,6 @@
 import Foundation
 
 
-// https://stackoverflow.com/a/44806984
-extension URL {
-    func valueOf(_ queryParamaterName: String) -> String? {
-        guard let url = URLComponents(string: self.absoluteString) else { return nil }
-        return url.queryItems?.first(where: { $0.name == queryParamaterName })?.value
-    }
-}
-
-
 /* All data that is read from nightscout is accessed using this boundary. */
 class NightscoutService {
 
@@ -25,55 +16,12 @@ class NightscoutService {
     
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
-    
-    var url: URL?
-    var token: String?
 
-    private init() {
-        parseBaseUri()
-    }
-    
-    /* Parses the URI entered in the UI and extracts the token if one is present. */
-    fileprivate func parseBaseUri() -> Void {
-        url = nil
-        token = nil
-        let urlString = UserDefaultsRepository.readBaseUri()
-        if !urlString.isEmpty {
-            url = URL(string: urlString)!
-            let tokenString = url?.valueOf("token")
-            if ((tokenString) != nil) {
-                token = String(describing: tokenString!)
-                print(token!)
-            }
-        }
-    }
-
-    /* Construct the url from the URL entered in the UI, creates the URL from URLComponents and
-       sets query parameters according to the passed in dictionary. */
-    fileprivate func getUrlWithPathAndQueryParameters(path: String, queryParams: Dictionary<String, String>) -> URL? {
-        parseBaseUri()
-        guard url != nil else {
-            return nil
-        }
-        var requestUri = url!
-        requestUri.appendPathComponent(path, isDirectory: false)
-        var urlComponents = URLComponents(string: String(describing: requestUri))!
-        urlComponents.queryItems = []
-        for (queryParam, queryValue) in queryParams {
-            urlComponents.queryItems?.append(URLQueryItem(name: queryParam, value: queryValue))
-        }
-        
-        if (token != nil) {
-            urlComponents.queryItems?.append(URLQueryItem(name: "token", value: String(describing: token!)))
-        }
-        print(urlComponents.url!)
-        return urlComponents.url!
-    }
     
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     func readChartData(_ resultHandler : @escaping (([Int]) -> Void)) {
         // Get the current data from REST-Call
-        let url = getUrlWithPathAndQueryParameters(path: "api/v1/entries.json", queryParams: ["count": "20"])
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries.json", queryParams: ["count": "20"])
         guard url != nil else {
             return
         }
@@ -106,7 +54,7 @@ class NightscoutService {
        Unit, whether it's mg/dL or mmol/l */
     func readStatus(_ resultHandler : @escaping ((Units) -> Void)) {
         // Get the current data from REST-Call
-        let url = getUrlWithPathAndQueryParameters(path: "api/v1/status.json", queryParams: [:])
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/status.json", queryParams: [:])
         guard url != nil else {
             return
         }
@@ -156,7 +104,7 @@ class NightscoutService {
             "count"             : "400",
         ]
         
-        let url = getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
         guard url != nil else {
             return
         }
@@ -309,7 +257,7 @@ class NightscoutService {
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData) -> Void)) {
         // Get the current data from REST-Call
-        let url = getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
         guard url != nil else {
             return
         }
@@ -337,7 +285,7 @@ class NightscoutService {
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatchInBackground() {
         // Get the current data from REST-Call
-        let url = getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
         guard url != nil else {
             return
         }
