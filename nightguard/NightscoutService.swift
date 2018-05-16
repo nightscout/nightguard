@@ -354,8 +354,9 @@ class NightscoutService {
                 let cals = jsonDict.object(forKey: "cals") as? NSArray
                 let currentCals = cals?.firstObject as? NSDictionary
                 nightscoutData.rawbg = self.getRawBGValue(bgs: currentBgs, cals: currentCals)
-                let noiseCode = currentBgs.object(forKey: "noise") as! NSNumber
-                nightscoutData.noise = self.getNoiseLevel(noiseCode.intValue, sgv: String(sgv))
+                if let noiseCode = currentBgs.object(forKey: "noise") as? NSNumber {
+                    nightscoutData.noise = self.getNoiseLevel(noiseCode.intValue, sgv: String(sgv))
+                }
                 
                 resultHandler(nightscoutData, nil)
             }

@@ -204,53 +204,13 @@ class MainViewController: UIViewController {
     }
     
     fileprivate func showSnoozePopup() {
-        let alert = UIAlertController(title: "Snooze",
-            message: "How long should the alarm be ignored?",
-            preferredStyle: UIAlertControllerStyle.alert)
         
-        alert.addAction(UIAlertAction(title: "30 Minutes",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                self.snoozeMinutes(30)
-        }))
-        alert.addAction(UIAlertAction(title: "1 Hour",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                self.snoozeMinutes(60)
-        }))
-        alert.addAction(UIAlertAction(title: "2 Hours",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                self.snoozeMinutes(120)
-        }))
-        alert.addAction(UIAlertAction(title: "1 Day",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                self.snoozeMinutes(24 * 60)
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                AlarmSound.unmuteVolume()
-        }))
-        present(alert, animated: true, completion: nil)
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let newViewController = storyBoard.instantiateViewController(withIdentifier: "snoozeAlarmViewController") as! SnoozeAlarmViewController
+        self.present(newViewController, animated: true, completion: nil)
     }
     
-    fileprivate func snoozeMinutes(_ minutes : Int) {
-        
-        AlarmRule.snooze(minutes)
-        
-        AlarmSound.stop()
-        AlarmSound.unmuteVolume()
-        self.updateSnoozeButtonText()
-    }
-    
-    fileprivate func updateSnoozeButtonText() {
+    public func updateSnoozeButtonText() {
         
         if AlarmRule.isSnoozed() {
             snoozeButton.setTitle("Snoozed for " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min", for: UIControlState())
