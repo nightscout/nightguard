@@ -26,6 +26,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var spriteKitView: UIView!
     @IBOutlet weak var errorPanelView: UIView!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var rawValuesPanel: GroupedLabelsView!
     
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
@@ -292,6 +293,11 @@ class MainViewController: UIViewController {
             
             self.batteryLabel.text = currentNightscoutData.battery
             self.iobLabel.text = currentNightscoutData.iob
+            
+            // show raw values panel ONLY if we have a valid rawbg value!
+            self.rawValuesPanel.isHidden = !((Int(currentNightscoutData.rawbg) ?? Int(0)) > 0)
+            self.rawValuesPanel.label.text = currentNightscoutData.noise
+            self.rawValuesPanel.highlightedLabel.text = currentNightscoutData.rawbg
         })
     }
     
