@@ -27,6 +27,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var errorPanelView: UIView!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var rawValuesPanel: GroupedLabelsView!
+    @IBOutlet weak var bgStackView: UIStackView!
     
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
@@ -79,6 +80,13 @@ class MainViewController: UIViewController {
         skView.addGestureRecognizer(pinchGesture)
         
         errorPanelView.isHidden = true
+        
+        // decide where to present the raw bg panel, depending on the device screen size: for small screens (under 4.7 inches) the raw bg panel is stacked under the bg label; for larger screens, the raw bg panel is near (right side of) the bg label
+        let screenSize = UIScreen.main.bounds.size
+        let height = max(screenSize.width, screenSize.height)
+        let isLargeEnoughScreen = height >= 667 // 4.7 inches or larger (iPhone 6, etc.)
+        rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
+        bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
     }
     
     override func viewDidAppear(_ animated: Bool) {
