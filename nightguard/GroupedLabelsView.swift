@@ -13,13 +13,14 @@ class GroupedLabelsView: UIStackView {
     private lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        view.layer.cornerRadius = 3
+        view.layer.cornerRadius = 2
         return view
     }()
     
     lazy var label: UILabel = {
         let label = PaddingLabel()
-        label.insets = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: 3)
+        label.textAlignment = .center
+        label.insets = UIEdgeInsets(top: 1, left: 2, bottom: 1, right: 2)
         label.font = UIFont.systemFont(ofSize: 11)
         label.clipsToBounds = true
         return label
@@ -27,12 +28,13 @@ class GroupedLabelsView: UIStackView {
     
     lazy var highlightedLabel: UILabel = {
         let label = PaddingLabel()
-        label.insets = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: 3)
+        label.textAlignment = .center
+        label.insets = UIEdgeInsets(top: 1, left: 2, bottom: 1, right: 2)
         label.font = UIFont.systemFont(ofSize: 11)
         label.textColor = .white
         label.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         label.clipsToBounds = true
-        label.layer.cornerRadius = 3
+        label.layer.cornerRadius = 2
         return label
     }()
     
@@ -50,8 +52,6 @@ class GroupedLabelsView: UIStackView {
         
         layoutMargins = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
         isLayoutMarginsRelativeArrangement = true
-        
-        //        spacing = 4
         
         pinBackground()
         addArrangedSubview(highlightedLabel)
