@@ -209,15 +209,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
-    
-    @IBAction func onBgGroupDoubleTapped(_ sender: Any) {
-        isRawValuesGroupHidden = !isRawValuesGroupHidden
-        rawValuesGroup.setHidden(isRawValuesGroupHidden)
-    }
-    
+        
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer){
         updateNightscoutData(forceRefresh: false, forceRepaintCharts: false)
+    }
+    
+    @IBAction func onLabelsGroupDoubleTapped(_ sender: Any) {
+        updateNightscoutData(forceRefresh: true, forceRepaintCharts: false)
     }
     
     @IBAction func onSpriteKitViewDoubleTapped(_ sender: Any) {
@@ -336,6 +335,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.batteryLabel.setText(currentNightscoutData.battery)
         self.iobLabel.setText(currentNightscoutData.iob)
         
+        // show raw values panel ONLY if we have a valid rawbg value!
+        let isValidRawBGValue = (Int(currentNightscoutData.rawbg) ?? Int(0)) > 0
+        self.rawValuesGroup.setHidden(!isValidRawBGValue)
         self.rawbgLabel.setText(currentNightscoutData.rawbg)
         self.noiseLabel.setText(currentNightscoutData.noise)
     }
