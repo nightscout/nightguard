@@ -21,7 +21,7 @@ class GroupedLabelsView: UIStackView {
         let label = PaddingLabel()
         label.textAlignment = .center
         label.insets = UIEdgeInsets(top: 1, left: 2, bottom: 1, right: 2)
-        label.font = UIFont.systemFont(ofSize: 11)
+        label.font = UIFont.systemFont(ofSize: 9)
         label.clipsToBounds = true
         return label
     }()
