@@ -276,12 +276,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
-            DispatchQueue.main.async { [unowned self] in
-                self.updateInterface(withNightscoutData: newNightscoutData, error: error)
-                if let newNightscoutData = newNightscoutData {
-                    self.updateComplication()
-                    self.playAlarm(currentNightscoutData: newNightscoutData)
-                }
+            self.updateInterface(withNightscoutData: newNightscoutData, error: error)
+            if let newNightscoutData = newNightscoutData {
+                self.updateComplication()
+                self.playAlarm(currentNightscoutData: newNightscoutData)
             }
         })
         
@@ -332,14 +330,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
-            DispatchQueue.main.async {
+            DispatchQueue.global().async {
                 self.cachedTodaysBgValues = newTodaysData
                 self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues, moveToLatestValue: true)
             }
         })
         let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
             
-            DispatchQueue.main.async {
+            DispatchQueue.global().async {
                 self.cachedYesterdaysBgValues = newYesterdaysData
                 self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData, moveToLatestValue: false)
             }

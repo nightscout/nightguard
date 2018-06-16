@@ -76,7 +76,7 @@ class StatsViewController: UIViewController {
     
     fileprivate func paintChart(_ days : [[BloodSugar]]) {
         
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
             self.chartScene.paintChart(days,
                     newCanvasWidth: min(self.maximumDeviceTextureWidth(),
                     self.chartSpriteKitView.bounds.width),

@@ -196,7 +196,7 @@ class MainViewController: UIViewController {
             AlarmSound.muteVolume()
             // For safety reasons: Unmute sound after 1 minute
             // This prevents an unlimited snooze if the snooze button was touched accidentally.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
+            DispatchQueue.global().asyncAfter(deadline: .now() + 30.0, execute: {
                 AlarmSound.unmuteVolume()
             })
             showSnoozePopup()
@@ -255,7 +255,7 @@ class MainViewController: UIViewController {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
-            DispatchQueue.main.async {
+            DispatchQueue.global().async {
                 if let error = error {
                     self.feedbackLabel.text = "❌ \(error.localizedDescription)"
                     self.feedbackLabel.textColor = .red
@@ -280,7 +280,7 @@ class MainViewController: UIViewController {
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
         
-        DispatchQueue.main.async(execute: {
+        DispatchQueue.global().async(execute: {
             if currentNightscoutData.sgv == "---" {
                 self.bgLabel.text = "---"
             } else {

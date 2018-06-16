@@ -308,32 +308,29 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         
         let nightscoutData = NSData(contentsOf: location as URL)
         
-        // extract data on main thead
-        DispatchQueue.main.sync { [unowned self] in
-            NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] (newNightscoutData, error) -> Void in
+        NightscoutService.singleton.extractData(data: nightscoutData! as Data, { (newNightscoutData, error) -> Void in
                 
-                // keep the error (if any)
-                self.sessionError = error
-                
-                guard let newNightscoutData = newNightscoutData else {
-                    return
-                }
-                
-                let updateResult = self.updateNightscoutData(newNightscoutData)
-                BackgroundRefreshLogger.nightscoutDataReceived(newNightscoutData, updateResult: updateResult, updateSource: .urlSession)
-                switch updateResult {
-                case .updateDataIsOld:
-                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData += 1
-                    BackgroundRefreshLogger.info("URL session data: OLD")
-                case .updateDataAlreadyExists:
-                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData += 1
-                    BackgroundRefreshLogger.info("URL session data: EXISTING")
-                case .updated:
-                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData += 1
-                    BackgroundRefreshLogger.info("URL session data: NEW")
-                }
-            })
-        }
+            // keep the error (if any)
+            self.sessionError = error
+            
+            guard let newNightscoutData = newNightscoutData else {
+                return
+            }
+            
+            let updateResult = self.updateNightscoutData(newNightscoutData)
+            BackgroundRefreshLogger.nightscoutDataReceived(newNightscoutData, updateResult: updateResult, updateSource: .urlSession)
+            switch updateResult {
+            case .updateDataIsOld:
+                BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData += 1
+                BackgroundRefreshLogger.info("URL session data: OLD")
+            case .updateDataAlreadyExists:
+                BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData += 1
+                BackgroundRefreshLogger.info("URL session data: EXISTING")
+            case .updated:
+                BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData += 1
+                BackgroundRefreshLogger.info("URL session data: NEW")
+            }
+        })
         
         completePendingURLSessionTask()
     }

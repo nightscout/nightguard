@@ -80,7 +80,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
             if #available(watchOSApplicationExtension 3.0, *) {
                 if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
                     if WKExtension.shared().applicationState == .active {
-                        DispatchQueue.main.async {
+                        DispatchQueue.global().async {
                             interfaceController.loadAndPaintChartData(forceRepaint: true)
                         }
                     } else {
@@ -93,7 +93,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
         if let _ = applicationContext["nightscoutData"] {
             if #available(watchOSApplicationExtension 3.0, *) {
                 if let extensionDelegate = WKExtension.shared().delegate as? ExtensionDelegate {
-                    DispatchQueue.main.async {
+                    DispatchQueue.global().async {
                         extensionDelegate.handleNightscoutDataMessage(applicationContext)
                     }
                 }
@@ -104,7 +104,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
     @available(watchOSApplicationExtension 2.2, *)
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         
-        DispatchQueue.main.async { () -> Void in
+        DispatchQueue.global().async { () -> Void in
             
             self.updateValuesFromApplicationContext(session.receivedApplicationContext as [String : AnyObject])
         }
