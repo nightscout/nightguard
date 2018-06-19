@@ -335,9 +335,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.batteryLabel.setText(currentNightscoutData.battery)
         self.iobLabel.setText(currentNightscoutData.iob)
         
-        // show raw values panel ONLY if we have a valid rawbg value!
-        let isValidRawBGValue = (Int(currentNightscoutData.rawbg) ?? Int(0)) > 0
-        self.rawValuesGroup.setHidden(!isValidRawBGValue)
+        // show raw values panel ONLY if configured so and we have a valid rawbg value!
+        let isValidRawBGValue = UnitsConverter.toMgdl(currentNightscoutData.rawbg) > 0
+        self.rawValuesGroup.setHidden(!UserDefaultsRepository.readShowRawBG() || !isValidRawBGValue)
         self.rawbgLabel.setText(currentNightscoutData.rawbg)
         self.noiseLabel.setText(currentNightscoutData.noise)
     }

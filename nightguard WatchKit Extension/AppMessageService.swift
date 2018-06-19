@@ -59,6 +59,10 @@ class AppMessageService : NSObject, WCSessionDelegate {
             UserDefaultsRepository.saveBaseUri(hostUri)
         }
         
+        if let showRawBG = applicationContext["showRawBG"] as? Bool {
+            UserDefaultsRepository.saveShowRawBG(showRawBG)
+        }
+        
         var shouldRepaintCharts = false
         if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
             let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)

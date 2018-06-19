@@ -40,12 +40,13 @@ class WatchService {
         sendOrTransmitToWatch(applicationDict)
     }
     
-    func sendToWatch(_ hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units) {
+    func sendToWatch(_ hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units, showRawBG : Bool) {
         let applicationDict : [String : Any] =
             ["hostUri" : hostUri,
              "alertIfBelowValue" : alertIfBelowValue,
              "alertIfAboveValue" : alertIfAboveValue,
-             "units" : units.rawValue]
+             "units" : units.rawValue,
+             "showRawBG" : showRawBG]
         sendOrTransmitToWatch(applicationDict)
     }
     
