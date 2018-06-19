@@ -223,7 +223,7 @@
 		43F1E0F91D07698000C329A2 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = nightguard/Media.xcassets; sourceTree = SOURCE_ROOT; };
 		43F1E0FA1D07698000C329A2 /* NightscoutData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutData.swift; path = nightguard/NightscoutData.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PrefsViewController.swift; path = nightguard/PrefsViewController.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = scoutwatch.entitlements; path = nightguard/scoutwatch.entitlements; sourceTree = SOURCE_ROOT; };
+		43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = scoutwatch.entitlements; path = nightguard/scoutwatch.entitlements; sourceTree = SOURCE_ROOT; };
 		43F1E1101D076C1C00C329A2 /* NightscoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutService.swift; path = nightguard/NightscoutService.swift; sourceTree = SOURCE_ROOT; };
 		43F1E11A1D076D9700C329A2 /* TimeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeService.swift; path = nightguard/TimeService.swift; sourceTree = SOURCE_ROOT; };
 		43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeAlarmViewController.swift; sourceTree = "<group>"; };
@@ -341,25 +341,16 @@
 		43647BCC1BFF6435004389F9 /* nightguard */ = {
 			isa = PBXGroup;
 			children = (
+				D144FFB120D7AEF60036E021 /* resources */,
 				432E62E21D1126CA00DD7978 /* app */,
 				43F1E1181D076D2800C329A2 /* domain */,
 				433AD0131CCE1CE2001A76CD /* external */,
 				437EEDC21FB7169C00694EAD /* repository */,
-				43647BD11BFF6435004389F9 /* Main.storyboard */,
-				43F1E0F81D07698000C329A2 /* MainViewController.swift */,
-				43F1E0F31D07698000C329A2 /* AlarmViewController.swift */,
-				43288A691D1C68D400EE3999 /* StatsViewController.swift */,
-				4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */,
-				43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */,
-				43288A6B1D1C893200EE3999 /* TabBarController.swift */,
-				43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */,
+				D1FAA4AB20D7AE6B0062B333 /* controllers */,
+				D1BA903620D303E700A0EBD1 /* views */,
 				43F1E0F41D07698000C329A2 /* AppDelegate.swift */,
 				43F1E0F71D07698000C329A2 /* Info.plist */,
-				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
-				43F1E0F91D07698000C329A2 /* Media.xcassets */,
 				43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */,
-				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
-				D1BA903620D303E700A0EBD1 /* views */,
 			);
 			path = nightguard;
 			sourceTree = "<group>";
@@ -454,6 +445,17 @@
 			name = domain;
 			sourceTree = "<group>";
 		};
+		D144FFB120D7AEF60036E021 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				43F1E0F91D07698000C329A2 /* Media.xcassets */,
+				43647BD11BFF6435004389F9 /* Main.storyboard */,
+				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
+				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
+			);
+			name = resources;
+			sourceTree = "<group>";
+		};
 		D1BA903620D303E700A0EBD1 /* views */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,6 +464,20 @@
 				D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */,
 			);
 			name = views;
+			sourceTree = "<group>";
+		};
+		D1FAA4AB20D7AE6B0062B333 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				43F1E0F81D07698000C329A2 /* MainViewController.swift */,
+				43F1E0F31D07698000C329A2 /* AlarmViewController.swift */,
+				43288A691D1C68D400EE3999 /* StatsViewController.swift */,
+				4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */,
+				43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */,
+				43288A6B1D1C893200EE3999 /* TabBarController.swift */,
+				43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */,
+			);
+			name = controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

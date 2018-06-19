@@ -89,6 +89,12 @@ class MainViewController: UIViewController {
         bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        showHideRawBGPanel()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         
         // Start immediately so that the current time gets display at once
@@ -302,8 +308,7 @@ class MainViewController: UIViewController {
             self.batteryLabel.text = currentNightscoutData.battery
             self.iobLabel.text = currentNightscoutData.iob
             
-            // show raw values panel ONLY if we have a valid rawbg value!
-            self.rawValuesPanel.isHidden = !((Int(currentNightscoutData.rawbg) ?? Int(0)) > 0)
+            self.showHideRawBGPanel(currentNightscoutData)
             self.rawValuesPanel.label.text = currentNightscoutData.noise
             self.rawValuesPanel.highlightedLabel.text = currentNightscoutData.rawbg
         })
@@ -337,5 +342,14 @@ class MainViewController: UIViewController {
             newCanvasWidth: self.maximumDeviceTextureWidth(),
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: true)
+    }
+    
+    fileprivate func showHideRawBGPanel(_ nightscoutData: NightscoutData? = nil) {
+        
+        let currentNightscoutData = nightscoutData ?? NightscoutCacheService.singleton.getCurrentNightscoutData()
+        let isValidRawBGValue = UnitsConverter.toMgdl(currentNightscoutData.rawbg) > 0
+
+        // show raw values panel ONLY if configured so and we have a valid rawbg value!
+        self.rawValuesPanel.isHidden = !UserDefaultsRepository.readShowRawBG() || !isValidRawBGValue
     }
 }

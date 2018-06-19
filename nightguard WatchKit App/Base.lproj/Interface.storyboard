@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14113" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch42" orientation="portrait">
+    <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -14,7 +14,7 @@
             <objects>
                 <controller fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="nightguard">
                     <items>
-                        <group width="1" alignment="left" id="1AH-d7-hZo">
+                        <group width="1" height="58" alignment="left" id="1AH-d7-hZo">
                             <items>
                                 <group width="60" alignment="left" layout="vertical" spacing="2" id="wwf-5f-pVK">
                                     <items>
@@ -100,6 +100,7 @@
                                     </connections>
                                 </tapGestureRecognizer>
                             </gestureRecognizers>
+                            <variation key="device=watch38mm" height="52"/>
                         </group>
                         <group width="1" alignment="left" layout="overlap" id="Umr-m9-d1K">
                             <items>
