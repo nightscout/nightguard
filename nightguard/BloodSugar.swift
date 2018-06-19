@@ -21,7 +21,11 @@ class BloodSugar : NSCoder {
     
     // when the noise is very strong, values are not computable... and we should exclude them from any logic & presentation
     var isValid: Bool {
-        return self.value > 10
+        return BloodSugar.isValid(value: self.value)
+    }
+    
+    static func isValid(value: Float) -> Bool {
+        return UnitsConverter.toMgdl(value) > 10
     }
     
     @objc required convenience init(coder decoder: NSCoder) {

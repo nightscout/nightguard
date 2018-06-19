@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13771" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14113" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13756"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14033"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -14,56 +14,93 @@
             <objects>
                 <controller fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="nightguard">
                     <items>
-                        <group width="1" height="50" alignment="left" id="1AH-d7-hZo">
+                        <group width="1" height="58" alignment="left" id="1AH-d7-hZo">
                             <items>
-                                <label width="80" height="45" alignment="left" text="---" textAlignment="center" baselineAdjustment="alignCenters" minimumScaleFactor="0.40000000000000002" id="vdn-99-EwA">
-                                    <fontDescription key="font" type="system" pointSize="46"/>
-                                    <variation key="device=watch38mm" width="60">
-                                        <fontDescription key="font" type="system" pointSize="38"/>
-                                    </variation>
-                                    <variation key="device=watch42mm" width="80"/>
-                                </label>
-                                <group alignment="left" layout="overlap" id="pYj-hp-PHS">
+                                <group width="60" alignment="left" layout="vertical" spacing="2" id="wwf-5f-pVK">
                                     <items>
-                                        <group width="72.5" height="1" alignment="left" layout="vertical" id="2qL-lw-zuD">
+                                        <label width="1" height="34" alignment="left" text="---" textAlignment="center" baselineAdjustment="alignCenters" minimumScaleFactor="0.40000000000000002" id="vdn-99-EwA">
+                                            <fontDescription key="font" type="system" pointSize="46"/>
+                                            <variation key="device=watch38mm">
+                                                <fontDescription key="font" type="system" pointSize="38"/>
+                                            </variation>
+                                            <variation key="device=watch42mm" height="40"/>
+                                        </label>
+                                        <group alignment="center" verticalAlignment="center" radius="2" id="1pi-M7-12E">
                                             <items>
-                                                <group width="70" height="17" alignment="left" id="yrF-or-Bnh">
+                                                <group alignment="left" verticalAlignment="center" radius="2" id="Sv9-wJ-4Nu">
                                                     <items>
-                                                        <label width="26.5" height="17.5" alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
+                                                        <label alignment="left" text="191" textAlignment="center" id="zeh-B2-2k7">
+                                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                                        </label>
+                                                    </items>
+                                                    <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <edgeInsets key="margins" left="2" right="2" top="0.0" bottom="0.0"/>
+                                                </group>
+                                                <label alignment="left" verticalAlignment="center" text="Clean" textAlignment="right" numberOfLines="2" minimumScaleFactor="0.20000000000000001" id="bBa-oK-viF">
+                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="font" type="system" pointSize="7"/>
+                                                </label>
+                                            </items>
+                                            <color key="backgroundColor" white="1" alpha="0.50470890410958902" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <edgeInsets key="margins" left="1" right="2" top="1" bottom="1"/>
+                                        </group>
+                                    </items>
+                                    <variation key="device=watch42mm" width="80"/>
+                                </group>
+                                <group alignment="left" layout="overlap" id="rvs-oN-6yu">
+                                    <items>
+                                        <group width="72.5" alignment="left" layout="vertical" spacing="1" id="2qL-lw-zuD">
+                                            <items>
+                                                <group width="1" height="17" alignment="left" id="yrF-or-Bnh">
+                                                    <items>
+                                                        <label alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
                                                             <fontDescription key="font" type="system" pointSize="16"/>
                                                         </label>
                                                     </items>
                                                 </group>
-                                                <group height="10" alignment="left" id="7mo-kr-osX">
+                                                <group width="1" height="16" alignment="left" id="7mo-kr-osX">
                                                     <items>
-                                                        <label width="45" height="18.5" alignment="right" text="59min" textAlignment="right" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
-                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                        <label alignment="right" text="59min" textAlignment="right" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
+                                                            <fontDescription key="font" type="system" pointSize="12"/>
                                                         </label>
-                                                        <label width="26.5" height="12" alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.20000000000000001" id="nnO-nW-RbM">
-                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                        <label alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.20000000000000001" id="nnO-nW-RbM">
+                                                            <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
                                                         </label>
                                                     </items>
                                                 </group>
-                                                <group height="10" alignment="left" id="HZw-Hn-d6o">
+                                                <group width="1" height="14" alignment="left" id="HZw-Hn-d6o">
                                                     <items>
-                                                        <label width="42" height="9" alignment="left" text="0.05U" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
-                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                        <label alignment="left" text="0.05U" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
+                                                            <fontDescription key="font" type="system" pointSize="12"/>
                                                         </label>
-                                                        <label height="10" alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
-                                                            <fontDescription key="font" type="system" pointSize="13"/>
+                                                        <label alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
+                                                            <fontDescription key="font" type="system" pointSize="12"/>
                                                         </label>
                                                     </items>
                                                 </group>
                                             </items>
+                                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                            <variation key="device=watch42mm" spacing="4"/>
                                         </group>
-                                        <group width="1" alignment="left" verticalAlignment="bottom" layout="vertical" id="MZW-91-Uu2">
+                                        <group alignment="left" verticalAlignment="bottom" id="Ro7-EH-y39">
                                             <items>
-                                                <imageView width="24" height="24" alignment="left" verticalAlignment="bottom" image="Activity1" id="THf-20-AM2"/>
+                                                <imageView width="26" height="26" alignment="left" id="8b4-VL-pZs">
+                                                    <variation key="device=watch42mm" height="30" width="30"/>
+                                                </imageView>
                                             </items>
+                                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
                                         </group>
                                     </items>
                                 </group>
                             </items>
+                            <gestureRecognizers>
+                                <tapGestureRecognizer numberOfTapsRequired="2" id="1al-IW-1XU">
+                                    <connections>
+                                        <action selector="onLabelsGroupDoubleTapped:" destination="AgC-eL-Hgc" id="O94-7q-k3M"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                            </gestureRecognizers>
+                            <variation key="device=watch38mm" height="52"/>
                         </group>
                         <group width="1" alignment="left" layout="overlap" id="Umr-m9-d1K">
                             <items>
@@ -71,7 +108,7 @@
                                     <gestureRecognizers>
                                         <tapGestureRecognizer numberOfTapsRequired="2" id="Njy-aE-O1r">
                                             <connections>
-                                                <action selector="onDoubleTapped:" destination="AgC-eL-Hgc" id="rV9-up-4OT"/>
+                                                <action selector="onSpriteKitViewDoubleTapped:" destination="AgC-eL-Hgc" id="rV9-up-4OT"/>
                                             </connections>
                                         </tapGestureRecognizer>
                                     </gestureRecognizers>
@@ -97,20 +134,23 @@
                     </items>
                     <menu key="menu" id="YiW-tI-jRp"/>
                     <connections>
-                        <outlet property="activityIndicatorImage" destination="THf-20-AM2" id="0KZ-Ud-x7j"/>
+                        <outlet property="activityIndicatorImage" destination="8b4-VL-pZs" id="BMO-7y-Os6"/>
                         <outlet property="batteryLabel" destination="lz8-YE-T1d" id="a4A-hb-KFZ"/>
                         <outlet property="bgLabel" destination="vdn-99-EwA" id="Tg2-Yj-bDo"/>
                         <outlet property="deltaArrowLabel" destination="nnO-nW-RbM" id="aR3-me-buM"/>
                         <outlet property="deltaLabel" destination="frk-q8-3y9" id="KvH-er-bpE"/>
-                        <outlet property="errorGroup" destination="dXq-O8-Nm3" id="olA-tz-soY"/>
-                        <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="O5p-uD-eWO"/>
+                        <outlet property="errorGroup" destination="dXq-O8-Nm3" id="oox-bn-71F"/>
+                        <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="JRC-e5-KcA"/>
                         <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="fNu-BR-2Ss"/>
+                        <outlet property="noiseLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
+                        <outlet property="rawValuesGroup" destination="1pi-M7-12E" id="DSq-be-TK7"/>
+                        <outlet property="rawbgLabel" destination="zeh-B2-2k7" id="9WF-fI-jiV"/>
                         <outlet property="spriteKitView" destination="HJ3-mD-NFS" id="hnU-4D-1mD"/>
                         <outlet property="timeLabel" destination="w1H-tu-XyX" id="KWM-Y9-FDg"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="-70.615384615384613" y="-43.153846153846153"/>
+            <point key="canvasLocation" x="-71.487179487179489" y="-54.923076923076927"/>
         </scene>
         <!--InfoInterfaceController-->
         <scene sceneID="uNG-cf-2tk">
