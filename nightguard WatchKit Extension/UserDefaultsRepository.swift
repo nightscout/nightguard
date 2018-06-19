@@ -39,6 +39,16 @@ class UserDefaultsRepository {
         defaults!.setValue(baseUri, forKey: "hostUri")
     }
     
+    static func readShowRawBG() -> Bool {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        return defaults?.bool(forKey: "showRawBG") ?? false
+    }
+    
+    static func saveShowRawBG(_ showRawBG: Bool) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(showRawBG, forKey: "showRawBG")
+    }
+    
     // Returns true if the units (mmol or mg/dL) have already been retrieved
     // from the nightscout backend
     static func areUnitsDefined() -> Bool {
