@@ -38,7 +38,6 @@ class MainViewController: UIViewController {
     // another timer to restart the timer for the case that a watchdog kills it
     // the latter can happen, when the request takes too long :-/
     var safetyResetTimer = Timer()
-    var snoozeAlarmViewController : SnoozeAlarmViewController?
     
     // check every 5 Seconds whether new bgvalues should be retrieved
     let timeInterval: TimeInterval = 5.0
@@ -95,10 +94,6 @@ class MainViewController: UIViewController {
         let isLargeEnoughScreen = height >= 667 // 4.7 inches or larger (iPhone 6, etc.)
         rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
         bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
-        
-        // create the snooze popup view
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        snoozeAlarmViewController = storyBoard.instantiateViewController(withIdentifier: "snoozeAlarmViewController") as? SnoozeAlarmViewController
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,7 +104,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        // Start immediately so that the current time gets display at once
+        // Start immediately so that the current time gets displayed at once
         // And the alarm can play if needed
         timerDidEnd(timer)
         
@@ -234,17 +229,23 @@ class MainViewController: UIViewController {
         } else {
             // stop the alarm immediatly here not to disturb others
             AlarmSound.muteVolume()
+            showSnoozePopup()
             // For safety reasons: Unmute sound after 1 minute
             // This prevents an unlimited snooze if the snooze button was touched accidentally.
             DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
                 AlarmSound.unmuteVolume()
             })
-            showSnoozePopup()
         }
     }
     
     fileprivate func showSnoozePopup() {
-        self.present(snoozeAlarmViewController!, animated: true, completion: nil)
+        
+        // create the snooze popup view
+        if let snoozeAlarmViewController = self.storyboard?.instantiateViewController(
+            withIdentifier: "snoozeAlarmViewController") as? SnoozeAlarmViewController {
+            
+            self.present(snoozeAlarmViewController, animated: true, completion: nil)
+        }
     }
     
     public func updateSnoozeButtonText() {

@@ -56,6 +56,7 @@ class SnoozeAlarmViewController: UIViewController {
     @IBAction func doButtonPressed(_ sender: Any) {
         
         AlarmSound.unmuteVolume()
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
+        //self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
