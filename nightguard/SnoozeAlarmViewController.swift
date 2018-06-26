@@ -12,7 +12,7 @@ import UIKit
 class SnoozeAlarmViewController: UIViewController {
     
     @IBAction func do30minButtonPressed(_ sender: Any) {
-        snoozeMinutes(30)
+        snoozeMinutes(1)
     }
     
     @IBAction func do45minButtonPressed(_ sender: Any) {

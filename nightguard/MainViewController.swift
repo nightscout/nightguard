@@ -35,8 +35,15 @@ class MainViewController: UIViewController {
     var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     // timer to check continuously for new bgValues
     var timer = Timer()
+    // another timer to restart the timer for the case that a watchdog kills it
+    // the latter can happen, when the request takes too long :-/
+    var safetyResetTimer = Timer()
+    var snoozeAlarmViewController : SnoozeAlarmViewController?
+    
     // check every 5 Seconds whether new bgvalues should be retrieved
-    let timeInterval:TimeInterval = 5.0
+    let timeInterval: TimeInterval = 5.0
+    // kill and restart the timer every 12 minutes
+    let safetyResetTimerInterval: TimeInterval = 60.0 * 12
     
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
@@ -59,11 +66,12 @@ class MainViewController: UIViewController {
         paintScreenLockSwitch()
         
         // Start the timer to retrieve new bgValues
-        timer = Timer.scheduledTimer(timeInterval: timeInterval,
-                                                       target: self,
-                                                       selector: #selector(MainViewController.timerDidEnd(_:)),
-                                                       userInfo: nil,
-                                                       repeats: true)
+        startTimer()
+        safetyResetTimer = Timer.scheduledTimer(timeInterval: safetyResetTimerInterval,
+                                     target: self,
+                                     selector: #selector(MainViewController.safetyResetTimerDidEnd(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -87,6 +95,10 @@ class MainViewController: UIViewController {
         let isLargeEnoughScreen = height >= 667 // 4.7 inches or larger (iPhone 6, etc.)
         rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
         bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
+        
+        // create the snooze popup view
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        snoozeAlarmViewController = storyBoard.instantiateViewController(withIdentifier: "snoozeAlarmViewController") as? SnoozeAlarmViewController
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -174,6 +186,19 @@ class MainViewController: UIViewController {
         return UIStatusBarStyle.lightContent
     }
     
+    func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: timeInterval,
+                                     target: self,
+                                     selector: #selector(MainViewController.timerDidEnd(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
+    }
+    
+    @objc func safetyResetTimerDidEnd(_ timer: Timer) {
+        timer.invalidate()
+        startTimer()
+    }
+    
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer) {
         
@@ -211,7 +236,7 @@ class MainViewController: UIViewController {
             AlarmSound.muteVolume()
             // For safety reasons: Unmute sound after 1 minute
             // This prevents an unlimited snooze if the snooze button was touched accidentally.
-            DispatchQueue.global().asyncAfter(deadline: .now() + 30.0, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
                 AlarmSound.unmuteVolume()
             })
             showSnoozePopup()
@@ -219,10 +244,7 @@ class MainViewController: UIViewController {
     }
     
     fileprivate func showSnoozePopup() {
-        
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let newViewController = storyBoard.instantiateViewController(withIdentifier: "snoozeAlarmViewController") as! SnoozeAlarmViewController
-        self.present(newViewController, animated: true, completion: nil)
+        self.present(snoozeAlarmViewController!, animated: true, completion: nil)
     }
     
     public func updateSnoozeButtonText() {
@@ -270,7 +292,7 @@ class MainViewController: UIViewController {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 if let error = error {
                     self.errorLabel.text = "❌ \(error.localizedDescription)"
                     self.errorLabel.textColor = .red
@@ -289,7 +311,7 @@ class MainViewController: UIViewController {
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
         
-        DispatchQueue.global().async(execute: {
+        DispatchQueue.main.async(execute: {
             if currentNightscoutData.sgv == "---" {
                 self.bgLabel.text = "---"
             } else {

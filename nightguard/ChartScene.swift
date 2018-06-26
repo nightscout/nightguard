@@ -69,7 +69,8 @@ class ChartScene : SKScene {
             displayDaysLegend: displayDaysLegend
         )
         
-        if chartImage == nil {
+        // do nothing if the chart couldn't be created
+        if chartImage == nil || (chartImage?.size.width)! <= CGFloat(0) || (chartImage?.size.height)! <= CGFloat(0) {
             return
         }
         

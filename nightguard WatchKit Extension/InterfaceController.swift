@@ -344,14 +344,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 self.cachedTodaysBgValues = newTodaysData
                 self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues, moveToLatestValue: true)
             }
         })
         let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
             
-            DispatchQueue.global().async {
+            DispatchQueue.main.async {
                 self.cachedYesterdaysBgValues = newYesterdaysData
                 self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData, moveToLatestValue: false)
             }

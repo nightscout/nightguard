@@ -84,7 +84,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
             if #available(watchOSApplicationExtension 3.0, *) {
                 if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
                     if WKExtension.shared().applicationState == .active {
-                        DispatchQueue.global().async {
+                        DispatchQueue.main.async {
                             interfaceController.loadAndPaintChartData(forceRepaint: true)
                         }
                     } else {
