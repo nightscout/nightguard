@@ -32,7 +32,7 @@ class ChartScene : SKScene {
         
         infoLabelNode.fontColor = UIColor.red
         infoLabelNode.fontSize = CGFloat(15)
-        infoLabelNode.fontName = "System-Bold"
+        infoLabelNode.fontName = "AvenirNext-Bold"
 
         initialPlacingOfChart()
         
