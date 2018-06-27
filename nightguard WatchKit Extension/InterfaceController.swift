@@ -289,6 +289,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
                 if let newNightscoutData = newNightscoutData {
                     self.updateComplication()
                     self.playAlarm(currentNightscoutData: newNightscoutData)
+                }
             }
         })
         
@@ -341,7 +342,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.noiseLabel.setText(currentNightscoutData.noise)
     }
     
-    /*fileprivate*/ func loadAndPaintChartData(forceRepaint : Bool) {
+    func loadAndPaintChartData(forceRepaint : Bool) {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
@@ -380,7 +381,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             infoLabel: determineInfoLabel())
     }
     
-    fileprivate func determineInfoLabel() -> String {
+    func determineInfoLabel() -> String {
         
         if !AlarmRule.isSnoozed() {
             return ""
