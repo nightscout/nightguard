@@ -97,7 +97,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
         if let _ = applicationContext["nightscoutData"] {
             if #available(watchOSApplicationExtension 3.0, *) {
                 if let extensionDelegate = WKExtension.shared().delegate as? ExtensionDelegate {
-                    DispatchQueue.global().async {
+                    DispatchQueue.main.async {
                         extensionDelegate.handleNightscoutDataMessage(applicationContext)
                     }
                 }
@@ -108,7 +108,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
     @available(watchOSApplicationExtension 2.2, *)
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         
-        DispatchQueue.global().async { () -> Void in
+        DispatchQueue.main.async { () -> Void in
             
             self.updateValuesFromApplicationContext(session.receivedApplicationContext as [String : AnyObject])
         }

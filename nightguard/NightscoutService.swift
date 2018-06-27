@@ -35,15 +35,19 @@ class NightscoutService {
                 return
             }
             
-            let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
-            var sgvValues = [Int]()
-            for (key, value) in jsonArray {
-                if key == "sqv" {
-                    sgvValues.insert(value as! Int, at: 0)
+            DispatchQueue.main.async {
+                
+                let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
+                var sgvValues = [Int]()
+                for (key, value) in jsonArray {
+                   if key == "sqv" {
+                        sgvValues.insert(value as! Int, at: 0)
+                    }
+                    resultHandler(sgvValues)
                 }
             }
-            resultHandler(sgvValues)
         }) ;
+                
         task.resume()
     }
 
@@ -68,25 +72,27 @@ class NightscoutService {
                 return
             }
             
-            do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                guard let jsonDict :NSDictionary = json as? NSDictionary else {
-                    return
-                }
-                let settingsDict = jsonDict.object(forKey: "settings") as! NSDictionary
-                if (settingsDict.count > 0) {
-                    
-                    let unitsAsString = settingsDict.value(forKey: "units") as! String
-                    if unitsAsString.lowercased() == "mg/dl" {
-                        resultHandler(Units.mgdl)
-                    } else {
-                        resultHandler(Units.mmol)
+            DispatchQueue.main.async {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                    guard let jsonDict :NSDictionary = json as? NSDictionary else {
+                        return
                     }
+                    let settingsDict = jsonDict.object(forKey: "settings") as! NSDictionary
+                    if (settingsDict.count > 0) {
+
+                        let unitsAsString = settingsDict.value(forKey: "units") as! String
+                        if unitsAsString.lowercased() == "mg/dl" {
+                            resultHandler(Units.mgdl)
+                        } else {
+                            resultHandler(Units.mmol)
+                        }
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
                 }
-            } catch let error as NSError {
-                print(error.localizedDescription)
             }
-        }) 
+        })
         task.resume()
     }
     
