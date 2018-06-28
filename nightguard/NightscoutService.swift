@@ -14,7 +14,7 @@ class NightscoutService {
     static let singleton = NightscoutService()
     
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
-    let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
+    let DIRECTIONS = ["-", "↑↑", "↑","↗︎", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     func readChartData(_ resultHandler : @escaping (([Int]) -> Void)) {
