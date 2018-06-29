@@ -284,7 +284,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
-            DispatchQueue.global().async { [unowned self] in
+            DispatchQueue.main.async { [unowned self] in
                 self.updateInterface(withNightscoutData: newNightscoutData, error: error)
                 if let newNightscoutData = newNightscoutData {
                     self.updateComplication()

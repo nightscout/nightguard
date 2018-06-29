@@ -310,7 +310,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         let nightscoutData = NSData(contentsOf: location as URL)
         
         // extract data on main thead
-        DispatchQueue.main.sync { [unowned self] in
+        DispatchQueue.main.async { [unowned self] in
             NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] (newNightscoutData, error) -> Void in
                 
                 // keep the error (if any)
