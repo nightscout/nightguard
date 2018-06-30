@@ -39,8 +39,8 @@ class MainViewController: UIViewController {
     // the latter can happen, when the request takes too long :-/
     var safetyResetTimer = Timer()
     
-    // check every 5 Seconds whether new bgvalues should be retrieved
-    let timeInterval: TimeInterval = 5.0
+    // check every 15 Seconds whether new bgvalues should be retrieved
+    let timeInterval: TimeInterval = 15.0
     // kill and restart the timer every 12 minutes
     let safetyResetTimerInterval: TimeInterval = 60.0 * 12
     
@@ -293,17 +293,15 @@ class MainViewController: UIViewController {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.errorLabel.text = "❌ \(error.localizedDescription)"
-                    self.errorLabel.textColor = .red
-                    self.errorPanelView.isHidden = false
-                } else if let newNightscoutData = newNightscoutData {
-                    self.errorPanelView.isHidden = true
-                    self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
-                    
-                    WatchService.singleton.sendToWatchCurrentNightwatchData()
-                }
+            if let error = error {
+                self.errorLabel.text = "❌ \(error.localizedDescription)"
+                self.errorLabel.textColor = .red
+                self.errorPanelView.isHidden = false
+            } else if let newNightscoutData = newNightscoutData {
+                self.errorPanelView.isHidden = true
+                self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                
+                WatchService.singleton.sendToWatchCurrentNightwatchData()
             }
         })
         

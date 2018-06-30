@@ -99,61 +99,65 @@ class NightscoutService {
     /* Reads all data between two timestamps and limits the maximum return values to 400. */
     func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
 
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if baseUri == "" {
-            return
-        }
-        
-        let unixTimestamp1 : Double = timestamp1.timeIntervalSince1970 * 1000
-        let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
-        
-        // Get the current data from REST-Call
-        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gt]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
-        let request =
-            URLRequest(url: URL(string: requestUri)!,
-                            cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-        
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { data, response, error in
-            
-            guard error == nil else {
-                print(error!)
+        DispatchQueue.global().async {
+            let baseUri = UserDefaultsRepository.readBaseUri()
+            if baseUri == "" {
                 return
             }
-            guard data != nil else {
-                print("The received data was nil...")
-                return
-            }
-        
-            let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
-            let sgvRows = stringSgvData.components(separatedBy: "\n")
-            var timestampColumn : Int = 1
-            var bloodSugarColumn : Int = 2
-        
-            var bloodSugarArray = [BloodSugar]()
-            for sgvRow in sgvRows {
-                let sgvRowArray = sgvRow.components(separatedBy: "\t")
             
-                if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
-                    // Nightscout return for some versions
-                    if self.isDateColumn(sgvRowArray[1]) {
-                        timestampColumn = 2
-                        bloodSugarColumn = 3
-                    }
+            let unixTimestamp1 : Double = timestamp1.timeIntervalSince1970 * 1000
+            let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
+            
+            // Get the current data from REST-Call
+            let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gt]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
+            let request =
+                URLRequest(url: URL(string: requestUri)!,
+                                cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+            
+            let session = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: { data, response, error in
                 
-                    if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
-                        if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
-                            let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
-                            bloodSugarArray.insert(bloodSugar, at: 0)
+                guard error == nil else {
+                    print(error!)
+                    return
+                }
+                guard data != nil else {
+                    print("The received data was nil...")
+                    return
+                }
+            
+                let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
+                let sgvRows = stringSgvData.components(separatedBy: "\n")
+                var timestampColumn : Int = 1
+                var bloodSugarColumn : Int = 2
+            
+                var bloodSugarArray = [BloodSugar]()
+                for sgvRow in sgvRows {
+                    let sgvRowArray = sgvRow.components(separatedBy: "\t")
+                
+                    if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
+                        // Nightscout return for some versions
+                        if self.isDateColumn(sgvRowArray[1]) {
+                            timestampColumn = 2
+                            bloodSugarColumn = 3
+                        }
+                    
+                        if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
+                            if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
+                                let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
+                                bloodSugarArray.insert(bloodSugar, at: 0)
+                            }
                         }
                     }
                 }
-            }
-            
-            bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
-            resultHandler(bloodSugarArray)
-        }) 
-        task.resume()
+                
+                bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
+                DispatchQueue.main.async {
+                    resultHandler(bloodSugarArray)
+                }
+            })
+            task.resume()
+        }
     }
     
     // append the oldvalues but leave duplicates
@@ -257,34 +261,41 @@ class NightscoutService {
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
 
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if (baseUri == "") {
-            return
-        }
-        
-        // Get the current data from REST-Call
-        let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-        
-        let session : URLSession = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+        DispatchQueue.global().async {
+
+            let baseUri = UserDefaultsRepository.readBaseUri()
+            if (baseUri == "") {
+                return
+            }
             
-            guard error == nil else {
-                print("Error receiving Pepple Watch Data.")
-                print(error!)
-                resultHandler(nil, error)
-                return
-            }
+            // Get the current data from REST-Call
+            let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+            
+            let session : URLSession = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: { data, response, error in
+                
+                guard error == nil else {
+                    print("Error receiving Pepple Watch Data.")
+                    print(error!)
+                    DispatchQueue.main.async {
+                        resultHandler(nil, error)
+                    }
+                    return
+                }
 
-            guard data != nil else {
-                print("Pebble Watch Data was nil.")
-                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data Received from Pebble Watch API"])
-                resultHandler(nil, error)
-                return
-            }
+                guard data != nil else {
+                    print("Pebble Watch Data was nil.")
+                    let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data Received from Pebble Watch API"])
+                    DispatchQueue.main.async {
+                        resultHandler(nil, error)
+                    }
+                    return
+                }
 
-            self.extractData(data : data!, resultHandler)
-        }) ;
-        task.resume()
+                self.extractData(data : data!, resultHandler)
+            }) ;
+            task.resume()
+        }
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
@@ -360,12 +371,17 @@ class NightscoutService {
                     nightscoutData.noise = self.getNoiseLevel(noiseCode.intValue, sgv: String(sgv))
                 }
                 
-                resultHandler(nightscoutData, nil)
+                DispatchQueue.main.async {
+                    resultHandler(nightscoutData, nil)
+                }
             }
         } catch {
             print("Catched unknown exception.")
             let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error while extracting data from Pebble Watch API"])
-            resultHandler(nil, error)
+            
+            DispatchQueue.main.async {
+                resultHandler(nil, error)
+            }
             return
         }
     }
