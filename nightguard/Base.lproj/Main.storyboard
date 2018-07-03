@@ -201,7 +201,7 @@
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="jYq-YK-YW0"/>
                                 <fontDescription key="fontDescription" name=".SFNSDisplay" family=".SF NS Display" pointSize="40"/>
-                                <state key="normal" title="1min"/>
+                                <state key="normal" title="30min"/>
                                 <connections>
                                     <action selector="do30minButtonPressed:" destination="pgd-kF-6zp" eventType="touchUpInside" id="Vm5-gc-NG5"/>
                                 </connections>
