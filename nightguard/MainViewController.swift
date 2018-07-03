@@ -39,8 +39,8 @@ class MainViewController: UIViewController {
     // the latter can happen, when the request takes too long :-/
     var safetyResetTimer = Timer()
     
-    // check every 15 Seconds whether new bgvalues should be retrieved
-    let timeInterval: TimeInterval = 15.0
+    // check every 30 Seconds whether new bgvalues should be retrieved
+    let timeInterval: TimeInterval = 30.0
     // kill and restart the timer every 12 minutes
     let safetyResetTimerInterval: TimeInterval = 60.0 * 12
     

@@ -269,7 +269,8 @@ class NightscoutService {
             }
             
             // Get the current data from REST-Call
-            let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+            var request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+            request.timeoutInterval = 70
             
             let session : URLSession = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: { data, response, error in
