@@ -100,6 +100,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             
             template.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
             template.ringStyle = CLKComplicationRingStyle.closed
+        case .graphicCorner:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicCornerTextImage()
+                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                modTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Circular")!)
+                template = modTemplate
+            } else {
+                abort()
+            }
         default: break
         }
         

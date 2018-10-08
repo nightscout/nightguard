@@ -73,6 +73,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             // Apple Watch 42mm
             return 145.0
         }
+        if (interfaceBounds.height == 224.0) {
+            // Apple Watch 44mm
+            return 165.0
+        }
         
         // interfaceBounds.height == 170.0
         // Apple Watch 38mm
