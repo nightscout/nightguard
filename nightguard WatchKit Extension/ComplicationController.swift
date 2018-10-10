@@ -104,7 +104,24 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             if #available(watchOSApplicationExtension 5.0, *) {
                 let modTemplate = CLKComplicationTemplateGraphicCornerTextImage()
                 modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-                modTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Circular")!)
+                modTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Corner")!)
+                template = modTemplate
+            } else {
+                abort()
+            }
+        case .graphicCircular:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicCircularClosedGaugeText()
+                modTemplate.centerTextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
+                modTemplate.gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: 0.0)
+                template = modTemplate
+            } else {
+                abort()
+            }
+        case .graphicBezel:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicBezelCircularText()
+                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
                 template = modTemplate
             } else {
                 abort()
