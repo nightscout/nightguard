@@ -122,6 +122,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             if #available(watchOSApplicationExtension 5.0, *) {
                 let modTemplate = CLKComplicationTemplateGraphicBezelCircularText()
                 modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                let modImageTemplate = CLKComplicationTemplateGraphicCircularImage()
+                modImageTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
+                modTemplate.circularTemplate = modImageTemplate
                 template = modTemplate
             } else {
                 abort()
