@@ -364,16 +364,22 @@ class ChartPainter {
     // Returns e.g. 04:00 for 02:00 o'clock.
     fileprivate func getNextEvenHour(_ date : Date) -> Date {
         
-        var cal = Calendar.current
-        cal.timeZone = TimeZone(abbreviation: "UTC")!  // because date is in UTC, otherwise day-light saving days will have trouble finding the next hour (infinite cycle!)
-
+        let cal = Calendar.current
+        
         let hour = (cal as NSCalendar).component(NSCalendar.Unit.hour, from: date)
         
-        if isEven(hour + 1) {
-            return (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!.addingTimeInterval(fullHour)
-        } else {
-            return (cal as NSCalendar).date(bySettingHour: hour + 1, minute: 00, second: 0, of: date, options: NSCalendar.Options())!.addingTimeInterval(fullHour)
+        let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!
+        var nextHour = currentHour.addingTimeInterval(
+            isEven(hour + 1) ? fullHour : 2 * fullHour
+        )
+        
+        // During daylight-savings the next hour can be the still the same
+        // We need to jump to the next hour in this case
+        if (cal as NSCalendar).component(NSCalendar.Unit.hour, from: nextHour) == hour {
+            nextHour = currentHour.addingTimeInterval(fullHour * 2)
         }
+        
+        return nextHour
     }
     
     fileprivate func isEven(_ hour : Int) -> Bool {
@@ -382,9 +388,8 @@ class ChartPainter {
     
     fileprivate func getNextHour(_ date : Date) -> Date {
         
-        var cal = Calendar.current
-        cal.timeZone = TimeZone(abbreviation: "UTC")!  // because date is in UTC, otherwise day-light saving days will have trouble finding the next hour (infinite cycle!)
-
+        let cal = Calendar.current
+        
         let hour = (cal as NSCalendar).component(NSCalendar.Unit.hour, from: date)
         
         let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!
@@ -392,7 +397,7 @@ class ChartPainter {
         
         // During daylight-savings the next hour can be the still the same
         // We need to jump to the next hour in this case
-        if nextHour == date {
+        if (cal as NSCalendar).component(NSCalendar.Unit.hour, from: nextHour) == hour {
             nextHour = currentHour.addingTimeInterval(fullHour * 2)
         }
         
