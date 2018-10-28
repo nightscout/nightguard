@@ -189,7 +189,7 @@ class NightscoutCacheService: NSObject {
     
     fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void), inBackground : Bool) {
         
-        if true /*currentNightscoutData!.isOlderThan5Minutes()*/ {
+        if currentNightscoutData!.isOlderThan5Minutes() {
             if inBackground {
                 NightscoutService.singleton.readCurrentDataForPebbleWatchInBackground()
             } else {

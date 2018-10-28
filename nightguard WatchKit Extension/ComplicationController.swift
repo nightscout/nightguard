@@ -100,6 +100,35 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             
             template.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
             template.ringStyle = CLKComplicationRingStyle.closed
+        case .graphicCorner:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicCornerTextImage()
+                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                modTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Corner")!)
+                template = modTemplate
+            } else {
+                abort()
+            }
+        case .graphicCircular:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicCircularClosedGaugeText()
+                modTemplate.centerTextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
+                modTemplate.gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: 0.0)
+                template = modTemplate
+            } else {
+                abort()
+            }
+        case .graphicBezel:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicBezelCircularText()
+                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                let modImageTemplate = CLKComplicationTemplateGraphicCircularImage()
+                modImageTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
+                modTemplate.circularTemplate = modImageTemplate
+                template = modTemplate
+            } else {
+                abort()
+            }
         default: break
         }
         

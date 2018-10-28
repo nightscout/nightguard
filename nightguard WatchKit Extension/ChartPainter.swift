@@ -365,8 +365,9 @@ class ChartPainter {
     // Returns e.g. 04:00 for 02:00 o'clock.
     fileprivate func getNextEvenHour(_ date : Date) -> Date {
         
-        let cal = Calendar.current
-        
+        var cal = Calendar.current
+        cal.timeZone = TimeZone(abbreviation: "UTC")!  // because date is in UTC, otherwise day-light saving days will have trouble finding the next hour (infinite cycle!)
+
         let hour = (cal as NSCalendar).component(NSCalendar.Unit.hour, from: date)
         
         if isEven(hour + 1) {
@@ -382,8 +383,9 @@ class ChartPainter {
     
     fileprivate func getNextHour(_ date : Date) -> Date {
         
-        let cal = Calendar.current
-        
+        var cal = Calendar.current
+        cal.timeZone = TimeZone(abbreviation: "UTC")!  // because date is in UTC, otherwise day-light saving days will have trouble finding the next hour (infinite cycle!)
+
         let hour = (cal as NSCalendar).component(NSCalendar.Unit.hour, from: date)
         
         let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!

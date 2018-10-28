@@ -73,6 +73,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             // Apple Watch 42mm
             return 145.0
         }
+        if (interfaceBounds.height == 224.0) {
+            // Apple Watch 44mm
+            return 165.0
+        }
         
         // interfaceBounds.height == 170.0
         // Apple Watch 38mm
@@ -342,7 +346,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.noiseLabel.setText(currentNightscoutData.noise)
     }
     
-    /*fileprivate*/ func loadAndPaintChartData(forceRepaint : Bool) {
+    func loadAndPaintChartData(forceRepaint : Bool) {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
@@ -381,7 +385,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             infoLabel: determineInfoLabel())
     }
     
-    fileprivate func determineInfoLabel() -> String {
+    func determineInfoLabel() -> String {
         
         if !AlarmRule.isSnoozed() {
             return ""
