@@ -69,13 +69,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
         
-        if (interfaceBounds.height == 195.0) {
-            // Apple Watch 42mm
-            return 145.0
-        }
-        if (interfaceBounds.height == 224.0) {
+        if (interfaceBounds.height >= 224.0) {
             // Apple Watch 44mm
             return 165.0
+        }
+        if (interfaceBounds.height >= 195.0) {
+            // Apple Watch 42mm
+            return 145.0
         }
         
         // interfaceBounds.height == 170.0
