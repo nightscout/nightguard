@@ -35,8 +35,7 @@ class NightscoutService {
                 return
             }
             
-            DispatchQueue.main.async {
-                
+            dispatchOnMain {
                 let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
                 var sgvValues = [Int]()
                 for (key, value) in jsonArray {
@@ -72,7 +71,7 @@ class NightscoutService {
                 return
             }
             
-            DispatchQueue.main.async {
+            dispatchOnMain {
                 do {
                     let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
                     guard let jsonDict :NSDictionary = json as? NSDictionary else {
@@ -99,7 +98,7 @@ class NightscoutService {
     /* Reads all data between two timestamps and limits the maximum return values to 400. */
     func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
 
-        DispatchQueue.global().async {
+//        DispatchQueue.global().async {
             let baseUri = UserDefaultsRepository.readBaseUri()
             if baseUri == "" {
                 return
@@ -152,12 +151,12 @@ class NightscoutService {
                 }
                 
                 bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
-                DispatchQueue.main.async {
+                dispatchOnMain {
                     resultHandler(bloodSugarArray)
                 }
             })
             task.resume()
-        }
+//        }
     }
     
     // append the oldvalues but leave duplicates
@@ -261,7 +260,7 @@ class NightscoutService {
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
 
-        DispatchQueue.global().async {
+//        DispatchQueue.global().async {
 
             let baseUri = UserDefaultsRepository.readBaseUri()
             if (baseUri == "") {
@@ -278,7 +277,7 @@ class NightscoutService {
                 guard error == nil else {
                     print("Error receiving Pepple Watch Data.")
                     print(error!)
-                    DispatchQueue.main.async {
+                    dispatchOnMain {
                         resultHandler(nil, error)
                     }
                     return
@@ -287,7 +286,7 @@ class NightscoutService {
                 guard data != nil else {
                     print("Pebble Watch Data was nil.")
                     let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data Received from Pebble Watch API"])
-                    DispatchQueue.main.async {
+                    dispatchOnMain {
                         resultHandler(nil, error)
                     }
                     return
@@ -296,7 +295,7 @@ class NightscoutService {
                 self.extractData(data : data!, resultHandler)
             }) ;
             task.resume()
-        }
+//        }
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
@@ -372,7 +371,7 @@ class NightscoutService {
                     nightscoutData.noise = self.getNoiseLevel(noiseCode.intValue, sgv: String(sgv))
                 }
                 
-                DispatchQueue.main.async {
+                dispatchOnMain {
                     resultHandler(nightscoutData, nil)
                 }
             }
@@ -380,7 +379,7 @@ class NightscoutService {
             print("Catched unknown exception.")
             let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error while extracting data from Pebble Watch API"])
             
-            DispatchQueue.main.async {
+            dispatchOnMain {
                 resultHandler(nil, error)
             }
             return

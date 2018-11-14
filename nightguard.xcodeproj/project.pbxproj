@@ -102,6 +102,8 @@
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
 		D1BD14E5205BB9E200B93389 /* BackgroundRefreshScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */; };
 		D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
+		D1E6B897219C69D9007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
+		D1E6B898219C6A86007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -233,6 +235,7 @@
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshScheduler.swift; sourceTree = "<group>"; };
 		D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshLogger.swift; sourceTree = "<group>"; };
+		D1E6B896219C69D9007ED4FE /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,6 +352,7 @@
 				D1FAA4AB20D7AE6B0062B333 /* controllers */,
 				D1BA903620D303E700A0EBD1 /* views */,
 				43F1E0F41D07698000C329A2 /* AppDelegate.swift */,
+				D1E6B896219C69D9007ED4FE /* Utils.swift */,
 				43F1E0F71D07698000C329A2 /* Info.plist */,
 				43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */,
 			);
@@ -729,6 +733,7 @@
 				43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */,
 				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
+				D1E6B897219C69D9007ED4FE /* Utils.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
 				43E89E571E659102005B0A65 /* ChartScene.swift in Sources */,
 				43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */,
@@ -798,6 +803,7 @@
 				D10ACE402063C25600F41EE7 /* BackgroundRefreshSettings.swift in Sources */,
 				4346F9841D0773F700487541 /* TimeService.swift in Sources */,
 				D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */,
+				D1E6B898219C6A86007ED4FE /* Utils.swift in Sources */,
 				43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */,
 				439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				432E62EC1D15EFEC00DD7978 /* FloatExtension.swift in Sources */,

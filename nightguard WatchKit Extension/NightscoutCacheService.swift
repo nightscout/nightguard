@@ -70,16 +70,19 @@ class NightscoutCacheService: NSObject {
         return false
     }
     
-    func loadCurrentNightscoutData(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void))
-        -> NightscoutData {
-            
-            if currentNightscoutData == nil {
-                currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
-            }
-            
-            checkIfRefreshIsNeeded(resultHandler, inBackground: false)
-            
-            return currentNightscoutData!
+    func loadCurrentNightscoutData(forceRefresh: Bool, _ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) -> NightscoutData {
+    
+        if currentNightscoutData == nil {
+            currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
+        }
+        
+        checkIfRefreshIsNeeded(resultHandler, inBackground: false, forceRefresh: forceRefresh)
+        
+        return currentNightscoutData!
+    }
+    
+    func loadCurrentNightscoutData(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) -> NightscoutData {
+        return loadCurrentNightscoutData(forceRefresh: false, resultHandler)
     }
     
     func loadCurrentNightscoutDataInBackground() {
@@ -187,9 +190,9 @@ class NightscoutCacheService: NSObject {
         return transformedValues
     }
     
-    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void), inBackground : Bool) {
+    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void), inBackground : Bool, forceRefresh: Bool = false) {
         
-        if currentNightscoutData!.isOlderThan5Minutes() {
+        if forceRefresh || currentNightscoutData!.isOlderThan5Minutes() {
             if inBackground {
                 NightscoutService.singleton.readCurrentDataForPebbleWatchInBackground()
             } else {
