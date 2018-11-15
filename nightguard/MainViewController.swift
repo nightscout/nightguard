@@ -291,19 +291,20 @@ class MainViewController: UIViewController {
     
     fileprivate func loadAndPaintCurrentBgData() {
         
-        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData { [unowned self] result in
             
-            if let error = error {
+            switch result {
+            case .error(let error):
                 self.errorLabel.text = "❌ \(error.localizedDescription)"
                 self.errorLabel.textColor = .red
                 self.errorPanelView.isHidden = false
-            } else if let newNightscoutData = newNightscoutData {
+            case .data(let newNightscoutData):
                 self.errorPanelView.isHidden = true
                 self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
                 
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
             }
-        })
+        }
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
     }
@@ -337,16 +338,21 @@ class MainViewController: UIViewController {
     
     fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
         
-        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
+        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
+         
+            if case .data(let newTodaysData) = result {
+                let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
+                self.paintChartData(todaysData: newTodaysData, yesterdaysData: cachedYesterdaysData)
+            }
+        }
+        
+        let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData { [unowned self] result in
             
-            let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
-            self.paintChartData(todaysData: newTodaysData, yesterdaysData: cachedYesterdaysData)
-        })
-        let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
-            
-            let cachedTodaysBgData = NightscoutCacheService.singleton.getTodaysBgData()
-            self.paintChartData(todaysData: cachedTodaysBgData, yesterdaysData: newYesterdaysData)
-        })
+            if case .data(let newYesterdaysData) = result {
+                let cachedTodaysBgData = NightscoutCacheService.singleton.getTodaysBgData()
+                self.paintChartData(todaysData: cachedTodaysBgData, yesterdaysData: newYesterdaysData)
+            }
+        }
         
         // this does a fast paint of eventually cached data
         if forceRepaint ||

@@ -182,7 +182,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     func retrieveAndStoreNightscoutUnits() {
-        NightscoutService.singleton.readStatus { (units) in
+        NightscoutService.singleton.readStatus { [unowned self] (units: Units) in
             UserDefaultsRepository.saveUnits(units)
             self.sendValuesToAppleWatch()
         }

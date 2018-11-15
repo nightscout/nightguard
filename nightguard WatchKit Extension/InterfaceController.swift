@@ -211,18 +211,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         assureThatBaseUriIsExisting()
         assureThatDisplayUnitsIsDefined()
         
-        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        if forceRefresh || currentNightscoutData.isOlderThan5Minutes() {
-            
-            // load current bg data, we probably have old data...
-            loadAndPaintCurrentBgData(forceRefresh: true)
-        } else {
-            
-            // otwherwise just update the gui with current data (will update the time, etc., but will not display the activity indicator & error panel)
-            updateInterface(withNightscoutData: currentNightscoutData, error: nil)
-            playAlarm(currentNightscoutData: currentNightscoutData)
-        }
-        
+        loadAndPaintCurrentBgData(forceRefresh: forceRefresh)
         loadAndPaintChartData(forceRepaint: forceRepaintCharts)
         AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
@@ -299,15 +288,24 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     fileprivate func loadAndPaintCurrentBgData(forceRefresh: Bool) {
-        
-        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: forceRefresh) { (newNightscoutData, error) -> Void in
+
+        // do not call refresh again if not needed
+        guard forceRefresh || !NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests else {
+            return
+        }
+
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: forceRefresh) { [unowned self] result in
             
              dispatchOnMain { [unowned self] in
                 guard self.isActive else { return }
-                self.updateInterface(withNightscoutData: newNightscoutData, error: error)
-                if let newNightscoutData = newNightscoutData {
+                
+                switch result {
+                case .data(let newNightscoutData):
+                    self.updateInterface(withNightscoutData: newNightscoutData, error: nil)
                     self.updateComplication()
                     self.playAlarm(currentNightscoutData: newNightscoutData)
+                case .error(let error):
+                    self.updateInterface(withNightscoutData: nil, error: error)
                 }
             }
         }
@@ -315,13 +313,16 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
         self.playAlarm(currentNightscoutData: currentNightscoutData)
         
-        // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
-        self.errorGroup.setHidden(true)
-        self.iobLabel.setText(nil)
-        self.deltaArrowLabel.setText(nil)
-        
-        self.activityIndicatorImage.setHidden(false)
-        self.activityIndicatorImage.startAnimatingWithImages(in: NSRange(1...15), duration: 1.0, repeatCount: 0)
+        if NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests {
+            
+            // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
+            self.errorGroup.setHidden(true)
+            self.iobLabel.setText(nil)
+            self.deltaArrowLabel.setText(nil)
+            
+            self.activityIndicatorImage.setHidden(false)
+            self.activityIndicatorImage.startAnimatingWithImages(in: NSRange(1...15), duration: 1.0, repeatCount: 0)
+        }
     }
     
     fileprivate func playAlarm(currentNightscoutData : NightscoutData) {
@@ -363,22 +364,39 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     func loadAndPaintChartData(forceRepaint : Bool) {
         
-        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
+        let newCachedTodaysBgValues: [BloodSugar]
+        if NightscoutCacheService.singleton.hasTodaysBgDataPendingRequests {
+           newCachedTodaysBgValues = NightscoutDataRepository.singleton.loadTodaysBgData()
+        } else {
+            newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
             
-            dispatchOnMain { [unowned self] in
-                guard self.isActive else { return }
-                self.cachedTodaysBgValues = newTodaysData
-                self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues, moveToLatestValue: true)
+                dispatchOnMain { [unowned self] in
+                    guard self.isActive else { return }
+                    
+                    if case .data(let newTodaysData) = result {
+                        self.cachedTodaysBgValues = newTodaysData
+                        self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues, moveToLatestValue: true)
+                    }
+                }
             }
-        })
-        let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
+        }
+        
+        let newCachedYesterdaysBgValues: [BloodSugar]
+        if NightscoutCacheService.singleton.hasYesterdaysBgDataPendingRequests {
+            newCachedYesterdaysBgValues = NightscoutDataRepository.singleton.loadYesterdaysBgData()
+        } else {
+            newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData { [unowned self] result in
             
-            dispatchOnMain { [unowned self] in
-                guard self.isActive else { return }
-                self.cachedYesterdaysBgValues = newYesterdaysData
-                self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData, moveToLatestValue: false)
+                dispatchOnMain { [unowned self] in
+                    guard self.isActive else { return }
+                    
+                    if case .data(let newYesterdaysData) = result {
+                        self.cachedYesterdaysBgValues = newYesterdaysData
+                        self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData, moveToLatestValue: false)
+                    }
+                }
             }
-        })
+        }
         
         // this does a fast paint of eventually cached data
         if forceRepaint ||

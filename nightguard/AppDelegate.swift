@@ -115,12 +115,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         // just refresh the current nightscout data
-        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { _, error in
-            if let _ = error {
-                completionHandler(.failed)
-            } else {
+        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
+            
+            switch result {
+            case .data:
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
                 completionHandler(.newData)
+            case .error:
+                completionHandler(.failed)
             }
         }
         
