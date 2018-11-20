@@ -16,7 +16,6 @@ class NightscoutService {
     
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
-
     
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     func readChartData(_ resultHandler : @escaping (([Int]) -> Void)) {
@@ -37,16 +36,18 @@ class NightscoutService {
             }
             
             DispatchQueue.main.async {
+                
                 let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
                 var sgvValues = [Int]()
                 for (key, value) in jsonArray {
-                    if key == "sqv" {
+                   if key == "sqv" {
                         sgvValues.insert(value as! Int, at: 0)
                     }
+                    resultHandler(sgvValues)
                 }
-                resultHandler(sgvValues)
             }
         }) ;
+                
         task.resume()
     }
 
@@ -77,7 +78,7 @@ class NightscoutService {
                     }
                     let settingsDict = jsonDict.object(forKey: "settings") as! NSDictionary
                     if (settingsDict.count > 0) {
-                        
+
                         let unitsAsString = settingsDict.value(forKey: "units") as! String
                         if unitsAsString.lowercased() == "mg/dl" {
                             resultHandler(Units.mgdl)
@@ -89,75 +90,86 @@ class NightscoutService {
                     print(error.localizedDescription)
                 }
             }
-        }) 
+        })
         task.resume()
     }
 
     /* Reads all data between two timestamps and limits the maximum return values to 400. */
     func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
-        let unixTimestamp1 : Double = timestamp1.timeIntervalSince1970 * 1000
-        let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
-        
-        let chartDataWithinPeriodOfTimeQueryParams = [
-            "find[date][$gt]"   : "\(unixTimestamp1)",
-            "find[date][$lte]"  : "\(unixTimestamp2)",
-            "count"             : "400",
-        ]
-        
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
-        guard url != nil else {
-            return
-        }
-        let request =
-            URLRequest(url: url!,
-                            cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-        
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { data, response, error in
-            
-            guard error == nil else {
-                print(error!)
-                return
-            }
-            guard data != nil else {
-                print("The received data was nil...")
+
+        DispatchQueue.global().async {
+            let baseUri = UserDefaultsRepository.readBaseUri()
+            if baseUri == "" {
                 return
             }
             
-            let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
-            guard !stringSgvData.contains("<html") else {
-                print("Invalid data with html received")  // TODO: pop an error alert
+            let unixTimestamp1 : Double = timestamp1.timeIntervalSince1970 * 1000
+            let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
+            
+            // Get the current data from REST-Call
+            let chartDataWithinPeriodOfTimeQueryParams = [
+                "find[date][$gt]"   : "\(unixTimestamp1)",
+                "find[date][$lte]"  : "\(unixTimestamp2)",
+                "count"             : "400",
+            ]
+        
+            let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
+            guard url != nil else {
                 return
             }
-            
-            let sgvRows = stringSgvData.components(separatedBy: "\n")
-            var timestampColumn : Int = 1
-            var bloodSugarColumn : Int = 2
-        
-            var bloodSugarArray = [BloodSugar]()
-            for sgvRow in sgvRows {
-                let sgvRowArray = sgvRow.components(separatedBy: "\t")
-            
-                if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
-                    // Nightscout return for some versions
-                    if self.isDateColumn(sgvRowArray[1]) {
-                        timestampColumn = 2
-                        bloodSugarColumn = 3
-                    }
+            let request =
+                URLRequest(url: url!,
+                    cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+                           
+            let session = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: { data, response, error in
                 
-                    if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
-                        if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
-                            let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
-                            bloodSugarArray.insert(bloodSugar, at: 0)
+                guard error == nil else {
+                    print(error!)
+                    return
+                }
+                guard data != nil else {
+                    print("The received data was nil...")
+                    return
+                }
+            
+                let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
+                guard !stringSgvData.contains("<html") else {
+                    print("Invalid data with html received")  // TODO: pop an error alert
+                    return
+                }
+                                                                           
+                let sgvRows = stringSgvData.components(separatedBy: "\n")
+                var timestampColumn : Int = 1
+                var bloodSugarColumn : Int = 2
+            
+                var bloodSugarArray = [BloodSugar]()
+                for sgvRow in sgvRows {
+                    let sgvRowArray = sgvRow.components(separatedBy: "\t")
+                
+                    if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
+                        // Nightscout return for some versions
+                        if self.isDateColumn(sgvRowArray[1]) {
+                            timestampColumn = 2
+                            bloodSugarColumn = 3
+                        }
+                    
+                        if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
+                            if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
+                                let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
+                                bloodSugarArray.insert(bloodSugar, at: 0)
+                            }
                         }
                     }
                 }
-            }
-            
-            bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
-            resultHandler(bloodSugarArray)
-        }) 
-        task.resume()
+                
+                bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
+                DispatchQueue.main.async {
+                    resultHandler(bloodSugarArray)
+                }
+            })
+            task.resume()
+        }
     }
     
     // append the oldvalues but leave duplicates
@@ -260,33 +272,47 @@ class NightscoutService {
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
-        // Get the current data from REST-Call
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
-        guard url != nil else {
-            return
-        }
-        let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-        
-        let session : URLSession = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+
+        DispatchQueue.global().async {
+
+            let baseUri = UserDefaultsRepository.readBaseUri()
+            if (baseUri == "") {
+                return
+            }
             
-            guard error == nil else {
-                print("Error receiving Pepple Watch Data.")
-                print(error!)
-                resultHandler(nil, error)
+            // Get the current data from REST-Call
+            let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+            guard url != nil else {
                 return
             }
+            let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+            request.timeoutInterval = 70
+            
+            let session : URLSession = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: { data, response, error in
+                
+                guard error == nil else {
+                    print("Error receiving Pepple Watch Data.")
+                    print(error!)
+                    DispatchQueue.main.async {
+                        resultHandler(nil, error)
+                    }
+                    return
+                }
 
-            guard data != nil else {
-                print("Pebble Watch Data was nil.")
-                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data Received from Pebble Watch API"])
-                resultHandler(nil, error)
-                return
-            }
+                guard data != nil else {
+                    print("Pebble Watch Data was nil.")
+                    let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data Received from Pebble Watch API"])
+                    DispatchQueue.main.async {
+                        resultHandler(nil, error)
+                    }
+                    return
+                }
 
-            self.extractData(data : data!, resultHandler)
-        }) ;
-        task.resume()
+                self.extractData(data : data!, resultHandler)
+            }) ;
+            task.resume()
+        }
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
@@ -358,12 +384,24 @@ class NightscoutService {
                 nightscoutData.bgdeltaString = self.direction(bgdelta) + String(format: "%.1f", bgdelta)
                 nightscoutData.bgdelta = bgdelta
                 
-                resultHandler(nightscoutData, nil)
+                let cals = jsonDict.object(forKey: "cals") as? NSArray
+                let currentCals = cals?.firstObject as? NSDictionary
+                nightscoutData.rawbg = self.getRawBGValue(bgs: currentBgs, cals: currentCals)
+                if let noiseCode = currentBgs.object(forKey: "noise") as? NSNumber {
+                    nightscoutData.noise = self.getNoiseLevel(noiseCode.intValue, sgv: String(sgv))
+                }
+                
+                DispatchQueue.main.async {
+                    resultHandler(nightscoutData, nil)
+                }
             }
         } catch {
             print("Catched unknown exception.")
             let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error while extracting data from Pebble Watch API"])
-            resultHandler(nil, error)
+            
+            DispatchQueue.main.async {
+                resultHandler(nil, error)
+            }
             return
         }
     }
@@ -386,5 +424,55 @@ class NightscoutService {
         timeFormatter.dateFormat = "HH:mm"
         let dateString : String = timeFormatter.string(from: Date(timeIntervalSince1970: secondsSince01011970.doubleValue / 1000))
         return dateString
+    }
+    
+    fileprivate func getNoiseLevel(_ noiseCode : Int, sgv: String) -> String {
+        
+        // as implemented in https://github.com/nightscout/cgm-remote-monitor/blob/d407bab2096d739708f365eae3c78847291bc997/lib/plugins/rawbg.js
+        switch noiseCode {
+        case 0:
+            return "---"
+        case 1:
+            return "Clean"
+        case 2:
+            return "Light"
+        case 3:
+            return "Medium"
+        case 4:
+            return "Heavy"
+        default:
+            if UnitsConverter.toMgdl(sgv) < 40 {
+                return "Heavy"
+            } else {
+                return "~~~"
+            }
+        }
+    }
+    
+    fileprivate func getRawBGValue(bgs: NSDictionary, cals: NSDictionary?) -> String {
+        
+        // as implemented in https://github.com/nightscout/cgm-remote-monitor/blob/d407bab2096d739708f365eae3c78847291bc997/lib/plugins/rawbg.js
+        
+        let filtered: Float = (bgs.object(forKey: "filtered") as? NSNumber)?.floatValue ?? 0
+        let unfiltered: Float = (bgs.object(forKey: "unfiltered") as? NSNumber)?.floatValue ?? 0
+        
+        let scale: Float = (cals?.object(forKey: "scale") as? NSNumber)?.floatValue ?? 0
+        let slope: Float = (cals?.object(forKey: "slope") as? NSNumber)?.floatValue ?? 0
+        let intercept: Float = (cals?.object(forKey: "intercept") as? NSNumber)?.floatValue ?? 0
+        
+        let sgv = bgs.object(forKey: "sgv") as! NSString
+        let sgvmgdl: Float = UnitsConverter.toMgdl(String(sgv))
+        
+        var raw: Float = 0
+        if slope == 0 || unfiltered == 0 || scale == 0 {
+            raw = 0
+        } else if filtered == 0 || sgvmgdl < 40 {
+            raw = scale * (unfiltered - intercept) / slope
+        } else {
+            let ratio = scale * (filtered - intercept) / slope / sgvmgdl
+            raw = scale * (unfiltered - intercept) / slope / ratio
+        }
+        
+        return "\(Int(UnitsConverter.toDisplayUnits(raw.rounded())))"
     }
 }

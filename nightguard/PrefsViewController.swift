@@ -14,10 +14,9 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     let displayTimespans = ["3 Hours", "6 Hours", "Last Night", "Last Day"]
     
     @IBOutlet weak var hostUriTextField: UITextField!
-    
     @IBOutlet weak var versionLabel: UILabel!
-    
     @IBOutlet weak var uriPickerView: UIPickerView!
+    @IBOutlet weak var showRawBGSwitch: UISwitch!
     
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
@@ -35,6 +34,8 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         hostUriTextField.delegate = self
         let tap = UITapGestureRecognizer(target: self, action: #selector(PrefsViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
+        
+        showRawBGSwitch.isOn = UserDefaultsRepository.readShowRawBG()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -135,8 +136,9 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         let alertIfBelowValue : Float = (defaults?.float(forKey: "alertIfBelowValue"))!
         let hostUri : String = UserDefaultsRepository.readBaseUri()
         let units : Units = UserDefaultsRepository.readUnits()
+        let showRawBG : Bool = UserDefaultsRepository.readShowRawBG()
         
-        WatchService.singleton.sendToWatch(hostUri, alertIfBelowValue: alertIfBelowValue, alertIfAboveValue: alertIfAboveValue, units: units)
+        WatchService.singleton.sendToWatch(hostUri, alertIfBelowValue: alertIfBelowValue, alertIfAboveValue: alertIfAboveValue, units: units, showRawBG: showRawBG)
     }
     
     // Remove keyboard by touching outside
@@ -152,6 +154,12 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         if GuiStateRepository.singleton.loadNightscoutUris().count > 1 {
             uriPickerView.isHidden = false
         }
+    }
+    
+    // RawBG switch
+    @IBAction func onShowRawBGValueChanged(_ sender: UISwitch) {
+        UserDefaultsRepository.saveShowRawBG(sender.isOn)
+        sendValuesToAppleWatch()
     }
     
     // Picker-View methods

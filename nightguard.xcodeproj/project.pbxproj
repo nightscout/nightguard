@@ -94,8 +94,12 @@
 		43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		43F1E1121D076C4500C329A2 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
+		43FCE625208B80840080DA0A /* SnoozeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */; };
 		D10ACE402063C25600F41EE7 /* BackgroundRefreshSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */; };
 		D10ACE412063C2A300F41EE7 /* BackgroundRefreshSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */; };
+		D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */; };
+		D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */; };
+		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
 		D1BD14E5205BB9E200B93389 /* BackgroundRefreshScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */; };
 		D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
 /* End PBXBuildFile section */
@@ -219,10 +223,14 @@
 		43F1E0F91D07698000C329A2 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = nightguard/Media.xcassets; sourceTree = SOURCE_ROOT; };
 		43F1E0FA1D07698000C329A2 /* NightscoutData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutData.swift; path = nightguard/NightscoutData.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PrefsViewController.swift; path = nightguard/PrefsViewController.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = scoutwatch.entitlements; path = nightguard/scoutwatch.entitlements; sourceTree = SOURCE_ROOT; };
+		43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = scoutwatch.entitlements; path = nightguard/scoutwatch.entitlements; sourceTree = SOURCE_ROOT; };
 		43F1E1101D076C1C00C329A2 /* NightscoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutService.swift; path = nightguard/NightscoutService.swift; sourceTree = SOURCE_ROOT; };
 		43F1E11A1D076D9700C329A2 /* TimeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeService.swift; path = nightguard/TimeService.swift; sourceTree = SOURCE_ROOT; };
+		43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeAlarmViewController.swift; sourceTree = "<group>"; };
 		D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshSettings.swift; sourceTree = "<group>"; };
+		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
+		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshScheduler.swift; sourceTree = "<group>"; };
 		D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshLogger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -333,23 +341,16 @@
 		43647BCC1BFF6435004389F9 /* nightguard */ = {
 			isa = PBXGroup;
 			children = (
+				D144FFB120D7AEF60036E021 /* resources */,
 				432E62E21D1126CA00DD7978 /* app */,
 				43F1E1181D076D2800C329A2 /* domain */,
 				433AD0131CCE1CE2001A76CD /* external */,
 				437EEDC21FB7169C00694EAD /* repository */,
-				43647BD11BFF6435004389F9 /* Main.storyboard */,
-				43F1E0F81D07698000C329A2 /* MainViewController.swift */,
-				43F1E0F31D07698000C329A2 /* AlarmViewController.swift */,
-				43288A691D1C68D400EE3999 /* StatsViewController.swift */,
-				4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */,
-				43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */,
-				43288A6B1D1C893200EE3999 /* TabBarController.swift */,
+				D1FAA4AB20D7AE6B0062B333 /* controllers */,
+				D1BA903620D303E700A0EBD1 /* views */,
 				43F1E0F41D07698000C329A2 /* AppDelegate.swift */,
 				43F1E0F71D07698000C329A2 /* Info.plist */,
-				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
-				43F1E0F91D07698000C329A2 /* Media.xcassets */,
 				43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */,
-				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
 			);
 			path = nightguard;
 			sourceTree = "<group>";
@@ -442,6 +443,41 @@
 				432E62DE1D10ACD200DD7978 /* Units.swift */,
 			);
 			name = domain;
+			sourceTree = "<group>";
+		};
+		D144FFB120D7AEF60036E021 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				43F1E0F91D07698000C329A2 /* Media.xcassets */,
+				43647BD11BFF6435004389F9 /* Main.storyboard */,
+				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
+				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
+			);
+			name = resources;
+			sourceTree = "<group>";
+		};
+		D1BA903620D303E700A0EBD1 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */,
+				D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */,
+				D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */,
+			);
+			name = views;
+			sourceTree = "<group>";
+		};
+		D1FAA4AB20D7AE6B0062B333 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				43F1E0F81D07698000C329A2 /* MainViewController.swift */,
+				43F1E0F31D07698000C329A2 /* AlarmViewController.swift */,
+				43288A691D1C68D400EE3999 /* StatsViewController.swift */,
+				4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */,
+				43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */,
+				43288A6B1D1C893200EE3999 /* TabBarController.swift */,
+				43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */,
+			);
+			name = controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -545,7 +581,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = private;
 				TargetAttributes = {
 					43647BC91BFF6435004389F9 = {
@@ -681,6 +717,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43F1E1001D07698000C329A2 /* AlarmViewController.swift in Sources */,
+				D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */,
 				432E62E91D143CF900DD7978 /* UnitsConverter.swift in Sources */,
 				43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
@@ -698,15 +735,18 @@
 				43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */,
 				43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */,
 				432E62EB1D15EFC600DD7978 /* FloatExtension.swift in Sources */,
+				43FCE625208B80840080DA0A /* SnoozeAlarmViewController.swift in Sources */,
 				430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */,
 				43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */,
 				43F1E1031D07698000C329A2 /* GuiStateRepository.swift in Sources */,
+				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
 				43288A6C1D1C893200EE3999 /* TabBarController.swift in Sources */,
 				43F1E1081D07698000C329A2 /* PrefsViewController.swift in Sources */,
 				43F1E1071D07698000C329A2 /* NightscoutData.swift in Sources */,
 				D10ACE412063C2A300F41EE7 /* BackgroundRefreshSettings.swift in Sources */,
+				D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */,
 				4351E6AE1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift in Sources */,
 				43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */,
 				43F1E0EE1D07693300C329A2 /* AlarmRule.swift in Sources */,
@@ -850,12 +890,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -882,7 +924,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -902,12 +944,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -928,7 +972,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

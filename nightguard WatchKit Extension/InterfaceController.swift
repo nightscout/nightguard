@@ -25,6 +25,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var errorGroup: WKInterfaceGroup!
     @IBOutlet var activityIndicatorImage: WKInterfaceImage!
     
+    @IBOutlet var rawbgLabel: WKInterfaceLabel!
+    @IBOutlet var noiseLabel: WKInterfaceLabel!
+    @IBOutlet var rawValuesGroup: WKInterfaceGroup!
     
     // set by AppMessageService when receiving data from phone app and charts should be repainted
     var shouldRepaintChartsOnActivation = false
@@ -45,6 +48,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate var isActive: Bool = false
     fileprivate var isFirstActivation: Bool = true
+    fileprivate var isRawValuesGroupHidden: Bool = false
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -65,7 +69,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
         
-        if (interfaceBounds.height == 195.0) {
+        if (interfaceBounds.height >= 224.0) {
+            // Apple Watch 44mm
+            return 165.0
+        }
+        if (interfaceBounds.height >= 195.0) {
             // Apple Watch 42mm
             return 145.0
         }
@@ -205,10 +213,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
-    
+        
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer){
         updateNightscoutData(forceRefresh: false, forceRepaintCharts: false)
+    }
+    
+    @IBAction func onLabelsGroupDoubleTapped(_ sender: Any) {
+        updateNightscoutData(forceRefresh: true, forceRepaintCharts: false)
     }
     
     @IBAction func onSpriteKitViewDoubleTapped(_ sender: Any) {
@@ -326,9 +338,15 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         self.batteryLabel.setText(currentNightscoutData.battery)
         self.iobLabel.setText(currentNightscoutData.iob)
+        
+        // show raw values panel ONLY if configured so and we have a valid rawbg value!
+        let isValidRawBGValue = UnitsConverter.toMgdl(currentNightscoutData.rawbg) > 0
+        self.rawValuesGroup.setHidden(!UserDefaultsRepository.readShowRawBG() || !isValidRawBGValue)
+        self.rawbgLabel.setText(currentNightscoutData.rawbg)
+        self.noiseLabel.setText(currentNightscoutData.noise)
     }
     
-    /*fileprivate*/ func loadAndPaintChartData(forceRepaint : Bool) {
+    func loadAndPaintChartData(forceRepaint : Bool) {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
             
@@ -367,7 +385,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             infoLabel: determineInfoLabel())
     }
     
-    fileprivate func determineInfoLabel() -> String {
+    func determineInfoLabel() -> String {
         
         if !AlarmRule.isSnoozed() {
             return ""

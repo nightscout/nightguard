@@ -32,7 +32,7 @@ class ChartScene : SKScene {
         
         infoLabelNode.fontColor = UIColor.red
         infoLabelNode.fontSize = CGFloat(15)
-        infoLabelNode.fontName = "System-Bold"
+        infoLabelNode.fontName = "AvenirNext-Bold"
 
         initialPlacingOfChart()
         
@@ -69,7 +69,8 @@ class ChartScene : SKScene {
             displayDaysLegend: displayDaysLegend
         )
         
-        if chartImage == nil {
+        // do nothing if the chart couldn't be created
+        if chartImage == nil || (chartImage?.size.width)! <= CGFloat(0) || (chartImage?.size.height)! <= CGFloat(0) {
             return
         }
         
@@ -82,7 +83,9 @@ class ChartScene : SKScene {
         infoLabelNode.text = infoLabel
         infoLabelNode.zPosition = 1000
         
-        if moveToLatestValue {
+        // only show the move animation, if we have data at all.
+        // In the latter case, displayPosition is 0
+        if moveToLatestValue && displayPosition > 0 {
             let newXPosition = normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width * 2 / 3))
             let moveToNewValue = SKAction.move(
                 to: CGPoint(x: newXPosition, y: 0),

@@ -24,8 +24,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak var screenlockSwitch: UISwitch!
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var spriteKitView: UIView!
-    @IBOutlet weak var feedbackPanelView: UIView!
-    @IBOutlet weak var feedbackLabel: UILabel!
+    @IBOutlet weak var errorPanelView: UIView!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var rawValuesPanel: GroupedLabelsView!
+    @IBOutlet weak var bgStackView: UIStackView!
     
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
@@ -33,8 +35,14 @@ class MainViewController: UIViewController {
     var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     // timer to check continuously for new bgValues
     var timer = Timer()
-    // check every 5 Seconds whether new bgvalues should be retrieved
-    let timeInterval:TimeInterval = 5.0
+    // another timer to restart the timer for the case that a watchdog kills it
+    // the latter can happen, when the request takes too long :-/
+    var safetyResetTimer = Timer()
+    
+    // check every 30 Seconds whether new bgvalues should be retrieved
+    let timeInterval: TimeInterval = 30.0
+    // kill and restart the timer every 12 minutes
+    let safetyResetTimerInterval: TimeInterval = 60.0 * 12
     
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
@@ -57,11 +65,12 @@ class MainViewController: UIViewController {
         paintScreenLockSwitch()
         
         // Start the timer to retrieve new bgValues
-        timer = Timer.scheduledTimer(timeInterval: timeInterval,
-                                                       target: self,
-                                                       selector: #selector(MainViewController.timerDidEnd(_:)),
-                                                       userInfo: nil,
-                                                       repeats: true)
+        startTimer()
+        safetyResetTimer = Timer.scheduledTimer(timeInterval: safetyResetTimerInterval,
+                                     target: self,
+                                     selector: #selector(MainViewController.safetyResetTimerDidEnd(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -77,12 +86,25 @@ class MainViewController: UIViewController {
         skView.addGestureRecognizer(panGesture)
         skView.addGestureRecognizer(pinchGesture)
         
-        feedbackPanelView.isHidden = true
+        errorPanelView.isHidden = true
+        
+        // decide where to present the raw bg panel, depending on the device screen size: for small screens (under 4.7 inches) the raw bg panel is stacked under the bg label; for larger screens, the raw bg panel is near (right side of) the bg label
+        let screenSize = UIScreen.main.bounds.size
+        let height = max(screenSize.width, screenSize.height)
+        let isLargeEnoughScreen = height >= 667 // 4.7 inches or larger (iPhone 6, etc.)
+        rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
+        bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        showHideRawBGPanel()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
-        // Start immediately so that the current time gets display at once
+        // Start immediately so that the current time gets displayed at once
         // And the alarm can play if needed
         timerDidEnd(timer)
         
@@ -159,6 +181,19 @@ class MainViewController: UIViewController {
         return UIStatusBarStyle.lightContent
     }
     
+    func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: timeInterval,
+                                     target: self,
+                                     selector: #selector(MainViewController.timerDidEnd(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
+    }
+    
+    @objc func safetyResetTimerDidEnd(_ timer: Timer) {
+        timer.invalidate()
+        startTimer()
+    }
+    
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer) {
         
@@ -194,63 +229,26 @@ class MainViewController: UIViewController {
         } else {
             // stop the alarm immediatly here not to disturb others
             AlarmSound.muteVolume()
+            showSnoozePopup()
             // For safety reasons: Unmute sound after 1 minute
             // This prevents an unlimited snooze if the snooze button was touched accidentally.
             DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
                 AlarmSound.unmuteVolume()
             })
-            showSnoozePopup()
         }
     }
     
     fileprivate func showSnoozePopup() {
-        let alert = UIAlertController(title: "Snooze",
-            message: "How long should the alarm be ignored?",
-            preferredStyle: UIAlertControllerStyle.alert)
         
-        alert.addAction(UIAlertAction(title: "30 Minutes",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                self.snoozeMinutes(30)
-        }))
-        alert.addAction(UIAlertAction(title: "1 Hour",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                self.snoozeMinutes(60)
-        }))
-        alert.addAction(UIAlertAction(title: "2 Hours",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                self.snoozeMinutes(120)
-        }))
-        alert.addAction(UIAlertAction(title: "1 Day",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                self.snoozeMinutes(24 * 60)
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel",
-            style: UIAlertActionStyle.default,
-            handler: {(alert: UIAlertAction!) in
-                
-                AlarmSound.unmuteVolume()
-        }))
-        present(alert, animated: true, completion: nil)
+        // create the snooze popup view
+        if let snoozeAlarmViewController = self.storyboard?.instantiateViewController(
+            withIdentifier: "snoozeAlarmViewController") as? SnoozeAlarmViewController {
+            
+            self.present(snoozeAlarmViewController, animated: true, completion: nil)
+        }
     }
     
-    fileprivate func snoozeMinutes(_ minutes : Int) {
-        
-        AlarmRule.snooze(minutes)
-        
-        AlarmSound.stop()
-        AlarmSound.unmuteVolume()
-        self.updateSnoozeButtonText()
-    }
-    
-    fileprivate func updateSnoozeButtonText() {
+    public func updateSnoozeButtonText() {
         
         if AlarmRule.isSnoozed() {
             snoozeButton.setTitle("Snoozed for " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min", for: UIControlState())
@@ -295,27 +293,19 @@ class MainViewController: UIViewController {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
             
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.feedbackLabel.text = "❌ \(error.localizedDescription)"
-                    self.feedbackLabel.textColor = .red
-                    self.feedbackPanelView.isHidden = false
-                } else if let newNightscoutData = newNightscoutData {
-                    self.feedbackPanelView.isHidden = true
-                    self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
-                    
-                    WatchService.singleton.sendToWatchCurrentNightwatchData()
-                }
+            if let error = error {
+                self.errorLabel.text = "❌ \(error.localizedDescription)"
+                self.errorLabel.textColor = .red
+                self.errorPanelView.isHidden = false
+            } else if let newNightscoutData = newNightscoutData {
+                self.errorPanelView.isHidden = true
+                self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                
+                WatchService.singleton.sendToWatchCurrentNightwatchData()
             }
         })
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
-        
-        // signal that we're loading new nightscout data...
-        // actually, it is NOT needed on phone app because we're updating data every 5 seconds
-//        self.feedbackLabel.text = "Loading..."
-//        self.feedbackLabel.textColor = .black
-//        self.feedbackPanelView.isHidden = false
     }
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
@@ -338,6 +328,10 @@ class MainViewController: UIViewController {
             
             self.batteryLabel.text = currentNightscoutData.battery
             self.iobLabel.text = currentNightscoutData.iob
+            
+            self.showHideRawBGPanel(currentNightscoutData)
+            self.rawValuesPanel.label.text = currentNightscoutData.noise
+            self.rawValuesPanel.highlightedLabel.text = currentNightscoutData.rawbg
         })
     }
     
@@ -369,5 +363,14 @@ class MainViewController: UIViewController {
             newCanvasWidth: self.maximumDeviceTextureWidth(),
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: true)
+    }
+    
+    fileprivate func showHideRawBGPanel(_ nightscoutData: NightscoutData? = nil) {
+        
+        let currentNightscoutData = nightscoutData ?? NightscoutCacheService.singleton.getCurrentNightscoutData()
+        let isValidRawBGValue = UnitsConverter.toMgdl(currentNightscoutData.rawbg) > 0
+
+        // show raw values panel ONLY if configured so and we have a valid rawbg value!
+        self.rawValuesPanel.isHidden = !UserDefaultsRepository.readShowRawBG() || !isValidRawBGValue
     }
 }
