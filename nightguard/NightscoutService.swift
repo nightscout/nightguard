@@ -285,7 +285,7 @@ class NightscoutService {
             guard url != nil else {
                 return
             }
-            let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+            var request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
             request.timeoutInterval = 70
             
             let session : URLSession = URLSession.shared
