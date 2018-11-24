@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
     <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,9 +28,9 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KP-gW-EZT">
                                 <rect key="frame" x="5" y="99" width="311" height="31.5"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Enter the URI to your Nightscout Server here. E.g. 'http://my.nightscout.server.de'">
+                                    <fragment content="Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'">
                                         <attributes>
-                                            <color key="NSColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="NSColor" white="0.95540901406170575" alpha="1" colorSpace="calibratedWhite"/>
                                             <font key="NSFont" metaFont="system"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
@@ -58,7 +56,7 @@
                                     <action selector="onShowRawBGValueChanged:" destination="5gg-kk-88j" eventType="valueChanged" id="Pk5-Ba-7mF"/>
                                 </connections>
                             </switch>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="http://my.nightscout.server.de" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S7A-b7-cEN">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="https://my.nightscout.de?token=mynightscouttoken" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S7A-b7-cEN">
                                 <rect key="frame" x="5" y="61" width="310" height="30"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -178,7 +176,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m53-UA-ptg">
-                                <rect key="frame" x="163.5" y="142" width="156.5" height="70"/>
+                                <rect key="frame" x="163" y="142" width="157" height="70"/>
                                 <color key="backgroundColor" red="0.35471885910000001" green="0.35471885910000001" blue="0.35471885910000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.5" height="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
@@ -227,7 +225,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w2F-L4-3hs">
-                                <rect key="frame" x="163.5" y="220" width="156.5" height="70"/>
+                                <rect key="frame" x="163" y="220" width="157" height="70"/>
                                 <color key="backgroundColor" red="0.35471885910000001" green="0.35471885910000001" blue="0.35471885910000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.5" height="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
@@ -237,7 +235,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rTa-S2-pIs">
-                                <rect key="frame" x="163.5" y="64" width="156.5" height="70"/>
+                                <rect key="frame" x="163" y="64" width="157" height="70"/>
                                 <color key="backgroundColor" red="0.35471885910000001" green="0.35471885910000001" blue="0.35471885910000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <state key="normal" title="45min"/>
@@ -246,7 +244,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xb6-y9-FQ0">
-                                <rect key="frame" x="163.5" y="298" width="156.5" height="70"/>
+                                <rect key="frame" x="163" y="298" width="157" height="70"/>
                                 <color key="backgroundColor" red="0.35471885910000001" green="0.35471885910000001" blue="0.35471885910000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.5" height="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
@@ -870,10 +868,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AlarmIcon" width="25" height="25"/>
-        <image name="MainIcon" width="25" height="25"/>
-        <image name="PrefsIcon" width="25" height="25"/>
-        <image name="StatsIcon" width="20" height="20"/>
+        <image name="AlarmIcon" width="50" height="50"/>
+        <image name="MainIcon" width="50" height="50"/>
+        <image name="PrefsIcon" width="50" height="50"/>
+        <image name="StatsIcon" width="40" height="40"/>
     </resources>
     <color key="tintColor" red="0.96517526286328037" green="0.96381590185596999" blue="0.98756055269162302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
