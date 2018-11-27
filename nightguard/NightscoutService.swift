@@ -16,24 +16,24 @@ enum NightscoutRequestResult<T> {
 
 /* All data that is read from nightscout is accessed using this boundary. */
 class NightscoutService {
-    
+
     static let singleton = NightscoutService()
     
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
-    let DIRECTIONS = ["-", "↑↑", "↑","↗︎", "→", "↘︎", "↓", "↓↓", "-", "-"]
+    let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     @discardableResult
     func readChartData(_ resultHandler : @escaping (NightscoutRequestResult<[Int]>) -> Void) -> URLSessionTask? {
         
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if baseUri == "" {
+        // Get the current data from REST-Call
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries.json", queryParams: ["count": "20"])
+        guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
         }
 
-        // Get the current data from REST-Call
-        let request = URLRequest(url: URL(string: baseUri + "/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
+        let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
            
@@ -76,14 +76,12 @@ class NightscoutService {
     @discardableResult
     func readStatus(_ resultHandler : @escaping (NightscoutRequestResult<Units>) -> Void) -> URLSessionTask? {
         
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if baseUri == "" {
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/status.json", queryParams: [:])
+        guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
         }
-        
-        // Get the current data from REST-Call
-        let request = URLRequest(url: URL(string: baseUri + "/api/v1/status.json")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             
@@ -131,7 +129,7 @@ class NightscoutService {
             }
         }
     }
-    
+
     /* Reads all data between two timestamps and limits the maximum return values to 400. */
     @discardableResult
     fileprivate func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
@@ -146,10 +144,19 @@ class NightscoutService {
         let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
         
         // Get the current data from REST-Call
-        let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gt]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
-        let request =
-            URLRequest(url: URL(string: requestUri)!,
-                            cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let chartDataWithinPeriodOfTimeQueryParams = [
+            "find[date][$gt]"   : "\(unixTimestamp1)",
+            "find[date][$lte]"  : "\(unixTimestamp2)",
+            "count"             : "400",
+            ]
+        
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
+        guard url != nil else {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
+        }
+
+        let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
@@ -166,11 +173,19 @@ class NightscoutService {
                 print("The received data was nil...")
                 dispatchOnMain { [unowned self] in
                     resultHandler(.error(self.createNoDataError(description: "No data received from Nightscout entries API")))
-                }
+                    }
                 return
             }
         
             let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
+            guard !stringSgvData.contains("<html") else {
+                print("Invalid data with html received")  // TODO: pop an error alert
+                dispatchOnMain { [unowned self] in
+                    resultHandler(.error(self.createNoDataError(description: "Invalid data with HTML received from Nightscout entries API")))
+                }
+                return
+            }
+
             let sgvRows = stringSgvData.components(separatedBy: "\n")
             var timestampColumn : Int = 1
             var bloodSugarColumn : Int = 2
@@ -346,7 +361,12 @@ class NightscoutService {
         }
         
         // Get the current data from REST-Call
-        var request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        guard url != nil else {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
+        }
+        var request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         request.timeoutInterval = 70
         
         let session : URLSession = URLSession.shared
@@ -378,14 +398,12 @@ class NightscoutService {
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatchInBackground() {
-        
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if (baseUri == "") {
+        // Get the current data from REST-Call
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        guard url != nil else {
             return
         }
-        
-        // Get the current data from REST-Call
-        let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let task = BackgroundUrlSessionWrapper.urlSession.downloadTask(with: request);
         task.resume()
@@ -402,9 +420,16 @@ class NightscoutService {
                 }
                 return
             }
-            let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
-            if (bgs.count > 0) {
-                let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
+            let bgs = jsonDict.object(forKey: "bgs") as? NSArray
+            guard bgs != nil else {
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. "])
+                dispatchOnMain {
+                    resultHandler(.error(error))
+                }
+                return
+            }
+            if ((bgs?.count)! > 0) {
+                let currentBgs : NSDictionary = bgs!.object(at: 0) as! NSDictionary
                 
                 let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
                 let time = currentBgs.object(forKey: "datetime") as! NSNumber
