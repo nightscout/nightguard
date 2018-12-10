@@ -295,6 +295,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
 
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: forceRefresh) { [unowned self] result in
+            guard let result = result else { return }
             
              dispatchOnMain { [unowned self] in
                 guard self.isActive else { return }
@@ -369,7 +370,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
            newCachedTodaysBgValues = NightscoutDataRepository.singleton.loadTodaysBgData()
         } else {
             newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
-            
+                guard let result = result else { return }
+
                 dispatchOnMain { [unowned self] in
                     guard self.isActive else { return }
                     
@@ -386,7 +388,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             newCachedYesterdaysBgValues = NightscoutDataRepository.singleton.loadYesterdaysBgData()
         } else {
             newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData { [unowned self] result in
-            
+                guard let result = result else { return }
+
                 dispatchOnMain { [unowned self] in
                     guard self.isActive else { return }
                     

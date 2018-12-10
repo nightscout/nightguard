@@ -90,7 +90,7 @@ class NightscoutCacheService: NSObject {
         return false
     }
     
-    func loadCurrentNightscoutData(forceRefresh: Bool, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) -> NightscoutData {
+    func loadCurrentNightscoutData(forceRefresh: Bool, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void) -> NightscoutData {
     
         if currentNightscoutData == nil {
             currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
@@ -101,12 +101,12 @@ class NightscoutCacheService: NSObject {
         return currentNightscoutData!
     }
     
-    func loadCurrentNightscoutData(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) -> NightscoutData {
+    func loadCurrentNightscoutData(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void) -> NightscoutData {
         return loadCurrentNightscoutData(forceRefresh: false, resultHandler)
     }
     
     // Reads the blood glucose data from today
-    func loadTodaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void)
+    func loadTodaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>?) -> Void)
         -> [BloodSugar] {
         
         if todaysBgData == nil {
@@ -132,7 +132,11 @@ class NightscoutCacheService: NSObject {
                 // cleanup (delete not running tasks) and add the current started one
                 todaysBgDataTasks.removeAll(where: { task in task.state != .running })
                 todaysBgDataTasks.append(task)
+            } else {
+                resultHandler(nil)
             }
+        } else {
+            resultHandler(nil)
         }
             
         return todaysBgData!
@@ -162,7 +166,7 @@ class NightscoutCacheService: NSObject {
     }
     
     // Reads the blood glucose data from yesterday
-    func loadYesterdaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void)
+    func loadYesterdaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>?) -> Void)
         -> [BloodSugar] {
         
         if yesterdaysBgData == nil {
@@ -193,7 +197,11 @@ class NightscoutCacheService: NSObject {
                 // cleanup (delete not running tasks) and add the current started one
                 yesterdaysBgDataTasks.removeAll(where: { task in task.state != .running })
                 yesterdaysBgDataTasks.append(task)
+            } else {
+                resultHandler(nil)
             }
+        } else {
+            resultHandler(nil)
         }
             
         return yesterdaysBgData!
@@ -217,9 +225,10 @@ class NightscoutCacheService: NSObject {
         return transformedValues
     }
     
-    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void, forceRefresh: Bool = false) {
+    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void, forceRefresh: Bool = false) {
         
         guard forceRefresh || currentNightscoutData!.isOlderThan5Minutes() else {
+            resultHandler(nil)
             return
         }
         
@@ -236,6 +245,8 @@ class NightscoutCacheService: NSObject {
             // cleanup (delete not running tasks) and add the current started one
             currentNightscoutDataTasks.removeAll(where: { task in task.state != .running })
             currentNightscoutDataTasks.append(task)
+        } else {
+            resultHandler(nil)
         }
     }
 }

@@ -293,6 +293,10 @@ class MainViewController: UIViewController {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData { [unowned self] result in
             
+            guard let result = result else {
+                return
+            }
+            
             switch result {
             case .error(let error):
                 self.errorLabel.text = "❌ \(error.localizedDescription)"
@@ -339,6 +343,7 @@ class MainViewController: UIViewController {
     fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
         
         let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
+            guard let result = result else { return }
          
             if case .data(let newTodaysData) = result {
                 let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
@@ -347,6 +352,7 @@ class MainViewController: UIViewController {
         }
         
         let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData { [unowned self] result in
+            guard let result = result else { return }
             
             if case .data(let newYesterdaysData) = result {
                 let cachedTodaysBgData = NightscoutCacheService.singleton.getTodaysBgData()

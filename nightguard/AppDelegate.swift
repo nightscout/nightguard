@@ -117,6 +117,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // just refresh the current nightscout data
         let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
             
+            guard let result = result else {
+                completionHandler(.noData)
+                return
+            }
+            
+            // send data to watch & announce completion handler
             switch result {
             case .data:
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
