@@ -38,6 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         activateWatchConnectivity()
         initializeApplicationDefaults()
         initializeAlarmRule()
+        
+        AlarmNotificationService.shared.requestAuthorization()
+        
         return true
 
     }
@@ -106,6 +109,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // just refresh the current nightscout data
         let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
             
+            // trigger notification alarm if needed
+            AlarmNotificationService.shared.notifyIfAlarmActivated()
+            
+            // update app badge
+            if UserDefaultsRepository.readShowBGOnAppBadge() {
+                UIApplication.shared.setCurrentBGValueOnAppBadge()
+            }
+            
             guard let result = result else {
                 completionHandler(.noData)
                 return
@@ -120,19 +131,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 completionHandler(.failed)
             }
         }
-        
-        // This can be used to alarm even when the app is in the background
-        // but this doesn't work very well - so removed it so far...
-//            ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(nightscoutData) -> Void in
-//                
-//                DataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
-//                if AlarmRule.isAlarmActivated(nightscoutData) {
-//                    AlarmSound.play()
-//                } else {
-//                    AlarmSound.stop()
-//                }
-//                completionHandler (.NoData)
-//            })
     }
 }
 

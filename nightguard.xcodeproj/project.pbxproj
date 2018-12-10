@@ -102,7 +102,9 @@
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
 		D1BD14E5205BB9E200B93389 /* BackgroundRefreshScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */; };
 		D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
+		D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */; };
 		D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
+		D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
 		D1E6B897219C69D9007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
 		D1E6B898219C6A86007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
 /* End PBXBuildFile section */
@@ -236,7 +238,9 @@
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshScheduler.swift; sourceTree = "<group>"; };
 		D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshLogger.swift; sourceTree = "<group>"; };
+		D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "alarm-notification.m4a"; sourceTree = "<group>"; };
 		D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
+		D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationService.swift; sourceTree = "<group>"; };
 		D1E6B896219C69D9007ED4FE /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -312,6 +316,7 @@
 		433AD0131CCE1CE2001A76CD /* external */ = {
 			isa = PBXGroup;
 			children = (
+				D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */,
 				4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */,
 				438066FA1D21B2000021B618 /* WatchMessageService.swift */,
 				43F1E1101D076C1C00C329A2 /* NightscoutService.swift */,
@@ -459,6 +464,7 @@
 				43647BD11BFF6435004389F9 /* Main.storyboard */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
 				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
+				D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */,
 			);
 			name = resources;
 			sourceTree = "<group>";
@@ -665,6 +671,7 @@
 				43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */,
 				43647BD31BFF6435004389F9 /* Main.storyboard in Resources */,
 				43F1E1091D07698000C329A2 /* scoutwatch.entitlements in Resources */,
+				D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,6 +736,7 @@
 				43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
+				D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */,
 				438066FB1D21B2000021B618 /* WatchMessageService.swift in Sources */,
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
 				439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
