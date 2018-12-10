@@ -18,13 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9KL-ow-hrU">
-                                <rect key="frame" x="49" y="130" width="217" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KP-gW-EZT">
                                 <rect key="frame" x="5" y="99" width="311" height="31.5"/>
                                 <attributedString key="attributedText">
@@ -39,7 +32,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show raw BG and noise level" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VgO-OM-UqJ">
-                                <rect key="frame" x="4" y="270" width="219" height="21"/>
+                                <rect key="frame" x="62" y="321" width="254" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -51,9 +44,15 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Mu-ji-UO4">
-                                <rect key="frame" x="266" y="265" width="51" height="31"/>
+                                <rect key="frame" x="5" y="316" width="51" height="31"/>
                                 <connections>
                                     <action selector="onShowRawBGValueChanged:" destination="5gg-kk-88j" eventType="valueChanged" id="Pk5-Ba-7mF"/>
+                                </connections>
+                            </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cGQ-Q4-2Mj">
+                                <rect key="frame" x="5" y="277" width="51" height="31"/>
+                                <connections>
+                                    <action selector="onShowBGOnAppBadgeChanged:" destination="5gg-kk-88j" eventType="valueChanged" id="qNi-Ye-QDb"/>
                                 </connections>
                             </switch>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="https://my.nightscout.de?token=mynightscouttoken" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S7A-b7-cEN">
@@ -77,8 +76,8 @@
                                     <outlet property="delegate" destination="5gg-kk-88j" id="Cpa-0w-Hud"/>
                                 </connections>
                             </pickerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGD-1l-u78">
-                                <rect key="frame" x="5" y="298.5" width="310" height="47.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGD-1l-u78">
+                                <rect key="frame" x="62" y="347" width="253" height="63"/>
                                 <attributedString key="attributedText">
                                     <fragment content="For receiving the raw BG and noise level values, the ">
                                         <attributes>
@@ -119,23 +118,35 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show BG on app badge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SB5-dC-vId">
+                                <rect key="frame" x="62" y="282.5" width="254" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="kGD-1l-u78" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="CyR-ft-26y"/>
+                            <constraint firstItem="kGD-1l-u78" firstAttribute="leading" secondItem="VgO-OM-UqJ" secondAttribute="leading" id="3EA-Mt-UUi"/>
+                            <constraint firstItem="cGQ-Q4-2Mj" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="8g4-Mh-Mry"/>
+                            <constraint firstItem="SB5-dC-vId" firstAttribute="leading" secondItem="cGQ-Q4-2Mj" secondAttribute="trailing" constant="8" id="CTl-3o-CuJ"/>
+                            <constraint firstItem="kGD-1l-u78" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="16" id="CyR-ft-26y"/>
+                            <constraint firstItem="7Mu-ji-UO4" firstAttribute="top" secondItem="cGQ-Q4-2Mj" secondAttribute="bottom" constant="8" id="Dpy-mB-BOG"/>
                             <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="8KP-gW-EZT" secondAttribute="trailing" constant="4" id="Dz2-KC-1lx"/>
                             <constraint firstItem="ivy-QP-fyl" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" id="DzH-gf-VFr"/>
+                            <constraint firstItem="cGQ-Q4-2Mj" firstAttribute="top" secondItem="ivy-QP-fyl" secondAttribute="bottom" constant="16" id="FrF-5L-Myx"/>
+                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="SB5-dC-vId" secondAttribute="trailing" constant="4" id="G7X-TW-tN1"/>
                             <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="S7A-b7-cEN" secondAttribute="trailing" constant="5" id="GD3-61-0EJ"/>
-                            <constraint firstItem="VgO-OM-UqJ" firstAttribute="bottom" secondItem="ivy-QP-fyl" secondAttribute="bottom" constant="30" id="JAO-LO-bdw"/>
-                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="7Mu-ji-UO4" secondAttribute="trailing" constant="5" id="Oob-im-x5h"/>
                             <constraint firstItem="0OT-uH-zv0" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="Oth-H7-mhe"/>
+                            <constraint firstItem="kGD-1l-u78" firstAttribute="top" secondItem="7Mu-ji-UO4" secondAttribute="bottom" id="PPA-Ee-A32"/>
                             <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="0OT-uH-zv0" secondAttribute="trailing" constant="5" id="TWd-Zf-1dl"/>
+                            <constraint firstItem="7Mu-ji-UO4" firstAttribute="centerY" secondItem="VgO-OM-UqJ" secondAttribute="centerY" id="Uxf-Ud-lL8"/>
                             <constraint firstItem="8KP-gW-EZT" firstAttribute="top" secondItem="S7A-b7-cEN" secondAttribute="top" constant="38" id="YFE-zi-S7u"/>
-                            <constraint firstItem="7Mu-ji-UO4" firstAttribute="leading" secondItem="VgO-OM-UqJ" secondAttribute="trailing" constant="43" id="ZmD-F1-eiy"/>
-                            <constraint firstItem="VgO-OM-UqJ" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="4" id="c3S-Me-uiY"/>
-                            <constraint firstItem="kGD-1l-u78" firstAttribute="bottom" secondItem="VgO-OM-UqJ" secondAttribute="bottom" constant="55" id="fHh-fZ-U9f"/>
-                            <constraint firstItem="7Mu-ji-UO4" firstAttribute="bottom" secondItem="ivy-QP-fyl" secondAttribute="bottom" constant="35" id="jw1-7s-uPB"/>
+                            <constraint firstItem="VgO-OM-UqJ" firstAttribute="leading" secondItem="7Mu-ji-UO4" secondAttribute="trailing" constant="8" id="ZYs-4Y-5Zo"/>
+                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="VgO-OM-UqJ" secondAttribute="trailing" constant="4" id="dyz-Gi-WKj"/>
+                            <constraint firstItem="cGQ-Q4-2Mj" firstAttribute="centerY" secondItem="SB5-dC-vId" secondAttribute="centerY" id="fYw-zF-ECI"/>
                             <constraint firstItem="8KP-gW-EZT" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="k7M-KQ-YgD"/>
+                            <constraint firstItem="7Mu-ji-UO4" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="mqM-pL-iJE"/>
                             <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="kGD-1l-u78" secondAttribute="trailing" constant="5" id="nVm-6u-f8U"/>
                             <constraint firstItem="ivy-QP-fyl" firstAttribute="top" secondItem="8KP-gW-EZT" secondAttribute="top" constant="50" id="sjM-gd-cf6"/>
                             <constraint firstItem="S7A-b7-cEN" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="skG-6z-EIc"/>
@@ -144,10 +155,16 @@
                             <constraint firstItem="0OT-uH-zv0" firstAttribute="top" secondItem="qME-VA-YSk" secondAttribute="top" constant="13" id="yBR-Vm-LFc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qME-VA-YSk"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="CyR-ft-26y"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Preferences" image="PrefsIcon" id="Cx1-Xp-6o8"/>
                     <connections>
                         <outlet property="hostUriTextField" destination="S7A-b7-cEN" id="V2W-NK-Afd"/>
+                        <outlet property="showBGOnAppBadgeSwitch" destination="cGQ-Q4-2Mj" id="yM8-Xt-KQA"/>
                         <outlet property="showRawBGSwitch" destination="7Mu-ji-UO4" id="LzN-7Q-bx0"/>
                         <outlet property="uriPickerView" destination="ivy-QP-fyl" id="AWU-To-DxU"/>
                         <outlet property="versionLabel" destination="0OT-uH-zv0" id="BVO-pI-KiM"/>

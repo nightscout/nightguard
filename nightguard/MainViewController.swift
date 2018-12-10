@@ -307,6 +307,12 @@ class MainViewController: UIViewController {
                 AlarmSound.stop()
             }
             self.updateSnoozeButtonText()
+
+            // update app badge
+            if UserDefaultsRepository.readShowBGOnAppBadge() {
+                UIApplication.shared.setCurrentBGValueOnAppBadge()
+            }
+            
             guard let result = result else {
                 return
             }

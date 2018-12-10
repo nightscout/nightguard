@@ -17,7 +17,8 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var uriPickerView: UIPickerView!
     @IBOutlet weak var showRawBGSwitch: UISwitch!
-    
+    @IBOutlet weak var showBGOnAppBadgeSwitch: UISwitch!
+
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -36,6 +37,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         self.view.addGestureRecognizer(tap)
         
         showRawBGSwitch.isOn = UserDefaultsRepository.readShowRawBG()
+        showBGOnAppBadgeSwitch.isOn = UserDefaultsRepository.readShowBGOnAppBadge()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -160,6 +162,17 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     @IBAction func onShowRawBGValueChanged(_ sender: UISwitch) {
         UserDefaultsRepository.saveShowRawBG(sender.isOn)
         sendValuesToAppleWatch()
+    }
+    
+    @IBAction func onShowBGOnAppBadgeChanged(_ sender: UISwitch) {
+        
+        if sender.isOn {
+            UIApplication.shared.setCurrentBGValueOnAppBadge()
+        } else {
+            UIApplication.shared.clearAppBadge()
+        }
+        
+        UserDefaultsRepository.saveShowBGOnAppBadge(sender.isOn)
     }
     
     // Picker-View methods

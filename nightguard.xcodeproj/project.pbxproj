@@ -102,6 +102,7 @@
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
 		D1BD14E5205BB9E200B93389 /* BackgroundRefreshScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */; };
 		D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
+		D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
 		D1E6B897219C69D9007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
 		D1E6B898219C6A86007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
 /* End PBXBuildFile section */
@@ -235,6 +236,7 @@
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshScheduler.swift; sourceTree = "<group>"; };
 		D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshLogger.swift; sourceTree = "<group>"; };
+		D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		D1E6B896219C69D9007ED4FE /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -291,6 +293,7 @@
 				43288A6F1D20284600EE3999 /* DoubleExtension.swift */,
 				430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */,
 				439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */,
+				D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -754,6 +757,7 @@
 				D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */,
 				4351E6AE1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift in Sources */,
 				43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */,
+				D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */,
 				43F1E0EE1D07693300C329A2 /* AlarmRule.swift in Sources */,
 				432E62EF1D17359600DD7978 /* StringExtension.swift in Sources */,
 				43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */,
