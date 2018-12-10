@@ -35,14 +35,8 @@ class MainViewController: UIViewController {
     var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     // timer to check continuously for new bgValues
     var timer = Timer()
-    // another timer to restart the timer for the case that a watchdog kills it
-    // the latter can happen, when the request takes too long :-/
-    var safetyResetTimer = Timer()
-    
     // check every 30 Seconds whether new bgvalues should be retrieved
     let timeInterval: TimeInterval = 30.0
-    // kill and restart the timer every 12 minutes
-    let safetyResetTimerInterval: TimeInterval = 60.0 * 12
     
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
@@ -66,11 +60,6 @@ class MainViewController: UIViewController {
         
         // Start the timer to retrieve new bgValues
         startTimer()
-        safetyResetTimer = Timer.scheduledTimer(timeInterval: safetyResetTimerInterval,
-                                     target: self,
-                                     selector: #selector(MainViewController.safetyResetTimerDidEnd(_:)),
-                                     userInfo: nil,
-                                     repeats: true)
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -94,6 +83,10 @@ class MainViewController: UIViewController {
         let isLargeEnoughScreen = height >= 667 // 4.7 inches or larger (iPhone 6, etc.)
         rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
         bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
+        
+        // stop timer when app enters in background, start is again when becomes active
+        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,7 +99,7 @@ class MainViewController: UIViewController {
         
         // Start immediately so that the current time gets displayed at once
         // And the alarm can play if needed
-        timerDidEnd(timer)
+        doPeriodicUpdate(forceRepaint: true)
         
         UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
@@ -181,7 +174,32 @@ class MainViewController: UIViewController {
         return UIStatusBarStyle.lightContent
     }
     
-    func startTimer() {
+    
+    // MARK: Notification
+    @objc func applicationDidEnterBackground(_ notification: Notification) {
+        timer.invalidate()
+        AlarmSound.stop()
+    }
+    
+    @objc func applicationWillEnterForeground(_ notification: Notification) {
+        
+        // If there is already a snooze active => we don't have to fear that an alarm
+        // would be played.
+        if !AlarmRule.isSnoozed() {
+            // snooze the alarm for 15 Seconds in order to retrieve new data
+            // before playing alarm
+            // Otherwise it could be the case that the app immediately plays
+            // an alarm sound without giving the app the chance to reload
+            // current data
+            AlarmRule.snoozeSeconds(15)
+            self.updateSnoozeButtonText()
+        }
+
+        startTimer()
+        doPeriodicUpdate(forceRepaint: true)
+    }
+
+    fileprivate func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: timeInterval,
                                      target: self,
                                      selector: #selector(MainViewController.timerDidEnd(_:)),
@@ -189,32 +207,21 @@ class MainViewController: UIViewController {
                                      repeats: true)
     }
     
-    @objc func safetyResetTimerDidEnd(_ timer: Timer) {
-        timer.invalidate()
-        startTimer()
-    }
-    
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer) {
         
-        if AlarmRule.isAlarmActivated(NightscoutCacheService.singleton.getCurrentNightscoutData(), bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) {
-            
-            // Play the sound only if foreground => otherwise this won't work at all
-            // and the sound will only play right when opening the application :-/
-            let state = UIApplication.shared.applicationState
-            if state == UIApplicationState.active {
-                AlarmSound.play()
-            }
-        } else {
-            AlarmSound.stop()
+        DispatchQueue.main.async { [unowned self] in
+            self.doPeriodicUpdate(forceRepaint: false)
         }
-        updateSnoozeButtonText()
+    }
+    
+    fileprivate func doPeriodicUpdate(forceRepaint: Bool) {
         
-        paintCurrentTime()
+        self.paintCurrentTime()
         // paint here is need if the server doesn't respond
         // => in that case the user has to know that the values are old!
-        loadAndPaintCurrentBgData()
-        loadAndPaintChartData(forceRepaint: false)
+        self.loadAndPaintCurrentBgData()
+        self.loadAndPaintChartData(forceRepaint: forceRepaint)
     }
     
     fileprivate func paintScreenLockSwitch() {
@@ -293,6 +300,13 @@ class MainViewController: UIViewController {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData { [unowned self] result in
             
+            // play alarm if activated
+            if AlarmRule.isAlarmActivated(NightscoutCacheService.singleton.getCurrentNightscoutData(), bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) {
+                AlarmSound.play()
+            } else {
+                AlarmSound.stop()
+            }
+            self.updateSnoozeButtonText()
             guard let result = result else {
                 return
             }
