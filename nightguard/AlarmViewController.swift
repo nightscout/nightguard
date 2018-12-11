@@ -36,6 +36,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     @IBOutlet weak var noDataAlarmButton: UIButton!
     @IBOutlet weak var noDataAlarmPickerView: UIPickerView!
     
+    @IBOutlet weak var notificationsSwitch: UISwitch!
+    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -53,6 +55,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         updateUnits()
         
         edgeDetectionSwitch.isOn = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
+        notificationsSwitch.isOn = AlarmNotificationService.shared.enabled
         numberOfConsecutiveValues.text = defaults?.string(forKey: "numberOfConsecutiveValues")
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
@@ -87,6 +90,10 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(edgeDetectionSwitch.isOn, forKey: "edgeDetectionAlarmEnabled")
         AlarmRule.isEdgeDetectionAlarmEnabled = edgeDetectionSwitch.isOn
+    }
+    
+    @IBAction func notificationsSwitchChanged(_ sender: AnyObject) {
+        AlarmNotificationService.shared.enabled = !AlarmNotificationService.shared.enabled
     }
     
     @IBAction func valuesEditingChanged(_ sender: AnyObject) {

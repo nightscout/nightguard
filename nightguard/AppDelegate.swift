@@ -38,9 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         activateWatchConnectivity()
         initializeApplicationDefaults()
         initializeAlarmRule()
-        
-        AlarmNotificationService.shared.requestAuthorization()
-        
         return true
 
     }

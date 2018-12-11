@@ -14,6 +14,19 @@ class AlarmNotificationService {
     
     static let shared = AlarmNotificationService()
     
+    // service state
+    var enabled: Bool {
+        get {
+            return UserDefaultsRepository.readAlarmNotificationState()
+        }
+        
+        set(value) {
+            UserDefaultsRepository.saveAlarmNotificationState(value)
+            if value {
+                requestAuthorization()
+            }
+        }
+    }
     /*
      * Request authorization from user to use local notifications for alarms
      */
@@ -39,17 +52,24 @@ class AlarmNotificationService {
      */
     func notifyIfAlarmActivated() {
         
-        // app should be in background
+        // PRECONDITIONS:
+        // 1. service should be enabled
+        guard enabled else {
+            return
+        }
+        
+        // 2. app should be in background
         guard UIApplication.shared.applicationState != .active else {
             return
         }
         
-        // alarm should be active
+        // 3. alarm should be active
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
         guard AlarmRule.isAlarmActivated(nightscoutData, bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) else {
             return
         }
         
+        // trigger notification
         let content = UNMutableNotificationContent()
         let units = (UserDefaultsRepository.readUnits() == Units.mmol) ? "mmol" : "mg/dL"
         content.title = "\(nightscoutData.sgv) \(nightscoutData.bgdeltaArrow)\t\(nightscoutData.bgdeltaString) \(units)"
