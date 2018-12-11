@@ -33,8 +33,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @IBOutlet weak var unitsLabel: UILabel!
     
-    @IBOutlet weak var noDataAlarmButton: UIButton!
-    @IBOutlet weak var noDataAlarmPickerView: UIPickerView!
+    @IBOutlet weak var noDataAlarmAfterMinutes: UITextField!
+    var noDataAlarmPickerView: UIPickerView!
     
     @IBOutlet weak var notificationsSwitch: UISwitch!
     
@@ -61,8 +61,10 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
         
+        noDataAlarmPickerView = UIPickerView()
         noDataAlarmPickerView.delegate = self
         noDataAlarmPickerView.dataSource = self
+        noDataAlarmAfterMinutes.inputView = noDataAlarmPickerView
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,7 +80,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.string(forKey: "alertIfBelowValue"))!)
         alertBelowSlider.value = (UnitsConverter.toMgdl(alertIfBelowValueLabel.text!.floatValue) - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
         
-        noDataAlarmButton.setTitle(defaults?.string(forKey: "noDataAlarmAfterMinutes"), for: UIControlState())
+        noDataAlarmAfterMinutes.text = defaults?.string(forKey: "noDataAlarmAfterMinutes")
+        preselectItemInPickerView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -115,6 +118,9 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         AlarmRule.deltaAmount = deltaAmountValue
     }
     
+    @IBAction func noDataAlarmAfterMinutesEditingChanged(_ sender: AnyObject) {        
+    }
+
     @IBAction func aboveAlertValueChanged(_ sender: AnyObject) {
         aboveSliderValueChanged(commitChanges: false)
     }
@@ -234,9 +240,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     // Remove keyboard and PickerView by touching outside
     @objc func onTouchGesture(){
         self.view.endEditing(true)
-        self.noDataAlarmPickerView.isHidden = true
     }
-    
     
     // Methods for the noDataAlarmPickerView
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -251,26 +255,23 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         return 1
     }
     
-    @IBAction func noDataAlarmButtonPressed(_ sender: AnyObject) {
-        preselectItemInPickerView()
-        noDataAlarmPickerView.isHidden = false
-    }
-    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedMinutes = toButtonText(noDataAlarmOptions[row])
-        noDataAlarmButton.setTitle(selectedMinutes, for: UIControlState())
-        
+        noDataAlarmAfterMinutes.text = selectedMinutes
+
         // Remember the selected value by storing it as default setting
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(selectedMinutes, forKey: "noDataAlarmAfterMinutes")
-        
+
         // Activate the new AlarmRule
         AlarmRule.minutesWithoutValues = Int(selectedMinutes)!
+        
+        self.view.endEditing(true)
     }
     
     // Selects the right item that is shown in the noDataAlarmButton in the PickerView
     fileprivate func preselectItemInPickerView() {
-        let rowOfSelectedItem : Int = noDataAlarmOptions.index(of: noDataAlarmButton.currentTitle! + " Minutes")!
+        let rowOfSelectedItem : Int = noDataAlarmOptions.index(of: noDataAlarmAfterMinutes.text! + " Minutes")!
         noDataAlarmPickerView.selectRow(rowOfSelectedItem, inComponent: 0, animated: false)
     }
     
