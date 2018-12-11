@@ -29,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Override point for customization after application launch.
         UITabBar.appearance().tintColor = UIColor.white
+
+        UITextField.appearance().keyboardAppearance = .dark
         
         // This application should be called in background every X Minutes
         UIApplication.shared.setMinimumBackgroundFetchInterval(
