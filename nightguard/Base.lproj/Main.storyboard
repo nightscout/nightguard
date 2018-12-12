@@ -10,170 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Preferences-->
-        <scene sceneID="AZy-md-1yX">
-            <objects>
-                <viewController title="Preferences" id="5gg-kk-88j" customClass="PrefsViewController" customModule="nightguard" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="MsJ-Nm-uEe">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8KP-gW-EZT">
-                                <rect key="frame" x="5" y="99" width="311" height="31.5"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'">
-                                        <attributes>
-                                            <color key="NSColor" white="0.95540901406170575" alpha="1" colorSpace="calibratedWhite"/>
-                                            <font key="NSFont" metaFont="system"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show raw BG and noise level" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VgO-OM-UqJ">
-                                <rect key="frame" x="62" y="321" width="254" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="bottomRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="V0.0.00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OT-uH-zv0">
-                                <rect key="frame" x="5" y="33" width="310" height="20"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Mu-ji-UO4">
-                                <rect key="frame" x="5" y="316" width="51" height="31"/>
-                                <connections>
-                                    <action selector="onShowRawBGValueChanged:" destination="5gg-kk-88j" eventType="valueChanged" id="Pk5-Ba-7mF"/>
-                                </connections>
-                            </switch>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cGQ-Q4-2Mj">
-                                <rect key="frame" x="5" y="277" width="51" height="31"/>
-                                <connections>
-                                    <action selector="onShowBGOnAppBadgeChanged:" destination="5gg-kk-88j" eventType="valueChanged" id="qNi-Ye-QDb"/>
-                                </connections>
-                            </switch>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="https://my.nightscout.de?token=mynightscouttoken" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S7A-b7-cEN">
-                                <rect key="frame" x="5" y="61" width="310" height="30"/>
-                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                <connections>
-                                    <action selector="doEditingChangedAction:" destination="5gg-kk-88j" eventType="editingChanged" id="H8K-uh-oRX"/>
-                                    <action selector="touchDownInsideUriTextfield:" destination="5gg-kk-88j" eventType="touchDown" id="D2Y-mE-e8W"/>
-                                </connections>
-                            </textField>
-                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ivy-QP-fyl" userLabel="UriPickerView">
-                                <rect key="frame" x="0.0" y="149" width="320" height="112"/>
-                                <color key="backgroundColor" red="0.85923865619546247" green="0.85923865619546247" blue="0.85923865619546247" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="112" id="VY7-zO-tk1"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="delegate" destination="5gg-kk-88j" id="Cpa-0w-Hud"/>
-                                </connections>
-                            </pickerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGD-1l-u78">
-                                <rect key="frame" x="62" y="347" width="253" height="63"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="For receiving the raw BG and noise level values, the ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="rawbg">
-                                        <attributes>
-                                            <color key="NSColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="13" name="HelveticaNeue-Bold"/>
-                                            <font key="NSOriginalFont" size="13" name="HelveticaNeue-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" plugin should be enabled on your Nightscout Server.  This works on ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Dexcom">
-                                        <attributes>
-                                            <color key="NSColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="13" name="HelveticaNeue-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" only!">
-                                        <attributes>
-                                            <color key="NSColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" metaFont="system"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show BG on app badge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SB5-dC-vId">
-                                <rect key="frame" x="62" y="282.5" width="254" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="kGD-1l-u78" firstAttribute="leading" secondItem="VgO-OM-UqJ" secondAttribute="leading" id="3EA-Mt-UUi"/>
-                            <constraint firstItem="cGQ-Q4-2Mj" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="8g4-Mh-Mry"/>
-                            <constraint firstItem="SB5-dC-vId" firstAttribute="leading" secondItem="cGQ-Q4-2Mj" secondAttribute="trailing" constant="8" id="CTl-3o-CuJ"/>
-                            <constraint firstItem="kGD-1l-u78" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="16" id="CyR-ft-26y"/>
-                            <constraint firstItem="7Mu-ji-UO4" firstAttribute="top" secondItem="cGQ-Q4-2Mj" secondAttribute="bottom" constant="8" id="Dpy-mB-BOG"/>
-                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="8KP-gW-EZT" secondAttribute="trailing" constant="4" id="Dz2-KC-1lx"/>
-                            <constraint firstItem="ivy-QP-fyl" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" id="DzH-gf-VFr"/>
-                            <constraint firstItem="cGQ-Q4-2Mj" firstAttribute="top" secondItem="ivy-QP-fyl" secondAttribute="bottom" constant="16" id="FrF-5L-Myx"/>
-                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="SB5-dC-vId" secondAttribute="trailing" constant="4" id="G7X-TW-tN1"/>
-                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="S7A-b7-cEN" secondAttribute="trailing" constant="5" id="GD3-61-0EJ"/>
-                            <constraint firstItem="0OT-uH-zv0" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="Oth-H7-mhe"/>
-                            <constraint firstItem="kGD-1l-u78" firstAttribute="top" secondItem="7Mu-ji-UO4" secondAttribute="bottom" id="PPA-Ee-A32"/>
-                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="0OT-uH-zv0" secondAttribute="trailing" constant="5" id="TWd-Zf-1dl"/>
-                            <constraint firstItem="7Mu-ji-UO4" firstAttribute="centerY" secondItem="VgO-OM-UqJ" secondAttribute="centerY" id="Uxf-Ud-lL8"/>
-                            <constraint firstItem="8KP-gW-EZT" firstAttribute="top" secondItem="S7A-b7-cEN" secondAttribute="top" constant="38" id="YFE-zi-S7u"/>
-                            <constraint firstItem="VgO-OM-UqJ" firstAttribute="leading" secondItem="7Mu-ji-UO4" secondAttribute="trailing" constant="8" id="ZYs-4Y-5Zo"/>
-                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="VgO-OM-UqJ" secondAttribute="trailing" constant="4" id="dyz-Gi-WKj"/>
-                            <constraint firstItem="cGQ-Q4-2Mj" firstAttribute="centerY" secondItem="SB5-dC-vId" secondAttribute="centerY" id="fYw-zF-ECI"/>
-                            <constraint firstItem="8KP-gW-EZT" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="k7M-KQ-YgD"/>
-                            <constraint firstItem="7Mu-ji-UO4" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="mqM-pL-iJE"/>
-                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="kGD-1l-u78" secondAttribute="trailing" constant="5" id="nVm-6u-f8U"/>
-                            <constraint firstItem="ivy-QP-fyl" firstAttribute="top" secondItem="8KP-gW-EZT" secondAttribute="top" constant="50" id="sjM-gd-cf6"/>
-                            <constraint firstItem="S7A-b7-cEN" firstAttribute="leading" secondItem="qME-VA-YSk" secondAttribute="leading" constant="5" id="skG-6z-EIc"/>
-                            <constraint firstItem="S7A-b7-cEN" firstAttribute="top" secondItem="0OT-uH-zv0" secondAttribute="top" constant="28" id="tcE-qc-C4i"/>
-                            <constraint firstItem="qME-VA-YSk" firstAttribute="trailing" secondItem="ivy-QP-fyl" secondAttribute="trailing" id="x8U-zZ-QlO"/>
-                            <constraint firstItem="0OT-uH-zv0" firstAttribute="top" secondItem="qME-VA-YSk" secondAttribute="top" constant="13" id="yBR-Vm-LFc"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="qME-VA-YSk"/>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="CyR-ft-26y"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Preferences" image="PrefsIcon" id="Cx1-Xp-6o8"/>
-                    <connections>
-                        <outlet property="hostUriTextField" destination="S7A-b7-cEN" id="V2W-NK-Afd"/>
-                        <outlet property="showBGOnAppBadgeSwitch" destination="cGQ-Q4-2Mj" id="yM8-Xt-KQA"/>
-                        <outlet property="showRawBGSwitch" destination="7Mu-ji-UO4" id="LzN-7Q-bx0"/>
-                        <outlet property="uriPickerView" destination="ivy-QP-fyl" id="AWU-To-DxU"/>
-                        <outlet property="versionLabel" destination="0OT-uH-zv0" id="BVO-pI-KiM"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="l0s-GN-TIY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1098.75" y="555"/>
-        </scene>
         <!--Snooze Alarm View Controller-->
         <scene sceneID="Qa7-6a-Auw">
             <objects>
@@ -712,21 +548,22 @@
                         <segue destination="wFP-V1-Fpg" kind="relationship" relationship="viewControllers" id="tVc-wm-64g"/>
                         <segue destination="7pd-UE-mwp" kind="relationship" relationship="viewControllers" id="POg-Tu-jgl"/>
                         <segue destination="tY7-pw-cBk" kind="relationship" relationship="viewControllers" id="mso-w9-IO8"/>
-                        <segue destination="5gg-kk-88j" kind="relationship" relationship="viewControllers" id="JsI-MD-uev"/>
+                        <segue destination="xQ4-Ke-Hd2" kind="relationship" relationship="viewControllers" id="O9h-fb-9MV"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rRQ-9l-s24" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1096" y="-297"/>
         </scene>
-        <!--Alarm-->
+        <!--Preferences-->
         <scene sceneID="ifb-Qm-17c">
             <objects>
-                <viewControllerPlaceholder storyboardName="Alarm" id="xQ4-Ke-Hd2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="9LQ-fr-oww"/>
+                <viewControllerPlaceholder storyboardName="Preferences" id="xQ4-Ke-Hd2" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Preferences" image="PrefsIcon" id="9LQ-fr-oww"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D4h-a9-Zye" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-990" y="244"/>
         </scene>
         <!--Alarm-->
         <scene sceneID="0s7-of-ffT">
