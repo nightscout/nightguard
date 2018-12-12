@@ -107,6 +107,7 @@
 		D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
 		D1DA7C7121BF7E0900B39675 /* Alarm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */; };
 		D1DA7C7321C01CB100B39675 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7221C01CB000B39675 /* Preferences.storyboard */; };
+		D1DA7C7521C0E1ED00B39675 /* Stats.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */; };
 		D1E6B897219C69D9007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
 		D1E6B898219C6A86007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
 /* End PBXBuildFile section */
@@ -245,6 +246,7 @@
 		D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationService.swift; sourceTree = "<group>"; };
 		D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Alarm.storyboard; sourceTree = "<group>"; };
 		D1DA7C7221C01CB000B39675 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
+		D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Stats.storyboard; sourceTree = "<group>"; };
 		D1E6B896219C69D9007ED4FE /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -467,6 +469,7 @@
 				43F1E0F91D07698000C329A2 /* Media.xcassets */,
 				43647BD11BFF6435004389F9 /* Main.storyboard */,
 				D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */,
+				D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */,
 				D1DA7C7221C01CB000B39675 /* Preferences.storyboard */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
 				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
@@ -672,6 +675,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1DA7C7521C0E1ED00B39675 /* Stats.storyboard in Resources */,
 				43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */,
 				43F1E1061D07698000C329A2 /* Media.xcassets in Resources */,
 				43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */,
