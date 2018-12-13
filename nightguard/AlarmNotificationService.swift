@@ -65,7 +65,7 @@ class AlarmNotificationService {
         
         // 3. alarm should be active
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        guard AlarmRule.isAlarmActivated(nightscoutData, bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) else {
+        guard let alarmActivationReason = AlarmRule.getAlarmActivationReason(nightscoutData, bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) else {
             return
         }
         
@@ -73,8 +73,7 @@ class AlarmNotificationService {
         let content = UNMutableNotificationContent()
         let units = (UserDefaultsRepository.readUnits() == Units.mmol) ? "mmol" : "mg/dL"
         content.title = "\(nightscoutData.sgv) \(nightscoutData.bgdeltaArrow)\t\(nightscoutData.bgdeltaString) \(units)"
-        //            content.body = "High BG alert"
-        // TODO: content body will contain the alarm name
+        content.body = "\(alarmActivationReason) alert"
         if let sgv = Float(nightscoutData.sgv) {
             content.badge = NSNumber(value: sgv)
         }

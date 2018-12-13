@@ -38,35 +38,56 @@ class AlarmRule {
      * Suspended is true if the Alarm has been technically deactivated for a short period of time.
      */
     static func isAlarmActivated(_ nightscoutData : NightscoutData, bloodValues : [BloodSugar]) -> Bool {
+        return (getAlarmActivationReason(nightscoutData, bloodValues: bloodValues) != nil)
+    }
+    
+    /*
+     * Returns a reason (string) if the alarm is activated.
+     * Returns nil if the alarm is snoozed or not active.
+     */
+    static func getAlarmActivationReason(_ nightscoutData : NightscoutData, bloodValues : [BloodSugar]) -> String? {
         
         if isSnoozed() {
-            return false
+            return nil
         }
         
         if nightscoutData.isOlderThanXMinutes(minutesWithoutValues) {
-            return true
+            return "Missed Readings"
         }
         
-        if isTooHighOrTooLow(UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)) {
-            return true
+        let svgInMgdl = UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)
+        if isTooHigh(svgInMgdl) {
+            return "High BG"
+        } else if isTooLow(svgInMgdl) {
+            return "Low BG"
         }
-        
+
         if isEdgeDetectionAlarmEnabled && bloodValuesAreIncreasingOrDecreasingToFast(bloodValues) {
-            return true
+            let lastTwoReadings = bloodValues.suffix(2)
+            let positiveDirection = lastTwoReadings[1].value > lastTwoReadings[0].value
+            return positiveDirection ? "Fast Rise" : "Fast Drop"
         }
         
-        return false
+        return nil
     }
     
     fileprivate static func isTooHighOrTooLow(_ bloodGlucose : Float) -> Bool {
-        return bloodGlucose > alertIfAboveValue || bloodGlucose < alertIfBelowValue
+        return isTooHigh(bloodGlucose) || isTooLow(bloodGlucose)
+    }
+    
+    fileprivate static func isTooHigh(_ bloodGlucose : Float) -> Bool {
+        return bloodGlucose > alertIfAboveValue
+    }
+
+    fileprivate static func isTooLow(_ bloodGlucose : Float) -> Bool {
+        return bloodGlucose < alertIfBelowValue
     }
     
     fileprivate static func bloodValuesAreIncreasingOrDecreasingToFast(_ bloodValues : [BloodSugar]) -> Bool {
         
         // we need at least these number of values, in order to prevent an out of bounds exception
         if bloodValues.count < numberOfConsecutiveValues + 2 {
-            return false;
+            return false
         }
         
         let maxItems = bloodValues.count
@@ -84,7 +105,7 @@ class AlarmRule {
                 return false
             }
         }
-        return true;
+        return true
     }
     
     static func newDirectionNegative(_ value1 : Float, value2 : Float) -> Bool {
