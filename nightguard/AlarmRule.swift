@@ -32,6 +32,8 @@ class AlarmRule {
     
     static var minutesWithoutValues : Int = 15
     
+    static var isSmartSnoozeEnabled : Bool = false
+    
     /*
      * Returns true if the alarm should be played.
      * Snooze is true if the Alarm has been manually deactivated.
@@ -56,16 +58,43 @@ class AlarmRule {
         }
         
         let svgInMgdl = UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)
-        if isTooHigh(svgInMgdl) {
+        let isTooHigh = AlarmRule.isTooHigh(svgInMgdl)
+        let isTooLow = AlarmRule.isTooLow(svgInMgdl)
+        
+        // IMPORTANT: augment the blood values with current reading (if not already there)
+        let bloodValues = bloodValues.assuringCurrentReadingExists(nightscoutData)
+        
+        if isSmartSnoozeEnabled && (isTooHigh || isTooLow) {
+            
+            // if the trend is to leave the too high or too low zone, we'll snooze the alarm (without caring about the edges - we're outside of the board, first get in, then we'll check the edges)
+            switch bloodValues.trend {
+            case .ascending:
+                if isTooLow {
+                    return nil
+                }
+            
+            case .descending:
+                if isTooHigh {
+                    return nil
+                }
+                
+            default:
+                break
+            }
+        }
+        
+        if isTooHigh {
             return "High BG"
-        } else if isTooLow(svgInMgdl) {
+        } else if isTooLow {
             return "Low BG"
         }
 
-        if isEdgeDetectionAlarmEnabled && bloodValuesAreIncreasingOrDecreasingToFast(bloodValues) {
-            let lastTwoReadings = bloodValues.suffix(2)
-            let positiveDirection = lastTwoReadings[1].value > lastTwoReadings[0].value
-            return positiveDirection ? "Fast Rise" : "Fast Drop"
+        if isEdgeDetectionAlarmEnabled  {
+            if bloodValuesAreIncreasingTooFast(bloodValues) {
+                return "Fast Rise"
+            } else if bloodValuesAreDecreasingTooFast(bloodValues) {
+                return "Fast Drop"
+            }
         }
         
         return nil
@@ -83,37 +112,28 @@ class AlarmRule {
         return bloodGlucose < alertIfBelowValue
     }
     
-    fileprivate static func bloodValuesAreIncreasingOrDecreasingToFast(_ bloodValues : [BloodSugar]) -> Bool {
+    fileprivate static func bloodValuesAreIncreasingOrDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
+        return bloodValuesAreIncreasingTooFast(bloodValues) || bloodValuesAreDecreasingTooFast(bloodValues)
+    }
+    
+    fileprivate static func bloodValuesAreIncreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
         
-        // we need at least these number of values, in order to prevent an out of bounds exception
-        if bloodValues.count < numberOfConsecutiveValues + 2 {
+        // we need at least these number of values (the most reacent X readings)
+        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues + 1) else {
             return false
         }
         
-        let maxItems = bloodValues.count
-        var positiveDirection : Bool? = nil
-        for index in maxItems-numberOfConsecutiveValues...maxItems {
-            
-            if abs(bloodValues[index-2].value - bloodValues[index-1].value) < deltaAmount {
-                return false
-            }
-            if (positiveDirection == nil) {
-                positiveDirection = (bloodValues[index-1].value - bloodValues[index-2].value) > 0
-            } else if positiveDirection! && newDirectionNegative(bloodValues[index-2].value, value2: bloodValues[index-1].value) {
-                return false
-            } else if !positiveDirection! && newDirectionPositive(bloodValues[index-2].value, value2: bloodValues[index-1].value) {
-                return false
-            }
+        return readings.deltas.allSatisfy { $0 > deltaAmount }
+    }
+    
+    fileprivate static func bloodValuesAreDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
+        
+        // we need at least these number of values (the most reacent X readings)
+        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues + 1) else {
+            return false
         }
-        return true
-    }
-    
-    static func newDirectionNegative(_ value1 : Float, value2 : Float) -> Bool {
-        return value2 - value1 < 0
-    }
-    
-    static func newDirectionPositive(_ value1 : Float, value2 : Float) -> Bool {
-        return value2 - value1 > 0
+        
+        return readings.deltas.allSatisfy { $0 < -deltaAmount }
     }
     
     /*

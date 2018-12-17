@@ -14,7 +14,7 @@ class BloodSugar : NSCoder {
     let value : Float
     let timestamp : Double
     
-    init(value : Float, timestamp : Double) {
+    required init(value : Float, timestamp : Double) {
         self.value = value
         self.timestamp = timestamp
     }
@@ -40,27 +40,5 @@ class BloodSugar : NSCoder {
     @objc func encodeWithCoder(_ coder: NSCoder) {
         coder.encode(self.value, forKey: "value")
         coder.encode(self.timestamp, forKey: "timestamp")
-    }
-    
-    static func getMinimumTimestamp(_ bloodValues : [BloodSugar]) -> Double {
-        
-        var minimumTimestamp : Double = Double.infinity
-        for bloodSugar in bloodValues {
-            if bloodSugar.timestamp < minimumTimestamp {
-                minimumTimestamp = bloodSugar.timestamp
-            }
-        }
-        return minimumTimestamp
-    }
-    
-    static func getMaximumTimestamp(_ bloodValues : [BloodSugar]) -> Double {
-        
-        var maximumTimestamp : Double = 0
-        for bloodSugar in bloodValues {
-            if bloodSugar.timestamp > maximumTimestamp {
-                maximumTimestamp = bloodSugar.timestamp
-            }
-        }
-        return maximumTimestamp
     }
 }

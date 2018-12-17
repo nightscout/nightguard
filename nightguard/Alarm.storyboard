@@ -38,7 +38,7 @@
                                 <rect key="frame" x="0.0" y="116" width="375" height="751"/>
                                 <subviews>
                                     <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hsU-pg-n3U">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="481.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                         <subviews>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="bZB-9Y-0nH">
                                                 <rect key="frame" x="14" y="45" width="347" height="31"/>
@@ -146,20 +146,31 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VIw-q0-CQa">
-                                                <rect key="frame" x="16" y="342" width="51" height="31"/>
+                                                <rect key="frame" x="16" y="414.5" width="51" height="31"/>
                                                 <connections>
-                                                    <action selector="edgeDetectionSwitchChanged:" destination="C5X-J9-KPA" eventType="valueChanged" id="hIp-YF-R7l"/>
                                                     <action selector="notificationsSwitchChanged:" destination="C5X-J9-KPA" eventType="valueChanged" id="vm4-JY-MZJ"/>
                                                 </connections>
                                             </switch>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2zk-AY-TuP">
+                                                <rect key="frame" x="16" y="342" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="smartSnoozeSwitchChanged:" destination="C5X-J9-KPA" eventType="valueChanged" id="DpV-dO-7dD"/>
+                                                </connections>
+                                            </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alert notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbk-4M-cy0">
+                                                <rect key="frame" x="73" y="419.5" width="286" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Smart snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZKu-Rj-Dl5">
                                                 <rect key="frame" x="73" y="347" width="286" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WaE-bu-RcM">
-                                                <rect key="frame" x="73" y="372" width="286" height="93.5"/>
+                                                <rect key="frame" x="73" y="444.5" width="286" height="93.5"/>
                                                 <string key="text">When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode.</string>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="13"/>
                                                 <color key="textColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -181,11 +192,19 @@
                                                     <action selector="valuesEditingChanged:" destination="C5X-J9-KPA" eventType="editingChanged" id="8x5-w3-hTN"/>
                                                 </connections>
                                             </textField>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snooze (do not alert) when values are high or low but the trend is going in the right direction. " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7bt-Ci-Y9b">
+                                                <rect key="frame" x="73" y="372" width="286" height="31.5"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="13"/>
+                                                <color key="textColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
+                                            <constraint firstItem="2zk-AY-TuP" firstAttribute="leading" secondItem="TkZ-5x-0kY" secondAttribute="leading" id="4DI-BO-y4y"/>
                                             <constraint firstItem="15A-xF-Dwr" firstAttribute="trailing" secondItem="bZB-9Y-0nH" secondAttribute="trailing" id="57a-pV-0wj"/>
                                             <constraint firstItem="F2j-LZ-794" firstAttribute="leading" secondItem="MA9-lS-fSf" secondAttribute="leading" id="5Bq-0a-3pC"/>
+                                            <constraint firstItem="ZKu-Rj-Dl5" firstAttribute="leading" secondItem="2zk-AY-TuP" secondAttribute="trailing" constant="8" id="5KB-f5-2jL"/>
                                             <constraint firstItem="k28-BK-Tm3" firstAttribute="leading" secondItem="30u-GK-1eE" secondAttribute="leading" constant="16" id="6tP-nG-o08"/>
                                             <constraint firstItem="f1c-zJ-Bdj" firstAttribute="leading" secondItem="k28-BK-Tm3" secondAttribute="trailing" constant="8" id="8Le-Hk-qNk"/>
                                             <constraint firstItem="U0X-U4-Vbv" firstAttribute="top" secondItem="F2j-LZ-794" secondAttribute="bottom" constant="8" id="8O8-wR-gj5"/>
@@ -199,6 +218,7 @@
                                             <constraint firstItem="TkZ-5x-0kY" firstAttribute="leading" secondItem="15A-xF-Dwr" secondAttribute="leading" id="JJA-FF-bcI"/>
                                             <constraint firstItem="TkZ-5x-0kY" firstAttribute="top" secondItem="15A-xF-Dwr" secondAttribute="bottom" constant="8" id="KTb-Cp-wmS"/>
                                             <constraint firstItem="VIw-q0-CQa" firstAttribute="centerY" secondItem="gbk-4M-cy0" secondAttribute="centerY" id="M10-tN-d2Y"/>
+                                            <constraint firstItem="2zk-AY-TuP" firstAttribute="top" secondItem="n1U-Bl-dU0" secondAttribute="bottom" constant="16" id="MHh-9R-ASs"/>
                                             <constraint firstItem="n1U-Bl-dU0" firstAttribute="centerY" secondItem="qj9-bs-XC9" secondAttribute="centerY" id="MpT-DU-QpJ"/>
                                             <constraint firstItem="hSk-Ag-Rjg" firstAttribute="leading" secondItem="0xF-ev-DOs" secondAttribute="trailing" constant="8" id="NhW-io-at4"/>
                                             <constraint firstItem="k28-BK-Tm3" firstAttribute="centerY" secondItem="f1c-zJ-Bdj" secondAttribute="centerY" id="NmR-6C-k2z"/>
@@ -212,23 +232,29 @@
                                             <constraint firstItem="0xF-ev-DOs" firstAttribute="leading" secondItem="U0X-U4-Vbv" secondAttribute="leading" id="Z49-Ly-aiJ"/>
                                             <constraint firstItem="n1U-Bl-dU0" firstAttribute="leading" secondItem="TkZ-5x-0kY" secondAttribute="leading" id="Z7d-4N-Ecc"/>
                                             <constraint firstItem="TkZ-5x-0kY" firstAttribute="centerY" secondItem="MA9-lS-fSf" secondAttribute="centerY" id="bHe-8t-a6Q"/>
+                                            <constraint firstItem="30u-GK-1eE" firstAttribute="trailing" secondItem="ZKu-Rj-Dl5" secondAttribute="trailing" constant="16" id="eTk-oR-IgB"/>
                                             <constraint firstItem="k28-BK-Tm3" firstAttribute="top" secondItem="30u-GK-1eE" secondAttribute="top" constant="16" id="ebR-cB-gfg"/>
                                             <constraint firstItem="bZB-9Y-0nH" firstAttribute="top" secondItem="k28-BK-Tm3" secondAttribute="bottom" constant="8" id="fky-Tt-8bV"/>
                                             <constraint firstItem="iCc-v8-Smb" firstAttribute="top" secondItem="bZB-9Y-0nH" secondAttribute="bottom" constant="16" id="fzf-YQ-BYC"/>
                                             <constraint firstItem="O2B-7d-dsU" firstAttribute="leading" secondItem="iCc-v8-Smb" secondAttribute="trailing" constant="8" id="gNw-py-9Zt"/>
                                             <constraint firstItem="30u-GK-1eE" firstAttribute="trailing" secondItem="gbk-4M-cy0" secondAttribute="trailing" constant="16" id="gmM-s0-Q9r"/>
+                                            <constraint firstItem="30u-GK-1eE" firstAttribute="trailing" secondItem="7bt-Ci-Y9b" secondAttribute="trailing" constant="16" id="iPy-pz-U4v"/>
                                             <constraint firstItem="Gao-sJ-PLR" firstAttribute="leading" secondItem="n1U-Bl-dU0" secondAttribute="trailing" id="iiS-Ha-eOk"/>
                                             <constraint firstItem="gbk-4M-cy0" firstAttribute="leading" secondItem="VIw-q0-CQa" secondAttribute="trailing" constant="8" id="jzj-Vp-m0F"/>
                                             <constraint firstItem="sS3-XN-k5d" firstAttribute="leading" secondItem="F2j-LZ-794" secondAttribute="trailing" constant="8" id="k3R-2H-uL9"/>
-                                            <constraint firstItem="VIw-q0-CQa" firstAttribute="top" secondItem="n1U-Bl-dU0" secondAttribute="bottom" constant="16" id="lPp-T4-QJW"/>
                                             <constraint firstItem="0xF-ev-DOs" firstAttribute="top" secondItem="U0X-U4-Vbv" secondAttribute="bottom" constant="8" id="mkb-Kl-46b"/>
                                             <constraint firstItem="30u-GK-1eE" firstAttribute="trailing" secondItem="f1c-zJ-Bdj" secondAttribute="trailing" constant="16" id="nJW-dz-kSB"/>
                                             <constraint firstItem="U0X-U4-Vbv" firstAttribute="leading" secondItem="F2j-LZ-794" secondAttribute="leading" id="njM-Xd-o5C"/>
+                                            <constraint firstItem="WaE-bu-RcM" firstAttribute="top" secondItem="gbk-4M-cy0" secondAttribute="bottom" constant="4" id="pCj-vZ-g8J"/>
                                             <constraint firstItem="0xF-ev-DOs" firstAttribute="width" secondItem="F2j-LZ-794" secondAttribute="width" id="q7b-xY-piq"/>
                                             <constraint firstItem="WaE-bu-RcM" firstAttribute="bottom" secondItem="30u-GK-1eE" secondAttribute="bottom" constant="-16" id="rSz-hv-8Oc"/>
                                             <constraint firstItem="WaE-bu-RcM" firstAttribute="leading" secondItem="gbk-4M-cy0" secondAttribute="leading" id="rfx-ht-Gho"/>
+                                            <constraint firstItem="7bt-Ci-Y9b" firstAttribute="bottom" secondItem="gbk-4M-cy0" secondAttribute="top" constant="-16" id="rib-I7-oeo"/>
+                                            <constraint firstItem="7bt-Ci-Y9b" firstAttribute="leading" secondItem="ZKu-Rj-Dl5" secondAttribute="leading" id="t5s-62-e1B"/>
+                                            <constraint firstItem="7bt-Ci-Y9b" firstAttribute="top" secondItem="ZKu-Rj-Dl5" secondAttribute="bottom" constant="4" id="vfW-76-AEP"/>
                                             <constraint firstItem="F2j-LZ-794" firstAttribute="centerY" secondItem="sS3-XN-k5d" secondAttribute="centerY" id="w6Q-hF-4by"/>
                                             <constraint firstItem="0xF-ev-DOs" firstAttribute="centerY" secondItem="hSk-Ag-Rjg" secondAttribute="centerY" id="xsU-aM-vbt"/>
+                                            <constraint firstItem="2zk-AY-TuP" firstAttribute="centerY" secondItem="ZKu-Rj-Dl5" secondAttribute="centerY" id="zxB-D0-Qc2"/>
                                         </constraints>
                                         <viewLayoutGuide key="safeArea" id="30u-GK-1eE"/>
                                     </view>
@@ -268,6 +294,7 @@
                         <outlet property="noDataAlarmAfterMinutes" destination="Gao-sJ-PLR" id="gra-LL-CvQ"/>
                         <outlet property="notificationsSwitch" destination="VIw-q0-CQa" id="Sds-sU-wH2"/>
                         <outlet property="numberOfConsecutiveValues" destination="F2j-LZ-794" id="yjZ-Wn-Va6"/>
+                        <outlet property="smartSnoozeSwitch" destination="2zk-AY-TuP" id="m47-t8-ysN"/>
                         <outlet property="unitsLabel" destination="hSk-Ag-Rjg" id="U72-cD-173"/>
                     </connections>
                 </viewController>

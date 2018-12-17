@@ -35,7 +35,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @IBOutlet weak var noDataAlarmAfterMinutes: UITextField!
     var noDataAlarmPickerView: UIPickerView!
-    
+
+    @IBOutlet weak var smartSnoozeSwitch: UISwitch!
     @IBOutlet weak var notificationsSwitch: UISwitch!
     
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
@@ -55,6 +56,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         updateUnits()
         
         edgeDetectionSwitch.isOn = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
+        smartSnoozeSwitch.isOn = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
         notificationsSwitch.isOn = AlarmNotificationService.shared.enabled
         numberOfConsecutiveValues.text = defaults?.string(forKey: "numberOfConsecutiveValues")
         
@@ -95,8 +97,14 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         AlarmRule.isEdgeDetectionAlarmEnabled = edgeDetectionSwitch.isOn
     }
     
+    @IBAction func smartSnoozeSwitchChanged(_ sender: AnyObject) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(smartSnoozeSwitch.isOn, forKey: "smartSnoozeEnabled")
+        AlarmRule.isSmartSnoozeEnabled = smartSnoozeSwitch.isOn
+    }
+    
     @IBAction func notificationsSwitchChanged(_ sender: AnyObject) {
-        AlarmNotificationService.shared.enabled = !AlarmNotificationService.shared.enabled
+        AlarmNotificationService.shared.enabled = notificationsSwitch.isOn
     }
     
     @IBAction func valuesEditingChanged(_ sender: AnyObject) {

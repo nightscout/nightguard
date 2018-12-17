@@ -61,6 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AlarmRule.alertIfBelowValue = (defaults?.float(forKey: "alertIfBelowValue"))!
         
         AlarmRule.minutesWithoutValues = (defaults?.integer(forKey: "noDataAlarmAfterMinutes"))!
+        
+        AlarmRule.isSmartSnoozeEnabled = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
     }
     
     func initializeApplicationDefaults() {
@@ -75,7 +77,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              "alertIfBelowValue": 80,
              "maximumBloodGlucoseDisplayed": 350,
              
-             "noDataAlarmAfterMinutes": 15
+             "noDataAlarmAfterMinutes": 15,
+             "smartSnoozeEnabled": false
         ]
         UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
     }
