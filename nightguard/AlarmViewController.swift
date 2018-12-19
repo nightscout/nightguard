@@ -62,6 +62,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         updateUnits()
         
         edgeDetectionSwitch.isOn = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
+        lowPredictionSwitch.isOn = (defaults?.bool(forKey: "lowPredictionEnabled"))!
         smartSnoozeSwitch.isOn = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
         notificationsSwitch.isOn = AlarmNotificationService.shared.enabled
         numberOfConsecutiveValues.text = defaults?.string(forKey: "numberOfConsecutiveValues")
