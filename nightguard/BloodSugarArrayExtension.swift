@@ -78,6 +78,8 @@ extension Array where Element: BloodSugar {
             return nil
         }
         
+        print("Training regression from: \(readings)")
+        
         let xValues = readings.map { Double(round($0.timestamp / 1000)) }
         let yValues = readings.map { Double($0.value) }
         

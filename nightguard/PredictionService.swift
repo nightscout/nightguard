@@ -24,7 +24,7 @@ class PredictionService {
             return []
         }
 
-        // if a new reading was detected or the previous predictions expired (one minute expiration date), we'll have to update the predictions
+        // if a new reading was detected, we'll have to update the predictions
         let newReadingDetected = readings.last!.timestamp > (preditionCurrentBG?.timestamp ?? 0)
         let predictionsExpired = prediction.isEmpty || prediction.first!.date.timeIntervalSinceNow < 0
         
@@ -33,6 +33,24 @@ class PredictionService {
         }
         
         return prediction
+    }
+    
+    /// The next hour prediction respecting the gap (time distance) between two readings (5 minutes), taking as reference the current reading.
+    var nextHourGapped: [BloodSugar] {
+        let nextHourReadings = nextHour
+        if nextHourReadings.isEmpty {
+            return []
+        }
+        
+        // try to select the first future reading at a distance of n*5 minutes of the current reading time
+        var minutesDistance: Int = 0
+        if let referenceReading = self.preditionCurrentBG {
+            minutesDistance = Int((nextHourReadings.first?.date.timeIntervalSince(referenceReading.date) ?? 0) / 60)
+        }
+        
+        let luckyIndex = minutesDistance % 5
+        let result = (0..<nextHourReadings.count).filter({ $0 % 5 == luckyIndex }).map { nextHourReadings[$0] }
+        return result
     }
     
     /// How many minutes until a low value is reached?
@@ -68,7 +86,6 @@ class PredictionService {
         }
         
         let nextHour = (1...60).map { Date().addingTimeInterval(Double($0) * 60).timeIntervalSince1970 }
-        print(Date(timeIntervalSince1970: nextHour.first!))
         
         let x = Matrix(columns: 1, rows: UInt(nextHour.count), values: nextHour)
         let y = regression.predict(x: x).values

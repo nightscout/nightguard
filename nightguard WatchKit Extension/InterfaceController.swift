@@ -413,8 +413,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
         
         let bounds = WKInterfaceDevice.current().screenBounds
+        
+        let todaysDataWithPrediction = todaysData + PredictionService.shared.nextHourGapped
         self.chartScene.paintChart(
-            [todaysData, yesterdaysData],
+            [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: bounds.width * 6,
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: moveToLatestValue,

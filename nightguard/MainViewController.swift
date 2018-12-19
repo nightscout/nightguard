@@ -436,8 +436,10 @@ class MainViewController: UIViewController {
     
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {
         
+        let todaysDataWithPrediction = todaysData + PredictionService.shared.nextHourGapped
+        
         self.chartScene.paintChart(
-            [todaysData, yesterdaysData],
+            [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: self.maximumDeviceTextureWidth(),
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: true)
