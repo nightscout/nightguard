@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 extension UIApplication {
     
@@ -20,7 +21,16 @@ extension UIApplication {
             return
         }
         
-        UIApplication.shared.applicationIconBadgeNumber = sgv
+        UNUserNotificationCenter.current().requestAuthorization(options: .badge) { (granted, error) in
+            if granted && error == nil {
+                
+                // success!
+                dispatchOnMain {
+                    UIApplication.shared.applicationIconBadgeNumber = sgv
+                }
+            }
+        }
+        
     }
     
     /*

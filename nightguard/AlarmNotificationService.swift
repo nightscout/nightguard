@@ -30,7 +30,7 @@ class AlarmNotificationService {
     /*
      * Request authorization from user to use local notifications for alarms
      */
-    func requestAuthorization(completion: ((Error?) -> Void)? = nil) {
+    func requestAuthorization(completion: ((Bool, Error?) -> Void)? = nil) {
         
         // enable local notifications (alarms in background)
         let authorizationOptions: UNAuthorizationOptions
@@ -42,8 +42,9 @@ class AlarmNotificationService {
         
         UNUserNotificationCenter.current().requestAuthorization(options: authorizationOptions) { (granted, error) in
             // Enable or disable features based on authorization.
-            
-            completion?(error)
+                dispatchOnMain {
+                    completion?(granted, error)
+                }
         }
     }
     
