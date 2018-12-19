@@ -50,9 +50,9 @@ class AlarmRule {
      * Returns a reason (string) if the alarm is activated.
      * Returns nil if the alarm is snoozed or not active.
      */
-    static func getAlarmActivationReason() -> String? {
+    static func getAlarmActivationReason(ignoreSnooze: Bool = false) -> String? {
         
-        if isSnoozed() {
+        if isSnoozed() && !ignoreSnooze {
             return nil
         }
         

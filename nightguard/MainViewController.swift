@@ -258,49 +258,55 @@ class MainViewController: UIViewController {
         }
     }
     
-    public func updateSnoozeButtonText(alarmReason: String? = nil) {
+    public func updateSnoozeButtonText() {
 
-        snoozeButton.setAttributedTitle(nil, for: .normal)
-
-        if AlarmRule.isSnoozed() {
-            snoozeButton.setTitle("Snoozed for " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min", for: UIControlState())
-        } else {
+        var title = "Snooze"
+        var subtitle = AlarmRule.getAlarmActivationReason(ignoreSnooze: true)
+        var subtitleColor: UIColor = (subtitle != nil) ? .red : .white
+        var showSubtitle = true
+        
+        if subtitle == nil {
             
-            var subtitle: String?
-            var subtitleColor = UIColor.white
-            if let alarmReason = alarmReason {
-                subtitle = alarmReason
-                subtitleColor = .red
-            } else if let minutesToLow = PredictionService.shared.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)) {
+            // no alarm, but maybe we'll show a low prediction warning...
+            if let minutesToLow = PredictionService.shared.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)) {
                 subtitle = "Low Predicted in \(minutesToLow)min"
                 subtitleColor = .yellow
             }
+        }
+
+        if AlarmRule.isSnoozed() {
+            let remaininingSnoozeMinutes = AlarmRule.getRemainingSnoozeMinutes()
+            title = "Snoozed for \(remaininingSnoozeMinutes)min"
             
-            if let subtitle = subtitle {
-                let style = NSMutableParagraphStyle()
-                style.alignment = .center
-                style.lineBreakMode = .byWordWrapping
-                
-                let titleAttributes: [NSAttributedStringKey : Any] = [
-                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 32),
-                    NSAttributedString.Key.paragraphStyle: style
-                ]
-                
-                let messageAttributes: [NSAttributedStringKey : Any] = [
-                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-                    NSAttributedString.Key.foregroundColor: subtitleColor,
-                    NSAttributedString.Key.paragraphStyle: style
-                ]
-                
-                let attString = NSMutableAttributedString()
-                attString.append(NSAttributedString(string: "Snooze", attributes: titleAttributes))
-                attString.append(NSAttributedString(string: "\n"))
-                attString.append(NSAttributedString(string: subtitle, attributes: messageAttributes))
-                
-                snoozeButton.setAttributedTitle(attString, for: .normal)
-            } else {
-                snoozeButton.setTitle("Snooze", for: UIControlState())
-            }
+            // show alert reason message if less than 5 minutes of snoozing (to be prepared!)
+            showSubtitle = remaininingSnoozeMinutes < 5
+        }
+        
+        if let subtitle = subtitle, showSubtitle {
+            let style = NSMutableParagraphStyle()
+            style.alignment = .center
+            style.lineBreakMode = .byWordWrapping
+            
+            let titleAttributes: [NSAttributedStringKey : Any] = [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 32),
+                NSAttributedString.Key.paragraphStyle: style
+            ]
+            
+            let messageAttributes: [NSAttributedStringKey : Any] = [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: subtitleColor,
+                NSAttributedString.Key.paragraphStyle: style
+            ]
+            
+            let attString = NSMutableAttributedString()
+            attString.append(NSAttributedString(string: title, attributes: titleAttributes))
+            attString.append(NSAttributedString(string: "\n"))
+            attString.append(NSAttributedString(string: subtitle, attributes: messageAttributes))
+            
+            snoozeButton.setAttributedTitle(attString, for: .normal)
+        } else {
+            snoozeButton.setAttributedTitle(nil, for: .normal)
+            snoozeButton.setTitle(title, for: .normal)
         }
     }
     
@@ -341,13 +347,12 @@ class MainViewController: UIViewController {
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData { [unowned self] result in
             
             // play alarm if activated
-            let alarmActivationReason = AlarmRule.getAlarmActivationReason()
-            if alarmActivationReason != nil {
+            if AlarmRule.isAlarmActivated() {
                 AlarmSound.play()
             } else {
                 AlarmSound.stop()
             }
-            self.updateSnoozeButtonText(alarmReason: alarmActivationReason)
+            self.updateSnoozeButtonText()
 
             // update app badge
             if UserDefaultsRepository.readShowBGOnAppBadge() {
