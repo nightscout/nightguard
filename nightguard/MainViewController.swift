@@ -55,6 +55,9 @@ class MainViewController: UIViewController {
         // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
         volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
         
+        snoozeButton.titleLabel?.numberOfLines = 0
+        snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
+        
         restoreGuiState()
         paintScreenLockSwitch()
         
@@ -255,12 +258,49 @@ class MainViewController: UIViewController {
         }
     }
     
-    public func updateSnoozeButtonText() {
-        
+    public func updateSnoozeButtonText(alarmReason: String? = nil) {
+
+        snoozeButton.setAttributedTitle(nil, for: .normal)
+
         if AlarmRule.isSnoozed() {
             snoozeButton.setTitle("Snoozed for " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min", for: UIControlState())
         } else {
-            snoozeButton.setTitle("Snooze", for: UIControlState())
+            
+            var subtitle: String?
+            var subtitleColor = UIColor.white
+            if let alarmReason = alarmReason {
+                subtitle = alarmReason
+                subtitleColor = .red
+            } else if let minutesToLow = PredictionService.shared.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)) {
+                subtitle = "Low Predicted in \(minutesToLow)min"
+                subtitleColor = .yellow
+            }
+            
+            if let subtitle = subtitle {
+                let style = NSMutableParagraphStyle()
+                style.alignment = .center
+                style.lineBreakMode = .byWordWrapping
+                
+                let titleAttributes: [NSAttributedStringKey : Any] = [
+                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 32),
+                    NSAttributedString.Key.paragraphStyle: style
+                ]
+                
+                let messageAttributes: [NSAttributedStringKey : Any] = [
+                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                    NSAttributedString.Key.foregroundColor: subtitleColor,
+                    NSAttributedString.Key.paragraphStyle: style
+                ]
+                
+                let attString = NSMutableAttributedString()
+                attString.append(NSAttributedString(string: "Snooze", attributes: titleAttributes))
+                attString.append(NSAttributedString(string: "\n"))
+                attString.append(NSAttributedString(string: subtitle, attributes: messageAttributes))
+                
+                snoozeButton.setAttributedTitle(attString, for: .normal)
+            } else {
+                snoozeButton.setTitle("Snooze", for: UIControlState())
+            }
         }
     }
     
@@ -301,12 +341,13 @@ class MainViewController: UIViewController {
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData { [unowned self] result in
             
             // play alarm if activated
-            if AlarmRule.isAlarmActivated(NightscoutCacheService.singleton.getCurrentNightscoutData(), bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) {
+            let alarmActivationReason = AlarmRule.getAlarmActivationReason()
+            if alarmActivationReason != nil {
                 AlarmSound.play()
             } else {
                 AlarmSound.stop()
             }
-            self.updateSnoozeButtonText()
+            self.updateSnoozeButtonText(alarmReason: alarmActivationReason)
 
             // update app badge
             if UserDefaultsRepository.readShowBGOnAppBadge() {

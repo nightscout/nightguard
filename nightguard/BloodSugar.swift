@@ -14,6 +14,10 @@ class BloodSugar : NSCoder {
     let value : Float
     let timestamp : Double
     
+    var date: Date {
+        return Date(timeIntervalSince1970: timestamp / 1000)
+    }
+    
     required init(value : Float, timestamp : Double) {
         self.value = value
         self.timestamp = timestamp
@@ -28,6 +32,24 @@ class BloodSugar : NSCoder {
         return UnitsConverter.toMgdl(value) > 10
     }
     
+    override var debugDescription: String {
+        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm:ss"
+        let time = timeFormatter.string(from: self.date)
+        
+        let value: String
+        if self.value.isNaN{
+            value = "NaN"
+        } else if self.value.isInfinite {
+            value = "inf"
+        } else {
+            value = "\(Int64(self.value.rounded()))"
+        }
+        
+        return "\(value) @ \(time)"
+    }
+    
     @objc required convenience init(coder decoder: NSCoder) {
 
         // only initialize if base values could be decoded
@@ -40,5 +62,10 @@ class BloodSugar : NSCoder {
     @objc func encodeWithCoder(_ coder: NSCoder) {
         coder.encode(self.value, forKey: "value")
         coder.encode(self.timestamp, forKey: "timestamp")
+    }
+    
+    func isOlderThanXMinutes(_ minutes : Int) -> Bool {
+        let timeInterval = Int(Date().timeIntervalSince(self.date))
+        return timeInterval > minutes * 60
     }
 }

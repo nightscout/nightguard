@@ -61,7 +61,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AlarmRule.alertIfBelowValue = (defaults?.float(forKey: "alertIfBelowValue"))!
         
         AlarmRule.minutesWithoutValues = (defaults?.integer(forKey: "noDataAlarmAfterMinutes"))!
-        
+
+        AlarmRule.minutesToPredictLow = (defaults?.integer(forKey: "lowPredictionMinutes"))!
+        AlarmRule.isLowPredictionEnabled = (defaults?.bool(forKey: "lowPredictionEnabled"))!
+
         AlarmRule.isSmartSnoozeEnabled = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
     }
     
@@ -78,6 +81,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              "maximumBloodGlucoseDisplayed": 350,
              
              "noDataAlarmAfterMinutes": 15,
+             
+             "lowPredictionMinutes": 15,
+             "lowPredictionEnabled": false,
+             
              "smartSnoozeEnabled": false
         ]
         UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])

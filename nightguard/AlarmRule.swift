@@ -32,6 +32,9 @@ class AlarmRule {
     
     static var minutesWithoutValues : Int = 15
     
+    static var minutesToPredictLow : Int = 15
+    static var isLowPredictionEnabled : Bool = false
+
     static var isSmartSnoozeEnabled : Bool = false
     
     /*
@@ -39,30 +42,35 @@ class AlarmRule {
      * Snooze is true if the Alarm has been manually deactivated.
      * Suspended is true if the Alarm has been technically deactivated for a short period of time.
      */
-    static func isAlarmActivated(_ nightscoutData : NightscoutData, bloodValues : [BloodSugar]) -> Bool {
-        return (getAlarmActivationReason(nightscoutData, bloodValues: bloodValues) != nil)
+    static func isAlarmActivated() -> Bool {
+        return (getAlarmActivationReason() != nil)
     }
     
     /*
      * Returns a reason (string) if the alarm is activated.
      * Returns nil if the alarm is snoozed or not active.
      */
-    static func getAlarmActivationReason(_ nightscoutData : NightscoutData, bloodValues : [BloodSugar]) -> String? {
+    static func getAlarmActivationReason() -> String? {
         
         if isSnoozed() {
             return nil
         }
         
-        if nightscoutData.isOlderThanXMinutes(minutesWithoutValues) {
+        // get the most recent readings
+        let bloodValues = [BloodSugar].latestFromRepositories()
+        guard let currentReading = bloodValues.last else {
+            
+            // no values? we'll wait a little more...
+            return nil
+        }
+        
+        if currentReading.isOlderThanXMinutes(minutesWithoutValues) {
             return "Missed Readings"
         }
         
-        let svgInMgdl = UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)
+        let svgInMgdl = UnitsConverter.toMgdl(currentReading.value)
         let isTooHigh = AlarmRule.isTooHigh(svgInMgdl)
         let isTooLow = AlarmRule.isTooLow(svgInMgdl)
-        
-        // IMPORTANT: augment the blood values with current reading (if not already there)
-        let bloodValues = bloodValues.assuringCurrentReadingExists(nightscoutData)
         
         if isSmartSnoozeEnabled && (isTooHigh || isTooLow) {
             
@@ -81,6 +89,13 @@ class AlarmRule {
             default:
                 break
             }
+            
+            // let's try also with prediction: we'll snooze the alarm if the prediction says that we'll leave the too high or too low zone in less than 30 minutes
+            if isTooHigh && (PredictionService.shared.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfAboveValue)) ?? Int.max) < 30 {
+                return nil
+            } else if isTooLow && (PredictionService.shared.minutesTo(high: UnitsConverter.toDisplayUnits(alertIfBelowValue)) ?? Int.max) < 30 {
+                return nil
+            }
         }
         
         if isTooHigh {
@@ -94,6 +109,17 @@ class AlarmRule {
                 return "Fast Rise"
             } else if bloodValuesAreDecreasingTooFast(bloodValues) {
                 return "Fast Drop"
+            }
+        }
+        
+        if isLowPredictionEnabled {
+            if let minutesToLow = PredictionService.shared.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfBelowValue)), minutesToLow <= minutesToPredictLow {
+                #if os(iOS)
+                return "Low Predicted in \(minutesToLow)min"
+                #else
+                // shorter text on watch
+                return "Low in \(minutesToLow)min"
+                #endif
             }
         }
         

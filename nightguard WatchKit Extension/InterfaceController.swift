@@ -328,8 +328,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func playAlarm(currentNightscoutData : NightscoutData) {
         
-        let newCachedTodaysBgValues = NightscoutDataRepository.singleton.loadTodaysBgData()  // do not generate a fetch this time (as playAlarm is called a lot!)
-        if AlarmRule.isAlarmActivated(currentNightscoutData, bloodValues: newCachedTodaysBgValues) {
+        if AlarmRule.isAlarmActivated() {
             WKInterfaceDevice.current().play(.notification)
         }
     }
@@ -426,7 +425,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     func determineInfoLabel() -> String {
         
         if !AlarmRule.isSnoozed() {
-            return ""
+            if let alarmReason = AlarmRule.getAlarmActivationReason() {
+                return  alarmReason
+            } else {
+                return ""
+            }
         }
         
         return "Snoozed " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min"

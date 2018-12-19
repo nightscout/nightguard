@@ -64,14 +64,15 @@ class AlarmNotificationService {
         }
         
         // 3. alarm should be active
-        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        guard let alarmActivationReason = AlarmRule.getAlarmActivationReason(nightscoutData, bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) else {
+        guard let alarmActivationReason = AlarmRule.getAlarmActivationReason() else {
             return
         }
-        
+
         // trigger notification
         let content = UNMutableNotificationContent()
+        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
         let units = (UserDefaultsRepository.readUnits() == Units.mmol) ? "mmol" : "mg/dL"
+
         content.title = "\(nightscoutData.sgv) \(nightscoutData.bgdeltaArrow)\t\(nightscoutData.bgdeltaString) \(units)"
         content.body = "\(alarmActivationReason) alert"
         if let sgv = Float(nightscoutData.sgv) {

@@ -16,6 +16,26 @@ enum BloodSugarTrend {
 }
 
 extension Array where Element: BloodSugar {
+
+    static func latestFromRepositories() -> [BloodSugar] {
+        
+        // get today's data
+        var result = NightscoutCacheService.singleton.getTodaysBgData()
+
+        // augment it with current reading (if not already there)
+        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        result.assureCurrentReadingExists(nightscoutData)
+        
+        // if day just began, we don't have enough readings from today, so we'll take also the some of the last yesterday's readings
+        if result.count < 12 {
+            result.insert(contentsOf: NightscoutCacheService.singleton.getYesterdaysBgData().suffix(12), at: 0)
+        }
+        
+        return result
+    }
+}
+
+extension Array where Element: BloodSugar {
     
     /// Get the array of deltas, calculating each delta element as the difference
     /// between the current reading value and the previous reading value.
@@ -50,6 +70,23 @@ extension Array where Element: BloodSugar {
         }
     }
     
+    /// Get the regression from latest BG readings. This is a 2-degree polynomial regression used
+    /// for predicting future values.
+    var regression: Regression? {
+        
+        guard let readings = self.lastConsecutive(4, maxMissedReadings: 2) else {
+            return nil
+        }
+        
+        let xValues = readings.map { Double(round($0.timestamp / 1000)) }
+        let yValues = readings.map { Double($0.value) }
+        
+        let x = Matrix(columns: 1, rows: UInt(readings.count), values: xValues)
+        let y = Matrix(columns: 1, rows: UInt(readings.count), values: yValues)
+        
+        let sqrtFeatureConstructor: Regression.FeatureConstructor = { value in sqrt(value) }
+        return Regression(x: x, y: y, degree: 2, featureConstructors: [sqrtFeatureConstructor])
+    }
     
     /// Get the readings from last X minutes
     func lastXMinutes(_ minutes: Int) -> Array<BloodSugar> {
@@ -66,7 +103,7 @@ extension Array where Element: BloodSugar {
     /// If there are not enough most recent values or the number of missed values exceed the
     /// missed param, nil is returned.
     func lastConsecutive(_ count: Int, maxMissedReadings: Int = 1) -> [BloodSugar]? {
-        let minutes = (count + maxMissedReadings) * 5 + 1
+        let minutes = (count + maxMissedReadings) * 5 + 2
         let readings = lastXMinutes(minutes).suffix(count)
         return readings.count == count ? Array<BloodSugar>(readings) : nil
     }

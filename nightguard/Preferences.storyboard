@@ -38,10 +38,10 @@
                                 <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FB2-Dv-FvV">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="289"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="336"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show raw BG and noise level" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arq-mM-XXH">
-                                                <rect key="frame" x="73" y="232.5" width="853" height="20.5"/>
+                                                <rect key="frame" x="73" y="232.5" width="286" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -95,7 +95,7 @@
                                                 </subviews>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t4y-L4-0ON">
-                                                <rect key="frame" x="73" y="257" width="853" height="16"/>
+                                                <rect key="frame" x="73" y="257" width="286" height="63"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="For receiving the raw BG and noise level values, the ">
                                                         <attributes>
@@ -137,7 +137,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show BG on app badge" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T1e-sH-CCi">
-                                                <rect key="frame" x="73" y="185.5" width="853" height="20.5"/>
+                                                <rect key="frame" x="73" y="185.5" width="286" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -152,6 +152,7 @@
                                             <constraint firstItem="T1e-sH-CCi" firstAttribute="leading" secondItem="bVU-Lg-wHF" secondAttribute="trailing" constant="8" id="EMN-hA-uIs"/>
                                             <constraint firstItem="arq-mM-XXH" firstAttribute="leading" secondItem="zqz-Oo-QZI" secondAttribute="trailing" constant="8" id="EmC-Z1-T1V"/>
                                             <constraint firstItem="zqz-Oo-QZI" firstAttribute="top" secondItem="bVU-Lg-wHF" secondAttribute="bottom" constant="16" id="FDN-kO-Joj"/>
+                                            <constraint firstAttribute="trailing" secondItem="T1e-sH-CCi" secondAttribute="trailing" constant="16" id="KMz-JQ-9OC"/>
                                             <constraint firstItem="bVU-Lg-wHF" firstAttribute="centerY" secondItem="T1e-sH-CCi" secondAttribute="centerY" id="P9O-lT-q0q"/>
                                             <constraint firstItem="nMM-Oc-LSA" firstAttribute="bottom" secondItem="t4y-L4-0ON" secondAttribute="bottom" priority="998" constant="16" id="Teb-c4-8yd"/>
                                             <constraint firstAttribute="trailing" secondItem="JAh-B5-d7R" secondAttribute="trailing" constant="16" id="bTe-yi-Qq2"/>

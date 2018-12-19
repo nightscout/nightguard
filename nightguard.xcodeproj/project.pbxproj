@@ -103,6 +103,18 @@
 		D133078A21C85D5400DC6879 /* BloodSugarArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */; };
 		D133078B21C85DA800DC6879 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078321C424A800DC6879 /* ArrayExtension.swift */; };
 		D133078C21C85DAA00DC6879 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078321C424A800DC6879 /* ArrayExtension.swift */; };
+		D133079221C85FAE00DC6879 /* RegressionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078D21C85FAC00DC6879 /* RegressionHelper.swift */; };
+		D133079321C85FAE00DC6879 /* RegressionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078D21C85FAC00DC6879 /* RegressionHelper.swift */; };
+		D133079421C85FAE00DC6879 /* Matrix+Append.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078E21C85FAC00DC6879 /* Matrix+Append.swift */; };
+		D133079521C85FAE00DC6879 /* Matrix+Append.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078E21C85FAC00DC6879 /* Matrix+Append.swift */; };
+		D133079621C85FAE00DC6879 /* Matrix+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078F21C85FAD00DC6879 /* Matrix+Description.swift */; };
+		D133079721C85FAE00DC6879 /* Matrix+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078F21C85FAD00DC6879 /* Matrix+Description.swift */; };
+		D133079821C85FAE00DC6879 /* Regression.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079021C85FAD00DC6879 /* Regression.swift */; };
+		D133079921C85FAE00DC6879 /* Regression.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079021C85FAD00DC6879 /* Regression.swift */; };
+		D133079A21C85FAE00DC6879 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079121C85FAE00DC6879 /* Matrix.swift */; };
+		D133079B21C85FAE00DC6879 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079121C85FAE00DC6879 /* Matrix.swift */; };
+		D133079E21C8D4CF00DC6879 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
+		D133079F21C8D4CF00DC6879 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */; };
 		D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */; };
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
@@ -244,6 +256,12 @@
 		D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshSettings.swift; sourceTree = "<group>"; };
 		D133078321C424A800DC6879 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodSugarArrayExtension.swift; sourceTree = "<group>"; };
+		D133078D21C85FAC00DC6879 /* RegressionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegressionHelper.swift; sourceTree = "<group>"; };
+		D133078E21C85FAC00DC6879 /* Matrix+Append.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Matrix+Append.swift"; sourceTree = "<group>"; };
+		D133078F21C85FAD00DC6879 /* Matrix+Description.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Matrix+Description.swift"; sourceTree = "<group>"; };
+		D133079021C85FAD00DC6879 /* Regression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regression.swift; sourceTree = "<group>"; };
+		D133079121C85FAE00DC6879 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		D133079D21C8D4CF00DC6879 /* PredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionService.swift; sourceTree = "<group>"; };
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -330,11 +348,13 @@
 		433AD0131CCE1CE2001A76CD /* external */ = {
 			isa = PBXGroup;
 			children = (
+				D133079C21C85FC600DC6879 /* regression */,
 				D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */,
 				4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */,
 				438066FA1D21B2000021B618 /* WatchMessageService.swift */,
 				43F1E1101D076C1C00C329A2 /* NightscoutService.swift */,
 				43F1E0E91D0768EF00C329A2 /* WatchService.swift */,
+				D133079D21C8D4CF00DC6879 /* PredictionService.swift */,
 			);
 			name = external;
 			sourceTree = "<group>";
@@ -471,6 +491,18 @@
 				432E62DE1D10ACD200DD7978 /* Units.swift */,
 			);
 			name = domain;
+			sourceTree = "<group>";
+		};
+		D133079C21C85FC600DC6879 /* regression */ = {
+			isa = PBXGroup;
+			children = (
+				D133079121C85FAE00DC6879 /* Matrix.swift */,
+				D133078E21C85FAC00DC6879 /* Matrix+Append.swift */,
+				D133078F21C85FAD00DC6879 /* Matrix+Description.swift */,
+				D133079021C85FAD00DC6879 /* Regression.swift */,
+				D133078D21C85FAC00DC6879 /* RegressionHelper.swift */,
+			);
+			name = regression;
 			sourceTree = "<group>";
 		};
 		D144FFB120D7AEF60036E021 /* resources */ = {
@@ -644,7 +676,7 @@
 					43647BF11BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = FBNVJ39CQN;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 1010;
 					};
 					43647C001BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -759,15 +791,18 @@
 				43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
+				D133079621C85FAE00DC6879 /* Matrix+Description.swift in Sources */,
 				D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */,
 				438066FB1D21B2000021B618 /* WatchMessageService.swift in Sources */,
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
 				439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */,
 				43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */,
+				D133079A21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
 				D1E6B897219C69D9007ED4FE /* Utils.swift in Sources */,
+				D133079821C85FAE00DC6879 /* Regression.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
 				43E89E571E659102005B0A65 /* ChartScene.swift in Sources */,
 				43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */,
@@ -775,12 +810,15 @@
 				43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */,
 				432E62EB1D15EFC600DD7978 /* FloatExtension.swift in Sources */,
 				43FCE625208B80840080DA0A /* SnoozeAlarmViewController.swift in Sources */,
+				D133079E21C8D4CF00DC6879 /* PredictionService.swift in Sources */,
 				430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */,
 				43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */,
 				43F1E1031D07698000C329A2 /* GuiStateRepository.swift in Sources */,
 				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
+				D133079421C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
+				D133079221C85FAE00DC6879 /* RegressionHelper.swift in Sources */,
 				43288A6C1D1C893200EE3999 /* TabBarController.swift in Sources */,
 				43F1E1081D07698000C329A2 /* PrefsViewController.swift in Sources */,
 				43F1E1071D07698000C329A2 /* NightscoutData.swift in Sources */,
@@ -844,7 +882,9 @@
 				D1E6B898219C6A86007ED4FE /* Utils.swift in Sources */,
 				43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */,
 				439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
+				D133079521C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
 				432E62EC1D15EFEC00DD7978 /* FloatExtension.swift in Sources */,
+				D133079F21C8D4CF00DC6879 /* PredictionService.swift in Sources */,
 				437EEDC41FB7180000694EAD /* NightscoutDataRepository.swift in Sources */,
 				43647C0D1BFF6435004389F9 /* NotificationController.swift in Sources */,
 				432E62F01D188A2400DD7978 /* UnitsConverter.swift in Sources */,
@@ -852,9 +892,13 @@
 				43F1E10C1D076B4100C329A2 /* NightscoutData.swift in Sources */,
 				43F1E1121D076C4500C329A2 /* NightscoutService.swift in Sources */,
 				43647C0F1BFF6435004389F9 /* ComplicationController.swift in Sources */,
+				D133079321C85FAE00DC6879 /* RegressionHelper.swift in Sources */,
 				43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */,
 				D133078B21C85DA800DC6879 /* ArrayExtension.swift in Sources */,
+				D133079721C85FAE00DC6879 /* Matrix+Description.swift in Sources */,
 				4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */,
+				D133079921C85FAE00DC6879 /* Regression.swift in Sources */,
+				D133079B21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				43F1E10B1D076B1D00C329A2 /* BloodSugar.swift in Sources */,
 				43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */,
 				432E62E11D10AF3900DD7978 /* Units.swift in Sources */,
@@ -1075,14 +1119,17 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp;
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
@@ -1094,10 +1141,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp;
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
