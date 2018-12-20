@@ -9,6 +9,18 @@
 import Foundation
 import Accelerate
 
+extension Array where Iterator.Element == Double {
+    
+    var average: Double {
+        return self.reduce(0, {$0 + $1}) / Double(self.count)
+    }
+    
+    var standardDeviation: Double {
+        let sumOfSquaredAvgDiff = self.map { pow($0 - average, 2.0)}.reduce(0, +)
+        return sqrt(sumOfSquaredAvgDiff / Double(self.count))
+    }
+}
+
 /// Matrix, storing its values in row-major order.
 class Matrix
 {
@@ -72,6 +84,20 @@ class Matrix
         return Matrix(columns: self.rows, rows: self.columns, values: result)
     }
     
+    /// Normalize the matrix from its own values, resulting a new matrix (used by training set)
+    func normalized() -> Matrix {
+        let average = self.values.average
+        let standardDeviation = self.values.standardDeviation
+        
+        let normalizedValues = self.values.map { ($0 - average) / standardDeviation }
+        return Matrix(columns: columns, rows: rows, values: normalizedValues)
+    }
+    
+    /// Normalize the matrix with training set average & standard deviation (used
+    func normalized(average: Double, standardDeviation: Double) -> Matrix {
+        let normalizedValues = self.values.map { ($0 - average) / standardDeviation }
+        return Matrix(columns: columns, rows: rows, values: normalizedValues)
+    }
     
     /// Sets all values to `value`.
     func setValues(_ value: Double) {

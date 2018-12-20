@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class Regression {
     
     let degree: Int
@@ -18,6 +17,10 @@ class Regression {
     typealias FeatureConstructor = (Double) -> Double
     private let featureConstructors: [FeatureConstructor]
     
+    // X normalization data
+    typealias NormalizationData = (average: Double, standarDeviation: Double)
+    private var normalization: [NormalizationData] = []
+    
     init(x: Matrix, y: Matrix, degree: Int, featureConstructors: [FeatureConstructor] = []) {
         self.degree = degree
         self.featureConstructors = featureConstructors
@@ -26,19 +29,31 @@ class Regression {
         
     private func createXWithExtraFeatures(_ x: Matrix) -> Matrix {
         
-        var newX = x
+        var normalizationStack = normalization
+        
+        let normalize: (Matrix) -> Matrix = { x in
+            if normalizationStack.isEmpty {
+                self.normalization.append((average: x.values.average, x.values.standardDeviation))
+                return x.normalized()
+            } else {
+                let normalizationData = normalizationStack.removeFirst()
+                return x.normalized(average: normalizationData.average, standardDeviation: normalizationData.standarDeviation)
+            }
+        }
+        
+        var newX = normalize(x)
         if degree > 1 {
             for i in 2...degree {
                 let degreeOfX = Matrix(columns: 1, rows: x.rows)
                 degreeOfX.setValues(x.values.map({ $0^Double(i) }))
-                newX = newX.appendHorizontal(degreeOfX)
+                newX = newX.appendHorizontal(normalize(degreeOfX))
             }
         }
         
         featureConstructors.forEach { featureConstructor in
             let feature = Matrix(columns: 1, rows: x.rows)
             feature.setValues(x.values.map { featureConstructor($0) } )
-            newX = newX.appendHorizontal(feature)
+            newX = newX.appendHorizontal(normalize(feature))
         }
         
         return newX
