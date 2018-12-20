@@ -452,10 +452,15 @@ class ChartPainter {
         var newMinYValue = minimumYValue
         var newMaxYValue = Float(min(CGFloat(maximumYValue), value2: maxYDisplayValue))
         
-        for bgValues in days {
-            for bgValue in bgValues {
+        for dayIndex in 0..<days.count {
+            for bgValue in days[dayIndex] {
                 
                 guard bgValue.isValid else {
+                    continue
+                }
+                
+                if (dayIndex == 0) && (bgValue.date > Date()) {
+                    // do not consider predicted values
                     continue
                 }
                 
