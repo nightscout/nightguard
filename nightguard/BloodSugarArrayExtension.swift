@@ -70,26 +70,6 @@ extension Array where Element: BloodSugar {
         }
     }
     
-    /// Get the regression from latest BG readings. This is a 2-degree polynomial regression used
-    /// for predicting future values.
-    var regression: Regression? {
-        
-        guard let readings = self.lastConsecutive(4, maxMissedReadings: 2) else {
-            return nil
-        }
-        
-        print("Training regression from: \(readings)")
-        
-        let xValues = readings.map { Double(round($0.timestamp / 1000)) }
-        let yValues = readings.map { Double($0.value) }
-        
-        let x = Matrix(columns: 1, rows: UInt(readings.count), values: xValues)
-        let y = Matrix(columns: 1, rows: UInt(readings.count), values: yValues)
-        
-        let sqrtFeatureConstructor: Regression.FeatureConstructor = { value in sqrt(value) }
-        return Regression(x: x, y: y, degree: 2, featureConstructors: [sqrtFeatureConstructor])
-    }
-    
     /// Get the readings from last X minutes
     func lastXMinutes(_ minutes: Int) -> Array<BloodSugar> {
         

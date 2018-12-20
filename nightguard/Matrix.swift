@@ -47,6 +47,17 @@ class Matrix
         self.values = [Double](repeating: value, count: Int(columns * rows))
     }
     
+    // Get a given column from Matrix as a new Matrix
+    func column(_ index: UInt) -> Matrix {
+        
+        if self.columns == 1 {
+            return self
+        }
+        
+        let columnValues = (0..<self.values.count).filter({ UInt($0) % self.columns == index}).map { self.values[$0] }
+        return Matrix(columns: 1, rows: self.rows, values: columnValues)
+        
+    }
     
     /// Returns the transposed version of the Matrix
     func transposed() -> Matrix {

@@ -25,10 +25,8 @@ class PredictionService {
         }
 
         // if a new reading was detected, we'll have to update the predictions
-        let newReadingDetected = readings.last!.timestamp > (preditionCurrentBG?.timestamp ?? 0)
-        let predictionsExpired = prediction.isEmpty || prediction.first!.date.timeIntervalSinceNow < 0
-        
-        if newReadingDetected || predictionsExpired {
+        let newReadingDetected = readings.last!.timestamp > (trainingReferenceReading?.timestamp ?? 0)
+        if newReadingDetected {
             updatePrediction(readings: readings)
         }
         
@@ -44,12 +42,15 @@ class PredictionService {
         
         // try to select the first future reading at a distance of n*5 minutes of the current reading time
         var minutesDistance: Int = 0
-        if let referenceReading = self.preditionCurrentBG {
-            minutesDistance = Int((nextHourReadings.first?.date.timeIntervalSince(referenceReading.date) ?? 0) / 60)
+        if let referenceReading = self.trainingReferenceReading {
+            minutesDistance = Int(round((nextHourReadings.first?.date.timeIntervalSince(referenceReading.date) ?? 0) / 60))
         }
         
-        let luckyIndex = minutesDistance % 5
-        let result = (0..<nextHourReadings.count).filter({ $0 % 5 == luckyIndex }).map { nextHourReadings[$0] }
+        let luckyIndex = (5 - minutesDistance) % 5
+        let firstIndex = (minutesDistance == 0) ? 1 : 0 // skip first index if the very first prediction if too close to reference reading
+        var result = (firstIndex..<nextHourReadings.count).filter({ $0 % 5 == luckyIndex }).map { nextHourReadings[$0] }
+        
+        print("First gapped prediction: \(result.first) (refereance reading: \(self.trainingReferenceReading))")
         return result
     }
     
@@ -78,19 +79,40 @@ class PredictionService {
     /// Updates the prediction cache.
     private func updatePrediction(readings: [BloodSugar]) {
         
-        guard let regression = readings.regression else {
-            
-            // cannot create regression... probably not enough readings
+        guard let currentReading = readings.last else {
+         
+            // no readings at all?!?
             prediction = []
             return
         }
         
-        let nextHour = (1...60).map { Date().addingTimeInterval(Double($0) * 60).timeIntervalSince1970 }
+        if (self.regression == nil) || ((trainingReferenceReading?.timestamp ?? 0) < currentReading.timestamp) {
+            
+            // new reading was detected, get new training sample
+            guard let readings = readings.lastConsecutive(3, maxMissedReadings: 2) else {
+                
+                // cannot create regression... not enough readings
+                prediction = []
+                return
+            }
+            
+            print("Training regression from: \(readings)")
+            
+            let xValues = readings.map { Double(round($0.timestamp / 1000)) }
+            let yValues = readings.map { Double($0.value) }
+
+            self.regression = BestMatchRegression()
+            self.regression!.train(x: xValues, y: yValues)
+            
+            // cache the current reading
+            trainingReferenceReading = currentReading
+        }
         
-        let x = Matrix(columns: 1, rows: UInt(nextHour.count), values: nextHour)
-        let y = regression.predict(x: x).values
+        // get predictions for the next hour, for each minute
+        let nextHour = (0...59).map { Date().addingTimeInterval(Double($0) * 60).timeIntervalSince1970 }
+        let y = nextHour.map { self.regression!.predict(x: $0) }
         
-        print(y)
+//        print(y)
         
         // cache the prediction...
         prediction = (0..<nextHour.count).map { index in
@@ -99,13 +121,11 @@ class PredictionService {
         
         print("Prediction update:")
         print(prediction)
-        
-        // ... and the current BG
-        preditionCurrentBG = readings.last
     }
     
+    private var regression: Regression?
     private var prediction: [BloodSugar] = []
-    private var preditionCurrentBG: BloodSugar?
+    private var trainingReferenceReading: BloodSugar?
 
     private init() {
     }
