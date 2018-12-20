@@ -11,7 +11,6 @@ import Foundation
 
 class ChartPainter {
     let GREEN :  UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
-    let DARKGREEN :  UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 0.2)
     let DARK : UIColor = UIColor.init(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
     let BLACK : UIColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
     let LIGHTGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.5)
@@ -215,7 +214,7 @@ class ChartPainter {
         
         // paint the rectangle
         context.setLineWidth(2.0)
-        context.setFillColor(DARKGREEN.cgColor)
+        context.setFillColor(DARK.cgColor)
         let goodPart = CGRect(origin: CGPoint.init(x: 0, y: calcYValue(upperBoundNiceValue)), size: CGSize.init(width: canvasWidth, height: Int(calcYValue(lowerBoundNiceValue) - calcYValue(upperBoundNiceValue))))
         context.fill(goodPart)
     }
