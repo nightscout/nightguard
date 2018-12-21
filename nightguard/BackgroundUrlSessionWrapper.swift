@@ -27,7 +27,7 @@ class BackgroundUrlSessionWrapper {
             fatalError("Error - you must call setup before accessing BackgroundUrlSession.singleton")
         }
         
-        let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: "com.evans.pf.nightguard")
+        let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: "de.my-wan.dhe.nightguard")
         BackgroundUrlSessionWrapper.urlSession = URLSession.init(configuration: backgroundConfiguration, delegate: delegate, delegateQueue: nil)
     }
 }

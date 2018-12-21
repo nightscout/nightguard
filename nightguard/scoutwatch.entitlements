@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.evans.pf.nightguard</string>
+		<string>group.de.my-wan.dhe.nightguard</string>
 	</array>
 </dict>
 </plist>
