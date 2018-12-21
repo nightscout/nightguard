@@ -29,6 +29,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var rawValuesPanel: GroupedLabelsView!
     @IBOutlet weak var bgStackView: UIStackView!
     
+    @IBOutlet weak var nightscoutButton: UIButton!
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
     
@@ -87,6 +88,11 @@ class MainViewController: UIViewController {
         rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
         bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
         
+        nightscoutButton.tintColor = UIColor.white
+        let nightscoutImage = UIImage(named: "Nightscout")?.withRenderingMode(.alwaysTemplate)
+        nightscoutButton.setImage(nightscoutImage, for: .normal)
+        nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+        
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
@@ -114,6 +120,13 @@ class MainViewController: UIViewController {
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         
         chartScene.size = CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        // keep the nightscout button round
+        nightscoutButton.layer.cornerRadius = nightscoutButton.bounds.size.width / 2
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

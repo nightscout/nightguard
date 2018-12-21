@@ -190,7 +190,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QxI-Mz-c2E">
-                                <rect key="frame" x="16" y="516" width="343" height="86"/>
+                                <rect key="frame" x="8" y="516" width="359" height="86"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="0.50706335616438358" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="86" id="c2h-zh-E4m"/>
@@ -207,22 +207,43 @@
                                 </connections>
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZrP-ql-0RC">
-                                <rect key="frame" x="16" y="477" width="51" height="31"/>
+                                <rect key="frame" x="8" y="477" width="51" height="31"/>
                                 <connections>
                                     <action selector="doScreenlockAction:" destination="wFP-V1-Fpg" eventType="valueChanged" id="Fvc-Iw-XIb"/>
                                 </connections>
                             </switch>
-                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4hs-Gk-Xl6">
-                                <rect key="frame" x="73" y="477" width="286" height="31"/>
+                            <containerView contentMode="scaleToFill" placeholderIntrinsicWidth="286" placeholderIntrinsicHeight="31" translatesAutoresizingMaskIntoConstraints="NO" id="4hs-Gk-Xl6">
+                                <rect key="frame" x="65" y="482.5" width="302" height="28"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="D4S-5q-MSD"/>
+                                </constraints>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dot-Yq-gkc" customClass="SKView">
                                 <rect key="frame" x="0.0" y="140" width="375" height="321"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifJ-Wp-aAP">
+                                        <rect key="frame" x="317" y="255" width="50" height="50"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="5To-yk-NNp"/>
+                                            <constraint firstAttribute="width" secondItem="ifJ-Wp-aAP" secondAttribute="height" multiplier="1:1" id="ZWR-Tw-wX8"/>
+                                        </constraints>
+                                        <state key="normal" image="Nightscout"/>
+                                        <connections>
+                                            <segue destination="KJF-Ig-XKW" kind="show" id="oM9-fP-iXI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="ifJ-Wp-aAP" secondAttribute="trailing" constant="8" id="lX6-Wa-Dx8"/>
+                                    <constraint firstAttribute="bottom" secondItem="ifJ-Wp-aAP" secondAttribute="bottom" constant="16" id="mNB-Ks-HOD"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1rF-Wm-FbJ">
-                                <rect key="frame" x="73" y="148" width="175.5" height="24"/>
+                                <rect key="frame" x="100" y="148" width="175.5" height="24"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="❌ Some error message..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tea-wl-rpX">
                                         <rect key="frame" x="8" y="4" width="159.5" height="16"/>
@@ -236,7 +257,8 @@
                                     <constraint firstItem="Tea-wl-rpX" firstAttribute="centerY" secondItem="1rF-Wm-FbJ" secondAttribute="centerY" id="8Sc-fC-Eb3"/>
                                     <constraint firstItem="Tea-wl-rpX" firstAttribute="trailing" secondItem="1rF-Wm-FbJ" secondAttribute="trailingMargin" id="Ezt-4S-Vx2"/>
                                     <constraint firstItem="Tea-wl-rpX" firstAttribute="leading" secondItem="1rF-Wm-FbJ" secondAttribute="leadingMargin" id="RHZ-QI-ukV"/>
-                                    <constraint firstItem="Tea-wl-rpX" firstAttribute="top" secondItem="1rF-Wm-FbJ" secondAttribute="top" constant="4" id="Wac-39-Zot"/>
+                                    <constraint firstItem="Tea-wl-rpX" firstAttribute="top" secondItem="1rF-Wm-FbJ" secondAttribute="top" constant="4" id="XIn-01-LvV"/>
+                                    <constraint firstAttribute="bottom" secondItem="Tea-wl-rpX" secondAttribute="bottom" constant="4" id="gqn-yy-RMa"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -370,20 +392,21 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" label="Preferences"/>
                         <constraints>
+                            <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1rF-Wm-FbJ" secondAttribute="trailing" constant="16" id="48s-0a-W8r"/>
                             <constraint firstItem="1rF-Wm-FbJ" firstAttribute="top" secondItem="f6k-n0-9ni" secondAttribute="bottom" constant="16" id="4we-MA-ydm"/>
-                            <constraint firstItem="1rF-Wm-FbJ" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="73" id="8PW-cQ-aAZ"/>
+                            <constraint firstItem="1rF-Wm-FbJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="16" id="8PW-cQ-aAZ"/>
                             <constraint firstItem="ZrP-ql-0RC" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="bottom" constant="16" id="8iY-2T-LtE"/>
                             <constraint firstItem="ZrP-ql-0RC" firstAttribute="leading" secondItem="QxI-Mz-c2E" secondAttribute="leading" id="9G0-uj-bUt"/>
-                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="height" secondItem="4hs-Gk-Xl6" secondAttribute="height" id="D80-kp-efh"/>
                             <constraint firstItem="QxI-Mz-c2E" firstAttribute="top" secondItem="ZrP-ql-0RC" secondAttribute="bottom" constant="8" id="MZd-7q-3Pc"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" id="OWA-mS-SW6"/>
+                            <constraint firstItem="1rF-Wm-FbJ" firstAttribute="centerX" secondItem="kaq-Fc-h0j" secondAttribute="centerX" id="WuA-to-AEA"/>
                             <constraint firstItem="4hs-Gk-Xl6" firstAttribute="leading" secondItem="ZrP-ql-0RC" secondAttribute="trailing" constant="8" symbolic="YES" id="X8Q-8X-U0R"/>
                             <constraint firstItem="QxI-Mz-c2E" firstAttribute="bottom" secondItem="tZK-nt-kLA" secondAttribute="bottom" constant="-16" id="YpJ-Qg-KCD"/>
-                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="centerY" secondItem="4hs-Gk-Xl6" secondAttribute="centerY" id="Z3X-Ud-WWP"/>
+                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="centerY" secondItem="4hs-Gk-Xl6" secondAttribute="centerY" constant="-4" id="Z3X-Ud-WWP"/>
                             <constraint firstItem="f6k-n0-9ni" firstAttribute="leading" secondItem="kaq-Fc-h0j" secondAttribute="leading" constant="8" id="a29-lU-eI5"/>
-                            <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="4hs-Gk-Xl6" secondAttribute="trailing" constant="16" id="dBA-IS-1Rm"/>
+                            <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="4hs-Gk-Xl6" secondAttribute="trailing" constant="8" id="dBA-IS-1Rm"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="top" secondItem="f6k-n0-9ni" secondAttribute="bottom" constant="8" symbolic="YES" id="j6b-Wv-i5b"/>
-                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="16" id="okW-kf-z32"/>
+                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="okW-kf-z32"/>
                             <constraint firstAttribute="trailing" secondItem="f6k-n0-9ni" secondAttribute="trailing" constant="8" id="qSw-fc-s74"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="trailing" secondItem="tZK-nt-kLA" secondAttribute="trailing" id="tbn-eR-7gt"/>
                             <constraint firstItem="4hs-Gk-Xl6" firstAttribute="trailing" secondItem="QxI-Mz-c2E" secondAttribute="trailing" id="uev-8J-O3X"/>
@@ -405,6 +428,7 @@
                         <outlet property="errorPanelView" destination="1rF-Wm-FbJ" id="VhD-o3-WnA"/>
                         <outlet property="iobLabel" destination="sxg-9W-FFR" id="DEM-gT-C3j"/>
                         <outlet property="lastUpdateLabel" destination="FFv-EO-ylg" id="KqE-n5-OYo"/>
+                        <outlet property="nightscoutButton" destination="ifJ-Wp-aAP" id="MHE-ed-Fhw"/>
                         <outlet property="rawValuesPanel" destination="XtI-XB-VeV" id="1T6-VA-eJr"/>
                         <outlet property="screenlockSwitch" destination="ZrP-ql-0RC" id="nb2-uc-4nL"/>
                         <outlet property="snoozeButton" destination="QxI-Mz-c2E" id="fvE-ps-o54"/>
@@ -416,6 +440,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktO-hG-udg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="604" y="-306"/>
+        </scene>
+        <!--Nightscout-->
+        <scene sceneID="TLg-eV-0T7">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Nightscout" id="KJF-Ig-XKW" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w1A-bq-9AP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1290" y="-208"/>
         </scene>
         <!--Nightscout-->
         <scene sceneID="pNU-Te-rip">
@@ -472,6 +504,7 @@
     <resources>
         <image name="Alarm" width="25" height="25"/>
         <image name="Main" width="37.5" height="37.5"/>
+        <image name="Nightscout" width="25" height="25"/>
         <image name="Prefs" width="25" height="25"/>
         <image name="Stats" width="25" height="25"/>
     </resources>

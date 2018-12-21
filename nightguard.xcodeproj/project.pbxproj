@@ -120,6 +120,8 @@
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
 		D1BD14E5205BB9E200B93389 /* BackgroundRefreshScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */; };
 		D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
+		D1C96AB121CCFE2200B08C2C /* Nightscout.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */; };
+		D1C96AB321CD00F100B08C2C /* NightscoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */; };
 		D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */; };
 		D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
 		D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
@@ -267,6 +269,8 @@
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshScheduler.swift; sourceTree = "<group>"; };
 		D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshLogger.swift; sourceTree = "<group>"; };
+		D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Nightscout.storyboard; sourceTree = "<group>"; };
+		D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutViewController.swift; sourceTree = "<group>"; };
 		D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "alarm-notification.m4a"; sourceTree = "<group>"; };
 		D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationService.swift; sourceTree = "<group>"; };
@@ -513,6 +517,7 @@
 				D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */,
 				D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */,
 				D1DA7C7221C01CB000B39675 /* Preferences.storyboard */,
+				D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
 				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
 				D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */,
@@ -540,6 +545,7 @@
 				43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */,
 				43288A6B1D1C893200EE3999 /* TabBarController.swift */,
 				43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */,
+				D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -725,6 +731,7 @@
 				43647BD31BFF6435004389F9 /* Main.storyboard in Resources */,
 				43F1E1091D07698000C329A2 /* scoutwatch.entitlements in Resources */,
 				D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */,
+				D1C96AB121CCFE2200B08C2C /* Nightscout.storyboard in Resources */,
 				D1DA7C7321C01CB100B39675 /* Preferences.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -816,6 +823,7 @@
 				43F1E1031D07698000C329A2 /* GuiStateRepository.swift in Sources */,
 				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
+				D1C96AB321CD00F100B08C2C /* NightscoutViewController.swift in Sources */,
 				D133079421C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
 				D133079221C85FAE00DC6879 /* RegressionHelper.swift in Sources */,
