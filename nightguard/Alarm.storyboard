@@ -331,7 +331,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rjI-Kn-jsP"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Alarm" image="AlarmIcon" id="qaL-66-9kL"/>
+                    <tabBarItem key="tabBarItem" title="Alarm" image="Alarm" id="qaL-66-9kL"/>
                     <navigationItem key="navigationItem" title="Alarm" id="Y72-r6-IOy"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="867"/>
@@ -357,6 +357,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AlarmIcon" width="50" height="50"/>
+        <image name="Alarm" width="25" height="25"/>
     </resources>
 </document>

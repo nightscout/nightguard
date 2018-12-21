@@ -49,7 +49,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jIU-pM-VZd"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Stats" image="StatsIcon" id="Gq1-vb-adG"/>
+                    <tabBarItem key="tabBarItem" title="Stats" image="Stats" id="Gq1-vb-adG"/>
                     <navigationItem key="navigationItem" title="Stats" id="jcp-sA-AVP">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="wFn-PF-b6m">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mfw-F5-wMB">
@@ -170,6 +170,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="StatsIcon" width="40" height="40"/>
+        <image name="Stats" width="25" height="25"/>
     </resources>
 </document>

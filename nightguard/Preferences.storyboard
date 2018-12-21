@@ -195,7 +195,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HX6-8I-GzP"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Preferences" image="PrefsIcon" id="9sc-JK-nya"/>
+                    <tabBarItem key="tabBarItem" title="Preferences" image="Prefs" id="9sc-JK-nya"/>
                     <navigationItem key="navigationItem" title="Preferences" id="N6z-kp-NCr"/>
                     <connections>
                         <outlet property="hostUriErrorLabel" destination="DOs-0n-mBI" id="HQL-JC-klO"/>
@@ -211,6 +211,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="PrefsIcon" width="50" height="50"/>
+        <image name="Prefs" width="25" height="25"/>
     </resources>
 </document>

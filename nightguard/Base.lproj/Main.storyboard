@@ -370,7 +370,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="tZK-nt-kLA"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Main" image="MainIcon" id="cAJ-FQ-kWE"/>
+                    <tabBarItem key="tabBarItem" title="Main" image="Main" id="cAJ-FQ-kWE"/>
                     <connections>
                         <outlet property="ScreenlockSwitch" destination="ZrP-ql-0RC" id="abw-sh-gzI"/>
                         <outlet property="batteryLabel" destination="3ZI-eY-05Z" id="pgN-9h-ivx"/>
@@ -419,7 +419,7 @@
         <scene sceneID="438-qH-Fr5">
             <objects>
                 <viewControllerPlaceholder storyboardName="Stats" id="plA-ZV-pwP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Stats" image="StatsIcon" id="Yx8-7d-Of5"/>
+                    <tabBarItem key="tabBarItem" title="Stats" image="Stats" id="Yx8-7d-Of5"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MvW-l4-ZCM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -429,7 +429,7 @@
         <scene sceneID="ifb-Qm-17c">
             <objects>
                 <viewControllerPlaceholder storyboardName="Preferences" id="xQ4-Ke-Hd2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Preferences" image="PrefsIcon" id="9LQ-fr-oww"/>
+                    <tabBarItem key="tabBarItem" title="Preferences" image="Prefs" id="9LQ-fr-oww"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D4h-a9-Zye" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -439,7 +439,7 @@
         <scene sceneID="0s7-of-ffT">
             <objects>
                 <viewControllerPlaceholder storyboardName="Alarm" id="7pd-UE-mwp" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" image="AlarmIcon" id="9LD-dY-EgA"/>
+                    <tabBarItem key="tabBarItem" title="Item" image="Alarm" id="9LD-dY-EgA"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zLf-by-LN5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -447,10 +447,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AlarmIcon" width="50" height="50"/>
-        <image name="MainIcon" width="50" height="50"/>
-        <image name="PrefsIcon" width="50" height="50"/>
-        <image name="StatsIcon" width="40" height="40"/>
+        <image name="Alarm" width="25" height="25"/>
+        <image name="Main" width="37.5" height="37.5"/>
+        <image name="Prefs" width="25" height="25"/>
+        <image name="Stats" width="25" height="25"/>
     </resources>
     <color key="tintColor" red="0.96517526286328037" green="0.96381590185596999" blue="0.98756055269162302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
