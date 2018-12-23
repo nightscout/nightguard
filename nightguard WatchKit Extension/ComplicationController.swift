@@ -195,13 +195,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         }
         
         let date: Date = Date(timeIntervalSince1970: time.doubleValue / 1000)
-        
-        // trick: we'll adjust the time with one minute to keep the complication relative time in sync with the minutes shown in the app
-        let calendar = Calendar.current
-        let adjustedDate = calendar.date(byAdding: .minute, value: 1, to: date)!
-        
         let isOlderThanTwoHours = getAgeOfDataInMinutes(time) >= 120
-        return CLKRelativeDateTextProvider(date: adjustedDate, style: .natural, units: isOlderThanTwoHours ? .hour : .minute)
+        return CLKRelativeDateTextProvider(date: date, style: .natural, units: isOlderThanTwoHours ? .hour : .minute)
     }
     
     // MARK: - Placeholder Templates

@@ -11,6 +11,17 @@ import UIKit
 
 class SnoozeAlarmViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // customize all buttons
+        let buttons = self.view.subviews.filter { $0 is UIButton }
+        buttons.forEach { button in
+            button.layer.cornerRadius = 4
+            button.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+        }
+    }
+    
     @IBAction func do30minButtonPressed(_ sender: Any) {
         snoozeMinutes(30)
     }

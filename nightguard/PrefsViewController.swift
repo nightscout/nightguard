@@ -14,10 +14,19 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     let displayTimespans = ["3 Hours", "6 Hours", "Last Night", "Last Day"]
     
     @IBOutlet weak var hostUriTextField: UITextField!
+    @IBOutlet weak var hostUriErrorLabel: UILabel!
     @IBOutlet weak var versionLabel: UILabel!
-    @IBOutlet weak var uriPickerView: UIPickerView!
     @IBOutlet weak var showRawBGSwitch: UISwitch!
+    @IBOutlet weak var showBGOnAppBadgeSwitch: UISwitch!
     
+    lazy var uriPickerView: UIPickerView = {
+        let pickerView = UIPickerView()
+        pickerView.delegate = self
+        return pickerView
+    }()
+    
+//    fileprivate var uriBeforeEditingSession: String?
+
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -36,8 +45,14 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         self.view.addGestureRecognizer(tap)
         
         showRawBGSwitch.isOn = UserDefaultsRepository.readShowRawBG()
+        showBGOnAppBadgeSwitch.isOn = UserDefaultsRepository.readShowBGOnAppBadge()
+        
+        showBookmarksButtonOnKeyboardIfNeeded()
+        
+        // no URI error message on startup
+        hostUriErrorLabel.isHidden = true
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
@@ -60,11 +75,59 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func doEditingChangedAction(_ sender: AnyObject) {
+    // MARK: UITextFieldDelegate methods
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         
-        hostUriTextField.text = addProtocolPartIfMissing(hostUriTextField.text!)
-        UserDefaultsRepository.saveBaseUri(hostUriTextField.text!)
+        // reset to keyboard input
+        textField.inputView = nil
+        
+        // keep the URI before start editing
+//        uriBeforeEditingSession = textField.text
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        
+        guard reason == .committed else {
+            return
+        }
+        
+//        guard uriBeforeEditingSession != hostUriTextField.text else {
+//            return
+//        }
+        
+        let hostUri = hostUriTextField.text!
+        UserDefaultsRepository.saveBaseUri(hostUri)
         sendValuesToAppleWatch()
+        
+        NightscoutCacheService.singleton.resetCache()
+        NightscoutDataRepository.singleton.storeTodaysBgData([])
+        NightscoutDataRepository.singleton.storeYesterdaysBgData([])
+        NightscoutDataRepository.singleton.storeCurrentNightscoutData(NightscoutData())
+        
+        retrieveAndStoreNightscoutUnits { [unowned self] error in
+            
+            guard error == nil else {
+                self.hostUriErrorLabel.text = "❌ \(error!.localizedDescription)"
+                self.hostUriErrorLabel.isHidden = false
+                return
+            }
+            
+            // hide the error message
+            self.hostUriErrorLabel.isHidden = true
+         
+            // add host URI only if status request was successful
+            self.addUriEntryToPickerView(hostUri: hostUri)
+        }
+    }
+    
+    //     Close the soft keyboard if return has been selected
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @IBAction func textFieldDidChange(_ textField: UITextField) {
+        textField.text = addProtocolPartIfMissing(textField.text!)
     }
     
     // adds 'https://' if a '/' but no 'http'-part is found in the uri.
@@ -77,24 +140,6 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         }
         
         return uri
-    }
-    
-    // Close the soft keyboard if return has been selected
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        UserDefaultsRepository.saveBaseUri(hostUriTextField.text!)
-        sendValuesToAppleWatch()
-        retrieveAndStoreNightscoutUnits()
-        
-        textField.resignFirstResponder()
-        uriPickerView.isHidden = true
-        NightscoutCacheService.singleton.resetCache()
-        NightscoutDataRepository.singleton.storeTodaysBgData([])
-        NightscoutDataRepository.singleton.storeYesterdaysBgData([])
-        NightscoutDataRepository.singleton.storeCurrentNightscoutData(NightscoutData())
-        addUriEntryToPickerView(hostUri: hostUriTextField.text!)
-        
-        return true
     }
 
     func addUriEntryToPickerView(hostUri : String) {
@@ -110,6 +155,8 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
             nightscoutUris = limitAmountOfUrisToFive(nightscoutUris: nightscoutUris)
             GuiStateRepository.singleton.storeNightscoutUris(nightscoutUris: nightscoutUris)
             uriPickerView.reloadAllComponents()
+            
+            showBookmarksButtonOnKeyboardIfNeeded()
         }
     }
     
@@ -145,15 +192,6 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @objc func onTouchGesture(){
         self.view.endEditing(true)
-        uriPickerView.isHidden = true
-        NightscoutCacheService.singleton.resetCache()
-        retrieveAndStoreNightscoutUnits()
-    }
-    
-    @IBAction func touchDownInsideUriTextfield(_ sender: Any) {
-        if GuiStateRepository.singleton.loadNightscoutUris().count > 1 {
-            uriPickerView.isHidden = false
-        }
     }
     
     // RawBG switch
@@ -162,7 +200,18 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         sendValuesToAppleWatch()
     }
     
-    // Picker-View methods
+    @IBAction func onShowBGOnAppBadgeChanged(_ sender: UISwitch) {
+        
+        if sender.isOn {
+            UIApplication.shared.setCurrentBGValueOnAppBadge()
+        } else {
+            UIApplication.shared.clearAppBadge()
+        }
+        
+        UserDefaultsRepository.saveShowBGOnAppBadge(sender.isOn)
+    }
+    
+    // MARK: Picker-View methods
     
     @objc func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
         return 1
@@ -178,14 +227,49 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         hostUriTextField.text = GuiStateRepository.singleton.loadNightscoutUris()[row]
-        NightscoutCacheService.singleton.resetCache()
+        self.view.endEditing(true)
     }
     
-    func retrieveAndStoreNightscoutUnits() {
-        NightscoutService.singleton.readStatus { (units) in
-            UserDefaultsRepository.saveUnits(units)
-            self.sendValuesToAppleWatch()
+    func retrieveAndStoreNightscoutUnits(completion: @escaping (Error?) -> Void) {
+        NightscoutService.singleton.readStatus { [unowned self] (result: NightscoutRequestResult<Units>) in
+            
+            switch result {
+            case .data(let units):
+                UserDefaultsRepository.saveUnits(units)
+                completion(nil)
+                
+            case .error(let error):
+                completion(error)
+            }
         }
     }
+    
+    fileprivate func showBookmarksButtonOnKeyboardIfNeeded() {
+        
+        guard GuiStateRepository.singleton.loadNightscoutUris().count > 1 else {
+            return
+        }
+        
+        let bookmarkToolbar = UIToolbar(frame:CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 30))
+        bookmarkToolbar.barStyle = .blackTranslucent
+        bookmarkToolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(toggleKeyboardAndBookmarks))
+        ]
+        bookmarkToolbar.sizeToFit()
+        hostUriTextField.inputAccessoryView = bookmarkToolbar
+    }
+    
+    @objc func toggleKeyboardAndBookmarks() {
+        
+        if hostUriTextField.inputView != nil {
+           hostUriTextField.inputView = nil
+        } else {
+            hostUriTextField.inputView = uriPickerView
+        }
+        
+        hostUriTextField.reloadInputViews()
+    }
+
 }
 

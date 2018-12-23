@@ -33,8 +33,12 @@ class NightscoutData : NSObject, NSCoding, Codable {
             if time == 0 {
                 return "-min"
             }
+            
+            // trick: when displaying the time, we'll add 30 seconds to current time for showing the difference like Nightscout does (0-30 seconds: "0 mins", 31-90 seconds: "1 min", ...)
+            let thirtySeconds = Int64(30 * 1000)
+            
             // calculate how old the current data is
-            let currentTime = Int64(Date().timeIntervalSince1970 * 1000)
+            let currentTime = Int64(Date().timeIntervalSince1970 * 1000) + thirtySeconds
             let difference = (currentTime - time.int64Value) / 60000
             if difference > 59 {
                 return ">1Hr"

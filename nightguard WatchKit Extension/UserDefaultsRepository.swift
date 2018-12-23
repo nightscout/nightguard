@@ -78,6 +78,26 @@ class UserDefaultsRepository {
         defaults!.setValue(showRawBG, forKey: "showRawBG")
     }
     
+    static func saveShowBGOnAppBadge(_ showRawBG: Bool) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(showRawBG, forKey: "showBGOnAppBadge")
+    }
+
+    static func readShowBGOnAppBadge() -> Bool {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        return defaults?.bool(forKey: "showBGOnAppBadge") ?? false
+    }
+    
+    static func saveAlarmNotificationState(_ isActivated: Bool) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(isActivated, forKey: "alarmNotificationState")
+    }
+    
+    static func readAlarmNotificationState() -> Bool {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        return defaults?.bool(forKey: "alarmNotificationState") ?? false
+    }
+    
     // Returns true if the units (mmol or mg/dL) have already been retrieved
     // from the nightscout backend
     static func areUnitsDefined() -> Bool {

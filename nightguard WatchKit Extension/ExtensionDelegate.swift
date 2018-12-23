@@ -311,27 +311,28 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         
         // extract data on main thead
         DispatchQueue.main.async { [unowned self] in
-            NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] (newNightscoutData, error) -> Void in
+            NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] result in
                 
-                // keep the error (if any)
-                self.sessionError = error
-                
-                guard let newNightscoutData = newNightscoutData else {
-                    return
-                }
-                
-                let updateResult = self.updateNightscoutData(newNightscoutData)
-                BackgroundRefreshLogger.nightscoutDataReceived(newNightscoutData, updateResult: updateResult, updateSource: .urlSession)
-                switch updateResult {
-                case .updateDataIsOld:
-                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData += 1
-                    BackgroundRefreshLogger.info("URL session data: OLD")
-                case .updateDataAlreadyExists:
-                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData += 1
-                    BackgroundRefreshLogger.info("URL session data: EXISTING")
-                case .updated:
-                    BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData += 1
-                    BackgroundRefreshLogger.info("URL session data: NEW")
+                switch result {
+                case .error(let error):
+                    self.sessionError = error
+                    
+                case .data(let newNightscoutData):
+                    self.sessionError = nil
+
+                    let updateResult = self.updateNightscoutData(newNightscoutData)
+                    BackgroundRefreshLogger.nightscoutDataReceived(newNightscoutData, updateResult: updateResult, updateSource: .urlSession)
+                    switch updateResult {
+                    case .updateDataIsOld:
+                        BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData += 1
+                        BackgroundRefreshLogger.info("URL session data: OLD")
+                    case .updateDataAlreadyExists:
+                        BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData += 1
+                        BackgroundRefreshLogger.info("URL session data: EXISTING")
+                    case .updated:
+                        BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData += 1
+                        BackgroundRefreshLogger.info("URL session data: NEW")
+                    }
                 }
             })
         }

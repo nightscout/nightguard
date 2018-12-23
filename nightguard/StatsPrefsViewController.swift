@@ -15,8 +15,9 @@ class StatsPrefsViewController : UIViewController {
     @IBOutlet weak var day3IsActivatedSwitch: UISwitch!
     @IBOutlet weak var day4IsActivatedSwitch: UISwitch!
     @IBOutlet weak var day5IsActivatedSwitch: UISwitch!
-    
+        
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         let daysToBeDisplayed = UserDefaultsRepository.readDaysToBeDisplayed()
         
@@ -27,20 +28,18 @@ class StatsPrefsViewController : UIViewController {
         day5IsActivatedSwitch.isOn = daysToBeDisplayed[4]
     }
     
-    @IBAction func returnToMainView(_ sender: AnyObject) {
-        
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
         UserDefaultsRepository.saveDaysToBeDisplayed(
             [day1IsActivatedSwitch.isOn,
                 day2IsActivatedSwitch.isOn,
                 day3IsActivatedSwitch.isOn,
                 day4IsActivatedSwitch.isOn,
                 day5IsActivatedSwitch.isOn])
-        
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        
         return UIStatusBarStyle.lightContent
     }
 }
