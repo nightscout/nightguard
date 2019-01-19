@@ -14,7 +14,7 @@ import Foundation
 /// extended on 60 minutes from current time on.
 class PredictionService {
     
-    static let shared = PredictionService()
+    static let singleton = PredictionService()
 
     /// The next hour predictions (60 predictions, one value for each minute)
     var nextHour: [BloodSugar] {

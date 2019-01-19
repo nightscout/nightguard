@@ -27,9 +27,11 @@ extension Array where Element: BloodSugar {
         result.assureCurrentReadingExists(nightscoutData)
         
         // if day just began, we don't have enough readings from today, so we'll take also the some of the last yesterday's readings
-        if result.count < 12 {
-            result.insert(contentsOf: NightscoutCacheService.singleton.getYesterdaysBgData().suffix(12), at: 0)
-        }
+        
+        // skip adding the yesterday's data for the moment!
+//        if result.count < 12 {
+//            result.insert(contentsOf: NightscoutCacheService.singleton.getYesterdaysBgData().suffix(12), at: 0)
+//        }
         
         return result
     }

@@ -116,7 +116,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     @IBAction func notificationsSwitchChanged(_ sender: AnyObject) {
-        AlarmNotificationService.shared.enabled = notificationsSwitch.isOn
+        AlarmNotificationService.singleton.enabled = notificationsSwitch.isOn
     }
     
     @IBAction func valuesEditingChanged(_ sender: AnyObject) {

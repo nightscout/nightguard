@@ -287,7 +287,7 @@ class MainViewController: UIViewController {
         if subtitle == nil {
             
             // no alarm, but maybe we'll show a low prediction warning...
-            if let minutesToLow = PredictionService.shared.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)) {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)) {
                 subtitle = "Low Predicted in \(minutesToLow)min"
                 subtitleColor = .yellow
             }
@@ -455,7 +455,7 @@ class MainViewController: UIViewController {
     
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {
         
-        let todaysDataWithPrediction = todaysData + PredictionService.shared.nextHourGapped
+        let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
         
         self.chartScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],

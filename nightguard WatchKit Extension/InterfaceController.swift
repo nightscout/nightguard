@@ -414,7 +414,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let bounds = WKInterfaceDevice.current().screenBounds
         
-        let todaysDataWithPrediction = todaysData + PredictionService.shared.nextHourGapped
+        let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
         self.chartScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: bounds.width * 6,
