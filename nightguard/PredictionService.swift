@@ -24,9 +24,9 @@ class PredictionService {
             return []
         }
 
-        // if a new reading was detected, we'll have to update the predictions
-        let newReadingDetected = readings.last!.timestamp > (trainingReferenceReading?.timestamp ?? 0)
-        if newReadingDetected {
+        // if prediction training readings has changed, we'll have to update the predictions
+        let shouldUpdatePrediction = readings.predictionTrainingReadings != self.trainingReadings
+        if shouldUpdatePrediction {
             updatePrediction(readings: readings)
         }
         
@@ -48,9 +48,10 @@ class PredictionService {
         
         let luckyIndex = (5 - minutesDistance) % 5
         let firstIndex = (minutesDistance == 0) ? 1 : 0 // skip first index if the very first prediction if too close to reference reading
-        var result = (firstIndex..<nextHourReadings.count).filter({ $0 % 5 == luckyIndex }).map { nextHourReadings[$0] }
+        let result = (firstIndex..<nextHourReadings.count).filter({ $0 % 5 == luckyIndex }).map { nextHourReadings[$0] }
         
-        print("First gapped prediction: \(result.first) (refereance reading: \(self.trainingReferenceReading))")
+        print("First gapped prediction: \(String(describing: result.first)) (refereance reading: \(String(describing: self.trainingReferenceReading)))")
+        
         return result
     }
     
@@ -58,8 +59,15 @@ class PredictionService {
     /// Returns nil if there is no predicted value that goes below the low value in 60 minutes.
     func minutesTo(low lowValue: Float) -> Int?  {
         
-        if let index = nextHour.firstIndex(where: { $0.value < lowValue }) {
-            return index + 1
+        let nextHourReadings = nextHour
+        guard !nextHourReadings.isEmpty else {
+            return nil
+        }
+        
+        let offsetMinutes = Int(Date().timeIntervalSince(nextHourReadings.first!.date) / 60)
+        
+        if let index = nextHourReadings.firstIndex(where: { $0.value < lowValue }) {
+            return (index + 1) - offsetMinutes
         }
         
         return nil
@@ -69,8 +77,15 @@ class PredictionService {
     /// Returns nil if there is no predicted value that goes above the high value in 60 minutes.
     func minutesTo(high highValue: Float) -> Int?  {
         
-        if let index = nextHour.firstIndex(where: { $0.value > highValue }) {
-            return index + 1
+        let nextHourReadings = nextHour
+        guard !nextHourReadings.isEmpty else {
+            return nil
+        }
+        
+        let offsetMinutes = Int(Date().timeIntervalSince(nextHourReadings.first!.date) / 60)
+        
+        if let index = nextHourReadings.firstIndex(where: { $0.value > highValue }) {
+            return (index + 1) - offsetMinutes
         }
         
         return nil
@@ -82,17 +97,18 @@ class PredictionService {
         guard let currentReading = readings.last else {
          
             // no readings at all?!?
-            prediction = []
+            reset()
             return
         }
         
-        if (self.regression == nil) || ((trainingReferenceReading?.timestamp ?? 0) < currentReading.timestamp) {
+        let predictionTrainingReadings = readings.predictionTrainingReadings
+        if (self.regression == nil) || (predictionTrainingReadings != self.trainingReadings) {
             
             // new reading was detected, get new training sample
-            guard let readings = readings.lastConsecutive(3, maxMissedReadings: 2) else {
+            guard let readings = predictionTrainingReadings else {
                 
                 // cannot create regression... not enough readings
-                prediction = []
+                reset()
                 return
             }
             
@@ -104,7 +120,10 @@ class PredictionService {
             self.regression = BestMatchRegression()
             self.regression!.train(x: xValues, y: yValues)
             
-            // cache the current reading
+            // cache the training readings
+            self.trainingReadings = predictionTrainingReadings
+            
+            // and the current reading
             trainingReferenceReading = currentReading
         }
         
@@ -123,10 +142,40 @@ class PredictionService {
         print(prediction)
     }
     
+    private func reset() {
+        prediction = []
+        regression = nil
+        trainingReferenceReading = nil
+        trainingReadings = nil
+    }
+    
     private var regression: Regression?
     private var prediction: [BloodSugar] = []
     private var trainingReferenceReading: BloodSugar?
+    private var trainingReadings: [BloodSugar]?
 
     private init() {
     }
+}
+
+
+fileprivate extension Array where Element: BloodSugar {
+    
+    // the last consecutive 2-3 values from the last 10-12 minutes are used for prediction
+    var predictionTrainingReadings: [BloodSugar]? {
+
+        guard let lastReadings = self.lastConsecutive(3, maxMissedReadings: 2) else {
+            return nil
+        }
+        
+        // NOTE: for the moment use the last consecutive 3 values (without time constraints)
+        return lastReadings
+
+//        let readingsFromLast12Minutes = lastReadings.suffix(3) { reading in
+//            reading.date.addingTimeInterval(TimeInterval(12 * 60)) > Date()
+//        }
+//
+//        return (readingsFromLast12Minutes.count >= 2) ? readingsFromLast12Minutes : nil
+    }
+    
 }
