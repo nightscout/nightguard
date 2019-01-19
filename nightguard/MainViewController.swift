@@ -231,10 +231,7 @@ class MainViewController: UIViewController {
     
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer) {
-        
-        DispatchQueue.main.async { [unowned self] in
-            self.doPeriodicUpdate(forceRepaint: false)
-        }
+        self.doPeriodicUpdate(forceRepaint: false)
     }
     
     fileprivate func doPeriodicUpdate(forceRepaint: Bool) {
