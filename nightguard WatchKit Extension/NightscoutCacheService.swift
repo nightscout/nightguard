@@ -250,3 +250,13 @@ class NightscoutCacheService: NSObject {
         }
     }
 }
+
+
+// HACK for updating the today's data from Test Cases; the problem is that
+// from tests the NightscoutDataRepository.loadTodaysBgData will fail unarchiving the [BloodSugar]
+// data, even if stored correctly...
+extension NightscoutCacheService {
+    func updateTodaysBgDataForTesting(_ data: [BloodSugar]) {
+        self.todaysBgData = data
+    }
+}
