@@ -24,6 +24,7 @@ class NightscoutViewController: UIViewController {
         super.viewDidLoad()
         
         let webConfiguration = WKWebViewConfiguration()
+        webConfiguration.preferences.javaScriptEnabled = true
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.navigationDelegate = self
         webView.uiDelegate = self
@@ -50,8 +51,20 @@ class NightscoutViewController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-
     
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        
+        return false
+//        switch action {
+//        case #selector(UIResponderStandardEditActions.copy(_:)),
+//            #selector(UIResponderStandardEditActions.cut(_:)),
+//            #selector(UIResponderStandardEditActions.paste(_:)):
+//            return false
+//        default:
+//            return super.canPerformAction(action, withSender: sender)
+//        }
+    }
+
     @IBAction func onRefresh(_ sender: UIBarButtonItem) {
         loadNightscout()
     }
@@ -75,6 +88,21 @@ class NightscoutViewController: UIViewController {
 
 // MARK:- WKUIDelegate implementation
 extension NightscoutViewController: WKNavigationDelegate, WKUIDelegate {
+    
+    func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
+        
+        let alertCtrl = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+        
+        alertCtrl.addAction(UIAlertAction(title: "OK", style: .default) { action in
+            completionHandler(true)
+        })
+
+        alertCtrl.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            completionHandler(false)
+        })
+        
+        present(alertCtrl, animated: true)
+    }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
