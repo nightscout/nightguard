@@ -22,7 +22,7 @@ class NightscoutServiceTest: XCTestCase {
         let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
-        serviceBoundary.readYesterdaysChartData({(bloodSugarArray) -> Void in
+        serviceBoundary.readYesterdaysChartData({(bloodSugarArray: [BloodSugar]) -> Void in
             
             if bloodSugarArray.count > 0 {
                 if TimeService.isYesterday(bloodSugarArray[0].timestamp) {
@@ -43,7 +43,7 @@ class NightscoutServiceTest: XCTestCase {
         let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
-        nightscoutService.readStatus({(units) -> Void in
+        nightscoutService.readStatus({(units: Units) -> Void in
             
             if units == Units.mgdl {
                 expectation.fulfill()
@@ -62,20 +62,26 @@ class NightscoutServiceTest: XCTestCase {
         let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
-        serviceBoundary.readLastTwoHoursChartData({(bloodSugarArray) -> Void in
+        serviceBoundary.readLastTwoHoursChartData({(response) -> Void in
             
-            if bloodSugarArray.count > 0 {
-                let twoHoursBefore = TimeService.getToday().addingTimeInterval(-60*120).timeIntervalSince1970
-                var allExpectationsFulFilled : Bool = true
-                for bloodSugar in bloodSugarArray {
-                    if !(twoHoursBefore < bloodSugar.timestamp) {
-                        allExpectationsFulFilled = false
+            switch response {
+            
+            case .data(let bloodSugarArray):
+                if bloodSugarArray.count > 0 {
+                    let twoHoursBefore = TimeService.getToday().addingTimeInterval(-60*120).timeIntervalSince1970
+                    var allExpectationsFulFilled : Bool = true
+                    for bloodSugar in bloodSugarArray {
+                        if !(twoHoursBefore < bloodSugar.timestamp) {
+                            allExpectationsFulFilled = false
+                        }
+                    }
+                    
+                    if allExpectationsFulFilled {
+                        expectation.fulfill()
                     }
                 }
-                
-                if allExpectationsFulFilled {
-                    expectation.fulfill()
-                }
+            case .error(_):
+                break
             }
         })
         
