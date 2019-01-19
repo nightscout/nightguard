@@ -46,6 +46,10 @@ extension Array where Element: BloodSugar {
     /// from the readings array have no previous BG reading to compare with).
     var deltas: [Float] {
         
+        guard !self.isEmpty else {
+            return []
+        }
+        
         var result: [Float] = []
         for i in 0..<(self.count-1) {
             result.append(self[i+1].value - self[i].value)
