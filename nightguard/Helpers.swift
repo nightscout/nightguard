@@ -1,5 +1,5 @@
 //
-//  Utils.swift
+//  Helpers.swift
 //  nightguard
 //
 //  Created by Florian Preknya on 11/14/18.
@@ -8,7 +8,6 @@
 
 import Foundation
 
-// todo: move this to another file (Tools or something similar)
 func dispatchOnMain(_ closure: @escaping () -> ()) {
     if Thread.isMainThread {
         closure()

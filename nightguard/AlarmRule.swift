@@ -8,6 +8,33 @@
 
 import Foundation
 
+
+class UserDefaultsValue<T> {
+    
+    let key: String
+    
+    var value: T {
+        didSet {
+            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
+            defaults.setValue(value, forKey: key)
+        }
+    }
+    
+    init(key: String, default defaultValue: T) {
+        self.key = key
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
+        if let anyValue = defaults.object(forKey: key), let value = UserDefaultsValue.fromAny(anyValue) {
+            self.value = value
+        } else {
+            self.value = defaultValue
+        }
+    }
+
+    class func fromAny(_ anyValue: Any) -> T? {
+        return anyValue as? T
+    }
+}
+
 /**
  * This class implements the Rules for which an alarm should be played.
  * 
@@ -23,7 +50,7 @@ class AlarmRule {
     
     fileprivate static var snoozedUntilTimestamp = TimeInterval()
     
-    static var numberOfConsecutiveValues : Int = 3
+    static var numberOfConsecutiveValues = UserDefaultsValue<Int>(key: "numberOfConsecutiveValues", default: 3)
     static var deltaAmount : Float = 8
     static var isEdgeDetectionAlarmEnabled : Bool = false
     
@@ -145,7 +172,7 @@ class AlarmRule {
     fileprivate static func bloodValuesAreIncreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
         
         // we need at least these number of values (the most reacent X readings)
-        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues + 1) else {
+        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues.value + 1) else {
             return false
         }
         
@@ -155,7 +182,7 @@ class AlarmRule {
     fileprivate static func bloodValuesAreDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
         
         // we need at least these number of values (the most reacent X readings)
-        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues + 1) else {
+        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues.value + 1) else {
             return false
         }
         

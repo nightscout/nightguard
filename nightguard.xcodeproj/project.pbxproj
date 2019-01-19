@@ -97,6 +97,10 @@
 		43FCE625208B80840080DA0A /* SnoozeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */; };
 		D10ACE402063C25600F41EE7 /* BackgroundRefreshSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */; };
 		D10ACE412063C2A300F41EE7 /* BackgroundRefreshSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */; };
+		D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
+		D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
+		D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
+		D112DD3721EA600200ECFB5E /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
 		D112DD3821EA61A700ECFB5E /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		D112DD3A21EB502300ECFB5E /* BloodSugarArrayTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */; };
 		D112DD3C21EB507E00ECFB5E /* PredictionServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */; };
@@ -131,8 +135,8 @@
 		D1DA7C7121BF7E0900B39675 /* Alarm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */; };
 		D1DA7C7321C01CB100B39675 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7221C01CB000B39675 /* Preferences.storyboard */; };
 		D1DA7C7521C0E1ED00B39675 /* Stats.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */; };
-		D1E6B897219C69D9007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
-		D1E6B898219C6A86007ED4FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Utils.swift */; };
+		D1E6B897219C69D9007ED4FE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
+		D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
 		D1F2F57921EF12DC00CEB874 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		D1F2F57A21EF131500CEB874 /* Regression.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079021C85FAD00DC6879 /* Regression.swift */; };
 		D1F2F57B21EF133000CEB874 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079121C85FAE00DC6879 /* Matrix.swift */; };
@@ -265,6 +269,7 @@
 		43F1E11A1D076D9700C329A2 /* TimeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeService.swift; path = nightguard/TimeService.swift; sourceTree = SOURCE_ROOT; };
 		43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeAlarmViewController.swift; sourceTree = "<group>"; };
 		D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshSettings.swift; sourceTree = "<group>"; };
+		D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerExtension.swift; sourceTree = "<group>"; };
 		D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodSugarArrayTest.swift; sourceTree = "<group>"; };
 		D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionServiceTest.swift; sourceTree = "<group>"; };
 		D133078321C424A800DC6879 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
@@ -288,7 +293,7 @@
 		D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Alarm.storyboard; sourceTree = "<group>"; };
 		D1DA7C7221C01CB000B39675 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
 		D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Stats.storyboard; sourceTree = "<group>"; };
-		D1E6B896219C69D9007ED4FE /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		D1E6B896219C69D9007ED4FE /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,9 +413,8 @@
 				437EEDC21FB7169C00694EAD /* repository */,
 				D1FAA4AB20D7AE6B0062B333 /* controllers */,
 				D1BA903620D303E700A0EBD1 /* views */,
+				D112DD3221E9E28500ECFB5E /* helpers */,
 				43F1E0F41D07698000C329A2 /* AppDelegate.swift */,
-				D1E6B896219C69D9007ED4FE /* Utils.swift */,
-				D133078321C424A800DC6879 /* ArrayExtension.swift */,
 				43F1E0F71D07698000C329A2 /* Info.plist */,
 				43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */,
 			);
@@ -508,6 +512,16 @@
 				432E62DE1D10ACD200DD7978 /* Units.swift */,
 			);
 			name = domain;
+			sourceTree = "<group>";
+		};
+		D112DD3221E9E28500ECFB5E /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D1E6B896219C69D9007ED4FE /* Helpers.swift */,
+				D133078321C424A800DC6879 /* ArrayExtension.swift */,
+				D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */,
+			);
+			name = helpers;
 			sourceTree = "<group>";
 		};
 		D133079C21C85FC600DC6879 /* regression */ = {
@@ -807,6 +821,7 @@
 				43F1E1001D07698000C329A2 /* AlarmViewController.swift in Sources */,
 				D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */,
 				D133078821C85D4400DC6879 /* BloodSugarArrayExtension.swift in Sources */,
+				D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */,
 				432E62E91D143CF900DD7978 /* UnitsConverter.swift in Sources */,
 				43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
@@ -821,7 +836,7 @@
 				D133079A21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
-				D1E6B897219C69D9007ED4FE /* Utils.swift in Sources */,
+				D1E6B897219C69D9007ED4FE /* Helpers.swift in Sources */,
 				D133079821C85FAE00DC6879 /* Regression.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
 				43E89E571E659102005B0A65 /* ChartScene.swift in Sources */,
@@ -866,6 +881,7 @@
 				D133078921C85D5200DC6879 /* BloodSugarArrayExtension.swift in Sources */,
 				432E62ED1D15EFF100DD7978 /* FloatExtension.swift in Sources */,
 				D1F2F57C21EF133600CEB874 /* Matrix+Append.swift in Sources */,
+				D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */,
 				432E62E71D11F61500DD7978 /* UserDefaultsRepositoryTest.swift in Sources */,
 				43794F491C30489C00DB8B58 /* NightscoutDataRepository.swift in Sources */,
 				432E62E01D10AF3800DD7978 /* Units.swift in Sources */,
@@ -875,6 +891,7 @@
 				D133078C21C85DAA00DC6879 /* ArrayExtension.swift in Sources */,
 				432E62DA1D0CC3DE00DD7978 /* TimeService.swift in Sources */,
 				D1F2F57E21EF134400CEB874 /* RegressionHelper.swift in Sources */,
+				D112DD3721EA600200ECFB5E /* Helpers.swift in Sources */,
 				D1F2F57921EF12DC00CEB874 /* PredictionService.swift in Sources */,
 				D1F2F57D21EF133A00CEB874 /* Matrix+Description.swift in Sources */,
 				D112DD3A21EB502300ECFB5E /* BloodSugarArrayTest.swift in Sources */,
@@ -909,7 +926,8 @@
 				D10ACE402063C25600F41EE7 /* BackgroundRefreshSettings.swift in Sources */,
 				4346F9841D0773F700487541 /* TimeService.swift in Sources */,
 				D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */,
-				D1E6B898219C6A86007ED4FE /* Utils.swift in Sources */,
+				D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */,
+				D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */,
 				43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */,
 				439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				D133079521C85FAE00DC6879 /* Matrix+Append.swift in Sources */,

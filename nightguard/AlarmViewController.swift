@@ -64,8 +64,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         edgeDetectionSwitch.isOn = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
         lowPredictionSwitch.isOn = (defaults?.bool(forKey: "lowPredictionEnabled"))!
         smartSnoozeSwitch.isOn = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
-        notificationsSwitch.isOn = AlarmNotificationService.shared.enabled
-        numberOfConsecutiveValues.text = defaults?.string(forKey: "numberOfConsecutiveValues")
+        notificationsSwitch.isOn = AlarmNotificationService.singleton.enabled
+        numberOfConsecutiveValues.text = "\(AlarmRule.numberOfConsecutiveValues.value)"
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
@@ -125,9 +125,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
             return
         }
         
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(numberOfConsecutiveValues, forKey: "numberOfConsecutiveValues")
-        AlarmRule.numberOfConsecutiveValues = numberOfConsecutiveValues
+        AlarmRule.numberOfConsecutiveValues.value = numberOfConsecutiveValues
     }
     
     @IBAction func deltaEditingChanged(_ sender: AnyObject) {

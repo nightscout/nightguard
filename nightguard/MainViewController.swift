@@ -95,6 +95,9 @@ class MainViewController: UIViewController {
         
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
@@ -198,9 +201,13 @@ class MainViewController: UIViewController {
     
     
     // MARK: Notification
+    
+    @objc func applicationWillResignActive(_ notification: NSNotification) {
+        AlarmSound.stop()
+    }
+    
     @objc func applicationDidEnterBackground(_ notification: Notification) {
         timer.invalidate()
-        AlarmSound.stop()
     }
     
     @objc func applicationWillEnterForeground(_ notification: Notification) {

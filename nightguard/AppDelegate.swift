@@ -54,7 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
         AlarmRule.isEdgeDetectionAlarmEnabled = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
-        AlarmRule.numberOfConsecutiveValues = (defaults?.integer(forKey: "numberOfConsecutiveValues"))!
         AlarmRule.deltaAmount = (defaults?.float(forKey: "deltaAmount"))!
         
         AlarmRule.alertIfAboveValue = (defaults?.float(forKey: "alertIfAboveValue"))!
