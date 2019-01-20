@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
             
             // trigger notification alarm if needed
-            AlarmNotificationService.shared.notifyIfAlarmActivated()
+            AlarmNotificationService.singleton.notifyIfAlarmActivated()
             
             // update app badge
             if UserDefaultsRepository.readShowBGOnAppBadge() {

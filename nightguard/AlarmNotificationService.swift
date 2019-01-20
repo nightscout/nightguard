@@ -12,7 +12,7 @@ import UserNotifications
 // Alarm notification authorization, triggering & handling logic.
 class AlarmNotificationService {
     
-    static let shared = AlarmNotificationService()
+    static let singleton = AlarmNotificationService()
     
     // service state
     var enabled: Bool {

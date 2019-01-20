@@ -32,7 +32,7 @@ class GroupedLabelsView: UIStackView {
         label.insets = UIEdgeInsets(top: 1, left: 2, bottom: 1, right: 2)
         label.font = UIFont.systemFont(ofSize: 11)
         label.textColor = .white
-        label.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         label.clipsToBounds = true
         label.layer.cornerRadius = 2
         return label

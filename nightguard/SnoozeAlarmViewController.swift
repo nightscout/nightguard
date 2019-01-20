@@ -18,7 +18,7 @@ class SnoozeAlarmViewController: UIViewController {
         let buttons = self.view.subviews.filter { $0 is UIButton }
         buttons.forEach { button in
             button.layer.cornerRadius = 4
-            button.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+            button.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         }
     }
     

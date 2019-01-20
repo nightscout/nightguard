@@ -91,9 +91,9 @@ class AlarmRule {
             }
             
             // let's try also with prediction: we'll snooze the alarm if the prediction says that we'll leave the too high or too low zone in less than 30 minutes
-            if isTooHigh && (PredictionService.shared.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfAboveValue)) ?? Int.max) < 30 {
+            if isTooHigh && (PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfAboveValue)) ?? Int.max) < 30 {
                 return nil
-            } else if isTooLow && (PredictionService.shared.minutesTo(high: UnitsConverter.toDisplayUnits(alertIfBelowValue)) ?? Int.max) < 30 {
+            } else if isTooLow && (PredictionService.singleton.minutesTo(high: UnitsConverter.toDisplayUnits(alertIfBelowValue)) ?? Int.max) < 30 {
                 return nil
             }
         }
@@ -113,7 +113,7 @@ class AlarmRule {
         }
         
         if isLowPredictionEnabled {
-            if let minutesToLow = PredictionService.shared.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfBelowValue)), minutesToLow <= minutesToPredictLow {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfBelowValue)), minutesToLow <= minutesToPredictLow {
                 #if os(iOS)
                 return "Low Predicted in \(minutesToLow)min"
                 #else

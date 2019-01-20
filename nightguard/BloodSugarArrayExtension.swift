@@ -27,9 +27,11 @@ extension Array where Element: BloodSugar {
         result.assureCurrentReadingExists(nightscoutData)
         
         // if day just began, we don't have enough readings from today, so we'll take also the some of the last yesterday's readings
-        if result.count < 12 {
-            result.insert(contentsOf: NightscoutCacheService.singleton.getYesterdaysBgData().suffix(12), at: 0)
-        }
+        
+        // skip adding the yesterday's data for the moment!
+//        if result.count < 12 {
+//            result.insert(contentsOf: NightscoutCacheService.singleton.getYesterdaysBgData().suffix(12), at: 0)
+//        }
         
         return result
     }
@@ -43,6 +45,10 @@ extension Array where Element: BloodSugar {
     /// The returned array will have count - 1 elements (because the first element
     /// from the readings array have no previous BG reading to compare with).
     var deltas: [Float] {
+        
+        guard !self.isEmpty else {
+            return []
+        }
         
         var result: [Float] = []
         for i in 0..<(self.count-1) {
