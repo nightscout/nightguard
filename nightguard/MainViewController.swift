@@ -58,6 +58,7 @@ class MainViewController: UIViewController {
         
         snoozeButton.titleLabel?.numberOfLines = 0
         snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
+        snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         
         restoreGuiState()
         paintScreenLockSwitch()
@@ -91,7 +92,7 @@ class MainViewController: UIViewController {
         nightscoutButton.tintColor = UIColor.white
         let nightscoutImage = UIImage(named: "Nightscout")?.withRenderingMode(.alwaysTemplate)
         nightscoutButton.setImage(nightscoutImage, for: .normal)
-        nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+        nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
