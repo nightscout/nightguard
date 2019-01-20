@@ -63,9 +63,6 @@ class MainViewController: UIViewController {
         restoreGuiState()
         paintScreenLockSwitch()
         
-        // Start the timer to retrieve new bgValues
-        startTimer()
-        
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
                                 newCanvasWidth: self.maximumDeviceTextureWidth())
@@ -97,6 +94,9 @@ class MainViewController: UIViewController {
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
+        // call first "UIApplicationWillEnterForeground" event by hand, it is not sent when the app starts (just registered for the event)
+        prepareForEnteringForeground()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -205,6 +205,18 @@ class MainViewController: UIViewController {
     }
     
     @objc func applicationWillEnterForeground(_ notification: Notification) {
+        prepareForEnteringForeground()
+    }
+
+    fileprivate func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: timeInterval,
+                                     target: self,
+                                     selector: #selector(MainViewController.timerDidEnd(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
+    }
+    
+    fileprivate func prepareForEnteringForeground() {
         
         // If there is already a snooze active => we don't have to fear that an alarm
         // would be played.
@@ -217,17 +229,9 @@ class MainViewController: UIViewController {
             AlarmRule.snoozeSeconds(15)
             self.updateSnoozeButtonText()
         }
-
+        
         startTimer()
         doPeriodicUpdate(forceRepaint: true)
-    }
-
-    fileprivate func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: timeInterval,
-                                     target: self,
-                                     selector: #selector(MainViewController.timerDidEnd(_:)),
-                                     userInfo: nil,
-                                     repeats: true)
     }
     
     // check whether new Values should be retrieved
