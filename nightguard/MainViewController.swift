@@ -284,7 +284,7 @@ class MainViewController: UIViewController {
         if subtitle == nil {
             
             // no alarm, but maybe we'll show a low prediction warning...
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)) {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)), minutesToLow > 0 {
                 subtitle = "Low Predicted in \(minutesToLow)min"
                 subtitleColor = .yellow
             }

@@ -64,6 +64,12 @@ class PredictionService {
             return nil
         }
         
+        if nextHourReadings[0].value <= lowValue {
+
+            // already low!
+            return 0
+        }
+        
         let offsetMinutes = Int(Date().timeIntervalSince(nextHourReadings.first!.date) / 60)
         
         if let index = nextHourReadings.firstIndex(where: { $0.value < lowValue }) {
@@ -81,6 +87,13 @@ class PredictionService {
         guard !nextHourReadings.isEmpty else {
             return nil
         }
+        
+        if nextHourReadings[0].value >= highValue {
+            
+            // already high!
+            return 0
+        }
+
         
         let offsetMinutes = Int(Date().timeIntervalSince(nextHourReadings.first!.date) / 60)
         
