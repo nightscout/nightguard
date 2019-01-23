@@ -696,20 +696,20 @@
 					};
 					43647BDD1BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = FBNVJ39CQN;
+						DevelopmentTeam = CKBQ7ULFY8;
 						LastSwiftMigration = 0900;
 						TestTargetID = 43647BC91BFF6435004389F9;
 					};
 					43647BE81BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = FBNVJ39CQN;
+						DevelopmentTeam = CKBQ7ULFY8;
 						LastSwiftMigration = 0900;
 						TestTargetID = 43647BC91BFF6435004389F9;
 					};
 					43647BF11BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = FBNVJ39CQN;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 0830;
 					};
 					43647C001BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -1045,7 +1045,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1125,10 +1125,9 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit Extension/scoutwatch WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguard.watchkitapp.watchkitextension";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1147,10 +1146,9 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit Extension/scoutwatch WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguard.watchkitapp.watchkitextension";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1167,17 +1165,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
@@ -1189,13 +1183,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1212,11 +1203,10 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1232,11 +1222,10 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1249,10 +1238,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguardTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguardTests";
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1264,10 +1252,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguardTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguardTests";
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1278,10 +1265,9 @@
 		43647C241BFF6435004389F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguardUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguardUITests";
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1293,10 +1279,9 @@
 		43647C251BFF6435004389F9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = FBNVJ39CQN;
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguardUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.evans.pf.nightguardUITests";
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;

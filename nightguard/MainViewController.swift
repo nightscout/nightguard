@@ -58,12 +58,10 @@ class MainViewController: UIViewController {
         
         snoozeButton.titleLabel?.numberOfLines = 0
         snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
+        snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         
         restoreGuiState()
         paintScreenLockSwitch()
-        
-        // Start the timer to retrieve new bgValues
-        startTimer()
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -91,7 +89,7 @@ class MainViewController: UIViewController {
         nightscoutButton.tintColor = UIColor.white
         let nightscoutImage = UIImage(named: "Nightscout")?.withRenderingMode(.alwaysTemplate)
         nightscoutButton.setImage(nightscoutImage, for: .normal)
-        nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.5)
+        nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -99,6 +97,9 @@ class MainViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
+        // call first "UIApplicationWillEnterForeground" event by hand, it is not sent when the app starts (just registered for the event)
+        prepareForEnteringForeground()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -211,6 +212,18 @@ class MainViewController: UIViewController {
     }
     
     @objc func applicationWillEnterForeground(_ notification: Notification) {
+        prepareForEnteringForeground()
+    }
+
+    fileprivate func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: timeInterval,
+                                     target: self,
+                                     selector: #selector(MainViewController.timerDidEnd(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
+    }
+    
+    fileprivate func prepareForEnteringForeground() {
         
         // If there is already a snooze active => we don't have to fear that an alarm
         // would be played.
@@ -223,17 +236,9 @@ class MainViewController: UIViewController {
             AlarmRule.snoozeSeconds(15)
             self.updateSnoozeButtonText()
         }
-
+        
         startTimer()
         doPeriodicUpdate(forceRepaint: true)
-    }
-
-    fileprivate func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: timeInterval,
-                                     target: self,
-                                     selector: #selector(MainViewController.timerDidEnd(_:)),
-                                     userInfo: nil,
-                                     repeats: true)
     }
     
     // check whether new Values should be retrieved
@@ -291,7 +296,7 @@ class MainViewController: UIViewController {
         if subtitle == nil {
             
             // no alarm, but maybe we'll show a low prediction warning...
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)) {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)), minutesToLow > 0 {
                 subtitle = "Low Predicted in \(minutesToLow)min"
                 subtitleColor = .yellow
             }

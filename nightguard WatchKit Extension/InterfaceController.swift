@@ -95,6 +95,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
         updateInterface(withNightscoutData: currentNightscoutData, error: nil)
         
+        // HACK: after updating to watchOS 5, the interface was not updated sometimes on watch activation, but it seems that if called after a little while, it works almost everytime (still not perfect, but... hey Apple, we want a fix here, on watchOS 4 there were no problems!)
         delay(0.4) { [unowned self] in
             self.delayedWillActivate()
         }
