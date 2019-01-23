@@ -129,6 +129,10 @@
 		D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
 		D1C96AB121CCFE2200B08C2C /* Nightscout.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */; };
 		D1C96AB321CD00F100B08C2C /* NightscoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */; };
+		D1D96CB121F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
+		D1D96CB221F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
+		D1D96CB321F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
+		D1D96CB421F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
 		D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */; };
 		D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
 		D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
@@ -287,6 +291,7 @@
 		D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshLogger.swift; sourceTree = "<group>"; };
 		D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Nightscout.storyboard; sourceTree = "<group>"; };
 		D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutViewController.swift; sourceTree = "<group>"; };
+		D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsValue.swift; sourceTree = "<group>"; };
 		D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "alarm-notification.m4a"; sourceTree = "<group>"; };
 		D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationService.swift; sourceTree = "<group>"; };
@@ -520,6 +525,7 @@
 				D1E6B896219C69D9007ED4FE /* Helpers.swift */,
 				D133078321C424A800DC6879 /* ArrayExtension.swift */,
 				D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */,
+				D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */,
 			);
 			name = helpers;
 			sourceTree = "<group>";
@@ -864,6 +870,7 @@
 				43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */,
 				D133078421C424A800DC6879 /* ArrayExtension.swift in Sources */,
 				D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */,
+				D1D96CB121F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
 				43F1E0EE1D07693300C329A2 /* AlarmRule.swift in Sources */,
 				432E62EF1D17359600DD7978 /* StringExtension.swift in Sources */,
 				43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */,
@@ -905,6 +912,7 @@
 				43794F481C30482500DB8B58 /* DataRepositoryTest.swift in Sources */,
 				43794F4B1C3049B300DB8B58 /* AppConstants.swift in Sources */,
 				439C39191C0E28DD00D89872 /* ChartPainter.swift in Sources */,
+				D1D96CB221F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
 				432E62D71D0CC35100DD7978 /* NightscoutService.swift in Sources */,
 				D112DD3821EA61A700ECFB5E /* NightscoutCacheService.swift in Sources */,
 				432E62D81D0CC38C00DD7978 /* NightscoutData.swift in Sources */,
@@ -915,6 +923,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1D96CB321F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
 				43647BEE1BFF6435004389F9 /* scoutwatchUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -925,6 +934,7 @@
 			files = (
 				D10ACE402063C25600F41EE7 /* BackgroundRefreshSettings.swift in Sources */,
 				4346F9841D0773F700487541 /* TimeService.swift in Sources */,
+				D1D96CB421F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
 				D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */,
 				D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */,
 				D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */,
