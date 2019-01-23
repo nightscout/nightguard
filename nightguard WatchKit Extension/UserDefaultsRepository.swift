@@ -68,35 +68,9 @@ class UserDefaultsRepository {
         }
     }
     
-    static func readShowRawBG() -> Bool {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        return defaults?.bool(forKey: "showRawBG") ?? false
-    }
-    
-    static func saveShowRawBG(_ showRawBG: Bool) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(showRawBG, forKey: "showRawBG")
-    }
-    
-    static func saveShowBGOnAppBadge(_ showRawBG: Bool) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(showRawBG, forKey: "showBGOnAppBadge")
-    }
-
-    static func readShowBGOnAppBadge() -> Bool {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        return defaults?.bool(forKey: "showBGOnAppBadge") ?? false
-    }
-    
-    static func saveAlarmNotificationState(_ isActivated: Bool) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(isActivated, forKey: "alarmNotificationState")
-    }
-    
-    static func readAlarmNotificationState() -> Bool {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        return defaults?.bool(forKey: "alarmNotificationState") ?? false
-    }
+    static let showRawBG = UserDefaultsValue<Bool>(key: "showRawBG", default: false)
+    static let showBGOnAppBadge = UserDefaultsValue<Bool>(key: "showBGOnAppBadge", default: false)
+    static let alarmNotificationState = UserDefaultsValue<Bool>(key: "alarmNotificationState", default: false)
     
     // Returns true if the units (mmol or mg/dL) have already been retrieved
     // from the nightscout backend
@@ -158,55 +132,10 @@ class UserDefaultsRepository {
     
     // Reads the defined value. The user would like to be alerted if the blood glucose
     // levels are above or below this range.
-    static func readUpperLowerBounds() -> (upperBound : Float, lowerBound : Float) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("Units are not saved so far. Assuming (180,80) in this case.")
-            return (180, 80)
-        }
-        
-        let upperBound = defaults.float(forKey: "alertIfAboveValue")
-        if upperBound == 0 {
-            // no values so for from the ios app received
-            // => assume a default value in this case
-            return (180, 80)
-        }
-        let lowerBound = defaults.float(forKey: "alertIfBelowValue")
-        
-        return (upperBound, lowerBound)
-    }
-    
-    static func saveUpperLowerBounds(_ upperBounds : Float, lowerBounds : Float) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("Upper/Lower Bounds can't be saved -> this should never happen!")
-            return
-        }
-        
-        defaults.set(upperBounds, forKey: "alertIfAboveValue")
-        defaults.set(lowerBounds, forKey: "alertIfBelowValue")
-    }
-    
-    static func saveMaximumBloodGlucoseDisplayed(_ maximumBloodGlucoseDisplayed : Float) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("maximumBloodGlucoseDisplayedcan't be saved -> this should never happen!")
-            return
-        }
-        
-        defaults.set(maximumBloodGlucoseDisplayed, forKey: "maximumBloodGlucoseDisplayed")
-    }
-    
-    static func readMaximumBloodGlucoseDisplayed() -> Float {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 350 in this case.")
-            return 350
-        }
-        
-        let value = defaults.float(forKey: "maximumBloodGlucoseDisplayed")
-        if value == 0 {
-            print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 350 in this case.")
-            return 350
-        }
-        return value
-    }
+    static let upperBound = UserDefaultsValue<Float>(key: "upperBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfAboveValue") as? Float) ?? 180)
+    static let lowerBound = UserDefaultsValue<Float>(key: "lowerBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfBelowValue") as? Float) ?? 80)
+
+    static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
     
     fileprivate static func validateUrl(_ stringURL : String) -> Bool {
         

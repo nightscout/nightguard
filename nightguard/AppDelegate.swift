@@ -38,8 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         activateWatchConnectivity()
-        initializeApplicationDefaults()
-        initializeAlarmRule()
         return true
 
     }
@@ -48,45 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if WCSession.isSupported() {
             session = WCSession.default
         }
-    }
-    
-    func initializeAlarmRule() {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        
-        AlarmRule.isEdgeDetectionAlarmEnabled = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
-        AlarmRule.deltaAmount = (defaults?.float(forKey: "deltaAmount"))!
-        
-        AlarmRule.alertIfAboveValue = (defaults?.float(forKey: "alertIfAboveValue"))!
-        AlarmRule.alertIfBelowValue = (defaults?.float(forKey: "alertIfBelowValue"))!
-        
-        AlarmRule.minutesWithoutValues = (defaults?.integer(forKey: "noDataAlarmAfterMinutes"))!
-
-        AlarmRule.minutesToPredictLow = (defaults?.integer(forKey: "lowPredictionMinutes"))!
-        AlarmRule.isLowPredictionEnabled = (defaults?.bool(forKey: "lowPredictionEnabled"))!
-
-        AlarmRule.isSmartSnoozeEnabled = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
-    }
-    
-    func initializeApplicationDefaults() {
-        
-        // Setting the defaults if the users starts the application for the first time
-        let initialDefaults: NSDictionary =
-            ["edgeDetectionAlarmEnabled": false,
-             "numberOfConsecutiveValues": 3,
-             "deltaAmount": 8,
-             
-             "alertIfAboveValue": 180,
-             "alertIfBelowValue": 80,
-             "maximumBloodGlucoseDisplayed": 350,
-             
-             "noDataAlarmAfterMinutes": 15,
-             
-             "lowPredictionMinutes": 15,
-             "lowPredictionEnabled": false,
-             
-             "smartSnoozeEnabled": false
-        ]
-        UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -121,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AlarmNotificationService.singleton.notifyIfAlarmActivated()
             
             // update app badge
-            if UserDefaultsRepository.readShowBGOnAppBadge() {
+            if UserDefaultsRepository.showBGOnAppBadge.value {
                 UIApplication.shared.setCurrentBGValueOnAppBadge()
             }
             

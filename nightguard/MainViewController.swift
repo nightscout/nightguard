@@ -296,7 +296,7 @@ class MainViewController: UIViewController {
         if subtitle == nil {
             
             // no alarm, but maybe we'll show a low prediction warning...
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)), minutesToLow > 0 {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue.value)), minutesToLow > 0 {
                 subtitle = "Low Predicted in \(minutesToLow)min"
                 subtitleColor = .yellow
             }
@@ -383,7 +383,7 @@ class MainViewController: UIViewController {
             self.updateSnoozeButtonText()
 
             // update app badge
-            if UserDefaultsRepository.readShowBGOnAppBadge() {
+            if UserDefaultsRepository.showBGOnAppBadge.value {
                 UIApplication.shared.setCurrentBGValueOnAppBadge()
             }
             
@@ -469,7 +469,7 @@ class MainViewController: UIViewController {
         self.chartScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: self.maximumDeviceTextureWidth(),
-            maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
+            maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
             moveToLatestValue: true)
     }
     
@@ -479,6 +479,6 @@ class MainViewController: UIViewController {
         let isValidRawBGValue = UnitsConverter.toMgdl(currentNightscoutData.rawbg) > 0
 
         // show raw values panel ONLY if configured so and we have a valid rawbg value!
-        self.rawValuesPanel.isHidden = !UserDefaultsRepository.readShowRawBG() || !isValidRawBGValue
+        self.rawValuesPanel.isHidden = !UserDefaultsRepository.showRawBG.value || !isValidRawBGValue
     }
 }

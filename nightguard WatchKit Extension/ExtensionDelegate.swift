@@ -69,13 +69,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         AppMessageService.singleton.keepAwakePhoneApp()
     }
     
-    func initializeApplicationDefaults() {
-        
-        // Setting the defaults if the users starts the application for the first time
-        let initialDefaults: NSDictionary = ["maximumBloodGlucoseDisplayed": 350]
-        UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
-    }
-
     @available(watchOSApplicationExtension 3.0, *)
     public func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         

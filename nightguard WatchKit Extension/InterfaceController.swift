@@ -214,8 +214,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         loadAndPaintCurrentBgData(forceRefresh: forceRefresh)
         loadAndPaintChartData(forceRepaint: forceRepaintCharts)
-        AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
-        AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
+        
+        // HACK??? this might be a fallback for situations when the alarm is not transmitted to watch
+//        AlarmRule.alertIfAboveValue.value = UserDefaultsRepository.readUpperLowerBounds().upperBound
+//        AlarmRule.alertIfBelowValue.value = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
         
     // check whether new Values should be retrieved
@@ -358,7 +360,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         // show raw values panel ONLY if configured so and we have a valid rawbg value!
         let isValidRawBGValue = UnitsConverter.toMgdl(currentNightscoutData.rawbg) > 0
-        self.rawValuesGroup.setHidden(!UserDefaultsRepository.readShowRawBG() || !isValidRawBGValue)
+        self.rawValuesGroup.setHidden(!UserDefaultsRepository.showRawBG.value || !isValidRawBGValue)
         self.rawbgLabel.setText(currentNightscoutData.rawbg)
         self.noiseLabel.setText(currentNightscoutData.noise)
     }
@@ -419,7 +421,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.chartScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: bounds.width * 6,
-            maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
+            maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
             moveToLatestValue: moveToLatestValue,
             displayDaysLegend: false,
             infoLabel: determineInfoLabel())

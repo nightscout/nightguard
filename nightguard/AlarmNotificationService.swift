@@ -17,11 +17,11 @@ class AlarmNotificationService {
     // service state
     var enabled: Bool {
         get {
-            return UserDefaultsRepository.readAlarmNotificationState()
+            return UserDefaultsRepository.alarmNotificationState.value
         }
         
         set(value) {
-            UserDefaultsRepository.saveAlarmNotificationState(value)
+            UserDefaultsRepository.alarmNotificationState.value = value
             if value {
                 requestAuthorization()
             }

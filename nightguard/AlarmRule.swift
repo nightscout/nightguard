@@ -8,33 +8,6 @@
 
 import Foundation
 
-
-class UserDefaultsValue<T> {
-    
-    let key: String
-    
-    var value: T {
-        didSet {
-            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
-            defaults.setValue(value, forKey: key)
-        }
-    }
-    
-    init(key: String, default defaultValue: T) {
-        self.key = key
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
-        if let anyValue = defaults.object(forKey: key), let value = UserDefaultsValue.fromAny(anyValue) {
-            self.value = value
-        } else {
-            self.value = defaultValue
-        }
-    }
-
-    class func fromAny(_ anyValue: Any) -> T? {
-        return anyValue as? T
-    }
-}
-
 /**
  * This class implements the Rules for which an alarm should be played.
  * 
@@ -50,19 +23,19 @@ class AlarmRule {
     
     fileprivate static var snoozedUntilTimestamp = TimeInterval()
     
-    static var numberOfConsecutiveValues = UserDefaultsValue<Int>(key: "numberOfConsecutiveValues", default: 3)
-    static var deltaAmount : Float = 8
-    static var isEdgeDetectionAlarmEnabled : Bool = false
+    static let numberOfConsecutiveValues = UserDefaultsValue<Int>(key: "numberOfConsecutiveValues", default: 3)
+    static let deltaAmount = UserDefaultsValue<Float>(key: "deltaAmount", default: 8)
+    static let isEdgeDetectionAlarmEnabled = UserDefaultsValue<Bool>(key: "deltaAmount", default: false)
     
-    static var alertIfAboveValue : Float = 180
-    static var alertIfBelowValue : Float = 80
+    static let alertIfAboveValue = UserDefaultsRepository.upperBound
+    static let alertIfBelowValue = UserDefaultsRepository.lowerBound
     
-    static var minutesWithoutValues : Int = 15
+    static let minutesWithoutValues = UserDefaultsValue<Int>(key: "noDataAlarmAfterMinutes", default: 15)
     
-    static var minutesToPredictLow : Int = 15
-    static var isLowPredictionEnabled : Bool = false
+    static var minutesToPredictLow = UserDefaultsValue<Int>(key: "lowPredictionMinutes", default: 15)
+    static var isLowPredictionEnabled = UserDefaultsValue<Bool>(key: "lowPredictionEnabled", default: false)
 
-    static var isSmartSnoozeEnabled : Bool = false
+    static var isSmartSnoozeEnabled = UserDefaultsValue<Bool>(key: "smartSnoozeEnabled", default: false)
     
     /*
      * Returns true if the alarm should be played.
@@ -91,7 +64,7 @@ class AlarmRule {
             return nil
         }
         
-        if currentReading.isOlderThanXMinutes(minutesWithoutValues) {
+        if currentReading.isOlderThanXMinutes(minutesWithoutValues.value) {
             return "Missed Readings"
         }
         
@@ -99,7 +72,7 @@ class AlarmRule {
         let isTooHigh = AlarmRule.isTooHigh(svgInMgdl)
         let isTooLow = AlarmRule.isTooLow(svgInMgdl)
         
-        if isSmartSnoozeEnabled && (isTooHigh || isTooLow) {
+        if isSmartSnoozeEnabled.value && (isTooHigh || isTooLow) {
             
             // if the trend is to leave the too high or too low zone, we'll snooze the alarm (without caring about the edges - we're outside of the board, first get in, then we'll check the edges)
             switch bloodValues.trend {
@@ -118,9 +91,9 @@ class AlarmRule {
             }
             
             // let's try also with prediction: we'll snooze the alarm if the prediction says that we'll leave the too high or too low zone in less than 30 minutes
-            if isTooHigh && (PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfAboveValue)) ?? Int.max) < 30 {
+            if isTooHigh && (PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfAboveValue.value)) ?? Int.max) < 30 {
                 return nil
-            } else if isTooLow && (PredictionService.singleton.minutesTo(high: UnitsConverter.toDisplayUnits(alertIfBelowValue)) ?? Int.max) < 30 {
+            } else if isTooLow && (PredictionService.singleton.minutesTo(high: UnitsConverter.toDisplayUnits(alertIfBelowValue.value)) ?? Int.max) < 30 {
                 return nil
             }
         }
@@ -131,7 +104,7 @@ class AlarmRule {
             return "Low BG"
         }
 
-        if isEdgeDetectionAlarmEnabled  {
+        if isEdgeDetectionAlarmEnabled.value  {
             if bloodValuesAreIncreasingTooFast(bloodValues) {
                 return "Fast Rise"
             } else if bloodValuesAreDecreasingTooFast(bloodValues) {
@@ -139,8 +112,8 @@ class AlarmRule {
             }
         }
         
-        if isLowPredictionEnabled {
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfBelowValue)), minutesToLow <= minutesToPredictLow {
+        if isLowPredictionEnabled.value {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfBelowValue.value)), minutesToLow <= minutesToPredictLow.value {
                 #if os(iOS)
                 return "Low Predicted in \(minutesToLow)min"
                 #else
@@ -158,11 +131,11 @@ class AlarmRule {
     }
     
     fileprivate static func isTooHigh(_ bloodGlucose : Float) -> Bool {
-        return bloodGlucose > alertIfAboveValue
+        return bloodGlucose > alertIfAboveValue.value
     }
 
     fileprivate static func isTooLow(_ bloodGlucose : Float) -> Bool {
-        return bloodGlucose < alertIfBelowValue
+        return bloodGlucose < alertIfBelowValue.value
     }
     
     fileprivate static func bloodValuesAreIncreasingOrDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
@@ -176,7 +149,7 @@ class AlarmRule {
             return false
         }
         
-        return readings.deltas.allSatisfy { $0 > deltaAmount }
+        return readings.deltas.allSatisfy { $0 > deltaAmount.value }
     }
     
     fileprivate static func bloodValuesAreDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
@@ -186,7 +159,7 @@ class AlarmRule {
             return false
         }
         
-        return readings.deltas.allSatisfy { $0 < -deltaAmount }
+        return readings.deltas.allSatisfy { $0 < -deltaAmount.value }
     }
     
     /*

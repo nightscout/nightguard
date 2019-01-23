@@ -44,8 +44,8 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         let tap = UITapGestureRecognizer(target: self, action: #selector(PrefsViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
         
-        showRawBGSwitch.isOn = UserDefaultsRepository.readShowRawBG()
-        showBGOnAppBadgeSwitch.isOn = UserDefaultsRepository.readShowBGOnAppBadge()
+        showRawBGSwitch.isOn = UserDefaultsRepository.showRawBG.value
+        showBGOnAppBadgeSwitch.isOn = UserDefaultsRepository.showBGOnAppBadge.value
         
         showBookmarksButtonOnKeyboardIfNeeded()
         
@@ -179,11 +179,11 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         
-        let alertIfAboveValue : Float = (defaults?.float(forKey: "alertIfAboveValue"))!
-        let alertIfBelowValue : Float = (defaults?.float(forKey: "alertIfBelowValue"))!
+        let alertIfAboveValue : Float = AlarmRule.alertIfAboveValue.value
+        let alertIfBelowValue : Float = AlarmRule.alertIfBelowValue.value
         let hostUri : String = UserDefaultsRepository.readBaseUri()
         let units : Units = UserDefaultsRepository.readUnits()
-        let showRawBG : Bool = UserDefaultsRepository.readShowRawBG()
+        let showRawBG : Bool = UserDefaultsRepository.showRawBG.value
         
         WatchService.singleton.sendToWatch(hostUri, alertIfBelowValue: alertIfBelowValue, alertIfAboveValue: alertIfAboveValue, units: units, showRawBG: showRawBG)
     }
@@ -196,7 +196,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     // RawBG switch
     @IBAction func onShowRawBGValueChanged(_ sender: UISwitch) {
-        UserDefaultsRepository.saveShowRawBG(sender.isOn)
+        UserDefaultsRepository.showRawBG.value = sender.isOn
         sendValuesToAppleWatch()
     }
     
@@ -208,7 +208,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
             UIApplication.shared.clearAppBadge()
         }
         
-        UserDefaultsRepository.saveShowBGOnAppBadge(sender.isOn)
+        UserDefaultsRepository.showBGOnAppBadge.value = sender.isOn
     }
     
     // MARK: Picker-View methods

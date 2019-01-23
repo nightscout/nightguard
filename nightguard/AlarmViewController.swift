@@ -61,9 +61,9 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         
         updateUnits()
         
-        edgeDetectionSwitch.isOn = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
-        lowPredictionSwitch.isOn = (defaults?.bool(forKey: "lowPredictionEnabled"))!
-        smartSnoozeSwitch.isOn = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
+        edgeDetectionSwitch.isOn = AlarmRule.isEdgeDetectionAlarmEnabled.value
+        lowPredictionSwitch.isOn = AlarmRule.isLowPredictionEnabled.value
+        smartSnoozeSwitch.isOn = AlarmRule.isSmartSnoozeEnabled.value
         notificationsSwitch.isOn = AlarmNotificationService.singleton.enabled
         numberOfConsecutiveValues.text = "\(AlarmRule.numberOfConsecutiveValues.value)"
         
@@ -81,15 +81,15 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         
         updateUnits()
         
-        deltaAmount.text = UnitsConverter.toDisplayUnits((defaults?.string(forKey: "deltaAmount"))!)
+        deltaAmount.text = UnitsConverter.toDisplayUnits("\(AlarmRule.deltaAmount.value)")
         
-        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.string(forKey: "alertIfAboveValue"))!)
+        alertIfAboveValueLabel.text = UnitsConverter.toDisplayUnits("\(AlarmRule.alertIfAboveValue.value)")
         alertAboveSlider.value = (UnitsConverter.toMgdl(alertIfAboveValueLabel.text!.floatValue) - MIN_ALERT_ABOVE_VALUE) / MAX_ALERT_ABOVE_VALUE
-        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.string(forKey: "alertIfBelowValue"))!)
+        alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits("\(AlarmRule.alertIfBelowValue.value)")
         alertBelowSlider.value = (UnitsConverter.toMgdl(alertIfBelowValueLabel.text!.floatValue) - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
         
-        noDataAlarmAfterMinutes.text = defaults?.string(forKey: "noDataAlarmAfterMinutes")
-        lowPredictionMinutes.text = defaults?.string(forKey: "lowPredictionMinutes")
+        noDataAlarmAfterMinutes.text = "\(AlarmRule.minutesWithoutValues.value)"
+        lowPredictionMinutes.text = "\(AlarmRule.minutesToPredictLow.value)"
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -98,21 +98,15 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     @IBAction func edgeDetectionSwitchChanged(_ sender: AnyObject) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(edgeDetectionSwitch.isOn, forKey: "edgeDetectionAlarmEnabled")
-        AlarmRule.isEdgeDetectionAlarmEnabled = edgeDetectionSwitch.isOn
+        AlarmRule.isEdgeDetectionAlarmEnabled.value = edgeDetectionSwitch.isOn
     }
     
     @IBAction func lowPredictionSwitchChanged(_ sender: AnyObject) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(lowPredictionSwitch.isOn, forKey: "lowPredictionEnabled")
-        AlarmRule.isLowPredictionEnabled = lowPredictionSwitch.isOn
+        AlarmRule.isLowPredictionEnabled.value = lowPredictionSwitch.isOn
     }
     
     @IBAction func smartSnoozeSwitchChanged(_ sender: AnyObject) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(smartSnoozeSwitch.isOn, forKey: "smartSnoozeEnabled")
-        AlarmRule.isSmartSnoozeEnabled = smartSnoozeSwitch.isOn
+        AlarmRule.isSmartSnoozeEnabled.value = smartSnoozeSwitch.isOn
     }
     
     @IBAction func notificationsSwitchChanged(_ sender: AnyObject) {
@@ -129,11 +123,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     @IBAction func deltaEditingChanged(_ sender: AnyObject) {
-        let deltaAmountValue = UnitsConverter.toMgdl(deltaAmount.text!)
-        
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(deltaAmountValue, forKey: "deltaAmount")
-        AlarmRule.deltaAmount = deltaAmountValue
+        let deltaAmountValue = UnitsConverter.toMgdl(deltaAmount.text!)        
+        AlarmRule.deltaAmount.value = deltaAmountValue
     }
     
     @IBAction func lowPredictionMinutesEditingDidBegin(_ textField: UITextField) {
@@ -144,13 +135,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @IBAction func lowPredictionMinutesEditingDidEnd(_ textField: UITextField) {
         let minutes = Int(textField.text!)!
-        
-        // Remember the selected value by storing it as default setting
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(minutes, forKey: "lowPredictionMinutes")
-        
-        // set the new AlarmRule
-        AlarmRule.minutesToPredictLow = minutes
+        AlarmRule.minutesToPredictLow.value = minutes
     }
     
     @IBAction func noDataAlarmAfterMinutesEditingDidBegin(_ textField: UITextField) {
@@ -161,13 +146,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @IBAction func noDataAlarmAfterMinutesEditingDidEnd(_ textField: UITextField) {
         let minutes = Int(textField.text!)!
-        
-        // Remember the selected value by storing it as default setting
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(minutes, forKey: "noDataAlarmAfterMinutes")
-        
-        // Activate the new AlarmRule
-        AlarmRule.minutesWithoutValues = minutes
+        AlarmRule.minutesWithoutValues.value = minutes
     }
 
     @IBAction func aboveAlertValueChanged(_ sender: AnyObject) {
@@ -251,11 +230,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         
         if commitChanges {
             adjustLowerSliderValue()
-            
-            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-            defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
-            
-            AlarmRule.alertIfAboveValue = alertIfAboveValue
+                        
+            AlarmRule.alertIfAboveValue.value = alertIfAboveValue
             WatchService.singleton.sendToWatch(UnitsConverter.toMgdl(alertIfBelowValueLabel.text!), alertIfAboveValue: alertIfAboveValue)
         }
     }
@@ -268,10 +244,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         if commitChanges {
             adjustAboveSliderValue()
             
-            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-            defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
-            
-            AlarmRule.alertIfBelowValue = alertIfBelowValue
+            AlarmRule.alertIfBelowValue.value = alertIfBelowValue
             WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: UnitsConverter.toMgdl(alertIfAboveValueLabel.text!))
         }
     }

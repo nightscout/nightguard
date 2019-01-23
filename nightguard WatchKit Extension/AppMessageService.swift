@@ -60,23 +60,17 @@ class AppMessageService : NSObject, WCSessionDelegate {
         }
         
         if let showRawBG = applicationContext["showRawBG"] as? Bool {
-            UserDefaultsRepository.saveShowRawBG(showRawBG)
+            UserDefaultsRepository.showRawBG.value = showRawBG
         }
         
         var shouldRepaintCharts = false
         if let alertIfAboveValue = applicationContext["alertIfAboveValue"] as? Float {
-            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-            defaults!.setValue(alertIfAboveValue, forKey: "alertIfAboveValue")
-            AlarmRule.alertIfAboveValue = alertIfAboveValue
-            
+            AlarmRule.alertIfAboveValue.value = alertIfAboveValue
             shouldRepaintCharts = true
         }
         
         if let alertIfBelowValue = applicationContext["alertIfBelowValue"] as? Float {
-            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-            defaults!.setValue(alertIfBelowValue, forKey: "alertIfBelowValue")
-            AlarmRule.alertIfBelowValue = alertIfBelowValue
-            
+            AlarmRule.alertIfBelowValue.value = alertIfBelowValue            
             shouldRepaintCharts = true
         }
         
