@@ -253,10 +253,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func assureThatDisplayUnitsIsDefined() {
         
-        if !UserDefaultsRepository.areUnitsDefined() {
+        if !UserDefaultsRepository.units.exists {
             // try to determine whether the user wishes to see value in mmol or mg/dL
             NightscoutService.singleton.readStatus { (units) in
-                UserDefaultsRepository.saveUnits(units)
+                UserDefaultsRepository.units.value = units
             }
         }
     }

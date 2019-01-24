@@ -19,7 +19,7 @@ class StatsPrefsViewController : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let daysToBeDisplayed = UserDefaultsRepository.readDaysToBeDisplayed()
+        let daysToBeDisplayed = UserDefaultsRepository.daysToBeDisplayed.value
         
         day1IsActivatedSwitch.isOn = daysToBeDisplayed[0]
         day2IsActivatedSwitch.isOn = daysToBeDisplayed[1]
@@ -31,12 +31,13 @@ class StatsPrefsViewController : UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        UserDefaultsRepository.saveDaysToBeDisplayed(
-            [day1IsActivatedSwitch.isOn,
-                day2IsActivatedSwitch.isOn,
-                day3IsActivatedSwitch.isOn,
-                day4IsActivatedSwitch.isOn,
-                day5IsActivatedSwitch.isOn])
+        UserDefaultsRepository.daysToBeDisplayed.value = [
+            day1IsActivatedSwitch.isOn,
+            day2IsActivatedSwitch.isOn,
+            day3IsActivatedSwitch.isOn,
+            day4IsActivatedSwitch.isOn,
+            day5IsActivatedSwitch.isOn
+        ]
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

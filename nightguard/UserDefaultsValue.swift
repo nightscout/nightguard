@@ -19,6 +19,12 @@ class UserDefaultsValue<T> {
         }
     }
     
+    // is value already stored in UserDefaults?
+    var exists: Bool {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
+        return defaults.object(forKey: key) != nil
+    }
+    
     init(key: String, default defaultValue: T) {
         self.key = key
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!

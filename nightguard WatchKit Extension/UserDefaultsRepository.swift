@@ -74,64 +74,13 @@ class UserDefaultsRepository {
     
     // Returns true if the units (mmol or mg/dL) have already been retrieved
     // from the nightscout backend
-    static func areUnitsDefined() -> Bool {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            return false
-        }
-        
-        guard let _ = defaults.object(forKey: "units") as? String else {
-            return false
-        }
-        return true
-    }
+    static let units = UserDefaultsValue<Units>(key: "units", default: Units.mgdl)
     
-    static func readUnits() -> Units {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("Units are not saved so far. Assuming mg/dL in this case.")
-            return Units.mgdl
-        }
-        
-        guard let units = defaults.object(forKey: "units") as? String else {
-            print("Units are not saved so far. Assuming mg/dL in this case.")
-            return Units.mgdl
-        }
-        return Units(rawValue: units)!
-    }
-    
-    static func saveUnits(_ units : Units) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            return
-        }
-        
-        defaults.set(units.rawValue, forKey: "units")
-    }
-    
-    // Returns an array of which days should be displayed.
-    // E.g. true, false, false, false, false if only the first day should be displayed
-    // In the statistics view
-    static func readDaysToBeDisplayed() -> [Bool] {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("NSUserDefaults can't be accessed. Assuming that all 5 days should be displayed this case.")
-            return [true, true, true, true, true]
-        }
-        
-        guard let daysToDisplay = defaults.array(forKey: "daysToBeDisplayed") as? [Bool] else {
-            print("DaysToDisplay are undefined so far. Assuming that all 5 days should be displayed this case.")
-            return [true, true, true, true, true]
-        }
-        
-        return daysToDisplay
-    }
-    
-    // Stores an array defining what days should be displayed in the statistics view
+    // the array defining what days should be displayed in the statistics view
     // E.g. [true, true, true, true, true] if all 5 days should be displayed
-    static func saveDaysToBeDisplayed(_ daysToBeDisplayed : [Bool]) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(daysToBeDisplayed, forKey: "daysToBeDisplayed")
-    }
+    static let daysToBeDisplayed = UserDefaultsValue<[Bool]>(key: "daysToBeDisplayed", default: [true, true, true, true, true])
     
-    // Reads the defined value. The user would like to be alerted if the blood glucose
-    // levels are above or below this range.
+    // blood glucose upper/lower bounds (definition of user's bg range)
     static let upperBound = UserDefaultsValue<Float>(key: "upperBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfAboveValue") as? Float) ?? 180)
     static let lowerBound = UserDefaultsValue<Float>(key: "lowerBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfBelowValue") as? Float) ?? 80)
 

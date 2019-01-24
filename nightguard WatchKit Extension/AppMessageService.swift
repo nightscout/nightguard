@@ -52,7 +52,7 @@ class AppMessageService : NSObject, WCSessionDelegate {
     
     func updateValuesFromApplicationContext(_ applicationContext: [String : AnyObject]) {
         if let units = applicationContext["units"] as? String {
-            UserDefaultsRepository.saveUnits(Units(rawValue: units)!)
+            UserDefaultsRepository.units.value = Units(rawValue: units)!
         }
         
         if let hostUri = applicationContext["hostUri"] as? String {

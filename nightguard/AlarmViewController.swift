@@ -191,7 +191,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
 
     func snapAboveSliderValue() {
         
-        guard UserDefaultsRepository.readUnits() == .mgdl else {
+        guard UserDefaultsRepository.units.value == .mgdl else {
             
             // don't know how to snap mol units...
             return
@@ -208,7 +208,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     func snapBelowSliderValue() {
         
-        guard UserDefaultsRepository.readUnits() == .mgdl else {
+        guard UserDefaultsRepository.units.value == .mgdl else {
 
             // don't know how to snap mol units...
             return
@@ -250,8 +250,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     func updateUnits() {
-        let units = UserDefaultsRepository.readUnits()
-        
+        let units = UserDefaultsRepository.units.value
         if units == Units.mmol {
             unitsLabel.text = "mmol"
         } else {

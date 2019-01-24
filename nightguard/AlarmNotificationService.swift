@@ -72,7 +72,7 @@ class AlarmNotificationService {
         // trigger notification
         let content = UNMutableNotificationContent()
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        let units = (UserDefaultsRepository.readUnits() == Units.mmol) ? "mmol" : "mg/dL"
+        let units = (UserDefaultsRepository.units.value == Units.mmol) ? "mmol" : "mg/dL"
 
         content.title = "\(nightscoutData.sgv) \(nightscoutData.bgdeltaArrow)\t\(nightscoutData.bgdeltaString) \(units)"
         content.body = "\(alarmActivationReason) alert"

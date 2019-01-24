@@ -182,7 +182,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         let alertIfAboveValue : Float = AlarmRule.alertIfAboveValue.value
         let alertIfBelowValue : Float = AlarmRule.alertIfBelowValue.value
         let hostUri : String = UserDefaultsRepository.readBaseUri()
-        let units : Units = UserDefaultsRepository.readUnits()
+        let units : Units = UserDefaultsRepository.units.value
         let showRawBG : Bool = UserDefaultsRepository.showRawBG.value
         
         WatchService.singleton.sendToWatch(hostUri, alertIfBelowValue: alertIfBelowValue, alertIfAboveValue: alertIfAboveValue, units: units, showRawBG: showRawBG)
@@ -235,7 +235,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
             
             switch result {
             case .data(let units):
-                UserDefaultsRepository.saveUnits(units)
+                UserDefaultsRepository.units.value = units
                 completion(nil)
                 
             case .error(let error):
