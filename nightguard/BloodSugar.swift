@@ -14,7 +14,11 @@ class BloodSugar : NSCoder {
     let value : Float
     let timestamp : Double
     
-    init(value : Float, timestamp : Double) {
+    var date: Date {
+        return Date(timeIntervalSince1970: timestamp / 1000)
+    }
+    
+    required init(value : Float, timestamp : Double) {
         self.value = value
         self.timestamp = timestamp
     }
@@ -26,6 +30,24 @@ class BloodSugar : NSCoder {
     
     static func isValid(value: Float) -> Bool {
         return UnitsConverter.toMgdl(value) > 10
+    }
+    
+    override var debugDescription: String {
+        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm:ss"
+        let time = timeFormatter.string(from: self.date)
+        
+        let value: String
+        if self.value.isNaN{
+            value = "NaN"
+        } else if self.value.isInfinite {
+            value = "inf"
+        } else {
+            value = "\(Int64(self.value.rounded()))"
+        }
+        
+        return "\(value) @ \(time)"
     }
     
     @objc required convenience init(coder decoder: NSCoder) {
@@ -42,25 +64,8 @@ class BloodSugar : NSCoder {
         coder.encode(self.timestamp, forKey: "timestamp")
     }
     
-    static func getMinimumTimestamp(_ bloodValues : [BloodSugar]) -> Double {
-        
-        var minimumTimestamp : Double = Double.infinity
-        for bloodSugar in bloodValues {
-            if bloodSugar.timestamp < minimumTimestamp {
-                minimumTimestamp = bloodSugar.timestamp
-            }
-        }
-        return minimumTimestamp
-    }
-    
-    static func getMaximumTimestamp(_ bloodValues : [BloodSugar]) -> Double {
-        
-        var maximumTimestamp : Double = 0
-        for bloodSugar in bloodValues {
-            if bloodSugar.timestamp > maximumTimestamp {
-                maximumTimestamp = bloodSugar.timestamp
-            }
-        }
-        return maximumTimestamp
+    func isOlderThanXMinutes(_ minutes : Int) -> Bool {
+        let timeInterval = Int(Date().timeIntervalSince(self.date))
+        return timeInterval > minutes * 60
     }
 }

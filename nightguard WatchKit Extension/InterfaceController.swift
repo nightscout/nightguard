@@ -69,7 +69,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
         
-        if (interfaceBounds.height == 195.0) {
+        if (interfaceBounds.height >= 224.0) {
+            // Apple Watch 44mm
+            return 165.0
+        }
+        if (interfaceBounds.height >= 195.0) {
             // Apple Watch 42mm
             return 145.0
         }
@@ -82,11 +86,26 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     override func willActivate() {
         super.willActivate()
         
-        guard WKExtension.shared().applicationState == .active else {
-            return
-        }
+//        guard WKExtension.shared().applicationState != .background else {
+//            return
+//        }
         
         isActive = true
+        
+        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        updateInterface(withNightscoutData: currentNightscoutData, error: nil)
+        
+        // HACK: after updating to watchOS 5, the interface was not updated sometimes on watch activation, but it seems that if called after a little while, it works almost everytime (still not perfect, but... hey Apple, we want a fix here, on watchOS 4 there were no problems!)
+        delay(0.4) { [unowned self] in
+            self.delayedWillActivate()
+        }
+    }
+    
+    private func delayedWillActivate() {
+        guard isActive else { return }
+        
+        print("delayedWillActivate")
+
         spriteKitView.isPaused = false
         
         // Start the timer to retrieve new bgValues and update the ui periodically
@@ -164,7 +183,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @objc func doRefreshMenuAction() {
         NightscoutCacheService.singleton.resetCache()
         
-        loadAndPaintCurrentBgData()
+        loadAndPaintCurrentBgData(forceRefresh: true)
         loadAndPaintChartData(forceRepaint: true)
     }
     
@@ -193,18 +212,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         assureThatBaseUriIsExisting()
         assureThatDisplayUnitsIsDefined()
         
-        let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        if forceRefresh || currentNightscoutData.isOlderThan5Minutes() {
-            
-            // load current bg data, we probably have old data...
-            loadAndPaintCurrentBgData()
-        } else {
-            
-            // otwherwise just update the gui with current data (will update the time, etc., but will not display the activity indicator & error panel)
-            updateInterface(withNightscoutData: currentNightscoutData, error: nil)
-            playAlarm(currentNightscoutData: currentNightscoutData)
-        }
-        
+        loadAndPaintCurrentBgData(forceRefresh: forceRefresh)
         loadAndPaintChartData(forceRepaint: forceRepaintCharts)
         AlarmRule.alertIfAboveValue = UserDefaultsRepository.readUpperLowerBounds().upperBound
         AlarmRule.alertIfBelowValue = UserDefaultsRepository.readUpperLowerBounds().lowerBound
@@ -280,35 +288,48 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
     
-    fileprivate func loadAndPaintCurrentBgData() {
-        
-        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
+    fileprivate func loadAndPaintCurrentBgData(forceRefresh: Bool) {
+
+        // do not call refresh again if not needed
+        guard forceRefresh || !NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests else {
+            return
+        }
+
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: forceRefresh) { [unowned self] result in
+            guard let result = result else { return }
             
-            DispatchQueue.main.async { [unowned self] in
-                self.updateInterface(withNightscoutData: newNightscoutData, error: error)
-                if let newNightscoutData = newNightscoutData {
+             dispatchOnMain { [unowned self] in
+                guard self.isActive else { return }
+                
+                switch result {
+                case .data(let newNightscoutData):
+                    self.updateInterface(withNightscoutData: newNightscoutData, error: nil)
                     self.updateComplication()
                     self.playAlarm(currentNightscoutData: newNightscoutData)
+                case .error(let error):
+                    self.updateInterface(withNightscoutData: nil, error: error)
                 }
             }
-        })
+        }
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
         self.playAlarm(currentNightscoutData: currentNightscoutData)
         
-        // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
-        self.errorGroup.setHidden(true)
-        self.iobLabel.setText(nil)
-        self.deltaArrowLabel.setText(nil)
-        
-        self.activityIndicatorImage.setHidden(false)
-        self.activityIndicatorImage.startAnimatingWithImages(in: NSRange(1...15), duration: 1.0, repeatCount: 0)
+        if NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests {
+            
+            // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
+            self.errorGroup.setHidden(true)
+            self.iobLabel.setText(nil)
+            self.deltaArrowLabel.setText(nil)
+            
+            self.activityIndicatorImage.setHidden(false)
+            self.activityIndicatorImage.startAnimatingWithImages(in: NSRange(1...15), duration: 1.0, repeatCount: 0)
+        }
     }
     
     fileprivate func playAlarm(currentNightscoutData : NightscoutData) {
         
-        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({ ([BloodSugar]) -> Void in })
-        if AlarmRule.isAlarmActivated(currentNightscoutData, bloodValues: newCachedTodaysBgValues) {
+        if AlarmRule.isAlarmActivated() {
             WKInterfaceDevice.current().play(.notification)
         }
     }
@@ -344,20 +365,41 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     func loadAndPaintChartData(forceRepaint : Bool) {
         
-        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
-            
-            DispatchQueue.main.async {
-                self.cachedTodaysBgValues = newTodaysData
-                self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues, moveToLatestValue: true)
+        let newCachedTodaysBgValues: [BloodSugar]
+        if NightscoutCacheService.singleton.hasTodaysBgDataPendingRequests {
+           newCachedTodaysBgValues = NightscoutDataRepository.singleton.loadTodaysBgData()
+        } else {
+            newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
+                guard let result = result else { return }
+
+                dispatchOnMain { [unowned self] in
+                    guard self.isActive else { return }
+                    
+                    if case .data(let newTodaysData) = result {
+                        self.cachedTodaysBgValues = newTodaysData
+                        self.paintChartData(todaysData: newTodaysData, yesterdaysData: self.cachedYesterdaysBgValues, moveToLatestValue: true)
+                    }
+                }
             }
-        })
-        let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
-            
-            DispatchQueue.main.async {
-                self.cachedYesterdaysBgValues = newYesterdaysData
-                self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData, moveToLatestValue: false)
+        }
+        
+        let newCachedYesterdaysBgValues: [BloodSugar]
+        if NightscoutCacheService.singleton.hasYesterdaysBgDataPendingRequests {
+            newCachedYesterdaysBgValues = NightscoutDataRepository.singleton.loadYesterdaysBgData()
+        } else {
+            newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData { [unowned self] result in
+                guard let result = result else { return }
+
+                dispatchOnMain { [unowned self] in
+                    guard self.isActive else { return }
+                    
+                    if case .data(let newYesterdaysData) = result {
+                        self.cachedYesterdaysBgValues = newYesterdaysData
+                        self.paintChartData(todaysData: self.cachedTodaysBgValues, yesterdaysData: newYesterdaysData, moveToLatestValue: false)
+                    }
+                }
             }
-        })
+        }
         
         // this does a fast paint of eventually cached data
         if forceRepaint ||
@@ -372,8 +414,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
         
         let bounds = WKInterfaceDevice.current().screenBounds
+        
+        let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
         self.chartScene.paintChart(
-            [todaysData, yesterdaysData],
+            [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: bounds.width * 6,
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: moveToLatestValue,
@@ -384,7 +428,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     func determineInfoLabel() -> String {
         
         if !AlarmRule.isSnoozed() {
-            return ""
+            if let alarmReason = AlarmRule.getAlarmActivationReason() {
+                return  alarmReason
+            } else {
+                return ""
+            }
         }
         
         return "Snoozed " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min"

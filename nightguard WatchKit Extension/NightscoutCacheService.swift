@@ -22,6 +22,26 @@ class NightscoutCacheService: NSObject {
     fileprivate var newDataReceived : Bool = false
     fileprivate let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     
+    // housekeeping of pending requests
+    fileprivate var todaysBgDataTasks: [URLSessionTask] = []
+    fileprivate var yesterdaysBgDataTasks: [URLSessionTask] = []
+    fileprivate var currentNightscoutDataTasks: [URLSessionTask] = []
+    
+    // are there any running "todays bg data" requests?
+    var hasTodaysBgDataPendingRequests: Bool {
+        return todaysBgDataTasks.contains(where: { task in task.state == .running })
+    }
+
+    // are there any running "yesterdays bg data" requests?
+    var hasYesterdaysBgDataPendingRequests: Bool {
+        return yesterdaysBgDataTasks.contains(where: { task in task.state == .running })
+    }
+
+    // are there any running "current nightscout data" requests?
+    var hasCurrentNightscoutDataPendingRequests: Bool {
+        return currentNightscoutDataTasks.contains(where: { task in task.state == .running })
+    }
+
     // During background updates, this value is modified from the ExtensionDelegate
     func updateCurrentNightscoutData(newNightscoutData : NightscoutData) {
         currentNightscoutData = newNightscoutData
@@ -70,29 +90,23 @@ class NightscoutCacheService: NSObject {
         return false
     }
     
-    func loadCurrentNightscoutData(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void))
-        -> NightscoutData {
-            
-            if currentNightscoutData == nil {
-                currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
-            }
-            
-            checkIfRefreshIsNeeded(resultHandler, inBackground: false)
-            
-            return currentNightscoutData!
-    }
+    func loadCurrentNightscoutData(forceRefresh: Bool, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void) -> NightscoutData {
     
-    func loadCurrentNightscoutDataInBackground() {
-        
         if currentNightscoutData == nil {
             currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         }
         
-        checkIfRefreshIsNeeded({_,_ in }, inBackground: true)
+        checkIfRefreshIsNeeded(resultHandler, forceRefresh: forceRefresh)
+        
+        return currentNightscoutData!
+    }
+    
+    func loadCurrentNightscoutData(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void) -> NightscoutData {
+        return loadCurrentNightscoutData(forceRefresh: false, resultHandler)
     }
     
     // Reads the blood glucose data from today
-    func loadTodaysData(_ resultHandler : @escaping (([BloodSugar]) -> Void))
+    func loadTodaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>?) -> Void)
         -> [BloodSugar] {
         
         if todaysBgData == nil {
@@ -100,20 +114,31 @@ class NightscoutCacheService: NSObject {
         }
         
         todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData!)
-            
+        
         if todaysBgData!.count == 0 || currentNightscoutData == nil || currentNightscoutData!.isOlderThan5Minutes()
             || currentNightscoutWasFetchedInBackground(todaysBgData: todaysBgData!) {
             
-            NightscoutService.singleton.readTodaysChartData(oldValues : todaysBgData!, {(todaysBgData) -> Void in
+            if let task = NightscoutService.singleton.readTodaysChartData(oldValues: todaysBgData!, { [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
                 
-                self.newDataReceived = true
+                if case .data(let todaysBgData) = result {
+                    self.newDataReceived = true
                 
-                self.todaysBgData = todaysBgData
-                NightscoutDataRepository.singleton.storeTodaysBgData(todaysBgData)
+                    self.todaysBgData = todaysBgData
+                    NightscoutDataRepository.singleton.storeTodaysBgData(todaysBgData)
+                }
                 
-                resultHandler(todaysBgData)
-            })
+                resultHandler(result)
+            }) {
+                // cleanup (delete not running tasks) and add the current started one
+                todaysBgDataTasks.removeAll(where: { task in task.state != .running })
+                todaysBgDataTasks.append(task)
+            } else {
+                resultHandler(nil)
+            }
+        } else {
+            resultHandler(nil)
         }
+            
         return todaysBgData!
     }
     
@@ -141,7 +166,7 @@ class NightscoutCacheService: NSObject {
     }
     
     // Reads the blood glucose data from yesterday
-    func loadYesterdaysData(_ resultHandler : @escaping (([BloodSugar]) -> Void))
+    func loadYesterdaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>?) -> Void)
         -> [BloodSugar] {
         
         if yesterdaysBgData == nil {
@@ -151,21 +176,34 @@ class NightscoutCacheService: NSObject {
         
         if yesterdaysBgData!.count == 0 || currentNightscoutData == nil || yesterdaysValuesAreOutdated() {
             
-            NightscoutService.singleton.readYesterdaysChartData({(yesterdaysValues) -> Void in
+            if let task = NightscoutService.singleton.readYesterdaysChartData({ [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
                 
-                self.newDataReceived = true
-                
-                // transform the yesterdays values to the current day, so that they can be easily displayed in
-                // one diagram
-                self.yesterdaysBgData = self.transformToCurrentDay(yesterdaysValues: yesterdaysValues)
-                NightscoutDataRepository.singleton.storeYesterdaysBgData(self.yesterdaysBgData!)
-                let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-                self.yesterdaysDayOfTheYear = Calendar.current.ordinality(of: .day, in: .year, for: yesterday)!
-                NightscoutDataRepository.singleton.storeYesterdaysDayOfTheYear(yesterdaysDayOfTheYear: self.yesterdaysDayOfTheYear!)
-                
-                resultHandler(self.yesterdaysBgData!)
-            })
+                if case .data(let yesterdaysValues) = result {
+                    self.newDataReceived = true
+                    
+                    // transform the yesterdays values to the current day, so that they can be easily displayed in
+                    // one diagram
+                    self.yesterdaysBgData = self.transformToCurrentDay(yesterdaysValues: yesterdaysValues)
+                    NightscoutDataRepository.singleton.storeYesterdaysBgData(self.yesterdaysBgData!)
+                    let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+                    self.yesterdaysDayOfTheYear = Calendar.current.ordinality(of: .day, in: .year, for: yesterday)!
+                    NightscoutDataRepository.singleton.storeYesterdaysDayOfTheYear(yesterdaysDayOfTheYear: self.yesterdaysDayOfTheYear!)
+                    
+                    resultHandler(.data(self.yesterdaysBgData!))
+                } else {
+                    resultHandler(result)
+                }
+            }) {
+                // cleanup (delete not running tasks) and add the current started one
+                yesterdaysBgDataTasks.removeAll(where: { task in task.state != .running })
+                yesterdaysBgDataTasks.append(task)
+            } else {
+                resultHandler(nil)
+            }
+        } else {
+            resultHandler(nil)
         }
+            
         return yesterdaysBgData!
     }
     
@@ -187,22 +225,38 @@ class NightscoutCacheService: NSObject {
         return transformedValues
     }
     
-    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void), inBackground : Bool) {
+    fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void, forceRefresh: Bool = false) {
         
-        if currentNightscoutData!.isOlderThan5Minutes() {
-            if inBackground {
-                NightscoutService.singleton.readCurrentDataForPebbleWatchInBackground()
-            } else {
-                NightscoutService.singleton.readCurrentDataForPebbleWatch({ [unowned self] (newNightscoutData, error) in
-                    
-                    if let newNightscoutData = newNightscoutData {
-                        self.currentNightscoutData = newNightscoutData
-                        NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData!)
-                    }
-                    
-                    resultHandler(newNightscoutData, error)
-                })
-            }
+        guard forceRefresh || currentNightscoutData!.isOlderThan5Minutes() else {
+            resultHandler(nil)
+            return
         }
+        
+        if let task = NightscoutService.singleton.readCurrentDataForPebbleWatch ({ [unowned self] (result: NightscoutRequestResult<NightscoutData>) in
+            
+            if case .data(let newNightscoutData) = result {
+                self.currentNightscoutData = newNightscoutData
+            
+                NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData!)
+            }
+            
+            resultHandler(result)
+        }) {
+            // cleanup (delete not running tasks) and add the current started one
+            currentNightscoutDataTasks.removeAll(where: { task in task.state != .running })
+            currentNightscoutDataTasks.append(task)
+        } else {
+            resultHandler(nil)
+        }
+    }
+}
+
+
+// HACK for updating the today's data from Test Cases; the problem is that
+// from tests the NightscoutDataRepository.loadTodaysBgData will fail unarchiving the [BloodSugar]
+// data, even if stored correctly...
+extension NightscoutCacheService {
+    func updateTodaysBgDataForTesting(_ data: [BloodSugar]) {
+        self.todaysBgData = data
     }
 }

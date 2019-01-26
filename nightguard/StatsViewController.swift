@@ -31,8 +31,17 @@ class StatsViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+
+        super.viewDidAppear(animated)
+        
         chartScene.size = CGSize(width: chartSpriteKitView.bounds.width, height: chartSpriteKitView.bounds.height)
         paintSelectedDays()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        chartScene.size = CGSize(width: chartSpriteKitView.bounds.width, height: chartSpriteKitView.bounds.height)
     }
     
     func paintSelectedDays() {
@@ -48,7 +57,7 @@ class StatsViewController: UIViewController {
                 if let day = StatisticsRepository.singleton.readDay(i) {
                     filteredDays.append(day)
                 } else {
-                    NightscoutService.singleton.readDay(i, callbackHandler: {(nrOfDay, bgValues) -> Void in
+                    NightscoutService.singleton.readDay(i, callbackHandler: { [unowned self] (nrOfDay, bgValues:[BloodSugar]) -> Void in
                         
                         // store all values for an identical day/month/year
                         // so that all values are displayed in an overlay mode
@@ -97,11 +106,7 @@ class StatsViewController: UIViewController {
         
         return normalizedBgValues
     }
-    
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.landscape
-    }
-    
+
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }

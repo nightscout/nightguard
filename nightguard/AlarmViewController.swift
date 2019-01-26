@@ -11,7 +11,8 @@ import WatchConnectivity
 
 class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var noDataAlarmOptions = ["15 Minutes", "20 Minutes", "25 Minutes", "30 Minutes", "35 Minutes", "40 Minutes", "45 Minutes"]
+    let noDataAlarmOptions = [15, 20, 25, 30, 35, 40, 45].map { "\($0) Minutes" }
+    let lowPredictionAlarmOptions = [5, 10, 15, 20, 25, 30].map { "\($0) Minutes" }
     
     fileprivate let MAX_ALERT_ABOVE_VALUE : Float = 200
     fileprivate let MIN_ALERT_ABOVE_VALUE : Float = 80
@@ -33,9 +34,17 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @IBOutlet weak var unitsLabel: UILabel!
     
-    @IBOutlet weak var noDataAlarmButton: UIButton!
-    @IBOutlet weak var noDataAlarmPickerView: UIPickerView!
-        
+    @IBOutlet weak var lowPredictionSwitch: UISwitch!
+    @IBOutlet weak var lowPredictionMinutes: UITextField!
+    
+    @IBOutlet weak var noDataAlarmAfterMinutes: UITextField!
+    var minutesPickerView: UIPickerView!
+
+    @IBOutlet weak var smartSnoozeSwitch: UISwitch!
+    @IBOutlet weak var notificationsSwitch: UISwitch!
+    
+    var editingMinutes: (textField: UITextField, options: [String])?
+    
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
@@ -49,13 +58,17 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         updateUnits()
         
         edgeDetectionSwitch.isOn = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
+        lowPredictionSwitch.isOn = (defaults?.bool(forKey: "lowPredictionEnabled"))!
+        smartSnoozeSwitch.isOn = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
+        notificationsSwitch.isOn = AlarmNotificationService.singleton.enabled
         numberOfConsecutiveValues.text = defaults?.string(forKey: "numberOfConsecutiveValues")
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(AlarmViewController.onTouchGesture))
         self.view.addGestureRecognizer(tap)
         
-        noDataAlarmPickerView.delegate = self
-        noDataAlarmPickerView.dataSource = self
+        minutesPickerView = UIPickerView()
+        minutesPickerView.delegate = self
+        minutesPickerView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,13 +84,30 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits((defaults?.string(forKey: "alertIfBelowValue"))!)
         alertBelowSlider.value = (UnitsConverter.toMgdl(alertIfBelowValueLabel.text!.floatValue) - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
         
-        noDataAlarmButton.setTitle(defaults?.string(forKey: "noDataAlarmAfterMinutes"), for: UIControlState())
+        noDataAlarmAfterMinutes.text = defaults?.string(forKey: "noDataAlarmAfterMinutes")
+        lowPredictionMinutes.text = defaults?.string(forKey: "lowPredictionMinutes")
     }
     
     @IBAction func edgeDetectionSwitchChanged(_ sender: AnyObject) {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults!.setValue(edgeDetectionSwitch.isOn, forKey: "edgeDetectionAlarmEnabled")
         AlarmRule.isEdgeDetectionAlarmEnabled = edgeDetectionSwitch.isOn
+    }
+    
+    @IBAction func lowPredictionSwitchChanged(_ sender: AnyObject) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(lowPredictionSwitch.isOn, forKey: "lowPredictionEnabled")
+        AlarmRule.isLowPredictionEnabled = lowPredictionSwitch.isOn
+    }
+    
+    @IBAction func smartSnoozeSwitchChanged(_ sender: AnyObject) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(smartSnoozeSwitch.isOn, forKey: "smartSnoozeEnabled")
+        AlarmRule.isSmartSnoozeEnabled = smartSnoozeSwitch.isOn
+    }
+    
+    @IBAction func notificationsSwitchChanged(_ sender: AnyObject) {
+        AlarmNotificationService.singleton.enabled = notificationsSwitch.isOn
     }
     
     @IBAction func valuesEditingChanged(_ sender: AnyObject) {
@@ -99,6 +129,40 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         AlarmRule.deltaAmount = deltaAmountValue
     }
     
+    @IBAction func lowPredictionMinutesEditingDidBegin(_ textField: UITextField) {
+        textField.inputView = minutesPickerView
+        editingMinutes = (textField: textField, options: lowPredictionAlarmOptions)
+        preselectItemInPickerView()
+    }
+    
+    @IBAction func lowPredictionMinutesEditingDidEnd(_ textField: UITextField) {
+        let minutes = Int(textField.text!)!
+        
+        // Remember the selected value by storing it as default setting
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(minutes, forKey: "lowPredictionMinutes")
+        
+        // set the new AlarmRule
+        AlarmRule.minutesToPredictLow = minutes
+    }
+    
+    @IBAction func noDataAlarmAfterMinutesEditingDidBegin(_ textField: UITextField) {
+        textField.inputView = minutesPickerView
+        editingMinutes = (textField: textField, options: noDataAlarmOptions)
+        preselectItemInPickerView()
+    }
+    
+    @IBAction func noDataAlarmAfterMinutesEditingDidEnd(_ textField: UITextField) {
+        let minutes = Int(textField.text!)!
+        
+        // Remember the selected value by storing it as default setting
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults!.setValue(minutes, forKey: "noDataAlarmAfterMinutes")
+        
+        // Activate the new AlarmRule
+        AlarmRule.minutesWithoutValues = minutes
+    }
+
     @IBAction func aboveAlertValueChanged(_ sender: AnyObject) {
         aboveSliderValueChanged(commitChanges: false)
     }
@@ -218,44 +282,38 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     // Remove keyboard and PickerView by touching outside
     @objc func onTouchGesture(){
         self.view.endEditing(true)
-        self.noDataAlarmPickerView.isHidden = true
     }
-    
     
     // Methods for the noDataAlarmPickerView
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return noDataAlarmOptions[row]
+        return editingMinutes!.options[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return noDataAlarmOptions.count
+        return editingMinutes?.options.count ?? 0
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    @IBAction func noDataAlarmButtonPressed(_ sender: AnyObject) {
-        preselectItemInPickerView()
-        noDataAlarmPickerView.isHidden = false
-    }
-    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selectedMinutes = toButtonText(noDataAlarmOptions[row])
-        noDataAlarmButton.setTitle(selectedMinutes, for: UIControlState())
+        let selectedMinutes = toButtonText(editingMinutes!.options[row])
+        editingMinutes!.textField.text = selectedMinutes
         
-        // Remember the selected value by storing it as default setting
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(selectedMinutes, forKey: "noDataAlarmAfterMinutes")
-        
-        // Activate the new AlarmRule
-        AlarmRule.minutesWithoutValues = Int(selectedMinutes)!
+        self.view.endEditing(true)
+        editingMinutes = nil
     }
     
     // Selects the right item that is shown in the noDataAlarmButton in the PickerView
     fileprivate func preselectItemInPickerView() {
-        let rowOfSelectedItem : Int = noDataAlarmOptions.index(of: noDataAlarmButton.currentTitle! + " Minutes")!
-        noDataAlarmPickerView.selectRow(rowOfSelectedItem, inComponent: 0, animated: false)
+        
+        guard let editingMinutes = self.editingMinutes else {
+            return
+        }
+        
+        let rowOfSelectedItem : Int = editingMinutes.options.index(of: editingMinutes.textField.text! + " Minutes")!
+        minutesPickerView.selectRow(rowOfSelectedItem, inComponent: 0, animated: false)
     }
     
     fileprivate func toButtonText(_ pickerText : String) -> String {

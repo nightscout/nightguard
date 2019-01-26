@@ -18,6 +18,7 @@ class ChartPainter {
     let YELLOW : UIColor = UIColor.init(red: 1, green: 1, blue: 0, alpha: 1)
     let RED : UIColor = UIColor.init(red: 1, green: 0, blue: 0, alpha: 1)
     let BLUE : UIColor = UIColor.init(red: 0, green: 0, blue: 1, alpha: 1)
+    let PURPLE = UIColor.purple
     
     let halfHour : Double = 1800
     let fullHour : Double = 3600
@@ -147,15 +148,39 @@ class ChartPainter {
     
             let maxYValue = calcYValue(Float(maxBgValue))
             
-            useRedColorIfLineWillBeReducedToMaxYValue(
-                context, beginOfLineYValue: beginOfLineYValue, endOfLineYValue: endOfLineYValue,
-                maxYDisplayValue: maxYValue, color: foregroundColor)
+            let distanceFromNow = Date().timeIntervalSince(endBGValue.date)
+            if (foregroundColor == GREEN.cgColor) && (distanceFromNow < 0) {
+                
+//                print(endBGValue.date)
+                
+                // a time in future indicates a predicted value!
+                let nextReadingPoint = CGPoint(x: calcXValue(bgValues[currentPoint].timestamp), y: endOfLineYValue)
+
+                context.strokePath()
+
+//                context.beginPath();
+                
+                // fading points, opacity decreases in distant future (one hour)
+                let opacity = min(1, max(0, CGFloat(3600 + distanceFromNow) / 4200))
+                let pointColor = PURPLE.withAlphaComponent(opacity)
+                context.setFillColor(pointColor.cgColor)
+                context.setStrokeColor(pointColor.cgColor)
+                let rect = CGRect(origin: nextReadingPoint, size: CGSize(width: 2, height: 2))
+                context.addEllipse(in: rect)
+                context.drawPath(using: .fillStroke)
+                context.strokePath()
+            } else {
             
-            drawLine(context,
-                     x1: calcXValue(bgValues[currentPoint-1].timestamp),
-                     y1: beginOfLineYValue,
-                     x2: calcXValue(bgValues[currentPoint].timestamp),
-                     y2: endOfLineYValue)
+                useRedColorIfLineWillBeReducedToMaxYValue(
+                    context, beginOfLineYValue: beginOfLineYValue, endOfLineYValue: endOfLineYValue,
+                    maxYDisplayValue: maxYValue, color: foregroundColor)
+                
+                drawLine(context,
+                         x1: calcXValue(bgValues[currentPoint-1].timestamp),
+                         y1: beginOfLineYValue,
+                         x2: calcXValue(bgValues[currentPoint].timestamp),
+                         y2: endOfLineYValue)
+            }
         }
         context.strokePath()
     }
@@ -189,7 +214,7 @@ class ChartPainter {
         
         // paint the rectangle
         context.setLineWidth(2.0)
-        context.setFillColor(DARKGRAY.cgColor)
+        context.setFillColor(DARK.cgColor)
         let goodPart = CGRect(origin: CGPoint.init(x: 0, y: calcYValue(upperBoundNiceValue)), size: CGSize.init(width: canvasWidth, height: Int(calcYValue(lowerBoundNiceValue) - calcYValue(upperBoundNiceValue))))
         context.fill(goodPart)
     }
@@ -368,11 +393,18 @@ class ChartPainter {
         
         let hour = (cal as NSCalendar).component(NSCalendar.Unit.hour, from: date)
         
-        if isEven(hour + 1) {
-            return (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!.addingTimeInterval(fullHour)
-        } else {
-            return (cal as NSCalendar).date(bySettingHour: hour + 1, minute: 00, second: 0, of: date, options: NSCalendar.Options())!.addingTimeInterval(fullHour)
+        let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!
+        var nextHour = currentHour.addingTimeInterval(
+            isEven(hour + 1) ? fullHour : 2 * fullHour
+        )
+        
+        // During daylight-savings the next hour can be the still the same
+        // We need to jump to the next hour in this case
+        if (cal as NSCalendar).component(NSCalendar.Unit.hour, from: nextHour) == hour {
+            nextHour = currentHour.addingTimeInterval(fullHour * 2)
         }
+        
+        return nextHour
     }
     
     fileprivate func isEven(_ hour : Int) -> Bool {
@@ -390,7 +422,7 @@ class ChartPainter {
         
         // During daylight-savings the next hour can be the still the same
         // We need to jump to the next hour in this case
-        if nextHour == date {
+        if (cal as NSCalendar).component(NSCalendar.Unit.hour, from: nextHour) == hour {
             nextHour = currentHour.addingTimeInterval(fullHour * 2)
         }
         
@@ -419,10 +451,15 @@ class ChartPainter {
         var newMinYValue = minimumYValue
         var newMaxYValue = Float(min(CGFloat(maximumYValue), value2: maxYDisplayValue))
         
-        for bgValues in days {
-            for bgValue in bgValues {
+        for dayIndex in 0..<days.count {
+            for bgValue in days[dayIndex] {
                 
                 guard bgValue.isValid else {
+                    continue
+                }
+                
+                if (dayIndex == 0) && (bgValue.date > Date()) {
+                    // do not consider predicted values
                     continue
                 }
                 

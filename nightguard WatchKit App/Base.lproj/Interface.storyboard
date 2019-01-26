@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14113" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch38" orientation="portrait">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14313.18" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch44" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14033"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14238.10"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -16,7 +16,7 @@
                     <items>
                         <group width="1" height="58" alignment="left" id="1AH-d7-hZo">
                             <items>
-                                <group width="60" alignment="left" layout="vertical" spacing="2" id="wwf-5f-pVK">
+                                <group width="60" alignment="left" verticalAlignment="bottom" layout="vertical" spacing="2" id="wwf-5f-pVK">
                                     <items>
                                         <label width="1" height="34" alignment="left" text="---" textAlignment="center" baselineAdjustment="alignCenters" minimumScaleFactor="0.40000000000000002" id="vdn-99-EwA">
                                             <fontDescription key="font" type="system" pointSize="46"/>
@@ -45,9 +45,11 @@
                                             <edgeInsets key="margins" left="1" right="2" top="1" bottom="1"/>
                                         </group>
                                     </items>
+                                    <variation key="device=watch40mm" width="79"/>
                                     <variation key="device=watch42mm" width="80"/>
+                                    <variation key="device=watch44mm" width="90"/>
                                 </group>
-                                <group alignment="left" layout="overlap" id="rvs-oN-6yu">
+                                <group alignment="left" verticalAlignment="bottom" layout="overlap" id="rvs-oN-6yu">
                                     <items>
                                         <group width="72.5" alignment="left" layout="vertical" spacing="1" id="2qL-lw-zuD">
                                             <items>
@@ -104,7 +106,7 @@
                         </group>
                         <group width="1" alignment="left" layout="overlap" id="Umr-m9-d1K">
                             <items>
-                                <spriteKitScene width="155" height="140" alignment="left" id="HJ3-mD-NFS">
+                                <spriteKitScene width="1" height="140" alignment="left" id="HJ3-mD-NFS">
                                     <gestureRecognizers>
                                         <tapGestureRecognizer numberOfTapsRequired="2" id="Njy-aE-O1r">
                                             <connections>
@@ -113,6 +115,7 @@
                                         </tapGestureRecognizer>
                                     </gestureRecognizers>
                                     <variation key="device=watch38mm" height="115"/>
+                                    <variation key="device=watch44mm" height="165"/>
                                 </spriteKitScene>
                                 <group width="1" height="1" alignment="left" id="JGS-42-dt6">
                                     <items>

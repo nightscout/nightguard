@@ -32,67 +32,134 @@ class AlarmRule {
     
     static var minutesWithoutValues : Int = 15
     
+    static var minutesToPredictLow : Int = 15
+    static var isLowPredictionEnabled : Bool = false
+
+    static var isSmartSnoozeEnabled : Bool = false
+    
     /*
      * Returns true if the alarm should be played.
      * Snooze is true if the Alarm has been manually deactivated.
      * Suspended is true if the Alarm has been technically deactivated for a short period of time.
      */
-    static func isAlarmActivated(_ nightscoutData : NightscoutData, bloodValues : [BloodSugar]) -> Bool {
+    static func isAlarmActivated() -> Bool {
+        return (getAlarmActivationReason() != nil)
+    }
+    
+    /*
+     * Returns a reason (string) if the alarm is activated.
+     * Returns nil if the alarm is snoozed or not active.
+     */
+    static func getAlarmActivationReason(ignoreSnooze: Bool = false) -> String? {
         
-        if isSnoozed() {
-            return false
+        if isSnoozed() && !ignoreSnooze {
+            return nil
         }
         
-        if nightscoutData.isOlderThanXMinutes(minutesWithoutValues) {
-            return true
+        // get the most recent readings
+        let bloodValues = [BloodSugar].latestFromRepositories()
+        guard let currentReading = bloodValues.last else {
+            
+            // no values? we'll wait a little more...
+            return nil
         }
         
-        if isTooHighOrTooLow(UnitsConverter.toMgdl(Float(nightscoutData.sgv)!)) {
-            return true
+        if currentReading.isOlderThanXMinutes(minutesWithoutValues) {
+            return "Missed Readings"
         }
         
-        if isEdgeDetectionAlarmEnabled && bloodValuesAreIncreasingOrDecreasingToFast(bloodValues) {
-            return true
+        let svgInMgdl = UnitsConverter.toMgdl(currentReading.value)
+        let isTooHigh = AlarmRule.isTooHigh(svgInMgdl)
+        let isTooLow = AlarmRule.isTooLow(svgInMgdl)
+        
+        if isSmartSnoozeEnabled && (isTooHigh || isTooLow) {
+            
+            // if the trend is to leave the too high or too low zone, we'll snooze the alarm (without caring about the edges - we're outside of the board, first get in, then we'll check the edges)
+            switch bloodValues.trend {
+            case .ascending:
+                if isTooLow {
+                    return nil
+                }
+            
+            case .descending:
+                if isTooHigh {
+                    return nil
+                }
+                
+            default:
+                break
+            }
+            
+            // let's try also with prediction: we'll snooze the alarm if the prediction says that we'll leave the too high or too low zone in less than 30 minutes
+            if isTooHigh && (PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfAboveValue)) ?? Int.max) < 30 {
+                return nil
+            } else if isTooLow && (PredictionService.singleton.minutesTo(high: UnitsConverter.toDisplayUnits(alertIfBelowValue)) ?? Int.max) < 30 {
+                return nil
+            }
         }
         
-        return false
+        if isTooHigh {
+            return "High BG"
+        } else if isTooLow {
+            return "Low BG"
+        }
+
+        if isEdgeDetectionAlarmEnabled  {
+            if bloodValuesAreIncreasingTooFast(bloodValues) {
+                return "Fast Rise"
+            } else if bloodValuesAreDecreasingTooFast(bloodValues) {
+                return "Fast Drop"
+            }
+        }
+        
+        if isLowPredictionEnabled {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfBelowValue)), minutesToLow <= minutesToPredictLow {
+                #if os(iOS)
+                return "Low Predicted in \(minutesToLow)min"
+                #else
+                // shorter text on watch
+                return "Low in \(minutesToLow)min"
+                #endif
+            }
+        }
+        
+        return nil
     }
     
     fileprivate static func isTooHighOrTooLow(_ bloodGlucose : Float) -> Bool {
-        return bloodGlucose > alertIfAboveValue || bloodGlucose < alertIfBelowValue
+        return isTooHigh(bloodGlucose) || isTooLow(bloodGlucose)
     }
     
-    fileprivate static func bloodValuesAreIncreasingOrDecreasingToFast(_ bloodValues : [BloodSugar]) -> Bool {
+    fileprivate static func isTooHigh(_ bloodGlucose : Float) -> Bool {
+        return bloodGlucose > alertIfAboveValue
+    }
+
+    fileprivate static func isTooLow(_ bloodGlucose : Float) -> Bool {
+        return bloodGlucose < alertIfBelowValue
+    }
+    
+    fileprivate static func bloodValuesAreIncreasingOrDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
+        return bloodValuesAreIncreasingTooFast(bloodValues) || bloodValuesAreDecreasingTooFast(bloodValues)
+    }
+    
+    fileprivate static func bloodValuesAreIncreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
         
-        // we need at least these number of values, in order to prevent an out of bounds exception
-        if bloodValues.count < numberOfConsecutiveValues + 2 {
-            return false;
+        // we need at least these number of values (the most reacent X readings)
+        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues + 1) else {
+            return false
         }
         
-        let maxItems = bloodValues.count
-        var positiveDirection : Bool? = nil
-        for index in maxItems-numberOfConsecutiveValues...maxItems {
-            
-            if abs(bloodValues[index-2].value - bloodValues[index-1].value) < deltaAmount {
-                return false
-            }
-            if (positiveDirection == nil) {
-                positiveDirection = (bloodValues[index-1].value - bloodValues[index-2].value) > 0
-            } else if positiveDirection! && newDirectionNegative(bloodValues[index-2].value, value2: bloodValues[index-1].value) {
-                return false
-            } else if !positiveDirection! && newDirectionPositive(bloodValues[index-2].value, value2: bloodValues[index-1].value) {
-                return false
-            }
+        return readings.deltas.allSatisfy { $0 > deltaAmount }
+    }
+    
+    fileprivate static func bloodValuesAreDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
+        
+        // we need at least these number of values (the most reacent X readings)
+        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues + 1) else {
+            return false
         }
-        return true;
-    }
-    
-    static func newDirectionNegative(_ value1 : Float, value2 : Float) -> Bool {
-        return value2 - value1 < 0
-    }
-    
-    static func newDirectionPositive(_ value1 : Float, value2 : Float) -> Bool {
-        return value2 - value1 > 0
+        
+        return readings.deltas.allSatisfy { $0 < -deltaAmount }
     }
     
     /*

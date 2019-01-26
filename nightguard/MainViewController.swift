@@ -29,20 +29,15 @@ class MainViewController: UIViewController {
     @IBOutlet weak var rawValuesPanel: GroupedLabelsView!
     @IBOutlet weak var bgStackView: UIStackView!
     
+    @IBOutlet weak var nightscoutButton: UIButton!
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
     
     var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
     // timer to check continuously for new bgValues
     var timer = Timer()
-    // another timer to restart the timer for the case that a watchdog kills it
-    // the latter can happen, when the request takes too long :-/
-    var safetyResetTimer = Timer()
-    
     // check every 30 Seconds whether new bgvalues should be retrieved
     let timeInterval: TimeInterval = 30.0
-    // kill and restart the timer every 12 minutes
-    let safetyResetTimerInterval: TimeInterval = 60.0 * 12
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,16 +52,12 @@ class MainViewController: UIViewController {
         // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
         volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
         
+        snoozeButton.titleLabel?.numberOfLines = 0
+        snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
+        snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        
         restoreGuiState()
         paintScreenLockSwitch()
-        
-        // Start the timer to retrieve new bgValues
-        startTimer()
-        safetyResetTimer = Timer.scheduledTimer(timeInterval: safetyResetTimerInterval,
-                                     target: self,
-                                     selector: #selector(MainViewController.safetyResetTimerDidEnd(_:)),
-                                     userInfo: nil,
-                                     repeats: true)
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -90,16 +81,45 @@ class MainViewController: UIViewController {
         let isLargeEnoughScreen = height >= 667 // 4.7 inches or larger (iPhone 6, etc.)
         rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
         bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
+        
+        nightscoutButton.tintColor = UIColor.white
+        let nightscoutImage = UIImage(named: "Nightscout")?.withRenderingMode(.alwaysTemplate)
+        nightscoutButton.setImage(nightscoutImage, for: .normal)
+        nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        
+        // stop timer when app enters in background, start is again when becomes active
+        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
+        // call first "UIApplicationWillEnterForeground" event by hand, it is not sent when the app starts (just registered for the event)
+        prepareForEnteringForeground()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
         showHideRawBGPanel()
     }
     
-    override func viewDidAppear(_ animated: Bool) {        
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        // Start immediately so that the current time gets displayed at once
+        // And the alarm can play if needed
+        doPeriodicUpdate(forceRepaint: true)     
         chartScene.size = CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        // keep the nightscout button round
+        nightscoutButton.layer.cornerRadius = nightscoutButton.bounds.size.width / 2
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -169,7 +189,18 @@ class MainViewController: UIViewController {
         return UIStatusBarStyle.lightContent
     }
     
-    func startTimer() {
+    
+    // MARK: Notification
+    @objc func applicationDidEnterBackground(_ notification: Notification) {
+        timer.invalidate()
+        AlarmSound.stop()
+    }
+    
+    @objc func applicationWillEnterForeground(_ notification: Notification) {
+        prepareForEnteringForeground()
+    }
+
+    fileprivate func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: timeInterval,
                                      target: self,
                                      selector: #selector(MainViewController.timerDidEnd(_:)),
@@ -177,32 +208,36 @@ class MainViewController: UIViewController {
                                      repeats: true)
     }
     
-    @objc func safetyResetTimerDidEnd(_ timer: Timer) {
-        timer.invalidate()
+    fileprivate func prepareForEnteringForeground() {
+        
+        // If there is already a snooze active => we don't have to fear that an alarm
+        // would be played.
+        if !AlarmRule.isSnoozed() {
+            // snooze the alarm for 15 Seconds in order to retrieve new data
+            // before playing alarm
+            // Otherwise it could be the case that the app immediately plays
+            // an alarm sound without giving the app the chance to reload
+            // current data
+            AlarmRule.snoozeSeconds(15)
+            self.updateSnoozeButtonText()
+        }
+        
         startTimer()
+        doPeriodicUpdate(forceRepaint: true)
     }
     
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer) {
+        self.doPeriodicUpdate(forceRepaint: false)
+    }
+    
+    fileprivate func doPeriodicUpdate(forceRepaint: Bool) {
         
-        if AlarmRule.isAlarmActivated(NightscoutCacheService.singleton.getCurrentNightscoutData(), bloodValues: NightscoutCacheService.singleton.getTodaysBgData()) {
-            
-            // Play the sound only if foreground => otherwise this won't work at all
-            // and the sound will only play right when opening the application :-/
-            let state = UIApplication.shared.applicationState
-            if state == UIApplicationState.active {
-                AlarmSound.play()
-            }
-        } else {
-            AlarmSound.stop()
-        }
-        updateSnoozeButtonText()
-        
-        paintCurrentTime()
+        self.paintCurrentTime()
         // paint here is need if the server doesn't respond
         // => in that case the user has to know that the values are old!
-        loadAndPaintCurrentBgData()
-        loadAndPaintChartData(forceRepaint: false)
+        self.loadAndPaintCurrentBgData()
+        self.loadAndPaintChartData(forceRepaint: forceRepaint)
     }
     
     fileprivate func paintScreenLockSwitch() {
@@ -237,11 +272,54 @@ class MainViewController: UIViewController {
     }
     
     public func updateSnoozeButtonText() {
+
+        var title = "Snooze"
+        var subtitle = AlarmRule.getAlarmActivationReason(ignoreSnooze: true)
+        var subtitleColor: UIColor = (subtitle != nil) ? .red : .white
+        var showSubtitle = true
         
+        if subtitle == nil {
+            
+            // no alarm, but maybe we'll show a low prediction warning...
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(AlarmRule.alertIfBelowValue)), minutesToLow > 0 {
+                subtitle = "Low Predicted in \(minutesToLow)min"
+                subtitleColor = .yellow
+            }
+        }
+
         if AlarmRule.isSnoozed() {
-            snoozeButton.setTitle("Snoozed for " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min", for: UIControlState())
+            let remaininingSnoozeMinutes = AlarmRule.getRemainingSnoozeMinutes()
+            title = "Snoozed for \(remaininingSnoozeMinutes)min"
+            
+            // show alert reason message if less than 5 minutes of snoozing (to be prepared!)
+            showSubtitle = remaininingSnoozeMinutes < 5
+        }
+        
+        if let subtitle = subtitle, showSubtitle {
+            let style = NSMutableParagraphStyle()
+            style.alignment = .center
+            style.lineBreakMode = .byWordWrapping
+            
+            let titleAttributes: [NSAttributedStringKey : Any] = [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 32),
+                NSAttributedString.Key.paragraphStyle: style
+            ]
+            
+            let messageAttributes: [NSAttributedStringKey : Any] = [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: subtitleColor,
+                NSAttributedString.Key.paragraphStyle: style
+            ]
+            
+            let attString = NSMutableAttributedString()
+            attString.append(NSAttributedString(string: title, attributes: titleAttributes))
+            attString.append(NSAttributedString(string: "\n"))
+            attString.append(NSAttributedString(string: subtitle, attributes: messageAttributes))
+            
+            snoozeButton.setAttributedTitle(attString, for: .normal)
         } else {
-            snoozeButton.setTitle("Snooze", for: UIControlState())
+            snoozeButton.setAttributedTitle(nil, for: .normal)
+            snoozeButton.setTitle(title, for: .normal)
         }
     }
     
@@ -279,19 +357,37 @@ class MainViewController: UIViewController {
     
     fileprivate func loadAndPaintCurrentBgData() {
         
-        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData({(newNightscoutData, error) -> Void in
+        let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData { [unowned self] result in
             
-            if let error = error {
+            // play alarm if activated
+            if AlarmRule.isAlarmActivated() {
+                AlarmSound.play()
+            } else {
+                AlarmSound.stop()
+            }
+            self.updateSnoozeButtonText()
+
+            // update app badge
+            if UserDefaultsRepository.readShowBGOnAppBadge() {
+                UIApplication.shared.setCurrentBGValueOnAppBadge()
+            }
+            
+            guard let result = result else {
+                return
+            }
+            
+            switch result {
+            case .error(let error):
                 self.errorLabel.text = "❌ \(error.localizedDescription)"
                 self.errorLabel.textColor = .red
                 self.errorPanelView.isHidden = false
-            } else if let newNightscoutData = newNightscoutData {
+            case .data(let newNightscoutData):
                 self.errorPanelView.isHidden = true
                 self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
                 
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
             }
-        })
+        }
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
     }
@@ -325,16 +421,23 @@ class MainViewController: UIViewController {
     
     fileprivate func loadAndPaintChartData(forceRepaint : Bool) {
         
-        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData({(newTodaysData) -> Void in
+        let newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
+            guard let result = result else { return }
+         
+            if case .data(let newTodaysData) = result {
+                let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
+                self.paintChartData(todaysData: newTodaysData, yesterdaysData: cachedYesterdaysData)
+            }
+        }
+        
+        let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData { [unowned self] result in
+            guard let result = result else { return }
             
-            let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
-            self.paintChartData(todaysData: newTodaysData, yesterdaysData: cachedYesterdaysData)
-        })
-        let newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData({(newYesterdaysData) -> Void in
-            
-            let cachedTodaysBgData = NightscoutCacheService.singleton.getTodaysBgData()
-            self.paintChartData(todaysData: cachedTodaysBgData, yesterdaysData: newYesterdaysData)
-        })
+            if case .data(let newYesterdaysData) = result {
+                let cachedTodaysBgData = NightscoutCacheService.singleton.getTodaysBgData()
+                self.paintChartData(todaysData: cachedTodaysBgData, yesterdaysData: newYesterdaysData)
+            }
+        }
         
         // this does a fast paint of eventually cached data
         if forceRepaint ||
@@ -346,8 +449,10 @@ class MainViewController: UIViewController {
     
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {
         
+        let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
+        
         self.chartScene.paintChart(
-            [todaysData, yesterdaysData],
+            [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: self.maximumDeviceTextureWidth(),
             maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
             moveToLatestValue: true)

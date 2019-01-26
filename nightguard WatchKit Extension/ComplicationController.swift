@@ -100,6 +100,35 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             
             template.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
             template.ringStyle = CLKComplicationRingStyle.closed
+        case .graphicCorner:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicCornerTextImage()
+                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                modTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Corner")!)
+                template = modTemplate
+            } else {
+                abort()
+            }
+        case .graphicCircular:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicCircularClosedGaugeText()
+                modTemplate.centerTextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
+                modTemplate.gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: 0.0)
+                template = modTemplate
+            } else {
+                abort()
+            }
+        case .graphicBezel:
+            if #available(watchOSApplicationExtension 5.0, *) {
+                let modTemplate = CLKComplicationTemplateGraphicBezelCircularText()
+                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                let modImageTemplate = CLKComplicationTemplateGraphicCircularImage()
+                modImageTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
+                modTemplate.circularTemplate = modImageTemplate
+                template = modTemplate
+            } else {
+                abort()
+            }
         default: break
         }
         
@@ -166,13 +195,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         }
         
         let date: Date = Date(timeIntervalSince1970: time.doubleValue / 1000)
-        
-        // trick: we'll adjust the time with one minute to keep the complication relative time in sync with the minutes shown in the app
-        let calendar = Calendar.current
-        let adjustedDate = calendar.date(byAdding: .minute, value: 1, to: date)!
-        
         let isOlderThanTwoHours = getAgeOfDataInMinutes(time) >= 120
-        return CLKRelativeDateTextProvider(date: adjustedDate, style: .natural, units: isOlderThanTwoHours ? .hour : .minute)
+        return CLKRelativeDateTextProvider(date: date, style: .natural, units: isOlderThanTwoHours ? .hour : .minute)
     }
     
     // MARK: - Placeholder Templates

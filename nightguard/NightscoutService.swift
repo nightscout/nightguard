@@ -8,34 +8,45 @@
 
 import Foundation
 
+/* Generic Nightscout request result */
+enum NightscoutRequestResult<T> {
+    case data(T)
+    case error(Error)
+}
+
 /* All data that is read from nightscout is accessed using this boundary. */
 class NightscoutService {
-    
+
     static let singleton = NightscoutService()
     
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
-    let DIRECTIONS = ["-", "↑↑", "↑","↗︎", "→", "↘︎", "↓", "↓↓", "-", "-"]
+    let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
-    func readChartData(_ resultHandler : @escaping (([Int]) -> Void)) {
+    @discardableResult
+    func readChartData(_ resultHandler : @escaping (NightscoutRequestResult<[Int]>) -> Void) -> URLSessionTask? {
         
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if baseUri == "" {
-            return
+        // Get the current data from REST-Call
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries.json", queryParams: ["count": "20"])
+        guard url != nil else {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
         }
 
-        // Get the current data from REST-Call
-        let request = URLRequest(url: URL(string: baseUri + "/api/v1/entries.json?count=20")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
+        let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
-            guard error == nil else {
-                return
-            }
-            guard data != nil else {
-                return
-            }
-            
-            DispatchQueue.main.async {
+           
+            dispatchOnMain { [unowned self] in
+                guard error == nil else {
+                    resultHandler(.error(error!))
+                    return
+                }
+                
+                guard data != nil else {
+                    resultHandler(.error(self.createNoDataError(description: "No data received from Nightscout entries API")))
+                    return
+                }
                 
                 let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
                 var sgvValues = [Int]()
@@ -43,36 +54,48 @@ class NightscoutService {
                    if key == "sqv" {
                         sgvValues.insert(value as! Int, at: 0)
                     }
-                    resultHandler(sgvValues)
+                    resultHandler(.data(sgvValues))
                 }
             }
-        }) ;
+        })
                 
         task.resume()
+        return task
+    }
+    
+    func readChartData(_ resultHandler : @escaping ([Int]) -> Void) {
+        self.readChartData { (result: NightscoutRequestResult<[Int]>)  in
+            if case .data(let data) = result {
+                resultHandler(data)
+            }
+        }
     }
 
     /* Reads the nightscout status from the backend. This is used to determine the configured
        Unit, whether it's mg/dL or mmol/l */
-    func readStatus(_ resultHandler : @escaping ((Units) -> Void)) {
+    @discardableResult
+    func readStatus(_ resultHandler : @escaping (NightscoutRequestResult<Units>) -> Void) -> URLSessionTask? {
         
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if baseUri == "" {
-            return
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/status.json", queryParams: [:])
+        guard url != nil else {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
         }
-        
-        // Get the current data from REST-Call
-        let request = URLRequest(url: URL(string: baseUri + "/api/v1/status.json")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             
-            guard error == nil else {
-                return
-            }
-            guard data != nil else {
-                return
-            }
-            
-            DispatchQueue.main.async {
+            dispatchOnMain { [unowned self] in
+                guard error == nil else {
+                    resultHandler(.error(error!))
+                    return
+                }
+                
+                guard data != nil else {
+                    resultHandler(.error(self.createNoDataError(description: "No data received from Nightscout status API")))
+                    return
+                }
+                
                 do {
                     let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
                     guard let jsonDict :NSDictionary = json as? NSDictionary else {
@@ -83,81 +106,118 @@ class NightscoutService {
 
                         let unitsAsString = settingsDict.value(forKey: "units") as! String
                         if unitsAsString.lowercased() == "mg/dl" {
-                            resultHandler(Units.mgdl)
+                            resultHandler(.data(Units.mgdl))
                         } else {
-                            resultHandler(Units.mmol)
+                            resultHandler(.data(Units.mmol))
                         }
                     }
                 } catch let error as NSError {
                     print(error.localizedDescription)
+                    resultHandler(.error(error))
                 }
             }
         })
+        
         task.resume()
+        return task
     }
     
-    /* Reads all data between two timestamps and limits the maximum return values to 400. */
-    func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (([BloodSugar]) -> Void)) {
+    func readStatus(_ resultHandler : @escaping (Units) -> Void) {
+        self.readStatus { (result: NightscoutRequestResult<Units>)  in
+            if case .data(let data) = result {
+                resultHandler(data)
+            }
+        }
+    }
 
-        DispatchQueue.global().async {
-            let baseUri = UserDefaultsRepository.readBaseUri()
-            if baseUri == "" {
+    /* Reads all data between two timestamps and limits the maximum return values to 400. */
+    @discardableResult
+    fileprivate func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
+
+        let baseUri = UserDefaultsRepository.readBaseUri()
+        if baseUri == "" {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
+        }
+        
+        let unixTimestamp1 : Double = timestamp1.timeIntervalSince1970 * 1000
+        let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
+        
+        // Get the current data from REST-Call
+        let chartDataWithinPeriodOfTimeQueryParams = [
+            "find[date][$gt]"   : "\(unixTimestamp1)",
+            "find[date][$lte]"  : "\(unixTimestamp2)",
+            "count"             : "400",
+            ]
+        
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
+        guard url != nil else {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
+        }
+
+        let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+            
+            guard error == nil else {
+                print(error!)
+                dispatchOnMain {
+                    resultHandler(.error(error!))
+                }
                 return
             }
             
-            let unixTimestamp1 : Double = timestamp1.timeIntervalSince1970 * 1000
-            let unixTimestamp2 : Double = timestamp2.timeIntervalSince1970 * 1000
-            
-            // Get the current data from REST-Call
-            let requestUri : String = "\(baseUri)/api/v1/entries?find[date][$gt]=\(unixTimestamp1)&find[date][$lte]=\(unixTimestamp2)&count=400"
-            let request =
-                URLRequest(url: URL(string: requestUri)!,
-                                cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-            
-            let session = URLSession.shared
-            let task = session.dataTask(with: request, completionHandler: { data, response, error in
-                
-                guard error == nil else {
-                    print(error!)
-                    return
+            guard data != nil else {
+                print("The received data was nil...")
+                dispatchOnMain { [unowned self] in
+                    resultHandler(.error(self.createNoDataError(description: "No data received from Nightscout entries API")))
+                    }
+                return
+            }
+        
+            let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
+            guard !stringSgvData.contains("<html") else {
+                print("Invalid data with html received")  // TODO: pop an error alert
+                dispatchOnMain { [unowned self] in
+                    resultHandler(.error(self.createNoDataError(description: "Invalid data with HTML received from Nightscout entries API")))
                 }
-                guard data != nil else {
-                    print("The received data was nil...")
-                    return
-                }
+                return
+            }
+
+            let sgvRows = stringSgvData.components(separatedBy: "\n")
+            var timestampColumn : Int = 1
+            var bloodSugarColumn : Int = 2
+        
+            var bloodSugarArray = [BloodSugar]()
+            for sgvRow in sgvRows {
+                let sgvRowArray = sgvRow.components(separatedBy: "\t")
             
-                let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
-                let sgvRows = stringSgvData.components(separatedBy: "\n")
-                var timestampColumn : Int = 1
-                var bloodSugarColumn : Int = 2
-            
-                var bloodSugarArray = [BloodSugar]()
-                for sgvRow in sgvRows {
-                    let sgvRowArray = sgvRow.components(separatedBy: "\t")
+                if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
+                    // Nightscout return for some versions
+                    if self.isDateColumn(sgvRowArray[1]) {
+                        timestampColumn = 2
+                        bloodSugarColumn = 3
+                    }
                 
-                    if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
-                        // Nightscout return for some versions
-                        if self.isDateColumn(sgvRowArray[1]) {
-                            timestampColumn = 2
-                            bloodSugarColumn = 3
-                        }
-                    
-                        if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
-                            if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
-                                let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
-                                bloodSugarArray.insert(bloodSugar, at: 0)
-                            }
+                    if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
+                        if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
+                            let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
+                            bloodSugarArray.insert(bloodSugar, at: 0)
                         }
                     }
                 }
-                
-                bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
-                DispatchQueue.main.async {
-                    resultHandler(bloodSugarArray)
-                }
-            })
-            task.resume()
-        }
+            }
+            
+            bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
+            dispatchOnMain {
+                resultHandler(.data(bloodSugarArray))
+            }
+        })
+        
+        task.resume()
+        return task
     }
     
     // append the oldvalues but leave duplicates
@@ -200,7 +260,8 @@ class NightscoutService {
     }
     
     /* Reads all values from the day before. This is used for comparison with the current values. */
-    func readYesterdaysChartData(_ resultHandler : @escaping (([BloodSugar]) -> Void)) {
+    @discardableResult
+    func readYesterdaysChartData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
         
         let calendar = Calendar.current
         let yesterday = TimeService.getYesterday()
@@ -208,12 +269,22 @@ class NightscoutService {
         let startOfYesterday = calendar.startOfDay(for: yesterday)
         let endOfYesterday = calendar.startOfDay(for: TimeService.getToday())
         
-        readChartDataWithinPeriodOfTime(oldValues: [], startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
+        return readChartDataWithinPeriodOfTime(oldValues: [], startOfYesterday, timestamp2: endOfYesterday, resultHandler: resultHandler)
+    }
+    
+    func readYesterdaysChartData(_ resultHandler : @escaping ([BloodSugar]) -> Void) {
+        
+        self.readYesterdaysChartData { (result: NightscoutRequestResult<[BloodSugar]>)  in
+            if case .data(let data) = result {
+                resultHandler(data)
+            }
+        }
     }
     
     /* Reads all values from the current day. Beginning is 00:00 or
        the lastReceivedTime if this time is later than the current day at 00:00. */
-    func readTodaysChartData(oldValues : [BloodSugar], _ resultHandler : @escaping (([BloodSugar]) -> Void)) {
+    @discardableResult
+    func readTodaysChartData(oldValues : [BloodSugar], _ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
         
         let calendar = Calendar.current
         let today = TimeService.getToday()
@@ -226,7 +297,17 @@ class NightscoutService {
         if lastReceivedTime > beginOfDay {
             beginOfDay = lastReceivedTime
         }
-        readChartDataWithinPeriodOfTime(oldValues : oldValues, beginOfDay, timestamp2: endOfDay, resultHandler: resultHandler)
+        
+        return readChartDataWithinPeriodOfTime(oldValues : oldValues, beginOfDay, timestamp2: endOfDay, resultHandler: resultHandler)
+    }
+    
+    func readTodaysChartData(oldValues : [BloodSugar], _ resultHandler : @escaping ([BloodSugar]) -> Void) {
+        
+        self.readTodaysChartData(oldValues: oldValues) { (result: NightscoutRequestResult<[BloodSugar]>)  in
+            if case .data(let data) = result {
+                resultHandler(data)
+            }
+        }
     }
     
     fileprivate func determineTheLatestValueOf(oldValues : [BloodSugar]) -> Date {
@@ -237,95 +318,118 @@ class NightscoutService {
         return Date.init(timeIntervalSince1970: oldValues.last!.timestamp / 1000)
     }
     
-    func readDay(_ nrOfDaysAgo : Int, callbackHandler : @escaping (_ nrOfDay : Int, [BloodSugar]) -> Void) {
+    @discardableResult
+    func readDay(_ nrOfDaysAgo : Int, callbackHandler : @escaping (_ nrOfDay : Int, NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
         let timeNrOfDaysAgo = TimeService.getNrOfDaysAgo(nrOfDaysAgo)
         
         let calendar = Calendar.current
         let startNrOfDaysAgo = calendar.startOfDay(for: timeNrOfDaysAgo)
         let endNrOfDaysAgo = startNrOfDaysAgo.addingTimeInterval(24 * 60 * 60)
         
-        readChartDataWithinPeriodOfTime(oldValues: [], startNrOfDaysAgo, timestamp2: endNrOfDaysAgo, resultHandler: {(bgValues) -> Void in
-            callbackHandler(nrOfDaysAgo, bgValues)
-        })
+        return readChartDataWithinPeriodOfTime(oldValues: [], startNrOfDaysAgo, timestamp2: endNrOfDaysAgo) { result in
+            callbackHandler(nrOfDaysAgo, result)
+        }
+    }
+    
+    func readDay(_ nrOfDaysAgo : Int, callbackHandler : @escaping (_ nrOfDay : Int, [BloodSugar]) -> Void) {
+        
+        self.readDay(nrOfDaysAgo) { (nrOfDay: Int, result: NightscoutRequestResult<[BloodSugar]>)  in
+            if case .data(let data) = result {
+                callbackHandler(nrOfDay, data)
+            }
+        }
     }
     
     /* Reads all values from the last 2 Hours before. */
-    func readLastTwoHoursChartData(_ resultHandler : @escaping (([BloodSugar]) -> Void)) {
+    @discardableResult
+    func readLastTwoHoursChartData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
         
         let today = TimeService.getToday()
         let twoHoursBefore = today.addingTimeInterval(-60*120)
         
-        readChartDataWithinPeriodOfTime(oldValues : [], twoHoursBefore, timestamp2: today, resultHandler: resultHandler)
+        return readChartDataWithinPeriodOfTime(oldValues : [], twoHoursBefore, timestamp2: today, resultHandler: resultHandler)
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
-    func readCurrentDataForPebbleWatch(_ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
+    @discardableResult
+    func readCurrentDataForPebbleWatch(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) -> URLSessionTask? {
 
-        DispatchQueue.global().async {
-
-            let baseUri = UserDefaultsRepository.readBaseUri()
-            if (baseUri == "") {
+        let baseUri = UserDefaultsRepository.readBaseUri()
+        if (baseUri == "") {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
+        }
+        
+        // Get the current data from REST-Call
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        guard url != nil else {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
+        }
+        var request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        request.timeoutInterval = 70
+        
+        let session : URLSession = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+            
+            guard error == nil else {
+                print("Error receiving Pepple Watch Data.")
+                print(error!)
+                dispatchOnMain {
+                    resultHandler(.error(error!))
+                }
                 return
             }
-            
-            // Get the current data from REST-Call
-            var request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-            request.timeoutInterval = 70
-            
-            let session : URLSession = URLSession.shared
-            let task = session.dataTask(with: request, completionHandler: { data, response, error in
-                
-                guard error == nil else {
-                    print("Error receiving Pepple Watch Data.")
-                    print(error!)
-                    DispatchQueue.main.async {
-                        resultHandler(nil, error)
-                    }
-                    return
-                }
 
-                guard data != nil else {
-                    print("Pebble Watch Data was nil.")
-                    let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Data Received from Pebble Watch API"])
-                    DispatchQueue.main.async {
-                        resultHandler(nil, error)
-                    }
-                    return
+            guard data != nil else {
+                print("Pebble Watch Data was nil.")
+                dispatchOnMain { [unowned self] in
+                    resultHandler(.error(self.createNoDataError(description: "No data received from Pebble Watch API")))
                 }
+                return
+            }
 
-                self.extractData(data : data!, resultHandler)
-            }) ;
-            task.resume()
-        }
+            self.extractData(data : data!, resultHandler)
+        })
+        
+        task.resume()
+        return task
     }
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     func readCurrentDataForPebbleWatchInBackground() {
-        
-        let baseUri = UserDefaultsRepository.readBaseUri()
-        if (baseUri == "") {
+        // Get the current data from REST-Call
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        guard url != nil else {
             return
         }
-        
-        // Get the current data from REST-Call
-        let request : URLRequest = URLRequest(url: URL(string: baseUri + "/pebble")!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let task = BackgroundUrlSessionWrapper.urlSession.downloadTask(with: request);
         task.resume()
     }
     
-    public func extractData(data : Data, _ resultHandler : @escaping ((NightscoutData?, Error?) -> Void)) {
+    public func extractData(data : Data, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) {
         
         do {
             let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
             guard let jsonDict :NSDictionary = json as? NSDictionary else {
                 let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON received from Pebble Watch API"])
-                resultHandler(nil, error)
+                dispatchOnMain {
+                    resultHandler(.error(error))
+                }
                 return
             }
-            let bgs : NSArray = jsonDict.object(forKey: "bgs") as! NSArray
-            if (bgs.count > 0) {
-                let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
+            let bgs = jsonDict.object(forKey: "bgs") as? NSArray
+            guard bgs != nil else {
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. "])
+                dispatchOnMain {
+                    resultHandler(.error(error))
+                }
+                return
+            }
+            if ((bgs?.count)! > 0) {
+                let currentBgs : NSDictionary = bgs!.object(at: 0) as! NSDictionary
                 
                 let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
                 let time = currentBgs.object(forKey: "datetime") as! NSNumber
@@ -359,7 +463,9 @@ class NightscoutService {
                 else {
                     nightscoutData.bgdeltaString = "?"
                     nightscoutData.bgdelta = 0
-                    resultHandler(nightscoutData, nil)
+                    dispatchOnMain {
+                        resultHandler(.data(nightscoutData))
+                    }
                     return
                 }
                 nightscoutData.bgdeltaString = self.direction(bgdelta) + String(format: "%.1f", bgdelta)
@@ -372,16 +478,16 @@ class NightscoutService {
                     nightscoutData.noise = self.getNoiseLevel(noiseCode.intValue, sgv: String(sgv))
                 }
                 
-                DispatchQueue.main.async {
-                    resultHandler(nightscoutData, nil)
+                dispatchOnMain {
+                    resultHandler(.data(nightscoutData))
                 }
             }
         } catch {
             print("Catched unknown exception.")
             let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error while extracting data from Pebble Watch API"])
             
-            DispatchQueue.main.async {
-                resultHandler(nil, error)
+            dispatchOnMain {
+                resultHandler(.error(error))
             }
             return
         }
@@ -455,5 +561,13 @@ class NightscoutService {
         }
         
         return "\(Int(UnitsConverter.toDisplayUnits(raw.rounded())))"
+    }
+    
+    private func createEmptyOrInvalidUriError() -> Error {
+        return NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo:  [NSLocalizedDescriptionKey: "The base URI is empty or invalid!"])
+    }
+    
+    private func createNoDataError(description: String) -> Error {
+         return NSError(domain: "NightguardError", code: -1, userInfo: [NSLocalizedDescriptionKey: description])
     }
 }

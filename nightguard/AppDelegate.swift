@@ -29,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Override point for customization after application launch.
         UITabBar.appearance().tintColor = UIColor.white
+
+        UITextField.appearance().keyboardAppearance = .dark
         
         // This application should be called in background every X Minutes
         UIApplication.shared.setMinimumBackgroundFetchInterval(
@@ -59,6 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AlarmRule.alertIfBelowValue = (defaults?.float(forKey: "alertIfBelowValue"))!
         
         AlarmRule.minutesWithoutValues = (defaults?.integer(forKey: "noDataAlarmAfterMinutes"))!
+
+        AlarmRule.minutesToPredictLow = (defaults?.integer(forKey: "lowPredictionMinutes"))!
+        AlarmRule.isLowPredictionEnabled = (defaults?.bool(forKey: "lowPredictionEnabled"))!
+
+        AlarmRule.isSmartSnoozeEnabled = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
     }
     
     func initializeApplicationDefaults() {
@@ -73,7 +80,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              "alertIfBelowValue": 80,
              "maximumBloodGlucoseDisplayed": 350,
              
-             "noDataAlarmAfterMinutes": 15
+             "noDataAlarmAfterMinutes": 15,
+             
+             "lowPredictionMinutes": 15,
+             "lowPredictionEnabled": false,
+             
+             "smartSnoozeEnabled": false
         ]
         UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
     }
@@ -90,17 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-        
-        // If there is already a snooze active => we don't have to fear that an alarm
-        // would be played.
-        if !AlarmRule.isSnoozed() {
-            // snooze the alarm for 15 Seconds in order to retrieve new data
-            // before playing alarm
-            // Otherwise it could be the case that the app immediately plays
-            // an alarm sound without giving the app the chance to reload
-            // current data
-            AlarmRule.snoozeSeconds(15)
-        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -115,27 +116,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         // just refresh the current nightscout data
-        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { _, error in
-            if let _ = error {
-                completionHandler(.failed)
-            } else {
+        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
+            
+            // trigger notification alarm if needed
+            AlarmNotificationService.singleton.notifyIfAlarmActivated()
+            
+            // update app badge
+            if UserDefaultsRepository.readShowBGOnAppBadge() {
+                UIApplication.shared.setCurrentBGValueOnAppBadge()
+            }
+            
+            guard let result = result else {
+                completionHandler(.noData)
+                return
+            }
+            
+            // send data to watch & announce completion handler
+            switch result {
+            case .data:
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
                 completionHandler(.newData)
+            case .error:
+                completionHandler(.failed)
             }
         }
-        
-        // This can be used to alarm even when the app is in the background
-        // but this doesn't work very well - so removed it so far...
-//            ServiceBoundary.singleton.readCurrentDataForPebbleWatch({(nightscoutData) -> Void in
-//                
-//                DataRepository.singleton.storeCurrentNightscoutData(nightscoutData)
-//                if AlarmRule.isAlarmActivated(nightscoutData) {
-//                    AlarmSound.play()
-//                } else {
-//                    AlarmSound.stop()
-//                }
-//                completionHandler (.NoData)
-//            })
     }
 }
 
