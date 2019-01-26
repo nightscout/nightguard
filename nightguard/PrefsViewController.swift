@@ -17,11 +17,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var uriPickerView: UIPickerView!
     @IBOutlet weak var showRawBGSwitch: UISwitch!
-    
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
-    }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,11 +32,6 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         self.view.addGestureRecognizer(tap)
         
         showRawBGSwitch.isOn = UserDefaultsRepository.readShowRawBG()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        let value = UIInterfaceOrientation.portrait.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
     func displayTheApplicationVersionNumber() {

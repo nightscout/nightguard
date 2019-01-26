@@ -43,11 +43,7 @@ class MainViewController: UIViewController {
     let timeInterval: TimeInterval = 30.0
     // kill and restart the timer every 12 minutes
     let safetyResetTimerInterval: TimeInterval = 60.0 * 12
-    
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
-    }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -102,15 +98,7 @@ class MainViewController: UIViewController {
         showHideRawBGPanel()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        
-        // Start immediately so that the current time gets displayed at once
-        // And the alarm can play if needed
-        timerDidEnd(timer)
-        
-        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-        
+    override func viewDidAppear(_ animated: Bool) {        
         chartScene.size = CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height)
     }
     

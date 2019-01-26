@@ -35,11 +35,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     
     @IBOutlet weak var noDataAlarmButton: UIButton!
     @IBOutlet weak var noDataAlarmPickerView: UIPickerView!
-    
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
-    }
-    
+        
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
@@ -76,11 +72,6 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         alertBelowSlider.value = (UnitsConverter.toMgdl(alertIfBelowValueLabel.text!.floatValue) - MIN_ALERT_BELOW_VALUE) / MAX_ALERT_ABOVE_VALUE
         
         noDataAlarmButton.setTitle(defaults?.string(forKey: "noDataAlarmAfterMinutes"), for: UIControlState())
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        let value = UIInterfaceOrientation.portrait.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
     @IBAction func edgeDetectionSwitchChanged(_ sender: AnyObject) {
