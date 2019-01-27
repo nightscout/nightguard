@@ -70,7 +70,7 @@ extension Array where Element: BloodSugar {
         
         let deltasInMgdl = readings.deltas.map { UnitsConverter.toMgdl($0) }
         if abs(deltasInMgdl[1]) > 4 || abs(deltasInMgdl[0] + deltasInMgdl[1]) > 10 {
-            return deltasInMgdl[0] > 0 ? .ascending : .descending
+            return deltasInMgdl[1] > 0 ? .ascending : .descending
         } else {
             return .unknown
         }
