@@ -134,7 +134,7 @@ class NightscoutService {
     @discardableResult
     fileprivate func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
 
-        let baseUri = UserDefaultsRepository.readBaseUri()
+        let baseUri = UserDefaultsRepository.baseUri.value
         if baseUri == "" {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
@@ -354,7 +354,7 @@ class NightscoutService {
     @discardableResult
     func readCurrentDataForPebbleWatch(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) -> URLSessionTask? {
 
-        let baseUri = UserDefaultsRepository.readBaseUri()
+        let baseUri = UserDefaultsRepository.baseUri.value
         if (baseUri == "") {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil

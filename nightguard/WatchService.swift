@@ -23,33 +23,6 @@ class WatchService {
     private var lastWatchUpdateTime: Date?
     private var lastWatchComplicationUpdateTime: Date?
     
-    func sendToWatch(_ units : Units) {
-        
-        let applicationDict = ["units" : units.rawValue]
-        sendOrTransmitToWatch(applicationDict)
-    }
-    
-    func sendToWatch(_ alertIfBelowValue : Float, alertIfAboveValue : Float) {
-        let applicationDict = ["alertIfBelowValue" : alertIfBelowValue,
-                                   "alertIfAboveValue" : alertIfAboveValue]
-        sendOrTransmitToWatch(applicationDict)
-    }
-    
-    func sendToWatch(_ hostUri : String) {
-        let applicationDict = ["hostUri" : hostUri]
-        sendOrTransmitToWatch(applicationDict)
-    }
-    
-    func sendToWatch(_ hostUri : String, alertIfBelowValue : Float, alertIfAboveValue : Float, units : Units, showRawBG : Bool) {
-        let applicationDict : [String : Any] =
-            ["hostUri" : hostUri,
-             "alertIfBelowValue" : alertIfBelowValue,
-             "alertIfAboveValue" : alertIfAboveValue,
-             "units" : units.rawValue,
-             "showRawBG" : showRawBG]
-        sendOrTransmitToWatch(applicationDict)
-    }
-    
     func sendToWatchCurrentNightwatchData() {
         
         // send ONLY if the phone app has new nightscout data
@@ -77,10 +50,7 @@ class WatchService {
                 } else {
                     
                     // do update!
-                    try? WCSession.default.updateApplicationContext(
-                        WatchMessageService.singleton.currentNightscoutDataAsMessage
-                    )
-
+                    NightscoutDataMessage().send()
                     self.lastSentNightscoutDataTime = nightscoutData.time
                     self.lastWatchUpdateTime = Date()
                 }
@@ -95,12 +65,9 @@ class WatchService {
                 // do nothing, last watch complication update was more recent than update rate, will skip updating it now!
             } else {
 
-                // send in user info along the nightscout data a flag to signal that we want to update complications also
-                var userInfo = WatchMessageService.singleton.currentNightscoutDataAsMessage
-                userInfo["updateComplication"] = true
-
-                // update!
-                WCSession.default.transferCurrentComplicationUserInfo(userInfo)
+                // update complications!
+                let message = NightscoutDataMessage()
+                WCSession.default.transferCurrentComplicationUserInfo(message.dictionary)
 
                 // and keep the update time
                 self.lastWatchComplicationUpdateTime = Date()

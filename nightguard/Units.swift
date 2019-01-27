@@ -12,3 +12,18 @@ enum Units : String {
     case mgdl = "mgdl"
     case mmol = "mmol"
 }
+
+extension Units: AnyConvertible {
+    
+    func toAny() -> Any {
+        return rawValue
+    }
+    
+    static func fromAny(_ anyValue: Any) -> Units? {
+        guard let rawValue = anyValue as? String else {
+            return nil
+        }
+        
+        return Units(rawValue: rawValue)
+    }
+}

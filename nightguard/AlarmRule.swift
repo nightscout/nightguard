@@ -23,19 +23,19 @@ class AlarmRule {
     
     fileprivate static var snoozedUntilTimestamp = TimeInterval()
     
-    static let numberOfConsecutiveValues = UserDefaultsValue<Int>(key: "numberOfConsecutiveValues", default: 3)
-    static let deltaAmount = UserDefaultsValue<Float>(key: "deltaAmount", default: 8)
-    static let isEdgeDetectionAlarmEnabled = UserDefaultsValue<Bool>(key: "deltaAmount", default: false)
+    static let numberOfConsecutiveValues = UserDefaultsSyncValue<Int>(key: "numberOfConsecutiveValues", default: 3)
+    static let deltaAmount = UserDefaultsSyncValue<Float>(key: "deltaAmount", default: 8)
+    static let isEdgeDetectionAlarmEnabled = UserDefaultsSyncValue<Bool>(key: "edgeDetectionAlarmEnabled", default: false)
     
     static let alertIfAboveValue = UserDefaultsRepository.upperBound
     static let alertIfBelowValue = UserDefaultsRepository.lowerBound
     
-    static let minutesWithoutValues = UserDefaultsValue<Int>(key: "noDataAlarmAfterMinutes", default: 15)
+    static let minutesWithoutValues = UserDefaultsSyncValue<Int>(key: "noDataAlarmAfterMinutes", default: 15)
     
-    static var minutesToPredictLow = UserDefaultsValue<Int>(key: "lowPredictionMinutes", default: 15)
-    static var isLowPredictionEnabled = UserDefaultsValue<Bool>(key: "lowPredictionEnabled", default: false)
+    static var minutesToPredictLow = UserDefaultsSyncValue<Int>(key: "lowPredictionMinutes", default: 15)
+    static var isLowPredictionEnabled = UserDefaultsSyncValue<Bool>(key: "lowPredictionEnabled", default: false)
 
-    static var isSmartSnoozeEnabled = UserDefaultsValue<Bool>(key: "smartSnoozeEnabled", default: false)
+    static var isSmartSnoozeEnabled = UserDefaultsSyncValue<Bool>(key: "smartSnoozeEnabled", default: false)
     
     /*
      * Returns true if the alarm should be played.
@@ -167,6 +167,7 @@ class AlarmRule {
      */
     static func snooze(_ minutes : Int) {
         snoozedUntilTimestamp = Date().timeIntervalSince1970 + Double(60 * minutes)
+        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
     }
     
     /*
@@ -175,6 +176,14 @@ class AlarmRule {
      */
     static func snoozeSeconds(_ seconds : Int) {
         snoozedUntilTimestamp = Date().timeIntervalSince1970 + Double(seconds)
+        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
+    }
+    
+    /*
+     * Snooze called from a message received from the connected device (watch or phone).
+     */
+    static func snoozeFromMessage(_ message: SnoozeMessage) {
+        snoozedUntilTimestamp = message.timestamp
     }
     
     /*
@@ -182,6 +191,7 @@ class AlarmRule {
      */
     static func disableSnooze() {
         snoozedUntilTimestamp = TimeInterval()
+        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
     }
     
     /*

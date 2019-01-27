@@ -96,8 +96,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
 //        }
         
         let hostUri = hostUriTextField.text!
-        UserDefaultsRepository.saveBaseUri(hostUri)
-        sendValuesToAppleWatch()
+        UserDefaultsRepository.baseUri.value = hostUri
         
         NightscoutCacheService.singleton.resetCache()
         NightscoutDataRepository.singleton.storeTodaysBgData([])
@@ -167,27 +166,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         }
         return uris
     }
-    
-    // Send the configuration values to the apple watch.
-    // This has to be done here, because the watch has no access to the default values.
-    // So this way we assure that the default values are submitted at least once after the
-    // iOS App started the first time.
-    //
-    // This is enough, because the user has to start the ios app at least once before starting the
-    // watch app: He has to enter the URI to the nightscout backend in the iOS app!
-    func sendValuesToAppleWatch() {
         
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        
-        let alertIfAboveValue : Float = AlarmRule.alertIfAboveValue.value
-        let alertIfBelowValue : Float = AlarmRule.alertIfBelowValue.value
-        let hostUri : String = UserDefaultsRepository.readBaseUri()
-        let units : Units = UserDefaultsRepository.units.value
-        let showRawBG : Bool = UserDefaultsRepository.showRawBG.value
-        
-        WatchService.singleton.sendToWatch(hostUri, alertIfBelowValue: alertIfBelowValue, alertIfAboveValue: alertIfAboveValue, units: units, showRawBG: showRawBG)
-    }
-    
     // Remove keyboard by touching outside
     
     @objc func onTouchGesture(){
@@ -197,7 +176,6 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     // RawBG switch
     @IBAction func onShowRawBGValueChanged(_ sender: UISwitch) {
         UserDefaultsRepository.showRawBG.value = sender.isOn
-        sendValuesToAppleWatch()
     }
     
     @IBAction func onShowBGOnAppBadgeChanged(_ sender: UISwitch) {

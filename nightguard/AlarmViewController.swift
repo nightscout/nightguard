@@ -230,9 +230,7 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         
         if commitChanges {
             adjustLowerSliderValue()
-                        
             AlarmRule.alertIfAboveValue.value = alertIfAboveValue
-            WatchService.singleton.sendToWatch(UnitsConverter.toMgdl(alertIfBelowValueLabel.text!), alertIfAboveValue: alertIfAboveValue)
         }
     }
     
@@ -242,10 +240,8 @@ class AlarmViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         alertIfBelowValueLabel.text = UnitsConverter.toDisplayUnits(String(alertIfBelowValue))
         
         if commitChanges {
-            adjustAboveSliderValue()
-            
+            adjustAboveSliderValue()            
             AlarmRule.alertIfBelowValue.value = alertIfBelowValue
-            WatchService.singleton.sendToWatch(alertIfBelowValue, alertIfAboveValue: UnitsConverter.toMgdl(alertIfAboveValueLabel.text!))
         }
     }
     

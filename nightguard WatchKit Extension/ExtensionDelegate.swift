@@ -18,7 +18,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     var session: WCSession? {
         didSet {
             if let session = session {
-                session.delegate = AppMessageService.singleton
+                session.delegate = WatchMessageService.singleton
                 session.activate()
             }
         }
@@ -51,7 +51,64 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     func activateWatchConnectivity() {
         if WCSession.isSupported() {
             session = WCSession.default
+         
+            handleWatchMessages()
         }
+    }
+    
+    func handleWatchMessages() {
+        
+        // snooze message
+        WatchMessageService.singleton.onMessage { (message: SnoozeMessage) in
+            
+            // update snooze from message
+            AlarmRule.snoozeFromMessage(message)
+            
+            if #available(watchOSApplicationExtension 3.0, *) {
+                if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
+                    interfaceController.loadAndPaintChartData(forceRepaint: true)
+                }
+            }
+        }
+        
+        // nightscout data message
+        WatchMessageService.singleton.onMessage { [weak self] (message: NightscoutDataMessage) in
+            self?.onNightscoutDataReceivedFromPhoneApp(message.nightscoutData)
+        }
+        
+        // user defaults sync message
+        WatchMessageService.singleton.onMessage { (message: UserDefaultSyncMessage) in
+            
+            // update the watch user default sync values, keeping track of which of them were updated
+            var updatedKeys: [String] = []
+            UserDefaultsSyncValuesRegistry.onValueChanged = { syncValue in
+                updatedKeys.append(syncValue.key)
+            }
+            UserDefaultsSyncValuesRegistry.updateSyncValues(from: message.dictionary)
+            UserDefaultsSyncValuesRegistry.onValueChanged = nil
+            
+            // we should repaint charts if some used defaults values were changed
+//            let shouldRepaintCharts = (
+//                updatedKeys.contains(UserDefaultsRepository.upperBound.key) ||
+//                updatedKeys.contains(UserDefaultsRepository.lowerBound.key)
+//            )
+            let shouldRepaintCharts = true
+            if shouldRepaintCharts {
+                if #available(watchOSApplicationExtension 3.0, *) {
+                    if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
+                        if WKExtension.shared().applicationState == .active {
+                            DispatchQueue.main.async {
+                                interfaceController.loadAndPaintChartData(forceRepaint: true)
+                            }
+                        } else {
+                            interfaceController.shouldRepaintChartsOnActivation = true
+                        }
+                    }
+                }
+            }
+
+        }
+        
     }
     
     func applicationDidBecomeActive() {
@@ -145,20 +202,16 @@ extension ExtensionDelegate {
     }
     
     @discardableResult
-    func handleNightscoutDataMessage(_ message: [String: Any]) -> Bool {
+    func onNightscoutDataReceivedFromPhoneApp(_ nightscoutData: NightscoutData) -> Bool {
         
         BackgroundRefreshLogger.phoneUpdates += 1
-        guard let data = message["nightscoutData"] as? Data, let nightscoutData = try? JSONDecoder().decode(NightscoutData.self, from: data) else {
-            print("Invalid nightscout data received from phone app!")
-            return false
-        }
         
         guard !nightscoutData.isOlderThanXMinutes(60) else {
             BackgroundRefreshLogger.info("📱Rejected nightscout data (>1hr old!)")
             return false
         }
 
-        let updateComplication = message["updateComplication"] as? Bool ?? false
+//        let updateComplication = message["updateComplication"] as? Bool ?? false
         BackgroundRefreshLogger.info("📱Updating nightscout data (update complication: \(updateComplication))")
         
         let updateResult = updateNightscoutData(nightscoutData, updateComplication: true) // always update complication!
@@ -365,7 +418,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
     
     func scheduleURLSession() -> (URLSession, URLSessionDownloadTask)? {
         
-        let baseUri = UserDefaultsRepository.readBaseUri()
+        let baseUri = UserDefaultsRepository.baseUri.value
         if baseUri == "" {
             return nil
         }

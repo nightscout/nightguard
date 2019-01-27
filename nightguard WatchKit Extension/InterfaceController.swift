@@ -246,7 +246,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func assureThatBaseUriIsExisting() {
         
-        if UserDefaultsRepository.readBaseUri().isEmpty {
+        if UserDefaultsRepository.baseUri.value.isEmpty {
             AppMessageService.singleton.requestBaseUri()
         }
     }

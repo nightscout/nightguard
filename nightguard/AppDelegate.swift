@@ -24,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    var mainViewController: MainViewController?
+    
     @available(iOS 3.0, *)
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -45,6 +47,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func activateWatchConnectivity() {
         if WCSession.isSupported() {
             session = WCSession.default
+        
+            handleWatchMessages()
+        }
+    }
+    
+    func handleWatchMessages() {
+        
+        // snooze message
+        WatchMessageService.singleton.onMessage { [weak self] (message: SnoozeMessage) in
+            
+            // update snooze from message
+            AlarmRule.snoozeFromMessage(message)
+            
+            // then update UI & play or mute the alarm
+            self?.mainViewController?.doPeriodicUpdate(forceRepaint: false)
+        }
+        
+        // request base URI
+        WatchMessageService.singleton.onRequest { (request: RequestBaseUriMessage) in
+            return ResponseBaseUriMessage(baseUri: UserDefaultsRepository.baseUri.value)
+        }
+        
+        // whenever a sync value changes, send the apropriate watch message with all the sync values
+        UserDefaultsSyncValuesRegistry.onValueChanged = { _ in
+            UserDefaultSyncMessage(dictionary: UserDefaultsSyncValuesRegistry.dictionary)?.send()
         }
     }
     

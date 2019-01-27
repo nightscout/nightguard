@@ -100,6 +100,9 @@ class MainViewController: UIViewController {
         
         // call first "UIApplicationWillEnterForeground" event by hand, it is not sent when the app starts (just registered for the event)
         prepareForEnteringForeground()
+        
+        // keep this instance in app delegate
+        (UIApplication.shared.delegate as? AppDelegate)?.mainViewController = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -246,7 +249,7 @@ class MainViewController: UIViewController {
         self.doPeriodicUpdate(forceRepaint: false)
     }
     
-    fileprivate func doPeriodicUpdate(forceRepaint: Bool) {
+    func doPeriodicUpdate(forceRepaint: Bool) {
         
         self.paintCurrentTime()
         // paint here is need if the server doesn't respond
