@@ -8,9 +8,15 @@
 
 import Foundation
 
-class UserDefaultsValue<T: AnyConvertible & Equatable> {
+/// A type erased key-value
+protocol UserDefaultsAnyValue {
+    var key: String { get }
+    var anyValue: Any { get set }
+}
+
+class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     
-    // user defaults
+    // user defaults key
     let key: String
     
     var value: T {
@@ -30,51 +36,16 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> {
                 value = validatedValue
             }
             
-            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
-            defaults.setValue(value.toAny(), forKey: key)
-            onValueChanged(oldValue: oldValue)
+            // store value to user defaults
+            UserDefaultsValue.defaults.setValue(value.toAny(), forKey: key)
+            
+            // execute custom closure
             onChange?()
+            
+            // signal UserDefaultsValues that value has changed
+            UserDefaultsValues.valueChanged(self)
         }
     }
-    
-    // is value already stored in UserDefaults?
-    var exists: Bool {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
-        return defaults.object(forKey: key) != nil
-    }
-    
-    private let onChange: (() -> ())?
-    
-    // validate & transform: giving the new value, validate it; if validations passes, return the new value; if fails, transform the value, returning a modified version or ... return nil and the change will not gonna happen
-    private let validation: ((T) -> T?)?
-    
-    init(key: String, default defaultValue: T, onChange: (() -> Void)? = nil, validation: ((T) -> T?)? = nil) {
-        self.key = key
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
-        if let anyValue = defaults.object(forKey: key), let value = T.fromAny(anyValue) as T? {
-            if let validation = validation {
-                self.value = validation(value) ?? defaultValue
-            } else {
-                self.value = value
-            }
-        } else {
-            self.value = defaultValue
-        }
-        self.onChange = onChange
-        self.validation = validation
-    }
-    
-    func onValueChanged(oldValue: T) {
-    }
-}
-
-/// A type erased key-value
-protocol DictionaryElement {
-    var key: String { get }
-    var anyValue: Any { get set }
-}
-
-class UserDefaultsSyncValue<T: AnyConvertible & Equatable>: UserDefaultsValue<T>, DictionaryElement {
     
     var anyValue: Any {
         get {
@@ -90,50 +61,112 @@ class UserDefaultsSyncValue<T: AnyConvertible & Equatable>: UserDefaultsValue<T>
         }
     }
     
-    override init(key: String, default defaultValue: T, onChange: (() -> Void)? = nil, validation: ((T) -> T?)? = nil) {
-        super.init(key: key, default: defaultValue, onChange: onChange, validation: validation)
-        
-        UserDefaultsSyncValuesRegistry.register(self)
+    // on change closure
+    private let onChange: (() -> ())?
+    
+    // validate & transform closure : giving the new value, validate it; if validations passes, return the new value; if fails, transform the value, returning a modified version or ... return nil and the change will not gonna happen
+    private let validation: ((T) -> T?)?
+    
+    class var defaults: UserDefaults {
+        return UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
     }
-
-    override func onValueChanged(oldValue: T) {
-        super.onValueChanged(oldValue: oldValue)
-        
-        if value != oldValue {
-            UserDefaultsSyncValuesRegistry.valueChanged(self)
+    
+    init(key: String, default defaultValue: T, onChange: (() -> Void)? = nil, validation: ((T) -> T?)? = nil) {
+        self.key = key
+        if let anyValue = UserDefaultsValue.defaults.object(forKey: key), let value = T.fromAny(anyValue) as T? {
+            if let validation = validation {
+                self.value = validation(value) ?? defaultValue
+            } else {
+                self.value = value
+            }
+        } else {
+            self.value = defaultValue
         }
+        self.onChange = onChange
+        self.validation = validation
+    }
+    
+    func group(_ groupName: String) -> Self {
+        UserDefaultsValues.add(self, to: groupName)
+        return self
     }
 }
 
-class UserDefaultsSyncValuesRegistry {
+
+class ObservationToken {
     
-    class func register(_ syncValue: DictionaryElement) {
-        syncValues.append(syncValue)
+    private let cancellationClosure: () -> Void
+    
+    init(cancellationClosure: @escaping () -> Void) {
+        self.cancellationClosure = cancellationClosure
     }
     
-    static var dictionary: [String: Any] {
+    func cancel() {
+        cancellationClosure()
+    }
+}
+
+class UserDefaultsValues {
+    
+    class func values(from groupName: String) -> [UserDefaultsAnyValue]? {
+        return groupNameToValues[groupName]
+    }
+    
+    class func add(_ value: UserDefaultsAnyValue, to groupName: String) {
         
-        var dictionary = [String: Any]()
-        for element in syncValues {
-            dictionary[element.key] = element.anyValue
+        // add to "value-key to groupNames" dictionary
+        var groupNames = valueKeyToGroupNames[value.key] ?? []
+        guard !groupNames.contains(groupName) else {
+            
+            // already added value to this group!
+            return
         }
+
+        groupNames.append(groupName)
+        valueKeyToGroupNames[value.key] = groupNames
         
-        return dictionary
+        // add to "groupName to value" dictionary
+        var values = groupNameToValues[groupName] ?? []
+        values.append(value)
+        groupNameToValues[groupName] = values
     }
     
-    static var onValueChanged: ((DictionaryElement) -> Void)?
-    
-    class func valueChanged(_ syncValue: DictionaryElement) {
-        onValueChanged?(syncValue)
-    }
-    
-    class func updateSyncValues(from dictionary: [String: Any]) {
-        for var syncValue in syncValues {
-            if let value = dictionary[syncValue.key] {
-                syncValue.anyValue = value
-            }
+    @discardableResult
+    class func observeChanges(in groupName: String, using closure: @escaping(UserDefaultsAnyValue, String) -> Void) -> ObservationToken {
+        
+        let id = UUID()
+
+        var observers = groupNameToObservers[groupName] ?? [:]
+        observers[id] = closure
+        groupNameToObservers[groupName] = observers
+        
+        return ObservationToken {
+            groupNameToObservers[groupName]?.removeValue(forKey: id)
         }
     }
     
-    static private var syncValues: [DictionaryElement] = []
+    // called by UserDefaultsValue instances when value changes
+    class func valueChanged(_ value: UserDefaultsAnyValue) {
+        valueKeyToGroupNames[value.key]?.forEach() { groupName in
+            notifyValueChanged(value, in: groupName)
+        }
+    }
+    
+    private class func notifyValueChanged(_ value: UserDefaultsAnyValue, in groupName: String) {
+        groupNameToObservers[groupName]?.values.forEach { closure in
+            closure(value, groupName)
+        }
+    }
+    
+    static private var groupNameToValues: [String: [UserDefaultsAnyValue]] = [:]
+    static private var valueKeyToGroupNames: [String: [String]] = [:]
+    static private var groupNameToObservers: [String: [UUID : (UserDefaultsAnyValue, String) -> Void]] = [:]
+}
+
+// user default values group definitions
+extension UserDefaultsValues {
+    struct GroupNames {
+        static let watchSync = "watchSync"
+        static let alarm = "alarm"
+    }
 }

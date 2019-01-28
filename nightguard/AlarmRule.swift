@@ -23,19 +23,37 @@ class AlarmRule {
     
     fileprivate static var snoozedUntilTimestamp = TimeInterval()
     
-    static let numberOfConsecutiveValues = UserDefaultsSyncValue<Int>(key: "numberOfConsecutiveValues", default: 3)
-    static let deltaAmount = UserDefaultsSyncValue<Float>(key: "deltaAmount", default: 8)
-    static let isEdgeDetectionAlarmEnabled = UserDefaultsSyncValue<Bool>(key: "edgeDetectionAlarmEnabled", default: false)
+    static let numberOfConsecutiveValues = UserDefaultsValue<Int>(key: "numberOfConsecutiveValues", default: 3)
+        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValues.GroupNames.alarm)
+    
+    static let deltaAmount = UserDefaultsValue<Float>(key: "deltaAmount", default: 8)
+        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValues.GroupNames.alarm)
+
+    static let isEdgeDetectionAlarmEnabled = UserDefaultsValue<Bool>(key: "edgeDetectionAlarmEnabled", default: false)
+        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValues.GroupNames.alarm)
     
     static let alertIfAboveValue = UserDefaultsRepository.upperBound
     static let alertIfBelowValue = UserDefaultsRepository.lowerBound
     
-    static let minutesWithoutValues = UserDefaultsSyncValue<Int>(key: "noDataAlarmAfterMinutes", default: 15)
+    static let minutesWithoutValues = UserDefaultsValue<Int>(key: "noDataAlarmAfterMinutes", default: 15)
+        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValues.GroupNames.alarm)
     
-    static var minutesToPredictLow = UserDefaultsSyncValue<Int>(key: "lowPredictionMinutes", default: 15)
-    static var isLowPredictionEnabled = UserDefaultsSyncValue<Bool>(key: "lowPredictionEnabled", default: false)
+    static var minutesToPredictLow = UserDefaultsValue<Int>(key: "lowPredictionMinutes", default: 15)
+        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValues.GroupNames.alarm)
 
-    static var isSmartSnoozeEnabled = UserDefaultsSyncValue<Bool>(key: "smartSnoozeEnabled", default: false)
+    static var isLowPredictionEnabled = UserDefaultsValue<Bool>(key: "lowPredictionEnabled", default: false)
+        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValues.GroupNames.alarm)
+
+
+    static var isSmartSnoozeEnabled = UserDefaultsValue<Bool>(key: "smartSnoozeEnabled", default: false)
+        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValues.GroupNames.alarm)
     
     /*
      * Returns true if the alarm should be played.

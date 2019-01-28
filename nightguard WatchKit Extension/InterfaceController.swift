@@ -253,12 +253,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func assureThatDisplayUnitsIsDefined() {
         
-        if !UserDefaultsRepository.units.exists {
-            // try to determine whether the user wishes to see value in mmol or mg/dL
-            NightscoutService.singleton.readStatus { (units) in
-                UserDefaultsRepository.units.value = units
-            }
-        }
+//        if !UserDefaultsRepository.units.exists {
+//            // try to determine whether the user wishes to see value in mmol or mg/dL
+//            NightscoutService.singleton.readStatus { (units) in
+//                UserDefaultsRepository.units.value = units
+//            }
+//        }
     }
     
     // Returns true, if the size of one array changed

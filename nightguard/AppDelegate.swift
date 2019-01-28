@@ -69,9 +69,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return ResponseBaseUriMessage(baseUri: UserDefaultsRepository.baseUri.value)
         }
         
-        // whenever a sync value changes, send the apropriate watch message with all the sync values
-        UserDefaultsSyncValuesRegistry.onValueChanged = { _ in
-            UserDefaultSyncMessage(dictionary: UserDefaultsSyncValuesRegistry.dictionary)?.send()
+        // whenever a value from the "watch sync" group changes, send the apropriate watch message containing all the group values
+        UserDefaultsValues.observeChanges(in: UserDefaultsValues.GroupNames.watchSync) { _, _ in
+            UserDefaultSyncMessage().send()
         }
     }
     

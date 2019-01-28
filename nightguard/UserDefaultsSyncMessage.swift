@@ -15,4 +15,13 @@ class UserDefaultSyncMessage: WatchMessage {
     required init?(dictionary: [String : Any]) {
         self.dictionary = dictionary
     }
+    
+    init() {
+        var dictionary = [String: Any]()
+        UserDefaultsValues.values(from: UserDefaultsValues.GroupNames.watchSync)?.forEach { value in
+            dictionary[value.key] = value.anyValue
+        }
+        
+        self.dictionary = dictionary
+    }
 }

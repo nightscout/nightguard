@@ -28,38 +28,43 @@ class UserDefaultsRepository {
     fileprivate static var url: URL?
     fileprivate static var token: String?
     
-    static let baseUri = UserDefaultsSyncValue<String>(
+    static let baseUri = UserDefaultsValue<String>(
         key: "hostUri",
         default: "",
         onChange: {
             parseBaseUri()
         },
-        validation: { hostUri in
-            let trimmedUri = uriWithoutTrailingSlashes(hostUri).trimmingCharacters(
-                in: CharacterSet.whitespacesAndNewlines)
-            
-            if (!validateUrl(trimmedUri)) {
-                return ""
-            }
-            
-            return trimmedUri
+            validation: { hostUri in
+                let trimmedUri = uriWithoutTrailingSlashes(hostUri).trimmingCharacters(
+                    in: CharacterSet.whitespacesAndNewlines)
+                
+                if (!validateUrl(trimmedUri)) {
+                    return ""
+                }
+                
+                return trimmedUri
         })
+        .group(UserDefaultsValues.GroupNames.watchSync)
     
-    static let showRawBG = UserDefaultsSyncValue<Bool>(key: "showRawBG", default: false)
+    static let showRawBG = UserDefaultsValue<Bool>(key: "showRawBG", default: false)
+        .group(UserDefaultsValues.GroupNames.watchSync)
     static let showBGOnAppBadge = UserDefaultsValue<Bool>(key: "showBGOnAppBadge", default: false)
     static let alarmNotificationState = UserDefaultsValue<Bool>(key: "alarmNotificationState", default: false)
     
     // Returns true if the units (mmol or mg/dL) have already been retrieved
     // from the nightscout backend
-    static let units = UserDefaultsSyncValue<Units>(key: "units", default: Units.mgdl)
+    static let units = UserDefaultsValue<Units>(key: "units", default: Units.mgdl)
+        .group(UserDefaultsValues.GroupNames.watchSync)
     
     // the array defining what days should be displayed in the statistics view
     // E.g. [true, true, true, true, true] if all 5 days should be displayed
     static let daysToBeDisplayed = UserDefaultsValue<[Bool]>(key: "daysToBeDisplayed", default: [true, true, true, true, true])
     
     // blood glucose upper/lower bounds (definition of user's bg range)
-    static let upperBound = UserDefaultsSyncValue<Float>(key: "upperBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfAboveValue") as? Float) ?? 180)
-    static let lowerBound = UserDefaultsSyncValue<Float>(key: "lowerBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfBelowValue") as? Float) ?? 80)
+    static let upperBound = UserDefaultsValue<Float>(key: "upperBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfAboveValue") as? Float) ?? 180)
+        .group(UserDefaultsValues.GroupNames.watchSync)
+    static let lowerBound = UserDefaultsValue<Float>(key: "lowerBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfBelowValue") as? Float) ?? 80)
+        .group(UserDefaultsValues.GroupNames.watchSync)
 
     static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
     

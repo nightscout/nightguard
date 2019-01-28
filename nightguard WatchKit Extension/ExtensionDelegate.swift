@@ -79,13 +79,21 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         // user defaults sync message
         WatchMessageService.singleton.onMessage { (message: UserDefaultSyncMessage) in
             
-            // update the watch user default sync values, keeping track of which of them were updated
+            // update user default values from "watch sync" group, keeping track of which of them were updated
             var updatedKeys: [String] = []
-            UserDefaultsSyncValuesRegistry.onValueChanged = { syncValue in
-                updatedKeys.append(syncValue.key)
+            let observationToken = UserDefaultsValues.observeChanges(in: UserDefaultsValues.GroupNames.watchSync) { value, _ in
+                updatedKeys.append(value.key)
             }
-            UserDefaultsSyncValuesRegistry.updateSyncValues(from: message.dictionary)
-            UserDefaultsSyncValuesRegistry.onValueChanged = nil
+            defer {
+                observationToken.cancel()
+            }
+            
+            // do the update!
+            for var value in (UserDefaultsValues.values(from: UserDefaultsValues.GroupNames.watchSync) ?? []) {
+                if let anyValue = message.dictionary[value.key] {
+                    value.anyValue = anyValue
+                }
+            }
             
             // we should repaint charts if some used defaults values were changed
 //            let shouldRepaintCharts = (
