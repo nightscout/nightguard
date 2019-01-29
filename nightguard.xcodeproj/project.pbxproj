@@ -746,7 +746,7 @@
 				TargetAttributes = {
 					43647BC91BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = FBNVJ39CQN;
+						DevelopmentTeam = 66QQCRE7XS;
 						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -771,12 +771,12 @@
 					};
 					43647BF11BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = FBNVJ39CQN;
+						DevelopmentTeam = 66QQCRE7XS;
 						LastSwiftMigration = 1010;
 					};
 					43647C001BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = FBNVJ39CQN;
+						DevelopmentTeam = 66QQCRE7XS;
 						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -1215,7 +1215,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp.watchkitextension;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1236,7 +1236,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp.watchkitextension;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1258,7 +1258,7 @@
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp;
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1279,7 +1279,7 @@
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp;
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1299,7 +1299,7 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1318,7 +1318,7 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguard;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1333,7 +1333,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguardTests;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardTests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1347,7 +1347,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguardTests;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardTests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1360,7 +1360,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguardUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardUITests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1374,7 +1374,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.evans.pf.nightguardUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardUITests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
