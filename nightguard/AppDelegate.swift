@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // whenever a value from the "watch sync" group changes, send the apropriate watch message containing all the group values
-        UserDefaultsValues.observeChanges(in: UserDefaultsValues.GroupNames.watchSync) { _, _ in
+        UserDefaultsValueGroups.observeChanges(in: UserDefaultsValueGroups.GroupNames.watchSync) { _, _ in
             UserDefaultSyncMessage().send()
         }
     }

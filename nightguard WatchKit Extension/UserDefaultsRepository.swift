@@ -44,17 +44,17 @@ class UserDefaultsRepository {
                 
                 return trimmedUri
         })
-        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     static let showRawBG = UserDefaultsValue<Bool>(key: "showRawBG", default: false)
-        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     static let showBGOnAppBadge = UserDefaultsValue<Bool>(key: "showBGOnAppBadge", default: false)
     static let alarmNotificationState = UserDefaultsValue<Bool>(key: "alarmNotificationState", default: false)
     
     // Returns true if the units (mmol or mg/dL) have already been retrieved
     // from the nightscout backend
     static let units = UserDefaultsValue<Units>(key: "units", default: Units.mgdl)
-        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     // the array defining what days should be displayed in the statistics view
     // E.g. [true, true, true, true, true] if all 5 days should be displayed
@@ -62,9 +62,9 @@ class UserDefaultsRepository {
     
     // blood glucose upper/lower bounds (definition of user's bg range)
     static let upperBound = UserDefaultsValue<Float>(key: "upperBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfAboveValue") as? Float) ?? 180)
-        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     static let lowerBound = UserDefaultsValue<Float>(key: "lowerBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfBelowValue") as? Float) ?? 80)
-        .group(UserDefaultsValues.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
 
     static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
     

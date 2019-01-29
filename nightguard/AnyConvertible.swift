@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A type that can be converted to/from Any 
 protocol AnyConvertible {
     func toAny() -> Any
     static func fromAny(_ anyValue: Any) -> Self?

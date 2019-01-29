@@ -8,17 +8,21 @@
 
 import Foundation
 
-/// A type erased key-value
+/// A type that presents a key and a mutable value (type erased key-value)
 protocol UserDefaultsAnyValue {
     var key: String { get }
     var anyValue: Any { get set }
 }
 
+/// A value holder that keeps its internal data (the value) synchronized with its UserDefaults value. The value is read from UserDefaults on initialization (if exists, otherwise a default value is used) and written when the value changes. Also a custom validation & onChange closure can be set on initialization.
+///
+/// Another feature of this class is that when the value changes, the change can be observed by multiple observers if the value is embeded in a group (UserDefaultsValueGroups class manages the groups). It is very convenient to group related values in the same group, so when one of them changes, the observers are notified that a change occured in that group.
 class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     
-    // user defaults key
+    // user defaults key (UserDefaultsAnyValue protocol implementation)
     let key: String
     
+    // the value (strong typed)
     var value: T {
         didSet {
             
@@ -43,10 +47,11 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
             onChange?()
             
             // signal UserDefaultsValues that value has changed
-            UserDefaultsValues.valueChanged(self)
+            UserDefaultsValueGroups.valueChanged(self)
         }
     }
     
+    /// get/set the value from Any value (UserDefaultsAnyValue protocol implementation)
     var anyValue: Any {
         get {
             return self.value.toAny()
@@ -67,7 +72,8 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     // validate & transform closure : giving the new value, validate it; if validations passes, return the new value; if fails, transform the value, returning a modified version or ... return nil and the change will not gonna happen
     private let validation: ((T) -> T?)?
     
-    class var defaults: UserDefaults {
+    // user defaults used for persistence
+    private class var defaults: UserDefaults {
         return UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
     }
     
@@ -86,87 +92,9 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
         self.validation = validation
     }
     
+    /// Insert this value in a group, useful for observing changes in the whole group, instead of particular values
     func group(_ groupName: String) -> Self {
-        UserDefaultsValues.add(self, to: groupName)
+        UserDefaultsValueGroups.add(self, to: groupName)
         return self
-    }
-}
-
-
-class ObservationToken {
-    
-    private let cancellationClosure: () -> Void
-    
-    init(cancellationClosure: @escaping () -> Void) {
-        self.cancellationClosure = cancellationClosure
-    }
-    
-    func cancel() {
-        cancellationClosure()
-    }
-}
-
-class UserDefaultsValues {
-    
-    class func values(from groupName: String) -> [UserDefaultsAnyValue]? {
-        return groupNameToValues[groupName]
-    }
-    
-    class func add(_ value: UserDefaultsAnyValue, to groupName: String) {
-        
-        // add to "value-key to groupNames" dictionary
-        var groupNames = valueKeyToGroupNames[value.key] ?? []
-        guard !groupNames.contains(groupName) else {
-            
-            // already added value to this group!
-            return
-        }
-
-        groupNames.append(groupName)
-        valueKeyToGroupNames[value.key] = groupNames
-        
-        // add to "groupName to value" dictionary
-        var values = groupNameToValues[groupName] ?? []
-        values.append(value)
-        groupNameToValues[groupName] = values
-    }
-    
-    @discardableResult
-    class func observeChanges(in groupName: String, using closure: @escaping(UserDefaultsAnyValue, String) -> Void) -> ObservationToken {
-        
-        let id = UUID()
-
-        var observers = groupNameToObservers[groupName] ?? [:]
-        observers[id] = closure
-        groupNameToObservers[groupName] = observers
-        
-        return ObservationToken {
-            groupNameToObservers[groupName]?.removeValue(forKey: id)
-        }
-    }
-    
-    // called by UserDefaultsValue instances when value changes
-    class func valueChanged(_ value: UserDefaultsAnyValue) {
-        valueKeyToGroupNames[value.key]?.forEach() { groupName in
-            notifyValueChanged(value, in: groupName)
-        }
-    }
-    
-    private class func notifyValueChanged(_ value: UserDefaultsAnyValue, in groupName: String) {
-        groupNameToObservers[groupName]?.values.forEach { closure in
-            closure(value, groupName)
-        }
-    }
-    
-    static private var groupNameToValues: [String: [UserDefaultsAnyValue]] = [:]
-    static private var valueKeyToGroupNames: [String: [String]] = [:]
-    static private var groupNameToObservers: [String: [UUID : (UserDefaultsAnyValue, String) -> Void]] = [:]
-}
-
-// user default values group definitions
-extension UserDefaultsValues {
-    struct GroupNames {
-        static let watchSync = "watchSync"
-        static let alarm = "alarm"
     }
 }

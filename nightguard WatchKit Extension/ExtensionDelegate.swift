@@ -81,7 +81,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             
             // update user default values from "watch sync" group, keeping track of which of them were updated
             var updatedKeys: [String] = []
-            let observationToken = UserDefaultsValues.observeChanges(in: UserDefaultsValues.GroupNames.watchSync) { value, _ in
+            let observationToken = UserDefaultsValueGroups.observeChanges(in: UserDefaultsValueGroups.GroupNames.watchSync) { value, _ in
                 updatedKeys.append(value.key)
             }
             defer {
@@ -89,7 +89,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             }
             
             // do the update!
-            for var value in (UserDefaultsValues.values(from: UserDefaultsValues.GroupNames.watchSync) ?? []) {
+            for var value in (UserDefaultsValueGroups.values(from: UserDefaultsValueGroups.GroupNames.watchSync) ?? []) {
                 if let anyValue = message.dictionary[value.key] {
                     value.anyValue = anyValue
                 }

@@ -18,7 +18,7 @@ class UserDefaultSyncMessage: WatchMessage {
     
     init() {
         var dictionary = [String: Any]()
-        UserDefaultsValues.values(from: UserDefaultsValues.GroupNames.watchSync)?.forEach { value in
+        UserDefaultsValueGroups.values(from: UserDefaultsValueGroups.GroupNames.watchSync)?.forEach { value in
             dictionary[value.key] = value.anyValue
         }
         

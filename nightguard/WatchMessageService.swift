@@ -9,6 +9,7 @@
 import Foundation
 import WatchConnectivity
 
+/// Service for sending/receiving watch messages in an easy way from both the phone or watch. Sending can be one way or a request/response, and receiving supose registering the types of message handlers for the type of messages that are waited on that device. Type-safe messages, of course!
 class WatchMessageService: NSObject {
     
     static let singleton = WatchMessageService()
