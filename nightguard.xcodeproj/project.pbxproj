@@ -162,6 +162,9 @@
 		D1DA7C7521C0E1ED00B39675 /* Stats.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */; };
 		D1E6B897219C69D9007ED4FE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
 		D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
+		D1ECDA1F2201075B002BE6F9 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */; };
+		D1ECDA202201075B002BE6F9 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */; };
+		D1ECDA212201075B002BE6F9 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */; };
 		D1F2F57921EF12DC00CEB874 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		D1F2F57A21EF131500CEB874 /* Regression.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079021C85FAD00DC6879 /* Regression.swift */; };
 		D1F2F57B21EF133000CEB874 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079121C85FAE00DC6879 /* Matrix.swift */; };
@@ -330,6 +333,7 @@
 		D1DA7C7221C01CB000B39675 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
 		D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Stats.storyboard; sourceTree = "<group>"; };
 		D1E6B896219C69D9007ED4FE /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationToken.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -557,6 +561,7 @@
 				D133078321C424A800DC6879 /* ArrayExtension.swift */,
 				D15055AF2200D31300F31C1F /* DeviceSize.swift */,
 				D1E6B896219C69D9007ED4FE /* Helpers.swift */,
+				D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */,
 				D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */,
 				D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */,
 				D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */,
@@ -895,6 +900,7 @@
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
 				439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				D1D96CBA21FB0E910035A60E /* WatchMessageService.swift in Sources */,
+				D1ECDA1F2201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */,
 				43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */,
 				D15055AC2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */,
@@ -956,6 +962,7 @@
 				432E62ED1D15EFF100DD7978 /* FloatExtension.swift in Sources */,
 				D1F2F57C21EF133600CEB874 /* Matrix+Append.swift in Sources */,
 				D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */,
+				D1ECDA202201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				432E62E71D11F61500DD7978 /* UserDefaultsRepositoryTest.swift in Sources */,
 				43794F491C30489C00DB8B58 /* NightscoutDataRepository.swift in Sources */,
 				432E62E01D10AF3800DD7978 /* Units.swift in Sources */,
@@ -1011,6 +1018,7 @@
 				D123EFE421FB2D5200CE8718 /* RequestBaseUriMessage.swift in Sources */,
 				D123EFE921FB643D00CE8718 /* EmptyWatchMessage.swift in Sources */,
 				D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */,
+				D1ECDA212201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				D133079521C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
 				432E62EC1D15EFEC00DD7978 /* FloatExtension.swift in Sources */,

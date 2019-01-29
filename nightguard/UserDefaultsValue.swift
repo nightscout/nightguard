@@ -16,7 +16,7 @@ protocol UserDefaultsAnyValue {
 
 /// A value holder that keeps its internal data (the value) synchronized with its UserDefaults value. The value is read from UserDefaults on initialization (if exists, otherwise a default value is used) and written when the value changes. Also a custom validation & onChange closure can be set on initialization.
 ///
-/// Another feature of this class is that when the value changes, the change can be observed by multiple observers if the value is embeded in a group (UserDefaultsValueGroups class manages the groups). It is very convenient to group related values in the same group, so when one of them changes, the observers are notified that a change occured in that group.
+/// Another feature of this class is that when the value changes, the change can be observed by multiple observers. There are two observation levels: the instance level, when the observers register directly to the UserDefaultsValue instance, and group level, if the UserDefaultsValue instance is embeded in a group (UserDefaultsValueGroups class manages the groups). It is very convenient to declare related values in the same group, so when one of them changes, the group observers are notified that a change occured in that group (no need to observe each particular UserDefaultsValue instance).
 class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     
     // user defaults key (UserDefaultsAnyValue protocol implementation)
@@ -46,7 +46,10 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
             // execute custom closure
             onChange?()
             
-            // signal UserDefaultsValues that value has changed
+            // notify observers
+            observers.values.forEach { $0(value) }
+            
+            // notify UserDefaultsValueGroups that value has changed
             UserDefaultsValueGroups.valueChanged(self)
         }
     }
@@ -72,6 +75,9 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     // validate & transform closure : giving the new value, validate it; if validations passes, return the new value; if fails, transform the value, returning a modified version or ... return nil and the change will not gonna happen
     private let validation: ((T) -> T?)?
     
+    // value change observers
+    private var observers: [UUID : (T) -> Void] = [:]
+    
     // user defaults used for persistence
     private class var defaults: UserDefaults {
         return UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
@@ -96,5 +102,17 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     func group(_ groupName: String) -> Self {
         UserDefaultsValueGroups.add(self, to: groupName)
         return self
+    }
+    
+    /// register observers, will be notified when value changes
+    @discardableResult
+    func observeChanges(using closure: @escaping(T) -> Void) -> ObservationToken {
+        
+        let id = UUID()
+        observers[id] = closure
+        
+        return ObservationToken { [weak self] in
+            self?.observers.removeValue(forKey: id)
+        }
     }
 }
