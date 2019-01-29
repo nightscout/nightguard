@@ -264,28 +264,22 @@ class MainViewController: UIViewController {
     
     @IBAction func doSnoozeAction(_ sender: AnyObject) {
         
-        if AlarmRule.isSnoozed() {
-            AlarmRule.disableSnooze()
-            snoozeButton.setTitle("Snooze", for: UIControlState())
-        } else {
-            // stop the alarm immediatly here not to disturb others
-            AlarmSound.muteVolume()
-            showSnoozePopup()
-            // For safety reasons: Unmute sound after 1 minute
-            // This prevents an unlimited snooze if the snooze button was touched accidentally.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
-                AlarmSound.unmuteVolume()
-            })
-        }
+        // stop the alarm immediatly here not to disturb others
+        AlarmSound.muteVolume()
+        showSnoozePopup()
+        // For safety reasons: Unmute sound after 1 minute
+        // This prevents an unlimited snooze if the snooze button was touched accidentally.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
+            AlarmSound.unmuteVolume()
+        })
     }
     
     fileprivate func showSnoozePopup() {
         
         // create the snooze popup view
-        if let snoozeAlarmViewController = self.storyboard?.instantiateViewController(
-            withIdentifier: "snoozeAlarmViewController") as? SnoozeAlarmViewController {
-            
-            self.present(snoozeAlarmViewController, animated: true, completion: nil)
+        if let snoozeAlarmNavigationController = self.storyboard?.instantiateViewController(
+            withIdentifier: "snoozeAlarmNavigationController")  {
+            self.present(snoozeAlarmNavigationController, animated: true, completion: nil)
         }
     }
     

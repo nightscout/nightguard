@@ -133,6 +133,7 @@
 		D15055AC2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */; };
 		D15055AD2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */; };
 		D15055AE2200CF1F00F31C1F /* UserDefaultsValueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */; };
+		D15055B02200D31300F31C1F /* DeviceSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15055AF2200D31300F31C1F /* DeviceSize.swift */; };
 		D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
@@ -308,6 +309,7 @@
 		D133079121C85FAE00DC6879 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		D133079D21C8D4CF00DC6879 /* PredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionService.swift; sourceTree = "<group>"; };
 		D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsValueGroups.swift; sourceTree = "<group>"; };
+		D15055AF2200D31300F31C1F /* DeviceSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSize.swift; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -551,12 +553,13 @@
 		D112DD3221E9E28500ECFB5E /* helpers */ = {
 			isa = PBXGroup;
 			children = (
-				D1E6B896219C69D9007ED4FE /* Helpers.swift */,
+				D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */,
 				D133078321C424A800DC6879 /* ArrayExtension.swift */,
+				D15055AF2200D31300F31C1F /* DeviceSize.swift */,
+				D1E6B896219C69D9007ED4FE /* Helpers.swift */,
 				D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */,
 				D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */,
 				D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */,
-				D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */,
 			);
 			name = helpers;
 			sourceTree = "<group>";
@@ -916,6 +919,7 @@
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
 				D1C96AB321CD00F100B08C2C /* NightscoutViewController.swift in Sources */,
 				D123EFEE21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */,
+				D15055B02200D31300F31C1F /* DeviceSize.swift in Sources */,
 				D133079421C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
 				D1D96CC021FB0F2E0035A60E /* UserDefaultsSyncMessage.swift in Sources */,

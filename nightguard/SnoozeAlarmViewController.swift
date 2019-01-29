@@ -11,6 +11,9 @@ import UIKit
 
 class SnoozeAlarmViewController: UIViewController {
     
+    @IBOutlet weak var stopSnoozingButton: UIButton!
+    @IBOutlet weak var buttonHeightConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,6 +23,42 @@ class SnoozeAlarmViewController: UIViewController {
             button.layer.cornerRadius = 4
             button.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         }
+        
+        // customize sizes fos smaller devices
+        switch DeviceSize() {
+        case .iPhone4:
+            buttonHeightConstraint.constant = 42
+            buttons.forEach { ($0 as? UIButton)?.titleLabel?.font = UIFont.systemFont(ofSize: 28) }
+            stopSnoozingButton.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        case .iPhone5:
+            buttonHeightConstraint.constant = 56
+            buttons.forEach { ($0 as? UIButton)?.titleLabel?.font = UIFont.systemFont(ofSize: 32) }
+            stopSnoozingButton.titleLabel?.font = UIFont.systemFont(ofSize: 28, weight: .medium)
+        default:
+            break
+        }
+
+        // stop snoozing is a little different...
+        stopSnoozingButton.backgroundColor = UIColor.white
+        stopSnoozingButton.setTitleColor(UIColor.black, for: .normal)
+        // ...and visible only if snoozed
+        stopSnoozingButton.isHidden = !AlarmRule.isSnoozed()
+    }
+    
+    @IBAction func do5minButtonPressed(_ sender: Any) {
+        snoozeMinutes(5)
+    }
+
+    @IBAction func do10minButtonPressed(_ sender: Any) {
+        snoozeMinutes(10)
+    }
+
+    @IBAction func do15minButtonPressed(_ sender: Any) {
+        snoozeMinutes(15)
+    }
+
+    @IBAction func do20minButtonPressed(_ sender: Any) {
+        snoozeMinutes(20)
     }
     
     @IBAction func do30minButtonPressed(_ sender: Any) {
@@ -64,9 +103,15 @@ class SnoozeAlarmViewController: UIViewController {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func dismiss(_ sender: Any) {
+        AlarmSound.unmuteVolume()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func doButtonPressed(_ sender: Any) {
         
         AlarmSound.unmuteVolume()
+        AlarmRule.disableSnooze()
         self.dismiss(animated: true, completion: nil)
         //self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
