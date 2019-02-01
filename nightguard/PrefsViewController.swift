@@ -7,17 +7,12 @@
 //
 
 import UIKit
-import WatchConnectivity
+import Eureka
 
-class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
+class PrefsViewController: FormViewController {
     
-    let displayTimespans = ["3 Hours", "6 Hours", "Last Night", "Last Day"]
-    
-    @IBOutlet weak var hostUriTextField: UITextField!
-    @IBOutlet weak var hostUriErrorLabel: UILabel!
-    @IBOutlet weak var versionLabel: UILabel!
-    @IBOutlet weak var showRawBGSwitch: UISwitch!
-    @IBOutlet weak var showBGOnAppBadgeSwitch: UISwitch!
+    private var nightscoutURLRow: URLRow!
+    private var nightscoutURLRule = RuleValidNightscoutURL()
     
     lazy var uriPickerView: UIPickerView = {
         let pickerView = UIPickerView()
@@ -25,8 +20,10 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         return pickerView
     }()
     
-//    fileprivate var uriBeforeEditingSession: String?
-
+    var hostUriTextField: UITextField {
+        return nightscoutURLRow.cell.textField
+    }
+    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -34,36 +31,16 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        displayTheApplicationVersionNumber()
+        self.tableView.backgroundColor = UIColor.App.Preferences.background
+        self.tableView.separatorColor = UIColor.App.Preferences.separator
         
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        let hostUri = defaults?.string(forKey: "hostUri")
-        hostUriTextField.text = hostUri
-        
-        hostUriTextField.delegate = self
-        let tap = UITapGestureRecognizer(target: self, action: #selector(PrefsViewController.onTouchGesture))
-        self.view.addGestureRecognizer(tap)
-        
-        showRawBGSwitch.isOn = UserDefaultsRepository.showRawBG.value
-        showBGOnAppBadgeSwitch.isOn = UserDefaultsRepository.showBGOnAppBadge.value
-        
+        constructForm()
         showBookmarksButtonOnKeyboardIfNeeded()
-        
-        // no URI error message on startup
-        hostUriErrorLabel.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
-    }
-    
-    func displayTheApplicationVersionNumber() {
-        
-        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let buildNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-
-        versionLabel.text = "V\(versionNumber).\(buildNumber)"
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -75,62 +52,126 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: UITextFieldDelegate methods
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        // reset to keyboard input
-        textField.inputView = nil
-        
-        // keep the URI before start editing
-//        uriBeforeEditingSession = textField.text
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let header = view as? UITableViewHeaderFooterView {
+            header.backgroundView?.backgroundColor = UIColor.App.Preferences.background
+            header.textLabel?.textColor = UIColor.App.Preferences.headerText
+        }
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if let footer = view as? UITableViewHeaderFooterView {
+            footer.textLabel?.textColor = UIColor.App.Preferences.footerText
+        }
+    }
+    
+    private func constructForm() {
         
-        guard reason == .committed else {
-            return
+        nightscoutURLRow = URLRow() { row in
+            row.title = "URL"
+            row.placeholder = "https://my.nightscout.de?token=mynightscouttoken"
+            row.value = URL(string: UserDefaultsRepository.baseUri.value)
+//            row.add(rule: RuleURL())
+            row.add(rule: nightscoutURLRule)
+            row.validationOptions = .validatesOnDemand
+            }.onChange { [weak self] row in
+                guard let urlString = row.value?.absoluteString, !urlString.isEmpty else { return }
+                if let updatedUrlString = self?.addProtocolPartIfMissing(urlString), let updatedUrl = URL(string: updatedUrlString) {
+                    row.value = updatedUrl
+                    row.updateCell()
+                }
+            }.onCellHighlightChanged { [weak self] (cell, row) in
+                if row.isHighlighted == false {
+                    
+                    // editing finished
+//                    guard row.validate().isEmpty else { return }
+                    guard let value = row.value else { return }
+                    self?.nightscoutURLChanged(value)
+                }
+            }
+            .onRowValidationChanged { cell, row in
+                let rowIndex = row.indexPath!.row
+                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                    row.section?.remove(at: rowIndex + 1)
+                }
+                if !row.isValid {
+                    for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {
+                        let labelRow = LabelRow() {
+                            let title = "❌ \(validationMsg)"
+                            $0.title = title
+                            $0.cellUpdate { cell, _ in
+                                cell.textLabel?.textColor = UIColor.red
+                            }
+                            $0.cellSetup { cell, row in
+                                cell.textLabel?.numberOfLines = 0
+                            }
+                            let rows = CGFloat(title.count / 50) + 1 // we condiser 80 characters are on a line
+                            $0.cell.height = { 30 * rows }
+                        }
+                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                    }
+                }
         }
         
-//        guard uriBeforeEditingSession != hostUriTextField.text else {
-//            return
-//        }
         
-        let hostUri = hostUriTextField.text!
-        UserDefaultsRepository.baseUri.value = hostUri
+        form +++ Section(header: "NIGHTSCOUT", footer: "Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'")
+            <<< nightscoutURLRow
+            
+            +++ Section(header: "", footer: "For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server.  This works on Dexcom only!")
+            <<< SwitchRow() { row in
+                row.title = "Show raw BG and noise level"
+                row.value = UserDefaultsRepository.showRawBG.value
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    UserDefaultsRepository.showRawBG.value = value
+            }
+
+            
+            +++ Section("")
+            <<< SwitchRow() { row in
+                row.title = "Show BG on app badge"
+                row.value = UserDefaultsRepository.showBGOnAppBadge.value
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    UserDefaultsRepository.showBGOnAppBadge.value = value
+            }
+            <<< LabelRow() { row in
+                row.title = "Version"
+                
+                let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+                let buildNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+                row.value = "V\(versionNumber).\(buildNumber)"
+        }
+    }
+    
+    private func nightscoutURLChanged(_ url: URL) {
+        
+        UserDefaultsRepository.baseUri.value = url.absoluteString
         
         NightscoutCacheService.singleton.resetCache()
         NightscoutDataRepository.singleton.storeTodaysBgData([])
         NightscoutDataRepository.singleton.storeYesterdaysBgData([])
         NightscoutDataRepository.singleton.storeCurrentNightscoutData(NightscoutData())
         
-        retrieveAndStoreNightscoutUnits { [unowned self] error in
+        retrieveAndStoreNightscoutUnits { [weak self] error in
             
-            guard error == nil else {
-                self.hostUriErrorLabel.text = "❌ \(error!.localizedDescription)"
-                self.hostUriErrorLabel.isHidden = false
-                return
+            // keep the error message
+            self?.nightscoutURLRule.nightscoutError = error
+            
+            self?.nightscoutURLRow.cleanValidationErrors()
+            self?.nightscoutURLRow.validate()
+            self?.nightscoutURLRow.updateCell()
+            
+            if error == nil {
+                
+                // add host URI only if status request was successful
+                self?.addUriEntryToPickerView(hostUri: url.absoluteString)
             }
-            
-            // hide the error message
-            self.hostUriErrorLabel.isHidden = true
-         
-            // add host URI only if status request was successful
-            self.addUriEntryToPickerView(hostUri: hostUri)
         }
     }
     
-    //     Close the soft keyboard if return has been selected
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    @IBAction func textFieldDidChange(_ textField: UITextField) {
-        textField.text = addProtocolPartIfMissing(textField.text!)
-    }
-    
     // adds 'https://' if a '/' but no 'http'-part is found in the uri.
-    func addProtocolPartIfMissing(_ uri : String) -> String {
+    private func addProtocolPartIfMissing(_ uri : String) -> String? {
         
         if (uri.contains("/") || uri.contains(".") || uri.contains(":"))
             && !uri.contains("http") {
@@ -138,77 +179,10 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
             return "https://" + uri
         }
         
-        return uri
-    }
-
-    func addUriEntryToPickerView(hostUri : String) {
-        
-        if hostUri == "" {
-            // ignore empty values => don't add them to the history of Uris
-            return
-        }
-        
-        var nightscoutUris = GuiStateRepository.singleton.loadNightscoutUris()
-        if !nightscoutUris.contains(hostUri) {
-            nightscoutUris.insert(hostUri, at: 0)
-            nightscoutUris = limitAmountOfUrisToFive(nightscoutUris: nightscoutUris)
-            GuiStateRepository.singleton.storeNightscoutUris(nightscoutUris: nightscoutUris)
-            uriPickerView.reloadAllComponents()
-            
-            showBookmarksButtonOnKeyboardIfNeeded()
-        }
+        return nil
     }
     
-    func limitAmountOfUrisToFive(nightscoutUris : [String]) -> [String] {
-        var uris = nightscoutUris
-        while uris.count > 5 {
-            uris.removeLast()
-        }
-        return uris
-    }
-        
-    // Remove keyboard by touching outside
-    
-    @objc func onTouchGesture(){
-        self.view.endEditing(true)
-    }
-    
-    // RawBG switch
-    @IBAction func onShowRawBGValueChanged(_ sender: UISwitch) {
-        UserDefaultsRepository.showRawBG.value = sender.isOn
-    }
-    
-    @IBAction func onShowBGOnAppBadgeChanged(_ sender: UISwitch) {
-        
-        if sender.isOn {
-            UIApplication.shared.setCurrentBGValueOnAppBadge()
-        } else {
-            UIApplication.shared.clearAppBadge()
-        }
-        
-        UserDefaultsRepository.showBGOnAppBadge.value = sender.isOn
-    }
-    
-    // MARK: Picker-View methods
-    
-    @objc func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    @objc func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return GuiStateRepository.singleton.loadNightscoutUris().count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return GuiStateRepository.singleton.loadNightscoutUris()[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        hostUriTextField.text = GuiStateRepository.singleton.loadNightscoutUris()[row]
-        self.view.endEditing(true)
-    }
-    
-    func retrieveAndStoreNightscoutUnits(completion: @escaping (Error?) -> Void) {
+    private func retrieveAndStoreNightscoutUnits(completion: @escaping (Error?) -> Void) {
         NightscoutService.singleton.readStatus { [unowned self] (result: NightscoutRequestResult<Units>) in
             
             switch result {
@@ -222,7 +196,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
         }
     }
     
-    fileprivate func showBookmarksButtonOnKeyboardIfNeeded() {
+    private func showBookmarksButtonOnKeyboardIfNeeded() {
         
         guard GuiStateRepository.singleton.loadNightscoutUris().count > 1 else {
             return
@@ -241,13 +215,98 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     @objc func toggleKeyboardAndBookmarks() {
         
         if hostUriTextField.inputView != nil {
-           hostUriTextField.inputView = nil
+            hostUriTextField.inputView = nil
         } else {
             hostUriTextField.inputView = uriPickerView
         }
         
         hostUriTextField.reloadInputViews()
     }
+    
+    private func addUriEntryToPickerView(hostUri : String) {
+        
+        if hostUri == "" {
+            // ignore empty values => don't add them to the history of Uris
+            return
+        }
+        
+        var nightscoutUris = GuiStateRepository.singleton.loadNightscoutUris()
+        if !nightscoutUris.contains(hostUri) {
+            nightscoutUris.insert(hostUri, at: 0)
+            nightscoutUris = limitAmountOfUrisToFive(nightscoutUris: nightscoutUris)
+            GuiStateRepository.singleton.storeNightscoutUris(nightscoutUris: nightscoutUris)
+            uriPickerView.reloadAllComponents()
+            
+            showBookmarksButtonOnKeyboardIfNeeded()
+        }
+    }
+    
+    private func limitAmountOfUrisToFive(nightscoutUris : [String]) -> [String] {
+        var uris = nightscoutUris
+        while uris.count > 5 {
+            uris.removeLast()
+        }
+        return uris
+    }
+}
 
+extension PrefsViewController: UIPickerViewDelegate {
+    
+    @objc func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    @objc func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return GuiStateRepository.singleton.loadNightscoutUris().count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return GuiStateRepository.singleton.loadNightscoutUris()[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        let stringURL = GuiStateRepository.singleton.loadNightscoutUris()[row]
+        if let url = URL(string: stringURL) {
+            nightscoutURLRow.value = url
+            nightscoutURLRow.updateCell()
+        }
+
+        self.view.endEditing(true)
+    }
+}
+
+
+// Nightscout URL validation rule
+fileprivate class RuleValidNightscoutURL: RuleType {
+    
+    var id: String?
+    var validationError: ValidationError
+    
+    var nightscoutError: Error? {
+        didSet {
+            validationError = ValidationError(msg: nightscoutError?.localizedDescription ?? "")
+        }
+    }
+    
+    //    private let ruleURL = RuleURL()
+    
+    init() {
+        validationError = ValidationError(msg: "")
+    }
+    
+    func isValid(value: URL?) -> ValidationError? {
+        
+        // NOTE: commented out RuleURL because it has a bug (regexp doesn't allow url port definition)
+        //        if let urlError = ruleURL.isValid(value: value) {
+        //            return urlError
+        //        }
+        
+        if let _ = self.nightscoutError {
+            return validationError
+        } else {
+            return nil
+        }
+    }
 }
 

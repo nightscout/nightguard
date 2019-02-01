@@ -39,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TimeInterval(BackgroundRefreshSettings.backgroundFetchInterval * 60)
         )
         
+        Eureka.customizeRows()
+        
         activateWatchConnectivity()
         return true
 

@@ -44,7 +44,7 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
             UserDefaultsValue.defaults.setValue(value.toAny(), forKey: key)
             
             // execute custom closure
-            onChange?()
+            onChange?(value)
             
             // notify observers
             observers.values.forEach { $0(value) }
@@ -70,7 +70,7 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     }
     
     // on change closure
-    private let onChange: (() -> ())?
+    private let onChange: ((T) -> ())?
     
     // validate & transform closure : giving the new value, validate it; if validations passes, return the new value; if fails, transform the value, returning a modified version or ... return nil and the change will not gonna happen
     private let validation: ((T) -> T?)?
@@ -83,7 +83,7 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
         return UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
     }
     
-    init(key: String, default defaultValue: T, onChange: (() -> Void)? = nil, validation: ((T) -> T?)? = nil) {
+    init(key: String, default defaultValue: T, onChange: ((T) -> Void)? = nil, validation: ((T) -> T?)? = nil) {
         self.key = key
         if let anyValue = UserDefaultsValue.defaults.object(forKey: key), let value = T.fromAny(anyValue) as T? {
             if let validation = validation {
