@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 // https://stackoverflow.com/a/44806984
 extension URL {
     func valueOf(_ queryParamaterName: String) -> String? {
@@ -31,7 +30,7 @@ class UserDefaultsRepository {
     static let baseUri = UserDefaultsValue<String>(
         key: "hostUri",
         default: "",
-        onChange: {
+        onChange: { _ in
             parseBaseUri()
         },
             validation: { hostUri in
@@ -48,7 +47,20 @@ class UserDefaultsRepository {
     
     static let showRawBG = UserDefaultsValue<Bool>(key: "showRawBG", default: false)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
-    static let showBGOnAppBadge = UserDefaultsValue<Bool>(key: "showBGOnAppBadge", default: false)
+    
+    static let showBGOnAppBadge = UserDefaultsValue<Bool>(
+        key: "showBGOnAppBadge",
+        default: false,
+        onChange: { show in
+            #if os(iOS)
+            if show {
+                UIApplication.shared.setCurrentBGValueOnAppBadge()
+            } else {
+                UIApplication.shared.clearAppBadge()
+            }
+            #endif
+    })
+    
     static let alarmNotificationState = UserDefaultsValue<Bool>(key: "alarmNotificationState", default: false)
     
     // Returns true if the units (mmol or mg/dL) have already been retrieved
