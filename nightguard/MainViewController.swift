@@ -256,7 +256,7 @@ class MainViewController: UIViewController {
         
         if AlarmRule.isSnoozed() {
             AlarmRule.disableSnooze()
-            snoozeButton.setTitle("Snooze", for: UIControlState())
+            updateSnoozeButtonText()
         } else {
             // stop the alarm immediatly here not to disturb others
             AlarmSound.muteVolume()
