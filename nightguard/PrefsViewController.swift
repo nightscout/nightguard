@@ -231,7 +231,7 @@ class PrefsViewController: UIViewController, UITextFieldDelegate, UIPickerViewDe
     }
     
     func retrieveAndStoreNightscoutUnits(completion: @escaping (Error?) -> Void) {
-        NightscoutService.singleton.readStatus { [unowned self] (result: NightscoutRequestResult<Units>) in
+        NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
             
             switch result {
             case .data(let units):

@@ -161,7 +161,7 @@ class ChartPainter {
 //                context.beginPath();
                 
                 // fading points, opacity decreases in distant future (one hour)
-                let opacity = min(1, max(0, CGFloat(3600 + distanceFromNow) / 4200))
+                let opacity = Swift.min(1, Swift.max(0, CGFloat(3600 + distanceFromNow) / 4200))
                 let pointColor = PURPLE.withAlphaComponent(opacity)
                 context.setFillColor(pointColor.cgColor)
                 context.setStrokeColor(pointColor.cgColor)

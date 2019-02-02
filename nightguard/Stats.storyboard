@@ -51,7 +51,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Stats" image="Stats" id="Gq1-vb-adG"/>
                     <navigationItem key="navigationItem" title="Stats" id="jcp-sA-AVP">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="wFn-PF-b6m">
+                        <barButtonItem key="leftBarButtonItem" id="wFn-PF-b6m">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mfw-F5-wMB">
                                 <rect key="frame" x="16" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
