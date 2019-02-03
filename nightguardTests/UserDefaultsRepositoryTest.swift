@@ -12,15 +12,15 @@ class UserDefaultsRepositoryTest : XCTestCase {
     
     func testSaveUnitsWithMgdl() {
         
-        UserDefaultsRepository.saveUnits(Units.mgdl)
+        UserDefaultsRepository.units.value = Units.mgdl
         
-        XCTAssertEqual(UserDefaultsRepository.readUnits(), Units.mgdl)
+        XCTAssertEqual(UserDefaultsRepository.units.value, Units.mgdl)
     }
     
     func testSaveUnitsWithMmoll() {
         
-        UserDefaultsRepository.saveUnits(Units.mmol)
+        UserDefaultsRepository.units.value = Units.mmol
         
-        XCTAssertEqual(UserDefaultsRepository.readUnits(), Units.mmol)
+        XCTAssertEqual(UserDefaultsRepository.units.value, Units.mmol)
     }
 }

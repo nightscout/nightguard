@@ -117,6 +117,7 @@
 		D123EFEC21FB70A700CE8718 /* KeepAwakeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123EFEA21FB70A700CE8718 /* KeepAwakeMessage.swift */; };
 		D123EFEE21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123EFED21FB782C00CE8718 /* NightscoutDataMessage.swift */; };
 		D123EFEF21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123EFED21FB782C00CE8718 /* NightscoutDataMessage.swift */; };
+		D12DE22C220777E400228875 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
 		D133078421C424A800DC6879 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078321C424A800DC6879 /* ArrayExtension.swift */; };
 		D133078821C85D4400DC6879 /* BloodSugarArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */; };
 		D133078921C85D5200DC6879 /* BloodSugarArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */; };
@@ -1189,6 +1190,7 @@
 				D1F2F57E21EF134400CEB874 /* RegressionHelper.swift in Sources */,
 				D112DD3721EA600200ECFB5E /* Helpers.swift in Sources */,
 				D1F2F57921EF12DC00CEB874 /* PredictionService.swift in Sources */,
+				D12DE22C220777E400228875 /* UIApplicationExtension.swift in Sources */,
 				D1F2F57D21EF133A00CEB874 /* Matrix+Description.swift in Sources */,
 				D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */,
 				D112DD3A21EB502300ECFB5E /* BloodSugarArrayTest.swift in Sources */,

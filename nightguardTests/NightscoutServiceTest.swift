@@ -18,7 +18,7 @@ class NightscoutServiceTest: XCTestCase {
         
         // Given
         let serviceBoundary = NightscoutService.singleton;
-        UserDefaultsRepository.saveBaseUri(BASE_URI)
+        UserDefaultsRepository.baseUri.value = BASE_URI
         let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
@@ -39,7 +39,7 @@ class NightscoutServiceTest: XCTestCase {
         
         // Given
         let nightscoutService = NightscoutService.singleton;
-        UserDefaultsRepository.saveBaseUri(BASE_URI)
+        UserDefaultsRepository.baseUri.value = BASE_URI
         let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
@@ -58,7 +58,7 @@ class NightscoutServiceTest: XCTestCase {
         
         // Given
         let serviceBoundary = NightscoutService.singleton;
-        UserDefaultsRepository.saveBaseUri(BASE_URI)
+        UserDefaultsRepository.baseUri.value = BASE_URI
         let expectation = self.expectation(description: "Remote Call was successful!")
         
         // When
