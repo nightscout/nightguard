@@ -17,6 +17,7 @@ enum BloodSugarTrend {
 
 extension Array where Element: BloodSugar {
 
+    /// return today's readings from repositories (readings are always in mg/dL)
     static func latestFromRepositories() -> [BloodSugar] {
         
         // get today's data
@@ -68,9 +69,9 @@ extension Array where Element: BloodSugar {
             return .unknown
         }
         
-        let deltasInMgdl = readings.deltas.map { UnitsConverter.toMgdl($0) }
-        if abs(deltasInMgdl[1]) > 4 || abs(deltasInMgdl[0] + deltasInMgdl[1]) > 10 {
-            return deltasInMgdl[0] > 0 ? .ascending : .descending
+        let deltas = readings.deltas // deltas (differences between 2 values expressed in mg/dL)
+        if abs(deltas[1]) > 4 || abs(deltas[0] + deltas[1]) > 10 {
+            return deltas[1] > 0 ? .ascending : .descending
         } else {
             return .unknown
         }
@@ -100,8 +101,10 @@ extension Array where Element: BloodSugar {
     mutating func assureCurrentReadingExists(_ nightscoutData: NightscoutData) {
         
         if (self.last?.timestamp ?? 0) < nightscoutData.time.doubleValue {
+            
+            // NOTE: convert current reading units to mg/dL (readings are always in mg/dL)
             self.append(
-                Element (value: Float(nightscoutData.sgv)!, timestamp: nightscoutData.time.doubleValue)
+                Element (value: UnitsConverter.toMgdl(Float(nightscoutData.sgv)!), timestamp: nightscoutData.time.doubleValue)
             )
         }
     }
