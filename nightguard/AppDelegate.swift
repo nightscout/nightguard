@@ -26,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var mainViewController: MainViewController?
     
-    @available(iOS 3.0, *)
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // Override point for customization after application launch.
@@ -38,13 +37,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.setMinimumBackgroundFetchInterval(
             TimeInterval(BackgroundRefreshSettings.backgroundFetchInterval * 60)
         )
-        
-        Eureka.customizeRows()
-        
+                
         activateWatchConnectivity()
         return true
-
     }
+    
 
     func activateWatchConnectivity() {
         if WCSession.isSupported() {

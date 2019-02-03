@@ -82,7 +82,7 @@
 		43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43F1E0F11D07698000C329A2 /* alarm.mp3 */; };
 		43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F21D07698000C329A2 /* AlarmSound.swift */; };
-		43F1E1001D07698000C329A2 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F31D07698000C329A2 /* AlarmViewController.swift */; };
+		43F1E1001D07698000C329A2 /* AlarmViewControllerOLD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F31D07698000C329A2 /* AlarmViewControllerOLD.swift */; };
 		43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F41D07698000C329A2 /* AppDelegate.swift */; };
 		43F1E1031D07698000C329A2 /* GuiStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */; };
 		43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F81D07698000C329A2 /* MainViewController.swift */; };
@@ -152,7 +152,8 @@
 		D1CE8CC02204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
 		D1CE8CC12204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
 		D1CE8CC22204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
-		D1CE8CC42204B19C0075FF8A /* EurekaCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CC32204B19C0075FF8A /* EurekaCustomization.swift */; };
+		D1CE8CC42204B19C0075FF8A /* CustomFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */; };
+		D1CE8CC7220573250075FF8A /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CC6220573250075FF8A /* AlarmViewController.swift */; };
 		D1D96CB121F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
 		D1D96CB221F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
 		D1D96CB421F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
@@ -297,7 +298,7 @@
 		43F1E0EC1D07693300C329A2 /* BloodSugar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BloodSugar.swift; path = nightguard/BloodSugar.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F11D07698000C329A2 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alarm.mp3; path = nightguard/alarm.mp3; sourceTree = SOURCE_ROOT; };
 		43F1E0F21D07698000C329A2 /* AlarmSound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmSound.swift; path = nightguard/AlarmSound.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0F31D07698000C329A2 /* AlarmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmViewController.swift; path = nightguard/AlarmViewController.swift; sourceTree = SOURCE_ROOT; };
+		43F1E0F31D07698000C329A2 /* AlarmViewControllerOLD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmViewControllerOLD.swift; path = nightguard/AlarmViewControllerOLD.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F41D07698000C329A2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = nightguard/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GuiStateRepository.swift; path = nightguard/GuiStateRepository.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F71D07698000C329A2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = nightguard/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -346,7 +347,8 @@
 		D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Nightscout.storyboard; sourceTree = "<group>"; };
 		D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutViewController.swift; sourceTree = "<group>"; };
 		D1CE8CBF2204B07F0075FF8A /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		D1CE8CC32204B19C0075FF8A /* EurekaCustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EurekaCustomization.swift; sourceTree = "<group>"; };
+		D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFormViewController.swift; sourceTree = "<group>"; };
+		D1CE8CC6220573250075FF8A /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsValue.swift; sourceTree = "<group>"; };
 		D1D96CB521FAF6890035A60E /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
 		D1D96CB921FB0E910035A60E /* WatchMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessageService.swift; sourceTree = "<group>"; };
@@ -426,7 +428,6 @@
 				430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */,
 				439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */,
 				D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */,
-				D1CE8CC32204B19C0075FF8A /* EurekaCustomization.swift */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -703,7 +704,9 @@
 			isa = PBXGroup;
 			children = (
 				43F1E0F81D07698000C329A2 /* MainViewController.swift */,
-				43F1E0F31D07698000C329A2 /* AlarmViewController.swift */,
+				D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */,
+				D1CE8CC6220573250075FF8A /* AlarmViewController.swift */,
+				43F1E0F31D07698000C329A2 /* AlarmViewControllerOLD.swift */,
 				43288A691D1C68D400EE3999 /* StatsViewController.swift */,
 				4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */,
 				43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */,
@@ -1094,7 +1097,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1D96CC321FB0FA80035A60E /* SnoozeMessage.swift in Sources */,
-				43F1E1001D07698000C329A2 /* AlarmViewController.swift in Sources */,
+				43F1E1001D07698000C329A2 /* AlarmViewControllerOLD.swift in Sources */,
 				D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */,
 				D133078821C85D4400DC6879 /* BloodSugarArrayExtension.swift in Sources */,
 				D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */,
@@ -1103,7 +1106,7 @@
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
 				D133079621C85FAE00DC6879 /* Matrix+Description.swift in Sources */,
-				D1CE8CC42204B19C0075FF8A /* EurekaCustomization.swift in Sources */,
+				D1CE8CC42204B19C0075FF8A /* CustomFormViewController.swift in Sources */,
 				D1CE8CC02204B07F0075FF8A /* Colors.swift in Sources */,
 				D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */,
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
@@ -1133,6 +1136,7 @@
 				43F1E1031D07698000C329A2 /* GuiStateRepository.swift in Sources */,
 				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
+				D1CE8CC7220573250075FF8A /* AlarmViewController.swift in Sources */,
 				D1C96AB321CD00F100B08C2C /* NightscoutViewController.swift in Sources */,
 				D123EFEE21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */,
 				D15055B02200D31300F31C1F /* DeviceSize.swift in Sources */,
@@ -1438,7 +1442,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp.watchkitextension;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1460,7 +1464,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp.watchkitextension;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1483,7 +1487,7 @@
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp;
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1505,7 +1509,7 @@
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp;
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1526,7 +1530,7 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1546,7 +1550,7 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1562,7 +1566,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardTests";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardTests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1577,7 +1581,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardTests";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardTests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1591,7 +1595,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardUITests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1606,7 +1610,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardUITests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;

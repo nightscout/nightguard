@@ -9,7 +9,7 @@
 import UIKit
 import Eureka
 
-class PrefsViewController: FormViewController {
+class PrefsViewController: CustomFormViewController {
     
     private var nightscoutURLRow: URLRow!
     private var nightscoutURLRule = RuleValidNightscoutURL()
@@ -31,20 +31,14 @@ class PrefsViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.backgroundColor = UIColor.App.Preferences.background
-        self.tableView.separatorColor = UIColor.App.Preferences.separator
-        
-        constructForm()
         showBookmarksButtonOnKeyboardIfNeeded()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,20 +46,7 @@ class PrefsViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if let header = view as? UITableViewHeaderFooterView {
-            header.backgroundView?.backgroundColor = UIColor.App.Preferences.background
-            header.textLabel?.textColor = UIColor.App.Preferences.headerText
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        if let footer = view as? UITableViewHeaderFooterView {
-            footer.textLabel?.textColor = UIColor.App.Preferences.footerText
-        }
-    }
-    
-    private func constructForm() {
+    override func constructForm() {
         
         nightscoutURLRow = URLRow() { row in
             row.title = "URL"

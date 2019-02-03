@@ -13,6 +13,18 @@ enum Units : String {
     case mmol = "mmol"
 }
 
+extension Units: CustomStringConvertible {
+    var description: String {
+        
+        switch self {
+        case .mgdl:
+            return "mg/dL"
+        case .mmol:
+            return "mmol/L"
+        }
+    }
+}
+
 extension Units: AnyConvertible {
     
     func toAny() -> Any {
