@@ -86,9 +86,8 @@ class AlarmRule {
             return "Missed Readings"
         }
         
-        let svgInMgdl = UnitsConverter.toMgdl(currentReading.value)
-        let isTooHigh = AlarmRule.isTooHigh(svgInMgdl)
-        let isTooLow = AlarmRule.isTooLow(svgInMgdl)
+        let isTooHigh = AlarmRule.isTooHigh(currentReading.value)
+        let isTooLow = AlarmRule.isTooLow(currentReading.value)
         
         if isSmartSnoozeEnabled.value && (isTooHigh || isTooLow) {
             
@@ -109,9 +108,9 @@ class AlarmRule {
             }
             
             // let's try also with prediction: we'll snooze the alarm if the prediction says that we'll leave the too high or too low zone in less than 30 minutes
-            if isTooHigh && (PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfAboveValue.value)) ?? Int.max) < 30 {
+            if isTooHigh && (PredictionService.singleton.minutesTo(low: alertIfAboveValue.value) ?? Int.max) < 30 {
                 return nil
-            } else if isTooLow && (PredictionService.singleton.minutesTo(high: UnitsConverter.toDisplayUnits(alertIfBelowValue.value)) ?? Int.max) < 30 {
+            } else if isTooLow && (PredictionService.singleton.minutesTo(high: alertIfBelowValue.value) ?? Int.max) < 30 {
                 return nil
             }
         }
@@ -131,7 +130,7 @@ class AlarmRule {
         }
         
         if isLowPredictionEnabled.value {
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: UnitsConverter.toDisplayUnits(alertIfBelowValue.value)), minutesToLow <= minutesToPredictLow.value {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: alertIfBelowValue.value), minutesToLow <= minutesToPredictLow.value {
                 #if os(iOS)
                 return "Low Predicted in \(minutesToLow)min"
                 #else
