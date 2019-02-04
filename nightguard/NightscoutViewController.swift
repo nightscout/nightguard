@@ -134,7 +134,7 @@ extension NightscoutViewController: WKNavigationDelegate, WKUIDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        NSLog("Nightscout navigation succeeded: \(webView.url)")
+        NSLog("Nightscout navigation succeeded: \(String(describing: webView.url))")
         
         if !loaded {
             
