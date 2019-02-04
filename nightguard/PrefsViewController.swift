@@ -164,7 +164,7 @@ class PrefsViewController: CustomFormViewController {
     }
     
     private func retrieveAndStoreNightscoutUnits(completion: @escaping (Error?) -> Void) {
-        NightscoutService.singleton.readStatus { [unowned self] (result: NightscoutRequestResult<Units>) in
+        NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
             
             switch result {
             case .data(let units):
@@ -179,7 +179,7 @@ class PrefsViewController: CustomFormViewController {
     
     private func showBookmarksButtonOnKeyboardIfNeeded() {
         
-        guard GuiStateRepository.singleton.loadNightscoutUris().count > 1 else {
+        guard GuiStateRepository.singleton.nightscoutUris.value.count > 1 else {
             return
         }
         
@@ -211,11 +211,11 @@ class PrefsViewController: CustomFormViewController {
             return
         }
         
-        var nightscoutUris = GuiStateRepository.singleton.loadNightscoutUris()
+        var nightscoutUris = GuiStateRepository.singleton.nightscoutUris.value
         if !nightscoutUris.contains(hostUri) {
             nightscoutUris.insert(hostUri, at: 0)
             nightscoutUris = limitAmountOfUrisToFive(nightscoutUris: nightscoutUris)
-            GuiStateRepository.singleton.storeNightscoutUris(nightscoutUris: nightscoutUris)
+            GuiStateRepository.singleton.nightscoutUris.value = nightscoutUris
             uriPickerView.reloadAllComponents()
             
             showBookmarksButtonOnKeyboardIfNeeded()
@@ -238,16 +238,16 @@ extension PrefsViewController: UIPickerViewDelegate {
     }
     
     @objc func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return GuiStateRepository.singleton.loadNightscoutUris().count
+        return GuiStateRepository.singleton.nightscoutUris.value.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return GuiStateRepository.singleton.loadNightscoutUris()[row]
+        return GuiStateRepository.singleton.nightscoutUris.value[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        let stringURL = GuiStateRepository.singleton.loadNightscoutUris()[row]
+        let stringURL = GuiStateRepository.singleton.nightscoutUris.value[row]
         if let url = URL(string: stringURL) {
             nightscoutURLRow.value = url
             nightscoutURLRow.updateCell()

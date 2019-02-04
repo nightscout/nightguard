@@ -195,7 +195,7 @@ class MainViewController: UIViewController {
     
     fileprivate func restoreGuiState() {
         
-        screenlockSwitch.isOn = GuiStateRepository.singleton.loadScreenlockSwitchState()
+        screenlockSwitch.isOn = GuiStateRepository.singleton.screenlockSwitchState.value
         doScreenlockAction(self)
     }
     
@@ -338,12 +338,12 @@ class MainViewController: UIViewController {
     @IBAction func doScreenlockAction(_ sender: AnyObject) {
         if screenlockSwitch.isOn {
             UIApplication.shared.isIdleTimerDisabled = true
-            GuiStateRepository.singleton.storeScreenlockSwitchState(true)
+            GuiStateRepository.singleton.screenlockSwitchState.value = true
             
             displayScreenlockInfoMessageOnlyOnce()
         } else {
             UIApplication.shared.isIdleTimerDisabled = false
-            GuiStateRepository.singleton.storeScreenlockSwitchState(false)
+            GuiStateRepository.singleton.screenlockSwitchState.value = false
         }
     }
     

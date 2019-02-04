@@ -56,8 +56,6 @@ class AlarmViewControllerOLD: UIViewController, UITextFieldDelegate, UIPickerVie
         
         super.viewDidLoad()
         
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        
         updateUnits()
         
         edgeDetectionSwitch.isOn = AlarmRule.isEdgeDetectionAlarmEnabled.value
@@ -75,9 +73,7 @@ class AlarmViewControllerOLD: UIViewController, UITextFieldDelegate, UIPickerVie
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        
+                
         updateUnits()
         
         deltaAmount.text = UnitsConverter.toDisplayUnits("\(AlarmRule.deltaAmount.value)")
