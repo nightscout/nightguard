@@ -202,6 +202,11 @@ class PrefsViewController: CustomFormViewController {
         }
         
         hostUriTextField.reloadInputViews()
+        
+        // select current URI
+        if let index = GuiStateRepository.singleton.nightscoutUris.value.firstIndex(of: UserDefaultsRepository.baseUri.value) {
+            uriPickerView.selectRow(index, inComponent: 0, animated: false)
+        }
     }
     
     private func addUriEntryToPickerView(hostUri : String) {
