@@ -25,6 +25,8 @@ class AlarmViewController: CustomFormViewController {
     
     fileprivate let SNAP_INCREMENT : Float = 10 // or change it to 5?
     
+    fileprivate var units = UserDefaultsRepository.units.value
+    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -32,8 +34,20 @@ class AlarmViewController: CustomFormViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-//        tableView.reloadData()
-        updateSliderRowsFromUserDefaultsValues()
+        if units != UserDefaultsRepository.units.value {
+            
+            // reconstruct the form if units were changed from last appearance
+            UIView.performWithoutAnimation {
+                form.removeAll()
+                constructForm()
+            }
+            
+            units = UserDefaultsRepository.units.value
+        } else {
+            
+            // refresh just the slider values
+            updateSliderRowsFromUserDefaultsValues()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
