@@ -14,7 +14,6 @@ class AlarmViewController: CustomFormViewController {
     var aboveSliderRow: SliderRow!
     var belowSliderRow: SliderRow!
 
-    let noDataAlarmOptions = [15, 20, 25, 30, 35, 40, 45].map { "\($0) Minutes" }
     let lowPredictionAlarmOptions = [5, 10, 15, 20, 25, 30].map { "\($0) Minutes" }
     
     fileprivate let MAX_ALERT_ABOVE_VALUE : Float = 280
@@ -67,8 +66,44 @@ class AlarmViewController: CustomFormViewController {
  
         
         form +++ Section(header: "High BG Alert", footer: "Alert when the blood glucose raises above this value.") <<< aboveSliderRow
-        
-        form +++ Section(header: "Low BG Alert", footer: "Alert when the blood glucose drops below this value.") <<< belowSliderRow
+            
+            +++ Section(header: "Low BG Alert", footer: "Alert when the blood glucose drops below this value.") <<< belowSliderRow
+            
+            +++ Section("Other alerts")
+            <<< PushRow<Int>() { row in
+                row.title = "Missed readings"
+                row.options = [15, 20, 25, 30, 35, 40, 45]
+                row.displayValueFor = { "\($0!) Minutes" }
+                row.value = AlarmRule.minutesToPredictLow.value
+                row.selectorTitle = "Missed readings alert"
+                row.cellStyle = .subtitle
+                }.onPresent { form, selector in                    
+                    selector.customize(header: "Alert when no data for more than")
+                }.cellUpdate { cell, row in
+                    cell.detailTextLabel?.text = "Alert when no data for more than \(AlarmRule.minutesToPredictLow.value) minutes."
+                    cell.detailTextLabel?.numberOfLines = 0
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    AlarmRule.minutesToPredictLow.value = value
+            }
+            
+            +++ Section(header: "", footer: "Snooze (do not alert) when values are high or low but the trend is going in the right direction.")
+            <<< SwitchRow() { row in
+                row.title = "Smart snooze"
+                row.value = AlarmRule.isSmartSnoozeEnabled.value
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    AlarmRule.isSmartSnoozeEnabled.value = value
+            }
+            
+            +++ Section(header: "", footer: "When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode.")
+            <<< SwitchRow() { row in
+                row.title = "Alert notifications"
+                row.value = AlarmNotificationService.singleton.enabled
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    AlarmNotificationService.singleton.enabled = value
+        }
     }
     
     @objc func onSliderValueChanged(slider: UISlider, event: UIEvent) {

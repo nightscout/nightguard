@@ -25,6 +25,7 @@ extension UIColor {
             static let footerText = UIColor.gray
             static let background = UIColor(netHex: 0x171717)
             static let rowBackground = UIColor(netHex: 0x1C1C1E)
+            static let selectedRowBackground = UIColor(netHex: 0x313131)
             static let separator = UIColor(netHex: 0x3F3F3F)
         }
         

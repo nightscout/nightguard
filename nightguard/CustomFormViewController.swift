@@ -85,10 +85,59 @@ extension CustomFormViewController {
             cell.valueLabel?.textColor = UIColor.App.Preferences.detailText
         }
         
+        PushRow<Int>.defaultCellUpdate = { cell, row in
+            cell.backgroundColor = UIColor.App.Preferences.rowBackground
+            cell.textLabel?.textColor = UIColor.App.Preferences.text
+            cell.detailTextLabel?.textColor = UIColor.App.Preferences.detailText
+            
+            let selectedBackgroundView = UIView()
+            selectedBackgroundView.backgroundColor = UIColor.App.Preferences.selectedRowBackground
+            cell.selectedBackgroundView = selectedBackgroundView
+        }
+        
         DateRow.defaultCellUpdate = { cell, row in
             cell.backgroundColor = UIColor.App.Preferences.rowBackground
             cell.textLabel?.textColor = UIColor.App.Preferences.text
             cell.detailTextLabel?.textColor = UIColor.App.Preferences.detailText
+        }
+        
+        ListCheckRow<Int>.defaultCellUpdate = { cell, row in
+            cell.backgroundColor = UIColor.App.Preferences.rowBackground
+            cell.textLabel?.textColor = UIColor.App.Preferences.text
+            cell.detailTextLabel?.textColor = UIColor.App.Preferences.detailText
+            
+            let selectedBackgroundView = UIView()
+            selectedBackgroundView.backgroundColor = UIColor.App.Preferences.selectedRowBackground
+            cell.selectedBackgroundView = selectedBackgroundView
+        }
+    }
+}
+
+extension SelectorViewController {
+    
+    func customize(header: String? = nil, footer: String? = nil) {
+        dismissOnSelection = false
+        dismissOnChange = false
+        enableDeselection = false
+
+        let _ = view // TRICK to force loading the view
+        tableView.backgroundColor = UIColor.App.Preferences.background
+        tableView.separatorColor = UIColor.App.Preferences.separator
+        
+        var reload = false
+        
+        if let headerTitle = header {
+            form.last?.header = HeaderFooterView(title: headerTitle)
+            reload = true
+        }
+        
+        if let footerTitle = footer {
+            form.last?.footer = HeaderFooterView(title: footerTitle)
+            reload = true
+        }
+        
+        if reload {
+            tableView?.reloadData()
         }
     }
 }
