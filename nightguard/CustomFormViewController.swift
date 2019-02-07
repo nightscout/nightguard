@@ -50,12 +50,11 @@ class CustomFormViewController: FormViewController {
 /// Eureka form rows customization
 extension CustomFormViewController {
     
+    /// customization for all the rows used in the app
     static func customizeRows() {
         
         LabelRow.defaultCellUpdate = { cell, row in
-            cell.backgroundColor = UIColor.App.Preferences.rowBackground
-            cell.textLabel?.textColor = UIColor.App.Preferences.text
-            cell.detailTextLabel?.textColor = UIColor.App.Preferences.detailText
+            cell.customize()
         }
         
         TextRow.defaultCellUpdate = { cell, row in
@@ -86,33 +85,43 @@ extension CustomFormViewController {
         }
         
         PushRow<Int>.defaultCellUpdate = { cell, row in
-            cell.backgroundColor = UIColor.App.Preferences.rowBackground
-            cell.textLabel?.textColor = UIColor.App.Preferences.text
-            cell.detailTextLabel?.textColor = UIColor.App.Preferences.detailText
-            
-            let selectedBackgroundView = UIView()
-            selectedBackgroundView.backgroundColor = UIColor.App.Preferences.selectedRowBackground
-            cell.selectedBackgroundView = selectedBackgroundView
+            cell.customize(selectable: true)
+        }
+        
+        ButtonRow.defaultCellUpdate = { cell, row in
+            cell.customize(selectable: true)
+        }
+        
+        ButtonRowWithDynamicDetails.defaultCellUpdate = { cell, row in
+            cell.customize(selectable: true)
         }
         
         DateRow.defaultCellUpdate = { cell, row in
-            cell.backgroundColor = UIColor.App.Preferences.rowBackground
-            cell.textLabel?.textColor = UIColor.App.Preferences.text
-            cell.detailTextLabel?.textColor = UIColor.App.Preferences.detailText
+            cell.customize()
         }
         
         ListCheckRow<Int>.defaultCellUpdate = { cell, row in
-            cell.backgroundColor = UIColor.App.Preferences.rowBackground
-            cell.textLabel?.textColor = UIColor.App.Preferences.text
-            cell.detailTextLabel?.textColor = UIColor.App.Preferences.detailText
-            
-            let selectedBackgroundView = UIView()
-            selectedBackgroundView.backgroundColor = UIColor.App.Preferences.selectedRowBackground
-            cell.selectedBackgroundView = selectedBackgroundView
+            cell.customize(selectable: true)
         }
     }
 }
 
+extension BaseCell {
+    
+    func customize(selectable: Bool = false) {
+        backgroundColor = UIColor.App.Preferences.rowBackground
+        textLabel?.textColor = UIColor.App.Preferences.text
+        detailTextLabel?.textColor = UIColor.App.Preferences.detailText
+        
+        if selectable {
+            let view = UIView()
+            view.backgroundColor = UIColor.App.Preferences.selectedRowBackground
+            selectedBackgroundView = view
+        }
+    }
+}
+
+/// customize the selector view controller
 extension SelectorViewController {
     
     func customize(header: String? = nil, footer: String? = nil) {

@@ -13,9 +13,9 @@ class AlarmViewController: CustomFormViewController {
     
     var aboveSliderRow: SliderRow!
     var belowSliderRow: SliderRow!
-
-    let lowPredictionAlarmOptions = [5, 10, 15, 20, 25, 30].map { "\($0) Minutes" }
     
+    fileprivate let minutesWithoutValuesAlarmOptions = [15, 20, 25, 30, 35, 40, 45]
+        
     fileprivate let MAX_ALERT_ABOVE_VALUE : Float = 280
     fileprivate let MIN_ALERT_ABOVE_VALUE : Float = 80
     
@@ -24,28 +24,17 @@ class AlarmViewController: CustomFormViewController {
     
     fileprivate let SNAP_INCREMENT : Float = 10 // or change it to 5?
     
-    fileprivate var units = UserDefaultsRepository.units.value
-    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        if units != UserDefaultsRepository.units.value {
-            
-            // reconstruct the form if units were changed from last appearance
-            UIView.performWithoutAnimation {
-                form.removeAll()
-                constructForm()
-            }
-            
-            units = UserDefaultsRepository.units.value
-        } else {
-            
-            // refresh just the slider values
-            updateSliderRowsFromUserDefaultsValues()
+        
+        // reconstruct the form if units were changed from last appearance
+        UIView.performWithoutAnimation {
+            form.removeAll()
+            constructForm()
         }
     }
     
@@ -58,33 +47,56 @@ class AlarmViewController: CustomFormViewController {
     
     override func constructForm() {
         
-         aboveSliderRow = createSliderRow(initialValue: AlarmRule.alertIfAboveValue.value, minimumValue: MIN_ALERT_ABOVE_VALUE, maximumValue: MAX_ALERT_ABOVE_VALUE)
+        aboveSliderRow = createSliderRow(initialValue: AlarmRule.alertIfAboveValue.value, minimumValue: MIN_ALERT_ABOVE_VALUE, maximumValue: MAX_ALERT_ABOVE_VALUE)
         aboveSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
         belowSliderRow = createSliderRow(initialValue: AlarmRule.alertIfBelowValue.value, minimumValue: MIN_ALERT_BELOW_VALUE, maximumValue: MAX_ALERT_BELOW_VALUE)
         belowSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
- 
         
-        form +++ Section(header: "High BG Alert", footer: "Alert when the blood glucose raises above this value.") <<< aboveSliderRow
+        
+        form +++ Section(header: "High BG Alert", footer: "Alerts when the blood glucose raises above this value.") <<< aboveSliderRow
             
-            +++ Section(header: "Low BG Alert", footer: "Alert when the blood glucose drops below this value.") <<< belowSliderRow
+            +++ Section(header: "Low BG Alert", footer: "Alerts when the blood glucose drops below this value.") <<< belowSliderRow
             
             +++ Section("Other alerts")
             <<< PushRow<Int>() { row in
                 row.title = "Missed readings"
-                row.options = [15, 20, 25, 30, 35, 40, 45]
+                row.options = minutesWithoutValuesAlarmOptions
                 row.displayValueFor = { "\($0!) Minutes" }
-                row.value = AlarmRule.minutesToPredictLow.value
-                row.selectorTitle = "Missed readings alert"
+                row.value = AlarmRule.minutesWithoutValues.value
+                row.selectorTitle = "Missed readings"
                 row.cellStyle = .subtitle
                 }.onPresent { form, selector in                    
                     selector.customize(header: "Alert when no data for more than")
                 }.cellUpdate { cell, row in
-                    cell.detailTextLabel?.text = "Alert when no data for more than \(AlarmRule.minutesToPredictLow.value) minutes."
+                    cell.detailTextLabel?.text = "Alerts when no data for more than \(AlarmRule.minutesWithoutValues.value) minutes."
                     cell.detailTextLabel?.numberOfLines = 0
                 }.onChange { row in
                     guard let value = row.value else { return }
-                    AlarmRule.minutesToPredictLow.value = value
+                    AlarmRule.minutesWithoutValues.value = value
+                }
+            
+            <<< ButtonRowWithDynamicDetails("Fast Rise/Drop") { row in
+                row.controllerProvider = { return FastRiseDropViewController() }
+                row.detailTextProvider = {
+                    if AlarmRule.isEdgeDetectionAlarmEnabled.value {
+                        return "Alerts when a fast BG rise or drop occurs."
+                    } else {
+                        return "Off"
+                    }
+                }
+            }
+
+            
+            <<< ButtonRowWithDynamicDetails("Low Prediction") { row in
+                row.controllerProvider = { return LowPredictionViewController() }
+                row.detailTextProvider = {
+                    if AlarmRule.isLowPredictionEnabled.value {
+                        return "Alerts when a low BG value is predicted in less than \(AlarmRule.minutesToPredictLow.value) minutes."
+                    } else {
+                        return "Off"
+                    }
+                }
             }
             
             +++ Section(header: "", footer: "Snooze (do not alert) when values are high or low but the trend is going in the right direction.")
@@ -136,7 +148,7 @@ class AlarmViewController: CustomFormViewController {
                     updateSliderRowsFromUserDefaultsValues()
                     return
                 }
-
+                
                 print("Changed below slider to \(mgdlValue) \(UserDefaultsRepository.units.value.description)")
                 UserDefaultsRepository.lowerBound.value = mgdlValue
             }
