@@ -160,23 +160,53 @@ class AlarmRule {
     }
     
     fileprivate static func bloodValuesAreIncreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
-        
-        // we need at least these number of values (the most reacent X readings)
-        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues.value + 1) else {
-            return false
-        }
-        
-        return readings.deltas.allSatisfy { $0 > deltaAmount.value }
+        return bloodValuesAreMovingTooFast(bloodValues, increasing: true)
     }
     
     fileprivate static func bloodValuesAreDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
+        return bloodValuesAreMovingTooFast(bloodValues, increasing: false)
+    }
+    
+    fileprivate static func bloodValuesAreMovingTooFast(_ bloodValues : [BloodSugar], increasing: Bool) -> Bool {
         
         // we need at least these number of values (the most reacent X readings)
-        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues.value + 1) else {
+        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues.value), readings.count > 1 else  {
             return false
         }
         
-        return readings.deltas.allSatisfy { $0 < -deltaAmount.value }
+        // calculate the difference in time and values between newest and oldest reading
+        let totalMinutes = Float((readings[readings.count - 1].timestamp - readings[0].timestamp) / 60000)
+        var totalDelta = readings[readings.count - 1].value - readings[0].value
+        if !increasing {
+            totalDelta *= -1
+        }
+        
+        let alarmDeltaPerMinute = deltaAmount.value / 5
+        if totalDelta < (totalMinutes * alarmDeltaPerMinute) {
+            return false
+        }
+        
+        // calculate the difference in time and values between the most recent 2 values
+        let recentMinutes = Float((readings[readings.count - 1].timestamp - readings[readings.count - 2].timestamp) / 60000)
+        var recentDelta = readings[readings.count - 1].value - readings[readings.count - 2].value
+        if !increasing {
+            recentDelta *= -1
+        }
+
+        if recentMinutes > 7 {
+            
+            // lost reading, cannot risk...
+            return true
+        }
+        
+        if recentDelta < ((recentMinutes * alarmDeltaPerMinute) / 2) {
+            
+            // in the most recent readings the raise/drop speed halved, do not alert!
+            return false
+        }
+        
+        // do alert!
+        return true
     }
     
     /*
