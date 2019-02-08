@@ -103,6 +103,14 @@ extension CustomFormViewController {
         ListCheckRow<Int>.defaultCellUpdate = { cell, row in
             cell.customize(selectable: true)
         }
+        
+        StepperRow.defaultCellUpdate = { cell, row in
+            cell.customize()
+        }
+        
+        SegmentedRow<Int>.defaultCellUpdate = { cell, row in
+            cell.customize()
+        }
     }
 }
 
@@ -112,6 +120,8 @@ extension BaseCell {
         backgroundColor = UIColor.App.Preferences.rowBackground
         textLabel?.textColor = UIColor.App.Preferences.text
         detailTextLabel?.textColor = UIColor.App.Preferences.detailText
+        
+        tintColor = UIColor.App.Preferences.text
         
         if selectable {
             let view = UIView()

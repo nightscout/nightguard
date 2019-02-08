@@ -690,10 +690,10 @@
 		D160D084220C50A9002B4633 /* forms */ = {
 			isa = PBXGroup;
 			children = (
-				D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */,
-				D160D087220C537C002B4633 /* LowPredictionViewController.swift */,
 				D160D085220C534E002B4633 /* ButtonRowWithDynamicDetails.swift */,
+				D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */,
 				D160D089220C608D002B4633 /* FastRiseDropViewController.swift */,
+				D160D087220C537C002B4633 /* LowPredictionViewController.swift */,
 			);
 			name = forms;
 			sourceTree = "<group>";

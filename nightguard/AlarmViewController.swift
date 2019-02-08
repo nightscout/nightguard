@@ -80,13 +80,17 @@ class AlarmViewController: CustomFormViewController {
                 row.controllerProvider = { return FastRiseDropViewController() }
                 row.detailTextProvider = {
                     if AlarmRule.isEdgeDetectionAlarmEnabled.value {
-                        return "Alerts when a fast BG rise or drop occurs."
+                        
+                        let deltaInMgdl = AlarmRule.deltaAmount.value
+                        let delta = UnitsConverter.toDisplayUnits("\(deltaInMgdl)")
+                        let units = UserDefaultsRepository.units.value.description
+                        
+                        return "Alerts when BG values are rising or dropping with \(delta) \(units), considering the last \(AlarmRule.numberOfConsecutiveValues.value) consecutive readings."
                     } else {
                         return "Off"
                     }
                 }
             }
-
             
             <<< ButtonRowWithDynamicDetails("Low Prediction") { row in
                 row.controllerProvider = { return LowPredictionViewController() }
