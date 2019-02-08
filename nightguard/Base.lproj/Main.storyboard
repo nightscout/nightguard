@@ -527,7 +527,6 @@
                     <connections>
                         <segue destination="GUP-Hx-gmC" kind="relationship" relationship="viewControllers" id="ynG-z7-zf4"/>
                         <segue destination="7pd-UE-mwp" kind="relationship" relationship="viewControllers" id="POg-Tu-jgl"/>
-                        <segue destination="0dm-ov-qP4" kind="relationship" relationship="viewControllers" id="H2S-R0-V6O"/>
                         <segue destination="plA-ZV-pwP" kind="relationship" relationship="viewControllers" id="gDM-Lc-2am"/>
                         <segue destination="xQ4-Ke-Hd2" kind="relationship" relationship="viewControllers" id="O9h-fb-9MV"/>
                     </connections>
@@ -581,16 +580,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zLf-by-LN5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1097" y="225"/>
-        </scene>
-        <!--AlarmViewControllerOLD-->
-        <scene sceneID="dIS-YY-Re5">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Alarm" referencedIdentifier="AlarmViewControllerOLD" id="0dm-ov-qP4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Alarms" image="Alarm" id="aiS-JW-0HE"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="t60-dc-hNo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-589" y="92"/>
         </scene>
     </scenes>
     <resources>
