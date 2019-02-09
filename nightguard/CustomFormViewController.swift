@@ -82,6 +82,7 @@ extension CustomFormViewController {
             cell.backgroundColor = UIColor.App.Preferences.rowBackground
             cell.titleLabel?.textColor = UIColor.App.Preferences.text
             cell.valueLabel?.textColor = UIColor.App.Preferences.detailText
+            cell.tintColor = UIColor.App.Preferences.tint
         }
         
         PushRow<Int>.defaultCellUpdate = { cell, row in
@@ -111,6 +112,17 @@ extension CustomFormViewController {
         SegmentedRow<Int>.defaultCellUpdate = { cell, row in
             cell.customize()
         }
+        
+        PickerInlineRow<Int>.defaultCellUpdate = { cell, row in
+            cell.customize(selectable: true)
+        }
+        
+        PickerRow<Int>.defaultCellUpdate = { cell, row in
+            cell.customize(selectable: true)
+            cell.pickerTextAttributes = [
+                .foregroundColor : UIColor.App.Preferences.text
+            ]
+        }
     }
 }
 
@@ -121,7 +133,7 @@ extension BaseCell {
         textLabel?.textColor = UIColor.App.Preferences.text
         detailTextLabel?.textColor = UIColor.App.Preferences.detailText
         
-        tintColor = UIColor.App.Preferences.text
+        tintColor = UIColor.App.Preferences.tint
         
         if selectable {
             let view = UIView()

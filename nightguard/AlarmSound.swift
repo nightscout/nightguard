@@ -38,14 +38,12 @@ class AlarmSound {
     fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")
     fileprivate static var audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOf: soundURL!)
     
-    // TODO: add as user default (in alarm settings screen)
-    fileprivate static var fadeInTimeInterval: TimeInterval = 1200  // fade-in time interval in seconds
-
-    // TODO: add as user default (in alarm settings screen)
-    fileprivate static var vibrate: Bool = true
-
-    // TODO: add as user default (in alarm settings screen)
-    fileprivate static var systemOutputVolume: Float = 1.0
+    static let fadeInTimeInterval = UserDefaultsValue<TimeInterval>(key: "fadeInTimeInterval", default: 0)  // fade-in time interval in seconds
+    
+    static let vibrate = UserDefaultsValue<Bool>(key: "vibrate", default: true)
+    
+    static let overrideSystemOutputVolume = UserDefaultsValue<Bool>(key: "overrideSystemOutputVolume", default: false)
+    static let systemOutputVolume = UserDefaultsValue<Float>(key: "systemOutputVolume", default: 0.7)
     
     fileprivate static var systemOutputVolumeBeforeOverride: Float?
     
@@ -67,8 +65,8 @@ class AlarmSound {
      * Sets the volume of the alarm back to the volume before it has been muted.
      */
     static func unmuteVolume() {
-        if self.fadeInTimeInterval > 0 {
-            self.audioPlayer.setVolume(1.0, fadeDuration: self.fadeInTimeInterval)
+        if self.fadeInTimeInterval.value > 0 {
+            self.audioPlayer.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
         } else {
             self.audioPlayer.volume = 1.0
         }
@@ -96,13 +94,13 @@ class AlarmSound {
             self.audioPlayer.numberOfLoops = -1
             
             // init volume before start playing (mute if fade-in)
-            self.audioPlayer.volume = (self.fadeInTimeInterval > 0) ? 0.0 : 1.0
+            self.audioPlayer.volume = (self.fadeInTimeInterval.value > 0) ? 0.0 : 1.0
             
             self.audioPlayer.play()
             
             // do fade-in
-            if self.fadeInTimeInterval > 0 {
-                self.audioPlayer.setVolume(1.0, fadeDuration: self.fadeInTimeInterval)
+            if self.fadeInTimeInterval.value > 0 {
+                self.audioPlayer.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
             }
             
             self.playingTimer = Timer.schedule(repeatInterval: 1.0, handler: self.onPlayingTimer)
@@ -130,11 +128,11 @@ class AlarmSound {
         }
         
         // override the system output volume
-        if MPVolumeView.volume != self.systemOutputVolume {
-            MPVolumeView.volume = self.systemOutputVolume
+        if MPVolumeView.volume != self.systemOutputVolume.value {
+            MPVolumeView.volume = self.systemOutputVolume.value
         }
         
-        if self.vibrate {
+        if self.vibrate.value {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
     }

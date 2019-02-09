@@ -15,7 +15,7 @@ class AlarmViewController: CustomFormViewController {
     var belowSliderRow: SliderRow!
     
     fileprivate let minutesWithoutValuesAlarmOptions = [15, 20, 25, 30, 35, 40, 45]
-        
+    
     fileprivate let MAX_ALERT_ABOVE_VALUE : Float = 280
     fileprivate let MIN_ALERT_ABOVE_VALUE : Float = 80
     
@@ -33,6 +33,8 @@ class AlarmViewController: CustomFormViewController {
         
         // reconstruct the form if units were changed from last appearance
         UIView.performWithoutAnimation {
+            let scrollOffset = tableView.contentOffset
+            defer { tableView.contentOffset = scrollOffset }
             form.removeAll()
             constructForm()
         }
@@ -58,9 +60,9 @@ class AlarmViewController: CustomFormViewController {
             
             +++ Section(header: "Low BG Alert", footer: "Alerts when the blood glucose drops below this value.") <<< belowSliderRow
             
-            +++ Section("Other alerts")
+            +++ Section("Other Alerts")
             <<< PushRow<Int>() { row in
-                row.title = "Missed readings"
+                row.title = "Missed Readings"
                 row.options = minutesWithoutValuesAlarmOptions
                 row.displayValueFor = { "\($0!) Minutes" }
                 row.value = AlarmRule.minutesWithoutValues.value
@@ -74,7 +76,7 @@ class AlarmViewController: CustomFormViewController {
                 }.onChange { row in
                     guard let value = row.value else { return }
                     AlarmRule.minutesWithoutValues.value = value
-                }
+            }
             
             <<< ButtonRowWithDynamicDetails("Fast Rise/Drop") { row in
                 row.controllerProvider = { return FastRiseDropViewController() }
@@ -105,7 +107,7 @@ class AlarmViewController: CustomFormViewController {
             
             +++ Section(header: "", footer: "Snooze (do not alert) when values are high or low but the trend is going in the right direction.")
             <<< SwitchRow() { row in
-                row.title = "Smart snooze"
+                row.title = "Smart Snooze"
                 row.value = AlarmRule.isSmartSnoozeEnabled.value
                 }.onChange { row in
                     guard let value = row.value else { return }
@@ -114,11 +116,17 @@ class AlarmViewController: CustomFormViewController {
             
             +++ Section(header: "", footer: "When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode.")
             <<< SwitchRow() { row in
-                row.title = "Alert notifications"
+                row.title = "Alert Notifications"
                 row.value = AlarmNotificationService.singleton.enabled
                 }.onChange { row in
                     guard let value = row.value else { return }
                     AlarmNotificationService.singleton.enabled = value
+            }
+            
+            +++ Section()
+            <<< ButtonRowWithDynamicDetails("Alert Volume"/*"Alert Volume & Snoozing"*/) { row in
+                row.controllerProvider = { return AlertVolumeViewController()
+                }
         }
     }
     
@@ -178,7 +186,6 @@ class AlarmViewController: CustomFormViewController {
                 row.steps = UInt(steps.rounded())
                 cell.slider.minimumValue = minimumValue
                 cell.slider.maximumValue = maximumValue
-                cell.tintColor = UIColor.white
                 row.displayValueFor = { value in
                     guard let value = value else { return "" }
                     let units = UserDefaultsRepository.units.value.description

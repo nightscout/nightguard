@@ -142,6 +142,7 @@
 		D160D086220C534E002B4633 /* ButtonRowWithDynamicDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D160D085220C534E002B4633 /* ButtonRowWithDynamicDetails.swift */; };
 		D160D088220C537C002B4633 /* LowPredictionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D160D087220C537C002B4633 /* LowPredictionViewController.swift */; };
 		D160D08A220C608D002B4633 /* FastRiseDropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D160D089220C608D002B4633 /* FastRiseDropViewController.swift */; };
+		D160D092220E4249002B4633 /* AlertVolumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D160D091220E4248002B4633 /* AlertVolumeViewController.swift */; };
 		D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
@@ -343,6 +344,7 @@
 		D160D085220C534E002B4633 /* ButtonRowWithDynamicDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRowWithDynamicDetails.swift; sourceTree = "<group>"; };
 		D160D087220C537C002B4633 /* LowPredictionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowPredictionViewController.swift; sourceTree = "<group>"; };
 		D160D089220C608D002B4633 /* FastRiseDropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastRiseDropViewController.swift; sourceTree = "<group>"; };
+		D160D091220E4248002B4633 /* AlertVolumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVolumeViewController.swift; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -692,6 +694,7 @@
 				D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */,
 				D160D089220C608D002B4633 /* FastRiseDropViewController.swift */,
 				D160D087220C537C002B4633 /* LowPredictionViewController.swift */,
+				D160D091220E4248002B4633 /* AlertVolumeViewController.swift */,
 			);
 			name = forms;
 			sourceTree = "<group>";
@@ -1172,6 +1175,7 @@
 				4351E6AE1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift in Sources */,
 				D1D96CB621FAF6890035A60E /* WatchMessage.swift in Sources */,
 				43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */,
+				D160D092220E4249002B4633 /* AlertVolumeViewController.swift in Sources */,
 				D133078421C424A800DC6879 /* ArrayExtension.swift in Sources */,
 				D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */,
 				D1D96CB121F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
@@ -1460,7 +1464,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1482,7 +1486,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1505,7 +1509,7 @@
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1527,7 +1531,7 @@
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1548,7 +1552,7 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1568,7 +1572,7 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1584,7 +1588,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardTests";
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1599,7 +1603,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardTests";
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1613,7 +1617,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardUITests";
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1628,7 +1632,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardUITests";
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;

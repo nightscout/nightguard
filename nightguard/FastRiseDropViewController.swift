@@ -27,7 +27,7 @@ class FastRiseDropViewController: CustomFormViewController {
             }
             
             <<< SegmentedRow<Int>() { row in
-                row.title = "Consecutive readings"
+                row.title = "Consecutive Readings"
                 row.options = [2, 3, 4, 5]
                 row.value = AlarmRule.numberOfConsecutiveValues.value
                 }.onChange { row in
