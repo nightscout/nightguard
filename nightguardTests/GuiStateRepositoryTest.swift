@@ -17,8 +17,8 @@ class GuiStateRepositoryTest: XCTestCase {
         let initialPosition : Bool = false
         
         // When
-        GuiStateRepository.singleton.storeScreenlockSwitchState(initialPosition)
-        let retrievedPosition = GuiStateRepository.singleton.loadScreenlockSwitchState()
+        GuiStateRepository.singleton.screenlockSwitchState.value = initialPosition
+        let retrievedPosition = GuiStateRepository.singleton.screenlockSwitchState.value
         
         // Then
         XCTAssertEqual(retrievedPosition, initialPosition)

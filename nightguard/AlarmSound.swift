@@ -11,32 +11,22 @@ import AVFoundation
 import MediaPlayer
 import UIKit
 
-extension MPVolumeView {
-    
-    static var volume: Float {
-        get {
-            return AVAudioSession.sharedInstance().outputVolume
-//            let volumeView = MPVolumeView()
-//            let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
-//            return slider?.value ?? 0.5
-        }
-        set {
-            let volumeView = MPVolumeView()
-            let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
-            
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01) {
-                slider?.value = newValue
-            }
-        }
-    }
-}
-
 /*
  * Class that handles the playing and the volume of the alarm sound.
  */
 class AlarmSound {
-    fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")
-    fileprivate static var audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOf: soundURL!)
+    
+    static var isPlaying: Bool {
+        return self.audioPlayer.isPlaying
+    }
+    
+    static var isMuted: Bool {
+        return self.audioPlayer.volume == 0
+    }
+    
+    static var isTesting: Bool = false
+    
+    static let volumeChangeDetector = VolumeChangeDetector()
     
     static let fadeInTimeInterval = UserDefaultsValue<TimeInterval>(key: "fadeInTimeInterval", default: 0)  // fade-in time interval in seconds
     
@@ -49,9 +39,8 @@ class AlarmSound {
     
     fileprivate static var playingTimer: Timer?
     
-    fileprivate static var isMuted: Bool {
-        return self.audioPlayer.volume == 0
-    }
+    fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")
+    fileprivate static var audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOf: soundURL!)
     
     /*
      * Sets the audio volume to 0.
@@ -122,16 +111,24 @@ class AlarmSound {
             return
         }
         
-        // keep the system output volume before overriding it
-        if self.systemOutputVolumeBeforeOverride == nil {
-            self.systemOutputVolumeBeforeOverride = MPVolumeView.volume
+        if self.overrideSystemOutputVolume.value {
+
+            // keep the system output volume before overriding it
+            if self.systemOutputVolumeBeforeOverride == nil {
+                self.systemOutputVolumeBeforeOverride = MPVolumeView.volume
+            }
+            
+            // override the system output volume
+            if MPVolumeView.volume != self.systemOutputVolume.value {
+                self.volumeChangeDetector.isActive = false
+                MPVolumeView.volume = self.systemOutputVolume.value
+            } else {
+            
+                // listen to user volume changes
+                self.volumeChangeDetector.isActive = true
+            }
         }
-        
-        // override the system output volume
-        if MPVolumeView.volume != self.systemOutputVolume.value {
-            MPVolumeView.volume = self.systemOutputVolume.value
-        }
-        
+            
         if self.vibrate.value {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -139,8 +136,15 @@ class AlarmSound {
     
     fileprivate static func restoreSystemOutputVolume() {
         
+        guard self.overrideSystemOutputVolume.value else {
+            return
+        }
+        
+        // cancel any volume change observations
+        self.volumeChangeDetector.isActive = false
+        
         // restore system output volume with its value before overriding it
-        if let volumeBeforeOverride = self.systemOutputVolumeBeforeOverride, volumeBeforeOverride > 0 {
+        if let volumeBeforeOverride = self.systemOutputVolumeBeforeOverride {
             MPVolumeView.volume = volumeBeforeOverride
         }
         

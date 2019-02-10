@@ -46,12 +46,12 @@ class AlarmRule {
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
 
-    static var isLowPredictionEnabled = UserDefaultsValue<Bool>(key: "lowPredictionEnabled", default: false)
+    static var isLowPredictionEnabled = UserDefaultsValue<Bool>(key: "lowPredictionEnabled", default: true)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
 
 
-    static var isSmartSnoozeEnabled = UserDefaultsValue<Bool>(key: "smartSnoozeEnabled", default: false)
+    static var isSmartSnoozeEnabled = UserDefaultsValue<Bool>(key: "smartSnoozeEnabled", default: true)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
     

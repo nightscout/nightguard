@@ -143,6 +143,9 @@
 		D160D088220C537C002B4633 /* LowPredictionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D160D087220C537C002B4633 /* LowPredictionViewController.swift */; };
 		D160D08A220C608D002B4633 /* FastRiseDropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D160D089220C608D002B4633 /* FastRiseDropViewController.swift */; };
 		D160D092220E4249002B4633 /* AlertVolumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D160D091220E4248002B4633 /* AlertVolumeViewController.swift */; };
+		D16C8ED72210377000192117 /* SnoozeActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8ED62210377000192117 /* SnoozeActionsViewController.swift */; };
+		D16C8ED92210687200192117 /* MPVolumeViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */; };
+		D16C8EDB221068F000192117 /* VolumeChangeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */; };
 		D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
@@ -345,6 +348,9 @@
 		D160D087220C537C002B4633 /* LowPredictionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowPredictionViewController.swift; sourceTree = "<group>"; };
 		D160D089220C608D002B4633 /* FastRiseDropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastRiseDropViewController.swift; sourceTree = "<group>"; };
 		D160D091220E4248002B4633 /* AlertVolumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVolumeViewController.swift; sourceTree = "<group>"; };
+		D16C8ED62210377000192117 /* SnoozeActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeActionsViewController.swift; sourceTree = "<group>"; };
+		D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPVolumeViewExtension.swift; sourceTree = "<group>"; };
+		D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeChangeDetector.swift; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -637,11 +643,13 @@
 				D133078321C424A800DC6879 /* ArrayExtension.swift */,
 				D15055AF2200D31300F31C1F /* DeviceSize.swift */,
 				D1E6B896219C69D9007ED4FE /* Helpers.swift */,
+				D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */,
 				D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */,
 				D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */,
 				D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */,
 				D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */,
 				D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */,
+				D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */,
 			);
 			name = helpers;
 			sourceTree = "<group>";
@@ -695,6 +703,7 @@
 				D160D089220C608D002B4633 /* FastRiseDropViewController.swift */,
 				D160D087220C537C002B4633 /* LowPredictionViewController.swift */,
 				D160D091220E4248002B4633 /* AlertVolumeViewController.swift */,
+				D16C8ED62210377000192117 /* SnoozeActionsViewController.swift */,
 			);
 			name = forms;
 			sourceTree = "<group>";
@@ -1143,6 +1152,7 @@
 				D1E6B897219C69D9007ED4FE /* Helpers.swift in Sources */,
 				D133079821C85FAE00DC6879 /* Regression.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
+				D16C8ED92210687200192117 /* MPVolumeViewExtension.swift in Sources */,
 				D123EFE321FB2D5200CE8718 /* RequestBaseUriMessage.swift in Sources */,
 				43E89E571E659102005B0A65 /* ChartScene.swift in Sources */,
 				43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */,
@@ -1172,6 +1182,7 @@
 				D10ACE412063C2A300F41EE7 /* BackgroundRefreshSettings.swift in Sources */,
 				D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */,
 				D123EFEB21FB70A700CE8718 /* KeepAwakeMessage.swift in Sources */,
+				D16C8ED72210377000192117 /* SnoozeActionsViewController.swift in Sources */,
 				4351E6AE1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift in Sources */,
 				D1D96CB621FAF6890035A60E /* WatchMessage.swift in Sources */,
 				43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */,
@@ -1182,6 +1193,7 @@
 				43F1E0EE1D07693300C329A2 /* AlarmRule.swift in Sources */,
 				432E62EF1D17359600DD7978 /* StringExtension.swift in Sources */,
 				43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */,
+				D16C8EDB221068F000192117 /* VolumeChangeDetector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

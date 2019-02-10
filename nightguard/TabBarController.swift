@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 class TabBarController: UITabBarController {
     
@@ -16,5 +17,17 @@ class TabBarController: UITabBarController {
             return selectedViewController.supportedInterfaceOrientations
         }
         return .allButUpsideDown
+    }
+    
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            print("Device shaken")
+            
+            if !AlarmRule.isSnoozed() {
+                DispatchQueue.main.async { [weak self] in
+                    self?.showSnoozePopup()
+                }
+            }
+        }
     }
 }

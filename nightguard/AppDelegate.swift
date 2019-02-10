@@ -37,6 +37,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.setMinimumBackgroundFetchInterval(
             TimeInterval(BackgroundRefreshSettings.backgroundFetchInterval * 60)
         )
+        
+        // set "prevent screen lock" to ON when the app is started for the first time
+        if !GuiStateRepository.singleton.screenlockSwitchState.exists {
+            GuiStateRepository.singleton.screenlockSwitchState.value = true
+        }
+        
+        // set the "prevent screen lock" option when the app is started
+        UIApplication.shared.isIdleTimerDisabled = GuiStateRepository.singleton.screenlockSwitchState.value
+        
+        AlarmSound.volumeChangeDetector.onVolumeChange = { [weak self] in
+            self?.mainViewController?.showSnoozePopup()
+        }
                 
         activateWatchConnectivity()
         return true

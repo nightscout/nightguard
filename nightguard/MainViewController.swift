@@ -21,7 +21,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var batteryLabel: UILabel!
     @IBOutlet weak var iobLabel: UILabel!
     @IBOutlet weak var snoozeButton: UIButton!
-    @IBOutlet weak var screenlockSwitch: UISwitch!
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var spriteKitView: UIView!
     @IBOutlet weak var errorPanelView: UIView!
@@ -55,13 +54,11 @@ class MainViewController: UIViewController {
         volumeContainerView.addSubview(volumeView)
         // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
         volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
+        volumeContainerView.isHidden = true
         
         snoozeButton.titleLabel?.numberOfLines = 0
         snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
         snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
-        
-        restoreGuiState()
-        paintScreenLockSwitch()
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -193,16 +190,9 @@ class MainViewController: UIViewController {
         volumeContainerView.addSubview(volumeView)
     }
     
-    fileprivate func restoreGuiState() {
-        
-        screenlockSwitch.isOn = GuiStateRepository.singleton.screenlockSwitchState.value
-        doScreenlockAction(self)
-    }
-    
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
-    
     
     // MARK: Notification
     
@@ -258,31 +248,10 @@ class MainViewController: UIViewController {
         self.loadAndPaintChartData(forceRepaint: forceRepaint)
     }
     
-    fileprivate func paintScreenLockSwitch() {
-        screenlockSwitch.isOn = UIApplication.shared.isIdleTimerDisabled
-    }
-    
     @IBAction func doSnoozeAction(_ sender: AnyObject) {
-        
-        // stop the alarm immediatly here not to disturb others
-        AlarmSound.muteVolume()
         showSnoozePopup()
-        // For safety reasons: Unmute sound after 1 minute
-        // This prevents an unlimited snooze if the snooze button was touched accidentally.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
-            AlarmSound.unmuteVolume()
-        })
     }
-    
-    fileprivate func showSnoozePopup() {
         
-        // create the snooze popup view
-        if let snoozeAlarmNavigationController = self.storyboard?.instantiateViewController(
-            withIdentifier: "snoozeAlarmNavigationController")  {
-            self.present(snoozeAlarmNavigationController, animated: true, completion: nil)
-        }
-    }
-    
     public func updateSnoozeButtonText() {
 
         var title = "Snooze"
@@ -335,32 +304,6 @@ class MainViewController: UIViewController {
         }
     }
     
-    @IBAction func doScreenlockAction(_ sender: AnyObject) {
-        if screenlockSwitch.isOn {
-            UIApplication.shared.isIdleTimerDisabled = true
-            GuiStateRepository.singleton.screenlockSwitchState.value = true
-            
-            displayScreenlockInfoMessageOnlyOnce()
-        } else {
-            UIApplication.shared.isIdleTimerDisabled = false
-            GuiStateRepository.singleton.screenlockSwitchState.value = false
-        }
-    }
-    
-    fileprivate func displayScreenlockInfoMessageOnlyOnce() {
-        let screenlockMessageShowed = UserDefaults.standard.bool(forKey: "screenlockMessageShowed")
-        
-        if !screenlockMessageShowed {
-            
-            let alertController = UIAlertController(title: "Keep the screen active", message: "Turn this switch to disable the screenlock and prevent the app to get stopped!", preferredStyle: .alert)
-            let actionOk = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(actionOk)
-            present(alertController, animated: true, completion: nil)
-            
-            UserDefaults.standard.set(true, forKey: "screenlockMessageShowed")
-        }
-    }
-    
     fileprivate func paintCurrentTime() {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
@@ -375,7 +318,9 @@ class MainViewController: UIViewController {
             if AlarmRule.isAlarmActivated() {
                 AlarmSound.play()
             } else {
-                AlarmSound.stop()
+                if !AlarmSound.isTesting {
+                    AlarmSound.stop()
+                }
             }
             self.updateSnoozeButtonText()
 

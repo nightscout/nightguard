@@ -11,13 +11,23 @@ import Eureka
 
 class CustomFormViewController: FormViewController {
     
-    static let dispatchOnce: Void = {
+    private static let dispatchOnce: Void = {
         customizeRows()
     }()
+    
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
+    }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
+    
+    var reconstructFormOnViewWillAppear: Bool {
+        return false
+    }
+    
+    fileprivate var firstAppearance = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +37,28 @@ class CustomFormViewController: FormViewController {
         tableView.separatorColor = UIColor.App.Preferences.separator
         
         constructForm()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // only if the orientation is portrat we should consider reconstructing the form on view appear (otherwise it will crash!)
+        if UIDevice.current.orientation == .portrait {
+            reconstructFormIfNeeded()
+        }
+    }
+
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // if did't have the chance to reconstruct the form on will appear because of the orientation, do it now!
+        if UIDevice.current.orientation != .portrait {
+            reconstructFormIfNeeded()
+        }
+        
+        let value = UIInterfaceOrientation.portrait.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -44,6 +76,24 @@ class CustomFormViewController: FormViewController {
     
     // to be implemented in subclasses
     func constructForm() {
+    }
+    
+    private func reconstructFormIfNeeded() {
+        
+        if !firstAppearance {
+            if reconstructFormOnViewWillAppear {
+                
+                // reconstruct the form if units were changed from last appearance
+                UIView.performWithoutAnimation {
+                    let scrollOffset = tableView.contentOffset
+                    defer { tableView.contentOffset = scrollOffset }
+                    form.removeAll()
+                    constructForm()
+                }
+            }
+        }
+        
+        firstAppearance = false
     }
 }
 

@@ -27,17 +27,9 @@ class AlarmViewController: CustomFormViewController {
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // reconstruct the form if units were changed from last appearance
-        UIView.performWithoutAnimation {
-            let scrollOffset = tableView.contentOffset
-            defer { tableView.contentOffset = scrollOffset }
-            form.removeAll()
-            constructForm()
-        }
+
+    override var reconstructFormOnViewWillAppear: Bool {
+        return true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -124,8 +116,12 @@ class AlarmViewController: CustomFormViewController {
             }
             
             +++ Section()
-            <<< ButtonRowWithDynamicDetails("Alert Volume"/*"Alert Volume & Snoozing"*/) { row in
+            <<< ButtonRowWithDynamicDetails("Alert Volume") { row in
                 row.controllerProvider = { return AlertVolumeViewController()
+                }
+            }
+            <<< ButtonRowWithDynamicDetails("Snoozing Actions") { row in
+                row.controllerProvider = { return SnoozeActionsViewController()
                 }
         }
     }

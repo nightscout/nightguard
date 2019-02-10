@@ -98,24 +98,42 @@ class PrefsViewController: CustomFormViewController {
         form +++ Section(header: "NIGHTSCOUT", footer: "Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'")
             <<< nightscoutURLRow
             
-            +++ Section(header: "", footer: "For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server.  This works on Dexcom only!")
+            +++ Section(footer: "This switch is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON for keeping the app alive.")
             <<< SwitchRow() { row in
-                row.title = "Show raw BG and noise level"
-                row.value = UserDefaultsRepository.showRawBG.value
-                }.onChange { row in
+                row.title = "Keep the Screen Active"
+                row.value = GuiStateRepository.singleton.screenlockSwitchState.value
+                }.onChange { [weak self] row in
                     guard let value = row.value else { return }
+                    
+                    if !value {
+                        self?.displayAlert(withTitle: "ARE YOU SURE?", message: "Keep this switch ON to disable the screenlock and prevent the app to get stopped!"/*, showOnceKey: "screenlockMessageShowed"*/)
+                    }
+                    
+                    GuiStateRepository.singleton.screenlockSwitchState.value = value
+            }
+            
+            +++ Section()
+            <<< SwitchRow() { row in
+                row.title = "Show Raw BG and Noise Level"
+                row.value = UserDefaultsRepository.showRawBG.value
+                }.onChange { [weak self] row in
+                    guard let value = row.value else { return }
+                    
+                    if value {
+                        self?.displayAlert(withTitle: "IMPORTANT", message: "For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!")
+                    }
+                    
                     UserDefaultsRepository.showRawBG.value = value
             }
 
-            
-            +++ Section("")
             <<< SwitchRow() { row in
-                row.title = "Show BG on app badge"
+                row.title = "Show BG on App Badge"
                 row.value = UserDefaultsRepository.showBGOnAppBadge.value
                 }.onChange { row in
                     guard let value = row.value else { return }
                     UserDefaultsRepository.showBGOnAppBadge.value = value
             }
+            
             <<< LabelRow() { row in
                 row.title = "Version"
                 
@@ -233,6 +251,24 @@ class PrefsViewController: CustomFormViewController {
             uris.removeLast()
         }
         return uris
+    }
+    
+    private func displayAlert(withTitle title: String, message: String, showOnceKey: String? = nil) {
+        
+        if let showOnceKey = showOnceKey {
+            guard !UserDefaults.standard.bool(forKey: showOnceKey) else {
+                return
+            }
+        }
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let actionOk = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(actionOk)
+        present(alertController, animated: true, completion: nil)
+
+        if let showOnceKey = showOnceKey {
+            UserDefaults.standard.set(true, forKey: showOnceKey)
+        }
     }
 }
 

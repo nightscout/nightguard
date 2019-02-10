@@ -11,9 +11,23 @@ import Eureka
 
 class AlertVolumeViewController: CustomFormViewController {
     
+    override var reconstructFormOnViewWillAppear: Bool {
+        return true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // stop testing the alarm
+        if AlarmSound.isTesting {
+            AlarmSound.isTesting = false
+            AlarmSound.stop()
+        }
+    }
+    
     override func constructForm() {
         
-        form +++ Section(header: "Alert Volume", footer: "By overriding the system volume, your custom volum level will be used rather than phone's current volume level.")
+        form +++ Section(header: "Alert Volume", footer: "If overriding the system output volume, your custom volume level will be used rather than phone's current volume level.")
             <<< SwitchRow("OverrideSystemVolumeSwitch") { row in
                 row.title = "Override System Volume"
                 row.value = AlarmSound.overrideSystemOutputVolume.value
@@ -37,7 +51,7 @@ class AlertVolumeViewController: CustomFormViewController {
                     AlarmSound.systemOutputVolume.value = value
             }
             
-            +++ Section(footer: "If selected, the alert will start quietly and reach the maximum volume in selected time interval.")
+            +++ Section(footer: "If selected, the alert will start quietly and increase the volume gradualy, reaching the maximum volume in selected time interval.")
             <<< PickerInlineRow<Int>() { row in
                 row.title = "Progressive Volume"
                 row.displayValueFor = { value in
@@ -55,8 +69,8 @@ class AlertVolumeViewController: CustomFormViewController {
                 }.onChange { row in
                     guard let value = row.value else { return }
                     AlarmSound.fadeInTimeInterval.value = TimeInterval(value)
-                }
-        
+            }
+            
             +++ Section()
             <<< SwitchRow() { row in
                 row.title = "Vibrate"
@@ -64,7 +78,27 @@ class AlertVolumeViewController: CustomFormViewController {
                 }.onChange { row in
                     guard let value = row.value else { return }
                     AlarmSound.vibrate.value = value
-        }
+            }
+            
+            +++ Section()
+            <<< ButtonRow() { row in
+                }.cellUpdate { cell, row in
+                    if AlarmSound.isPlaying {
+                        cell.textLabel?.text = "Stop Alert"
+                        cell.textLabel?.textColor = UIColor.red
+                    } else {
+                        cell.textLabel?.text = "Test Alert"
+                        cell.textLabel?.textColor = UIColor(netHex: 0x007AFF)  // default tint color - blue
+                    }
+                }.onCellSelection { cell, row in
+                    AlarmSound.isTesting = true
+                    if AlarmSound.isPlaying {
+                        AlarmSound.stop()
+                    } else {
+                        AlarmSound.play()
+                    }
+                    
+                    row.updateCell()
+            }
     }
-    
 }

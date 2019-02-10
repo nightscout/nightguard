@@ -80,6 +80,9 @@ class UserDefaultsRepository {
 
     static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
     
+    static let shakingOnAlertActionCode = UserDefaultsValue<Int>(key: "shakingOnAlertActionCode", default: 0)
+    static let volumeKeysOnAlertActionCode = UserDefaultsValue<Int>(key: "volumeKeysOnAlertActionCode", default: 0)
+    
     /* Parses the URI entered in the UI and extracts the token if one is present. */
     fileprivate static func parseBaseUri() {
         url = nil

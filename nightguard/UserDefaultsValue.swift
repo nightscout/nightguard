@@ -69,6 +69,11 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
         }
     }
     
+    /// is there this key already stored in UserDefaults?
+    var exists: Bool {
+        return UserDefaultsValue.defaults.object(forKey: key) != nil
+    }
+    
     // on change closure
     private let onChange: ((T) -> ())?
     

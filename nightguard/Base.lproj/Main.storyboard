@@ -279,14 +279,8 @@
                                     <action selector="doSnoozeAction:" destination="wFP-V1-Fpg" eventType="touchUpInside" id="rVO-Eo-fJe"/>
                                 </connections>
                             </button>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZrP-ql-0RC">
-                                <rect key="frame" x="8" y="672" width="51" height="31"/>
-                                <connections>
-                                    <action selector="doScreenlockAction:" destination="wFP-V1-Fpg" eventType="valueChanged" id="Fvc-Iw-XIb"/>
-                                </connections>
-                            </switch>
-                            <containerView contentMode="scaleToFill" placeholderIntrinsicWidth="286" placeholderIntrinsicHeight="31" translatesAutoresizingMaskIntoConstraints="NO" id="4hs-Gk-Xl6">
-                                <rect key="frame" x="65" y="677.66666666666663" width="341" height="28"/>
+                            <containerView contentMode="scaleToFill" ambiguous="YES" placeholderIntrinsicWidth="286" placeholderIntrinsicHeight="31" translatesAutoresizingMaskIntoConstraints="NO" id="4hs-Gk-Xl6">
+                                <rect key="frame" x="8" y="677.66666666666663" width="398" height="28"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -294,10 +288,10 @@
                                 </constraints>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dot-Yq-gkc" customClass="SKView">
-                                <rect key="frame" x="0.0" y="164" width="414" height="492"/>
+                                <rect key="frame" x="0.0" y="172" width="414" height="484"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifJ-Wp-aAP">
-                                        <rect key="frame" x="356" y="426" width="50" height="50"/>
+                                        <rect key="frame" x="356" y="418" width="50" height="50"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="5To-yk-NNp"/>
@@ -316,7 +310,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1rF-Wm-FbJ">
-                                <rect key="frame" x="119.33333333333333" y="172" width="175.33333333333337" height="23.666666666666657"/>
+                                <rect key="frame" x="119.33333333333333" y="180" width="175.33333333333337" height="23.666666666666657"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="❌ Some error message..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tea-wl-rpX">
                                         <rect key="frame" x="8" y="3.9999999999999991" width="159.33333333333334" height="15.666666666666664"/>
@@ -458,20 +452,18 @@
                         <accessibility key="accessibilityConfiguration" label="Preferences"/>
                         <constraints>
                             <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1rF-Wm-FbJ" secondAttribute="trailing" constant="16" id="48s-0a-W8r"/>
-                            <constraint firstItem="1rF-Wm-FbJ" firstAttribute="top" secondItem="f6k-n0-9ni" secondAttribute="bottom" constant="16" id="4we-MA-ydm"/>
+                            <constraint firstItem="1rF-Wm-FbJ" firstAttribute="top" secondItem="f6k-n0-9ni" secondAttribute="bottom" constant="24" id="4we-MA-ydm"/>
                             <constraint firstItem="1rF-Wm-FbJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="16" id="8PW-cQ-aAZ"/>
-                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="bottom" constant="16" id="8iY-2T-LtE"/>
-                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="leading" secondItem="QxI-Mz-c2E" secondAttribute="leading" id="9G0-uj-bUt"/>
-                            <constraint firstItem="QxI-Mz-c2E" firstAttribute="top" secondItem="ZrP-ql-0RC" secondAttribute="bottom" constant="8" id="MZd-7q-3Pc"/>
+                            <constraint firstItem="QxI-Mz-c2E" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="Klv-Ef-br1"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" id="OWA-mS-SW6"/>
                             <constraint firstItem="1rF-Wm-FbJ" firstAttribute="centerX" secondItem="kaq-Fc-h0j" secondAttribute="centerX" id="WuA-to-AEA"/>
-                            <constraint firstItem="4hs-Gk-Xl6" firstAttribute="leading" secondItem="ZrP-ql-0RC" secondAttribute="trailing" constant="8" symbolic="YES" id="X8Q-8X-U0R"/>
                             <constraint firstItem="QxI-Mz-c2E" firstAttribute="bottom" secondItem="tZK-nt-kLA" secondAttribute="bottom" constant="-16" id="YpJ-Qg-KCD"/>
-                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="centerY" secondItem="4hs-Gk-Xl6" secondAttribute="centerY" constant="-4" id="Z3X-Ud-WWP"/>
+                            <constraint firstItem="QxI-Mz-c2E" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="bottom" constant="55" id="Yvm-s9-X5C"/>
                             <constraint firstItem="f6k-n0-9ni" firstAttribute="leading" secondItem="kaq-Fc-h0j" secondAttribute="leading" constant="8" id="a29-lU-eI5"/>
                             <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="4hs-Gk-Xl6" secondAttribute="trailing" constant="8" id="dBA-IS-1Rm"/>
-                            <constraint firstItem="dot-Yq-gkc" firstAttribute="top" secondItem="f6k-n0-9ni" secondAttribute="bottom" constant="8" symbolic="YES" id="j6b-Wv-i5b"/>
-                            <constraint firstItem="ZrP-ql-0RC" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="okW-kf-z32"/>
+                            <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="QxI-Mz-c2E" secondAttribute="trailing" constant="8" id="ehu-vO-rie"/>
+                            <constraint firstItem="4hs-Gk-Xl6" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="gri-69-JHl"/>
+                            <constraint firstItem="dot-Yq-gkc" firstAttribute="top" secondItem="f6k-n0-9ni" secondAttribute="bottom" constant="16" id="j6b-Wv-i5b"/>
                             <constraint firstAttribute="trailing" secondItem="f6k-n0-9ni" secondAttribute="trailing" constant="8" id="qSw-fc-s74"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="trailing" secondItem="tZK-nt-kLA" secondAttribute="trailing" id="tbn-eR-7gt"/>
                             <constraint firstItem="4hs-Gk-Xl6" firstAttribute="trailing" secondItem="QxI-Mz-c2E" secondAttribute="trailing" id="uev-8J-O3X"/>
@@ -483,7 +475,6 @@
                     <navigationItem key="navigationItem" id="h66-MF-LkU"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="ScreenlockSwitch" destination="ZrP-ql-0RC" id="abw-sh-gzI"/>
                         <outlet property="batteryLabel" destination="3ZI-eY-05Z" id="pgN-9h-ivx"/>
                         <outlet property="bgLabel" destination="aNX-u1-teT" id="miL-Ac-Dj8"/>
                         <outlet property="bgStackView" destination="zgM-gD-e9z" id="8zJ-9C-ap4"/>
@@ -495,7 +486,6 @@
                         <outlet property="lastUpdateLabel" destination="FFv-EO-ylg" id="KqE-n5-OYo"/>
                         <outlet property="nightscoutButton" destination="ifJ-Wp-aAP" id="MHE-ed-Fhw"/>
                         <outlet property="rawValuesPanel" destination="XtI-XB-VeV" id="1T6-VA-eJr"/>
-                        <outlet property="screenlockSwitch" destination="ZrP-ql-0RC" id="nb2-uc-4nL"/>
                         <outlet property="snoozeButton" destination="QxI-Mz-c2E" id="fvE-ps-o54"/>
                         <outlet property="spriteKitView" destination="dot-Yq-gkc" id="VQK-0m-Y6R"/>
                         <outlet property="timeLabel" destination="YvM-WS-hyk" id="t6A-d4-mVH"/>
