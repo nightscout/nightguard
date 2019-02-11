@@ -21,32 +21,29 @@ class SnoozeActionsViewController: CustomFormViewController {
 
     override func constructForm() {
         
-        let shakingSection = makeSection(header: "Shaking the phone will", footer: "", userDefaultsValue: UserDefaultsRepository.shakingOnAlertSnoozeOption)
-        let volumeKeysSection = makeSection(header: "Pressing the Volume Keys will", footer: "This action is available only if \"Override System Volume\" option is ON (in Alert Volume screen)", userDefaultsValue: UserDefaultsRepository.volumeKeysOnAlertSnoozeOption)
-        
         form +++ Section(footer: "After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment.")
-            +++ shakingSection
-            +++ volumeKeysSection
+            +++ Section(header: "Quick Snoozing", footer: "NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)")
+            <<< makeQuickSnoozePickerRow(title: "Shaking the phone", userDefaultsValue: UserDefaultsRepository.shakingOnAlertSnoozeOption)
+            <<< makeQuickSnoozePickerRow(title: "Volume Buttons", userDefaultsValue: UserDefaultsRepository.volumeKeysOnAlertSnoozeOption)
     }
     
-    private func makeSection(header: String, footer: String, userDefaultsValue: UserDefaultsValue<QuickSnoozeOption>) -> SelectableSection<ListCheckRow<Int>> {
+    private func makeQuickSnoozePickerRow(title: String, userDefaultsValue: UserDefaultsValue<QuickSnoozeOption>) -> PickerInlineRow<Int> {
         
-        let section = SelectableSection<ListCheckRow<Int>>(header: header, footer: footer, selectionType: .singleSelection(enableDeselection: true))
-        section.onSelectSelectableRow = { cell, row in
-            guard let value = row.value else { return }
-            guard let action = QuickSnoozeOption(rawValue: value) else { return }
-            userDefaultsValue.value = action
-        }
-        
-        for option in quickActionCodes {
-            section <<< ListCheckRow<Int>() { row in
-                
-                row.title = option.description
-                row.selectableValue = option.rawValue
-                row.value = (option == userDefaultsValue.value) ? option.rawValue : nil
+        return PickerInlineRow<Int>() { row in
+            row.title = title
+            row.cellStyle = .subtitle
+            row.displayValueFor = { value in
+                guard let value = value else { return nil }
+                guard let quickSnoozeOption = QuickSnoozeOption(rawValue: value) else { return nil}
+
+                return "Will " + quickSnoozeOption.description
             }
+            row.options = quickActionCodes.map { $0.rawValue }
+            row.value = userDefaultsValue.value.rawValue
+            }.onChange { row in
+                guard let value = row.value else { return }
+                guard let quickSnoozeOption = QuickSnoozeOption(rawValue: value) else { return }
+                userDefaultsValue.value = quickSnoozeOption
         }
-        
-        return section
-    }
+    }    
 }
