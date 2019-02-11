@@ -146,6 +146,8 @@
 		D16C8ED72210377000192117 /* SnoozeActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8ED62210377000192117 /* SnoozeActionsViewController.swift */; };
 		D16C8ED92210687200192117 /* MPVolumeViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */; };
 		D16C8EDB221068F000192117 /* VolumeChangeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */; };
+		D16C8EDD22106C9300192117 /* QuickSnoozeOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */; };
+		D16C8EDF2211047300192117 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */; };
 		D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
@@ -351,6 +353,8 @@
 		D16C8ED62210377000192117 /* SnoozeActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeActionsViewController.swift; sourceTree = "<group>"; };
 		D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPVolumeViewExtension.swift; sourceTree = "<group>"; };
 		D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeChangeDetector.swift; sourceTree = "<group>"; };
+		D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSnoozeOption.swift; sourceTree = "<group>"; };
+		D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -603,6 +607,7 @@
 				43F1E0EC1D07693300C329A2 /* BloodSugar.swift */,
 				D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */,
 				432E62DE1D10ACD200DD7978 /* Units.swift */,
+				D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */,
 			);
 			name = domain;
 			sourceTree = "<group>";
@@ -649,6 +654,7 @@
 				D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */,
 				D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */,
 				D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */,
+				D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */,
 				D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */,
 			);
 			name = helpers;
@@ -1129,6 +1135,7 @@
 				D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */,
 				432E62E91D143CF900DD7978 /* UnitsConverter.swift in Sources */,
 				43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */,
+				D16C8EDD22106C9300192117 /* QuickSnoozeOption.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
 				D160D08A220C608D002B4633 /* FastRiseDropViewController.swift in Sources */,
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
@@ -1143,6 +1150,7 @@
 				D1ECDA1F2201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */,
 				43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */,
+				D16C8EDF2211047300192117 /* UIViewController+Extensions.swift in Sources */,
 				D1ECDA262202C8F0002BE6F9 /* UIColorExtension.swift in Sources */,
 				D15055AC2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */,
 				D160D086220C534E002B4633 /* ButtonRowWithDynamicDetails.swift in Sources */,

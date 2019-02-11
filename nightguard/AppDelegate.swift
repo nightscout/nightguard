@@ -24,8 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    var mainViewController: MainViewController?
-    
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // Override point for customization after application launch.
@@ -47,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.isIdleTimerDisabled = GuiStateRepository.singleton.screenlockSwitchState.value
         
         AlarmSound.volumeChangeDetector.onVolumeChange = { [weak self] in
-            self?.mainViewController?.showSnoozePopup()
+            self?.window?.rootViewController?.handleQuickSnooze(option: UserDefaultsRepository.volumeKeysOnAlertSnoozeOption.value)
         }
                 
         activateWatchConnectivity()
@@ -66,13 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func handleWatchMessages() {
         
         // snooze message
-        WatchMessageService.singleton.onMessage { [weak self] (message: SnoozeMessage) in
+        WatchMessageService.singleton.onMessage { (message: SnoozeMessage) in
             
             // update snooze from message
             AlarmRule.snoozeFromMessage(message)
-            
-            // then update UI & play or mute the alarm
-            self?.mainViewController?.doPeriodicUpdate(forceRepaint: false)
         }
         
         // request base URI

@@ -97,9 +97,11 @@ class MainViewController: UIViewController {
         
         // call first "UIApplicationWillEnterForeground" event by hand, it is not sent when the app starts (just registered for the event)
         prepareForEnteringForeground()
-        
-        // keep this instance in app delegate
-        (UIApplication.shared.delegate as? AppDelegate)?.mainViewController = self
+
+        // liste to alarm snoozing & play/stop alarm accordingly
+        AlarmRule.onSnoozeTimestampChanged = { [weak self] in
+            self?.evaluateAlarmActivationState()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -227,11 +229,23 @@ class MainViewController: UIViewController {
             // an alarm sound without giving the app the chance to reload
             // current data
             AlarmRule.snoozeSeconds(15)
-            self.updateSnoozeButtonText()
         }
         
         startTimer()
         doPeriodicUpdate(forceRepaint: true)
+    }
+    
+    func evaluateAlarmActivationState() {
+        
+        if AlarmRule.isAlarmActivated() {
+            AlarmSound.play()
+        } else {
+            if !AlarmSound.isTesting {
+                AlarmSound.stop()
+            }
+        }
+        
+        updateSnoozeButtonText()
     }
     
     // check whether new Values should be retrieved
@@ -314,15 +328,8 @@ class MainViewController: UIViewController {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData { [unowned self] result in
             
-            // play alarm if activated
-            if AlarmRule.isAlarmActivated() {
-                AlarmSound.play()
-            } else {
-                if !AlarmSound.isTesting {
-                    AlarmSound.stop()
-                }
-            }
-            self.updateSnoozeButtonText()
+            // play alarm if activated or stop otherwise
+            self.evaluateAlarmActivationState()
 
             // update app badge
             if UserDefaultsRepository.showBGOnAppBadge.value {

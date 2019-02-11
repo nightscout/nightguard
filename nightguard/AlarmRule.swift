@@ -21,7 +21,14 @@ import Foundation
  */
 class AlarmRule {
     
-    fileprivate static var snoozedUntilTimestamp = TimeInterval()
+    fileprivate static var snoozedUntilTimestamp = TimeInterval() {
+        didSet {
+            self.onSnoozeTimestampChanged?()
+        }
+    }
+    
+    // closure for listening to snooze timestamp changes
+    static var onSnoozeTimestampChanged: (() -> ())?
     
     static let numberOfConsecutiveValues = UserDefaultsValue<Int>(key: "numberOfConsecutiveValues", default: 3)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)

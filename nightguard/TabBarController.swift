@@ -25,7 +25,7 @@ class TabBarController: UITabBarController {
             
             if !AlarmRule.isSnoozed() {
                 DispatchQueue.main.async { [weak self] in
-                    self?.showSnoozePopup()
+                    self?.handleQuickSnooze(option: UserDefaultsRepository.shakingOnAlertSnoozeOption.value)
                 }
             }
         }

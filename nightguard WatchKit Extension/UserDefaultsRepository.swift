@@ -17,7 +17,6 @@ extension URL {
     }
 }
 
-
 /* 
  * This class provides access to general Application Data stored in the NSUserDefaults.
  * This is e.g. the Base-URI to the Nightscout Server.
@@ -80,8 +79,10 @@ class UserDefaultsRepository {
 
     static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
     
-    static let shakingOnAlertActionCode = UserDefaultsValue<Int>(key: "shakingOnAlertActionCode", default: 0)
-    static let volumeKeysOnAlertActionCode = UserDefaultsValue<Int>(key: "volumeKeysOnAlertActionCode", default: 0)
+    #if os(iOS)
+    static let shakingOnAlertSnoozeOption = UserDefaultsValue<QuickSnoozeOption>(key: "shakingOnAlertSnoozeOption", default: .doNothing)
+    static let volumeKeysOnAlertSnoozeOption = UserDefaultsValue<QuickSnoozeOption>(key: "volumeKeysOnAlertSnoozeOption", default: .doNothing)
+    #endif
     
     /* Parses the URI entered in the UI and extracts the token if one is present. */
     fileprivate static func parseBaseUri() {

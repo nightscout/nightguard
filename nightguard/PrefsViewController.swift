@@ -106,7 +106,7 @@ class PrefsViewController: CustomFormViewController {
                     guard let value = row.value else { return }
                     
                     if !value {
-                        self?.displayAlert(withTitle: "ARE YOU SURE?", message: "Keep this switch ON to disable the screenlock and prevent the app to get stopped!"/*, showOnceKey: "screenlockMessageShowed"*/)
+                        self?.showAlert(title: "ARE YOU SURE?", message: "Keep this switch ON to disable the screenlock and prevent the app to get stopped!"/*, showOnceKey: "screenlockMessageShowed"*/)
                     }
                     
                     GuiStateRepository.singleton.screenlockSwitchState.value = value
@@ -120,7 +120,7 @@ class PrefsViewController: CustomFormViewController {
                     guard let value = row.value else { return }
                     
                     if value {
-                        self?.displayAlert(withTitle: "IMPORTANT", message: "For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!")
+                        self?.showAlert(title: "IMPORTANT", message: "For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!")
                     }
                     
                     UserDefaultsRepository.showRawBG.value = value
@@ -251,25 +251,7 @@ class PrefsViewController: CustomFormViewController {
             uris.removeLast()
         }
         return uris
-    }
-    
-    private func displayAlert(withTitle title: String, message: String, showOnceKey: String? = nil) {
-        
-        if let showOnceKey = showOnceKey {
-            guard !UserDefaults.standard.bool(forKey: showOnceKey) else {
-                return
-            }
-        }
-        
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(actionOk)
-        present(alertController, animated: true, completion: nil)
-
-        if let showOnceKey = showOnceKey {
-            UserDefaults.standard.set(true, forKey: showOnceKey)
-        }
-    }
+    }    
 }
 
 extension PrefsViewController: UIPickerViewDelegate {
