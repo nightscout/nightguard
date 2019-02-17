@@ -80,6 +80,19 @@ class UserDefaultsRepository {
     static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
     
     #if os(iOS)
+    static let screenlockSwitchState = UserDefaultsValue<Bool>(
+        key: "screenlockSwitchState",
+        default: UIApplication.shared.isIdleTimerDisabled,
+        onChange: { screenlock in
+            UIApplication.shared.isIdleTimerDisabled = screenlock
+    })
+    
+    static let nightscoutUris = UserDefaultsValue<[String]>(key: "nightscoutUris", default: [])
+    
+    // minutes of idle (user inactivity) before dimming the screen (0 means never)
+    static let dimScreenWhenIdle = UserDefaultsValue<Int>(key: "dimScreenWhenIdle", default: 0)
+
+    // quick snooze options
     static let shakingOnAlertSnoozeOption = UserDefaultsValue<QuickSnoozeOption>(key: "shakingOnAlertSnoozeOption", default: .doNothing)
     static let volumeKeysOnAlertSnoozeOption = UserDefaultsValue<QuickSnoozeOption>(key: "volumeKeysOnAlertSnoozeOption", default: .doNothing)
     #endif

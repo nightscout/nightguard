@@ -37,21 +37,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         // set "prevent screen lock" to ON when the app is started for the first time
-        if !GuiStateRepository.singleton.screenlockSwitchState.exists {
-            GuiStateRepository.singleton.screenlockSwitchState.value = true
+        if !UserDefaultsRepository.screenlockSwitchState.exists {
+            UserDefaultsRepository.screenlockSwitchState.value = true
         }
         
         // set the "prevent screen lock" option when the app is started
-        UIApplication.shared.isIdleTimerDisabled = GuiStateRepository.singleton.screenlockSwitchState.value
+        UIApplication.shared.isIdleTimerDisabled = UserDefaultsRepository.screenlockSwitchState.value
         
         AlarmSound.volumeChangeDetector.onVolumeChange = { [weak self] in
             self?.window?.rootViewController?.handleQuickSnooze(option: UserDefaultsRepository.volumeKeysOnAlertSnoozeOption.value)
         }
-                
+        
         activateWatchConnectivity()
         return true
     }
     
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Override point for customization after application launch.
+        
+        let rootViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
+
+        self.window = UserInteractionDetectorWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = rootViewController
+        self.window?.makeKeyAndVisible()
+        
+        dimScreenOnIdle()
+        
+        return true
+    }
+    
+    func dimScreenOnIdle() {
+        
+        guard let window = self.window as? UserInteractionDetectorWindow else {
+            return
+        }
+        
+        let updateWindowUserInteractionTimeout = {
+            if UserDefaultsRepository.screenlockSwitchState.value {
+                window.timeout = TimeInterval(UserDefaultsRepository.dimScreenWhenIdle.value * 60)
+            } else {
+                window.timeout = nil
+            }
+        }
+        
+        // bind dim screen settings with user interaction detector window timeout
+        UserDefaultsRepository.dimScreenWhenIdle.observeChanges { _ in
+            updateWindowUserInteractionTimeout()
+        }
+        UserDefaultsRepository.screenlockSwitchState.observeChanges { _ in
+            updateWindowUserInteractionTimeout()
+        }
+        
+        updateWindowUserInteractionTimeout()
+    }
 
     func activateWatchConnectivity() {
         if WCSession.isSupported() {

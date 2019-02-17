@@ -98,10 +98,10 @@ class PrefsViewController: CustomFormViewController {
         form +++ Section(header: "NIGHTSCOUT", footer: "Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'")
             <<< nightscoutURLRow
             
-            +++ Section(footer: "This switch is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON for keeping the app alive.")
-            <<< SwitchRow() { row in
+            +++ Section(footer: "Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON.")
+            <<< SwitchRow("KeepScreenActive") { row in
                 row.title = "Keep the Screen Active"
-                row.value = GuiStateRepository.singleton.screenlockSwitchState.value
+                row.value = UserDefaultsRepository.screenlockSwitchState.value
                 }.onChange { [weak self] row in
                     guard let value = row.value else { return }
                     
@@ -109,7 +109,26 @@ class PrefsViewController: CustomFormViewController {
                         self?.showAlert(title: "ARE YOU SURE?", message: "Keep this switch ON to disable the screenlock and prevent the app to get stopped!"/*, showOnceKey: "screenlockMessageShowed"*/)
                     }
                     
-                    GuiStateRepository.singleton.screenlockSwitchState.value = value
+                    UserDefaultsRepository.screenlockSwitchState.value = value
+            }
+            <<< PushRow<Int>() { row in
+                row.title = "Dim Screen When Idle"
+                row.hidden = "$KeepScreenActive == false"
+                row.options = [0, 1, 2, 3, 4, 5, 10, 15]
+                row.displayValueFor = { option in
+                    switch option {
+                    case 0: return "Never"
+                    case 1: return "1 Minute"
+                    default: return "\(option!) Minutes"
+                    }
+                }
+                row.value = UserDefaultsRepository.dimScreenWhenIdle.value
+                row.selectorTitle = "Dim Screen When Idle"
+                }.onPresent { form, selector in
+                    selector.customize(header: "", footer: "Reduce screen brightness after detecting user inactivity for more than selected time period.")
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    UserDefaultsRepository.dimScreenWhenIdle.value = value
             }
             
             +++ Section()
@@ -197,7 +216,7 @@ class PrefsViewController: CustomFormViewController {
     
     private func showBookmarksButtonOnKeyboardIfNeeded() {
         
-        guard GuiStateRepository.singleton.nightscoutUris.value.count > 1 else {
+        guard UserDefaultsRepository.nightscoutUris.value.count > 1 else {
             return
         }
         
@@ -222,7 +241,7 @@ class PrefsViewController: CustomFormViewController {
         hostUriTextField.reloadInputViews()
         
         // select current URI
-        if let index = GuiStateRepository.singleton.nightscoutUris.value.firstIndex(of: UserDefaultsRepository.baseUri.value) {
+        if let index = UserDefaultsRepository.nightscoutUris.value.firstIndex(of: UserDefaultsRepository.baseUri.value) {
             uriPickerView.selectRow(index, inComponent: 0, animated: false)
         }
     }
@@ -234,11 +253,11 @@ class PrefsViewController: CustomFormViewController {
             return
         }
         
-        var nightscoutUris = GuiStateRepository.singleton.nightscoutUris.value
+        var nightscoutUris = UserDefaultsRepository.nightscoutUris.value
         if !nightscoutUris.contains(hostUri) {
             nightscoutUris.insert(hostUri, at: 0)
             nightscoutUris = limitAmountOfUrisToFive(nightscoutUris: nightscoutUris)
-            GuiStateRepository.singleton.nightscoutUris.value = nightscoutUris
+            UserDefaultsRepository.nightscoutUris.value = nightscoutUris
             uriPickerView.reloadAllComponents()
             
             showBookmarksButtonOnKeyboardIfNeeded()
@@ -261,16 +280,16 @@ extension PrefsViewController: UIPickerViewDelegate {
     }
     
     @objc func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return GuiStateRepository.singleton.nightscoutUris.value.count
+        return UserDefaultsRepository.nightscoutUris.value.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return GuiStateRepository.singleton.nightscoutUris.value[row]
+        return UserDefaultsRepository.nightscoutUris.value[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        let stringURL = GuiStateRepository.singleton.nightscoutUris.value[row]
+        let stringURL = UserDefaultsRepository.nightscoutUris.value[row]
         if let url = URL(string: stringURL) {
             nightscoutURLRow.value = url
             nightscoutURLRow.updateCell()

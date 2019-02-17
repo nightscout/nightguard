@@ -26,7 +26,6 @@
 		432E62D81D0CC38C00DD7978 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
 		432E62D91D0CC3AC00DD7978 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		432E62DA1D0CC3DE00DD7978 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
-		432E62DC1D0CC4A900DD7978 /* GuiStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */; };
 		432E62DF1D10ACD200DD7978 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
 		432E62E01D10AF3800DD7978 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
 		432E62E11D10AF3900DD7978 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
@@ -71,7 +70,6 @@
 		439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		43B16087200D37560058198B /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
-		43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */; };
 		43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 		43D28A0620321AAF003859DE /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
@@ -83,7 +81,6 @@
 		43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43F1E0F11D07698000C329A2 /* alarm.mp3 */; };
 		43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F21D07698000C329A2 /* AlarmSound.swift */; };
 		43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F41D07698000C329A2 /* AppDelegate.swift */; };
-		43F1E1031D07698000C329A2 /* GuiStateRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */; };
 		43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F81D07698000C329A2 /* MainViewController.swift */; };
 		43F1E1061D07698000C329A2 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43F1E0F91D07698000C329A2 /* Media.xcassets */; };
 		43F1E1071D07698000C329A2 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
@@ -148,6 +145,7 @@
 		D16C8EDB221068F000192117 /* VolumeChangeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */; };
 		D16C8EDD22106C9300192117 /* QuickSnoozeOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */; };
 		D16C8EDF2211047300192117 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */; };
+		D16C8EE22213022E00192117 /* UserInteractionDetectorWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */; };
 		D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
@@ -163,6 +161,7 @@
 		D1CE8CC22204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
 		D1CE8CC42204B19C0075FF8A /* CustomFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */; };
 		D1CE8CC7220573250075FF8A /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CC6220573250075FF8A /* AlarmViewController.swift */; };
+		D1D1623C2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */; };
 		D1D96CB121F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
 		D1D96CB221F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
 		D1D96CB421F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
@@ -298,7 +297,6 @@
 		439C39171C0E002F00D89872 /* ChartPainter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartPainter.swift; path = "nightguard WatchKit Extension/ChartPainter.swift"; sourceTree = SOURCE_ROOT; };
 		439C391A1C0E295C00D89872 /* ChartPainterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainterTest.swift; sourceTree = "<group>"; };
 		439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundUrlSessionWrapper.swift; sourceTree = "<group>"; };
-		43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuiStateRepositoryTest.swift; sourceTree = "<group>"; };
 		43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeInterfaceController.swift; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
@@ -308,7 +306,6 @@
 		43F1E0F11D07698000C329A2 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alarm.mp3; path = nightguard/alarm.mp3; sourceTree = SOURCE_ROOT; };
 		43F1E0F21D07698000C329A2 /* AlarmSound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmSound.swift; path = nightguard/AlarmSound.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F41D07698000C329A2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = nightguard/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GuiStateRepository.swift; path = nightguard/GuiStateRepository.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F71D07698000C329A2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = nightguard/Info.plist; sourceTree = SOURCE_ROOT; };
 		43F1E0F81D07698000C329A2 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = nightguard/MainViewController.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F91D07698000C329A2 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = nightguard/Media.xcassets; sourceTree = SOURCE_ROOT; };
@@ -355,6 +352,7 @@
 		D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeChangeDetector.swift; sourceTree = "<group>"; };
 		D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSnoozeOption.swift; sourceTree = "<group>"; };
 		D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractionDetectorWindow.swift; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
@@ -366,6 +364,7 @@
 		D1CE8CBF2204B07F0075FF8A /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFormViewController.swift; sourceTree = "<group>"; };
 		D1CE8CC6220573250075FF8A /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
+		D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+AnimatedBrightness.swift"; sourceTree = "<group>"; };
 		D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsValue.swift; sourceTree = "<group>"; };
 		D1D96CB521FAF6890035A60E /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
 		D1D96CB921FB0E910035A60E /* WatchMessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessageService.swift; sourceTree = "<group>"; };
@@ -445,6 +444,7 @@
 				430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */,
 				439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */,
 				D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */,
+				D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -524,7 +524,6 @@
 				43647BE41BFF6435004389F9 /* Info.plist */,
 				439C391A1C0E295C00D89872 /* ChartPainterTest.swift */,
 				43794F471C30482500DB8B58 /* DataRepositoryTest.swift */,
-				43BF690E1C72698000A36D61 /* GuiStateRepositoryTest.swift */,
 				433AD0161CCE3E89001A76CD /* NightscoutServiceTest.swift */,
 				432E62E61D11F61500DD7978 /* UserDefaultsRepositoryTest.swift */,
 				4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */,
@@ -587,7 +586,6 @@
 				43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */,
 				43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */,
 				4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */,
-				43F1E0F61D07698000C329A2 /* GuiStateRepository.swift */,
 			);
 			name = repository;
 			sourceTree = "<group>";
@@ -654,6 +652,7 @@
 				D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */,
 				D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */,
 				D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */,
+				D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */,
 				D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */,
 				D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */,
 			);
@@ -1130,11 +1129,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1D96CC321FB0FA80035A60E /* SnoozeMessage.swift in Sources */,
+				D1D1623C2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift in Sources */,
 				D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */,
 				D133078821C85D4400DC6879 /* BloodSugarArrayExtension.swift in Sources */,
 				D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */,
 				432E62E91D143CF900DD7978 /* UnitsConverter.swift in Sources */,
 				43F1E0EF1D07693300C329A2 /* BloodSugar.swift in Sources */,
+				D16C8EE22213022E00192117 /* UserInteractionDetectorWindow.swift in Sources */,
 				D16C8EDD22106C9300192117 /* QuickSnoozeOption.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
 				D160D08A220C608D002B4633 /* FastRiseDropViewController.swift in Sources */,
@@ -1171,7 +1172,6 @@
 				D133079E21C8D4CF00DC6879 /* PredictionService.swift in Sources */,
 				430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */,
 				43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */,
-				43F1E1031D07698000C329A2 /* GuiStateRepository.swift in Sources */,
 				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
 				D1CE8CC7220573250075FF8A /* AlarmViewController.swift in Sources */,
@@ -1234,11 +1234,9 @@
 				D1F2F57D21EF133A00CEB874 /* Matrix+Description.swift in Sources */,
 				D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */,
 				D112DD3A21EB502300ECFB5E /* BloodSugarArrayTest.swift in Sources */,
-				432E62DC1D0CC4A900DD7978 /* GuiStateRepository.swift in Sources */,
 				D15055AE2200CF1F00F31C1F /* UserDefaultsValueGroups.swift in Sources */,
 				433AD0181CCE3FCB001A76CD /* UserDefaultsRepository.swift in Sources */,
 				43B16087200D37560058198B /* BackgroundUrlSessionWrapper.swift in Sources */,
-				43BF690F1C72698000A36D61 /* GuiStateRepositoryTest.swift in Sources */,
 				432E62F11D188A2A00DD7978 /* UnitsConverter.swift in Sources */,
 				D112DD3C21EB507E00ECFB5E /* PredictionServiceTest.swift in Sources */,
 				43288A711D2028CC00EE3999 /* DoubleExtension.swift in Sources */,
@@ -1484,7 +1482,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp.watchkitextension;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1506,7 +1504,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp.watchkitextension;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1529,7 +1527,7 @@
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp;
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1551,7 +1549,7 @@
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard.watchkitapp;
 				PRODUCT_NAME = nightguard;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1572,7 +1570,7 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1592,7 +1590,7 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguard;
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1608,7 +1606,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardTests";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardTests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1623,7 +1621,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardTests";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardTests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1637,7 +1635,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardUITests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1652,7 +1650,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = de.my-wan.dhe.nightguardUITests;
 				PRODUCT_NAME = nightguard;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
