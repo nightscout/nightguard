@@ -26,6 +26,16 @@ class SnoozeInterfaceController : WKInterfaceController {
         self.dismiss()
     }
     
+    @IBAction func doSnooze3Hours() {
+        AlarmRule.snooze(180)
+        self.dismiss()
+    }
+    
+    @IBAction func doSnooze6Hours() {
+        AlarmRule.snooze(60 * 6)
+        self.dismiss()
+    }
+    
     @IBAction func doSnooze1Day() {
         AlarmRule.snooze(60 * 24)
         self.dismiss()

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14313.18" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14460.31" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch44" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14238.10"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14460.16"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
@@ -242,6 +242,16 @@
                         <button width="1" alignment="left" title="2h" id="AjC-71-s7w">
                             <connections>
                                 <action selector="doSnooze2Hours" destination="W3J-ff-Ny6" id="rVZ-fg-vmz"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="3h" id="4ee-cb-NHg" userLabel="3h">
+                            <connections>
+                                <action selector="doSnooze3Hours" destination="W3J-ff-Ny6" id="Q6K-rp-kha"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="6h" id="QlQ-f0-7ep">
+                            <connections>
+                                <action selector="doSnooze6Hours" destination="W3J-ff-Ny6" id="sgy-sc-nEO"/>
                             </connections>
                         </button>
                         <button width="1" alignment="left" title="1d" id="E2D-TG-Tr3">
