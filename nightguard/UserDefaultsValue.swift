@@ -22,6 +22,8 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     // user defaults key (UserDefaultsAnyValue protocol implementation)
     let key: String
     
+    typealias ValueType = T
+    
     // the value (strong typed)
     var value: T {
         didSet {

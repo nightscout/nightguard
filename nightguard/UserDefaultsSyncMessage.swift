@@ -22,6 +22,9 @@ class UserDefaultSyncMessage: WatchMessage {
             dictionary[value.key] = value.anyValue
         }
         
+        // add the last watch sync update id also in the dictionary
+        dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] = UserDefaultsRepository.lastWatchSyncUpdateId.anyValue
+        
         self.dictionary = dictionary
     }
 }

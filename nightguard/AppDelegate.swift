@@ -113,8 +113,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return ResponseBaseUriMessage(baseUri: UserDefaultsRepository.baseUri.value)
         }
         
+        WatchMessageService.singleton.onMessage { (message: WatchSyncRequestMessage) in
+            
+            // compare the "last sync update id" received from watch and compare it with phone value: if not equal, the watch has not the latest user defaults data ana a sync should be performed
+            if let anyWatchUpdateId = message.dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] {
+                let watchUpdateId = type(of: UserDefaultsRepository.lastWatchSyncUpdateId).ValueType.fromAny(anyWatchUpdateId)
+                if UserDefaultsRepository.lastWatchSyncUpdateId.value != watchUpdateId {
+                    
+                    // perform sync!
+                    UserDefaultSyncMessage().send()
+                    
+                    self.window?.rootViewController?.showAlert(title: "Resync user defaults", message: "UUID on watch didn't match phone UUID")
+                }
+            }
+            
+            // same comparison for snoozing timestamp
+            if let anyWatchSnoozeTimestamp = message.dictionary["snoozedUntilTimestamp"] {
+                let watchSnoozeTimestamp = anyWatchSnoozeTimestamp as? TimeInterval
+                if AlarmRule.snoozedUntilTimestamp != watchSnoozeTimestamp {
+                    
+                    // send snooze data to watch!
+                    SnoozeMessage(timestamp: AlarmRule.snoozedUntilTimestamp).send()
+
+                    self.window?.rootViewController?.showAlert(title: "Resync snooze", message: "Snooze timestamp on watch didn't match phone snooze timestamp")
+                }
+            }
+        }
+
+        
         // whenever a value from the "watch sync" group changes, send the apropriate watch message containing all the group values
         UserDefaultsValueGroups.observeChanges(in: UserDefaultsValueGroups.GroupNames.watchSync) { _, _ in
+            
+            UserDefaultsRepository.lastWatchSyncUpdateId.value = UUID().uuidString
             UserDefaultSyncMessage().send()
         }
     }

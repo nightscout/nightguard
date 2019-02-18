@@ -67,6 +67,9 @@ class UserDefaultsRepository {
     static let units = UserDefaultsValue<Units>(key: "units", default: Units.mgdl)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
+    // The last watch sync update id
+    static let lastWatchSyncUpdateId = UserDefaultsValue<String?>(key: "lastWatchSyncUpdateId", default: nil)
+    
     // the array defining what days should be displayed in the statistics view
     // E.g. [true, true, true, true, true] if all 5 days should be displayed
     static let daysToBeDisplayed = UserDefaultsValue<[Bool]>(key: "daysToBeDisplayed", default: [true, true, true, true, true])

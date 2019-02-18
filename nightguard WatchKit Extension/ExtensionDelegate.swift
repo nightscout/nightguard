@@ -95,6 +95,11 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 }
             }
             
+            // update the "last watch sync update id" field
+            if let lastWatchSyncUpdateId = message.dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] {
+                UserDefaultsRepository.lastWatchSyncUpdateId.anyValue = lastWatchSyncUpdateId
+            }
+            
             // we should repaint charts if some used defaults values were changed
 //            let shouldRepaintCharts = (
 //                updatedKeys.contains(UserDefaultsRepository.upperBound.key) ||

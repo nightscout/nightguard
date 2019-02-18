@@ -21,7 +21,7 @@ import Foundation
  */
 class AlarmRule {
     
-    fileprivate static var snoozedUntilTimestamp = TimeInterval() {
+    private(set) static var snoozedUntilTimestamp = TimeInterval() {
         didSet {
             self.onSnoozeTimestampChanged?()
         }

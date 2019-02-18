@@ -99,6 +99,15 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         delay(0.4) { [unowned self] in
             self.delayedWillActivate()
         }
+        
+        // send watch sync request message to phone app; if phone app has different user default or snooze timestamp values, it will send back the right messages for keeping the devices in sync
+        delay(1.0) {
+            guard WKExtension.shared().applicationState == .active else {
+                return
+            }
+            
+            WatchSyncRequestMessage().send()
+        }
     }
     
     private func delayedWillActivate() {
