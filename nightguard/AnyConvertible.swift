@@ -85,6 +85,19 @@ extension Data: AnyConvertible {
     }
 }
 
+extension UUID: AnyConvertible {
+    func toAny() -> Any {
+        return self.uuidString
+    }
+    
+    static func fromAny(_ anyValue: Any) -> UUID? {
+        guard let uuidString = anyValue as? String else {
+            return nil
+        }
+        
+        return UUID(uuidString: uuidString)
+    }
+}
 
 //extension Array: AnyConvertible {
 //    func toAny() -> Any {
@@ -105,3 +118,19 @@ extension Array: AnyConvertible where Element: AnyConvertible {
         return (anyValue as? Array)?.compactMap { Element.fromAny($0) }
     }
 }
+
+extension Optional: AnyConvertible where Wrapped: AnyConvertible {
+    func toAny() -> Any {
+        switch self {
+        case .some(let value):
+            return value.toAny()
+        case .none:
+            return self as Any
+        }
+    }
+    
+    static func fromAny(_ anyValue: Any) -> Optional<Wrapped>? {
+        return Wrapped.fromAny(anyValue)
+    }
+}
+
