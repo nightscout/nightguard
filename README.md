@@ -8,9 +8,7 @@ This is an iPhone and Apple Watch application to display blood glucose values st
 # Description
 This app displays the last 30 Values from your [nightscout](http://www.nightscout.info) [server](https://github.com/nightscout/cgm-remote-monitor):
 
-![Nightguard Main-Screen](https://github.com/nightscout/nightguard/blob/master/images/screen1.jpg)
-![Nightguard Alarm-Screen](https://github.com/nightscout/nightguard/blob/master/images/screen2.jpg)
-![Nightguard Preferences-Screen](https://github.com/nightscout/nightguard/blob/master/images/screen3.jpg)
+![Nightguard App](https://github.com/nightscout/nightguard/blob/master/images/nightguard24.jpg)
 
 A graphical representation is shown on the Apple Watch as well:
 
