@@ -55,6 +55,11 @@ class UserInteractionDetectorWindow: UIWindow {
     // Listen for any touch. If the screen receives a touch, the timer is reset.
     override func sendEvent(_ event: UIEvent) {
         super.sendEvent(event)
+        
+        // only when app is active!
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
 
         // continue only if user activity timeout is set
         guard let timeout = self.timeout, timeout > 0 else {
@@ -114,6 +119,11 @@ class UserInteractionDetectorWindow: UIWindow {
         
         idleTimer?.invalidate()
         idleTimer = nil
+        
+        // continue only if app is active!
+        guard UIApplication.shared.applicationState == .active else {
+            return
+        }
 
         // send notification
         NotificationCenter.default.post(name:Notification.Name.UserInteractionTimeout, object: nil)
