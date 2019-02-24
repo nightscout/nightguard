@@ -60,18 +60,15 @@ class WatchMessageService: NSObject {
     private func received(_ message: [String : Any], replyHandler: (([String : Any]) -> Void)? = nil) {
         
         if let replyHandler = replyHandler {
-            for requestHandler in requestHandlers {
-                let (handled, responseMessage) = requestHandler.handle(dictionary: message)
-                if handled {
-                    if let responseMessage = responseMessage {
-                        dispatchOnMain {
-                            var dictionary = responseMessage.dictionary
-                            dictionary["_type"] = String(describing: type(of: responseMessage))
-                            replyHandler(dictionary)
-                        }
-                    }
-                    return
-                }
+            
+            let responseHandler: (WatchMessage) -> Void = { responseMessage in
+                var dictionary = responseMessage.dictionary
+                dictionary["_type"] = String(describing: type(of: responseMessage))
+                replyHandler(dictionary)
+            }
+            
+            if let _ = requestHandlers.firstIndex(where: { $0.handle(dictionary: message, responseHandler: responseHandler) }) {
+                return
             }
         }
         
@@ -191,7 +188,7 @@ private class WatchMessageHandlerImpl<T: WatchMessage>: WatchMessageHandler {
 }
 
 private protocol WatchRequestHandler {
-    func handle(dictionary: [String : Any]) -> (Bool, WatchMessage?)
+    func handle(dictionary: [String : Any], responseHandler: @escaping (WatchMessage) -> Void) -> Bool
 }
 
 private class WatchRequestHandlerImpl<T: WatchMessage>: WatchRequestHandler {
@@ -205,18 +202,22 @@ private class WatchRequestHandlerImpl<T: WatchMessage>: WatchRequestHandler {
         print(String(describing: WatchMessageType.self))
     }
     
-    func handle(dictionary: [String : Any]) -> (Bool, WatchMessage?) {
+    func handle(dictionary: [String : Any], responseHandler: @escaping (WatchMessage) -> Void) -> Bool {
         
         guard let type = dictionary["_type"] as? String, type == String(describing: WatchMessageType.self) else {
             
             // message not recognized!
-            return (false, nil)
+            return false
         }
         
         if let message = WatchMessageType(dictionary: dictionary) {
-            return (true, handler(message))
+            dispatchOnMain { [weak self] in
+                if let responseMessage = self?.handler(message) {
+                    responseHandler(responseMessage)
+                }
+            }
         }
         
-        return (true, nil)
+        return true
     }
 }
