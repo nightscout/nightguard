@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 import WatchConnectivity
 
 @UIApplicationMain
@@ -112,6 +113,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         WatchMessageService.singleton.onRequest { (request: RequestBaseUriMessage) in
             return ResponseBaseUriMessage(baseUri: UserDefaultsRepository.baseUri.value)
         }
+
+        // request night safe phone settings
+        WatchMessageService.singleton.onRequest { (request: RequestNightSafeMessage) in
+            return ResponseNightSafeMessage(
+                PhoneNightSafeSettings(
+                    isPhoneActive: UIApplication.shared.applicationState == .active,
+                    isScreenLockActive: UIApplication.shared.isIdleTimerDisabled,
+                    volumeLevel: AlarmSound.overrideSystemOutputVolume.value ? AlarmSound.systemOutputVolume.value : MPVolumeView.volume
+                )
+            )
+        }        
         
         WatchMessageService.singleton.onMessage { (message: WatchSyncRequestMessage) in
             
@@ -122,8 +134,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     
                     // perform sync!
                     UserDefaultSyncMessage().send()
-                    
-                    self.window?.rootViewController?.showAlert(title: "Resync user defaults", message: "UUID on watch didn't match phone UUID")
+                
+                    print("Handling WatchSyncRequestMessage: UUID on watch didn't match phone UUID")
                 }
             }
             
@@ -134,8 +146,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     
                     // send snooze data to watch!
                     SnoozeMessage(timestamp: AlarmRule.snoozedUntilTimestamp).send()
-
-                    self.window?.rootViewController?.showAlert(title: "Resync snooze", message: "Snooze timestamp on watch didn't match phone snooze timestamp")
+                    
+                    print("Handling WatchSyncRequestMessage: Snooze timestamp on watch didn't match phone snooze timestamp")
                 }
             }
         }

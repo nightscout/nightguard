@@ -24,8 +24,12 @@ class WatchMessageService: NSObject {
     // send a request to paired device (and receive a response)
     func send<T: WatchMessage>(request: WatchMessage, responseHandler: @escaping (T) -> Void) {
         send(message: request) { dictionary in
-            guard let responseType = dictionary["_type"] as? String, responseType == String(describing: type(of: T.self)) else {
-                print("Wrong response type")
+            guard let registeredResponseType = String(describing: type(of: T.self)).split(separator: ".").first else {
+                print("Failed determining response type")
+                return
+            }
+            guard let responseType = dictionary["_type"] as? String, responseType == registeredResponseType else {
+                print("Wrong response type: \(registeredResponseType)")
                 return
             }
             
@@ -60,9 +64,11 @@ class WatchMessageService: NSObject {
                 let (handled, responseMessage) = requestHandler.handle(dictionary: message)
                 if handled {
                     if let responseMessage = responseMessage {
-                        var dictionary = responseMessage.dictionary
-                        dictionary["_type"] = String(describing: type(of: responseMessage))
-                        replyHandler(dictionary)
+                        dispatchOnMain {
+                            var dictionary = responseMessage.dictionary
+                            dictionary["_type"] = String(describing: type(of: responseMessage))
+                            replyHandler(dictionary)
+                        }
                     }
                     return
                 }

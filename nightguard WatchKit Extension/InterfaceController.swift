@@ -29,6 +29,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var noiseLabel: WKInterfaceLabel!
     @IBOutlet var rawValuesGroup: WKInterfaceGroup!
     
+    @IBOutlet var nightSafeIndicator: WKInterfaceGroup!
+    
     // set by AppMessageService when receiving data from phone app and charts should be repainted
     var shouldRepaintChartsOnActivation = false
     
@@ -61,6 +63,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         activityIndicatorImage.setImageNamed("Activity")
         errorGroup.setHidden(true)
+        nightSafeIndicator.setHidden(true)
         
         createMenuItems()
         
@@ -91,6 +94,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
 //        }
         
         isActive = true
+        nightSafeIndicator.setHidden(true)
         
         let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
         updateInterface(withNightscoutData: currentNightscoutData, error: nil)
@@ -114,7 +118,9 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         guard isActive else { return }
         
         print("delayedWillActivate")
-
+        
+        sendNightSafeRequest()
+        
         spriteKitView.isPaused = false
         
         // Start the timer to retrieve new bgValues and update the ui periodically
@@ -447,6 +453,31 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
         
         return "Snoozed " + String(AlarmRule.getRemainingSnoozeMinutes()) + "min"
+    }
+    
+    func sendNightSafeRequest() {
+        
+        // request phone settings for determining to show the night safe indicator
+        RequestNightSafeMessage().send { [weak self] (response: ResponseNightSafeMessage) in
+            dispatchOnMain {
+                guard let self = self else { return }
+                guard self.isActive else { return }
+                
+                // show the night safe indicator if phone is active & lock screen is ON
+                self.nightSafeIndicator.setHidden(
+                    !(response.value.isPhoneActive && response.value.isScreenLockActive)
+                )
+                self.nightSafeIndicator.setAlpha(CGFloat(response.value.volumeLevel))
+                
+                delay(2) { [weak self] in
+                    guard let self = self else { return }
+                    guard self.isActive else { return }
+                    self.animate(withDuration: 0.8) { [weak self] in
+                        self?.nightSafeIndicator.setHidden(true)
+                    }
+                }
+            }
+        }
     }
 
 }

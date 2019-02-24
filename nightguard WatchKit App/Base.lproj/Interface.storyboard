@@ -132,6 +132,9 @@
                                     </items>
                                     <edgeInsets key="margins" left="0.0" right="0.0" top="4" bottom="0.0"/>
                                 </group>
+                                <group width="8" height="8" alignment="center" verticalAlignment="bottom" radius="4" id="zdV-tY-qn0">
+                                    <color key="backgroundColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
+                                </group>
                             </items>
                         </group>
                     </items>
@@ -145,6 +148,7 @@
                         <outlet property="errorGroup" destination="dXq-O8-Nm3" id="oox-bn-71F"/>
                         <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="JRC-e5-KcA"/>
                         <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="fNu-BR-2Ss"/>
+                        <outlet property="nightSafeIndicator" destination="zdV-tY-qn0" id="dms-9T-ZjS"/>
                         <outlet property="noiseLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
                         <outlet property="rawValuesGroup" destination="1pi-M7-12E" id="DSq-be-TK7"/>
                         <outlet property="rawbgLabel" destination="zeh-B2-2k7" id="9WF-fI-jiV"/>

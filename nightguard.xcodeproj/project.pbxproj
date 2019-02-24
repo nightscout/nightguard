@@ -132,6 +132,11 @@
 		D133079B21C85FAE00DC6879 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079121C85FAE00DC6879 /* Matrix.swift */; };
 		D133079E21C8D4CF00DC6879 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		D133079F21C8D4CF00DC6879 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
+		D13A4C1C2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */; };
+		D13A4C1D2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */; };
+		D13A4C1E2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */; };
+		D13A4C202221E49200C71F08 /* NightSafeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1F2221E49200C71F08 /* NightSafeMessage.swift */; };
+		D13A4C212221E49200C71F08 /* NightSafeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1F2221E49200C71F08 /* NightSafeMessage.swift */; };
 		D15055AC2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */; };
 		D15055AD2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */; };
 		D15055AE2200CF1F00F31C1F /* UserDefaultsValueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */; };
@@ -343,6 +348,8 @@
 		D133079021C85FAD00DC6879 /* Regression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regression.swift; sourceTree = "<group>"; };
 		D133079121C85FAE00DC6879 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		D133079D21C8D4CF00DC6879 /* PredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionService.swift; sourceTree = "<group>"; };
+		D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericWatchMessage.swift; sourceTree = "<group>"; };
+		D13A4C1F2221E49200C71F08 /* NightSafeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightSafeMessage.swift; sourceTree = "<group>"; };
 		D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsValueGroups.swift; sourceTree = "<group>"; };
 		D15055AF2200D31300F31C1F /* DeviceSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSize.swift; sourceTree = "<group>"; };
 		D160D085220C534E002B4633 /* ButtonRowWithDynamicDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRowWithDynamicDetails.swift; sourceTree = "<group>"; };
@@ -694,12 +701,14 @@
 			isa = PBXGroup;
 			children = (
 				D123EFE721FB643D00CE8718 /* EmptyWatchMessage.swift */,
+				D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */,
 				D1D96CBF21FB0F2E0035A60E /* UserDefaultsSyncMessage.swift */,
 				D1D96CC221FB0FA80035A60E /* SnoozeMessage.swift */,
 				D123EFE221FB2D5200CE8718 /* RequestBaseUriMessage.swift */,
 				D123EFEA21FB70A700CE8718 /* KeepAwakeMessage.swift */,
 				D123EFED21FB782C00CE8718 /* NightscoutDataMessage.swift */,
 				D1D1623D221AAC05006F990A /* WatchSyncRequestMessage.swift */,
+				D13A4C1F2221E49200C71F08 /* NightSafeMessage.swift */,
 			);
 			name = messages;
 			sourceTree = "<group>";
@@ -1177,6 +1186,8 @@
 				430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */,
 				43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */,
 				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
+				D13A4C1C2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
+				D13A4C202221E49200C71F08 /* NightSafeMessage.swift in Sources */,
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
 				D1CE8CC7220573250075FF8A /* AlarmViewController.swift in Sources */,
 				D1C96AB321CD00F100B08C2C /* NightscoutViewController.swift in Sources */,
@@ -1219,6 +1230,7 @@
 				4351E6B21D2EFDFE001E4AE4 /* TimeServiceTest.swift in Sources */,
 				D1F2F57A21EF131500CEB874 /* Regression.swift in Sources */,
 				433AD0171CCE3E89001A76CD /* NightscoutServiceTest.swift in Sources */,
+				D13A4C1D2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
 				D133078921C85D5200DC6879 /* BloodSugarArrayExtension.swift in Sources */,
 				432E62ED1D15EFF100DD7978 /* FloatExtension.swift in Sources */,
 				D1F2F57C21EF133600CEB874 /* Matrix+Append.swift in Sources */,
@@ -1317,9 +1329,11 @@
 				D1BD14E5205BB9E200B93389 /* BackgroundRefreshScheduler.swift in Sources */,
 				D1D96CC121FB0F2E0035A60E /* UserDefaultsSyncMessage.swift in Sources */,
 				D133078A21C85D5400DC6879 /* BloodSugarArrayExtension.swift in Sources */,
+				D13A4C1E2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
 				D123EFEF21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */,
 				43794F421C2F435A00DB8B58 /* AppConstants.swift in Sources */,
 				439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */,
+				D13A4C212221E49200C71F08 /* NightSafeMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

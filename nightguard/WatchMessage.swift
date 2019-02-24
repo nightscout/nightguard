@@ -10,7 +10,7 @@ import Foundation
 import WatchConnectivity
 
 
-/// An abstraction of an watch message
+/// An abstraction of an watch message, that can convert to or be created from a dictionary of values. The WatchMessageService class knows how to send or receive (create) intances of WatchMessage; communication between phone and watch is done exclusively by using custom WatchMessages.
 protocol WatchMessage {
     
     init?(dictionary: [String : Any])
