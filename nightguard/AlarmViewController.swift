@@ -56,7 +56,12 @@ class AlarmViewController: CustomFormViewController {
                 row.controllerProvider = { return MissedReadingsViewController() }
                 row.detailTextProvider = {
                     if AlarmRule.noDataAlarmEnabled.value {
-                        return "Alerts when no data for more than \(AlarmRule.minutesWithoutValues.value) minutes."
+                        if #available(iOS 11.0, *) {
+                            return "Alerts when no data for more than \(AlarmRule.minutesWithoutValues.value) minutes."
+                        } else {
+                            // single line, as iOS 10 doesn't expand cell for more lines
+                            return "\(AlarmRule.minutesWithoutValues.value) minutes"
+                        }
                     } else {
                         return "Off"
                     }
@@ -72,7 +77,12 @@ class AlarmViewController: CustomFormViewController {
                         let delta = UnitsConverter.toDisplayUnits("\(deltaInMgdl)")
                         let units = UserDefaultsRepository.units.value.description
                         
-                        return "Alerts when BG values are rising or dropping with \(delta) \(units), considering the last \(AlarmRule.numberOfConsecutiveValues.value) consecutive readings."
+                        if #available(iOS 11.0, *) {
+                            return "Alerts when BG values are rising or dropping with \(delta) \(units), considering the last \(AlarmRule.numberOfConsecutiveValues.value) consecutive readings."
+                        } else {
+                            // single line, as iOS 10 doesn't expand cell for more lines
+                            return "\(delta) \(units) in \(AlarmRule.numberOfConsecutiveValues.value) consecutive readings"
+                        }
                     } else {
                         return "Off"
                     }
@@ -83,7 +93,12 @@ class AlarmViewController: CustomFormViewController {
                 row.controllerProvider = { return LowPredictionViewController() }
                 row.detailTextProvider = {
                     if AlarmRule.isLowPredictionEnabled.value {
-                        return "Alerts when a low BG value is predicted in less than \(AlarmRule.minutesToPredictLow.value) minutes."
+                        if #available(iOS 11.0, *) {
+                            return "Alerts when a low BG value is predicted in less than \(AlarmRule.minutesToPredictLow.value) minutes."
+                        } else {
+                            // single line, as iOS 10 doesn't expand cell for more lines
+                            return "\(AlarmRule.minutesToPredictLow.value) minutes"
+                        }
                     } else {
                         return "Off"
                     }
