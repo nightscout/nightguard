@@ -13,9 +13,7 @@ class AlarmViewController: CustomFormViewController {
     
     var aboveSliderRow: SliderRow!
     var belowSliderRow: SliderRow!
-    
-    fileprivate let minutesWithoutValuesAlarmOptions = [15, 20, 25, 30, 35, 40, 45]
-    
+        
     fileprivate let MAX_ALERT_ABOVE_VALUE : Float = 280
     fileprivate let MIN_ALERT_ABOVE_VALUE : Float = 80
     
@@ -53,23 +51,18 @@ class AlarmViewController: CustomFormViewController {
             +++ Section(header: "Low BG Alert", footer: "Alerts when the blood glucose drops below this value.") <<< belowSliderRow
             
             +++ Section("Other Alerts")
-            <<< PushRow<Int>() { row in
-                row.title = "Missed Readings"
-                row.options = minutesWithoutValuesAlarmOptions
-                row.displayValueFor = { "\($0!) Minutes" }
-                row.value = AlarmRule.minutesWithoutValues.value
-                row.selectorTitle = "Missed readings"
-                row.cellStyle = .subtitle
-                }.onPresent { form, selector in                    
-                    selector.customize(header: "Alert when no data for more than")
-                }.cellUpdate { cell, row in
-                    cell.detailTextLabel?.text = "Alerts when no data for more than \(AlarmRule.minutesWithoutValues.value) minutes."
-                    cell.detailTextLabel?.numberOfLines = 0
-                }.onChange { row in
-                    guard let value = row.value else { return }
-                    AlarmRule.minutesWithoutValues.value = value
-            }
             
+            <<< ButtonRowWithDynamicDetails("Missed Readings") { row in
+                row.controllerProvider = { return MissedReadingsViewController() }
+                row.detailTextProvider = {
+                    if AlarmRule.noDataAlarmEnabled.value {
+                        return "Alerts when no data for more than \(AlarmRule.minutesWithoutValues.value) minutes."
+                    } else {
+                        return "Off"
+                    }
+                }
+            }
+
             <<< ButtonRowWithDynamicDetails("Fast Rise/Drop") { row in
                 row.controllerProvider = { return FastRiseDropViewController() }
                 row.detailTextProvider = {

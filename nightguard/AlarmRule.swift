@@ -45,6 +45,7 @@ class AlarmRule {
     static let alertIfAboveValue = UserDefaultsRepository.upperBound
     static let alertIfBelowValue = UserDefaultsRepository.lowerBound
     
+    static let noDataAlarmEnabled = UserDefaultsValue<Bool>(key: "noDataAlarmEnabled", default: true)
     static let minutesWithoutValues = UserDefaultsValue<Int>(key: "noDataAlarmAfterMinutes", default: 15)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
@@ -90,7 +91,13 @@ class AlarmRule {
         }
         
         if currentReading.isOlderThanXMinutes(minutesWithoutValues.value) {
-            return "Missed Readings"
+            if noDataAlarmEnabled.value {
+                return "Missed Readings"
+            } else {
+                
+                // no alarm at all... because old readings cannot be used for further alert evaluations
+                return nil
+            }
         }
         
         let isTooHigh = AlarmRule.isTooHigh(currentReading.value)
