@@ -22,9 +22,10 @@ class VolumeChangeDetector: NSObject {
             
             if isActive {
                 do {
-                    try AVAudioSession.sharedInstance().setActive(true, with: [])
+                    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+                    try AVAudioSession.sharedInstance().setActive(true)
                 } catch {
-                    print("Error activating audio session")
+                    NSLog("VolumeChangeDetector - error activating audio session")
                 }
                 AVAudioSession.sharedInstance().addObserver(self, forKeyPath: "outputVolume", options: NSKeyValueObservingOptions.new, context: nil)
             } else {

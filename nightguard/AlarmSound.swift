@@ -40,7 +40,8 @@ class AlarmSound {
     fileprivate static var playingTimer: Timer?
     
     fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")
-    fileprivate static var audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOf: soundURL!)
+    fileprivate static let audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOf: soundURL!)
+    fileprivate static let audioPlayerDelegate = AudioPlayerDelegate()
     
     /*
      * Sets the audio volume to 0.
@@ -75,6 +76,8 @@ class AlarmSound {
             return
         }
         
+        self.audioPlayer.delegate = self.audioPlayerDelegate
+        
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try AVAudioSession.sharedInstance().setActive(true)
@@ -85,7 +88,19 @@ class AlarmSound {
             // init volume before start playing (mute if fade-in)
             self.audioPlayer.volume = (self.fadeInTimeInterval.value > 0) ? 0.0 : 1.0
             
-            self.audioPlayer.play()
+            if !self.audioPlayer.prepareToPlay() {
+                NSLog("AlarmSound - audio player failed preparing to play")
+            }
+            
+            if self.audioPlayer.play() {
+                if !self.isPlaying {
+                    NSLog("AlarmSound - not playing after calling play")
+                    NSLog("AlarmSound - rate value: \(self.audioPlayer.rate)")
+                }
+            } else {
+                NSLog("AlarmSound - audio player failed to play")
+            }
+            
             
             // do fade-in
             if self.fadeInTimeInterval.value > 0 {
@@ -94,15 +109,15 @@ class AlarmSound {
             
             self.playingTimer = Timer.schedule(repeatInterval: 1.0, handler: self.onPlayingTimer)
             
-        } catch _ {
-            print("Unable to play sound!")
+        } catch let error {
+            NSLog("AlarmSound - unable to play sound; error: \(error)")
         }
     }
     
     fileprivate static func onPlayingTimer(timer: Timer?) {
         
         // player should be playing, not muted!
-        guard self.audioPlayer.isPlaying && !self.isMuted else {
+        guard self.isPlaying && !self.isMuted else {
             return
         }
         
@@ -149,5 +164,36 @@ class AlarmSound {
         }
         
         self.systemOutputVolumeBeforeOverride = nil
+    }
+}
+
+class AudioPlayerDelegate: NSObject, AVAudioPlayerDelegate {
+
+    /* audioPlayerDidFinishPlaying:successfully: is called when a sound has finished playing. This method is NOT called if the player is stopped due to an interruption. */
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        NSLog("AlarmRule - audioPlayerDidFinishPlaying (\(flag))")
+    }
+    
+    /* if an error occurs while decoding it will be reported to the delegate. */
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        if let error = error {
+            NSLog("AlarmRule - audioPlayerDecodeErrorDidOccur: \(error)")
+        } else {
+            NSLog("AlarmRule - audioPlayerDecodeErrorDidOccur")
+        }
+    }
+    
+    /* AVAudioPlayer INTERRUPTION NOTIFICATIONS ARE DEPRECATED - Use AVAudioSession instead. */
+    
+    /* audioPlayerBeginInterruption: is called when the audio session has been interrupted while the player was playing. The player will have been paused. */
+    func audioPlayerBeginInterruption(_ player: AVAudioPlayer) {
+        NSLog("AlarmRule - audioPlayerBeginInterruption")
+    }
+    
+    
+    /* audioPlayerEndInterruption:withOptions: is called when the audio session interruption has ended and this player had been interrupted while playing. */
+    /* Currently the only flag is AVAudioSessionInterruptionFlags_ShouldResume. */
+    func audioPlayerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
+        NSLog("AlarmRule - audioPlayerEndInterruption withOptions: \(flags)")
     }
 }
