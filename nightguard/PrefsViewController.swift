@@ -105,11 +105,20 @@ class PrefsViewController: CustomFormViewController {
                 }.onChange { [weak self] row in
                     guard let value = row.value else { return }
                     
-                    if !value {
-                        self?.showAlert(title: "ARE YOU SURE?", message: "Keep this switch ON to disable the screenlock and prevent the app to get stopped!"/*, showOnceKey: "screenlockMessageShowed"*/)
+                    if value {
+                        UserDefaultsRepository.screenlockSwitchState.value = value
+                    } else {
+                        self?.showYesNoAlert(
+                            title: "ARE YOU SURE?",
+                            message: "Keep this switch ON to disable the screenlock and prevent the app to get stopped!",
+                            yesHandler: {
+                                UserDefaultsRepository.screenlockSwitchState.value = value
+                            },
+                            noHandler: {
+                                row.value = true
+                                row.updateCell()
+                        })
                     }
-                    
-                    UserDefaultsRepository.screenlockSwitchState.value = value
             }
             <<< PushRow<Int>() { row in
                 row.title = "Dim Screen When Idle"

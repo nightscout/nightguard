@@ -10,7 +10,7 @@ import UIKit
 
 extension UIViewController {
     
-    func showAlert(title: String, message: String, showOnceKey: String? = nil) {
+    func showAlert(title: String, message: String, showOnceKey: String? = nil, okHandler: (() -> Void)? = nil) {
         
         if let showOnceKey = showOnceKey {
             guard !UserDefaults.standard.bool(forKey: showOnceKey) else {
@@ -19,7 +19,7 @@ extension UIViewController {
         }
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let actionOk = UIAlertAction(title: "OK", style: .default, handler: { _ in okHandler?() })
         alertController.addAction(actionOk)
         present(alertController, animated: true, completion: nil)
         
@@ -27,6 +27,27 @@ extension UIViewController {
             UserDefaults.standard.set(true, forKey: showOnceKey)
         }
     }
+    
+    func showYesNoAlert(title: String, message: String, showOnceKey: String? = nil, yesHandler: (() -> Void)? = nil, noHandler: (() -> Void)? = nil) {
+        
+        if let showOnceKey = showOnceKey {
+            guard !UserDefaults.standard.bool(forKey: showOnceKey) else {
+                return
+            }
+        }
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let actionYes = UIAlertAction(title: "Yes", style: .default, handler: { _ in yesHandler?() })
+        alertController.addAction(actionYes)
+        let actionNo = UIAlertAction(title: "No", style: .default, handler: { _ in noHandler?() })
+        alertController.addAction(actionNo)
+        present(alertController, animated: true, completion: nil)
+        
+        if let showOnceKey = showOnceKey {
+            UserDefaults.standard.set(true, forKey: showOnceKey)
+        }
+    }
+
 }
 
 // snoozing capability from any controller
