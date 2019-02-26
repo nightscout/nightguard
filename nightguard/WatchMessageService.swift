@@ -34,7 +34,9 @@ class WatchMessageService: NSObject {
             }
             
             if let response = T(dictionary: dictionary) {
-                responseHandler(response)
+                dispatchOnMain {
+                    responseHandler(response)
+                }
             }
         }
     }
