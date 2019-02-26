@@ -109,11 +109,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AlarmRule.snoozeFromMessage(message)
         }
         
-        // request base URI
-        WatchMessageService.singleton.onRequest { (request: RequestBaseUriMessage) in
-            return ResponseBaseUriMessage(baseUri: UserDefaultsRepository.baseUri.value)
-        }
-
         // request night safe phone settings
         WatchMessageService.singleton.onRequest { (request: RequestNightSafeMessage) in
             return ResponseNightSafeMessage(

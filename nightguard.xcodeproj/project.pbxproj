@@ -104,8 +104,6 @@
 		D112DD3821EA61A700ECFB5E /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		D112DD3A21EB502300ECFB5E /* BloodSugarArrayTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */; };
 		D112DD3C21EB507E00ECFB5E /* PredictionServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */; };
-		D123EFE321FB2D5200CE8718 /* RequestBaseUriMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123EFE221FB2D5200CE8718 /* RequestBaseUriMessage.swift */; };
-		D123EFE421FB2D5200CE8718 /* RequestBaseUriMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123EFE221FB2D5200CE8718 /* RequestBaseUriMessage.swift */; };
 		D123EFE621FB31FF00CE8718 /* WatchMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB921FB0E910035A60E /* WatchMessageService.swift */; };
 		D123EFE821FB643D00CE8718 /* EmptyWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123EFE721FB643D00CE8718 /* EmptyWatchMessage.swift */; };
 		D123EFE921FB643D00CE8718 /* EmptyWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123EFE721FB643D00CE8718 /* EmptyWatchMessage.swift */; };
@@ -337,7 +335,6 @@
 		D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerExtension.swift; sourceTree = "<group>"; };
 		D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodSugarArrayTest.swift; sourceTree = "<group>"; };
 		D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionServiceTest.swift; sourceTree = "<group>"; };
-		D123EFE221FB2D5200CE8718 /* RequestBaseUriMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBaseUriMessage.swift; sourceTree = "<group>"; };
 		D123EFE721FB643D00CE8718 /* EmptyWatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWatchMessage.swift; sourceTree = "<group>"; };
 		D123EFEA21FB70A700CE8718 /* KeepAwakeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwakeMessage.swift; sourceTree = "<group>"; };
 		D123EFED21FB782C00CE8718 /* NightscoutDataMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutDataMessage.swift; sourceTree = "<group>"; };
@@ -706,7 +703,6 @@
 				D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */,
 				D1D96CBF21FB0F2E0035A60E /* UserDefaultsSyncMessage.swift */,
 				D1D96CC221FB0FA80035A60E /* SnoozeMessage.swift */,
-				D123EFE221FB2D5200CE8718 /* RequestBaseUriMessage.swift */,
 				D123EFEA21FB70A700CE8718 /* KeepAwakeMessage.swift */,
 				D123EFED21FB782C00CE8718 /* NightscoutDataMessage.swift */,
 				D1D1623D221AAC05006F990A /* WatchSyncRequestMessage.swift */,
@@ -1178,7 +1174,6 @@
 				D133079821C85FAE00DC6879 /* Regression.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
 				D16C8ED92210687200192117 /* MPVolumeViewExtension.swift in Sources */,
-				D123EFE321FB2D5200CE8718 /* RequestBaseUriMessage.swift in Sources */,
 				43E89E571E659102005B0A65 /* ChartScene.swift in Sources */,
 				43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */,
 				43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */,
@@ -1292,7 +1287,6 @@
 				D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */,
 				D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */,
 				43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */,
-				D123EFE421FB2D5200CE8718 /* RequestBaseUriMessage.swift in Sources */,
 				D123EFE921FB643D00CE8718 /* EmptyWatchMessage.swift in Sources */,
 				D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */,
 				D1ECDA212201075B002BE6F9 /* ObservationToken.swift in Sources */,

@@ -14,6 +14,10 @@ class NightscoutCacheService: NSObject {
     
     static let singleton = NightscoutCacheService()
     
+    var isEmpty: Bool {
+        return (yesterdaysBgData ?? []).isEmpty && (todaysBgData ?? []).isEmpty
+    }
+    
     fileprivate var todaysBgData : [BloodSugar]? = nil
     fileprivate var yesterdaysBgData : [BloodSugar]? = nil
     fileprivate var yesterdaysDayOfTheYear : Int? = nil

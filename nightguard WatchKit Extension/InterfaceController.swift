@@ -31,7 +31,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     @IBOutlet var nightSafeIndicator: WKInterfaceGroup!
     
-    // set by AppMessageService when receiving data from phone app and charts should be repainted
+    // set by AppMessageService when receiving messages/data from phone app and current bg data or charts should be repainted
+    var shouldRepaintCurrentBgDataOnActivation = false
     var shouldRepaintChartsOnActivation = false
     
     fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
@@ -50,7 +51,6 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate var isActive: Bool = false
     fileprivate var isFirstActivation: Bool = true
-    fileprivate var isRawValuesGroupHidden: Bool = false
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -105,11 +105,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
         
         // send watch sync request message to phone app; if phone app has different user default or snooze timestamp values, it will send back the right messages for keeping the devices in sync
-        delay(1.0) {
+        delay(1.0) { [weak self] in
             guard WKExtension.shared().applicationState == .active else {
                 return
             }
             
+            if !UserDefaultsRepository.baseUri.exists {
+                self?.showMessage("Requesting data from phone...")
+            }
             WatchSyncRequestMessage().send()
         }
     }
@@ -128,7 +131,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         createNewTimerSingleton()
         
         // manually refresh the gui by fireing the timer
-        updateNightscoutData(forceRefresh: isFirstActivation, forceRepaintCharts: shouldRepaintChartsOnActivation)
+        updateNightscoutData(forceRefresh: isFirstActivation || shouldRepaintCurrentBgDataOnActivation, forceRepaintCharts: shouldRepaintChartsOnActivation)
                 
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state
@@ -144,6 +147,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // reset the first activation flag!
         isFirstActivation = false
         // ... and the "should repaint charts" flag
+        shouldRepaintCurrentBgDataOnActivation = false
         shouldRepaintChartsOnActivation = false
     }
     
@@ -224,15 +228,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     fileprivate func updateNightscoutData(forceRefresh: Bool, forceRepaintCharts: Bool) {
-        assureThatBaseUriIsExisting()
-        assureThatDisplayUnitsIsDefined()
-        
         loadAndPaintCurrentBgData(forceRefresh: forceRefresh)
         loadAndPaintChartData(forceRepaint: forceRepaintCharts)
-        
-        // HACK??? this might be a fallback for situations when the alarm is not transmitted to watch
-//        AlarmRule.alertIfAboveValue.value = UserDefaultsRepository.readUpperLowerBounds().upperBound
-//        AlarmRule.alertIfBelowValue.value = UserDefaultsRepository.readUpperLowerBounds().lowerBound
     }
         
     // check whether new Values should be retrieved
@@ -257,23 +254,10 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.addMenuItem(with: WKMenuItemIcon.resume, title: "Refresh", action: #selector(InterfaceController.doRefreshMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.block, title: "Snooze", action: #selector(InterfaceController.doSnoozeMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.more, title: zoomingIsActive ? "Scroll" : "Zoom", action: #selector(InterfaceController.doToogleZoomScrollAction))
-    }
-    
-    fileprivate func assureThatBaseUriIsExisting() {
         
-        if UserDefaultsRepository.baseUri.value.isEmpty {
-            AppMessageService.singleton.requestBaseUri()
-        }
-    }
-    
-    fileprivate func assureThatDisplayUnitsIsDefined() {
-        
-//        if !UserDefaultsRepository.units.exists {
-//            // try to determine whether the user wishes to see value in mmol or mg/dL
-//            NightscoutService.singleton.readStatus { (units) in
-//                UserDefaultsRepository.units.value = units
-//            }
-//        }
+        self.addMenuItem(with: WKMenuItemIcon.add, title: "Add", action: #selector(InterfaceController.doInfoMenuAction))
+        self.addMenuItem(with: WKMenuItemIcon.more, title: "More", action: #selector(InterfaceController.doRefreshMenuAction))
+
     }
     
     // Returns true, if the size of one array changed
@@ -281,6 +265,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         return newCachedTodaysBgValues.count != cachedTodaysBgValues.count ||
                 newCachedYesterdaysBgValues.count != cachedYesterdaysBgValues.count
+    }
+    
+    func showMessage(_ message: String?, isError: Bool = false) {
+        errorLabel.setText(message)
+        errorLabel.setTextColor(isError ? .red : .black)
+        errorGroup.setHidden(message == nil ? true : false)
     }
     
     func updateInterface(withNightscoutData nightscoutData: NightscoutData?, error: Error?) {
@@ -294,18 +284,17 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             // show errors ONLY when the interface is active (connection errors can be received while it is inactive... don't know for the moment why)
             // NOTE: actually, the whole UI should be updated only when the interface is active...
             if self.isActive {
-                self.errorLabel.setText("❌ \(error.localizedDescription)")
-                self.errorGroup.setHidden(false)
+                self.showMessage("❌ \(error.localizedDescription)", isError: true)
             } else {
-                self.errorGroup.setHidden(true)
+                self.showMessage(nil)
             }
         } else if let nightscoutData = nightscoutData {
-            self.errorGroup.setHidden(true)
+            self.showMessage(nil)
             self.paintCurrentBgData(currentNightscoutData: nightscoutData)
         }
     }
     
-    fileprivate func loadAndPaintCurrentBgData(forceRefresh: Bool) {
+    func loadAndPaintCurrentBgData(forceRefresh: Bool) {
 
         // do not call refresh again if not needed
         guard forceRefresh || !NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests else {
@@ -386,6 +375,12 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         if NightscoutCacheService.singleton.hasTodaysBgDataPendingRequests {
            newCachedTodaysBgValues = NightscoutDataRepository.singleton.loadTodaysBgData()
         } else {
+            
+            // show a message if the today & yesterday data is missing, we're gonna load them now (will show on first install and when URI changes)
+            if UserDefaultsRepository.baseUri.exists && NightscoutCacheService.singleton.isEmpty {
+                showMessage("Loading BG data...")
+            }
+            
             newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
                 guard let result = result else { return }
 
@@ -480,4 +475,22 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         }
     }
 
+}
+
+@available(watchOSApplicationExtension 3.0, *)
+extension InterfaceController {
+    
+    // obtain the InterfaceController on main thread if app state is active
+    static func onMain(_ closure: @escaping (InterfaceController) -> Void) {
+        
+        guard let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController else {
+            return
+        }
+        
+        dispatchOnMain {
+            guard WKExtension.shared().applicationState == .active else { return }
+            guard interfaceController.isActive else { return }
+            closure(interfaceController)
+        }
+    }
 }

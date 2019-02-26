@@ -65,8 +65,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             AlarmRule.snoozeFromMessage(message)
             
             if #available(watchOSApplicationExtension 3.0, *) {
-                if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
-                    interfaceController.loadAndPaintChartData(forceRepaint: true)
+                InterfaceController.onMain {
+                    $0.loadAndPaintChartData(forceRepaint: true)
                 }
             }
         }
@@ -100,21 +100,38 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 UserDefaultsRepository.lastWatchSyncUpdateId.anyValue = lastWatchSyncUpdateId
             }
             
-            // we should repaint charts if some used defaults values were changed
-//            let shouldRepaintCharts = (
-//                updatedKeys.contains(UserDefaultsRepository.upperBound.key) ||
-//                updatedKeys.contains(UserDefaultsRepository.lowerBound.key)
-//            )
-            let shouldRepaintCharts = true
-            if shouldRepaintCharts {
+            // we should repaint current value if some used defaults values were changed
+            let hasChangedUri = updatedKeys.contains(UserDefaultsRepository.baseUri.key)
+            let hasChangedUnits = updatedKeys.contains(UserDefaultsRepository.units.key)
+            let hasChangedShowRawBG = updatedKeys.contains(UserDefaultsRepository.showRawBG.key)
+//            let hasChangedBounds = updatedKeys.contains(UserDefaultsRepository.upperBound.key) || updatedKeys.contains(UserDefaultsRepository.lowerBound.key)
+            
+            if hasChangedUri {
+                
+                // reset cache if uri has changed!
+                print("ExtensionDelegate.handleWatchMessages - resetting cache!")
+                NightscoutCacheService.singleton.resetCache()
+            }
+            
+            let shouldRepaintCurrentBgData = hasChangedUri || hasChangedUnits || hasChangedShowRawBG
+            let shouldRepaintCharts = true // do it always!
+            if shouldRepaintCurrentBgData || shouldRepaintCharts {
                 if #available(watchOSApplicationExtension 3.0, *) {
                     if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
                         if WKExtension.shared().applicationState == .active {
-                            DispatchQueue.main.async {
-                                interfaceController.loadAndPaintChartData(forceRepaint: true)
+                            InterfaceController.onMain { interfaceController in
+                                if shouldRepaintCurrentBgData {
+                                    print("ExtensionDelegate.handleWatchMessages - repainting current bg data!")
+                                    interfaceController.loadAndPaintCurrentBgData(forceRefresh: true)
+                                }
+                                if shouldRepaintCharts {
+                                    print("ExtensionDelegate.handleWatchMessages - repainting charts!")
+                                    interfaceController.loadAndPaintChartData(forceRepaint: true)
+                                }
                             }
                         } else {
-                            interfaceController.shouldRepaintChartsOnActivation = true
+                            interfaceController.shouldRepaintChartsOnActivation = shouldRepaintCharts
+                            interfaceController.shouldRepaintCurrentBgDataOnActivation = shouldRepaintCurrentBgData
                         }
                     }
                 }
