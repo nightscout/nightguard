@@ -371,16 +371,15 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     func loadAndPaintChartData(forceRepaint : Bool) {
         
+        // show a message if the today & yesterday data is missing, we're gonna load them now (will show on first install and when URI changes)
+        if UserDefaultsRepository.baseUri.exists && NightscoutCacheService.singleton.isEmpty && NightscoutDataRepository.singleton.isEmpty {
+            showMessage("Loading BG data...")
+        }
+        
         let newCachedTodaysBgValues: [BloodSugar]
         if NightscoutCacheService.singleton.hasTodaysBgDataPendingRequests {
            newCachedTodaysBgValues = NightscoutDataRepository.singleton.loadTodaysBgData()
         } else {
-            
-            // show a message if the today & yesterday data is missing, we're gonna load them now (will show on first install and when URI changes)
-            if UserDefaultsRepository.baseUri.exists && NightscoutCacheService.singleton.isEmpty {
-                showMessage("Loading BG data...")
-            }
-            
             newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
                 guard let result = result else { return }
 
