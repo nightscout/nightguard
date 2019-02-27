@@ -254,10 +254,6 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.addMenuItem(with: WKMenuItemIcon.resume, title: "Refresh", action: #selector(InterfaceController.doRefreshMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.block, title: "Snooze", action: #selector(InterfaceController.doSnoozeMenuAction))
         self.addMenuItem(with: WKMenuItemIcon.more, title: zoomingIsActive ? "Scroll" : "Zoom", action: #selector(InterfaceController.doToogleZoomScrollAction))
-        
-        self.addMenuItem(with: WKMenuItemIcon.add, title: "Add", action: #selector(InterfaceController.doInfoMenuAction))
-        self.addMenuItem(with: WKMenuItemIcon.more, title: "More", action: #selector(InterfaceController.doRefreshMenuAction))
-
     }
     
     // Returns true, if the size of one array changed
