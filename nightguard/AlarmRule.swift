@@ -21,21 +21,47 @@ import Foundation
  */
 class AlarmRule {
     
-    fileprivate static var snoozedUntilTimestamp = TimeInterval()
+    private(set) static var snoozedUntilTimestamp = TimeInterval() {
+        didSet {
+            self.onSnoozeTimestampChanged?()
+        }
+    }
     
-    static var numberOfConsecutiveValues : Int = 3
-    static var deltaAmount : Float = 8
-    static var isEdgeDetectionAlarmEnabled : Bool = false
+    // closure for listening to snooze timestamp changes
+    static var onSnoozeTimestampChanged: (() -> ())?
     
-    static var alertIfAboveValue : Float = 180
-    static var alertIfBelowValue : Float = 80
+    static let numberOfConsecutiveValues = UserDefaultsValue<Int>(key: "numberOfConsecutiveValues", default: 3)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
     
-    static var minutesWithoutValues : Int = 15
-    
-    static var minutesToPredictLow : Int = 15
-    static var isLowPredictionEnabled : Bool = false
+    static let deltaAmount = UserDefaultsValue<Float>(key: "deltaAmount", default: 8)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
 
-    static var isSmartSnoozeEnabled : Bool = false
+    static let isEdgeDetectionAlarmEnabled = UserDefaultsValue<Bool>(key: "edgeDetectionAlarmEnabled", default: false)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+    
+    static let alertIfAboveValue = UserDefaultsRepository.upperBound
+    static let alertIfBelowValue = UserDefaultsRepository.lowerBound
+    
+    static let noDataAlarmEnabled = UserDefaultsValue<Bool>(key: "noDataAlarmEnabled", default: true)
+    static let minutesWithoutValues = UserDefaultsValue<Int>(key: "noDataAlarmAfterMinutes", default: 15)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+    
+    static var minutesToPredictLow = UserDefaultsValue<Int>(key: "lowPredictionMinutes", default: 15)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+
+    static var isLowPredictionEnabled = UserDefaultsValue<Bool>(key: "lowPredictionEnabled", default: true)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+
+
+    static var isSmartSnoozeEnabled = UserDefaultsValue<Bool>(key: "smartSnoozeEnabled", default: true)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
     
     /*
      * Returns true if the alarm should be played.
@@ -64,14 +90,20 @@ class AlarmRule {
             return nil
         }
         
-        if currentReading.isOlderThanXMinutes(minutesWithoutValues) {
-            return "Missed Readings"
+        if currentReading.isOlderThanXMinutes(minutesWithoutValues.value) {
+            if noDataAlarmEnabled.value {
+                return "Missed Readings"
+            } else {
+                
+                // no alarm at all... because old readings cannot be used for further alert evaluations
+                return nil
+            }
         }
         
         let isTooHigh = AlarmRule.isTooHigh(currentReading.value)
         let isTooLow = AlarmRule.isTooLow(currentReading.value)
         
-        if isSmartSnoozeEnabled && (isTooHigh || isTooLow) {
+        if isSmartSnoozeEnabled.value && (isTooHigh || isTooLow) {
             
             // if the trend is to leave the too high or too low zone, we'll snooze the alarm (without caring about the edges - we're outside of the board, first get in, then we'll check the edges)
             switch bloodValues.trend {
@@ -90,9 +122,9 @@ class AlarmRule {
             }
             
             // let's try also with prediction: we'll snooze the alarm if the prediction says that we'll leave the too high or too low zone in less than 30 minutes
-            if isTooHigh && (PredictionService.singleton.minutesTo(low: alertIfAboveValue) ?? Int.max) < 30 {
+            if isTooHigh && (PredictionService.singleton.minutesTo(low: alertIfAboveValue.value) ?? Int.max) < 30 {
                 return nil
-            } else if isTooLow && (PredictionService.singleton.minutesTo(high: alertIfBelowValue) ?? Int.max) < 30 {
+            } else if isTooLow && (PredictionService.singleton.minutesTo(high: alertIfBelowValue.value) ?? Int.max) < 30 {
                 return nil
             }
         }
@@ -103,7 +135,7 @@ class AlarmRule {
             return "Low BG"
         }
 
-        if isEdgeDetectionAlarmEnabled  {
+        if isEdgeDetectionAlarmEnabled.value  {
             if bloodValuesAreIncreasingTooFast(bloodValues) {
                 return "Fast Rise"
             } else if bloodValuesAreDecreasingTooFast(bloodValues) {
@@ -111,8 +143,8 @@ class AlarmRule {
             }
         }
         
-        if isLowPredictionEnabled {
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: alertIfBelowValue), minutesToLow <= minutesToPredictLow {
+        if isLowPredictionEnabled.value {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: alertIfBelowValue.value), minutesToLow <= minutesToPredictLow.value {
                 #if os(iOS)
                 return "Low Predicted in \(minutesToLow)min"
                 #else
@@ -130,11 +162,11 @@ class AlarmRule {
     }
     
     fileprivate static func isTooHigh(_ bloodGlucose : Float) -> Bool {
-        return bloodGlucose > alertIfAboveValue
+        return bloodGlucose > alertIfAboveValue.value
     }
 
     fileprivate static func isTooLow(_ bloodGlucose : Float) -> Bool {
-        return bloodGlucose < alertIfBelowValue
+        return bloodGlucose < alertIfBelowValue.value
     }
     
     fileprivate static func bloodValuesAreIncreasingOrDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
@@ -142,23 +174,53 @@ class AlarmRule {
     }
     
     fileprivate static func bloodValuesAreIncreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
-        
-        // we need at least these number of values (the most reacent X readings)
-        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues + 1) else {
-            return false
-        }
-        
-        return readings.deltas.allSatisfy { $0 > deltaAmount }
+        return bloodValuesAreMovingTooFast(bloodValues, increasing: true)
     }
     
     fileprivate static func bloodValuesAreDecreasingTooFast(_ bloodValues : [BloodSugar]) -> Bool {
+        return bloodValuesAreMovingTooFast(bloodValues, increasing: false)
+    }
+    
+    fileprivate static func bloodValuesAreMovingTooFast(_ bloodValues : [BloodSugar], increasing: Bool) -> Bool {
         
         // we need at least these number of values (the most reacent X readings)
-        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues + 1) else {
+        guard let readings = bloodValues.lastConsecutive(numberOfConsecutiveValues.value), readings.count > 1 else  {
             return false
         }
         
-        return readings.deltas.allSatisfy { $0 < -deltaAmount }
+        // calculate the difference in time and values between newest and oldest reading
+        let totalMinutes = Float((readings[readings.count - 1].timestamp - readings[0].timestamp) / 60000)
+        var totalDelta = readings[readings.count - 1].value - readings[0].value
+        if !increasing {
+            totalDelta *= -1
+        }
+        
+        let alarmDeltaPerMinute = deltaAmount.value / 5
+        if totalDelta < (totalMinutes * alarmDeltaPerMinute) {
+            return false
+        }
+        
+        // calculate the difference in time and values between the most recent 2 values
+        let recentMinutes = Float((readings[readings.count - 1].timestamp - readings[readings.count - 2].timestamp) / 60000)
+        var recentDelta = readings[readings.count - 1].value - readings[readings.count - 2].value
+        if !increasing {
+            recentDelta *= -1
+        }
+
+        if recentMinutes > 7 {
+            
+            // lost reading, cannot risk...
+            return true
+        }
+        
+        if recentDelta < ((recentMinutes * alarmDeltaPerMinute) / 2) {
+            
+            // in the most recent readings the raise/drop speed halved, do not alert!
+            return false
+        }
+        
+        // do alert!
+        return true
     }
     
     /*
@@ -166,6 +228,7 @@ class AlarmRule {
      */
     static func snooze(_ minutes : Int) {
         snoozedUntilTimestamp = Date().timeIntervalSince1970 + Double(60 * minutes)
+        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
     }
     
     /*
@@ -174,6 +237,14 @@ class AlarmRule {
      */
     static func snoozeSeconds(_ seconds : Int) {
         snoozedUntilTimestamp = Date().timeIntervalSince1970 + Double(seconds)
+        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
+    }
+    
+    /*
+     * Snooze called from a message received from the connected device (watch or phone).
+     */
+    static func snoozeFromMessage(_ message: SnoozeMessage) {
+        snoozedUntilTimestamp = message.timestamp
     }
     
     /*
@@ -181,6 +252,7 @@ class AlarmRule {
      */
     static func disableSnooze() {
         snoozedUntilTimestamp = TimeInterval()
+        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
     }
     
     /*

@@ -50,7 +50,7 @@ class BloodSugarArrayTest: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         // IMPORTANT: test bg values are in mg/dl
-        UserDefaultsRepository.saveUnits(.mgdl)
+        UserDefaultsRepository.units.value = .mgdl
     }
 
     override func tearDown() {

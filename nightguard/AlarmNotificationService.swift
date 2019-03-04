@@ -17,11 +17,11 @@ class AlarmNotificationService {
     // service state
     var enabled: Bool {
         get {
-            return UserDefaultsRepository.readAlarmNotificationState()
+            return UserDefaultsRepository.alarmNotificationState.value
         }
         
         set(value) {
-            UserDefaultsRepository.saveAlarmNotificationState(value)
+            UserDefaultsRepository.alarmNotificationState.value = value
             if value {
                 requestAuthorization()
             }
@@ -72,7 +72,7 @@ class AlarmNotificationService {
         // trigger notification
         let content = UNMutableNotificationContent()
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        let units = (UserDefaultsRepository.readUnits() == Units.mmol) ? "mmol" : "mg/dL"
+        let units = UserDefaultsRepository.units.value.description
 
         content.title = "\(nightscoutData.sgv) \(nightscoutData.bgdeltaArrow)\t\(nightscoutData.bgdeltaString) \(units)"
         content.body = "\(alarmActivationReason) alert"

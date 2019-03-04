@@ -22,8 +22,7 @@ class UnitsConverter {
             return value
         }
         
-        let units = UserDefaultsRepository.readUnits()
-        
+        let units = UserDefaultsRepository.units.value
         if units == Units.mgdl {
             return removeDecimals(value)
         }
@@ -37,8 +36,7 @@ class UnitsConverter {
     // Unit to be used.
     static func toDisplayUnits(_ value : Float) -> Float {
         
-        let units = UserDefaultsRepository.readUnits()
-        
+        let units = UserDefaultsRepository.units.value
         if units == Units.mgdl {
             return removeDecimals(value)
         }
@@ -54,8 +52,7 @@ class UnitsConverter {
     
     static func toDisplayUnits(_ mgValues : [BloodSugar]) -> [BloodSugar] {
         
-        let units = UserDefaultsRepository.readUnits()
-        
+        let units = UserDefaultsRepository.units.value
         if units == Units.mgdl {
             return mgValues
         }
@@ -90,8 +87,7 @@ class UnitsConverter {
     
     // Converts the value in Display Units to Mg/dL.
     static func toMgdl(_ value : Float) -> Float {
-        let units = UserDefaultsRepository.readUnits()
-        
+        let units = UserDefaultsRepository.units.value
         if units == Units.mgdl {
             return removeDecimals(value)
         }

@@ -79,7 +79,7 @@ class NightscoutViewController: UIViewController {
             webView.stopLoading()
         }
         
-        guard let baseUri = URL(string: UserDefaultsRepository.readBaseUri()) else { return }
+        guard let baseUri = URL(string: UserDefaultsRepository.baseUri.value) else { return }
         
         let myRequest = URLRequest(url: baseUri)
         webView.load(myRequest)

@@ -21,7 +21,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var batteryLabel: UILabel!
     @IBOutlet weak var iobLabel: UILabel!
     @IBOutlet weak var snoozeButton: UIButton!
-    @IBOutlet weak var screenlockSwitch: UISwitch!
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var spriteKitView: UIView!
     @IBOutlet weak var errorPanelView: UIView!
@@ -55,13 +54,11 @@ class MainViewController: UIViewController {
         volumeContainerView.addSubview(volumeView)
         // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
         volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
+        volumeContainerView.isHidden = true
         
         snoozeButton.titleLabel?.numberOfLines = 0
         snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
         snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
-        
-        restoreGuiState()
-        paintScreenLockSwitch()
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -92,11 +89,19 @@ class MainViewController: UIViewController {
         nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         
         // stop timer when app enters in background, start is again when becomes active
-        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
         // call first "UIApplicationWillEnterForeground" event by hand, it is not sent when the app starts (just registered for the event)
         prepareForEnteringForeground()
+
+        // liste to alarm snoozing & play/stop alarm accordingly
+        AlarmRule.onSnoozeTimestampChanged = { [weak self] in
+            self?.evaluateAlarmActivationState()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -187,21 +192,18 @@ class MainViewController: UIViewController {
         volumeContainerView.addSubview(volumeView)
     }
     
-    fileprivate func restoreGuiState() {
-        
-        screenlockSwitch.isOn = GuiStateRepository.singleton.loadScreenlockSwitchState()
-        doScreenlockAction(self)
-    }
-    
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
     
-    
     // MARK: Notification
+    
+    @objc func applicationWillResignActive(_ notification: NSNotification) {
+        AlarmSound.stop()
+    }
+    
     @objc func applicationDidEnterBackground(_ notification: Notification) {
         timer.invalidate()
-        AlarmSound.stop()
     }
     
     @objc func applicationWillEnterForeground(_ notification: Notification) {
@@ -227,11 +229,23 @@ class MainViewController: UIViewController {
             // an alarm sound without giving the app the chance to reload
             // current data
             AlarmRule.snoozeSeconds(15)
-            self.updateSnoozeButtonText()
         }
         
         startTimer()
         doPeriodicUpdate(forceRepaint: true)
+    }
+    
+    func evaluateAlarmActivationState() {
+        
+        if AlarmRule.isAlarmActivated() {
+            AlarmSound.play()
+        } else {
+            if !AlarmSound.isTesting {
+                AlarmSound.stop()
+            }
+        }
+        
+        updateSnoozeButtonText()
     }
     
     // check whether new Values should be retrieved
@@ -239,7 +253,7 @@ class MainViewController: UIViewController {
         self.doPeriodicUpdate(forceRepaint: false)
     }
     
-    fileprivate func doPeriodicUpdate(forceRepaint: Bool) {
+    func doPeriodicUpdate(forceRepaint: Bool) {
         
         self.paintCurrentTime()
         // paint here is need if the server doesn't respond
@@ -248,37 +262,10 @@ class MainViewController: UIViewController {
         self.loadAndPaintChartData(forceRepaint: forceRepaint)
     }
     
-    fileprivate func paintScreenLockSwitch() {
-        screenlockSwitch.isOn = UIApplication.shared.isIdleTimerDisabled
-    }
-    
     @IBAction func doSnoozeAction(_ sender: AnyObject) {
-        
-        if AlarmRule.isSnoozed() {
-            AlarmRule.disableSnooze()
-            updateSnoozeButtonText()
-        } else {
-            // stop the alarm immediatly here not to disturb others
-            AlarmSound.muteVolume()
-            showSnoozePopup()
-            // For safety reasons: Unmute sound after 1 minute
-            // This prevents an unlimited snooze if the snooze button was touched accidentally.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
-                AlarmSound.unmuteVolume()
-            })
-        }
+        showSnoozePopup()
     }
-    
-    fileprivate func showSnoozePopup() {
         
-        // create the snooze popup view
-        if let snoozeAlarmViewController = self.storyboard?.instantiateViewController(
-            withIdentifier: "snoozeAlarmViewController") as? SnoozeAlarmViewController {
-            
-            self.present(snoozeAlarmViewController, animated: true, completion: nil)
-        }
-    }
-    
     public func updateSnoozeButtonText() {
 
         var title = "Snooze"
@@ -289,7 +276,7 @@ class MainViewController: UIViewController {
         if subtitle == nil {
             
             // no alarm, but maybe we'll show a low prediction warning...
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue), minutesToLow > 0 {
+            if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue.value), minutesToLow > 0 {
                 subtitle = "Low Predicted in \(minutesToLow)min"
                 subtitleColor = .yellow
             }
@@ -331,32 +318,6 @@ class MainViewController: UIViewController {
         }
     }
     
-    @IBAction func doScreenlockAction(_ sender: AnyObject) {
-        if screenlockSwitch.isOn {
-            UIApplication.shared.isIdleTimerDisabled = true
-            GuiStateRepository.singleton.storeScreenlockSwitchState(true)
-            
-            displayScreenlockInfoMessageOnlyOnce()
-        } else {
-            UIApplication.shared.isIdleTimerDisabled = false
-            GuiStateRepository.singleton.storeScreenlockSwitchState(false)
-        }
-    }
-    
-    fileprivate func displayScreenlockInfoMessageOnlyOnce() {
-        let screenlockMessageShowed = UserDefaults.standard.bool(forKey: "screenlockMessageShowed")
-        
-        if !screenlockMessageShowed {
-            
-            let alertController = UIAlertController(title: "Keep the screen active", message: "Turn this switch to disable the screenlock and prevent the app to get stopped!", preferredStyle: .alert)
-            let actionOk = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(actionOk)
-            present(alertController, animated: true, completion: nil)
-            
-            UserDefaults.standard.set(true, forKey: "screenlockMessageShowed")
-        }
-    }
-    
     fileprivate func paintCurrentTime() {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
@@ -367,16 +328,11 @@ class MainViewController: UIViewController {
         
         let currentNightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData { [unowned self] result in
             
-            // play alarm if activated
-            if AlarmRule.isAlarmActivated() {
-                AlarmSound.play()
-            } else {
-                AlarmSound.stop()
-            }
-            self.updateSnoozeButtonText()
+            // play alarm if activated or stop otherwise
+            self.evaluateAlarmActivationState()
 
             // update app badge
-            if UserDefaultsRepository.readShowBGOnAppBadge() {
+            if UserDefaultsRepository.showBGOnAppBadge.value {
                 UIApplication.shared.setCurrentBGValueOnAppBadge()
             }
             
@@ -462,7 +418,7 @@ class MainViewController: UIViewController {
         self.chartScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: self.maximumDeviceTextureWidth(),
-            maxYDisplayValue: CGFloat(UserDefaultsRepository.readMaximumBloodGlucoseDisplayed()),
+            maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
             moveToLatestValue: true)
     }
     
@@ -472,6 +428,6 @@ class MainViewController: UIViewController {
         let isValidRawBGValue = UnitsConverter.toMgdl(currentNightscoutData.rawbg) > 0
 
         // show raw values panel ONLY if configured so and we have a valid rawbg value!
-        self.rawValuesPanel.isHidden = !UserDefaultsRepository.readShowRawBG() || !isValidRawBGValue
+        self.rawValuesPanel.isHidden = !UserDefaultsRepository.showRawBG.value || !isValidRawBGValue
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 import WatchConnectivity
 
 @UIApplicationMain
@@ -24,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    @available(iOS 3.0, *)
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // Override point for customization after application launch.
@@ -37,57 +37,123 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TimeInterval(BackgroundRefreshSettings.backgroundFetchInterval * 60)
         )
         
+        // set "prevent screen lock" to ON when the app is started for the first time
+        if !UserDefaultsRepository.screenlockSwitchState.exists {
+            UserDefaultsRepository.screenlockSwitchState.value = true
+        }
+        
+        // set the "prevent screen lock" option when the app is started
+        UIApplication.shared.isIdleTimerDisabled = UserDefaultsRepository.screenlockSwitchState.value
+        
+        AlarmSound.volumeChangeDetector.onVolumeChange = { [weak self] in
+            self?.window?.rootViewController?.handleQuickSnooze(option: UserDefaultsRepository.volumeKeysOnAlertSnoozeOption.value)
+        }
+        
         activateWatchConnectivity()
-        initializeApplicationDefaults()
-        initializeAlarmRule()
         return true
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Override point for customization after application launch.
+        
+        let rootViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
 
+        self.window = UserInteractionDetectorWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = rootViewController
+        self.window?.makeKeyAndVisible()
+        
+        dimScreenOnIdle()
+        
+        return true
+    }
+    
+    func dimScreenOnIdle() {
+        
+        guard let window = self.window as? UserInteractionDetectorWindow else {
+            return
+        }
+        
+        let updateWindowUserInteractionTimeout = {
+            if UserDefaultsRepository.screenlockSwitchState.value {
+                window.timeout = TimeInterval(UserDefaultsRepository.dimScreenWhenIdle.value * 60)
+            } else {
+                window.timeout = nil
+            }
+        }
+        
+        // bind dim screen settings with user interaction detector window timeout
+        UserDefaultsRepository.dimScreenWhenIdle.observeChanges { _ in
+            updateWindowUserInteractionTimeout()
+        }
+        UserDefaultsRepository.screenlockSwitchState.observeChanges { _ in
+            updateWindowUserInteractionTimeout()
+        }
+        
+        updateWindowUserInteractionTimeout()
     }
 
     func activateWatchConnectivity() {
         if WCSession.isSupported() {
             session = WCSession.default
+        
+            handleWatchMessages()
         }
     }
     
-    func initializeAlarmRule() {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+    func handleWatchMessages() {
         
-        AlarmRule.isEdgeDetectionAlarmEnabled = (defaults?.bool(forKey: "edgeDetectionAlarmEnabled"))!
-        AlarmRule.numberOfConsecutiveValues = (defaults?.integer(forKey: "numberOfConsecutiveValues"))!
-        AlarmRule.deltaAmount = (defaults?.float(forKey: "deltaAmount"))!
+        // snooze message
+        WatchMessageService.singleton.onMessage { (message: SnoozeMessage) in
+            
+            // update snooze from message
+            AlarmRule.snoozeFromMessage(message)
+        }
         
-        AlarmRule.alertIfAboveValue = (defaults?.float(forKey: "alertIfAboveValue"))!
-        AlarmRule.alertIfBelowValue = (defaults?.float(forKey: "alertIfBelowValue"))!
+        // request night safe phone settings
+        WatchMessageService.singleton.onRequest { (request: RequestNightSafeMessage) in
+            return ResponseNightSafeMessage(
+                PhoneNightSafeSettings(
+                    isPhoneActive: UIApplication.shared.applicationState == .active,
+                    isScreenLockActive: UIApplication.shared.isIdleTimerDisabled,
+                    volumeLevel: AlarmSound.overrideSystemOutputVolume.value ? AlarmSound.systemOutputVolume.value : MPVolumeView.volume
+                )
+            )
+        }        
         
-        AlarmRule.minutesWithoutValues = (defaults?.integer(forKey: "noDataAlarmAfterMinutes"))!
+        WatchMessageService.singleton.onMessage { (message: WatchSyncRequestMessage) in
+            
+            // compare the "last sync update id" received from watch and compare it with phone value: if not equal, the watch has not the latest user defaults data ana a sync should be performed
+            if let anyWatchUpdateId = message.dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] {
+                let watchUpdateId = type(of: UserDefaultsRepository.lastWatchSyncUpdateId).ValueType.fromAny(anyWatchUpdateId)
+                if UserDefaultsRepository.lastWatchSyncUpdateId.value != watchUpdateId {
+                    
+                    // perform sync!
+                    UserDefaultSyncMessage().send()
+                
+                    print("Handling WatchSyncRequestMessage: UUID on watch didn't match phone UUID")
+                }
+            }
+            
+            // same comparison for snoozing timestamp
+            if let anyWatchSnoozeTimestamp = message.dictionary["snoozedUntilTimestamp"] {
+                let watchSnoozeTimestamp = anyWatchSnoozeTimestamp as? TimeInterval
+                if AlarmRule.snoozedUntilTimestamp != watchSnoozeTimestamp {
+                    
+                    // send snooze data to watch!
+                    SnoozeMessage(timestamp: AlarmRule.snoozedUntilTimestamp).send()
+                    
+                    print("Handling WatchSyncRequestMessage: Snooze timestamp on watch didn't match phone snooze timestamp")
+                }
+            }
+        }
 
-        AlarmRule.minutesToPredictLow = (defaults?.integer(forKey: "lowPredictionMinutes"))!
-        AlarmRule.isLowPredictionEnabled = (defaults?.bool(forKey: "lowPredictionEnabled"))!
-
-        AlarmRule.isSmartSnoozeEnabled = (defaults?.bool(forKey: "smartSnoozeEnabled"))!
-    }
-    
-    func initializeApplicationDefaults() {
         
-        // Setting the defaults if the users starts the application for the first time
-        let initialDefaults: NSDictionary =
-            ["edgeDetectionAlarmEnabled": false,
-             "numberOfConsecutiveValues": 3,
-             "deltaAmount": 8,
-             
-             "alertIfAboveValue": 180,
-             "alertIfBelowValue": 80,
-             "maximumBloodGlucoseDisplayed": 350,
-             
-             "noDataAlarmAfterMinutes": 15,
-             
-             "lowPredictionMinutes": 15,
-             "lowPredictionEnabled": false,
-             
-             "smartSnoozeEnabled": false
-        ]
-        UserDefaults.standard.register(defaults: initialDefaults as! [String : AnyObject])
+        // whenever a value from the "watch sync" group changes, send the apropriate watch message containing all the group values
+        UserDefaultsValueGroups.observeChanges(in: UserDefaultsValueGroups.GroupNames.watchSync) { _, _ in
+            
+            UserDefaultsRepository.lastWatchSyncUpdateId.value = UUID().uuidString
+            UserDefaultSyncMessage().send()
+        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -122,7 +188,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AlarmNotificationService.singleton.notifyIfAlarmActivated()
             
             // update app badge
-            if UserDefaultsRepository.readShowBGOnAppBadge() {
+            if UserDefaultsRepository.showBGOnAppBadge.value {
                 UIApplication.shared.setCurrentBGValueOnAppBadge()
             }
             

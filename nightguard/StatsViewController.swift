@@ -50,7 +50,7 @@ class StatsViewController: UIViewController {
     
     func paintSelectedDays() {
         
-        let daysToBeDisplayed = UserDefaultsRepository.readDaysToBeDisplayed()
+        let daysToBeDisplayed = UserDefaultsRepository.daysToBeDisplayed.value
         
         var i : Int = 0
         var filteredDays : [[BloodSugar]] = []

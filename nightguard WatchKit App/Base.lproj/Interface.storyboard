@@ -132,6 +132,9 @@
                                     </items>
                                     <edgeInsets key="margins" left="0.0" right="0.0" top="4" bottom="0.0"/>
                                 </group>
+                                <group width="8" height="8" alignment="center" verticalAlignment="bottom" radius="4" id="zdV-tY-qn0">
+                                    <color key="backgroundColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
+                                </group>
                             </items>
                         </group>
                     </items>
@@ -145,6 +148,7 @@
                         <outlet property="errorGroup" destination="dXq-O8-Nm3" id="oox-bn-71F"/>
                         <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="JRC-e5-KcA"/>
                         <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="fNu-BR-2Ss"/>
+                        <outlet property="nightSafeIndicator" destination="zdV-tY-qn0" id="dms-9T-ZjS"/>
                         <outlet property="noiseLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
                         <outlet property="rawValuesGroup" destination="1pi-M7-12E" id="DSq-be-TK7"/>
                         <outlet property="rawbgLabel" destination="zeh-B2-2k7" id="9WF-fI-jiV"/>
@@ -224,14 +228,49 @@
                 <controller identifier="SnoozeInterfaceController" fullScreen="YES" id="W3J-ff-Ny6" customClass="SnoozeInterfaceController" customModule="nightguard">
                     <items>
                         <button width="1" height="38" alignment="left" title="Stop Snoozing" id="vBI-uK-ui8">
-                            <fontDescription key="font" type="system" pointSize="15"/>
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="font" type="boldSystem" pointSize="15"/>
                             <connections>
                                 <action selector="doCancelSnoozeAction" destination="W3J-ff-Ny6" id="lvF-Qh-uHJ"/>
                             </connections>
                         </button>
-                        <button width="1" alignment="left" title="30min" id="LmY-nN-0PP">
+                        <group width="1" alignment="left" id="hsc-gi-7ol">
+                            <items>
+                                <button width="0.5" alignment="left" title="5min" id="xxc-dE-3Kb">
+                                    <connections>
+                                        <action selector="doSnooze5Minutes" destination="W3J-ff-Ny6" id="UV5-uZ-Ayv"/>
+                                    </connections>
+                                </button>
+                                <button width="0.48999999999999999" alignment="right" title="10min" id="9VS-98-rhP">
+                                    <connections>
+                                        <action selector="doSnooze10Minutes" destination="W3J-ff-Ny6" id="Lng-sW-6UK"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
+                        <group width="1" alignment="left" id="mrY-dS-Yui">
+                            <items>
+                                <button width="0.5" alignment="left" title="15min" id="wn2-PF-bKP">
+                                    <connections>
+                                        <action selector="doSnooze15Minutes" destination="W3J-ff-Ny6" id="6Qx-gE-kVe"/>
+                                    </connections>
+                                </button>
+                                <button width="0.48999999999999999" alignment="right" title="20min" id="08g-dW-F7X">
+                                    <connections>
+                                        <action selector="doSnooze20Minutes" destination="W3J-ff-Ny6" id="lWe-nH-bYl"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
+                        <button width="1" alignment="left" title="30min" id="PSv-3m-jyA">
                             <connections>
-                                <action selector="doSnooze30Minutes" destination="W3J-ff-Ny6" id="ahC-xB-tbj"/>
+                                <action selector="doSnooze30Minutes" destination="W3J-ff-Ny6" id="Mlt-K0-GEp"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="45min" id="1Bd-ZE-voa">
+                            <connections>
+                                <action selector="doSnooze45Minutes" destination="W3J-ff-Ny6" id="Rxl-ML-VwK"/>
                             </connections>
                         </button>
                         <button width="1" alignment="left" title="1h" id="B6w-zl-nKO">
@@ -244,14 +283,14 @@
                                 <action selector="doSnooze2Hours" destination="W3J-ff-Ny6" id="rVZ-fg-vmz"/>
                             </connections>
                         </button>
-                        <button width="1" alignment="left" title="3h" id="4ee-cb-NHg" userLabel="3h">
+                        <button width="1" alignment="left" title="3h" id="Vbc-n1-Q5B">
                             <connections>
-                                <action selector="doSnooze3Hours" destination="W3J-ff-Ny6" id="Q6K-rp-kha"/>
+                                <action selector="doSnooze3Hours" destination="W3J-ff-Ny6" id="xDQ-dG-JPg"/>
                             </connections>
                         </button>
-                        <button width="1" alignment="left" title="6h" id="QlQ-f0-7ep">
+                        <button width="1" alignment="left" title="6h" id="SKd-7S-4Ns">
                             <connections>
-                                <action selector="doSnooze6Hours" destination="W3J-ff-Ny6" id="sgy-sc-nEO"/>
+                                <action selector="doSnooze6Hours" destination="W3J-ff-Ny6" id="mOd-TY-gpt"/>
                             </connections>
                         </button>
                         <button width="1" alignment="left" title="1d" id="E2D-TG-Tr3">
@@ -260,6 +299,9 @@
                             </connections>
                         </button>
                     </items>
+                    <connections>
+                        <outlet property="stopSnoozingButton" destination="vBI-uK-ui8" id="pcc-Ya-weq"/>
+                    </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="409" y="-44"/>

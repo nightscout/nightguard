@@ -30,7 +30,7 @@ class InfoInterfaceController: WKInterfaceController {
     
     func displayLabels() {
         
-        serverUriLabel.setText(UserDefaultsRepository.readBaseUri())
+        serverUriLabel.setText(UserDefaultsRepository.baseUri.value)
         
         // version number
         let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String

@@ -20,6 +20,10 @@ class NightscoutDataRepository {
         static let yesterdaysDayOfTheYear = "yesterdaysDayOfTheYear"
     }
     
+    var isEmpty: Bool {
+        return loadYesterdaysBgData().isEmpty && loadTodaysBgData().isEmpty
+    }
+    
     func clearAll() {
          let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         defaults?.removeObject(forKey: Constants.currentBgData)

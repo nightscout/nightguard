@@ -61,11 +61,10 @@ class ChartScene : SKScene {
             canvasWidth: Int(canvasWidth),
             canvasHeight: Int(size.height));
         
-        let (upper, lower) = UserDefaultsRepository.readUpperLowerBounds()
         let (chartImage, displayPosition) = chartPainter.drawImage(
             days, maxBgValue: maxYDisplayValue,
-            upperBoundNiceValue: upper,
-            lowerBoundNiceValue: lower,
+            upperBoundNiceValue: UserDefaultsRepository.upperBound.value,
+            lowerBoundNiceValue: UserDefaultsRepository.lowerBound.value,
             displayDaysLegend: displayDaysLegend
         )
         
@@ -177,7 +176,7 @@ class ChartScene : SKScene {
         
         if keepScale {
             
-            UserDefaultsRepository.saveMaximumBloodGlucoseDisplayed(Float(newMaxYDisplayValue))
+            UserDefaultsRepository.maximumBloodGlucoseDisplayed.value = Float(newMaxYDisplayValue)
         } else {
             // restore the old value so that the next scale request is always
             // in relation to the original unscaled value

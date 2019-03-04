@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 // https://stackoverflow.com/a/44806984
 extension URL {
     func valueOf(_ queryParamaterName: String) -> String? {
@@ -18,46 +17,94 @@ extension URL {
     }
 }
 
-
 /* 
  * This class provides access to general Application Data stored in the NSUserDefaults.
  * This is e.g. the Base-URI to the Nightscout Server.
  */
 class UserDefaultsRepository {
     
-    static var url: URL?
-    static var token: String?
-
-    static func readBaseUri() -> String {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            return ""
-        }
-        
-        guard let hostUri = defaults.string(forKey: "hostUri") else {
-            return ""
-        }
-        
-        let trimmedUri = uriWithoutTrailingSlashes(hostUri).trimmingCharacters(
-            in: CharacterSet.whitespacesAndNewlines)
-        
-        if (!validateUrl(trimmedUri)) {
-            return ""
-        }
-        
-        return trimmedUri
-    }
+    fileprivate static var url: URL?
+    fileprivate static var token: String?
     
-    static func saveBaseUri(_ baseUri : String) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(baseUri, forKey: "hostUri")
-        parseBaseUri()
-    }
+    static let baseUri = UserDefaultsValue<String>(
+        key: "hostUri",
+        default: "",
+        onChange: { _ in
+            parseBaseUri()
+        },
+            validation: { hostUri in
+                let trimmedUri = uriWithoutTrailingSlashes(hostUri).trimmingCharacters(
+                    in: CharacterSet.whitespacesAndNewlines)
+                
+                if (!validateUrl(trimmedUri)) {
+                    return ""
+                }
+                
+                return trimmedUri
+        })
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let showRawBG = UserDefaultsValue<Bool>(key: "showRawBG", default: false)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let showBGOnAppBadge = UserDefaultsValue<Bool>(
+        key: "showBGOnAppBadge",
+        default: false,
+        onChange: { show in
+            #if os(iOS)
+            if show {
+                UIApplication.shared.setCurrentBGValueOnAppBadge()
+            } else {
+                UIApplication.shared.clearAppBadge()
+            }
+            #endif
+    })
+    
+    static let alarmNotificationState = UserDefaultsValue<Bool>(key: "alarmNotificationState", default: false)
+    
+    // Returns true if the units (mmol or mg/dL) have already been retrieved
+    // from the nightscout backend
+    static let units = UserDefaultsValue<Units>(key: "units", default: Units.mgdl)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    // The last watch sync update id
+    static let lastWatchSyncUpdateId = UserDefaultsValue<String>(key: "lastWatchSyncUpdateId", default: "")
+    
+    // the array defining what days should be displayed in the statistics view
+    // E.g. [true, true, true, true, true] if all 5 days should be displayed
+    static let daysToBeDisplayed = UserDefaultsValue<[Bool]>(key: "daysToBeDisplayed", default: [true, true, true, true, true])
+    
+    // blood glucose upper/lower bounds (definition of user's bg range)
+    static let upperBound = UserDefaultsValue<Float>(key: "upperBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfAboveValue") as? Float) ?? 180)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    static let lowerBound = UserDefaultsValue<Float>(key: "lowerBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfBelowValue") as? Float) ?? 80)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
 
+    static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
+    
+    #if os(iOS)
+    static let screenlockSwitchState = UserDefaultsValue<Bool>(
+        key: "screenlockSwitchState",
+        default: UIApplication.shared.isIdleTimerDisabled,
+        onChange: { screenlock in
+            UIApplication.shared.isIdleTimerDisabled = screenlock
+    })
+    
+    static let nightscoutUris = UserDefaultsValue<[String]>(key: "nightscoutUris", default: [])
+    
+    // minutes of idle (user inactivity) before dimming the screen (0 means never)
+    static let dimScreenWhenIdle = UserDefaultsValue<Int>(key: "dimScreenWhenIdle", default: 0)
+
+    // quick snooze options
+    static let shakingOnAlertSnoozeOption = UserDefaultsValue<QuickSnoozeOption>(key: "shakingOnAlertSnoozeOption", default: .doNothing)
+    static let volumeKeysOnAlertSnoozeOption = UserDefaultsValue<QuickSnoozeOption>(key: "volumeKeysOnAlertSnoozeOption", default: .doNothing)
+    #endif
+    
     /* Parses the URI entered in the UI and extracts the token if one is present. */
-    static func parseBaseUri() -> Void {
+    fileprivate static func parseBaseUri() {
         url = nil
         token = nil
-        let urlString = UserDefaultsRepository.readBaseUri()
+        let urlString = baseUri.value
         if !urlString.isEmpty {
             url = URL(string: urlString)!
             let tokenString = url?.valueOf("token")
@@ -68,146 +115,6 @@ class UserDefaultsRepository {
         }
     }
     
-    static func readShowRawBG() -> Bool {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        return defaults?.bool(forKey: "showRawBG") ?? false
-    }
-    
-    static func saveShowRawBG(_ showRawBG: Bool) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(showRawBG, forKey: "showRawBG")
-    }
-    
-    static func saveShowBGOnAppBadge(_ showRawBG: Bool) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(showRawBG, forKey: "showBGOnAppBadge")
-    }
-
-    static func readShowBGOnAppBadge() -> Bool {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        return defaults?.bool(forKey: "showBGOnAppBadge") ?? false
-    }
-    
-    static func saveAlarmNotificationState(_ isActivated: Bool) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.setValue(isActivated, forKey: "alarmNotificationState")
-    }
-    
-    static func readAlarmNotificationState() -> Bool {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        return defaults?.bool(forKey: "alarmNotificationState") ?? false
-    }
-    
-    // Returns true if the units (mmol or mg/dL) have already been retrieved
-    // from the nightscout backend
-    static func areUnitsDefined() -> Bool {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            return false
-        }
-        
-        guard let _ = defaults.object(forKey: "units") as? String else {
-            return false
-        }
-        return true
-    }
-    
-    static func readUnits() -> Units {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("Units are not saved so far. Assuming mg/dL in this case.")
-            return Units.mgdl
-        }
-        
-        guard let units = defaults.object(forKey: "units") as? String else {
-            print("Units are not saved so far. Assuming mg/dL in this case.")
-            return Units.mgdl
-        }
-        return Units(rawValue: units)!
-    }
-    
-    static func saveUnits(_ units : Units) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            return
-        }
-        
-        defaults.set(units.rawValue, forKey: "units")
-    }
-    
-    // Returns an array of which days should be displayed.
-    // E.g. true, false, false, false, false if only the first day should be displayed
-    // In the statistics view
-    static func readDaysToBeDisplayed() -> [Bool] {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("NSUserDefaults can't be accessed. Assuming that all 5 days should be displayed this case.")
-            return [true, true, true, true, true]
-        }
-        
-        guard let daysToDisplay = defaults.array(forKey: "daysToBeDisplayed") as? [Bool] else {
-            print("DaysToDisplay are undefined so far. Assuming that all 5 days should be displayed this case.")
-            return [true, true, true, true, true]
-        }
-        
-        return daysToDisplay
-    }
-    
-    // Stores an array defining what days should be displayed in the statistics view
-    // E.g. [true, true, true, true, true] if all 5 days should be displayed
-    static func saveDaysToBeDisplayed(_ daysToBeDisplayed : [Bool]) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(daysToBeDisplayed, forKey: "daysToBeDisplayed")
-    }
-    
-    // Reads the defined value. The user would like to be alerted if the blood glucose
-    // levels are above or below this range.
-    static func readUpperLowerBounds() -> (upperBound : Float, lowerBound : Float) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("Units are not saved so far. Assuming (180,80) in this case.")
-            return (180, 80)
-        }
-        
-        let upperBound = defaults.float(forKey: "alertIfAboveValue")
-        if upperBound == 0 {
-            // no values so for from the ios app received
-            // => assume a default value in this case
-            return (180, 80)
-        }
-        let lowerBound = defaults.float(forKey: "alertIfBelowValue")
-        
-        return (upperBound, lowerBound)
-    }
-    
-    static func saveUpperLowerBounds(_ upperBounds : Float, lowerBounds : Float) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("Upper/Lower Bounds can't be saved -> this should never happen!")
-            return
-        }
-        
-        defaults.set(upperBounds, forKey: "alertIfAboveValue")
-        defaults.set(lowerBounds, forKey: "alertIfBelowValue")
-    }
-    
-    static func saveMaximumBloodGlucoseDisplayed(_ maximumBloodGlucoseDisplayed : Float) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("maximumBloodGlucoseDisplayedcan't be saved -> this should never happen!")
-            return
-        }
-        
-        defaults.set(maximumBloodGlucoseDisplayed, forKey: "maximumBloodGlucoseDisplayed")
-    }
-    
-    static func readMaximumBloodGlucoseDisplayed() -> Float {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
-            print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 350 in this case.")
-            return 350
-        }
-        
-        let value = defaults.float(forKey: "maximumBloodGlucoseDisplayed")
-        if value == 0 {
-            print("NSUserdefaults can't be read. Assuming a maximumBloodGlucoseDisplayed of 350 in this case.")
-            return 350
-        }
-        return value
-    }
-    
     fileprivate static func validateUrl(_ stringURL : String) -> Bool {
         
         // return nil if the URL has not a valid format
@@ -216,7 +123,7 @@ class UserDefaultsRepository {
         return url != nil
     }
     
-    static func uriWithoutTrailingSlashes(_ hostUri : String) -> String {
+    fileprivate static func uriWithoutTrailingSlashes(_ hostUri : String) -> String {
         if !hostUri.hasSuffix("/") {
             return hostUri
         }

@@ -1,46 +1,225 @@
 //
-//  WCSessionDelegate.swift
+//  WatchMessageService.swift
 //  nightguard
 //
-//  Created by Dirk Hermanns on 27.06.16.
-//  Copyright © 2016 private. All rights reserved.
+//  Created by Florian Preknya on 1/25/19.
+//  Copyright © 2019 private. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import WatchConnectivity
 
-// This class receives Watch Request for the baseUri.
-// The functionality is activated in the AppDelegate.
-class WatchMessageService : NSObject, WCSessionDelegate {
+/// Service for sending/receiving watch messages in an easy way from both the phone or watch. Sending can be one way or a request/response, and receiving supose registering the types of message handlers for the type of messages that are waited on that device. Type-safe messages, of course!
+class WatchMessageService: NSObject {
     
     static let singleton = WatchMessageService()
     
-    var currentNightscoutDataAsMessage: [String : Any] {
-        
-        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        let encodedNightscoutData = try? JSONEncoder().encode(nightscoutData)
-        return ["nightscoutData": encodedNightscoutData ?? Data()]
+    // send a message to paired device
+    func send(message: WatchMessage, replyHandler: (([String : Any]) -> Void)? = nil) {
+        var dictionary = message.dictionary
+        dictionary["_type"] = String(describing: type(of: message))
+        sendOrTransmit(dictionary, replyHandler: replyHandler)
     }
+    
+    // send a request to paired device (and receive a response)
+    func send<T: WatchMessage>(request: WatchMessage, responseHandler: @escaping (T) -> Void) {
+        send(message: request) { dictionary in
+            guard let registeredResponseType = String(describing: type(of: T.self)).split(separator: ".").first else {
+                print("Failed determining response type")
+                return
+            }
+            guard let responseType = dictionary["_type"] as? String, responseType == registeredResponseType else {
+                print("Wrong response type: \(registeredResponseType)")
+                return
+            }
+            
+            if let response = T(dictionary: dictionary) {
+                dispatchOnMain {
+                    responseHandler(response)
+                }
+            }
+        }
+    }
+    
+    // define a message handler for a given type of message (code to execute when that message is received on current device)
+    func onMessage<T: WatchMessage>(handler: @escaping (T) -> Void) {
+        self.messageHandlers.append(
+            WatchMessageHandlerImpl<T>(handler: handler)
+        )
+    }
+    
+    // define a request handler: for a given type of request, respond with a response message
+    func onRequest<T: WatchMessage>(handler: @escaping (T) -> WatchMessage?) {
+        self.requestHandlers.append(
+            WatchRequestHandlerImpl<T>(handler: handler)
+        )
+    }
+    
+    private override init() {
+        super.init()
+    }
+    
+    private func received(_ message: [String : Any], replyHandler: (([String : Any]) -> Void)? = nil) {
+        
+        if let replyHandler = replyHandler {
+            
+            let responseHandler: (WatchMessage) -> Void = { responseMessage in
+                var dictionary = responseMessage.dictionary
+                dictionary["_type"] = String(describing: type(of: responseMessage))
+                replyHandler(dictionary)
+            }
+            
+            if let _ = requestHandlers.firstIndex(where: { $0.handle(dictionary: message, responseHandler: responseHandler) }) {
+                return
+            }
+        }
+        
+        // iterate through the message handlers until one of them handles it
+        let _ = messageHandlers.firstIndex(where: { $0.handle(dictionary: message) })
+    }
+    
+    private func sendOrTransmit(_ message: [String : Any], replyHandler: (([String : Any]) -> Void)? = nil) {
+        
+        guard WCSession.isSupported() else {
+            
+            // no paired device!
+            return
+        }
+        
+        if #available(iOS 9.3, watchOSApplicationExtension 2.2, *) {
+            guard WCSession.default.activationState == .activated else {
+                
+                // paired device is not active, cannot continue!
+                return
+            }
+        }
+        
+        // send message if paired device is reachable
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(message, replyHandler: replyHandler, errorHandler: { error in
+                print(error)
+                
+                // transmit message on failure
+                try? WCSession.default.updateApplicationContext(message)
+            })
+        } else {
+            
+            // otherwise, transmit application context
+            try? WCSession.default.updateApplicationContext(message)
+        }
+    }
+    
+    private var messageHandlers: [WatchMessageHandler] = []
+    private var requestHandlers: [WatchRequestHandler] = []
+}
+
+extension WatchMessageService: WCSessionDelegate {
     
     // This method gets called when the watch requests the baseUri from the Nightscout Backend
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-        
-        if message["requestBaseUri"] != nil {
-            replyHandler(["baseUri": UserDefaultsRepository.readBaseUri()])
-        }
+        print("Received message (with reply handler): \(message)")
+        received(message, replyHandler: replyHandler)
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
         print("Received message: \(message)")
+        received(message)
     }
     
-    @available(iOS 9.3, *)
+    @available(watchOSApplicationExtension 2.2, *)
+//    @available(iOS 9.3, *)
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+//        #if os(watchOS)
+        received(session.receivedApplicationContext)
+//        #endif
     }
     
+    /** Called on the delegate of the receiver. Will be called on startup if an applicationContext is available. */
+    @available(watchOS 2.0, *)
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        received(applicationContext)
+    }
+    
+    /** Called on the delegate of the receiver. Will be called on startup if the user info finished transferring when the receiver was not running. */
+    @available(watchOS 2.0, *)
+    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any]) {
+        received(userInfo)
+    }
+    
+    #if os(iOS)
     func sessionDidBecomeInactive(_ session: WCSession) {
     }
     
     func sessionDidDeactivate(_ session: WCSession) {
+    }
+    #endif
+}
+
+
+private protocol WatchMessageHandler {
+    func handle(dictionary: [String : Any]) -> Bool
+}
+
+private class WatchMessageHandlerImpl<T: WatchMessage>: WatchMessageHandler {
+    
+    typealias WatchMessageType = T
+    typealias HandlerType = (WatchMessageType) -> Void
+    let handler: HandlerType
+    
+    init(handler: @escaping HandlerType) {
+        self.handler = handler
+        print(String(describing: WatchMessageType.self))
+    }
+    
+    func handle(dictionary: [String : Any]) -> Bool {
+        
+        guard let type = dictionary["_type"] as? String, type == String(describing: WatchMessageType.self) else {
+            
+            // message not recognized!
+            return false
+        }
+        
+        if let message = WatchMessageType(dictionary: dictionary) {
+            dispatchOnMain { [weak self] in
+                self?.handler(message)
+            }
+        }
+        
+        return true
+    }
+}
+
+private protocol WatchRequestHandler {
+    func handle(dictionary: [String : Any], responseHandler: @escaping (WatchMessage) -> Void) -> Bool
+}
+
+private class WatchRequestHandlerImpl<T: WatchMessage>: WatchRequestHandler {
+    
+    typealias WatchMessageType = T
+    typealias HandlerType = (WatchMessageType) -> WatchMessage?
+    let handler: HandlerType
+    
+    init(handler: @escaping HandlerType) {
+        self.handler = handler
+        print(String(describing: WatchMessageType.self))
+    }
+    
+    func handle(dictionary: [String : Any], responseHandler: @escaping (WatchMessage) -> Void) -> Bool {
+        
+        guard let type = dictionary["_type"] as? String, type == String(describing: WatchMessageType.self) else {
+            
+            // message not recognized!
+            return false
+        }
+        
+        if let message = WatchMessageType(dictionary: dictionary) {
+            dispatchOnMain { [weak self] in
+                if let responseMessage = self?.handler(message) {
+                    responseHandler(responseMessage)
+                }
+            }
+        }
+        
+        return true
     }
 }
