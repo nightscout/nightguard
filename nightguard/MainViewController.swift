@@ -29,6 +29,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var bgStackView: UIStackView!
     
     @IBOutlet weak var nightscoutButton: UIButton!
+    @IBOutlet weak var statsLabel: UILabel!
+    
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
     
@@ -37,6 +39,9 @@ class MainViewController: UIViewController {
     var timer = Timer()
     // check every 30 Seconds whether new bgvalues should be retrieved
     let timeInterval: TimeInterval = 30.0
+    
+    // basic stats for the last 24 hours
+    var basicStats: BasicStats?
     
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
@@ -101,6 +106,13 @@ class MainViewController: UIViewController {
         // liste to alarm snoozing & play/stop alarm accordingly
         AlarmRule.onSnoozeTimestampChanged = { [weak self] in
             self?.evaluateAlarmActivationState()
+        }
+        
+        UserDefaultsRepository.upperBound.observeChanges { [weak self] _ in
+            self?.updateBasicStats()
+        }
+        UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
+            self?.updateBasicStats()
         }
     }
     
@@ -348,6 +360,7 @@ class MainViewController: UIViewController {
             case .data(let newNightscoutData):
                 self.errorPanelView.isHidden = true
                 self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                self.updateBasicStats()
                 
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
             }
@@ -429,5 +442,14 @@ class MainViewController: UIViewController {
 
         // show raw values panel ONLY if configured so and we have a valid rawbg value!
         self.rawValuesPanel.isHidden = !UserDefaultsRepository.showRawBG.value || !isValidRawBGValue
+    }
+    
+    fileprivate func updateBasicStats() {
+        
+        // recreate the basic stats object
+        self.basicStats = BasicStats()
+        
+        // update the UI
+        statsLabel.text = "A1C: \(String(format: "%.1f", basicStats!.a1c))%, in: \(String(format: "%.1f", basicStats!.inRangeValuesPercentage * 100))%"
     }
 }
