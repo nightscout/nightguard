@@ -995,7 +995,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1006,7 +1006,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		43FD71501CFCD75A005CE68B /* Run Script */ = {
