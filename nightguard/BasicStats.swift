@@ -10,11 +10,101 @@ import Foundation
 
 struct BasicStats {
     
+    // The time period of the stats data (most recent data)
+    enum Period: CustomStringConvertible {
+        case last24h
+        case last8h
+        case today
+        case yesterday
+        case todayAndYesterday
+
+        var description: String {
+            
+            switch self {
+            case .last24h:
+                return "Last 24h"
+            case .last8h:
+                return "Last 8h"
+            case .today:
+                return "Today"
+            case .yesterday:
+                return "Yesterday"
+            case .todayAndYesterday:
+                return "Today & Yesterday"
+            }
+        }
+        
+        // how many minutes are in the period?
+        var minutes: Int {
+            switch self {
+            case .last24h:
+                return 24 * 60
+            case .last8h:
+                return 8 * 60
+            case .today:
+                let secondsFromStartOfDay = Date().timeIntervalSince(
+                    Calendar(identifier: .gregorian).startOfDay(for: Date())
+                )
+                return Int(secondsFromStartOfDay / 60)
+            case .yesterday:
+                return 24 * 60
+            case .todayAndYesterday:
+                return Period.today.minutes + 24 * 60
+            }
+        }
+        
+        // the period readings
+        var readings: [BloodSugar] {
+            switch self {
+            case .last24h:
+                let now = Date()
+
+                // get today's data
+                let todaysReadings = NightscoutCacheService.singleton.getTodaysBgData()
+                
+                // get yesterday's data, the ones that are newer than 24h
+                let yesterdaysReadings = NightscoutCacheService.singleton.getYesterdaysBgData()
+                let yesterdaysReadingsNewerThan24h = yesterdaysReadings.suffix(yesterdaysReadings.count) { $0.date > now }
+                
+                return yesterdaysReadingsNewerThan24h + todaysReadings
+                
+            case .last8h:
+                let eightHoursBefore = Date().addingTimeInterval(-8 * 60 * 60)
+
+                // get today's data
+                let todaysReadings = NightscoutCacheService.singleton.getTodaysBgData()
+                let todaysReadingsNewerThan8h = todaysReadings.suffix(todaysReadings.count) { $0.date > eightHoursBefore }
+                if todaysReadingsNewerThan8h.count < todaysReadings.count {
+                    return todaysReadingsNewerThan8h
+                } else {
+                    
+                    // hack for yesterday 8 hours before (because yesterday dates are changed for today - a trick for displaying them in the graph) - we'll have to add 16h for getting the corresponding readings
+                    let eightHoursBeforeForYesterday = eightHoursBefore.addingTimeInterval(16 * 60 * 60)
+                    let yesterdaysReadings = NightscoutCacheService.singleton.getYesterdaysBgData()
+                    let yesterdaysReadingsNewerThan8h = yesterdaysReadings.suffix(yesterdaysReadings.count) { $0.date > eightHoursBeforeForYesterday }
+
+                    return yesterdaysReadingsNewerThan8h + todaysReadingsNewerThan8h
+                }
+
+            case .today:
+                return NightscoutCacheService.singleton.getTodaysBgData()
+            case .yesterday:
+                return NightscoutCacheService.singleton.getYesterdaysBgData()
+            case .todayAndYesterday:
+                return NightscoutCacheService.singleton.getYesterdaysBgData() + NightscoutCacheService.singleton.getTodaysBgData()
+            }
+        }
+        
+    }
+    let period: Period
+    
     let averageGlucose: Float
     let a1c: Float
     
     let readingsCount: Int
-    let readingsMaximumCount: Int = 288 // maximum for 24h
+    var readingsMaximumCount: Int  {
+        return period.minutes / 5 // one reading each 5 minutes
+    }
     var readingsPercentage: Float {
         return Float(readingsCount) / Float(readingsMaximumCount)
     }
@@ -26,42 +116,38 @@ struct BasicStats {
     
     let lowValuesCount: Int
     var lowValuesPercentage: Float {
-        return (readingsCount != 0) ? (Float(lowValuesCount) / Float(readingsCount)) : 0
+        let validReadingsCount = readingsCount - invalidValuesCount
+        return (validReadingsCount != 0) ? (Float(lowValuesCount) / Float(validReadingsCount)) : 0
     }
     
     let highValuesCount: Int
     var highValuesPercentage: Float {
-        return (readingsCount != 0) ? (Float(highValuesCount) / Float(readingsCount)) : 0
+        let validReadingsCount = readingsCount - invalidValuesCount
+        return (validReadingsCount != 0) ? (Float(highValuesCount) / Float(validReadingsCount)) : 0
     }
     
     let inRangeValuesCount: Int
     var inRangeValuesPercentage: Float {
-        return (readingsCount != 0) ? (Float(inRangeValuesCount) / Float(readingsCount)) : 0
+        let validReadingsCount = readingsCount - invalidValuesCount
+        return (validReadingsCount != 0) ? (Float(inRangeValuesCount) / Float(validReadingsCount)) : 0
     }
     
-    init() {
+    init(period: Period = Period.last24h) {
+        
+        self.period = period
         
         // get the readings
-        
-        // get today's data
-        let todaysReadings = NightscoutCacheService.singleton.getTodaysBgData()
-        
-        // get yesterday's data, the ones that are newer than 24h
-        let now = Date()
-        let yesterdaysReadings = NightscoutCacheService.singleton.getYesterdaysBgData()
-        let yesterdaysReadingsNewerThan24h = yesterdaysReadings.suffix(yesterdaysReadings.count) { $0.date > now }
-
-        // 24h values
-        let last24hReadings = yesterdaysReadingsNewerThan24h + todaysReadings
+        let readings = period.readings
         
         // get the upper/lower bounds
         let upperBound = UserDefaultsRepository.upperBound.value
         let lowerBound = UserDefaultsRepository.lowerBound.value
 
-        self.readingsCount = last24hReadings.count
+        self.readingsCount = readings.count
         
         var invalidValuesCount = 0, lowValuesCount = 0, highValuesCount = 0, inRangeValuesCount = 0
-        for reading in last24hReadings {
+        var totalGlucoseCount: Float = 0
+        for reading in readings {
             guard reading.isValid else {
                 invalidValuesCount += 1
                 continue
@@ -74,6 +160,8 @@ struct BasicStats {
             } else {
                 inRangeValuesCount += 1
             }
+            
+            totalGlucoseCount += reading.value
         }
         
         self.invalidValuesCount = invalidValuesCount
@@ -81,7 +169,7 @@ struct BasicStats {
         self.highValuesCount = highValuesCount
         self.inRangeValuesCount = inRangeValuesCount
         
-        self.averageGlucose = last24hReadings.reduce(0, { sum, bg in return sum + bg.value }) / Float(last24hReadings.count)
+        self.averageGlucose = totalGlucoseCount / Float(readings.count - invalidValuesCount)
         self.a1c = (46.7 + self.averageGlucose) / 28.7
     }
 }

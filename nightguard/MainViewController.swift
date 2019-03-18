@@ -30,6 +30,7 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var nightscoutButton: UIButton!
     @IBOutlet weak var statsLabel: UILabel!
+    @IBOutlet weak var statsPanelView: BasicStatsPanelView!
     
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
@@ -360,7 +361,6 @@ class MainViewController: UIViewController {
             case .data(let newNightscoutData):
                 self.errorPanelView.isHidden = true
                 self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
-                self.updateBasicStats()
                 
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
             }
@@ -404,6 +404,7 @@ class MainViewController: UIViewController {
             if case .data(let newTodaysData) = result {
                 let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
                 self.paintChartData(todaysData: newTodaysData, yesterdaysData: cachedYesterdaysData)
+                self.updateBasicStats()
             }
         }
         
@@ -413,6 +414,7 @@ class MainViewController: UIViewController {
             if case .data(let newYesterdaysData) = result {
                 let cachedTodaysBgData = NightscoutCacheService.singleton.getTodaysBgData()
                 self.paintChartData(todaysData: cachedTodaysBgData, yesterdaysData: newYesterdaysData)
+                self.updateBasicStats()
             }
         }
         
@@ -446,10 +448,8 @@ class MainViewController: UIViewController {
     
     fileprivate func updateBasicStats() {
         
-        // recreate the basic stats object
-        self.basicStats = BasicStats()
-        
         // update the UI
-        statsLabel.text = "A1C: \(String(format: "%.1f", basicStats!.a1c))%, in: \(String(format: "%.1f", basicStats!.inRangeValuesPercentage * 100))%"
+//        statsLabel.text = "A1c: \(String(format: "%.1f", basicStats!.a1c))%, in: \(String(format: "%.1f", basicStats!.inRangeValuesPercentage * 100))%"
+        statsPanelView.updateModel()
     }
 }

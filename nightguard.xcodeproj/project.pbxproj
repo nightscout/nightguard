@@ -130,6 +130,10 @@
 		D133079B21C85FAE00DC6879 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079121C85FAE00DC6879 /* Matrix.swift */; };
 		D133079E21C8D4CF00DC6879 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		D133079F21C8D4CF00DC6879 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
+		D1358AE42234F80A00D0FA87 /* SMDiagramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1358AE32234F80A00D0FA87 /* SMDiagramView.swift */; };
+		D1358AE62234FB2600D0FA87 /* BasicStatsPanelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1358AE52234FB2600D0FA87 /* BasicStatsPanelView.xib */; };
+		D1358AE82234FB5000D0FA87 /* BasicStatsPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1358AE72234FB5000D0FA87 /* BasicStatsPanelView.swift */; };
+		D1358AEC2237C44600D0FA87 /* XibLoadedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1358AEB2237C44600D0FA87 /* XibLoadedView.swift */; };
 		D13A4C1C2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */; };
 		D13A4C1D2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */; };
 		D13A4C1E2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */; };
@@ -201,6 +205,11 @@
 		D1F2F57C21EF133600CEB874 /* Matrix+Append.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078E21C85FAC00DC6879 /* Matrix+Append.swift */; };
 		D1F2F57D21EF133A00CEB874 /* Matrix+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078F21C85FAD00DC6879 /* Matrix+Description.swift */; };
 		D1F2F57E21EF134400CEB874 /* RegressionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078D21C85FAC00DC6879 /* RegressionHelper.swift */; };
+		D1F94ECC223FFDF200BB0A4D /* BasicStatsControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F94ECB223FFDF100BB0A4D /* BasicStatsControl.swift */; };
+		D1F94ECE223FFE2A00BB0A4D /* GlucoseDistributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F94ECD223FFE2A00BB0A4D /* GlucoseDistributionView.swift */; };
+		D1F94ED0223FFEFF00BB0A4D /* A1cView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F94ECF223FFEFF00BB0A4D /* A1cView.swift */; };
+		D1F94ED2223FFF3900BB0A4D /* ReadingsStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F94ED1223FFF3900BB0A4D /* ReadingsStatsView.swift */; };
+		D1F94ED4223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -349,6 +358,10 @@
 		D133079021C85FAD00DC6879 /* Regression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regression.swift; sourceTree = "<group>"; };
 		D133079121C85FAE00DC6879 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		D133079D21C8D4CF00DC6879 /* PredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionService.swift; sourceTree = "<group>"; };
+		D1358AE32234F80A00D0FA87 /* SMDiagramView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMDiagramView.swift; sourceTree = "<group>"; };
+		D1358AE52234FB2600D0FA87 /* BasicStatsPanelView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicStatsPanelView.xib; sourceTree = "<group>"; };
+		D1358AE72234FB5000D0FA87 /* BasicStatsPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelView.swift; sourceTree = "<group>"; };
+		D1358AEB2237C44600D0FA87 /* XibLoadedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibLoadedView.swift; sourceTree = "<group>"; };
 		D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericWatchMessage.swift; sourceTree = "<group>"; };
 		D13A4C1F2221E49200C71F08 /* NightSafeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightSafeMessage.swift; sourceTree = "<group>"; };
 		D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsValueGroups.swift; sourceTree = "<group>"; };
@@ -392,6 +405,11 @@
 		D1EBB6A82223FF0200CE27FF /* MissedReadingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissedReadingsViewController.swift; sourceTree = "<group>"; };
 		D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationToken.swift; sourceTree = "<group>"; };
 		D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		D1F94ECB223FFDF100BB0A4D /* BasicStatsControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsControl.swift; sourceTree = "<group>"; };
+		D1F94ECD223FFE2A00BB0A4D /* GlucoseDistributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseDistributionView.swift; sourceTree = "<group>"; };
+		D1F94ECF223FFEFF00BB0A4D /* A1cView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A1cView.swift; sourceTree = "<group>"; };
+		D1F94ED1223FFF3900BB0A4D /* ReadingsStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingsStatsView.swift; sourceTree = "<group>"; };
+		D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodSelectorView.swift; sourceTree = "<group>"; };
 		DFAB5E556FA57C770FDF2924 /* Pods_nightguardTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguardTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDA8B19A6EB3652EEDD03592 /* Pods_nightguardUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguardUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE4022D9F5273F6FF43EA39D /* Pods_nightguard_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguard_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -733,9 +751,11 @@
 		D1BA903620D303E700A0EBD1 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				D1F94ECA223FFD5400BB0A4D /* stats */,
 				D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */,
 				D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */,
 				D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */,
+				D1358AEB2237C44600D0FA87 /* XibLoadedView.swift */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -748,6 +768,21 @@
 				D1D96CB921FB0E910035A60E /* WatchMessageService.swift */,
 			);
 			name = watch;
+			sourceTree = "<group>";
+		};
+		D1F94ECA223FFD5400BB0A4D /* stats */ = {
+			isa = PBXGroup;
+			children = (
+				D1358AE32234F80A00D0FA87 /* SMDiagramView.swift */,
+				D1F94ECB223FFDF100BB0A4D /* BasicStatsControl.swift */,
+				D1F94ECF223FFEFF00BB0A4D /* A1cView.swift */,
+				D1F94ECD223FFE2A00BB0A4D /* GlucoseDistributionView.swift */,
+				D1F94ED1223FFF3900BB0A4D /* ReadingsStatsView.swift */,
+				D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */,
+				D1358AE52234FB2600D0FA87 /* BasicStatsPanelView.xib */,
+				D1358AE72234FB5000D0FA87 /* BasicStatsPanelView.swift */,
+			);
+			name = stats;
 			sourceTree = "<group>";
 		};
 		D1FAA4AB20D7AE6B0062B333 /* controllers */ = {
@@ -945,6 +980,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1358AE62234FB2600D0FA87 /* BasicStatsPanelView.xib in Resources */,
 				D1DA7C7521C0E1ED00B39675 /* Stats.storyboard in Resources */,
 				43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */,
 				43F1E1061D07698000C329A2 /* Media.xcassets in Resources */,
@@ -1145,6 +1181,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1358AE82234FB5000D0FA87 /* BasicStatsPanelView.swift in Sources */,
 				D1D96CC321FB0FA80035A60E /* SnoozeMessage.swift in Sources */,
 				D1D1623C2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift in Sources */,
 				D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */,
@@ -1156,6 +1193,7 @@
 				D16C8EDD22106C9300192117 /* QuickSnoozeOption.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
 				D160D08A220C608D002B4633 /* FastRiseDropViewController.swift in Sources */,
+				D1F94ED0223FFEFF00BB0A4D /* A1cView.swift in Sources */,
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
 				D133079621C85FAE00DC6879 /* Matrix+Description.swift in Sources */,
 				D1CE8CC42204B19C0075FF8A /* CustomFormViewController.swift in Sources */,
@@ -1171,6 +1209,7 @@
 				D16C8EDF2211047300192117 /* UIViewController+Extensions.swift in Sources */,
 				D1ECDA262202C8F0002BE6F9 /* UIColorExtension.swift in Sources */,
 				D15055AC2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */,
+				D1F94ECE223FFE2A00BB0A4D /* GlucoseDistributionView.swift in Sources */,
 				D160D086220C534E002B4633 /* ButtonRowWithDynamicDetails.swift in Sources */,
 				D133079A21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
@@ -1184,11 +1223,14 @@
 				43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */,
 				43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */,
 				D1EBB6A92223FF0200CE27FF /* MissedReadingsViewController.swift in Sources */,
+				D1F94ECC223FFDF200BB0A4D /* BasicStatsControl.swift in Sources */,
+				D1358AEC2237C44600D0FA87 /* XibLoadedView.swift in Sources */,
 				432E62EB1D15EFC600DD7978 /* FloatExtension.swift in Sources */,
 				43FCE625208B80840080DA0A /* SnoozeAlarmViewController.swift in Sources */,
 				D133079E21C8D4CF00DC6879 /* PredictionService.swift in Sources */,
 				430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */,
 				43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */,
+				D1F94ED2223FFF3900BB0A4D /* ReadingsStatsView.swift in Sources */,
 				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
 				D13A4C1C2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
 				D13A4C202221E49200C71F08 /* NightSafeMessage.swift in Sources */,
@@ -1198,6 +1240,7 @@
 				D123EFEE21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */,
 				D15055B02200D31300F31C1F /* DeviceSize.swift in Sources */,
 				D133079421C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
+				D1358AE42234F80A00D0FA87 /* SMDiagramView.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
 				D1D96CC021FB0F2E0035A60E /* UserDefaultsSyncMessage.swift in Sources */,
 				D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */,
@@ -1210,6 +1253,7 @@
 				D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */,
 				D123EFEB21FB70A700CE8718 /* KeepAwakeMessage.swift in Sources */,
 				D16C8ED72210377000192117 /* SnoozeActionsViewController.swift in Sources */,
+				D1F94ED4223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift in Sources */,
 				4351E6AE1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift in Sources */,
 				D1D96CB621FAF6890035A60E /* WatchMessage.swift in Sources */,
 				43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */,
