@@ -29,7 +29,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var bgStackView: UIStackView!
     
     @IBOutlet weak var nightscoutButton: UIButton!
-    @IBOutlet weak var statsLabel: UILabel!
     @IBOutlet weak var statsPanelView: BasicStatsPanelView!
     
     // the way that has already been moved during a pan gesture
@@ -122,6 +121,21 @@ class MainViewController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         showHideRawBGPanel()
+
+        // show/hide the stats panel, using user preference value
+        let statsShouldBeHidden = !UserDefaultsRepository.showStats.value
+        if statsPanelView.isHidden != statsShouldBeHidden {
+            statsPanelView.isHidden = statsShouldBeHidden
+            
+            view.setNeedsLayout()
+            view.layoutIfNeeded()
+            
+            if !statsPanelView.isHidden {
+                DispatchQueue.main.async { [unowned self] in
+                    self.statsPanelView.updateModel()
+                }
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -146,6 +160,11 @@ class MainViewController: UIViewController {
         
         // keep the nightscout button round
         nightscoutButton.layer.cornerRadius = nightscoutButton.bounds.size.width / 2
+        
+        DispatchQueue.main.async { [unowned self] in
+            self.chartScene.size = CGSize(width: self.spriteKitView.bounds.width, height: self.spriteKitView.bounds.height)
+            self.loadAndPaintChartData(forceRepaint: true)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -450,6 +469,8 @@ class MainViewController: UIViewController {
         
         // update the UI
 //        statsLabel.text = "A1c: \(String(format: "%.1f", basicStats!.a1c))%, in: \(String(format: "%.1f", basicStats!.inRangeValuesPercentage * 100))%"
-        statsPanelView.updateModel()
+        if !statsPanelView.isHidden {
+            statsPanelView.updateModel()
+        }
     }
 }

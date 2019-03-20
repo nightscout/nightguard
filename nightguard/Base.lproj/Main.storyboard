@@ -379,21 +379,15 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A1C: 6.4, in range: 85%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9N5-p0-4wp">
-                                        <rect key="frame" x="0.0" y="110" width="398" height="0.0"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <view contentMode="scaleToFill" placeholderIntrinsicWidth="398" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="8KP-K7-ZDM" customClass="BasicStatsPanelView" customModule="nightguard" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116" width="398" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="70" id="mEj-5g-aa7"/>
+                                            <constraint firstAttribute="height" priority="750" constant="80" id="i40-16-jLK"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="mEj-5g-aa7"/>
+                                                <exclude reference="i40-16-jLK"/>
                                             </mask>
                                         </variation>
                                     </view>
@@ -512,7 +506,6 @@
                         <outlet property="rawValuesPanel" destination="XtI-XB-VeV" id="1T6-VA-eJr"/>
                         <outlet property="snoozeButton" destination="QxI-Mz-c2E" id="fvE-ps-o54"/>
                         <outlet property="spriteKitView" destination="dot-Yq-gkc" id="VQK-0m-Y6R"/>
-                        <outlet property="statsLabel" destination="9N5-p0-4wp" id="kRH-XA-51A"/>
                         <outlet property="statsPanelView" destination="8KP-K7-ZDM" id="TEl-Rt-zAb"/>
                         <outlet property="timeLabel" destination="YvM-WS-hyk" id="t6A-d4-mVH"/>
                         <outlet property="volumeContainerView" destination="4hs-Gk-Xl6" id="0Wm-7G-jj6"/>
