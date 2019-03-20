@@ -137,12 +137,7 @@ class MainViewController: UIViewController {
             }
         }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-    
+        
     override func viewDidAppear(_ animated: Bool) {
         
         // Start immediately so that the current time gets displayed at once
