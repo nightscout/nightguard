@@ -159,6 +159,7 @@
 		D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
+		D1B777E42243E27B003FEDF0 /* TouchReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */; };
 		D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */; };
 		D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */; };
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
@@ -378,6 +379,7 @@
 		D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractionDetectorWindow.swift; sourceTree = "<group>"; };
 		D18C5D8922293C220099D96E /* BasicStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStats.swift; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
+		D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchReportingView.swift; sourceTree = "<group>"; };
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -756,6 +758,7 @@
 				D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */,
 				D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */,
 				D1358AEB2237C44600D0FA87 /* XibLoadedView.swift */,
+				D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -1261,6 +1264,7 @@
 				D133078421C424A800DC6879 /* ArrayExtension.swift in Sources */,
 				D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */,
 				D1D96CB121F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
+				D1B777E42243E27B003FEDF0 /* TouchReportingView.swift in Sources */,
 				D18C5D8A22293C220099D96E /* BasicStats.swift in Sources */,
 				43F1E0EE1D07693300C329A2 /* AlarmRule.swift in Sources */,
 				432E62EF1D17359600DD7978 /* StringExtension.swift in Sources */,

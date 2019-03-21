@@ -79,7 +79,7 @@ struct BasicStats {
                 } else {
                     
                     // hack for yesterday 8 hours before (because yesterday dates are changed for today - a trick for displaying them in the graph) - we'll have to add 16h for getting the corresponding readings
-                    let eightHoursBeforeForYesterday = eightHoursBefore.addingTimeInterval(16 * 60 * 60)
+                    let eightHoursBeforeForYesterday = eightHoursBefore.addingTimeInterval(24 * 60 * 60)
                     let yesterdaysReadings = NightscoutCacheService.singleton.getYesterdaysBgData()
                     let yesterdaysReadingsNewerThan8h = yesterdaysReadings.suffix(yesterdaysReadings.count) { $0.date > eightHoursBeforeForYesterday }
 
@@ -100,6 +100,8 @@ struct BasicStats {
     
     let averageGlucose: Float
     let a1c: Float
+    let standardDeviation: Float
+    let coefficientOfVariation: Float
     
     let readingsCount: Int
     var readingsMaximumCount: Int  {
@@ -147,11 +149,15 @@ struct BasicStats {
         
         var invalidValuesCount = 0, lowValuesCount = 0, highValuesCount = 0, inRangeValuesCount = 0
         var totalGlucoseCount: Float = 0
+        
+        var validReadings: [BloodSugar] = []
         for reading in readings {
             guard reading.isValid else {
                 invalidValuesCount += 1
                 continue
             }
+            
+            validReadings.append(reading)
             
             if reading.value <= lowerBound {
                 lowValuesCount += 1
@@ -171,5 +177,7 @@ struct BasicStats {
         
         self.averageGlucose = totalGlucoseCount / Float(readings.count - invalidValuesCount)
         self.a1c = (46.7 + self.averageGlucose) / 28.7
+        self.standardDeviation = Float(validReadings.map { Double($0.value) }.standardDeviation)
+        self.coefficientOfVariation = (self.averageGlucose != 0) ? (self.standardDeviation / self.averageGlucose) : Float.nan
     }
 }

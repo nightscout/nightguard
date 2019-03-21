@@ -21,7 +21,7 @@ struct StatsPage {
     }
 }
 
-class BasicStatsControl: UIControl {
+class BasicStatsControl: TouchReportingView {
     
     var model: BasicStats? {
         didSet {
@@ -78,10 +78,24 @@ class BasicStatsControl: UIControl {
         commonInit()
     }
     
-    func commonInit() {
+    override func commonInit() {
+        super.commonInit()
+        
         clipsToBounds = true
         backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         
+        onTouchStarted = { [unowned self] in
+            self.diagramView.titleView?.alpha = 0.5
+        }
+
+        onTouchEnded = { [unowned self] in
+            self.diagramView.titleView?.alpha = 1
+        }
+        
+        onTouchUpInside = { [unowned self] in
+            self.changePage()
+        }
+
         // add to superview
         addSubview(diagramView)
         diagramView.pin(to: self)
@@ -89,16 +103,17 @@ class BasicStatsControl: UIControl {
         diagramView.titleView = createTitleView()
         diagramView.isUserInteractionEnabled = false
         
+        nameLabel?.numberOfLines = 2
+        nameLabel?.preferredMaxLayoutWidth = isSmallDevice ? 56 : 64
         valueLabel?.numberOfLines = 2
         valueLabel?.preferredMaxLayoutWidth = isSmallDevice ? 56 : 64
+
         
         // hidden until model is set
         diagramView.alpha = 0
-        
-        addTarget(self, action: #selector(pressed), for: .touchUpInside)
     }
     
-    @IBAction func pressed() {
+    func changePage() {
         if pages.count > 1 {
             self.currentPageIndex = (self.currentPageIndex + 1) % pages.count
         }

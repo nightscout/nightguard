@@ -33,7 +33,7 @@ class StatsPeriodSelectorView: BasicStatsControl {
         updateTitleView(name: "Stats Period", value: model?.period.description)
     }
     
-    override func pressed() {
+    override func changePage() {
         guard let period = self.model?.period else { return }
         let nextPeriodIndex = ((periods.firstIndex(of: period) ?? -1) + 1) % periods.count
         onPeriodChangeRequest?(periods[nextPeriodIndex])
