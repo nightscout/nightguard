@@ -16,4 +16,13 @@ extension Float {
             ? String(format: "%5.0f", self).trimmingCharacters(in: CharacterSet.whitespaces)
             : String(format: "%5.1f", self).trimmingCharacters(in: CharacterSet.whitespaces)
     }
+    
+    var roundTo3f: Float {
+        return round(to: 3)
+    }
+    
+    func round(to places: Int) -> Float {
+        let divisor = pow(10.0, Float(places))
+        return (divisor * self).rounded() / divisor
+    }
 }

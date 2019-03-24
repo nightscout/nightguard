@@ -160,6 +160,9 @@
 		D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		D1B777E42243E27B003FEDF0 /* TouchReportingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */; };
+		D1B777E62244C11B003FEDF0 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B777E52244C11B003FEDF0 /* Comparable+Extensions.swift */; };
+		D1B777E72244C43D003FEDF0 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B777E52244C11B003FEDF0 /* Comparable+Extensions.swift */; };
+		D1B777E82244C43E003FEDF0 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B777E52244C11B003FEDF0 /* Comparable+Extensions.swift */; };
 		D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */; };
 		D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */; };
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
@@ -380,6 +383,7 @@
 		D18C5D8922293C220099D96E /* BasicStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStats.swift; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
 		D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchReportingView.swift; sourceTree = "<group>"; };
+		D1B777E52244C11B003FEDF0 /* Comparable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -689,6 +693,7 @@
 				D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */,
 				D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */,
 				D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */,
+				D1B777E52244C11B003FEDF0 /* Comparable+Extensions.swift */,
 			);
 			name = helpers;
 			sourceTree = "<group>";
@@ -1223,6 +1228,7 @@
 				D16C8ED92210687200192117 /* MPVolumeViewExtension.swift in Sources */,
 				43E89E571E659102005B0A65 /* ChartScene.swift in Sources */,
 				43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */,
+				D1B777E62244C11B003FEDF0 /* Comparable+Extensions.swift in Sources */,
 				43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */,
 				43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */,
 				D1EBB6A92223FF0200CE27FF /* MissedReadingsViewController.swift in Sources */,
@@ -1291,6 +1297,7 @@
 				D1ECDA202201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				432E62E71D11F61500DD7978 /* UserDefaultsRepositoryTest.swift in Sources */,
 				43794F491C30489C00DB8B58 /* NightscoutDataRepository.swift in Sources */,
+				D1B777E72244C43D003FEDF0 /* Comparable+Extensions.swift in Sources */,
 				432E62E01D10AF3800DD7978 /* Units.swift in Sources */,
 				D1F2F57B21EF133000CEB874 /* Matrix.swift in Sources */,
 				432E62D91D0CC3AC00DD7978 /* BloodSugar.swift in Sources */,
@@ -1384,6 +1391,7 @@
 				D1D96CC121FB0F2E0035A60E /* UserDefaultsSyncMessage.swift in Sources */,
 				D133078A21C85D5400DC6879 /* BloodSugarArrayExtension.swift in Sources */,
 				D13A4C1E2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
+				D1B777E82244C43E003FEDF0 /* Comparable+Extensions.swift in Sources */,
 				D123EFEF21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */,
 				43794F421C2F435A00DB8B58 /* AppConstants.swift in Sources */,
 				439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */,

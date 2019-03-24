@@ -9,15 +9,16 @@
 import UIKit
 
 struct StatsPage {
-    let segmentIndex: Int?
-    let name: String?
-    let value: (() -> CGFloat)?
-    let formatter: ((CGFloat) -> String)?
-    let color: UIColor?
+    var name: String
+    var value: Any?
+    var formattedValue: String?
+    var color: UIColor?
     
-    var formattedValue: String? {
-        guard let value = self.value?() else { return nil}
-        return formatter?(value)
+    init(name: String, value: Any? = nil, formattedValue: String? = nil, color: UIColor? = nil) {
+        self.name = name
+        self.value = value
+        self.formattedValue = formattedValue
+        self.color = color
     }
 }
 
@@ -25,7 +26,7 @@ class BasicStatsControl: TouchReportingView {
     
     var model: BasicStats? {
         didSet {
-            diagramView.reloadData()
+//            diagramView.reloadData()
             
             // reveal!
             UIView.animate(withDuration: 0.8) { [weak self] in
@@ -36,22 +37,20 @@ class BasicStatsControl: TouchReportingView {
         }
     }
     
-    var pages: [StatsPage] {
-        
-        // implement in subclasses
-        return [
-            StatsPage(segmentIndex: 0, name: nil, value: nil, formatter: nil, color: .clear)
-        ]
-    }
+    var pages: [StatsPage] = []
     
-    var currentPageIndex: Int = 0 {
+    var currentPageIndex: Int = -1 {
         didSet {
             pageChanged()
             diagramView.reloadData()
         }
     }
     
-    var currentPage: StatsPage {
+    var currentPage: StatsPage? {
+        guard currentPageIndex >= 0 && currentPageIndex < pages.count else {
+            return nil
+        }
+        
         return pages[currentPageIndex]
     }
     
@@ -121,14 +120,39 @@ class BasicStatsControl: TouchReportingView {
     
     func modelWasSet() {
         
+        // get current page name
+        let currentPageName = currentPage?.name
+        
+        // recreate pages
+        pages = createPages()
+        
+        // restore current page
+        if pages.isEmpty {
+            currentPageIndex = -1
+        } else {
+            if let currentPageName = currentPageName {
+                currentPageIndex = pages.firstIndex(where: { $0.name == currentPageName }) ?? 0
+            } else {
+                currentPageIndex = 0
+            }
+        }
+        
         // update title
-        updateTitleView(name: currentPage.name, value: currentPage.formattedValue)
+        updateTitleView(name: currentPage?.name, value: currentPage?.formattedValue)
+    }
+    
+    func createPages() -> [StatsPage] {
+        
+        // override in subclasses
+        return [
+            StatsPage(name: "")
+        ]
     }
     
     func pageChanged() {
         
         // update title
-        updateTitleView(name: currentPage.name, value: currentPage.formattedValue)
+        updateTitleView(name: currentPage?.name, value: currentPage?.formattedValue)
     }
     
     override func layoutSubviews() {
@@ -189,9 +213,5 @@ class BasicStatsControl: TouchReportingView {
         stackView.spacing = isSmallDevice ? 2 : 4
         
         return stackView
-    }
-    
-    func percent(_ value: CGFloat) -> String {
-        return "\(Float(value * 100).cleanValue)%"
     }
 }

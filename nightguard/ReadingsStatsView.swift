@@ -10,17 +10,22 @@ import UIKit
 
 class ReadingsStatsView: BasicStatsControl {
     
-    override var pages: [StatsPage] {
-        return [
-            StatsPage(segmentIndex: -1, name: "Readings", value: { [weak self] in
-                CGFloat(self?.model?.readingsCount ?? 0)
-                }, formatter: { [weak self] value in
-                    "\(Float(value).cleanValue) / \(self?.model?.readingsMaximumCount ?? 0)"
-                }, color: .clear),
-            StatsPage(segmentIndex: 0, name: "Readings %", value: { [weak self] in
-                CGFloat(self?.model?.readingsPercentage ?? 0)
-                }, formatter: percent, color: .white)
+    override func createPages() -> [StatsPage] {
+        
+        let invalidValuesPercentage = model?.invalidValuesPercentage ?? 0
+        let readingsPercent = (model?.readingsPercentage ?? 0) - invalidValuesPercentage
+        var pages = [
+            StatsPage(name: "Readings", formattedValue: "\(Float(model?.readingsCount ?? 0).cleanValue) / \(model?.readingsMaximumCount ?? 0)"),
+            StatsPage(name: "Readings %", value: readingsPercent, formattedValue: model?.formattedReadingsPercentage, color: .white)
         ]
+        
+        if let invalidValuesCount = model?.invalidValuesCount, invalidValuesCount > 0 {
+            pages.append(
+                StatsPage(name: "Invalid readings", value: invalidValuesPercentage, formattedValue: "\(invalidValuesCount)", color: .red)
+            )
+        }
+        
+        return pages
     }
     
     override func commonInit() {
@@ -33,16 +38,20 @@ class ReadingsStatsView: BasicStatsControl {
 extension ReadingsStatsView: SMDiagramViewDataSource {
     
     @objc func numberOfSegmentsIn(diagramView: SMDiagramView) -> Int {
-        return 1
+        return pages.count - 1
     }
     
     func diagramView(_ diagramView: SMDiagramView, proportionForSegmentAtIndex index: NSInteger) -> CGFloat {
-        return pages[index + 1].value?() ?? 0
+        guard let value = pages[index + 1].value as? Float else {
+            return 0
+        }
+        
+        return CGFloat(value)
     }
     
     func diagramView(_ diagramView: SMDiagramView, colorForSegmentAtIndex index: NSInteger, angle: CGFloat) -> UIColor? {
-        
-        return pages[index + 1].color?.withAlphaComponent(0.5)
+        let color = pages[index + 1].color
+        return (index == 0 || currentPageIndex < 2) ? color?.withAlphaComponent(0.5) : color
     }
     
     func diagramView(_ diagramView: SMDiagramView, radiusForSegmentAtIndex index: NSInteger, proportion: CGFloat, angle: CGFloat) -> CGFloat {

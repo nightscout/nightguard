@@ -22,20 +22,12 @@ extension UIColor {
 
 class A1cView: BasicStatsControl {
     
-    override var pages: [StatsPage] {
+    override func createPages() -> [StatsPage] {
         return [
-            StatsPage(segmentIndex: 0, name: "A1c", value: { [weak self] in
-                CGFloat(self?.model?.a1c ?? 0)
-                }, formatter: { "\(Float($0).cleanValue)%" }, color: .clear),
-            StatsPage(segmentIndex: 1, name: "Average", value: { [weak self] in
-                CGFloat(self?.model?.averageGlucose ?? 0)
-                }, formatter: { UnitsConverter.toDisplayUnits("\($0)") + "\n\(UserDefaultsRepository.units.value.description)" },  color: .clear),
-            StatsPage(segmentIndex: 2, name: "Std Deviation", value: { [weak self] in
-                CGFloat(self?.model?.standardDeviation ?? 0)
-                }, formatter: { UnitsConverter.toDisplayUnits("\($0)") + "\n\(UserDefaultsRepository.units.value.description)" },  color: .clear),
-            StatsPage(segmentIndex: 3, name: "Coefficient of Variation", value: { [weak self] in
-                CGFloat(self?.model?.coefficientOfVariation ?? 0)
-                }, formatter: percent,  color: .clear)
+            StatsPage(name: "A1c", formattedValue: model?.formattedA1c),
+            StatsPage(name: "Average", formattedValue: model?.formattedAverageGlucose?.replacingOccurrences(of: " ", with: "\n")),
+            StatsPage(name: "Std Deviation", formattedValue: model?.formattedStandardDeviation?.replacingOccurrences(of: " ", with: "\n")),
+            StatsPage(name: "Coefficient of Variation", formattedValue: model?.formattedCoefficientOfVariation)
         ]
     }
     
@@ -65,6 +57,10 @@ class A1cView: BasicStatsControl {
         super.commonInit()
         
         diagramView.dataSource = self
+//        diagramView.separatorWidh = 8
+//        diagramView.separatorColor = .black
+//        diagramView.startAngle = .pi * 0.75
+//        diagramView.endAngle = 2 * .pi + .pi * 0.75
     }
     
     override func modelWasSet() {
@@ -81,10 +77,11 @@ class A1cView: BasicStatsControl {
 extension A1cView: SMDiagramViewDataSource {
     
     @objc func numberOfSegmentsIn(diagramView: SMDiagramView) -> Int {
-        return 1
+        return 2
     }
 
     func diagramView(_ diagramView: SMDiagramView, colorForSegmentAtIndex index: NSInteger, angle: CGFloat) -> UIColor? {
+//        return (index == 1) ? a1cColor : variationColor
         return modelColor
     }
     

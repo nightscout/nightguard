@@ -10,18 +10,13 @@ import UIKit
 
 class GlucoseDistributionView: BasicStatsControl {
     
-    override var pages: [StatsPage] {
+    override func createPages() -> [StatsPage] {
+        
         return [
-            StatsPage(segmentIndex: 1, name: "In Range", value: { [weak self] in
-                CGFloat(self?.model?.inRangeValuesPercentage ?? 0)
-                }, formatter: percent, color: .green),
-            StatsPage(segmentIndex: 0, name: "Low", value: { [weak self] in
-                CGFloat(self?.model?.lowValuesPercentage ?? 0)
-                }, formatter: percent, color: .red),
-            StatsPage(segmentIndex: 2, name: "High", value: { [weak self] in
-                CGFloat(self?.model?.highValuesPercentage ?? 0)
-                }, formatter: percent, color: .yellow),
-            StatsPage(segmentIndex: nil, name: nil, value: nil, formatter: nil, color: nil)
+            StatsPage(name: "In Range", value: model?.inRangeValuesPercentage, formattedValue: model?.formattedInRangeValuesPercentage, color: .green),
+            StatsPage(name: "Low", value: model?.lowValuesPercentage, formattedValue: model?.formattedLowValuesPercentage, color: .red),
+            StatsPage(name: "High", value: model?.highValuesPercentage, formattedValue: model?.formattedHighValuesPercentage, color: .yellow),
+            StatsPage(name: "")
         ]
     }
     
@@ -42,11 +37,15 @@ class GlucoseDistributionView: BasicStatsControl {
 extension GlucoseDistributionView: SMDiagramViewDataSource {
     
     @objc func numberOfSegmentsIn(diagramView: SMDiagramView) -> Int {
-        return 3
+        return pages.count - 1
     }
     
     func diagramView(_ diagramView: SMDiagramView, proportionForSegmentAtIndex index: NSInteger) -> CGFloat {
-        return pages[index].value?() ?? 0
+        guard let value = pages[index].value as? Float else {
+            return 0
+        }
+        
+        return CGFloat(value)
     }
     
     func diagramView(_ diagramView: SMDiagramView, colorForSegmentAtIndex index: NSInteger, angle: CGFloat) -> UIColor? {
@@ -67,13 +66,13 @@ extension GlucoseDistributionView: SMDiagramViewDataSource {
         if diagramView.diagramViewMode == .arc {
             return nil
         } else {
-            guard let percentage = pages[index].value?(), percentage > 0.3 else {
+            guard let percentage = pages[index].value as? Float, percentage > 0.3 else {
                 // not big enough!
                 return nil
             }
             
             let percentsLabel = UILabel()
-            percentsLabel.text = percent(percentage)
+            percentsLabel.text = pages[index].formattedValue
             percentsLabel.textColor = UIColor.white.withAlphaComponent(0.7)
             percentsLabel.clipsToBounds = false
             percentsLabel.layer.shadowColor = UIColor.black.cgColor

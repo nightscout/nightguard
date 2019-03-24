@@ -105,33 +105,39 @@ struct BasicStats {
     
     let readingsCount: Int
     var readingsMaximumCount: Int  {
-        return period.minutes / 5 // one reading each 5 minutes
+        return max(period.minutes / 5, readingsCount) // one reading each 5 minutes
     }
     var readingsPercentage: Float {
-        return Float(readingsCount) / Float(readingsMaximumCount)
+        return (Float(readingsCount) / Float(readingsMaximumCount)).roundTo3f.clamped(to: 0...1)
     }
     
     let invalidValuesCount: Int
     var invalidValuesPercentage: Float {
-        return (readingsCount != 0) ? (Float(invalidValuesCount) / Float(readingsCount)) : 0
+        return (readingsCount != 0) ? (Float(invalidValuesCount) / Float(readingsCount)).roundTo3f : 0
     }
     
     let lowValuesCount: Int
     var lowValuesPercentage: Float {
-        let validReadingsCount = readingsCount - invalidValuesCount
-        return (validReadingsCount != 0) ? (Float(lowValuesCount) / Float(validReadingsCount)) : 0
+        if lowValuesCount == 0 {
+            return 0.0
+        } else {
+            // to avoid situations when the sum of high, low & in range is not exactly 100%
+            return Float(1.0) - highValuesPercentage - inRangeValuesPercentage
+        }
+//        let validReadingsCount = readingsCount - invalidValuesCount
+//        return (validReadingsCount != 0) ? (Float(lowValuesCount) / Float(validReadingsCount)).roundTo3f : 0
     }
     
     let highValuesCount: Int
     var highValuesPercentage: Float {
         let validReadingsCount = readingsCount - invalidValuesCount
-        return (validReadingsCount != 0) ? (Float(highValuesCount) / Float(validReadingsCount)) : 0
+        return (validReadingsCount != 0) ? (Float(highValuesCount) / Float(validReadingsCount)).roundTo3f : 0
     }
     
     let inRangeValuesCount: Int
     var inRangeValuesPercentage: Float {
         let validReadingsCount = readingsCount - invalidValuesCount
-        return (validReadingsCount != 0) ? (Float(inRangeValuesCount) / Float(validReadingsCount)) : 0
+        return (validReadingsCount != 0) ? (Float(inRangeValuesCount) / Float(validReadingsCount)).roundTo3f : 0
     }
     
     init(period: Period = Period.last24h) {
@@ -178,6 +184,54 @@ struct BasicStats {
         self.averageGlucose = totalGlucoseCount / Float(readings.count - invalidValuesCount)
         self.a1c = (46.7 + self.averageGlucose) / 28.7
         self.standardDeviation = Float(validReadings.map { Double($0.value) }.standardDeviation)
-        self.coefficientOfVariation = (self.averageGlucose != 0) ? (self.standardDeviation / self.averageGlucose) : Float.nan
+        self.coefficientOfVariation = (self.averageGlucose != 0) ? (self.standardDeviation / self.averageGlucose).roundTo3f : Float.nan
+    }
+}
+
+extension BasicStats {
+    
+    var formattedInRangeValuesPercentage: String? {
+        return formattedPercent(inRangeValuesPercentage)
+    }
+    
+    var formattedLowValuesPercentage: String? {
+        return formattedPercent(lowValuesPercentage)
+    }
+
+    var formattedHighValuesPercentage: String? {
+        return formattedPercent(highValuesPercentage)
+    }
+    
+    var formattedAverageGlucose: String? {
+        return formattedUnits(averageGlucose)
+    }
+    
+    var formattedA1c: String? {
+        return a1c.isNaN ? nil : "\(a1c.round(to: 1).cleanValue)%"
+    }
+    
+    var formattedStandardDeviation: String? {
+        return formattedUnits(standardDeviation)
+    }
+    
+    var formattedCoefficientOfVariation: String? {
+        return formattedPercent(coefficientOfVariation)
+    }
+    
+    var formattedReadingsPercentage: String? {
+        return formattedPercent(readingsPercentage)
+    }
+    
+    var formattedInvalidValuesPercentage: String? {
+        return formattedPercent(invalidValuesPercentage)
+    }
+    
+    private func formattedPercent(_ value: Float) -> String? {
+        return value.isNaN ? nil : "\((value * 100).cleanValue)%"
+    }
+    
+    private func formattedUnits(_ value: Float) -> String? {
+        return value.isNaN ? nil :
+        UnitsConverter.toDisplayUnits("\(value)") + " \(UserDefaultsRepository.units.value.description)"
     }
 }
