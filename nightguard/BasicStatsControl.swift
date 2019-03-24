@@ -211,7 +211,7 @@ class BasicStatsControl: TouchReportingView {
         nameLabel.text = ""
         nameLabel.textAlignment = .center
         nameLabel.textColor = UIColor.white.withAlphaComponent(0.5)
-        nameLabel.font = UIFont.systemFont(ofSize: 9)
+        nameLabel.font = UIFont.systemFont(ofSize: isSmallDevice ? 8 : 9)
         
         let stackView = UIStackView(arrangedSubviews: [valueLabel, nameLabel])
         stackView.axis = .vertical
