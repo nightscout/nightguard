@@ -8,6 +8,9 @@
 
 import Foundation
 
+/**
+ The stats values calculated by considering all the readings for a given (recent) period.
+ */
 struct BasicStats {
     
     // The time period of the stats data (most recent data)

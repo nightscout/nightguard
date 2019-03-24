@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+ The stats view that displays the BG distribution chart & time spent in each individual ranges.
+ */
 class GlucoseDistributionView: BasicStatsControl {
     
     override func createPages() -> [StatsPage] {

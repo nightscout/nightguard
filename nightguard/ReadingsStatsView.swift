@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+ The stats view that displays the number of readings in the selected stats period, how many were invalid, etc.
+ */
 class ReadingsStatsView: BasicStatsControl {
     
     override func createPages() -> [StatsPage] {

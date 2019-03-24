@@ -9,6 +9,8 @@
 import UIKit
 
 extension UIColor {
+    
+    // Creates a color-meter like UIColor by placing the given value in correspondence with its good-bad range, resulting a green color if the value is very good on that scale, a red color if is very bad or yellow & compositions with red-green if is in between
     static func redYellowGreen(for value: CGFloat, bestValue: CGFloat, worstValue: CGFloat) -> UIColor {
         if bestValue < worstValue {
             let power = max(min((worstValue - CGFloat(value)) / (worstValue - bestValue), 1), 0)
@@ -20,6 +22,9 @@ extension UIColor {
     }
 }
 
+/**
+ A stats view that displays the A1c value, the average BG value, standard deviation & variation values. It appreciates the values by giving a colored feedback to user: green - good values, yellow - okish, red - pretty bad.
+ */
 class A1cView: BasicStatsControl {
     
     override func createPages() -> [StatsPage] {

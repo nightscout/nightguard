@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+ This is a fake stats view, it is actualy a stats period changer; it was convenable to keep it as a stats view because of the unitar UI.
+ */
 class StatsPeriodSelectorView: BasicStatsControl {
     
     var onPeriodChangeRequest: ((BasicStats.Period) -> Void)?

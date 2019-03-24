@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+ The stats panel that contains all the rounded stats views.
+ */
 class BasicStatsPanelView: XibLoadedView {
     
     var model: BasicStats? {

@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+ The stats page contains information about a statistic feature (name-value, other attributes used for drawing)
+ */
 struct StatsPage {
     var name: String
     var value: Any?
@@ -22,6 +25,9 @@ struct StatsPage {
     }
 }
 
+/**
+ The base stats view class, a round view that takes a BasicStats instance as model and displays a segment-like chart on margins (optional & very configurable) and property-value labels in the center (the curent stats page). The stats views can contain multiple pages; pages are turned when the user taps the view.
+ */
 class BasicStatsControl: TouchReportingView {
     
     var model: BasicStats? {
