@@ -27,7 +27,7 @@ class StatsPeriodSelectorView: BasicStatsControl {
         super.commonInit()
         
         diagramView.dataSource = self
-        valueLabel?.font = UIFont.boldSystemFont(ofSize: isSmallDevice ? 11 : 13)
+        valueLabel?.font = UIFont.boldSystemFont(ofSize: DeviceSize().isSmall ? 11 : 13)
     }
     
     override func modelWasSet() {
@@ -46,7 +46,7 @@ class StatsPeriodSelectorView: BasicStatsControl {
         super.updateValueLabel(value, asDetail: asDetail)
         
         // override value label font
-        valueLabel?.font = UIFont.boldSystemFont(ofSize: isSmallDevice ? 11 : 13)
+        valueLabel?.font = UIFont.boldSystemFont(ofSize: DeviceSize().isSmall ? 11 : 13)
     }
 }
 

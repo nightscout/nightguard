@@ -78,3 +78,9 @@ enum DeviceSize {
         }
     }
 }
+
+extension DeviceSize {
+    var isSmall: Bool {
+        return self == .iPhone4 || self == .iPhone5
+    }
+}

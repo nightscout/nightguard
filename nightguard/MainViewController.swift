@@ -21,7 +21,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var batteryLabel: UILabel!
     @IBOutlet weak var iobLabel: UILabel!
     @IBOutlet weak var snoozeButton: UIButton!
-    @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var spriteKitView: UIView!
     @IBOutlet weak var errorPanelView: UIView!
     @IBOutlet weak var errorLabel: UILabel!
@@ -29,6 +28,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var bgStackView: UIStackView!
     
     @IBOutlet weak var nightscoutButton: UIButton!
+    @IBOutlet weak var nightscoutButtonPanelView: UIView!
     @IBOutlet weak var statsPanelView: BasicStatsPanelView!
     
     // the way that has already been moved during a pan gesture
@@ -50,20 +50,11 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Embed the Volume Slider View
-        // This way the system volume can be
-        // controlled by the user
-        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
-        volumeView.backgroundColor = UIColor.black
-        volumeView.tintColor = UIColor.gray
-        volumeContainerView.addSubview(volumeView)
-        // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
-        volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
-        volumeContainerView.isHidden = true
-        
         snoozeButton.titleLabel?.numberOfLines = 0
         snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
         snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        snoozeButton.titleLabel?.font = UIFont.systemFont(ofSize: DeviceSize().isSmall ? 24 : 27)
+        snoozeButton.titleLabel?.textAlignment = .center
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -92,6 +83,7 @@ class MainViewController: UIViewController {
         let nightscoutImage = UIImage(named: "Nightscout")?.withRenderingMode(.alwaysTemplate)
         nightscoutButton.setImage(nightscoutImage, for: .normal)
         nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        nightscoutButtonPanelView.backgroundColor = .black
         
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -155,6 +147,7 @@ class MainViewController: UIViewController {
         
         // keep the nightscout button round
         nightscoutButton.layer.cornerRadius = nightscoutButton.bounds.size.width / 2
+        nightscoutButtonPanelView.layer.cornerRadius = nightscoutButtonPanelView.bounds.size.width / 2
         
         DispatchQueue.main.async { [unowned self] in
             self.chartScene.size = CGSize(width: self.spriteKitView.bounds.width, height: self.spriteKitView.bounds.height)
@@ -203,20 +196,6 @@ class MainViewController: UIViewController {
         } else {
             chartScene.scale(recognizer.scale, keepScale: false, infoLabelText: "")
         }
-    }
-    
-    // Resize the MPVolumeView when the parent view changes
-    // This is needed on an e.g. 4,7" iPhone. Otherwise the MPVolumeView would be too small
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-
-        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
-        volumeView.backgroundColor = UIColor.black
-        volumeView.tintColor = UIColor.gray
-
-        for view in volumeContainerView.subviews {
-            view.removeFromSuperview()
-        }
-        volumeContainerView.addSubview(volumeView)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -299,6 +278,7 @@ class MainViewController: UIViewController {
         var subtitle = AlarmRule.getAlarmActivationReason(ignoreSnooze: true)
         var subtitleColor: UIColor = (subtitle != nil) ? .red : .white
         var showSubtitle = true
+        let isSmallDevice = DeviceSize().isSmall
         
         if subtitle == nil {
             
@@ -323,12 +303,12 @@ class MainViewController: UIViewController {
             style.lineBreakMode = .byWordWrapping
             
             let titleAttributes: [NSAttributedStringKey : Any] = [
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 32),
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 24 : 27),
                 NSAttributedString.Key.paragraphStyle: style
             ]
             
             let messageAttributes: [NSAttributedStringKey : Any] = [
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 14 : 16),
                 NSAttributedString.Key.foregroundColor: subtitleColor,
                 NSAttributedString.Key.paragraphStyle: style
             ]
@@ -337,7 +317,6 @@ class MainViewController: UIViewController {
             attString.append(NSAttributedString(string: title, attributes: titleAttributes))
             attString.append(NSAttributedString(string: "\n"))
             attString.append(NSAttributedString(string: subtitle, attributes: messageAttributes))
-            
             snoozeButton.setAttributedTitle(attString, for: .normal)
         } else {
             snoozeButton.setAttributedTitle(nil, for: .normal)

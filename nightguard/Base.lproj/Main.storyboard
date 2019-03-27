@@ -262,8 +262,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="JZR-hs-OI1">
-                                <rect key="frame" x="8" y="52" width="398" height="196"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="JZR-hs-OI1">
+                                <rect key="frame" x="8" y="52" width="398" height="200"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6k-n0-9ni">
                                         <rect key="frame" x="0.0" y="0.0" width="398" height="104"/>
@@ -380,7 +380,7 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" placeholderIntrinsicWidth="398" placeholderIntrinsicHeight="80" translatesAutoresizingMaskIntoConstraints="NO" id="8KP-K7-ZDM" customClass="BasicStatsPanelView" customModule="nightguard" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="116" width="398" height="80"/>
+                                        <rect key="frame" x="0.0" y="120" width="398" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" priority="750" constant="80" id="i40-16-jLK"/>
@@ -394,42 +394,17 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dot-Yq-gkc" customClass="SKView">
-                                <rect key="frame" x="0.0" y="256" width="414" height="414"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifJ-Wp-aAP">
-                                        <rect key="frame" x="356" y="348" width="50" height="50"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="5To-yk-NNp"/>
-                                            <constraint firstAttribute="width" secondItem="ifJ-Wp-aAP" secondAttribute="height" multiplier="1:1" id="ZWR-Tw-wX8"/>
-                                        </constraints>
-                                        <state key="normal" image="Nightscout"/>
-                                        <connections>
-                                            <segue destination="KJF-Ig-XKW" kind="show" id="oM9-fP-iXI"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
+                                <rect key="frame" x="0.0" y="268" width="414" height="441"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="ifJ-Wp-aAP" secondAttribute="trailing" constant="8" id="lX6-Wa-Dx8"/>
-                                    <constraint firstAttribute="bottom" secondItem="ifJ-Wp-aAP" secondAttribute="bottom" constant="16" id="mNB-Ks-HOD"/>
-                                </constraints>
                             </view>
-                            <containerView contentMode="scaleToFill" placeholderIntrinsicWidth="286" placeholderIntrinsicHeight="31" translatesAutoresizingMaskIntoConstraints="NO" id="4hs-Gk-Xl6">
-                                <rect key="frame" x="8" y="691.66666666666663" width="398" height="28"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="D4S-5q-MSD"/>
-                                </constraints>
-                            </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QxI-Mz-c2E">
                                 <rect key="frame" x="8" y="725" width="398" height="80"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="0.50706335616438358" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="c2h-zh-E4m"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <inset key="titleEdgeInsets" minX="48" minY="0.0" maxX="48" maxY="0.0"/>
                                 <state key="normal" title="Snooze"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -441,7 +416,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1rF-Wm-FbJ">
-                                <rect key="frame" x="119.33333333333333" y="264" width="175.33333333333337" height="23.666666666666686"/>
+                                <rect key="frame" x="119.33333333333333" y="276" width="175.33333333333337" height="23.666666666666686"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="❌ Some error message..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tea-wl-rpX">
                                         <rect key="frame" x="8" y="3.9999999999999991" width="159.33333333333334" height="15.666666666666664"/>
@@ -464,27 +439,49 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6P-2g-zF8">
+                                <rect key="frame" x="350" y="717" width="64" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifJ-Wp-aAP">
+                                        <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="48" id="5To-yk-NNp"/>
+                                            <constraint firstAttribute="width" secondItem="ifJ-Wp-aAP" secondAttribute="height" multiplier="1:1" id="ZWR-Tw-wX8"/>
+                                        </constraints>
+                                        <state key="normal" image="Nightscout"/>
+                                        <connections>
+                                            <segue destination="KJF-Ig-XKW" kind="show" id="oM9-fP-iXI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="ifJ-Wp-aAP" firstAttribute="centerY" secondItem="G6P-2g-zF8" secondAttribute="centerY" id="8xr-OM-u4H"/>
+                                    <constraint firstItem="ifJ-Wp-aAP" firstAttribute="centerX" secondItem="G6P-2g-zF8" secondAttribute="centerX" id="Tvu-ww-hRc"/>
+                                    <constraint firstAttribute="width" secondItem="G6P-2g-zF8" secondAttribute="height" multiplier="1:1" id="Zn2-N1-NYh"/>
+                                    <constraint firstAttribute="width" constant="64" id="rTD-vZ-shN"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" label="Preferences"/>
                         <constraints>
-                            <constraint firstItem="QxI-Mz-c2E" firstAttribute="top" secondItem="4hs-Gk-Xl6" secondAttribute="bottom" constant="5.3333333333333712" id="2Vj-Ue-SMm"/>
                             <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1rF-Wm-FbJ" secondAttribute="trailing" constant="16" id="48s-0a-W8r"/>
                             <constraint firstItem="1rF-Wm-FbJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="16" id="8PW-cQ-aAZ"/>
                             <constraint firstItem="1rF-Wm-FbJ" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="top" constant="8" id="Ego-v1-CFB"/>
                             <constraint firstItem="QxI-Mz-c2E" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="Klv-Ef-br1"/>
+                            <constraint firstItem="G6P-2g-zF8" firstAttribute="centerY" secondItem="QxI-Mz-c2E" secondAttribute="centerY" constant="-16" id="L2o-wC-c8X"/>
                             <constraint firstItem="JZR-hs-OI1" firstAttribute="top" secondItem="tZK-nt-kLA" secondAttribute="top" constant="8" id="N6m-xR-3v6"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" id="OWA-mS-SW6"/>
                             <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="JZR-hs-OI1" secondAttribute="trailing" constant="8" id="Wf4-50-I6h"/>
                             <constraint firstItem="1rF-Wm-FbJ" firstAttribute="centerX" secondItem="kaq-Fc-h0j" secondAttribute="centerX" id="WuA-to-AEA"/>
                             <constraint firstItem="QxI-Mz-c2E" firstAttribute="bottom" secondItem="tZK-nt-kLA" secondAttribute="bottom" constant="-8" id="YpJ-Qg-KCD"/>
-                            <constraint firstItem="QxI-Mz-c2E" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="bottom" constant="55" id="Yvm-s9-X5C"/>
-                            <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="4hs-Gk-Xl6" secondAttribute="trailing" constant="8" id="dBA-IS-1Rm"/>
+                            <constraint firstItem="QxI-Mz-c2E" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="bottom" constant="16" id="Yvm-s9-X5C"/>
                             <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="QxI-Mz-c2E" secondAttribute="trailing" constant="8" id="ehu-vO-rie"/>
-                            <constraint firstItem="4hs-Gk-Xl6" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="gri-69-JHl"/>
+                            <constraint firstItem="G6P-2g-zF8" firstAttribute="trailing" secondItem="tZK-nt-kLA" secondAttribute="trailing" id="gQs-7v-D1g"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="trailing" secondItem="tZK-nt-kLA" secondAttribute="trailing" id="tbn-eR-7gt"/>
-                            <constraint firstItem="4hs-Gk-Xl6" firstAttribute="trailing" secondItem="QxI-Mz-c2E" secondAttribute="trailing" id="uev-8J-O3X"/>
-                            <constraint firstItem="dot-Yq-gkc" firstAttribute="top" secondItem="JZR-hs-OI1" secondAttribute="bottom" constant="8" id="vPN-8e-kWZ"/>
+                            <constraint firstItem="dot-Yq-gkc" firstAttribute="top" secondItem="JZR-hs-OI1" secondAttribute="bottom" constant="16" id="vPN-8e-kWZ"/>
                             <constraint firstItem="JZR-hs-OI1" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="zBV-oh-lrB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="tZK-nt-kLA"/>
@@ -503,17 +500,17 @@
                         <outlet property="iobLabel" destination="sxg-9W-FFR" id="DEM-gT-C3j"/>
                         <outlet property="lastUpdateLabel" destination="FFv-EO-ylg" id="KqE-n5-OYo"/>
                         <outlet property="nightscoutButton" destination="ifJ-Wp-aAP" id="MHE-ed-Fhw"/>
+                        <outlet property="nightscoutButtonPanelView" destination="G6P-2g-zF8" id="d37-ZH-Zql"/>
                         <outlet property="rawValuesPanel" destination="XtI-XB-VeV" id="1T6-VA-eJr"/>
                         <outlet property="snoozeButton" destination="QxI-Mz-c2E" id="fvE-ps-o54"/>
                         <outlet property="spriteKitView" destination="dot-Yq-gkc" id="VQK-0m-Y6R"/>
                         <outlet property="statsPanelView" destination="8KP-K7-ZDM" id="TEl-Rt-zAb"/>
                         <outlet property="timeLabel" destination="YvM-WS-hyk" id="t6A-d4-mVH"/>
-                        <outlet property="volumeContainerView" destination="4hs-Gk-Xl6" id="0Wm-7G-jj6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktO-hG-udg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="604" y="-306"/>
+            <point key="canvasLocation" x="602.89855072463774" y="-306.02678571428572"/>
         </scene>
         <!--Nightscout-->
         <scene sceneID="TLg-eV-0T7">

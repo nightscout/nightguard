@@ -71,10 +71,6 @@ class BasicStatsControl: TouchReportingView {
         return (diagramView.titleView as? UIStackView)?.arrangedSubviews.last as? UILabel
     }
     
-    lazy var isSmallDevice: Bool = {
-        return [.iPhone4, .iPhone5].contains( DeviceSize())
-    }()
-    
     fileprivate var alternateValueTimer: Timer?
     
     override init(frame: CGRect) {
@@ -112,6 +108,7 @@ class BasicStatsControl: TouchReportingView {
         diagramView.titleView = createTitleView()
         diagramView.isUserInteractionEnabled = false
         
+        let isSmallDevice = DeviceSize().isSmall
         nameLabel?.numberOfLines = 2
         nameLabel?.preferredMaxLayoutWidth = isSmallDevice ? 56 : 64
         valueLabel?.numberOfLines = 2
@@ -225,7 +222,9 @@ class BasicStatsControl: TouchReportingView {
     }
     
     private func createTitleView() -> UIView {
-        
+
+        let isSmallDevice = DeviceSize().isSmall
+
         let valueLabel = UILabel()
         valueLabel.text = ""
         valueLabel.textAlignment = .center
@@ -251,6 +250,8 @@ class BasicStatsControl: TouchReportingView {
         guard let valueLabel = self.valueLabel else {
             return
         }
+        
+        let isSmallDevice = DeviceSize().isSmall
         
         valueLabel.text = value
         if asDetail {
