@@ -40,7 +40,14 @@ class BasicStatsPanelView: XibLoadedView {
     }
     
     func updateModel() {
-        self.model = BasicStats(period: self.model?.period ?? .last24h)
+        if let model = self.model, model.containsMostRecentReading {
+            
+            // do nothing, the model contains already the most recent reading
+        } else {
+            
+            // (re)create the model
+            self.model = BasicStats(period: self.model?.period ?? .last24h)
+        }
     }
 }
 

@@ -15,10 +15,20 @@ class GlucoseDistributionView: BasicStatsControl {
     
     override func createPages() -> [StatsPage] {
         
+        var lowDuration: String?
+        if let lowValuesCount = model?.lowValuesCount, lowValuesCount > 0 {
+            lowDuration = formattedDuration(fromReadingsCount: lowValuesCount)
+        }
+        
+        var highDuration: String?
+        if let highValuesCount = model?.highValuesCount, highValuesCount > 0 {
+            highDuration = formattedDuration(fromReadingsCount: highValuesCount)
+        }
+        
         return [
             StatsPage(name: "In Range", value: model?.inRangeValuesPercentage, formattedValue: model?.formattedInRangeValuesPercentage, color: .green),
-            StatsPage(name: "Low", value: model?.lowValuesPercentage, formattedValue: model?.formattedLowValuesPercentage, color: .red),
-            StatsPage(name: "High", value: model?.highValuesPercentage, formattedValue: model?.formattedHighValuesPercentage, color: .yellow),
+            StatsPage(name: "Low", value: model?.lowValuesPercentage, formattedValue: model?.formattedLowValuesPercentage, detail: lowDuration, color: .red),
+            StatsPage(name: "High", value: model?.highValuesPercentage, formattedValue: model?.formattedHighValuesPercentage, detail: highDuration, color: .yellow),
             StatsPage(name: "")
         ]
     }
@@ -107,5 +117,5 @@ extension GlucoseDistributionView: SMDiagramViewDataSource {
     func diagramView(_ diagramView: SMDiagramView, lineWidthForSegmentAtIndex index: NSInteger, angle: CGFloat) -> CGFloat {
         //not called for SMDiagramViewModeSegment
         return (index == currentPageIndex) ? 8.0 : 6.0
-    }
+    }    
 }

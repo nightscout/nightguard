@@ -15,12 +15,14 @@ struct StatsPage {
     var name: String
     var value: Any?
     var formattedValue: String?
+    var detail: String?
     var color: UIColor?
     
-    init(name: String, value: Any? = nil, formattedValue: String? = nil, color: UIColor? = nil) {
+    init(name: String, value: Any? = nil, formattedValue: String? = nil, detail: String? = nil, color: UIColor? = nil) {
         self.name = name
         self.value = value
         self.formattedValue = formattedValue
+        self.detail = detail
         self.color = color
     }
 }
@@ -72,6 +74,8 @@ class BasicStatsControl: TouchReportingView {
     lazy var isSmallDevice: Bool = {
         return [.iPhone4, .iPhone5].contains( DeviceSize())
     }()
+    
+    fileprivate var alternateValueTimer: Timer?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -144,7 +148,7 @@ class BasicStatsControl: TouchReportingView {
         }
         
         // update title
-        updateTitleView(name: currentPage?.name, value: currentPage?.formattedValue)
+        updateTitleView(name: currentPage?.name, value: currentPage?.formattedValue, detail: currentPage?.detail)
     }
     
     func createPages() -> [StatsPage] {
@@ -158,7 +162,7 @@ class BasicStatsControl: TouchReportingView {
     func pageChanged() {
         
         // update title
-        updateTitleView(name: currentPage?.name, value: currentPage?.formattedValue)
+        updateTitleView(name: currentPage?.name, value: currentPage?.formattedValue, detail: currentPage?.detail)
     }
     
     override func layoutSubviews() {
@@ -167,16 +171,37 @@ class BasicStatsControl: TouchReportingView {
         self.layer.cornerRadius =  self.bounds.size.height / 2
     }
     
-    func updateTitleView(name: String?, value: String?) {
+    func updateTitleView(name: String?, value: String?, detail: String? = nil) {
         
         guard let titleView = diagramView.titleView else {
             return
         }
         
         nameLabel?.text = name
-        valueLabel?.text = value
+        updateValueLabel(value)
         
-        titleView.bounds = CGRect(origin: CGPoint.zero, size: titleView.systemLayoutSizeFitting(UILayoutFittingCompressedSize))
+        alternateValueTimer?.invalidate()
+        alternateValueTimer = nil
+        
+        if detail != nil {
+            
+            alternateValueTimer = Timer.schedule(1.5) { [weak self] _ in
+                guard let valueLabel = self?.valueLabel else { return }
+                UIView.transition(with: valueLabel, duration: 0.4, options: .transitionFlipFromTop, animations: { [weak self] in
+                    self?.updateValueLabel(detail, asDetail: true)
+                })
+                self?.updateTitleViewSize()
+                
+                self?.alternateValueTimer = Timer.schedule(1.5) { [weak self] _ in
+                    UIView.transition(with: valueLabel, duration: 0.4, options: .transitionFlipFromBottom, animations: { [weak self] in
+                        self?.updateValueLabel(value, asDetail: false)
+                    })
+                    self?.updateTitleViewSize()
+                }
+            }
+        }
+        
+        updateTitleViewSize()
     }
     
     private func createDiagramView() -> SMDiagramView {
@@ -219,5 +244,47 @@ class BasicStatsControl: TouchReportingView {
         stackView.spacing = isSmallDevice ? 2 : 4
         
         return stackView
+    }
+    
+    func updateValueLabel(_ value: String?, asDetail: Bool = false) {
+        
+        guard let valueLabel = self.valueLabel else {
+            return
+        }
+        
+        valueLabel.text = value
+        if asDetail {
+            valueLabel.textColor = UIColor.white.withAlphaComponent(0.8)
+            valueLabel.font = UIFont.systemFont(ofSize: isSmallDevice ? 13 : 15)
+        } else {
+            valueLabel.textColor = UIColor.white
+            valueLabel.font = UIFont.boldSystemFont(ofSize: isSmallDevice ? 13 : 15)
+        }
+    }
+    
+    private func updateTitleViewSize() {
+        guard let titleView = diagramView.titleView else {
+            return
+        }
+        
+        let width = self.bounds.width
+        let height = titleView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        titleView.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: height))
+    }
+    
+    func formattedDuration(fromReadingsCount readingsCount: Int) -> String {
+        
+        let totalMinutes = readingsCount * 5 // 5 minutes each reading
+        
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        
+        if hours == 0 {
+            return "\(minutes)m"
+        } else if minutes == 0 {
+            return "\(hours)h"
+        } else {
+            return "\(hours)h \(minutes)m"
+        }
     }
 }

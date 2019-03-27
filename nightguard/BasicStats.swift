@@ -143,6 +143,12 @@ struct BasicStats {
         return (validReadingsCount != 0) ? (Float(inRangeValuesCount) / Float(validReadingsCount)).roundTo3f : 0
     }
     
+    var containsMostRecentReading: Bool {
+        return period.readings.last == self.latestReading
+    }
+    
+    fileprivate let latestReading: BloodSugar?
+    
     init(period: Period = Period.last24h) {
         
         self.period = period
@@ -155,6 +161,7 @@ struct BasicStats {
         let lowerBound = UserDefaultsRepository.lowerBound.value
 
         self.readingsCount = readings.count
+        self.latestReading = readings.last
         
         var invalidValuesCount = 0, lowValuesCount = 0, highValuesCount = 0, inRangeValuesCount = 0
         var totalGlucoseCount: Float = 0

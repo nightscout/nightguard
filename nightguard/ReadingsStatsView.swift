@@ -23,8 +23,9 @@ class ReadingsStatsView: BasicStatsControl {
         ]
         
         if let invalidValuesCount = model?.invalidValuesCount, invalidValuesCount > 0 {
+            
             pages.append(
-                StatsPage(name: "Invalid readings", value: invalidValuesPercentage, formattedValue: "\(invalidValuesCount)", color: .red)
+                StatsPage(name: "Invalid readings", value: invalidValuesPercentage, formattedValue: "\(invalidValuesCount)", detail: formattedDuration(fromReadingsCount: invalidValuesCount) ,color: .red)
             )
         }
         

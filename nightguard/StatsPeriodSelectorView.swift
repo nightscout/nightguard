@@ -41,6 +41,13 @@ class StatsPeriodSelectorView: BasicStatsControl {
         let nextPeriodIndex = ((periods.firstIndex(of: period) ?? -1) + 1) % periods.count
         onPeriodChangeRequest?(periods[nextPeriodIndex])
     }
+    
+    override func updateValueLabel(_ value: String?, asDetail: Bool = false) {
+        super.updateValueLabel(value, asDetail: asDetail)
+        
+        // override value label font
+        valueLabel?.font = UIFont.boldSystemFont(ofSize: isSmallDevice ? 11 : 13)
+    }
 }
 
 extension StatsPeriodSelectorView: SMDiagramViewDataSource {
