@@ -20,8 +20,6 @@ class AlarmViewController: CustomFormViewController {
     fileprivate let MAX_ALERT_BELOW_VALUE : Float = 200
     fileprivate let MIN_ALERT_BELOW_VALUE : Float = 50
     
-    fileprivate let SNAP_INCREMENT : Float = 10 // or change it to 5?
-    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -39,10 +37,10 @@ class AlarmViewController: CustomFormViewController {
     
     override func constructForm() {
         
-        aboveSliderRow = createSliderRow(initialValue: AlarmRule.alertIfAboveValue.value, minimumValue: MIN_ALERT_ABOVE_VALUE, maximumValue: MAX_ALERT_ABOVE_VALUE)
+        aboveSliderRow = SliderRow.glucoseLevelSlider(initialValue: AlarmRule.alertIfAboveValue.value, minimumValue: MIN_ALERT_ABOVE_VALUE, maximumValue: MAX_ALERT_ABOVE_VALUE)
         aboveSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
-        belowSliderRow = createSliderRow(initialValue: AlarmRule.alertIfBelowValue.value, minimumValue: MIN_ALERT_BELOW_VALUE, maximumValue: MAX_ALERT_BELOW_VALUE)
+        belowSliderRow = SliderRow.glucoseLevelSlider(initialValue: AlarmRule.alertIfBelowValue.value, minimumValue: MIN_ALERT_BELOW_VALUE, maximumValue: MAX_ALERT_BELOW_VALUE)
         belowSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
         
@@ -82,6 +80,28 @@ class AlarmViewController: CustomFormViewController {
                         } else {
                             // single line, as iOS 10 doesn't expand cell for more lines
                             return "\(delta) \(units) in \(AlarmRule.numberOfConsecutiveValues.value) consecutive readings"
+                        }
+                    } else {
+                        return "Off"
+                    }
+                }
+            }
+            
+            <<< ButtonRowWithDynamicDetails("Persistent High") { row in
+                row.controllerProvider = { return PersistentHighViewController() }
+                row.detailTextProvider = {
+                    
+                    let urgentHighInMgdl = AlarmRule.persistentHighUpperBound.value
+                    let urgentHigh = UnitsConverter.toDisplayUnits("\(urgentHighInMgdl)")
+                    let units = UserDefaultsRepository.units.value.description
+                    let urgentHighWithUnits = "\(urgentHigh) \(units)"
+                    
+                    if AlarmRule.isPersistentHighEnabled.value {
+                        if #available(iOS 11.0, *) {
+                            return "Alerts when BG remains high for more than \(AlarmRule.persistentHighMinutes.value) minutes or exceeds the urgent high value (\(urgentHighWithUnits))."
+                        } else {
+                            // single line, as iOS 10 doesn't expand cell for more lines
+                            return "\(AlarmRule.persistentHighMinutes.value) minutes (< \(urgentHighWithUnits))"
                         }
                     } else {
                         return "Off"
@@ -171,34 +191,6 @@ class AlarmViewController: CustomFormViewController {
             
         default:
             break
-        }
-    }
-    
-    private func createSliderRow(initialValue: Float, minimumValue: Float, maximumValue: Float) -> SliderRow {
-        
-        return SliderRow() { row in
-            row.value = Float(UnitsConverter.toDisplayUnits("\(initialValue)"))!
-            }.cellSetup { [weak self] cell, row in
-                guard let self = self else { return }
-                //                    row.shouldHideValue = true
-                
-                let minimumValue = Float(UnitsConverter.toDisplayUnits("\(minimumValue)"))!
-                let maximumValue = Float(UnitsConverter.toDisplayUnits("\(maximumValue)"))!
-                let snapIncrement = (UserDefaultsRepository.units.value == .mgdl) ? self.SNAP_INCREMENT : 0.1
-                
-                let steps = (maximumValue - minimumValue) / snapIncrement
-                row.steps = UInt(steps.rounded())
-                cell.slider.minimumValue = minimumValue
-                cell.slider.maximumValue = maximumValue
-                row.displayValueFor = { value in
-                    guard let value = value else { return "" }
-                    let units = UserDefaultsRepository.units.value.description
-                    return String("\(value.cleanValue) \(units)")
-                }
-                
-                // fixed width for value label
-                let widthConstraint = NSLayoutConstraint(item: cell.valueLabel, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 96)
-                cell.valueLabel.addConstraints([widthConstraint])
         }
     }
     

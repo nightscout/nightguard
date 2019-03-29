@@ -153,6 +153,7 @@
 		D16C8EDD22106C9300192117 /* QuickSnoozeOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */; };
 		D16C8EDF2211047300192117 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */; };
 		D16C8EE22213022E00192117 /* UserInteractionDetectorWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */; };
+		D17F7938224D3C500074907B /* PersistentHighViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17F7937224D3C500074907B /* PersistentHighViewController.swift */; };
 		D18C5D8A22293C220099D96E /* BasicStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18C5D8922293C220099D96E /* BasicStats.swift */; };
 		D18C5D8B22293C230099D96E /* BasicStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18C5D8922293C220099D96E /* BasicStats.swift */; };
 		D18C5D8C22293C230099D96E /* BasicStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18C5D8922293C220099D96E /* BasicStats.swift */; };
@@ -380,6 +381,7 @@
 		D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSnoozeOption.swift; sourceTree = "<group>"; };
 		D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractionDetectorWindow.swift; sourceTree = "<group>"; };
+		D17F7937224D3C500074907B /* PersistentHighViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentHighViewController.swift; sourceTree = "<group>"; };
 		D18C5D8922293C220099D96E /* BasicStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStats.swift; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
 		D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchReportingView.swift; sourceTree = "<group>"; };
@@ -751,6 +753,7 @@
 				D1EBB6A82223FF0200CE27FF /* MissedReadingsViewController.swift */,
 				D160D091220E4248002B4633 /* AlertVolumeViewController.swift */,
 				D16C8ED62210377000192117 /* SnoozeActionsViewController.swift */,
+				D17F7937224D3C500074907B /* PersistentHighViewController.swift */,
 			);
 			name = forms;
 			sourceTree = "<group>";
@@ -1273,6 +1276,7 @@
 				D1B777E42243E27B003FEDF0 /* TouchReportingView.swift in Sources */,
 				D18C5D8A22293C220099D96E /* BasicStats.swift in Sources */,
 				43F1E0EE1D07693300C329A2 /* AlarmRule.swift in Sources */,
+				D17F7938224D3C500074907B /* PersistentHighViewController.swift in Sources */,
 				432E62EF1D17359600DD7978 /* StringExtension.swift in Sources */,
 				D1D1623E221AAC05006F990A /* WatchSyncRequestMessage.swift in Sources */,
 				43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */,

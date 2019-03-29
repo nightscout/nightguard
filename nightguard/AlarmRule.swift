@@ -62,7 +62,19 @@ class AlarmRule {
     static var isSmartSnoozeEnabled = UserDefaultsValue<Bool>(key: "smartSnoozeEnabled", default: true)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
+
+    static var isPersistentHighEnabled = UserDefaultsValue<Bool>(key: "persistentHighEnabled", default: false)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
     
+    static var persistentHighMinutes = UserDefaultsValue<Int>(key: "persistentHighMinutes", default: 30)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+    
+    static var persistentHighUpperBound = UserDefaultsValue<Float>(key: "persistentHighUpperBound", default: 250)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+
     /*
      * Returns true if the alarm should be played.
      * Snooze is true if the Alarm has been manually deactivated.
@@ -130,6 +142,24 @@ class AlarmRule {
         }
         
         if isTooHigh {
+            
+            if isPersistentHighEnabled.value {
+                if currentReading.value < persistentHighUpperBound.value {
+                    
+                    // if all the previous readings (for the defined minutes are high, we'll consider it a persistent high)
+                    let lastReadingValues = bloodValues.lastXMinutes(persistentHighMinutes.value).map { Double($0.value) }
+                    
+                    // we should have at least a reading in 10 minutes for considering a persistent high
+                    if !lastReadingValues.isEmpty && (lastReadingValues.count >= (persistentHighMinutes.value / 10)) {
+                        if AlarmRule.isTooHigh(Float(lastReadingValues.average)) {
+                            return "Persistent High BG"
+                        } else {
+                            return nil
+                        }
+                    }
+                }
+            }
+            
             return "High BG"
         } else if isTooLow {
             return "Low BG"
