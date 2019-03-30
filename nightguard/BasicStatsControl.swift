@@ -170,10 +170,6 @@ class BasicStatsControl: TouchReportingView {
     
     func updateTitleView(name: String?, value: String?, detail: String? = nil) {
         
-        guard let titleView = diagramView.titleView else {
-            return
-        }
-        
         nameLabel?.text = name
         updateValueLabel(value)
         
