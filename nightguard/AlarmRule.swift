@@ -147,11 +147,11 @@ class AlarmRule {
                 if currentReading.value < persistentHighUpperBound.value {
                     
                     // if all the previous readings (for the defined minutes are high, we'll consider it a persistent high)
-                    let lastReadingValues = bloodValues.lastXMinutes(persistentHighMinutes.value).map { Double($0.value) }
+                    let lastReadings = bloodValues.lastXMinutes(persistentHighMinutes.value)
                     
                     // we should have at least a reading in 10 minutes for considering a persistent high
-                    if !lastReadingValues.isEmpty && (lastReadingValues.count >= (persistentHighMinutes.value / 10)) {
-                        if AlarmRule.isTooHigh(Float(lastReadingValues.average)) {
+                    if !lastReadings.isEmpty && (lastReadings.count >= (persistentHighMinutes.value / 10)) {
+                        if lastReadings.allSatisfy({ AlarmRule.isTooHigh($0.value) }) {
                             return "Persistent High BG"
                         } else {
                             return nil
