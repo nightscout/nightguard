@@ -142,6 +142,14 @@ class PrefsViewController: CustomFormViewController {
             
             +++ Section()
             <<< SwitchRow() { row in
+                row.title = "Show Statistics"
+                row.value = UserDefaultsRepository.showStats.value
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    UserDefaultsRepository.showStats.value = value
+            }
+
+            <<< SwitchRow() { row in
                 row.title = "Show Raw BG and Noise Level"
                 row.value = UserDefaultsRepository.showRawBG.value
                 }.onChange { [weak self] row in
