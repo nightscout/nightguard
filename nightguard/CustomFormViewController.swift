@@ -222,3 +222,32 @@ extension SelectorViewController {
         }
     }
 }
+
+extension SliderRow {
+    
+    class func glucoseLevelSlider(initialValue: Float, minimumValue: Float, maximumValue: Float, snapIncrementForMgDl: Float = 10.0) -> SliderRow {
+        
+        return SliderRow() { row in
+            row.value = Float(UnitsConverter.toDisplayUnits("\(initialValue)"))!
+            }.cellSetup { cell, row in
+                
+                let minimumValue = Float(UnitsConverter.toDisplayUnits("\(minimumValue)"))!
+                let maximumValue = Float(UnitsConverter.toDisplayUnits("\(maximumValue)"))!
+                let snapIncrement = (UserDefaultsRepository.units.value == .mgdl) ? snapIncrementForMgDl : 0.1
+                
+                let steps = (maximumValue - minimumValue) / snapIncrement
+                row.steps = UInt(steps.rounded())
+                cell.slider.minimumValue = minimumValue
+                cell.slider.maximumValue = maximumValue
+                row.displayValueFor = { value in
+                    guard let value = value else { return "" }
+                    let units = UserDefaultsRepository.units.value.description
+                    return String("\(value.cleanValue) \(units)")
+                }
+                
+                // fixed width for value label
+                let widthConstraint = NSLayoutConstraint(item: cell.valueLabel, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 96)
+                cell.valueLabel.addConstraints([widthConstraint])
+        }
+    }
+}

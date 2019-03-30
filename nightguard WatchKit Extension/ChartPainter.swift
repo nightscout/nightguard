@@ -301,7 +301,8 @@ class ChartPainter {
     }
     
     fileprivate func durationIsMoreThan6Hours(_ minTimestamp : Double, maxTimestamp : Double) -> Bool {
-        return maxTimestamp - minTimestamp > 6 * 60 * 60 * 1000
+        let sixHours = Double(6 * 60 * 60 * 1000)
+        return (maxTimestamp - minTimestamp) > sixHours
     }
     
     fileprivate func paintEverySecondHour(_ context : CGContext, attrs : [NSAttributedStringKey : Any]) {

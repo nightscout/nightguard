@@ -100,6 +100,9 @@ class UserDefaultsRepository {
     static let volumeKeysOnAlertSnoozeOption = UserDefaultsValue<QuickSnoozeOption>(key: "volumeKeysOnAlertSnoozeOption", default: .doNothing)
     #endif
     
+    // show/hide stats
+    static let showStats = UserDefaultsValue<Bool>(key: "showStats", default: true)
+    
     /* Parses the URI entered in the UI and extracts the token if one is present. */
     fileprivate static func parseBaseUri() {
         url = nil

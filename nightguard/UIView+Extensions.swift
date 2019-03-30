@@ -10,6 +10,7 @@ import UIKit
 
 extension UIView {
     func pin(to view: UIView) {
+        translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             leadingAnchor.constraint(equalTo: view.leadingAnchor),
             trailingAnchor.constraint(equalTo: view.trailingAnchor),

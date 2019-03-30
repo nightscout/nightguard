@@ -21,7 +21,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var batteryLabel: UILabel!
     @IBOutlet weak var iobLabel: UILabel!
     @IBOutlet weak var snoozeButton: UIButton!
-    @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var spriteKitView: UIView!
     @IBOutlet weak var errorPanelView: UIView!
     @IBOutlet weak var errorLabel: UILabel!
@@ -29,6 +28,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var bgStackView: UIStackView!
     
     @IBOutlet weak var nightscoutButton: UIButton!
+    @IBOutlet weak var nightscoutButtonPanelView: UIView!
+    @IBOutlet weak var statsPanelView: BasicStatsPanelView!
+    
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
     
@@ -38,6 +40,9 @@ class MainViewController: UIViewController {
     // check every 30 Seconds whether new bgvalues should be retrieved
     let timeInterval: TimeInterval = 30.0
     
+    // basic stats for the last 24 hours
+    var basicStats: BasicStats?
+    
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
@@ -45,20 +50,11 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Embed the Volume Slider View
-        // This way the system volume can be
-        // controlled by the user
-        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
-        volumeView.backgroundColor = UIColor.black
-        volumeView.tintColor = UIColor.gray
-        volumeContainerView.addSubview(volumeView)
-        // add an observer to resize the MPVolumeView when displayed on e.g. 4.7" iPhone
-        volumeContainerView.addObserver(self, forKeyPath: "bounds", options: [], context: nil)
-        volumeContainerView.isHidden = true
-        
         snoozeButton.titleLabel?.numberOfLines = 0
         snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
         snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        snoozeButton.titleLabel?.font = UIFont.systemFont(ofSize: DeviceSize().isSmall ? 24 : 27)
+        snoozeButton.titleLabel?.textAlignment = .center
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -87,6 +83,7 @@ class MainViewController: UIViewController {
         let nightscoutImage = UIImage(named: "Nightscout")?.withRenderingMode(.alwaysTemplate)
         nightscoutButton.setImage(nightscoutImage, for: .normal)
         nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        nightscoutButtonPanelView.backgroundColor = .black
         
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -102,6 +99,13 @@ class MainViewController: UIViewController {
         AlarmRule.onSnoozeTimestampChanged = { [weak self] in
             self?.evaluateAlarmActivationState()
         }
+        
+        UserDefaultsRepository.upperBound.observeChanges { [weak self] _ in
+            self?.updateBasicStats()
+        }
+        UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
+            self?.updateBasicStats()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,13 +113,23 @@ class MainViewController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         showHideRawBGPanel()
+
+        // show/hide the stats panel, using user preference value
+        let statsShouldBeHidden = !UserDefaultsRepository.showStats.value
+        if statsPanelView.isHidden != statsShouldBeHidden {
+            statsPanelView.isHidden = statsShouldBeHidden
+            
+            view.setNeedsLayout()
+            view.layoutIfNeeded()
+            
+            if !statsPanelView.isHidden {
+                DispatchQueue.main.async { [unowned self] in
+                    self.statsPanelView.updateModel()
+                }
+            }
+        }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-    
+        
     override func viewDidAppear(_ animated: Bool) {
         
         // Start immediately so that the current time gets displayed at once
@@ -133,6 +147,12 @@ class MainViewController: UIViewController {
         
         // keep the nightscout button round
         nightscoutButton.layer.cornerRadius = nightscoutButton.bounds.size.width / 2
+        nightscoutButtonPanelView.layer.cornerRadius = nightscoutButtonPanelView.bounds.size.width / 2
+        
+        DispatchQueue.main.async { [unowned self] in
+            self.chartScene.size = CGSize(width: self.spriteKitView.bounds.width, height: self.spriteKitView.bounds.height)
+            self.loadAndPaintChartData(forceRepaint: true)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -176,20 +196,6 @@ class MainViewController: UIViewController {
         } else {
             chartScene.scale(recognizer.scale, keepScale: false, infoLabelText: "")
         }
-    }
-    
-    // Resize the MPVolumeView when the parent view changes
-    // This is needed on an e.g. 4,7" iPhone. Otherwise the MPVolumeView would be too small
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-
-        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
-        volumeView.backgroundColor = UIColor.black
-        volumeView.tintColor = UIColor.gray
-
-        for view in volumeContainerView.subviews {
-            view.removeFromSuperview()
-        }
-        volumeContainerView.addSubview(volumeView)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -272,6 +278,7 @@ class MainViewController: UIViewController {
         var subtitle = AlarmRule.getAlarmActivationReason(ignoreSnooze: true)
         var subtitleColor: UIColor = (subtitle != nil) ? .red : .white
         var showSubtitle = true
+        let isSmallDevice = DeviceSize().isSmall
         
         if subtitle == nil {
             
@@ -296,12 +303,12 @@ class MainViewController: UIViewController {
             style.lineBreakMode = .byWordWrapping
             
             let titleAttributes: [NSAttributedStringKey : Any] = [
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 32),
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 24 : 27),
                 NSAttributedString.Key.paragraphStyle: style
             ]
             
             let messageAttributes: [NSAttributedStringKey : Any] = [
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 14 : 16),
                 NSAttributedString.Key.foregroundColor: subtitleColor,
                 NSAttributedString.Key.paragraphStyle: style
             ]
@@ -310,7 +317,6 @@ class MainViewController: UIViewController {
             attString.append(NSAttributedString(string: title, attributes: titleAttributes))
             attString.append(NSAttributedString(string: "\n"))
             attString.append(NSAttributedString(string: subtitle, attributes: messageAttributes))
-            
             snoozeButton.setAttributedTitle(attString, for: .normal)
         } else {
             snoozeButton.setAttributedTitle(nil, for: .normal)
@@ -391,6 +397,7 @@ class MainViewController: UIViewController {
             if case .data(let newTodaysData) = result {
                 let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
                 self.paintChartData(todaysData: newTodaysData, yesterdaysData: cachedYesterdaysData)
+                self.updateBasicStats()
             }
         }
         
@@ -400,6 +407,7 @@ class MainViewController: UIViewController {
             if case .data(let newYesterdaysData) = result {
                 let cachedTodaysBgData = NightscoutCacheService.singleton.getTodaysBgData()
                 self.paintChartData(todaysData: cachedTodaysBgData, yesterdaysData: newYesterdaysData)
+                self.updateBasicStats()
             }
         }
         
@@ -429,5 +437,14 @@ class MainViewController: UIViewController {
 
         // show raw values panel ONLY if configured so and we have a valid rawbg value!
         self.rawValuesPanel.isHidden = !UserDefaultsRepository.showRawBG.value || !isValidRawBGValue
+    }
+    
+    fileprivate func updateBasicStats() {
+        
+        // update the UI
+//        statsLabel.text = "A1c: \(String(format: "%.1f", basicStats!.a1c))%, in: \(String(format: "%.1f", basicStats!.inRangeValuesPercentage * 100))%"
+        if !statsPanelView.isHidden {
+            statsPanelView.updateModel()
+        }
     }
 }
