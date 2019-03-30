@@ -40,7 +40,7 @@ class BasicStatsPanelView: XibLoadedView {
     }
     
     func updateModel() {
-        if let model = self.model, model.containsMostRecentReading {
+        if let model = self.model, model.isUpToDate {
             
             // do nothing, the model contains already the most recent reading
         } else {

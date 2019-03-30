@@ -143,11 +143,18 @@ struct BasicStats {
         return (validReadingsCount != 0) ? (Float(inRangeValuesCount) / Float(validReadingsCount)).roundTo3f : 0
     }
     
-    var containsMostRecentReading: Bool {
-        return period.readings.last == self.latestReading
+    /// Returns true if the stats are actual, with respect for the input data (contains the most recent readings & the current upper-lower bounds).
+    var isUpToDate: Bool {
+        return
+            self.period.readings.last == self.latestReading &&
+            self.upperBound == UserDefaultsRepository.upperBound.value &&
+            self.lowerBound == UserDefaultsRepository.lowerBound.value
     }
     
+    // store some relevant data about the stats input data (to be able to tell later if the stats are "up to date")
     fileprivate let latestReading: BloodSugar?
+    fileprivate let upperBound: Float
+    fileprivate let lowerBound: Float
     
     init(period: Period = Period.last24h) {
         
@@ -157,8 +164,8 @@ struct BasicStats {
         let readings = period.readings
         
         // get the upper/lower bounds
-        let upperBound = UserDefaultsRepository.upperBound.value
-        let lowerBound = UserDefaultsRepository.lowerBound.value
+        self.upperBound = UserDefaultsRepository.upperBound.value
+        self.lowerBound = UserDefaultsRepository.lowerBound.value
 
         self.readingsCount = readings.count
         self.latestReading = readings.last
