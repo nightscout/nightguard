@@ -17,11 +17,11 @@ import UIKit
 class AlarmSound {
     
     static var isPlaying: Bool {
-        return self.audioPlayer.isPlaying
+        return self.audioPlayer?.isPlaying == true
     }
     
     static var isMuted: Bool {
-        return self.audioPlayer.volume == 0
+        return self.muted
     }
     
     static var isTesting: Bool = false
@@ -39,15 +39,18 @@ class AlarmSound {
     
     fileprivate static var playingTimer: Timer?
     
-    fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")
-    fileprivate static let audioPlayer : AVAudioPlayer = try! AVAudioPlayer(contentsOf: soundURL!)
+    fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")!
+    fileprivate static var audioPlayer: AVAudioPlayer?
     fileprivate static let audioPlayerDelegate = AudioPlayerDelegate()
+    
+    fileprivate static var muted = false
     
     /*
      * Sets the audio volume to 0.
      */
     static func muteVolume() {
-        self.audioPlayer.volume = 0
+        self.audioPlayer?.volume = 0
+        self.muted = true
         self.restoreSystemOutputVolume()
     }
     
@@ -56,46 +59,51 @@ class AlarmSound {
      */
     static func unmuteVolume() {
         if self.fadeInTimeInterval.value > 0 {
-            self.audioPlayer.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
+            self.audioPlayer?.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
         } else {
-            self.audioPlayer.volume = 1.0
+            self.audioPlayer?.volume = 1.0
         }
+        self.muted = false
     }
     
     static func stop() {
         self.playingTimer?.invalidate()
         self.playingTimer = nil
         
-        self.audioPlayer.stop()
+        self.audioPlayer?.stop()
+        self.audioPlayer = nil
+        
         self.restoreSystemOutputVolume()
     }
     
     static func play() {
         
-        guard !self.audioPlayer.isPlaying else {
+        guard !self.isPlaying else {
             return
         }
         
-        self.audioPlayer.delegate = self.audioPlayerDelegate
-        
         do {
+            self.audioPlayer = try AVAudioPlayer(contentsOf: self.soundURL)
+            self.audioPlayer!.delegate = self.audioPlayerDelegate
+            
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try AVAudioSession.sharedInstance().setActive(true)
             
             // Play endless loops
-            self.audioPlayer.numberOfLoops = -1
+            self.audioPlayer!.numberOfLoops = -1
             
             // init volume before start playing (mute if fade-in)
-            self.audioPlayer.volume = (self.fadeInTimeInterval.value > 0) ? 0.0 : 1.0
             
-            if !self.audioPlayer.prepareToPlay() {
+            self.audioPlayer!.volume = (self.muted || (self.fadeInTimeInterval.value > 0)) ? 0.0 : 1.0
+            
+            if !self.audioPlayer!.prepareToPlay() {
                 NSLog("AlarmSound - audio player failed preparing to play")
             }
             
-            if self.audioPlayer.play() {
+            if self.audioPlayer!.play() {
                 if !self.isPlaying {
                     NSLog("AlarmSound - not playing after calling play")
-                    NSLog("AlarmSound - rate value: \(self.audioPlayer.rate)")
+                    NSLog("AlarmSound - rate value: \(self.audioPlayer!.rate)")
                 }
             } else {
                 NSLog("AlarmSound - audio player failed to play")
@@ -103,8 +111,8 @@ class AlarmSound {
             
             
             // do fade-in
-            if self.fadeInTimeInterval.value > 0 {
-                self.audioPlayer.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
+            if !self.muted && (self.fadeInTimeInterval.value > 0) {
+                self.audioPlayer!.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
             }
             
             self.playingTimer = Timer.schedule(repeatInterval: 1.0, handler: self.onPlayingTimer)
