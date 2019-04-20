@@ -31,6 +31,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var nightscoutButtonPanelView: UIView!
     @IBOutlet weak var statsPanelView: BasicStatsPanelView!
     
+    // currently presented bedside view controller instance
+    private var bedsideViewController: BedsideViewController?
+    
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
     
@@ -106,6 +109,10 @@ class MainViewController: UIViewController {
         UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
             self?.updateBasicStats()
         }
+        
+        // TODO: move the trigger to a button
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.longPressGesture(_:)))
+        self.view.addGestureRecognizer(longPressGestureRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -195,7 +202,21 @@ class MainViewController: UIViewController {
             chartScene.scale(recognizer.scale, keepScale: true, infoLabelText: "")
         } else {
             chartScene.scale(recognizer.scale, keepScale: false, infoLabelText: "")
+        }        
+    }
+    
+    @objc func longPressGesture(_ recognizer : UILongPressGestureRecognizer) {
+        
+        guard recognizer.state == UIGestureRecognizerState.ended else {
+            return
         }
+        
+        // present the fullscreen view controller
+        self.bedsideViewController = BedsideViewController.instantiate()
+        self.present(self.bedsideViewController!, animated: true)
+
+        // initiate a periodic update for feeding fresh data to presented view controller
+        doPeriodicUpdate(forceRepaint: false)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -252,6 +273,7 @@ class MainViewController: UIViewController {
         }
         
         updateSnoozeButtonText()
+        self.bedsideViewController?.updateAlarmInfo()
     }
     
     // check whether new Values should be retrieved
@@ -282,10 +304,13 @@ class MainViewController: UIViewController {
         
         if subtitle == nil {
             
-            // no alarm, but maybe we'll show a low prediction warning...
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue.value), minutesToLow > 0 {
-                subtitle = "Low Predicted in \(minutesToLow)min"
-                subtitleColor = .yellow
+            if AlarmRule.isLowPredictionEnabled.value {
+                
+                // no alarm, but maybe we'll show a low prediction warning...
+                if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue.value), minutesToLow > 0 {
+                    subtitle = "Low Predicted in \(minutesToLow)min"
+                    subtitleColor = .yellow
+                }
             }
         }
 
@@ -354,12 +379,14 @@ class MainViewController: UIViewController {
             case .data(let newNightscoutData):
                 self.errorPanelView.isHidden = true
                 self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                self.bedsideViewController?.currentNightscoutData = newNightscoutData
                 
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
             }
         }
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+        self.bedsideViewController?.currentNightscoutData = currentNightscoutData
     }
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
