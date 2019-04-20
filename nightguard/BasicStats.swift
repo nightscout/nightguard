@@ -111,7 +111,7 @@ struct BasicStats {
         return max(period.minutes / 5, readingsCount) // one reading each 5 minutes
     }
     var readingsPercentage: Float {
-        return (Float(readingsCount) / Float(readingsMaximumCount)).roundTo3f.clamped(to: 0...1)
+        return (readingsMaximumCount != 0) ? (Float(readingsCount) / Float(readingsMaximumCount)).roundTo3f.clamped(to: 0...1) : 0
     }
     
     let invalidValuesCount: Int
