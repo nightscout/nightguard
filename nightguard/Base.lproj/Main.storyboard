@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -422,7 +422,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNg-kT-Em2" userLabel="Slide to Snooze View" customClass="SlideToSnoozeView" customModule="nightguard" customModuleProvider="target">
-                                <rect key="frame" x="8" y="641" width="359" height="80"/>
+                                <rect key="frame" x="0.0" y="641" width="375" height="80"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="i8h-7H-LUb"/>
@@ -462,12 +462,12 @@
                             <constraint firstItem="1rF-Wm-FbJ" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="top" constant="8" id="Ego-v1-CFB"/>
                             <constraint firstItem="JZR-hs-OI1" firstAttribute="top" secondItem="tZK-nt-kLA" secondAttribute="top" constant="8" id="N6m-xR-3v6"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" id="OWA-mS-SW6"/>
-                            <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="MNg-kT-Em2" secondAttribute="trailing" constant="8" id="S11-4t-Q5g"/>
+                            <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="MNg-kT-Em2" secondAttribute="trailing" id="S11-4t-Q5g"/>
                             <constraint firstItem="tZK-nt-kLA" firstAttribute="trailing" secondItem="JZR-hs-OI1" secondAttribute="trailing" constant="8" id="Wf4-50-I6h"/>
                             <constraint firstItem="1rF-Wm-FbJ" firstAttribute="centerX" secondItem="kaq-Fc-h0j" secondAttribute="centerX" id="WuA-to-AEA"/>
                             <constraint firstItem="MNg-kT-Em2" firstAttribute="top" secondItem="dot-Yq-gkc" secondAttribute="bottom" constant="16" id="dCj-sI-vFo"/>
                             <constraint firstItem="G6P-2g-zF8" firstAttribute="trailing" secondItem="tZK-nt-kLA" secondAttribute="trailing" id="gQs-7v-D1g"/>
-                            <constraint firstItem="MNg-kT-Em2" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" constant="8" id="rgp-jn-66j"/>
+                            <constraint firstItem="MNg-kT-Em2" firstAttribute="leading" secondItem="tZK-nt-kLA" secondAttribute="leading" id="rgp-jn-66j"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="trailing" secondItem="tZK-nt-kLA" secondAttribute="trailing" id="tbn-eR-7gt"/>
                             <constraint firstItem="G6P-2g-zF8" firstAttribute="centerY" secondItem="MNg-kT-Em2" secondAttribute="centerY" constant="-16" id="uWf-Eb-2Nu"/>
                             <constraint firstItem="dot-Yq-gkc" firstAttribute="top" secondItem="JZR-hs-OI1" secondAttribute="bottom" constant="16" id="vPN-8e-kWZ"/>
@@ -579,7 +579,7 @@
     </scenes>
     <resources>
         <image name="Alarm" width="25" height="25"/>
-        <image name="Main" width="56.25" height="56.25"/>
+        <image name="Main" width="25" height="25"/>
         <image name="Nightscout" width="25" height="25"/>
         <image name="Prefs" width="25" height="25"/>
         <image name="Stats" width="25" height="25"/>

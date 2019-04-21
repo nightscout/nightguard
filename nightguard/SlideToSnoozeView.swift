@@ -83,6 +83,9 @@ public class SlideToSnoozeView: UIView {
         thumbnailImageView.tintColor = UIColor.App.Preferences.detailText
         
         self.addSubview(view)
+        // add a tap gesture recognizer to let the user now that he has to slide instead of tap
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(signalThatASlideInsteadOfATapIsNeededToSnooze(sender:)))
+        view.addGestureRecognizer(tapGesture)
         view.addSubview(thumbnailImageView)
         view.addSubview(sliderHolderView)
         view.addSubview(draggedView)
@@ -94,6 +97,21 @@ public class SlideToSnoozeView: UIView {
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(_:)))
         panGestureRecognizer.minimumNumberOfTouches = 1
         thumbnailImageView.addGestureRecognizer(panGestureRecognizer)
+    }
+    
+    @objc func signalThatASlideInsteadOfATapIsNeededToSnooze(sender: UITapGestureRecognizer) {
+        print("Tap")
+        UIView.animate(withDuration: animationVelocity, animations: {
+                self.leadingThumbnailViewConstraint?.constant = 50
+                self.textLabel.alpha = 1
+                self.layoutIfNeeded()
+            }, completion: { _ in
+                UIView.animate(withDuration: self.animationVelocity) {
+                    self.leadingThumbnailViewConstraint?.constant = self.thumbnailViewLeadingDistance
+                    self.textLabel.alpha = 1
+                    self.layoutIfNeeded()
+                }
+            })
     }
     
     private func setupConstraint() {
@@ -191,17 +209,21 @@ public class SlideToSnoozeView: UIView {
                 updateThumbnailViewLeadingPosition(thumbnailViewLeadingDistance)
                 return
             }
-            UIView.animate(withDuration: animationVelocity) {
-                self.leadingThumbnailViewConstraint?.constant = self.thumbnailViewLeadingDistance
-                self.textLabel.alpha = 1
-                self.layoutIfNeeded()
-            }
+            letButtonReturnToStartPosition()
             break
         default:
             break
         }
     }
     
+    private func letButtonReturnToStartPosition() {
+        UIView.animate(withDuration: animationVelocity) {
+            self.leadingThumbnailViewConstraint?.constant = self.thumbnailViewLeadingDistance
+            self.textLabel.alpha = 1
+            self.layoutIfNeeded()
+        }
+    }
+
     // Others
     public func resetStateWithAnimation(_ animated: Bool) {
         let action = {
