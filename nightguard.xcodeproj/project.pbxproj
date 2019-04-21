@@ -969,7 +969,7 @@
 			};
 			buildConfigurationList = 43647BC51BFF6435004389F9 /* Build configuration list for PBXProject "nightguard" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

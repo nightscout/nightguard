@@ -34,7 +34,7 @@ class BasicStatsPanelView: XibLoadedView {
             self.model = BasicStats(period: period)
         }
         
-        defer {
+        do {
             self.model = BasicStats(period: .last24h)
         }
     }
