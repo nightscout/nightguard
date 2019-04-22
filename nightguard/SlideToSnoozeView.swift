@@ -199,7 +199,9 @@ public class SlideToSnoozeView: UIView {
             textLabel.alpha = (xEndingPoint - translatedPoint) / xEndingPoint
             break
         case .ended:
-            if translatedPoint >= xEndingPoint {
+            // add some tolerance so that the slider doesn't need to be pushed to the very end
+            // of the sliding area
+            if translatedPoint >= xEndingPoint - 50 {
                 textLabel.alpha = 0
                 updateThumbnailViewLeadingPosition(xEndingPoint)
                 delegate?.slideToSnoozeDelegateDidFinish(self)
