@@ -10,6 +10,7 @@ import UIKit
 import MediaPlayer
 import WatchConnectivity
 import SpriteKit
+import XLActionController
 
 class MainViewController: UIViewController {
     
@@ -27,8 +28,8 @@ class MainViewController: UIViewController {
     @IBOutlet weak var rawValuesPanel: GroupedLabelsView!
     @IBOutlet weak var bgStackView: UIStackView!
     
-    @IBOutlet weak var nightscoutButton: UIButton!
-    @IBOutlet weak var nightscoutButtonPanelView: UIView!
+    @IBOutlet weak var actionsMenuButton: UIButton!
+    @IBOutlet weak var actionsMenuButtonPanelView: UIView!
     @IBOutlet weak var statsPanelView: BasicStatsPanelView!
     
     // currently presented bedside view controller instance
@@ -82,11 +83,11 @@ class MainViewController: UIViewController {
         rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
         bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
         
-        nightscoutButton.tintColor = UIColor.white
-        let nightscoutImage = UIImage(named: "Nightscout")?.withRenderingMode(.alwaysTemplate)
-        nightscoutButton.setImage(nightscoutImage, for: .normal)
-        nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
-        nightscoutButtonPanelView.backgroundColor = .black
+        actionsMenuButton.tintColor = UIColor.gray
+        let actionImage = UIImage(named: "Action")?.withRenderingMode(.alwaysTemplate)
+        actionsMenuButton.setImage(actionImage, for: .normal)
+        actionsMenuButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        actionsMenuButtonPanelView.backgroundColor = .black
         
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -110,9 +111,9 @@ class MainViewController: UIViewController {
             self?.updateBasicStats()
         }
         
-        // TODO: move the trigger to a button
+        // show nightscout on long press of action button
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.longPressGesture(_:)))
-        self.view.addGestureRecognizer(longPressGestureRecognizer)
+        self.actionsMenuButton.addGestureRecognizer(longPressGestureRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -153,8 +154,8 @@ class MainViewController: UIViewController {
         super.viewWillLayoutSubviews()
         
         // keep the nightscout button round
-        nightscoutButton.layer.cornerRadius = nightscoutButton.bounds.size.width / 2
-        nightscoutButtonPanelView.layer.cornerRadius = nightscoutButtonPanelView.bounds.size.width / 2
+        actionsMenuButton.layer.cornerRadius = actionsMenuButton.bounds.size.width / 2
+        actionsMenuButtonPanelView.layer.cornerRadius = actionsMenuButtonPanelView.bounds.size.width / 2
         
         DispatchQueue.main.async { [unowned self] in
             self.chartScene.size = CGSize(width: self.spriteKitView.bounds.width, height: self.spriteKitView.bounds.height)
@@ -207,16 +208,11 @@ class MainViewController: UIViewController {
     
     @objc func longPressGesture(_ recognizer : UILongPressGestureRecognizer) {
         
-        guard recognizer.state == UIGestureRecognizerState.ended else {
+        guard recognizer.state == UIGestureRecognizerState.recognized else {
             return
         }
         
-        // present the fullscreen view controller
-        self.bedsideViewController = BedsideViewController.instantiate()
-        self.present(self.bedsideViewController!, animated: true)
-
-        // initiate a periodic update for feeding fresh data to presented view controller
-        doPeriodicUpdate(forceRepaint: false)
+        showNightscout()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -292,6 +288,35 @@ class MainViewController: UIViewController {
     
     @IBAction func doSnoozeAction(_ sender: AnyObject) {
         showSnoozePopup()
+    }
+    
+    @IBAction func showActionsMenu(_ sender: AnyObject) {
+        
+        let actionController = MenuActionController()
+        actionController.addAction(Action(MenuActionData(title: "Open your Nightscout site", image: UIImage(named: "Nightscout")!.withRenderingMode(.alwaysTemplate)), style: .default) { [unowned self] _ in
+            
+            self.showNightscout()
+        })
+        actionController.addAction(Action(MenuActionData(title: "Fullscreen monitor", image: UIImage(named: "Fullscreen")!.withRenderingMode(.alwaysTemplate)), style: .default) {  [unowned self] _ in
+            self.showFullscreenMonitor()
+        })
+        
+        present(actionController, animated: true) {
+            actionController.view.tintColor = UIColor.white//.withAlphaComponent(0.7)
+        }
+    }
+    
+    func showNightscout() {
+        let nightscoutInitialViewController = UIStoryboard(name: "Nightscout", bundle: Bundle.main).instantiateInitialViewController()!
+        self.present(nightscoutInitialViewController, animated: true, completion: nil)
+    }
+    
+    func showFullscreenMonitor() {
+        self.bedsideViewController = BedsideViewController.instantiate()
+        self.present(self.bedsideViewController!, animated: true)
+        
+        // initiate a periodic update for feeding fresh data to presented view controller
+        self.doPeriodicUpdate(forceRepaint: false)
     }
         
     public func updateSnoozeButtonText() {
