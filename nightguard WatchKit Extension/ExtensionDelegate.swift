@@ -242,7 +242,7 @@ extension ExtensionDelegate {
         }
 
 //        let updateComplication = message["updateComplication"] as? Bool ?? false
-        BackgroundRefreshLogger.info("📱Updating nightscout data (update complication: \(updateComplication))")
+        BackgroundRefreshLogger.info("📱Updating nightscout data (update complication: \(String(describing: updateComplication)))")
         
         let updateResult = updateNightscoutData(nightscoutData, updateComplication: true) // always update complication!
         BackgroundRefreshLogger.nightscoutDataReceived(nightscoutData, updateResult: updateResult, updateSource: .phoneApp)

@@ -1,16 +1,22 @@
 PODS:
   - Eureka (4.3.1)
+  - XLActionController (5.0.0):
+    - XLActionController/Core (= 5.0.0)
+  - XLActionController/Core (5.0.0)
 
 DEPENDENCIES:
   - Eureka
+  - XLActionController
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Eureka
+    - XLActionController
 
 SPEC CHECKSUMS:
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
+  XLActionController: d7dea0b162bd3977311bcba7d377b88d6b87a7b4
 
-PODFILE CHECKSUM: 60c292a641d78e0019281e2b1e9a48453daab2a5
+PODFILE CHECKSUM: 5ed83a63601875cde50174a8cda4c8c28ce58f63
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

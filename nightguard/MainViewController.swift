@@ -10,9 +10,10 @@ import UIKit
 import MediaPlayer
 import WatchConnectivity
 import SpriteKit
+import XLActionController
 
-class MainViewController: UIViewController {
-    
+class MainViewController: UIViewController, SlideToSnoozeDelegate {
+
     @IBOutlet weak var bgLabel: UILabel!
     @IBOutlet weak var deltaLabel: UILabel!
     @IBOutlet weak var deltaArrowsLabel: UILabel!
@@ -20,16 +21,19 @@ class MainViewController: UIViewController {
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var batteryLabel: UILabel!
     @IBOutlet weak var iobLabel: UILabel!
-    @IBOutlet weak var snoozeButton: UIButton!
     @IBOutlet weak var spriteKitView: UIView!
     @IBOutlet weak var errorPanelView: UIView!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var rawValuesPanel: GroupedLabelsView!
     @IBOutlet weak var bgStackView: UIStackView!
     
-    @IBOutlet weak var nightscoutButton: UIButton!
-    @IBOutlet weak var nightscoutButtonPanelView: UIView!
+    @IBOutlet weak var actionsMenuButton: UIButton!
+    @IBOutlet weak var actionsMenuButtonPanelView: UIView!
     @IBOutlet weak var statsPanelView: BasicStatsPanelView!
+    @IBOutlet weak var slideToSnoozeView: SlideToSnoozeView!
+    
+    // currently presented bedside view controller instance
+    private var bedsideViewController: BedsideViewController?
     
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
@@ -50,11 +54,12 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        snoozeButton.titleLabel?.numberOfLines = 0
-        snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
-        snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
-        snoozeButton.titleLabel?.font = UIFont.systemFont(ofSize: DeviceSize().isSmall ? 24 : 27)
-        snoozeButton.titleLabel?.textAlignment = .center
+        //TODO update to slide-to-snooze
+        //snoozeButton.titleLabel?.numberOfLines = 0
+        //snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
+        //snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        //snoozeButton.titleLabel?.font = UIFont.systemFont(ofSize: DeviceSize().isSmall ? 24 : 27)
+        //snoozeButton.titleLabel?.textAlignment = .center
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
@@ -79,11 +84,11 @@ class MainViewController: UIViewController {
         rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
         bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
         
-        nightscoutButton.tintColor = UIColor.white
-        let nightscoutImage = UIImage(named: "Nightscout")?.withRenderingMode(.alwaysTemplate)
-        nightscoutButton.setImage(nightscoutImage, for: .normal)
-        nightscoutButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
-        nightscoutButtonPanelView.backgroundColor = .black
+        actionsMenuButton.tintColor = UIColor.gray
+        let actionImage = UIImage(named: "Action")?.withRenderingMode(.alwaysTemplate)
+        actionsMenuButton.setImage(actionImage, for: .normal)
+        actionsMenuButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        actionsMenuButtonPanelView.backgroundColor = .black
         
         // stop timer when app enters in background, start is again when becomes active
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -106,6 +111,12 @@ class MainViewController: UIViewController {
         UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
             self?.updateBasicStats()
         }
+        
+        // show nightscout on long press of action button
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.longPressGesture(_:)))
+        self.actionsMenuButton.addGestureRecognizer(longPressGestureRecognizer)
+
+        slideToSnoozeView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,6 +139,9 @@ class MainViewController: UIViewController {
                 }
             }
         }
+        
+        slideToSnoozeView.setNeedsLayout()
+        slideToSnoozeView.layoutIfNeeded()
     }
         
     override func viewDidAppear(_ animated: Bool) {
@@ -146,8 +160,8 @@ class MainViewController: UIViewController {
         super.viewWillLayoutSubviews()
         
         // keep the nightscout button round
-        nightscoutButton.layer.cornerRadius = nightscoutButton.bounds.size.width / 2
-        nightscoutButtonPanelView.layer.cornerRadius = nightscoutButtonPanelView.bounds.size.width / 2
+        actionsMenuButton.layer.cornerRadius = actionsMenuButton.bounds.size.width / 2
+        actionsMenuButtonPanelView.layer.cornerRadius = actionsMenuButtonPanelView.bounds.size.width / 2
         
         DispatchQueue.main.async { [unowned self] in
             self.chartScene.size = CGSize(width: self.spriteKitView.bounds.width, height: self.spriteKitView.bounds.height)
@@ -195,7 +209,16 @@ class MainViewController: UIViewController {
             chartScene.scale(recognizer.scale, keepScale: true, infoLabelText: "")
         } else {
             chartScene.scale(recognizer.scale, keepScale: false, infoLabelText: "")
+        }        
+    }
+    
+    @objc func longPressGesture(_ recognizer : UILongPressGestureRecognizer) {
+        
+        guard recognizer.state == UIGestureRecognizerState.recognized else {
+            return
         }
+        
+        showNightscout()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -252,6 +275,7 @@ class MainViewController: UIViewController {
         }
         
         updateSnoozeButtonText()
+        self.bedsideViewController?.updateAlarmInfo()
     }
     
     // check whether new Values should be retrieved
@@ -268,44 +292,76 @@ class MainViewController: UIViewController {
         self.loadAndPaintChartData(forceRepaint: forceRepaint)
     }
     
-    @IBAction func doSnoozeAction(_ sender: AnyObject) {
+    func slideToSnoozeDelegateDidFinish(_ sender: SlideToSnoozeView) {
         showSnoozePopup()
+    }
+    
+    @IBAction func showActionsMenu(_ sender: AnyObject) {
+        
+        let actionController = MenuActionController()
+        actionController.addAction(Action(MenuActionData(title: "Open your Nightscout site", image: UIImage(named: "Nightscout")!.withRenderingMode(.alwaysTemplate)), style: .default) { [unowned self] _ in
+            
+            self.showNightscout()
+        })
+        actionController.addAction(Action(MenuActionData(title: "Fullscreen monitor", image: UIImage(named: "Fullscreen")!.withRenderingMode(.alwaysTemplate)), style: .default) {  [unowned self] _ in
+            self.showFullscreenMonitor()
+        })
+        
+        present(actionController, animated: true) {
+            actionController.view.tintColor = UIColor.white//.withAlphaComponent(0.7)
+        }
+    }
+    
+    func showNightscout() {
+        let nightscoutInitialViewController = UIStoryboard(name: "Nightscout", bundle: Bundle.main).instantiateInitialViewController()!
+        self.present(nightscoutInitialViewController, animated: true, completion: nil)
+    }
+    
+    func showFullscreenMonitor() {
+        self.bedsideViewController = BedsideViewController.instantiate()
+        self.present(self.bedsideViewController!, animated: true)
+        
+        // initiate a periodic update for feeding fresh data to presented view controller
+        self.doPeriodicUpdate(forceRepaint: false)
     }
         
     public func updateSnoozeButtonText() {
 
-        var title = "Snooze"
+        let isSmallDevice = DeviceSize().isSmall
+        let style = NSMutableParagraphStyle()
+        style.alignment = .center
+        style.lineBreakMode = .byWordWrapping
+        
+        let titleAttributes: [NSAttributedStringKey : Any] = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 24 : 27),
+            NSAttributedString.Key.paragraphStyle: style
+        ]
+        var title = NSMutableAttributedString(string: "snooze", attributes: titleAttributes)
         var subtitle = AlarmRule.getAlarmActivationReason(ignoreSnooze: true)
         var subtitleColor: UIColor = (subtitle != nil) ? .red : .white
         var showSubtitle = true
-        let isSmallDevice = DeviceSize().isSmall
         
         if subtitle == nil {
             
-            // no alarm, but maybe we'll show a low prediction warning...
-            if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue.value), minutesToLow > 0 {
-                subtitle = "Low Predicted in \(minutesToLow)min"
-                subtitleColor = .yellow
+            if AlarmRule.isLowPredictionEnabled.value {
+                
+                // no alarm, but maybe we'll show a low prediction warning...
+                if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue.value), minutesToLow > 0 {
+                    subtitle = "Low Predicted in \(minutesToLow)min"
+                    subtitleColor = .yellow
+                }
             }
         }
 
         if AlarmRule.isSnoozed() {
             let remaininingSnoozeMinutes = AlarmRule.getRemainingSnoozeMinutes()
-            title = "Snoozed for \(remaininingSnoozeMinutes)min"
+            title = NSMutableAttributedString(string: "Snoozed for \n \(remaininingSnoozeMinutes)min", attributes: titleAttributes)
             
             // show alert reason message if less than 5 minutes of snoozing (to be prepared!)
             showSubtitle = remaininingSnoozeMinutes < 5
         }
         
         if let subtitle = subtitle, showSubtitle {
-            let style = NSMutableParagraphStyle()
-            style.alignment = .center
-            style.lineBreakMode = .byWordWrapping
-            
-            let titleAttributes: [NSAttributedStringKey : Any] = [
-                NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 24 : 27),
-                NSAttributedString.Key.paragraphStyle: style
-            ]
             
             let messageAttributes: [NSAttributedStringKey : Any] = [
                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 14 : 16),
@@ -314,13 +370,13 @@ class MainViewController: UIViewController {
             ]
             
             let attString = NSMutableAttributedString()
-            attString.append(NSAttributedString(string: title, attributes: titleAttributes))
+            attString.append(title)
             attString.append(NSAttributedString(string: "\n"))
             attString.append(NSAttributedString(string: subtitle, attributes: messageAttributes))
-            snoozeButton.setAttributedTitle(attString, for: .normal)
+            
+            slideToSnoozeView.setAttributedTitle(title: attString)
         } else {
-            snoozeButton.setAttributedTitle(nil, for: .normal)
-            snoozeButton.setTitle(title, for: .normal)
+            slideToSnoozeView.setAttributedTitle(title: title)
         }
     }
     
@@ -354,12 +410,14 @@ class MainViewController: UIViewController {
             case .data(let newNightscoutData):
                 self.errorPanelView.isHidden = true
                 self.paintCurrentBgData(currentNightscoutData: newNightscoutData)
+                self.bedsideViewController?.currentNightscoutData = newNightscoutData
                 
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
             }
         }
         
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
+        self.bedsideViewController?.currentNightscoutData = currentNightscoutData
     }
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
