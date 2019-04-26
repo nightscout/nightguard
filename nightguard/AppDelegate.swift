@@ -137,10 +137,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // same comparison for snoozing timestamp
             if let anyWatchSnoozeTimestamp = message.dictionary["snoozedUntilTimestamp"] {
                 let watchSnoozeTimestamp = anyWatchSnoozeTimestamp as? TimeInterval
-                if AlarmRule.snoozedUntilTimestamp != watchSnoozeTimestamp {
+                if AlarmRule.snoozedUntilTimestamp.value != watchSnoozeTimestamp {
                     
                     // send snooze data to watch!
-                    SnoozeMessage(timestamp: AlarmRule.snoozedUntilTimestamp).send()
+                    SnoozeMessage(timestamp: AlarmRule.snoozedUntilTimestamp.value).send()
                     
                     print("Handling WatchSyncRequestMessage: Snooze timestamp on watch didn't match phone snooze timestamp")
                 }
