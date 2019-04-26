@@ -21,11 +21,13 @@ import Foundation
  */
 class AlarmRule {
     
-    private(set) static var snoozedUntilTimestamp = TimeInterval() {
-        didSet {
-            self.onSnoozeTimestampChanged?()
-        }
-    }
+    private(set) static var snoozedUntilTimestamp = UserDefaultsValue<TimeInterval>(
+        key: "snoozedUntilTimestamp",
+        default: TimeInterval(),
+        onChange: { _ in
+            onSnoozeTimestampChanged?()
+    }).group(UserDefaultsValueGroups.GroupNames.alarm)
+    // NOTE that we're not synchronizing the snoozeTimestamp with watch. It is the custom SnoozeMessage that does that.
     
     // closure for listening to snooze timestamp changes
     static var onSnoozeTimestampChanged: (() -> ())?
@@ -260,8 +262,8 @@ class AlarmRule {
      * Snoozes all alarms for the next x minutes.
      */
     static func snooze(_ minutes : Int) {
-        snoozedUntilTimestamp = Date().timeIntervalSince1970 + Double(60 * minutes)
-        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
+        snoozedUntilTimestamp.value = Date().timeIntervalSince1970 + Double(60 * minutes)
+        SnoozeMessage(timestamp: snoozedUntilTimestamp.value).send()
     }
     
     /*
@@ -269,23 +271,23 @@ class AlarmRule {
      * new values. Otherwise the alarm would play at once which makes no sense on startup.
      */
     static func snoozeSeconds(_ seconds : Int) {
-        snoozedUntilTimestamp = Date().timeIntervalSince1970 + Double(seconds)
-        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
+        snoozedUntilTimestamp.value = Date().timeIntervalSince1970 + Double(seconds)
+        SnoozeMessage(timestamp: snoozedUntilTimestamp.value).send()
     }
     
     /*
      * Snooze called from a message received from the connected device (watch or phone).
      */
     static func snoozeFromMessage(_ message: SnoozeMessage) {
-        snoozedUntilTimestamp = message.timestamp
+        snoozedUntilTimestamp.value = message.timestamp
     }
     
     /*
      * An eventually activated snooze will be disabled again.
      */
     static func disableSnooze() {
-        snoozedUntilTimestamp = TimeInterval()
-        SnoozeMessage(timestamp: snoozedUntilTimestamp).send()
+        snoozedUntilTimestamp.value = TimeInterval()
+        SnoozeMessage(timestamp: snoozedUntilTimestamp.value).send()
     }
     
     /*
@@ -293,7 +295,7 @@ class AlarmRule {
      */
     static func isSnoozed() -> Bool {
         let currentTimestamp = Date().timeIntervalSince1970
-        return currentTimestamp < snoozedUntilTimestamp
+        return currentTimestamp < snoozedUntilTimestamp.value
     }
     
     /*
@@ -303,10 +305,10 @@ class AlarmRule {
     static func getRemainingSnoozeMinutes() -> Int {
         let currentTimestamp = TimeService.getCurrentTime()
         
-        if (snoozedUntilTimestamp - currentTimestamp) <= 0 {
+        if (snoozedUntilTimestamp.value - currentTimestamp) <= 0 {
             return 0
         }
         
-        return Int(ceil((snoozedUntilTimestamp - currentTimestamp) / 60.0))
+        return Int(ceil((snoozedUntilTimestamp.value - currentTimestamp) / 60.0))
     }
 }
