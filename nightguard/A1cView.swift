@@ -30,6 +30,7 @@ class A1cView: BasicStatsControl {
     override func createPages() -> [StatsPage] {
         return [
             StatsPage(name: "A1c", formattedValue: model?.formattedA1c),
+            StatsPage(name: "IFCC A1c", formattedValue: model?.formattedIFCCA1c?.replacingOccurrences(of: " ", with: "\n")),
             StatsPage(name: "Average", formattedValue: model?.formattedAverageGlucose?.replacingOccurrences(of: " ", with: "\n")),
             StatsPage(name: "Std Deviation", formattedValue: model?.formattedStandardDeviation?.replacingOccurrences(of: " ", with: "\n")),
             StatsPage(name: "Coefficient of Variation", formattedValue: model?.formattedCoefficientOfVariation)
@@ -55,7 +56,7 @@ class A1cView: BasicStatsControl {
     }
     
     fileprivate var modelColor: UIColor? {
-        return (currentPageIndex < 2) ? a1cColor : variationColor
+        return (currentPageIndex < 3) ? a1cColor : variationColor
     }
     
     override func commonInit() {
@@ -66,6 +67,11 @@ class A1cView: BasicStatsControl {
 //        diagramView.separatorColor = .black
 //        diagramView.startAngle = .pi * 0.75
 //        diagramView.endAngle = 2 * .pi + .pi * 0.75
+        
+        // cheating: extend the value label width (the mmol/mol units are too long)
+        if let valueLabel = valueLabel {
+            valueLabel.preferredMaxLayoutWidth += 8
+        }
     }
     
     override func modelWasSet() {
