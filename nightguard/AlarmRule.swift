@@ -46,6 +46,9 @@ class AlarmRule {
     static let alertIfBelowValue = UserDefaultsRepository.lowerBound
     
     static let noDataAlarmEnabled = UserDefaultsValue<Bool>(key: "noDataAlarmEnabled", default: true)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+    
     static let minutesWithoutValues = UserDefaultsValue<Int>(key: "noDataAlarmAfterMinutes", default: 15)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
