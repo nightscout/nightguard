@@ -102,7 +102,13 @@ struct BasicStats {
     let period: Period
     
     let averageGlucose: Float
+    
+    // http://www.ngsp.org/ifccngsp.asp
+    // DCCT (Diabetes Control and Complications Trial) units - percentage
     let a1c: Float
+    // IFCC (International Federation of Clinical Chemistry) units - mmol/mol
+    let ifccA1c: Float
+    
     let standardDeviation: Float
     let coefficientOfVariation: Float
     
@@ -200,6 +206,7 @@ struct BasicStats {
         
         self.averageGlucose = totalGlucoseCount / Float(readings.count - invalidValuesCount)
         self.a1c = (46.7 + self.averageGlucose) / 28.7
+        self.ifccA1c = (self.a1c - 2.152) / 0.09148
         self.standardDeviation = Float(validReadings.map { Double($0.value) }.standardDeviation)
         self.coefficientOfVariation = (self.averageGlucose != 0) ? (self.standardDeviation / self.averageGlucose).roundTo3f : Float.nan
     }
@@ -225,6 +232,10 @@ extension BasicStats {
     
     var formattedA1c: String? {
         return a1c.isNaN ? nil : "\(a1c.round(to: 1).cleanValue)%"
+    }
+    
+    var formattedIFCCA1c: String? {
+        return ifccA1c.isNaN ? nil : "\(ifccA1c.rounded().cleanValue) mmol/mol"
     }
     
     var formattedStandardDeviation: String? {

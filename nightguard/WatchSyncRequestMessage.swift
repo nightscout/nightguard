@@ -20,7 +20,7 @@ class WatchSyncRequestMessage: WatchMessage {
     init() {
         var dictionary = [String: Any]()
         dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] = UserDefaultsRepository.lastWatchSyncUpdateId.anyValue
-        dictionary["snoozedUntilTimestamp"] = AlarmRule.snoozedUntilTimestamp
+        dictionary["snoozedUntilTimestamp"] = AlarmRule.snoozedUntilTimestamp.value
         
         self.dictionary = dictionary
     }
