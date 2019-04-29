@@ -48,6 +48,23 @@ extension UIViewController {
         }
     }
 
+    func showAcceptDeclineAlert(title: String, message: String, showOnceKey: String? = nil) {
+        
+        if let showOnceKey = showOnceKey {
+            guard !UserDefaults.standard.bool(forKey: showOnceKey) else {
+                return
+            }
+        }
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let actionAccept = UIAlertAction(title: "Accept", style: .default, handler: { (alert: UIAlertAction!) in
+            if let showOnceKey = showOnceKey {
+                UserDefaults.standard.set(true, forKey: showOnceKey)
+            }
+        })
+        alertController.addAction(actionAccept)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 // snoozing capability from any controller

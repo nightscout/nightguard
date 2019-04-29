@@ -53,14 +53,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //TODO update to slide-to-snooze
-        //snoozeButton.titleLabel?.numberOfLines = 0
-        //snoozeButton.titleLabel?.lineBreakMode = .byWordWrapping
-        //snoozeButton.backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
-        //snoozeButton.titleLabel?.font = UIFont.systemFont(ofSize: DeviceSize().isSmall ? 24 : 27)
-        //snoozeButton.titleLabel?.textAlignment = .center
-        
+
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
                                 newCanvasWidth: self.maximumDeviceTextureWidth())
@@ -145,6 +138,16 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     }
         
     override func viewDidAppear(_ animated: Bool) {
+        
+        // Remind the user with every new version, that this is a
+        // volunteers project without any warranty!
+        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        showAcceptDeclineAlert(title: "Disclaimer!", message:
+            "Don't use this App for medical decisions! " +
+            "It comes with absolutely NO WARRANTY. " +
+            "It is maintained by volunteers only. " +
+            "Use it at your own risk!",
+                  showOnceKey: "showedWarningIn\(versionNumber)")
         
         // Start immediately so that the current time gets displayed at once
         // And the alarm can play if needed
