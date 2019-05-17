@@ -95,11 +95,12 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
             template = modTemplate
         case .circularSmall:
-            let template = CLKComplicationTemplateCircularSmallRingText()
-            template.textProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
+            let modTemplate = CLKComplicationTemplateCircularSmallRingText()
+            modTemplate.textProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
             
-            template.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
-            template.ringStyle = CLKComplicationRingStyle.closed
+            modTemplate.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
+            modTemplate.ringStyle = CLKComplicationRingStyle.closed
+            template = modTemplate
         case .graphicCorner:
             if #available(watchOSApplicationExtension 5.0, *) {
                 let modTemplate = CLKComplicationTemplateGraphicCornerTextImage()
