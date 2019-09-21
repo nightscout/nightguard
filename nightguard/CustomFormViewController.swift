@@ -111,16 +111,16 @@ extension CustomFormViewController {
             cell.backgroundColor = UIColor.App.Preferences.rowBackground
             cell.titleLabel?.textColor = UIColor.App.Preferences.text
             cell.textField?.textColor = UIColor.App.Preferences.text
-            cell.textField?.setValue(UIColor.App.Preferences.placeholderText, forKeyPath: "_placeholderLabel.textColor")
-            cell.textField?.setValue(UIFont.italicSystemFont(ofSize: 12), forKeyPath:"_placeholderLabel.font")
+//            cell.textField?.setValue(UIColor.App.Preferences.placeholderText, forKeyPath: "_placeholderLabel.textColor")
+//            cell.textField?.setValue(UIFont.italicSystemFont(ofSize: 12), forKeyPath:"_placeholderLabel.font")
         }
         
         URLRow.defaultCellUpdate = { cell, row in
             cell.backgroundColor = UIColor.App.Preferences.rowBackground
             cell.titleLabel?.textColor = UIColor.App.Preferences.text
             cell.textField?.textColor = UIColor.App.Preferences.text
-            cell.textField?.setValue(UIColor.App.Preferences.placeholderText, forKeyPath: "_placeholderLabel.textColor")
-            cell.textField?.setValue(UIFont.italicSystemFont(ofSize: 12), forKeyPath:"_placeholderLabel.font")
+//            cell.textField?.setValue(UIColor.App.Preferences.placeholderText, forKeyPath: "_placeholderLabel.textColor")
+//            cell.textField?.setValue(UIFont.italicSystemFont(ofSize: 12), forKeyPath:"_placeholderLabel.font")
         }
         
         SwitchRow.defaultCellUpdate = { cell, row in
