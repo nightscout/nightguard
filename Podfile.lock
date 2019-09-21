@@ -1,5 +1,5 @@
 PODS:
-  - Eureka (4.3.1)
+  - Eureka (5.0.1)
   - XLActionController (5.0.0):
     - XLActionController/Core (= 5.0.0)
   - XLActionController/Core (5.0.0)
@@ -23,9 +23,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/xmartlabs/XLActionController
 
 SPEC CHECKSUMS:
-  Eureka: 28ea296f06710f6745266b71f17862048941a32d
+  Eureka: da9d2294da234eae40b22e7273b9fc2335502fc1
   XLActionController: 43ee1da8641fb4b6891f89cc3c6c73041cdd0062
 
-PODFILE CHECKSUM: db6006252abddd279258fe57e3e671636f8d247d
+PODFILE CHECKSUM: be42bed5287f99b598278ed6ac5a9f3cbca358db
 
 COCOAPODS: 1.7.5
