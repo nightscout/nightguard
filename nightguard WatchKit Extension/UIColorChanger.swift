@@ -6,8 +6,11 @@
 //  Copyright © 2016 private. All rights reserved.
 //
 
-import Foundation
+import UIKit
+#if !os(iOS)
 import WatchKit
+#endif
+
 /*
  * Calculates the Colors for the different UI Elements
  * corresponding to current blood and time values.

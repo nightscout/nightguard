@@ -6,8 +6,11 @@
 //  Copyright © 2015 private. All rights reserved.
 //
 
-import WatchKit
 import Foundation
+import UIKit
+#if !os(iOS)
+import WatchKit
+#endif
 
 class ChartPainter {
     let GREEN :  UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
