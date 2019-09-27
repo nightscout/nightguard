@@ -103,9 +103,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             template = modTemplate
         case .graphicCorner:
             if #available(watchOSApplicationExtension 5.0, *) {
-                let modTemplate = CLKComplicationTemplateGraphicCornerTextImage()
-                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-                modTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Corner")!)
+                 let modTemplate = CLKComplicationTemplateGraphicCornerStackText()
+                modTemplate.outerTextProvider = CLKSimpleTextProvider(text: self.getOneLine(currentNightscoutData))
+                modTemplate.innerTextProvider = CLKSimpleTextProvider(text: self.getLastReadingTime(currentNightscoutData))
                 template = modTemplate
             } else {
                 abort()
@@ -159,6 +159,11 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     func getOneBigLine(_ data : NightscoutData) -> String {
         return "\(data.hourAndMinutes) \(data.sgv)\(data.bgdeltaString.cleanFloatValue)\(data.bgdeltaArrow)"
     }
+    
+    // Display 11:24
+       func getLastReadingTime(_ data : NightscoutData) -> String {
+           return "\(data.hourAndMinutes)"
+       }
     
     // Displays 113 ↗ +2
     func getOneLine(_ data : NightscoutData) -> String {
