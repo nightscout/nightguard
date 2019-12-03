@@ -42,7 +42,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             let modTemplate = CLKComplicationTemplateModularSmallStackText()
             
             if useRelativeTimeWhenPossible {
-                modTemplate.line1TextProvider = CLKSimpleTextProvider(text: getSgvAndArrow(currentNightscoutData))
+                modTemplate.line1TextProvider = CLKSimpleTextProvider(text: getSgvAndArrow(currentNightscoutData, " "))
                 modTemplate.line2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
             } else {
                 modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
@@ -104,7 +104,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .graphicCorner:
             if #available(watchOSApplicationExtension 5.0, *) {
                  let modTemplate = CLKComplicationTemplateGraphicCornerStackText()
-                modTemplate.outerTextProvider = CLKSimpleTextProvider(text: self.getOneLine(currentNightscoutData))
+                modTemplate.outerTextProvider = CLKSimpleTextProvider(text: self.getOneShortLine(currentNightscoutData))
                 modTemplate.innerTextProvider = CLKSimpleTextProvider(text: self.getLastReadingTime(currentNightscoutData))
                 template = modTemplate
             } else {
@@ -167,10 +167,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     // Displays 113 ↗ +2
     func getOneLine(_ data : NightscoutData) -> String {
-        return "\(getSgvAndArrow(data))\t\(data.bgdeltaString.cleanFloatValue)"
+        return "\(getSgvAndArrow(data, " "))\t\(data.bgdeltaString.cleanFloatValue)"
     }
     
-    func getSgvAndArrow(_ data: NightscoutData) -> String {
+    // Displays 113↗+2
+    func getOneShortLine(_ data : NightscoutData) -> String {
+        return "\(getSgvAndArrow(data, ""))\(data.bgdeltaString.cleanFloatValue)"
+    }
+    
+    func getSgvAndArrow(_ data: NightscoutData, _ separator: String) -> String {
         
         // compact arrow to one character (space requirements!)
         var bgdeltaArrow = data.bgdeltaArrow
@@ -180,7 +185,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             bgdeltaArrow = "⇊"
         }
         
-        return [data.sgv, bgdeltaArrow].joined(separator: " ")
+        return [data.sgv, bgdeltaArrow].joined(separator: separator)
     }
     
     // If the age is older than 59 minutes => return 60 in that case
