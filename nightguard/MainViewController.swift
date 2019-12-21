@@ -317,11 +317,13 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     func showNightscout() {
         let nightscoutInitialViewController = UIStoryboard(name: "Nightscout", bundle: Bundle.main).instantiateInitialViewController()!
+        nightscoutInitialViewController.modalPresentationStyle = .fullScreen
         self.present(nightscoutInitialViewController, animated: true, completion: nil)
     }
     
     func showFullscreenMonitor() {
         self.bedsideViewController = BedsideViewController.instantiate()
+        self.bedsideViewController?.modalPresentationStyle = .fullScreen
         self.present(self.bedsideViewController!, animated: true)
         
         // initiate a periodic update for feeding fresh data to presented view controller
