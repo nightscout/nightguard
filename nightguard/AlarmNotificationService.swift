@@ -80,9 +80,9 @@ class AlarmNotificationService {
             content.badge = NSNumber(value: sgv)
         }
         if #available(iOS 12.0, *) {
-            content.sound = UNNotificationSound.criticalSoundNamed("alarm-notification.m4a", withAudioVolume: 0.6)
+            content.sound = UNNotificationSound.criticalSoundNamed(convertToUNNotificationSoundName("alarm-notification.m4a"), withAudioVolume: 0.6)
         } else {
-            content.sound = UNNotificationSound(named: "alarm-notification.m4a")
+            content.sound = UNNotificationSound(named: convertToUNNotificationSoundName("alarm-notification.m4a"))
         }
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         
@@ -92,4 +92,9 @@ class AlarmNotificationService {
     
     private init() {
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUNNotificationSoundName(_ input: String) -> UNNotificationSoundName {
+	return UNNotificationSoundName(rawValue: input)
 }

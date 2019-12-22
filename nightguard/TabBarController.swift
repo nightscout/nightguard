@@ -19,7 +19,7 @@ class TabBarController: UITabBarController {
         return .allButUpsideDown
     }
     
-    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             print("Device shaken")
             

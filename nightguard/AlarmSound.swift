@@ -86,7 +86,7 @@ class AlarmSound {
             self.audioPlayer = try AVAudioPlayer(contentsOf: self.soundURL)
             self.audioPlayer!.delegate = self.audioPlayerDelegate
             
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playback)))
             try AVAudioSession.sharedInstance().setActive(true)
             
             // Play endless loops
@@ -204,4 +204,9 @@ class AudioPlayerDelegate: NSObject, AVAudioPlayerDelegate {
     func audioPlayerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
         NSLog("AlarmRule - audioPlayerEndInterruption withOptions: \(flags)")
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

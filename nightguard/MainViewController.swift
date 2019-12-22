@@ -84,11 +84,11 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         actionsMenuButtonPanelView.backgroundColor = .black
         
         // stop timer when app enters in background, start is again when becomes active
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
         
         // call first "UIApplicationWillEnterForeground" event by hand, it is not sent when the app starts (just registered for the event)
         prepareForEnteringForeground()
@@ -179,7 +179,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     @objc func panGesture(_ recognizer : UIPanGestureRecognizer) {
         
-        if recognizer.state == UIGestureRecognizerState.began {
+        if recognizer.state == UIGestureRecognizer.State.began {
             oldXTranslation = 0
 
             // The user just touched the display
@@ -191,7 +191,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         chartScene.draggedByATouch(translation.x - oldXTranslation)
         oldXTranslation = translation.x
         
-        if (recognizer.state == UIGestureRecognizerState.ended) {
+        if (recognizer.state == UIGestureRecognizer.State.ended) {
             let velocity = recognizer.velocity(in: spriteKitView)
             
             if (velocity.x < -100) {
@@ -208,7 +208,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     // Blood Glucose value that is displayed in the chart.
     @objc func pinchGesture(_ recognizer : UIPinchGestureRecognizer) {
         
-        if recognizer.state == UIGestureRecognizerState.ended {
+        if recognizer.state == UIGestureRecognizer.State.ended {
             chartScene.scale(recognizer.scale, keepScale: true, infoLabelText: "")
         } else {
             chartScene.scale(recognizer.scale, keepScale: false, infoLabelText: "")
@@ -217,7 +217,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     @objc func longPressGesture(_ recognizer : UILongPressGestureRecognizer) {
         
-        guard recognizer.state == UIGestureRecognizerState.recognized else {
+        guard recognizer.state == UIGestureRecognizer.State.recognized else {
             return
         }
         
@@ -337,7 +337,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         style.alignment = .center
         style.lineBreakMode = .byWordWrapping
         
-        let titleAttributes: [NSAttributedStringKey : Any] = [
+        let titleAttributes: [NSAttributedString.Key : Any] = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 24 : 27),
             NSAttributedString.Key.paragraphStyle: style
         ]
@@ -368,7 +368,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         
         if let subtitle = subtitle, showSubtitle {
             
-            let messageAttributes: [NSAttributedStringKey : Any] = [
+            let messageAttributes: [NSAttributedString.Key : Any] = [
                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 14 : 16),
                 NSAttributedString.Key.foregroundColor: subtitleColor,
                 NSAttributedString.Key.paragraphStyle: style

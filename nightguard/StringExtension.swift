@@ -24,7 +24,7 @@ extension String {
     var cleanFloatValue: String {
         
         if self.contains(".0") {
-            return String(self[..<self.index(of: ".")!])
+            return String(self[..<self.firstIndex(of: ".")!])
         }
         
         return self

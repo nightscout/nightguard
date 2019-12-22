@@ -44,8 +44,8 @@ class UserInteractionDetectorWindow: UIWindow {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -72,7 +72,7 @@ class UserInteractionDetectorWindow: UIWindow {
         
         if let touches = event.allTouches {
             for touch in touches {
-                if touch.phase == UITouchPhase.began {
+                if touch.phase == UITouch.Phase.began {
                     self.resetIdleTimer()
                 }
             }

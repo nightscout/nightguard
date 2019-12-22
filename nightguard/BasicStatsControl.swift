@@ -265,7 +265,7 @@ class BasicStatsControl: TouchReportingView {
         }
         
         let width = self.bounds.width
-        let height = titleView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        let height = titleView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         titleView.bounds = CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: height))
     }
     

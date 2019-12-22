@@ -24,6 +24,6 @@ class PaddingLabel: UILabel {
     }
     
     override func drawText(in rect: CGRect) {
-        return super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
+        return super.drawText(in: rect.inset(by: insets))
     }
 }

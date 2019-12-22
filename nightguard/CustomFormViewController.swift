@@ -246,7 +246,7 @@ extension SliderRow {
                 }
                 
                 // fixed width for value label
-                let widthConstraint = NSLayoutConstraint(item: cell.valueLabel, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 96)
+                let widthConstraint = NSLayoutConstraint(item: cell.valueLabel!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 96)
                 cell.valueLabel.addConstraints([widthConstraint])
         }
     }

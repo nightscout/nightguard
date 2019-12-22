@@ -226,7 +226,7 @@ class NightscoutService {
         var mergedValues = oldValues
         for valueToInsert in newValues {
             
-            if let index = mergedValues.index(where: { $0.timestamp > valueToInsert.timestamp }) {
+            if let index = mergedValues.firstIndex(where: { $0.timestamp > valueToInsert.timestamp }) {
                 mergedValues.insert(valueToInsert, at: index)
             } else {
                 // the new value is later than all other values => just append

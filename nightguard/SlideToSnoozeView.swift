@@ -90,7 +90,7 @@ public class SlideToSnoozeView: UIView {
         view.addSubview(sliderHolderView)
         view.addSubview(draggedView)
         sliderHolderView.addSubview(textLabel)
-        view.bringSubview(toFront: self.thumbnailImageView)
+        view.bringSubviewToFront(self.thumbnailImageView)
         setupConstraint()
         setStyle()
         // Add pan gesture
