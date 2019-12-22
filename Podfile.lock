@@ -1,31 +1,22 @@
 PODS:
   - Eureka (5.0.1)
-  - XLActionController (5.0.0):
-    - XLActionController/Core (= 5.0.0)
-  - XLActionController/Core (5.0.0)
+  - XLActionController (5.0.2):
+    - XLActionController/Core (= 5.0.2)
+  - XLActionController/Core (5.0.2)
 
 DEPENDENCIES:
   - Eureka
-  - XLActionController (from `https://github.com/xmartlabs/XLActionController`, commit `e26395b`)
+  - XLActionController
 
 SPEC REPOS:
   trunk:
     - Eureka
-
-EXTERNAL SOURCES:
-  XLActionController:
-    :commit: e26395b
-    :git: https://github.com/xmartlabs/XLActionController
-
-CHECKOUT OPTIONS:
-  XLActionController:
-    :commit: e26395b
-    :git: https://github.com/xmartlabs/XLActionController
+    - XLActionController
 
 SPEC CHECKSUMS:
   Eureka: da9d2294da234eae40b22e7273b9fc2335502fc1
-  XLActionController: 43ee1da8641fb4b6891f89cc3c6c73041cdd0062
+  XLActionController: f1f2226d2c6629db197d4a41f2da907085a4cb9d
 
-PODFILE CHECKSUM: be42bed5287f99b598278ed6ac5a9f3cbca358db
+PODFILE CHECKSUM: 5ed83a63601875cde50174a8cda4c8c28ce58f63
 
 COCOAPODS: 1.8.4
