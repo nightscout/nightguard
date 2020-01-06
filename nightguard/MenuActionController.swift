@@ -68,7 +68,7 @@ class MenuActionController: ActionController<MenuActionCell, MenuActionData, UIC
         settings.cancelView.showCancel = true
         settings.animation.scale = nil
         settings.animation.present.springVelocity = 0.0
-        settings.cancelView.hideCollectionViewBehindCancelView = true
+        settings.cancelView.hideCollectionViewBehindCancelView = false
         
         cellSpec = .nibFile(nibName: "MenuActionCell", bundle: Bundle(for: MenuActionCell.self), height: { _ in 70 })
         
