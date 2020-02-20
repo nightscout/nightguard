@@ -18,7 +18,7 @@ class PersistentHighViewController: CustomFormViewController {
     
     override func constructForm() {
         
-        selectableSection = SelectableSection<ListCheckRow<Int>>("Alert when high BG for more than", selectionType: .singleSelection(enableDeselection: true))
+        selectableSection = SelectableSection<ListCheckRow<Int>>(NSLocalizedString("Alert when high BG for more than", comment: "Label for duration options"), selectionType: .singleSelection(enableDeselection: true))
         selectableSection.onSelectSelectableRow = { cell, row in
             guard let value = row.value else { return }
             AlarmRule.persistentHighMinutes.value = value
@@ -27,7 +27,7 @@ class PersistentHighViewController: CustomFormViewController {
         
         for option in alarmOptions {
             selectableSection <<< ListCheckRow<Int>("\(option) Minutes") { lrow in
-                lrow.title = "\(option) Minutes"
+                lrow.title = "\(option) " + NSLocalizedString("Minutes", comment: "Option")
                 lrow.selectableValue = option
                 lrow.value = (option == AlarmRule.persistentHighMinutes.value) ? option : nil
             }
@@ -36,14 +36,14 @@ class PersistentHighViewController: CustomFormViewController {
         urgentHighSliderRow = SliderRow.glucoseLevelSlider(initialValue: AlarmRule.persistentHighUpperBound.value, minimumValue: AlarmRule.alertIfAboveValue.value, maximumValue: 300)
         urgentHighSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
-        let urgentHighSection = Section(header: "Urgent High", footer: "Alerts anytime when the blood glucose raises above this value.")
+        let urgentHighSection = Section(header: NSLocalizedString("Urgent High", comment: "Label for Urgent High"), footer: NSLocalizedString("Alerts anytime when the blood glucose raises above this value.", comment: "Footer for Urgent High"))
         urgentHighSection <<< urgentHighSliderRow
         urgentHighSection.hidden = "$PersistentHighSwitch == false"
 
         
-        form +++ Section(header: "", footer: "Alerts when the BG remains high for a longer period. When on, this alert will delay the high BG alert until the period elapsed or until reaching a maximum BG level (urgent high).")
+        form +++ Section(header: "", footer: NSLocalizedString("Alerts when the BG remains high for a longer period. When on, this alert will delay the high BG alert until the period elapsed or until reaching a maximum BG level (urgent high).", comment: "Footer for Persistent High"))
             <<< SwitchRow("PersistentHighSwitch") { row in
-                row.title = "Persistent High"
+                row.title = NSLocalizedString("Persistent High", comment: "Alarm settings title: Persistent High")
                 row.value = AlarmRule.isPersistentHighEnabled.value
                 }.onChange { row in
                     guard let value = row.value else { return }

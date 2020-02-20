@@ -29,11 +29,11 @@ class A1cView: BasicStatsControl {
     
     override func createPages() -> [StatsPage] {
         return [
-            StatsPage(name: "A1c", formattedValue: model?.formattedA1c),
-            StatsPage(name: "IFCC A1c", formattedValue: model?.formattedIFCCA1c?.replacingOccurrences(of: " ", with: "\n")),
-            StatsPage(name: "Average", formattedValue: model?.formattedAverageGlucose?.replacingOccurrences(of: " ", with: "\n")),
-            StatsPage(name: "Std Deviation", formattedValue: model?.formattedStandardDeviation?.replacingOccurrences(of: " ", with: "\n")),
-            StatsPage(name: "Coefficient of Variation", formattedValue: model?.formattedCoefficientOfVariation)
+            StatsPage(name: NSLocalizedString("A1c", comment: "Button value for A1c"), formattedValue: model?.formattedA1c),
+            StatsPage(name: NSLocalizedString("IFCC A1c", comment: "Button value for IFCC A1c"), formattedValue: model?.formattedIFCCA1c?.replacingOccurrences(of: " ", with: "\n")),
+            StatsPage(name: NSLocalizedString("Average", comment: "Button value for Average"), formattedValue: model?.formattedAverageGlucose?.replacingOccurrences(of: " ", with: "\n")),
+            StatsPage(name: NSLocalizedString("Std Deviation", comment: "Button value for Std Deviation"), formattedValue: model?.formattedStandardDeviation?.replacingOccurrences(of: " ", with: "\n")),
+            StatsPage(name: NSLocalizedString("Coefficient of Variation", comment: "Button value for Coefficient of Variation"), formattedValue: model?.formattedCoefficientOfVariation)
         ]
     }
     

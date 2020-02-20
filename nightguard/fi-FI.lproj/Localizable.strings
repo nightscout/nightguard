@@ -1,0 +1,288 @@
+/* Single line footer for Fast rise/drop */
+"%s %s in %d consecutive readings" = "%1@ %2$@ %3$d peräkkäisessä lukemassa";
+
+/* Single line footer for predicted low */
+"%d minutes" = "%d minuuttia";
+
+/* Option in low predicion alert settings */
+"%d Minutes" = "%d minuuttia";
+
+/* Single line footer for Persistent high */
+"%d minutes < %d)." = "%1$d minuuttia < %2$d).";
+
+/* Single line footer for missed readings alert */
+"%d minutes." = "%d minuuttia.";
+
+/* Option */
+"1 Minute" = "1 minuutti";
+
+/* Button value for A1c */
+"A1c" = "A1c";
+
+/* Label for Alert Notifications */
+"Alert Notifications" = "Hälytysilmoitukset";
+
+/* Label for Alert volume */
+"Alert Volume" = "Hälytyksen voimakkuus";
+
+/* Label for duration options */
+"Alert when high BG for more than" = "Hälytys kun korkea verensokeri vähintään";
+
+/* Label for Alert when no data */
+"Alert when no data for more than" = "Hälytys kun tietoja ei ole yli";
+
+/* Footer for Urgent High */
+"Alerts anytime when the blood glucose raises above this value." = "Alerts anytime when the blood glucose raises above this value.";
+
+/* Footer for Alerts */
+"Alerts when a fast BG rise or drop is detected in the last consecutive readings." = "Hälytykset kun havaitaan nopea verensokerin nousu tai lasku peräkkäisissä lukemissa";
+
+/* Footer for predicted low */
+"Alerts when a low BG value is predicted in less than %d minutes." = "Hälytykset kun ennustetaan matalaa verensokeria %d minuutissa.";
+
+/* Footer in low predicion alert settings */
+"Alerts when a low BG value is predicted in the near future (if the current trend is continued)." = "Hälytykset kun ennustetaan lähitulevaisuudessa alhaista verensokeria (jos nykyinen suuntaus jatkuu).";
+
+/* footer for Persistent high */
+"Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %d)." = "Hälytykset kun verensokeri pysyy korkealla enemmän kuin %1$d minuuttia tai ylittää erittäin korkean arvon %2$d).";
+
+/* Footer for Fast rise/drop */
+"Alerts when BG values are rising or dropping with %s %s, considering the last %d consecutive readings." = "Hälytykset kun verensokeri arvo on nousemassa tai laskemassa %1$@ %2$@, ottaen huomioon %3$d peräkkäistä lukemaa.";
+
+/* Footer for missed readings alert */
+"Alerts when no data for more than %d minutes." = "Hälytys kun ei dataa %d minuuttiin.";
+
+/* Footer for Alerts when no data is received */
+"Alerts when no data is received for a longer period. We suggest leaving this check ALWAYS ON." = "Hälytykset kun lukemia ei ole saatu pitkään aikaan. Suositus, pidä aina päällä";
+
+/* Footer for Persistent High */
+"Alerts when the BG remains high for a longer period. When on, this alert will delay the high BG alert until the period elapsed or until reaching a maximum BG level (urgent high)." = "Hälytykset kun verensokeri pysyy korkealla pitempään. Kun päällä, hälytys viivästää korkean verensokerin hälytystä valitus ajan tai kunnes ylitetään maksimi verensokeri (Hyvin korkea)";
+
+/* Footer for Low alert */
+"Alerts when the blood glucose drops below this value." = "Hälytykset kun verensokeri laskee alle tämän arvon.";
+
+/* Footer for High alert */
+"Alerts when the blood glucose raises above this value." = "Hälytykset kun verensokeri nousee yli tämän arvon.";
+
+/* Title for confirmation */
+"ARE YOU SURE?" = "OLETKO VARMA?";
+
+/* Button value for Average */
+"Average" = "Keskiarvo";
+
+/* Button value for Coefficient of Variation */
+"Coefficient of Variation" = "Variaatio\nkerroin";
+
+/* Label for Consecutive Readings */
+"Consecutive Readings" = "Peräkkäiset lukemat";
+
+/* Label for delta */
+"Delta" = "Delta";
+
+/* Label for Dim screen when idle */
+"Dim Screen When Idle" = "Himmennä näyttö idlessä";
+
+/* Footer for URL */
+"Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'" = "Kirjoita Nightscout palvelimen osoite tähän, esim. 'https://nightscout?token=minunToken'";
+
+/* Label for Fast rise/drop */
+"Fast Rise/Drop" = "Nopea nousu/lasku";
+
+/* Body of confirmation */
+"For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!" = "Saadaksesi raakaa verensokeri ja kohinan taso arvoja, rawbg liitännäisen pitää olla käytössä Nightscout palvelimellasi. Huomioi että tämä toimii ainoastaan Dexcomin kanssa!";
+
+/* Body of confirmation */
+"For your safety, keep this switch ON for receiving alarms when no readings!" = "Turvallisuutesi vuoksi, pidä tämä valinta päällä saadaksesi hälytyksen puuttuvista lukemista!";
+
+/* Fullscreen monitor */
+"Fullscreen monitor" = "Kokoruutu";
+
+/* Button value for High */
+"High" = "Korkea";
+
+/* Alarm settings title: High alert */
+"High BG Alert" = "Korkea verensokeri";
+
+/* Footer for consecutive readings */
+"How many consecutive readings to consider." = "Montako peräkkäistä lukemaa huomioidaan.";
+
+/* Footer for Alert volume */
+"If overriding the system output volume, your custom volume level will be used rather than phone's current volume level." = "Jos ohitat järjestelmän äänenvoimakkuuden, valitsemaasi äänenvoimakkuutta käytetään puhelimen nykyisen äänenvoimakkuuden sijaan.";
+
+/* Footer for Progressive volume switch */
+"If selected, the alert will start quietly and increase the volume gradualy, reaching the maximum volume in selected time interval." = "Jos valittu, hälytys alkaa hiljaisena ja äänenvoimakkuus kasvaa asteittain saavuttaen suurimman äänenvoimakkuuden valitulla aikavälillä.";
+
+/* Button value for IFCC A1c */
+"IFCC A1c" = "IFCC A1c";
+
+/* Title for confirmation */
+"IMPORTANT" = "TÄRKEÄÄ";
+
+/* Button value for In range */
+"In Range" = "Tavoitteessa";
+
+/* Invalid data from NS entries API */
+"Invalid data with HTML received from Nightscout entries API" = "Virheellinen HTML data Nightscout merkintä APIsta";
+
+/* Invalid JSON from Pebble API */
+"Invalid JSON received from Pebble Watch API" = "Virheellinen JSON Pebble Watch APIsta";
+
+/* Invalid JSON from Pebble API, missing bgs, check NS conf */
+"Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. " = "Virheellinen JSON Pebble Watch APIsta, bgs taulukko puuttuu. Tarkista Nightscout asetukset. ";
+
+/* Invalid readings */
+"Invalid readings" = "Virheelliset lukemat";
+
+/* Label for Keep the Screen Active */
+"Keep the Screen Active" = "Pidä näyttö aktiivisena";
+
+/* Message for confirmation */
+"Keep this switch ON to disable the screenlock and prevent the app to get stopped!" = "Pidä tämä valinta päällä, kun haluat poistaa näytön lukituksen käytöstä ja estää sovellusta pysähtymästä!";
+
+/* Footer for Dim Screen */
+"Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON." = "Näytön pitäminen aktiivisena on ensiarvoisen tärkeää, jos sovellusta käytetään yövahtina. Ehdotamme, että se jätetään aina päälle.";
+
+/* Stats button value for Last 24h */
+"Last 24h" = "Viim. 24h";
+
+/* Stats button value for Last 8h */
+"Last 8h" = "Viim. 8h";
+
+/* Button value for Low */
+"Low" = "Matala";
+
+/* Alarm settings title: Low alert */
+"Low BG Alert" = "Matala verensokeri";
+
+/* Show low prediction warning */
+"Low Predicted in %dmin" = "Matala %dmin";
+
+/* Alarm settings title: Low prediction */
+"Low Prediction" = "Matalan ennuste";
+
+/* Title in low predicion alert settings */
+"Low Prediction2" = "Matalan ennuste";
+
+/* Option */
+"Minutes" = "minuuttia";
+
+/* plurar unit */
+"minutes" = "minuuttia";
+
+/* Alarm settings title: Missed readings */
+"Missed Readings" = "Ei lukemia";
+
+/* Option */
+"Never" = "Ei koskaan";
+
+/* No data from NS entries API */
+"No data received from Nightscout entries API" = "Ei dataa Nightscout merkintä APIsta";
+
+/* No data from NS status API */
+"No data received from Nightscout status API" = "Ei dataa Nightscout status APIsta";
+
+/* No data from Pebble API */
+"No data received from Pebble Watch API" = "Ei dataa Pebble Watch APIsta";
+
+/* Alert off */
+"Off" = "Pois päältä";
+
+/* Link to NS site */
+"Open your Nightscout site" = "Avaa Nightscout sivusi";
+
+/* Alarm settings title: Other alerts */
+"Other Alerts" = "Muut hälytykset";
+
+/* Label for Override System Volume switch */
+"Override System Volume" = "Ohita järjestelmän äänenvoimakkuus";
+
+/* Alarm settings title: Persistent High */
+"Persistent High" = "Jatkuva korkea";
+
+/* Label for prediction interval options */
+"Prediction interval" = "Ennusteväli";
+
+/* Label for Progressive Volume */
+"Progressive Volume" = "Nouseva äänenvoimakkuus";
+
+/* Text of Readings stats button */
+"Readings" = "Lukemat";
+
+/* Text of Reading% stats button */
+"Readings %" = "Lukema %";
+
+/* Footer for Reduce screen brightness */
+"Reduce screen brightness after detecting user inactivity for more than selected time period." = "Vähennä näytön kirkkautta kun passiivisuus yli valitun ajan.";
+
+/* plurar unit */
+"seconds" = "sekunttia";
+
+/* Label for Show BG on Badge */
+"Show BG on App Badge" = "Näytä verensokeri sovelluksen ikonissa";
+
+/* Label for Show Raw BG */
+"Show Raw BG and Noise Level" = "Näytä raaka verensokeri ja kohinantaso";
+
+/* Label for Show statistics */
+"Show Statistics" = "Näytä tilastot";
+
+/* Label for Smart snooze switch */
+"Smart Snooze" = "Älykäs torkku";
+
+/* Text of snooze button */
+"snooze" = "torkku";
+
+/* Footer for smart snooze switch */
+"Snooze (do not alert) when values are high or low but the trend is going in the right direction." = "Torku (älä hälytä) kun verensokerit ovat korkealla tai matalalla mutta on menossa oikeaan suuntaan.";
+
+/* Snoozed duration in main page */
+"Snoozed for %dmin" = "Torkkuu %dmin";
+
+/* Label for Snoozing actions */
+"Snoozing Actions" = "Torkkutoiminnot";
+
+/* Title of Stats period */
+"Stats Period" = "Tilastojakso";
+
+/* Button value for Std Deviation */
+"Std Deviation" = "Keskihajonta";
+
+/* Stop alert button */
+"Stop Alert" = "Pysäytä hälytys";
+
+/* Test alert button */
+"Test Alert" = "Testaa hälytystä";
+
+/* Empty or invalid Uri error */
+"The base URI is empty or invalid!" = "URI on tyhjä tai virheellinen!";
+
+/* Footer for delta */
+"The difference (delta) between two individual readings." = "Ero kahden peräkkäisen lukeman välillä.";
+
+/* Stats button value for Today */
+"Today" = "Tänään";
+
+/* Stats button value for Today & Yesterday */
+"Today & Yesterday" = "Tänään ja eilen";
+
+/* Unkown error while extracting Pebble API data */
+"Unknown error while extracting data from Pebble Watch API" = "Tuntematon virhe tietojen purkamisessa Pebble Watch APIsta";
+
+/* Label for Urgent High */
+"Urgent High" = "Hyvin korkea";
+
+/* Title for URL */
+"URL" = "URL";
+
+/* Label for Version */
+"Version" = "Versio";
+
+/* Label for Vibrate switch */
+"Vibrate" = "Värinä";
+
+/* Footer for Alert notifications */
+"When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode." = "Kun sovellus on taustalla, voit ottaa ilmoitukset käyttöön huomataksesi tulevat hälytykset. Lisää äänenvoimakkuutta ja ota 'Älä häiritse' tila pois päältä ollaksesi varma että huomaat hälytykset.";
+
+/* Stats button value for Yesterday */
+"Yesterday" = "Eilen";
+

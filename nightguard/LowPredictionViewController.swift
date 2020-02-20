@@ -16,7 +16,7 @@ class LowPredictionViewController: CustomFormViewController {
     
     override func constructForm() {
         
-        selectableSection = SelectableSection<ListCheckRow<Int>>("Prediction interval", selectionType: .singleSelection(enableDeselection: true))
+        selectableSection = SelectableSection<ListCheckRow<Int>>(NSLocalizedString("Prediction interval", comment: "Label for prediction interval options"), selectionType: .singleSelection(enableDeselection: true))
         selectableSection.onSelectSelectableRow = { cell, row in
             guard let value = row.value else { return }
             AlarmRule.minutesToPredictLow.value = value
@@ -27,16 +27,18 @@ class LowPredictionViewController: CustomFormViewController {
         })
         
         for option in lowPredictionAlarmOptions {
-            selectableSection <<< ListCheckRow<Int>("\(option) Minutes") { lrow in
-                lrow.title = "\(option) Minutes"
+            let optionString = String(format: NSLocalizedString("%d Minutes", comment: "Option in low predicion alert settings"), option)
+
+            selectableSection <<< ListCheckRow<Int>(optionString) { lrow in
+                lrow.title = optionString
                 lrow.selectableValue = option
                 lrow.value = (option == AlarmRule.minutesToPredictLow.value) ? option : nil
             }
         }
         
-        form +++ Section(header: "", footer: "Alerts when a low BG value is predicted in the near future (if the current trend is continued).")
+        form +++ Section(header: "", footer: NSLocalizedString("Alerts when a low BG value is predicted in the near future (if the current trend is continued).", comment: "Footer in low predicion alert settings"))
             <<< SwitchRow("Low Prediction") { row in
-                row.title = "Low Prediction"
+                row.title = NSLocalizedString("Low Prediction2", comment: "Title in low predicion alert settings")
                 row.value = AlarmRule.isLowPredictionEnabled.value
                 }.onChange { row in
                     guard let value = row.value else { return }

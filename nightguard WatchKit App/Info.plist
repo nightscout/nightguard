@@ -21,14 +21,14 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>511</string>
+	<string>513</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>de.my-wan.dhe.nightguard</string>
+	<string>fi.uusi-raatikkala.nightguard</string>
 	<key>WKWatchKitApp</key>
 	<true/>
 </dict>

@@ -13,21 +13,21 @@ class FastRiseDropViewController: CustomFormViewController {
     
     override func constructForm() {
         
-        form +++ Section(header: "", footer: "Alerts when a fast BG rise or drop is detected in the last consecutive readings.")
+        form +++ Section(header: "", footer: NSLocalizedString("Alerts when a fast BG rise or drop is detected in the last consecutive readings.", comment: "Footer for Alerts"))
             <<< SwitchRow("FastRiseDropSwitch") { row in
-                row.title = "Fast Rise/Drop"
+                row.title = NSLocalizedString("Fast Rise/Drop", comment: "Label for Fast rise/drop")
                 row.value = AlarmRule.isEdgeDetectionAlarmEnabled.value
                 }.onChange { row in
                     guard let value = row.value else { return }
                     AlarmRule.isEdgeDetectionAlarmEnabled.value = value
             }
             
-            +++ Section(footer: "How many consecutive readings to consider.") { header in
+            +++ Section(footer: NSLocalizedString("How many consecutive readings to consider.", comment: "Footer for consecutive readings")) { header in
                 header.hidden = "$FastRiseDropSwitch == false"
             }
             
             <<< SegmentedRow<Int>() { row in
-                row.title = "Consecutive Readings"
+                row.title = NSLocalizedString("Consecutive Readings", comment: "Label for Consecutive Readings")
                 row.options = [2, 3, 4, 5]
                 row.value = AlarmRule.numberOfConsecutiveValues.value
                 }.onChange { row in
@@ -35,12 +35,12 @@ class FastRiseDropViewController: CustomFormViewController {
                     AlarmRule.numberOfConsecutiveValues.value = Int(value)
                 }
             
-            +++ Section(footer: "The difference (delta) between two individual readings.") { header in
+            +++ Section(footer: NSLocalizedString("The difference (delta) between two individual readings.", comment: "Footer for delta")) { header in
                 header.hidden = "$FastRiseDropSwitch == false"
             }
             
             <<< StepperRow() { row in
-                row.title = "Delta"
+                row.title = NSLocalizedString("Delta", comment: "Label for delta")
                 row.displayValueFor = { value in
                     guard let value = value else { return nil }
                     let cleanValue = Float(value).cleanValue
