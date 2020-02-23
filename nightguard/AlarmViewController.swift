@@ -79,11 +79,11 @@ class AlarmViewController: CustomFormViewController {
                         
                         if #available(iOS 11.0, *) {
                             return String(format: NSLocalizedString(
-                                "Alerts when BG values are rising or dropping with %s %s, considering the last %d consecutive readings.",
+                                "Alerts when BG values are rising or dropping with %@ %@, considering the last %d consecutive readings.",
                                 comment: "Footer for Fast rise/drop"), delta, units, consecutiveValue)
                         } else {
                             // single line, as iOS 10 doesn't expand cell for more lines
-                            return String(format: NSLocalizedString("%s %s in %d consecutive readings",
+                            return String(format: NSLocalizedString("%@ %@ in %d consecutive readings",
                                      comment: "Single line footer for Fast rise/drop"), delta, units, consecutiveValue)
                         }
                     } else {

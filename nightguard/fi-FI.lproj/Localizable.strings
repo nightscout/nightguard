@@ -1,5 +1,5 @@
 /* Single line footer for Fast rise/drop */
-"%s %s in %d consecutive readings" = "%1@ %2$@ %3$d peräkkäisessä lukemassa";
+"%@ %@ in %d consecutive readings" = "%1@ %2$@ %3$d peräkkäisessä lukemassa";
 
 /* Single line footer for predicted low */
 "%d minutes" = "%d minuuttia";
@@ -47,7 +47,7 @@
 "Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %d)." = "Hälytykset kun verensokeri pysyy korkealla enemmän kuin %1$d minuuttia tai ylittää erittäin korkean arvon %2$d).";
 
 /* Footer for Fast rise/drop */
-"Alerts when BG values are rising or dropping with %s %s, considering the last %d consecutive readings." = "Hälytykset kun verensokeri arvo on nousemassa tai laskemassa %1$@ %2$@, ottaen huomioon %3$d peräkkäistä lukemaa.";
+"Alerts when BG values are rising or dropping with %@ %@, considering the last %d consecutive readings." = "Hälytykset kun verensokeri arvo on nousemassa tai laskemassa %1$@ %2$@, ottaen huomioon %3$d peräkkäistä lukemaa.";
 
 /* Footer for missed readings alert */
 "Alerts when no data for more than %d minutes." = "Hälytys kun ei dataa %d minuuttiin.";
