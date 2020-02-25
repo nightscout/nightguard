@@ -17,6 +17,8 @@ target 'nightguard' do
   target 'nightguardUITests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'Eureka'
+    pod 'XLActionController'
   end
 
 end

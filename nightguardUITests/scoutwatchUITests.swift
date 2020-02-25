@@ -9,16 +9,27 @@
 import XCTest
 
 class scoutwatchUITests: XCTestCase {
-        
+    var app: XCUIApplication!
+
     override func setUp() {
         super.setUp()
         
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        
+        addUIInterruptionMonitor(withDescription: "Accept disclaimer") { alert -> Bool in
+            if alert.alerts["Disclaimer!"].exists {
+                alert.alerts["Disclaimer!"].scrollViews.otherElements.buttons["Accept"].tap()
+                return true
+            }
+            return false
+        }
+
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
+
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        let app = XCUIApplication()
+        app = XCUIApplication()
+        setupSnapshot(app)
+        app.launchArguments.append("--uitesting")
         app.launchEnvironment["TEST"] = "1"
         app.launch()
 
@@ -29,18 +40,19 @@ class scoutwatchUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
-        let app = XCUIApplication()
-        
-        let snoozeButton : XCUIElement = app.buttons["Snooze"]
-        snoozeButton.tap()
-        app.alerts["Snooze"].collectionViews.buttons["30 Minutes"].tap()
-        
-        //XCTAssertEqual("Snoozed for 30min", snoozeButton.title)
+
+    func testTabsBars() {
+        let tabBarsQuery = app.tabBars
+        XCTAssertEqual(tabBarsQuery.buttons.count, 4)
+
+        tabBarsQuery.buttons["Preferences"].tap()
+        snapshot("01-preferences")
+        tabBarsQuery.buttons["Main"].tap()
+        snapshot("02-main")
+        tabBarsQuery.buttons["Alarms"].tap()
+        snapshot("03-alarms")
+        tabBarsQuery.buttons["Stats"].tap()
+        snapshot("04-stats")
     }
     
 }
