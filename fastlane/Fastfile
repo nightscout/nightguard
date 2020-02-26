@@ -19,5 +19,6 @@ platform :ios do
   desc "Generate new localized screenshots"
   lane :screenshots do
     capture_screenshots(workspace: "nightguard.xcworkspace", scheme: "nightguardUITests")
+    frame_screenshots
   end
 end
