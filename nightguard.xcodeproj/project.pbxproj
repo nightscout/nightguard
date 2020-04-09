@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DF692A369920ED1471F4CB4 /* Pods_nightguardUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDA8B19A6EB3652EEDD03592 /* Pods_nightguardUITests.framework */; };
+		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
 		3CE052D040FF4F7F7B59CA3F /* Pods_nightguard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7695EB5A62ACCB701AA224B3 /* Pods_nightguard.framework */; };
 		430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */; };
 		43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
@@ -306,6 +307,7 @@
 /* Begin PBXFileReference section */
 		0884247B43E1351A95D71F0C /* Pods-nightguard WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard WatchKit App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-nightguard WatchKit App/Pods-nightguard WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
 		127F207A227F018E00C90F07 /* nightguard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nightguard.entitlements; sourceTree = "<group>"; };
+		28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		2CD1F1A801015AC39114CEC2 /* Pods-nightguardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests.release.xcconfig"; sourceTree = "<group>"; };
 		430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
@@ -325,9 +327,9 @@
 		43647BCA1BFF6435004389F9 /* nightguard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nightguard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BD21BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43647BD71BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		43647BDE1BFF6435004389F9 /* nightguard.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nightguard.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43647BDE1BFF6435004389F9 /* nightguard_tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nightguard_tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BE41BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		43647BE91BFF6435004389F9 /* nightguard.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nightguard.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43647BE91BFF6435004389F9 /* nightguard_uitests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nightguard_uitests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BED1BFF6435004389F9 /* scoutwatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scoutwatchUITests.swift; sourceTree = "<group>"; };
 		43647BEF1BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43647BF21BFF6435004389F9 /* nightguard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nightguard.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -567,8 +569,8 @@
 			isa = PBXGroup;
 			children = (
 				43647BCA1BFF6435004389F9 /* nightguard.app */,
-				43647BDE1BFF6435004389F9 /* nightguard.xctest */,
-				43647BE91BFF6435004389F9 /* nightguard.xctest */,
+				43647BDE1BFF6435004389F9 /* nightguard_tests.xctest */,
+				43647BE91BFF6435004389F9 /* nightguard_uitests.xctest */,
 				43647BF21BFF6435004389F9 /* nightguard.app */,
 				43647C011BFF6435004389F9 /* nightguard.appex */,
 			);
@@ -612,6 +614,7 @@
 		43647BEC1BFF6435004389F9 /* nightguardUITests */ = {
 			isa = PBXGroup;
 			children = (
+				28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */,
 				43647BED1BFF6435004389F9 /* scoutwatchUITests.swift */,
 				43647BEF1BFF6435004389F9 /* Info.plist */,
 			);
@@ -897,7 +900,7 @@
 			);
 			name = nightguardTests;
 			productName = scoutwatchTests;
-			productReference = 43647BDE1BFF6435004389F9 /* nightguard.xctest */;
+			productReference = 43647BDE1BFF6435004389F9 /* nightguard_tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		43647BE81BFF6435004389F9 /* nightguardUITests */ = {
@@ -908,6 +911,7 @@
 				43647BE51BFF6435004389F9 /* Sources */,
 				43647BE61BFF6435004389F9 /* Frameworks */,
 				43647BE71BFF6435004389F9 /* Resources */,
+				2D4064AFFD5591876BBBB111 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -916,7 +920,7 @@
 			);
 			name = nightguardUITests;
 			productName = scoutwatchUITests;
-			productReference = 43647BE91BFF6435004389F9 /* nightguard.xctest */;
+			productReference = 43647BE91BFF6435004389F9 /* nightguard_uitests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		43647BF11BFF6435004389F9 /* nightguard WatchKit App */ = {
@@ -1092,6 +1096,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2D4064AFFD5591876BBBB111 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2D72FB8D04AE400767CB773A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1398,6 +1419,7 @@
 				4330662C23AFB05900690C4A /* WatchMessageService.swift in Sources */,
 				4330663023AFB27900690C4A /* Helpers.swift in Sources */,
 				4330663923AFB58500690C4A /* AnyConvertible.swift in Sources */,
+				28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */,
 				4330663F23AFB68900690C4A /* QuickSnoozeOption.swift in Sources */,
 				4330662F23AFB26700690C4A /* NightscoutData.swift in Sources */,
 				43647BEE1BFF6435004389F9 /* scoutwatchUITests.swift in Sources */,
@@ -1825,7 +1847,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardTests";
-				PRODUCT_NAME = nightguard;
+				PRODUCT_NAME = nightguard_tests;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/nightguard.app/nightguard";
@@ -1845,7 +1867,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardTests";
-				PRODUCT_NAME = nightguard;
+				PRODUCT_NAME = nightguard_tests;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/nightguard.app/nightguard";
@@ -1864,7 +1886,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardUITests";
-				PRODUCT_NAME = nightguard;
+				PRODUCT_NAME = nightguard_uitests;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = nightguard;
@@ -1884,7 +1906,7 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguardUITests";
-				PRODUCT_NAME = nightguard;
+				PRODUCT_NAME = nightguard_uitests;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = nightguard;
