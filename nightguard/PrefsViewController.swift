@@ -89,7 +89,8 @@ class PrefsViewController: CustomFormViewController {
                             let rows = CGFloat(title.count / 50) + 1 // we condiser 80 characters are on a line
                             $0.cell.height = { 30 * rows }
                         }
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                        let insertionRow = row.indexPath!.row + index + 1
+                        row.section?.insert(labelRow, at: insertionRow)
                     }
                 }
         }
@@ -138,6 +139,7 @@ class PrefsViewController: CustomFormViewController {
                 }.onChange { row in
                     guard let value = row.value else { return }
                     UserDefaultsRepository.dimScreenWhenIdle.value = value
+                    row.reload()
             }
             
             +++ Section()
