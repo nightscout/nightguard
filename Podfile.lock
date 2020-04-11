@@ -1,5 +1,5 @@
 PODS:
-  - Eureka (5.0.1)
+  - Eureka (5.2.1)
   - XLActionController (5.0.2):
     - XLActionController/Core (= 5.0.2)
   - XLActionController/Core (5.0.2)
@@ -14,9 +14,9 @@ SPEC REPOS:
     - XLActionController
 
 SPEC CHECKSUMS:
-  Eureka: da9d2294da234eae40b22e7273b9fc2335502fc1
+  Eureka: c883105488e05bc65539f583246ecf9657cabbfe
   XLActionController: f1f2226d2c6629db197d4a41f2da907085a4cb9d
 
 PODFILE CHECKSUM: 4723f56028c819fef9274c8175d4a2af1d39bec9
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.0
