@@ -139,6 +139,7 @@ class PrefsViewController: CustomFormViewController {
                 }.onChange { row in
                     guard let value = row.value else { return }
                     UserDefaultsRepository.dimScreenWhenIdle.value = value
+                    row.reload()
             }
             
             +++ Section()
