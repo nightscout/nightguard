@@ -50,9 +50,8 @@ class PrefsViewController: CustomFormViewController {
         
         nightscoutURLRow = URLRow() { row in
             row.title = "URL"
-            row.placeholder = "https://my.nightscout.de?token=mynightscouttoken"
+            row.placeholder = "http://night.fritz.box"
             row.value = URL(string: UserDefaultsRepository.baseUri.value)
-//            row.add(rule: RuleURL())
             row.add(rule: nightscoutURLRule)
             row.validationOptions = .validatesOnDemand
             }.onChange { [weak self] row in

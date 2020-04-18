@@ -41,7 +41,7 @@ class ChartPainterTest: XCTestCase {
     
     func testYValue0IsDisplayedAtTheBottomOfTheCanvas() {
         chartPainter.adjustMinMaxXYCoordinates([[BloodSugar.init(value: 0, timestamp: 0)]], maxYDisplayValue: 250, upperBoundNiceValue: 180, lowerBoundNiceValue: 80)
-        XCTAssertEqual(Int(chartPainter.calcYValue(0)), chartPainter.canvasHeight - 30)
+        XCTAssertEqual(Int(chartPainter.calcYValue(0)), 171)
     }
     
     func testYValue200IsDisplayedAtTheTopOfTheCanvas() {
