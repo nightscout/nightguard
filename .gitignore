@@ -1,5 +1,11 @@
+nightguard.app.dSYM.zip
+nightguard.ipa
+nightguard.xcodeproj/xcshareddata/
+Pods/
 nightguard.xcodeproj/project.xcworkspace/xcshareddata/
 nightguard.xcodeproj/project.xcworkspace/xcuserdata/
 nightguard.xcodeproj/xcuserdata/
 nightguard.xcworkspace/xcuserdata/
-Pods/
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/report.xml

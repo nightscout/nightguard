@@ -50,9 +50,8 @@ class PrefsViewController: CustomFormViewController {
         
         nightscoutURLRow = URLRow() { row in
             row.title = NSLocalizedString("URL", comment: "Title for URL")
-            row.placeholder = "https://my.nightscout.de?token=mynightscouttoken"
+            row.placeholder = "http://night.fritz.box"
             row.value = URL(string: UserDefaultsRepository.baseUri.value)
-//            row.add(rule: RuleURL())
             row.add(rule: nightscoutURLRule)
             row.validationOptions = .validatesOnDemand
             }.onChange { [weak self] row in
@@ -89,7 +88,8 @@ class PrefsViewController: CustomFormViewController {
                             let rows = CGFloat(title.count / 50) + 1 // we condiser 80 characters are on a line
                             $0.cell.height = { 30 * rows }
                         }
-                        row.section?.insert(labelRow, at: row.indexPath!.row + index + 1)
+                        let insertionRow = row.indexPath!.row + index + 1
+                        row.section?.insert(labelRow, at: insertionRow)
                     }
                 }
         }
@@ -138,6 +138,7 @@ class PrefsViewController: CustomFormViewController {
                 }.onChange { row in
                     guard let value = row.value else { return }
                     UserDefaultsRepository.dimScreenWhenIdle.value = value
+                    row.reload()
             }
             
             +++ Section()

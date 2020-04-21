@@ -27,6 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        if CommandLine.arguments.contains("--uitesting") {
+            configureAppForTesting()
+        }
+
         // Override point for customization after application launch.
         UITabBar.appearance().tintColor = UIColor.white
 
@@ -51,6 +55,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         activateWatchConnectivity()
         return true
+    }
+
+    func configureAppForTesting() -> Void {
+        UIView.setAnimationsEnabled(false)
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
