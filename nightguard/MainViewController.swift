@@ -302,11 +302,11 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @IBAction func showActionsMenu(_ sender: AnyObject) {
         
         let actionController = MenuActionController()
-        actionController.addAction(Action(MenuActionData(title: "Open your Nightscout site", image: UIImage(named: "Nightscout")!.withRenderingMode(.alwaysTemplate)), style: .default) { [unowned self] _ in
+        actionController.addAction(Action(MenuActionData(title:  NSLocalizedString("Open your Nightscout site", comment: "Link to NS site"), image: UIImage(named: "Nightscout")!.withRenderingMode(.alwaysTemplate)), style: .default) { [unowned self] _ in
             
             self.showNightscout()
         })
-        actionController.addAction(Action(MenuActionData(title: "Fullscreen monitor", image: UIImage(named: "Fullscreen")!.withRenderingMode(.alwaysTemplate)), style: .default) {  [unowned self] _ in
+        actionController.addAction(Action(MenuActionData(title:  NSLocalizedString("Fullscreen monitor", comment: "Fullscreen monitor"), image: UIImage(named: "Fullscreen")!.withRenderingMode(.alwaysTemplate)), style: .default) {  [unowned self] _ in
             self.showFullscreenMonitor()
         })
         
@@ -341,7 +341,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: isSmallDevice ? 24 : 27),
             NSAttributedString.Key.paragraphStyle: style
         ]
-        var title = NSMutableAttributedString(string: "snooze", attributes: titleAttributes)
+        var title = NSMutableAttributedString(string: NSLocalizedString("snooze", comment: "Text of snooze button"), attributes: titleAttributes)
         var subtitle = AlarmRule.getAlarmActivationReason(ignoreSnooze: true)
         var subtitleColor: UIColor = (subtitle != nil) ? .red : .white
         var showSubtitle = true
@@ -352,7 +352,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
                 
                 // no alarm, but maybe we'll show a low prediction warning...
                 if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue.value), minutesToLow > 0 {
-                    subtitle = "Low Predicted in \(minutesToLow)min"
+                    subtitle = String(format: NSLocalizedString("Low Predicted in %dmin", comment: "Show low prediction warning"), minutesToLow)
                     subtitleColor = .yellow
                 }
             }
@@ -360,7 +360,8 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
 
         if AlarmRule.isSnoozed() {
             let remaininingSnoozeMinutes = AlarmRule.getRemainingSnoozeMinutes()
-            title = NSMutableAttributedString(string: "Snoozed for \n \(remaininingSnoozeMinutes)min", attributes: titleAttributes)
+            let titleString = String(format: NSLocalizedString("Snoozed for %dmin", comment: "Snoozed duration in main page"), remaininingSnoozeMinutes)
+            title = NSMutableAttributedString(string: titleString, attributes: titleAttributes)
             
             // show alert reason message if less than 5 minutes of snoozing (to be prepared!)
             showSubtitle = remaininingSnoozeMinutes < 5

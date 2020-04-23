@@ -33,7 +33,7 @@ class StatsPeriodSelectorView: BasicStatsControl {
     override func modelWasSet() {
         super.modelWasSet()
         
-        updateTitleView(name: "Stats Period", value: model?.period.description)
+        updateTitleView(name: NSLocalizedString("Stats Period", comment: "Title of Stats period"), value: model?.period.description)
     }
     
     override func changePage() {

@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import Foundation
 
 class AlarmViewController: CustomFormViewController {
     
@@ -44,29 +45,29 @@ class AlarmViewController: CustomFormViewController {
         belowSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
         
-        form +++ Section(header: "High BG Alert", footer: "Alerts when the blood glucose raises above this value.") <<< aboveSliderRow
+        form +++ Section(header: NSLocalizedString("High BG Alert", comment: "Alarm settings title: High alert"), footer: NSLocalizedString("Alerts when the blood glucose raises above this value.", comment: "Footer for High alert")) <<< aboveSliderRow
             
-            +++ Section(header: "Low BG Alert", footer: "Alerts when the blood glucose drops below this value.") <<< belowSliderRow
+            +++ Section(header: NSLocalizedString("Low BG Alert", comment: "Alarm settings title: Low alert"), footer: NSLocalizedString("Alerts when the blood glucose drops below this value.", comment: "Footer for Low alert")) <<< belowSliderRow
             
-            +++ Section("Other Alerts")
+            +++ Section(NSLocalizedString("Other Alerts", comment: "Alarm settings title: Other alerts"))
             
-            <<< ButtonRowWithDynamicDetails("Missed Readings") { row in
+            <<< ButtonRowWithDynamicDetails(NSLocalizedString("Missed Readings", comment: "Alarm settings title: Missed readings")) { row in
                 row.controllerProvider = { return MissedReadingsViewController() }
                 row.detailTextProvider = {
                     if AlarmRule.noDataAlarmEnabled.value {
                         if #available(iOS 11.0, *) {
-                            return "Alerts when no data for more than \(AlarmRule.minutesWithoutValues.value) minutes."
+                            return String(format: NSLocalizedString("Alerts when no data for more than %d minutes.", comment: "Footer for missed readings alert"), AlarmRule.minutesWithoutValues.value)
                         } else {
                             // single line, as iOS 10 doesn't expand cell for more lines
-                            return "\(AlarmRule.minutesWithoutValues.value) minutes"
+                            return String(format: NSLocalizedString("%d minutes.", comment: "Single line footer for missed readings alert"), AlarmRule.minutesWithoutValues.value)
                         }
                     } else {
-                        return "Off"
+                        return NSLocalizedString("Off", comment: "Alert off")
                     }
                 }
             }
 
-            <<< ButtonRowWithDynamicDetails("Fast Rise/Drop") { row in
+            <<< ButtonRowWithDynamicDetails(NSLocalizedString("Fast Rise/Drop", comment: "Label for Fast rise/drop")) { row in
                 row.controllerProvider = { return FastRiseDropViewController() }
                 row.detailTextProvider = {
                     if AlarmRule.isEdgeDetectionAlarmEnabled.value {
@@ -74,20 +75,24 @@ class AlarmViewController: CustomFormViewController {
                         let deltaInMgdl = AlarmRule.deltaAmount.value
                         let delta = UnitsConverter.toDisplayUnits("\(deltaInMgdl)")
                         let units = UserDefaultsRepository.units.value.description
+                        let consecutiveValue = AlarmRule.numberOfConsecutiveValues.value
                         
                         if #available(iOS 11.0, *) {
-                            return "Alerts when BG values are rising or dropping with \(delta) \(units), considering the last \(AlarmRule.numberOfConsecutiveValues.value) consecutive readings."
+                            return String(format: NSLocalizedString(
+                                "Alerts when BG values are rising or dropping with %@ %@, considering the last %d consecutive readings.",
+                                comment: "Footer for Fast rise/drop"), delta, units, consecutiveValue)
                         } else {
                             // single line, as iOS 10 doesn't expand cell for more lines
-                            return "\(delta) \(units) in \(AlarmRule.numberOfConsecutiveValues.value) consecutive readings"
+                            return String(format: NSLocalizedString("%@ %@ in %d consecutive readings",
+                                     comment: "Single line footer for Fast rise/drop"), delta, units, consecutiveValue)
                         }
                     } else {
-                        return "Off"
+                        return NSLocalizedString("Off", comment: "Alert off")
                     }
                 }
             }
             
-            <<< ButtonRowWithDynamicDetails("Persistent High") { row in
+            <<< ButtonRowWithDynamicDetails(NSLocalizedString("Persistent High", comment: "Alarm settings title: Persistent High")) { row in
                 row.controllerProvider = { return PersistentHighViewController() }
                 row.detailTextProvider = {
                     
@@ -98,45 +103,47 @@ class AlarmViewController: CustomFormViewController {
                     
                     if AlarmRule.isPersistentHighEnabled.value {
                         if #available(iOS 11.0, *) {
-                            return "Alerts when BG remains high for more than \(AlarmRule.persistentHighMinutes.value) minutes or exceeds the urgent high value (\(urgentHighWithUnits))."
+                            return String(format: NSLocalizedString(
+                                "Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %d).",
+                                comment: "footer for Persistent high"), AlarmRule.persistentHighMinutes.value, urgentHighWithUnits)
                         } else {
                             // single line, as iOS 10 doesn't expand cell for more lines
-                            return "\(AlarmRule.persistentHighMinutes.value) minutes (< \(urgentHighWithUnits))"
+                            return String(format: NSLocalizedString("%d minutes < %d).", comment: "Single line footer for Persistent high"), AlarmRule.persistentHighMinutes.value, urgentHighWithUnits)
                         }
                     } else {
-                        return "Off"
+                        return NSLocalizedString("Off", comment: "Alert off")
                     }
                 }
             }
             
-            <<< ButtonRowWithDynamicDetails("Low Prediction") { row in
+            <<< ButtonRowWithDynamicDetails(NSLocalizedString("Low Prediction", comment: "Alarm settings title: Low prediction")) { row in
                 row.controllerProvider = { return LowPredictionViewController() }
                 row.detailTextProvider = {
                     if AlarmRule.isLowPredictionEnabled.value {
                         if #available(iOS 11.0, *) {
-                            return "Alerts when a low BG value is predicted in less than \(AlarmRule.minutesToPredictLow.value) minutes."
+                            return String(format: NSLocalizedString("Alerts when a low BG value is predicted in less than %d minutes.", comment: "Footer for predicted low"), AlarmRule.minutesToPredictLow.value)
                         } else {
                             // single line, as iOS 10 doesn't expand cell for more lines
-                            return "\(AlarmRule.minutesToPredictLow.value) minutes"
+                            return String(format: NSLocalizedString("%d minutes", comment: "Single line footer for predicted low"), AlarmRule.minutesToPredictLow.value)
                         }
                     } else {
-                        return "Off"
+                        return NSLocalizedString("Off", comment: "Alert off")
                     }
                 }
             }
             
-            +++ Section(header: "", footer: "Snooze (do not alert) when values are high or low but the trend is going in the right direction.")
+            +++ Section(header: "", footer: NSLocalizedString("Snooze (do not alert) when values are high or low but the trend is going in the right direction.", comment: "Footer for smart snooze switch"))
             <<< SwitchRow() { row in
-                row.title = "Smart Snooze"
+                row.title = NSLocalizedString("Smart Snooze", comment: "Label for Smart snooze switch")
                 row.value = AlarmRule.isSmartSnoozeEnabled.value
                 }.onChange { row in
                     guard let value = row.value else { return }
                     AlarmRule.isSmartSnoozeEnabled.value = value
             }
             
-            +++ Section(header: "", footer: "When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode.")
+            +++ Section(header: "", footer: NSLocalizedString("When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode.", comment: "Footer for Alert notifications"))
             <<< SwitchRow() { row in
-                row.title = "Alert Notifications"
+                row.title = NSLocalizedString("Alert Notifications", comment: "Label for Alert Notifications");
                 row.value = AlarmNotificationService.singleton.enabled
                 }.onChange { row in
                     guard let value = row.value else { return }
@@ -144,11 +151,11 @@ class AlarmViewController: CustomFormViewController {
             }
             
             +++ Section()
-            <<< ButtonRowWithDynamicDetails("Alert Volume") { row in
+            <<< ButtonRowWithDynamicDetails(NSLocalizedString("Alert Volume", comment: "Label for Alert volume")) { row in
                 row.controllerProvider = { return AlertVolumeViewController()
                 }
             }
-            <<< ButtonRowWithDynamicDetails("Snoozing Actions") { row in
+            <<< ButtonRowWithDynamicDetails(NSLocalizedString("Snoozing Actions", comment: "Label for Snoozing actions")) { row in
                 row.controllerProvider = { return SnoozeActionsViewController()
                 }
         }

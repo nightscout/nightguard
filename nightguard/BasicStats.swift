@@ -25,15 +25,15 @@ struct BasicStats {
             
             switch self {
             case .last24h:
-                return "Last 24h"
+                return NSLocalizedString("Last 24h", comment: "Stats button value for Last 24h")
             case .last8h:
-                return "Last 8h"
+                return NSLocalizedString("Last 8h", comment: "Stats button value for Last 8h")
             case .today:
-                return "Today"
+                return NSLocalizedString("Today", comment: "Stats button value for Today")
             case .yesterday:
-                return "Yesterday"
+                return NSLocalizedString("Yesterday", comment: "Stats button value for Yesterday")
             case .todayAndYesterday:
-                return "Today & Yesterday"
+                return NSLocalizedString("Today & Yesterday", comment: "Stats button value for Today & Yesterday")
             }
         }
         

@@ -16,27 +16,27 @@ class MissedReadingsViewController: CustomFormViewController {
     
     override func constructForm() {
         
-        selectableSection = SelectableSection<ListCheckRow<Int>>("Alert when no data for more than", selectionType: .singleSelection(enableDeselection: true))
+        selectableSection = SelectableSection<ListCheckRow<Int>>(NSLocalizedString("Alert when no data for more than", comment: "Label for Alert when no data"), selectionType: .singleSelection(enableDeselection: true))
         selectableSection.onSelectSelectableRow = { cell, row in
             guard let value = row.value else { return }
             AlarmRule.minutesWithoutValues.value = value
         }
-        selectableSection.hidden = .function(["Missed Readings"], { form -> Bool in
+        selectableSection.hidden = .function([NSLocalizedString("Missed Readings", comment: "Alarm settings title: Missed readings")], { form -> Bool in
             let row: RowOf<Bool>! = form.rowBy(tag: "Missed Readings")
             return row.value ?? false == false
         })
         
         for option in alarmOptions {
             selectableSection <<< ListCheckRow<Int>("\(option) Minutes") { lrow in
-                lrow.title = "\(option) Minutes"
+                lrow.title = "\(option) " + NSLocalizedString("Minutes", comment: "Option")
                 lrow.selectableValue = option
                 lrow.value = (option == AlarmRule.minutesWithoutValues.value) ? option : nil
             }
         }
         
-        form +++ Section(header: "", footer: "Alerts when no data is received for a longer period. We suggest leaving this check ALWAYS ON.")
+        form +++ Section(header: "", footer: NSLocalizedString("Alerts when no data is received for a longer period. We suggest leaving this check ALWAYS ON.", comment: "Footer for Alerts when no data is received"))
             <<< SwitchRow("Missed Readings") { row in
-                row.title = "Missed Readings"
+                row.title = NSLocalizedString("Missed Readings", comment: "Alarm settings title: Missed readings")
                 row.value = AlarmRule.noDataAlarmEnabled.value
                 }.onChange { [weak self] row in
                     guard let value = row.value else { return }
@@ -45,8 +45,8 @@ class MissedReadingsViewController: CustomFormViewController {
                         AlarmRule.noDataAlarmEnabled.value = value
                     } else {
                         self?.showYesNoAlert(
-                            title: "ARE YOU SURE?",
-                            message: "For your safety, keep this switch ON for receiving alarms when no readings!",
+                            title: NSLocalizedString("ARE YOU SURE?", comment: "Title for confirmation"),
+                            message: NSLocalizedString("For your safety, keep this switch ON for receiving alarms when no readings!", comment: "Body of confirmation"),
                             yesHandler: {
                                 AlarmRule.noDataAlarmEnabled.value = value
                         },

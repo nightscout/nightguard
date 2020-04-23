@@ -26,9 +26,9 @@ class GlucoseDistributionView: BasicStatsControl {
         }
         
         return [
-            StatsPage(name: "In Range", value: model?.inRangeValuesPercentage, formattedValue: model?.formattedInRangeValuesPercentage, color: .green),
-            StatsPage(name: "Low", value: model?.lowValuesPercentage, formattedValue: model?.formattedLowValuesPercentage, detail: lowDuration, color: .red),
-            StatsPage(name: "High", value: model?.highValuesPercentage, formattedValue: model?.formattedHighValuesPercentage, detail: highDuration, color: .yellow),
+            StatsPage(name: NSLocalizedString("In Range", comment: "Button value for In range"), value: model?.inRangeValuesPercentage, formattedValue: model?.formattedInRangeValuesPercentage, color: .green),
+            StatsPage(name: NSLocalizedString("Low", comment: "Button value for Low"), value: model?.lowValuesPercentage, formattedValue: model?.formattedLowValuesPercentage, detail: lowDuration, color: .red),
+            StatsPage(name: NSLocalizedString("High", comment: "Button value for High"), value: model?.highValuesPercentage, formattedValue: model?.formattedHighValuesPercentage, detail: highDuration, color: .yellow),
             StatsPage(name: "")
         ]
     }

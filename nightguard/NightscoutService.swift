@@ -44,7 +44,7 @@ class NightscoutService {
                 }
                 
                 guard data != nil else {
-                    resultHandler(.error(self.createNoDataError(description: "No data received from Nightscout entries API")))
+                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Nightscout entries API", comment: "No data from NS entries API"))))
                     return
                 }
                 
@@ -92,7 +92,7 @@ class NightscoutService {
                 }
                 
                 guard data != nil else {
-                    resultHandler(.error(self.createNoDataError(description: "No data received from Nightscout status API")))
+                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Nightscout status API", comment: "No data from NS status API"))))
                     return
                 }
                 
@@ -172,7 +172,7 @@ class NightscoutService {
             guard data != nil else {
                 print("The received data was nil...")
                 dispatchOnMain { [unowned self] in
-                    resultHandler(.error(self.createNoDataError(description: "No data received from Nightscout entries API")))
+                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Nightscout entries API", comment: "No data from NS entries API"))))
                     }
                 return
             }
@@ -181,7 +181,7 @@ class NightscoutService {
             guard !stringSgvData.contains("<html") else {
                 print("Invalid data with html received")  // TODO: pop an error alert
                 dispatchOnMain { [unowned self] in
-                    resultHandler(.error(self.createNoDataError(description: "Invalid data with HTML received from Nightscout entries API")))
+                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("Invalid data with HTML received from Nightscout entries API", comment: "Invalid data from NS entries API"))))
                 }
                 return
             }
@@ -384,7 +384,7 @@ class NightscoutService {
             guard data != nil else {
                 print("Pebble Watch Data was nil.")
                 dispatchOnMain { [unowned self] in
-                    resultHandler(.error(self.createNoDataError(description: "No data received from Pebble Watch API")))
+                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Pebble Watch API", comment: "No data from Pebble API"))))
                 }
                 return
             }
@@ -414,7 +414,7 @@ class NightscoutService {
         do {
             let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
             guard let jsonDict :NSDictionary = json as? NSDictionary else {
-                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON received from Pebble Watch API"])
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from Pebble Watch API", comment: "Invalid JSON from Pebble API")])
                 dispatchOnMain {
                     resultHandler(.error(error))
                 }
@@ -422,7 +422,7 @@ class NightscoutService {
             }
             let bgs = jsonDict.object(forKey: "bgs") as? NSArray
             guard bgs != nil else {
-                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. "])
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. ", comment: "Invalid JSON from Pebble API, missing bgs, check NS conf")])
                 dispatchOnMain {
                     resultHandler(.error(error))
                 }
@@ -484,7 +484,7 @@ class NightscoutService {
             }
         } catch {
             print("Catched unknown exception.")
-            let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error while extracting data from Pebble Watch API"])
+            let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Unknown error while extracting data from Pebble Watch API", comment: "Unkown error while extracting Pebble API data")])
             
             dispatchOnMain {
                 resultHandler(.error(error))
@@ -564,10 +564,10 @@ class NightscoutService {
     }
     
     private func createEmptyOrInvalidUriError() -> Error {
-        return NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo:  [NSLocalizedDescriptionKey: "The base URI is empty or invalid!"])
+        return NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo:  [NSLocalizedDescriptionKey: NSLocalizedString("The base URI is empty or invalid!", comment: "Empty or invalid Uri error")])
     }
     
-    private func createNoDataError(description: String) -> Error {
-         return NSError(domain: "NightguardError", code: -1, userInfo: [NSLocalizedDescriptionKey: description])
+    private func createNoDataError(description: String ) -> Error {
+        return NSError(domain: "NightguardError", code: -1, userInfo: [NSLocalizedDescriptionKey: description])
     }
 }
