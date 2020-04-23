@@ -1,0 +1,87 @@
+
+/* Class = "UILabel"; text = "100%"; ObjectID = "3ZI-eY-05Z"; */
+"3ZI-eY-05Z.text" = "100%";
+
+/* Class = "UIButton"; normalTitle = "12h"; ObjectID = "6vy-0z-ct0"; */
+"6vy-0z-ct0.normalTitle" = "12h";
+
+/* Class = "UILabel"; text = "---"; ObjectID = "7OG-w8-xXQ"; */
+"7OG-w8-xXQ.text" = "---";
+
+/* Class = "UIButton"; normalTitle = "30min"; ObjectID = "829-7r-faZ"; */
+"829-7r-faZ.normalTitle" = "30min";
+
+/* Class = "UITabBarItem"; title = "Alarms"; ObjectID = "9LD-dY-EgA"; */
+"9LD-dY-EgA.title" = "Hälytykset";
+
+/* Class = "UITabBarItem"; title = "Preferences"; ObjectID = "9LQ-fr-oww"; */
+"9LQ-fr-oww.title" = "Asetukset";
+
+/* Class = "UILabel"; text = "0min"; ObjectID = "FFv-EO-ylg"; */
+"FFv-EO-ylg.text" = "0min";
+
+/* Class = "UIButton"; normalTitle = "10"; ObjectID = "MfQ-kN-jB6"; */
+"MfQ-kN-jB6.normalTitle" = "10";
+
+/* Class = "UIButton"; normalTitle = "3h"; ObjectID = "N1c-KO-Mkj"; */
+"N1c-KO-Mkj.normalTitle" = "3h";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "SLx-m6-8iP"; */
+"SLx-m6-8iP.text" = "-";
+
+/* Class = "UILabel"; text = "❌ Some error message..."; ObjectID = "Tea-wl-rpX"; */
+"Tea-wl-rpX.text" = "❌ Joku virheilmoitus...";
+
+/* Class = "UIButton"; normalTitle = "24h"; ObjectID = "Xb6-y9-FQ0"; */
+"Xb6-y9-FQ0.normalTitle" = "24h";
+
+/* Class = "UILabel"; text = "--:--"; ObjectID = "YvM-WS-hyk"; */
+"YvM-WS-hyk.text" = "--:--";
+
+/* Class = "UITabBarItem"; title = "Stats"; ObjectID = "Yx8-7d-Of5"; */
+"Yx8-7d-Of5.title" = "Tilastot";
+
+/* Class = "UILabel"; text = "222"; ObjectID = "aNX-u1-teT"; */
+"aNX-u1-teT.text" = "222";
+
+/* Class = "UITabBarItem"; title = "Main"; ObjectID = "cAJ-FQ-kWE"; */
+"cAJ-FQ-kWE.title" = "Pääsivu";
+
+/* Class = "UIButton"; normalTitle = "20"; ObjectID = "fTQ-zL-7pq"; */
+"fTQ-zL-7pq.normalTitle" = "20";
+
+/* Class = "UIButton"; normalTitle = "5"; ObjectID = "feH-Wo-uea"; */
+"feH-Wo-uea.normalTitle" = "5";
+
+/* Class = "UIButton"; normalTitle = "Stop Snoozing"; ObjectID = "gRY-rA-xFX"; */
+"gRY-rA-xFX.normalTitle" = "Lopeta torkku";
+
+/* Class = "UIButton"; normalTitle = "1h"; ObjectID = "kYz-5B-GiV"; */
+"kYz-5B-GiV.normalTitle" = "1h";
+
+/* Class = "UIView"; accessibilityLabel = "Preferences"; ObjectID = "kaq-Fc-h0j"; */
+"kaq-Fc-h0j.accessibilityLabel" = "Asetukset";
+
+/* Class = "UIButton"; normalTitle = "2h"; ObjectID = "m53-UA-ptg"; */
+"m53-UA-ptg.normalTitle" = "2h";
+
+/* Class = "UIButton"; normalTitle = "15"; ObjectID = "oaN-86-9XF"; */
+"oaN-86-9XF.normalTitle" = "15";
+
+/* Class = "UITabBarController"; title = "Nightscout"; ObjectID = "oic-Vn-yoT"; */
+"oic-Vn-yoT.title" = "Nightscout";
+
+/* Class = "UITabBarItem"; title = "Main"; ObjectID = "pbV-EP-yS6"; */
+"pbV-EP-yS6.title" = "Pääsivu";
+
+/* Class = "UILabel"; text = "Snooze Alarms for"; ObjectID = "q3I-tj-Pu1"; */
+"q3I-tj-Pu1.text" = "Torkuta hälytykset";
+
+/* Class = "UIButton"; normalTitle = "45min"; ObjectID = "rTa-S2-pIs"; */
+"rTa-S2-pIs.normalTitle" = "45min";
+
+/* Class = "UILabel"; text = "0.0U"; ObjectID = "sxg-9W-FFR"; */
+"sxg-9W-FFR.text" = "0.0U";
+
+/* Class = "UIButton"; normalTitle = "6h"; ObjectID = "w2F-L4-3hs"; */
+"w2F-L4-3hs.normalTitle" = "6h";

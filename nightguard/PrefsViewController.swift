@@ -49,7 +49,7 @@ class PrefsViewController: CustomFormViewController {
     override func constructForm() {
         
         nightscoutURLRow = URLRow() { row in
-            row.title = "URL"
+            row.title = NSLocalizedString("URL", comment: "Title for URL")
             row.placeholder = "http://night.fritz.box"
             row.value = URL(string: UserDefaultsRepository.baseUri.value)
             row.add(rule: nightscoutURLRule)
@@ -95,12 +95,12 @@ class PrefsViewController: CustomFormViewController {
         }
         
         
-        form +++ Section(header: "NIGHTSCOUT", footer: "Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'")
+        form +++ Section(header: "NIGHTSCOUT", footer: NSLocalizedString("Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'", comment: "Footer for URL"))
             <<< nightscoutURLRow
             
-            +++ Section(footer: "Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON.")
+            +++ Section(footer: NSLocalizedString("Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON.", comment: "Footer for Dim Screen"))
             <<< SwitchRow("KeepScreenActive") { row in
-                row.title = "Keep the Screen Active"
+                row.title = NSLocalizedString("Keep the Screen Active", comment: "Label for Keep the Screen Active")
                 row.value = UserDefaultsRepository.screenlockSwitchState.value
                 }.onChange { [weak self] row in
                     guard let value = row.value else { return }
@@ -109,8 +109,8 @@ class PrefsViewController: CustomFormViewController {
                         UserDefaultsRepository.screenlockSwitchState.value = value
                     } else {
                         self?.showYesNoAlert(
-                            title: "ARE YOU SURE?",
-                            message: "Keep this switch ON to disable the screenlock and prevent the app to get stopped!",
+                            title: NSLocalizedString("ARE YOU SURE?", comment: "Title for confirmation"),
+                            message: NSLocalizedString("Keep this switch ON to disable the screenlock and prevent the app to get stopped!", comment: "Message for confirmation"),
                             yesHandler: {
                                 UserDefaultsRepository.screenlockSwitchState.value = value
                             },
@@ -121,20 +121,20 @@ class PrefsViewController: CustomFormViewController {
                     }
             }
             <<< PushRow<Int>() { row in
-                row.title = "Dim Screen When Idle"
+                row.title = NSLocalizedString("Dim Screen When Idle", comment: "Label for Dim screen when idle")
                 row.hidden = "$KeepScreenActive == false"
                 row.options = [0, 1, 2, 3, 4, 5, 10, 15]
                 row.displayValueFor = { option in
                     switch option {
-                    case 0: return "Never"
-                    case 1: return "1 Minute"
-                    default: return "\(option!) Minutes"
+                    case 0: return NSLocalizedString("Never", comment: "Option")
+                    case 1: return NSLocalizedString("1 Minute", comment: "Option")
+                    default: return "\(option!) " + NSLocalizedString("Minutes", comment: "Option")
                     }
                 }
                 row.value = UserDefaultsRepository.dimScreenWhenIdle.value
-                row.selectorTitle = "Dim Screen When Idle"
+                row.selectorTitle = NSLocalizedString("Dim Screen When Idle", comment: "Label for Dim screen when idle")
                 }.onPresent { form, selector in
-                    selector.customize(header: "", footer: "Reduce screen brightness after detecting user inactivity for more than selected time period.")
+                    selector.customize(header: "", footer: NSLocalizedString("Reduce screen brightness after detecting user inactivity for more than selected time period.", comment: "Footer for Reduce screen brightness"))
                 }.onChange { row in
                     guard let value = row.value else { return }
                     UserDefaultsRepository.dimScreenWhenIdle.value = value
@@ -143,7 +143,7 @@ class PrefsViewController: CustomFormViewController {
             
             +++ Section()
             <<< SwitchRow() { row in
-                row.title = "Show Statistics"
+                row.title = NSLocalizedString("Show Statistics", comment: "Label for Show statistics")
                 row.value = UserDefaultsRepository.showStats.value
                 }.onChange { row in
                     guard let value = row.value else { return }
@@ -151,20 +151,20 @@ class PrefsViewController: CustomFormViewController {
             }
 
             <<< SwitchRow() { row in
-                row.title = "Show Raw BG and Noise Level"
+                row.title = NSLocalizedString("Show Raw BG and Noise Level", comment: "Label for Show Raw BG")
                 row.value = UserDefaultsRepository.showRawBG.value
                 }.onChange { [weak self] row in
                     guard let value = row.value else { return }
                     
                     if value {
-                        self?.showAlert(title: "IMPORTANT", message: "For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!")
+                        self?.showAlert(title: NSLocalizedString("IMPORTANT", comment: "Title for confirmation"), message: NSLocalizedString("For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!", comment: "Body of confirmation"))
                     }
                     
                     UserDefaultsRepository.showRawBG.value = value
             }
 
             <<< SwitchRow() { row in
-                row.title = "Show BG on App Badge"
+                row.title = NSLocalizedString("Show BG on App Badge", comment: "Label for Show BG on Badge")
                 row.value = UserDefaultsRepository.showBGOnAppBadge.value
                 }.onChange { row in
                     guard let value = row.value else { return }
@@ -172,7 +172,7 @@ class PrefsViewController: CustomFormViewController {
             }
             
             <<< LabelRow() { row in
-                row.title = "Version"
+                row.title = NSLocalizedString("Version", comment: "Label for Version")
                 
                 let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
                 let buildNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String

@@ -1,0 +1,21 @@
+
+/* Class = "UILabel"; text = "01:40"; ObjectID = "6GO-4B-bqb"; */
+"6GO-4B-bqb.text" = "01:40";
+
+/* Class = "UILabel"; text = "-"; ObjectID = "84s-NK-Vg0"; */
+"84s-NK-Vg0.text" = "-";
+
+/* Class = "UILabel"; text = "Persistent High BG"; ObjectID = "H7F-lV-LNq"; */
+"H7F-lV-LNq.text" = "Jatkuva korkea BG";
+
+/* Class = "UILabel"; text = "Snoozed for 5min"; ObjectID = "Jks-QJ-79F"; */
+"Jks-QJ-79F.text" = "Torkkuu 5min";
+
+/* Class = "UILabel"; text = "3min"; ObjectID = "Tor-n5-kS0"; */
+"Tor-n5-kS0.text" = "3min";
+
+/* Class = "UILabel"; text = "-3"; ObjectID = "bBh-xU-jo5"; */
+"bBh-xU-jo5.text" = "-3";
+
+/* Class = "UILabel"; text = "222"; ObjectID = "y0D-Zw-4uO"; */
+"y0D-Zw-4uO.text" = "222";

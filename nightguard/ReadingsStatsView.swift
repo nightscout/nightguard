@@ -18,14 +18,14 @@ class ReadingsStatsView: BasicStatsControl {
         let invalidValuesPercentage = model?.invalidValuesPercentage ?? 0
         let readingsPercent = (model?.readingsPercentage ?? 0) - invalidValuesPercentage
         var pages = [
-            StatsPage(name: "Readings", formattedValue: "\(Float(model?.readingsCount ?? 0).cleanValue) / \(model?.readingsMaximumCount ?? 0)"),
-            StatsPage(name: "Readings %", value: readingsPercent, formattedValue: model?.formattedReadingsPercentage, color: .white)
+            StatsPage(name: NSLocalizedString("Readings", comment: "Text of Readings stats button"), formattedValue: "\(Float(model?.readingsCount ?? 0).cleanValue) / \(model?.readingsMaximumCount ?? 0)"),
+            StatsPage(name: NSLocalizedString("Readings %", comment: "Text of Reading% stats button"), value: readingsPercent, formattedValue: model?.formattedReadingsPercentage, color: .white)
         ]
         
         if let invalidValuesCount = model?.invalidValuesCount, invalidValuesCount > 0 {
             
             pages.append(
-                StatsPage(name: "Invalid readings", value: invalidValuesPercentage, formattedValue: "\(invalidValuesCount)", detail: formattedDuration(fromReadingsCount: invalidValuesCount) ,color: .red)
+                StatsPage(name: NSLocalizedString("Invalid readings", comment: "Invalid readings"), value: invalidValuesPercentage, formattedValue: "\(invalidValuesCount)", detail: formattedDuration(fromReadingsCount: invalidValuesCount) ,color: .red)
             )
         }
         

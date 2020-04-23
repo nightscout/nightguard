@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "Day 2 activated"; ObjectID = "5s9-Ir-Y1w"; */
+"5s9-Ir-Y1w.text" = "Päivä 2 aktivoitu";
+
+/* Class = "UILabel"; text = "Day 4 activated"; ObjectID = "6w3-nX-GGA"; */
+"6w3-nX-GGA.text" = "Päivä 4 aktivoitu";
+
+/* Class = "UITabBarItem"; title = "Stats"; ObjectID = "Gq1-vb-adG"; */
+"Gq1-vb-adG.title" = "Tilastot";
+
+/* Class = "UILabel"; text = "Day 1 activated"; ObjectID = "Z68-zn-H43"; */
+"Z68-zn-H43.text" = "Päivä 1 aktivoitu";
+
+/* Class = "UILabel"; text = "Day 3 activated"; ObjectID = "ZFw-0B-qy0"; */
+"ZFw-0B-qy0.text" = "Päivä 3 aktivoitu";
+
+/* Class = "UINavigationItem"; title = "Stats"; ObjectID = "jcp-sA-AVP"; */
+"jcp-sA-AVP.title" = "Tilastot";
+
+/* Class = "UILabel"; text = "Day 5 activated"; ObjectID = "lPe-K1-SFm"; */
+"lPe-K1-SFm.text" = "Päivä 5 aktivoitu";
+
+/* Class = "UIButton"; normalTitle = "Edit"; ObjectID = "mfw-F5-wMB"; */
+"mfw-F5-wMB.normalTitle" = "Muuta";

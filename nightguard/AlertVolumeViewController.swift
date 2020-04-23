@@ -27,9 +27,9 @@ class AlertVolumeViewController: CustomFormViewController {
     
     override func constructForm() {
         
-        form +++ Section(header: "Alert Volume", footer: "If overriding the system output volume, your custom volume level will be used rather than phone's current volume level.")
+        form +++ Section(header: NSLocalizedString("Alert Volume", comment: "Label for Alert volume"), footer: NSLocalizedString("If overriding the system output volume, your custom volume level will be used rather than phone's current volume level.", comment: "Footer for Alert volume"))
             <<< SwitchRow("OverrideSystemVolumeSwitch") { row in
-                row.title = "Override System Volume"
+                row.title = NSLocalizedString("Override System Volume", comment: "Label for Override System Volume switch")
                 row.value = AlarmSound.overrideSystemOutputVolume.value
                 }.onChange { row in
                     guard let value = row.value else { return }
@@ -51,17 +51,17 @@ class AlertVolumeViewController: CustomFormViewController {
                     AlarmSound.systemOutputVolume.value = value
             }
             
-            +++ Section(footer: "If selected, the alert will start quietly and increase the volume gradualy, reaching the maximum volume in selected time interval.")
+            +++ Section(footer: NSLocalizedString("If selected, the alert will start quietly and increase the volume gradualy, reaching the maximum volume in selected time interval.", comment: "Footer for Progressive volume switch"))
             <<< PickerInlineRow<Int>() { row in
-                row.title = "Progressive Volume"
+                row.title = NSLocalizedString("Progressive Volume", comment: "Label for Progressive Volume")
                 row.displayValueFor = { value in
                     guard let value = value else { return nil }
                     if value == 0 {
-                        return "Off"
+                        return NSLocalizedString("Off", comment: "Alert off")
                     } else if value < 60 {
-                        return "\(value) seconds"
+                        return "\(value) " + NSLocalizedString("seconds", comment: "plurar unit")
                     } else {
-                        return "\(value / 60) minutes"
+                        return "\(value / 60) " + NSLocalizedString("minutes", comment: "plurar unit")
                     }
                 }
                 row.options = [0, 30, 60, 120, 300, 600, 900, 1200]
@@ -73,7 +73,7 @@ class AlertVolumeViewController: CustomFormViewController {
             
             +++ Section()
             <<< SwitchRow() { row in
-                row.title = "Vibrate"
+                row.title = NSLocalizedString("Vibrate", comment: "Label for Vibrate switch")
                 row.value = AlarmSound.vibrate.value
                 }.onChange { row in
                     guard let value = row.value else { return }
@@ -84,10 +84,10 @@ class AlertVolumeViewController: CustomFormViewController {
             <<< ButtonRow() { row in
                 }.cellUpdate { cell, row in
                     if AlarmSound.isPlaying {
-                        cell.textLabel?.text = "Stop Alert"
+                        cell.textLabel?.text = NSLocalizedString("Stop Alert", comment: "Stop alert button")
                         cell.textLabel?.textColor = UIColor.red
                     } else {
-                        cell.textLabel?.text = "Test Alert"
+                        cell.textLabel?.text = NSLocalizedString("Test Alert", comment: "Test alert button")
                         cell.textLabel?.textColor = UIColor(netHex: 0x007AFF)  // default tint color - blue
                     }
                 }.onCellSelection { cell, row in

@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		1DF692A369920ED1471F4CB4 /* Pods_nightguardUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDA8B19A6EB3652EEDD03592 /* Pods_nightguardUITests.framework */; };
+		28B03A1A23F9C3CE000939E6 /* Alarm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A1C23F9C3CE000939E6 /* Alarm.storyboard */; };
+		28B03A1F23F9C3EF000939E6 /* Stats.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A2123F9C3EF000939E6 /* Stats.storyboard */; };
+		28B03A2423F9C3FA000939E6 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A2623F9C3FA000939E6 /* Preferences.storyboard */; };
+		28B03A2923F9C408000939E6 /* Nightscout.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A2B23F9C408000939E6 /* Nightscout.storyboard */; };
+		28B03A2E23F9C412000939E6 /* Bedside.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3023F9C412000939E6 /* Bedside.storyboard */; };
+		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
 		3CE052D040FF4F7F7B59CA3F /* Pods_nightguard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7695EB5A62ACCB701AA224B3 /* Pods_nightguard.framework */; };
 		430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */; };
@@ -199,7 +205,6 @@
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
 		D1BD14E5205BB9E200B93389 /* BackgroundRefreshScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */; };
 		D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
-		D1C96AB121CCFE2200B08C2C /* Nightscout.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */; };
 		D1C96AB321CD00F100B08C2C /* NightscoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */; };
 		D1CE8CC02204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
 		D1CE8CC12204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
@@ -209,7 +214,6 @@
 		D1D1623C2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */; };
 		D1D1623E221AAC05006F990A /* WatchSyncRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1623D221AAC05006F990A /* WatchSyncRequestMessage.swift */; };
 		D1D1623F221AB253006F990A /* WatchSyncRequestMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D1623D221AAC05006F990A /* WatchSyncRequestMessage.swift */; };
-		D1D55392225F878D006C143B /* Bedside.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1D55391225F878D006C143B /* Bedside.storyboard */; };
 		D1D55394225F8A3C006C143B /* BedsideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D55393225F8A3C006C143B /* BedsideViewController.swift */; };
 		D1D96CB121F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
 		D1D96CB221F85BC70035A60E /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
@@ -224,9 +228,6 @@
 		D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */; };
 		D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
 		D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
-		D1DA7C7121BF7E0900B39675 /* Alarm.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */; };
-		D1DA7C7321C01CB100B39675 /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7221C01CB000B39675 /* Preferences.storyboard */; };
-		D1DA7C7521C0E1ED00B39675 /* Stats.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */; };
 		D1E6B897219C69D9007ED4FE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
 		D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
 		D1EBB6A92223FF0200CE27FF /* MissedReadingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EBB6A82223FF0200CE27FF /* MissedReadingsViewController.swift */; };
@@ -308,6 +309,21 @@
 /* Begin PBXFileReference section */
 		0884247B43E1351A95D71F0C /* Pods-nightguard WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard WatchKit App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-nightguard WatchKit App/Pods-nightguard WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
 		127F207A227F018E00C90F07 /* nightguard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nightguard.entitlements; sourceTree = "<group>"; };
+		28A3509623F9B31300F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Main.strings"; sourceTree = "<group>"; };
+		28A3509723F9B31400F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		28A3509823F9B31400F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Interface.strings"; sourceTree = "<group>"; };
+		28B03A1B23F9C3CE000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Alarm.storyboard; sourceTree = "<group>"; };
+		28B03A1E23F9C3E5000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Alarm.strings"; sourceTree = "<group>"; };
+		28B03A2023F9C3EF000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Stats.storyboard; sourceTree = "<group>"; };
+		28B03A2323F9C3F4000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Stats.strings"; sourceTree = "<group>"; };
+		28B03A2523F9C3FA000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Preferences.storyboard; sourceTree = "<group>"; };
+		28B03A2823F9C402000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Preferences.strings"; sourceTree = "<group>"; };
+		28B03A2A23F9C408000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Nightscout.storyboard; sourceTree = "<group>"; };
+		28B03A2D23F9C40C000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Nightscout.strings"; sourceTree = "<group>"; };
+		28B03A2F23F9C412000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Bedside.storyboard; sourceTree = "<group>"; };
+		28B03A3223F9C416000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Bedside.strings"; sourceTree = "<group>"; };
+		28B03A3623F9CD8E000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		28B03A3923F9CE6C000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		2CD1F1A801015AC39114CEC2 /* Pods-nightguardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests.release.xcconfig"; sourceTree = "<group>"; };
 		430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -430,14 +446,12 @@
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshScheduler.swift; sourceTree = "<group>"; };
 		D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshLogger.swift; sourceTree = "<group>"; };
-		D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Nightscout.storyboard; sourceTree = "<group>"; };
 		D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutViewController.swift; sourceTree = "<group>"; };
 		D1CE8CBF2204B07F0075FF8A /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D1CE8CC32204B19C0075FF8A /* CustomFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFormViewController.swift; sourceTree = "<group>"; };
 		D1CE8CC6220573250075FF8A /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+AnimatedBrightness.swift"; sourceTree = "<group>"; };
 		D1D1623D221AAC05006F990A /* WatchSyncRequestMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSyncRequestMessage.swift; sourceTree = "<group>"; };
-		D1D55391225F878D006C143B /* Bedside.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Bedside.storyboard; sourceTree = "<group>"; };
 		D1D55393225F8A3C006C143B /* BedsideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedsideViewController.swift; sourceTree = "<group>"; };
 		D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsValue.swift; sourceTree = "<group>"; };
 		D1D96CB521FAF6890035A60E /* WatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMessage.swift; sourceTree = "<group>"; };
@@ -447,9 +461,6 @@
 		D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "alarm-notification.m4a"; sourceTree = "<group>"; };
 		D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationService.swift; sourceTree = "<group>"; };
-		D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Alarm.storyboard; sourceTree = "<group>"; };
-		D1DA7C7221C01CB000B39675 /* Preferences.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preferences.storyboard; sourceTree = "<group>"; };
-		D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Stats.storyboard; sourceTree = "<group>"; };
 		D1E6B896219C69D9007ED4FE /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		D1EBB6A82223FF0200CE27FF /* MissedReadingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissedReadingsViewController.swift; sourceTree = "<group>"; };
 		D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationToken.swift; sourceTree = "<group>"; };
@@ -761,14 +772,15 @@
 			children = (
 				43F1E0F91D07698000C329A2 /* Media.xcassets */,
 				43647BD11BFF6435004389F9 /* Main.storyboard */,
-				D1DA7C7021BF7E0900B39675 /* Alarm.storyboard */,
-				D1DA7C7421C0E1ED00B39675 /* Stats.storyboard */,
-				D1DA7C7221C01CB000B39675 /* Preferences.storyboard */,
-				D1C96AB021CCFE2200B08C2C /* Nightscout.storyboard */,
-				D1D55391225F878D006C143B /* Bedside.storyboard */,
+				28B03A1C23F9C3CE000939E6 /* Alarm.storyboard */,
+				28B03A2123F9C3EF000939E6 /* Stats.storyboard */,
+				28B03A2623F9C3FA000939E6 /* Preferences.storyboard */,
+				28B03A2B23F9C408000939E6 /* Nightscout.storyboard */,
+				28B03A3023F9C412000939E6 /* Bedside.storyboard */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
 				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
 				D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */,
+				28B03A3523F9CD8E000939E6 /* Localizable.strings */,
 			);
 			name = resources;
 			sourceTree = "<group>";
@@ -975,7 +987,6 @@
 				TargetAttributes = {
 					43647BC91BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = BSAVUVP8PV;
 						LastSwiftMigration = 1130;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -988,19 +999,16 @@
 					};
 					43647BDD1BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = BSAVUVP8PV;
 						LastSwiftMigration = 1130;
 						TestTargetID = 43647BC91BFF6435004389F9;
 					};
 					43647BE81BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = BSAVUVP8PV;
 						LastSwiftMigration = 1130;
 						TestTargetID = 43647BC91BFF6435004389F9;
 					};
 					43647BF11BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = BSAVUVP8PV;
 						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1011,7 +1019,6 @@
 					};
 					43647C001BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = BSAVUVP8PV;
 						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1029,6 +1036,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"fi-FI",
 			);
 			mainGroup = 43647BC11BFF6435004389F9;
 			productRefGroup = 43647BCB1BFF6435004389F9 /* Products */;
@@ -1050,18 +1058,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1358AE62234FB2600D0FA87 /* BasicStatsPanelView.xib in Resources */,
-				D1D55392225F878D006C143B /* Bedside.storyboard in Resources */,
-				D1DA7C7521C0E1ED00B39675 /* Stats.storyboard in Resources */,
+				28B03A2E23F9C412000939E6 /* Bedside.storyboard in Resources */,
+				28B03A1F23F9C3EF000939E6 /* Stats.storyboard in Resources */,
 				43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */,
 				43F1E1061D07698000C329A2 /* Media.xcassets in Resources */,
 				43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */,
-				D1DA7C7121BF7E0900B39675 /* Alarm.storyboard in Resources */,
+				28B03A1A23F9C3CE000939E6 /* Alarm.storyboard in Resources */,
 				D16FC358226AEACC00AB4DE3 /* MenuActionCell.xib in Resources */,
 				43647BD31BFF6435004389F9 /* Main.storyboard in Resources */,
+				28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */,
 				43F1E1091D07698000C329A2 /* scoutwatch.entitlements in Resources */,
 				D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */,
-				D1C96AB121CCFE2200B08C2C /* Nightscout.storyboard in Resources */,
-				D1DA7C7321C01CB100B39675 /* Preferences.storyboard in Resources */,
+				28B03A2923F9C408000939E6 /* Nightscout.storyboard in Resources */,
+				28B03A2423F9C3FA000939E6 /* Preferences.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1531,10 +1540,65 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		28B03A1C23F9C3CE000939E6 /* Alarm.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28B03A1B23F9C3CE000939E6 /* Base */,
+				28B03A1E23F9C3E5000939E6 /* fi-FI */,
+			);
+			name = Alarm.storyboard;
+			sourceTree = "<group>";
+		};
+		28B03A2123F9C3EF000939E6 /* Stats.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28B03A2023F9C3EF000939E6 /* Base */,
+				28B03A2323F9C3F4000939E6 /* fi-FI */,
+			);
+			name = Stats.storyboard;
+			sourceTree = "<group>";
+		};
+		28B03A2623F9C3FA000939E6 /* Preferences.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28B03A2523F9C3FA000939E6 /* Base */,
+				28B03A2823F9C402000939E6 /* fi-FI */,
+			);
+			name = Preferences.storyboard;
+			sourceTree = "<group>";
+		};
+		28B03A2B23F9C408000939E6 /* Nightscout.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28B03A2A23F9C408000939E6 /* Base */,
+				28B03A2D23F9C40C000939E6 /* fi-FI */,
+			);
+			name = Nightscout.storyboard;
+			sourceTree = "<group>";
+		};
+		28B03A3023F9C412000939E6 /* Bedside.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28B03A2F23F9C412000939E6 /* Base */,
+				28B03A3223F9C416000939E6 /* fi-FI */,
+			);
+			name = Bedside.storyboard;
+			sourceTree = "<group>";
+		};
+		28B03A3523F9CD8E000939E6 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28B03A3623F9CD8E000939E6 /* Base */,
+				28B03A3923F9CE6C000939E6 /* fi-FI */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		43647BD11BFF6435004389F9 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				43647BD21BFF6435004389F9 /* Base */,
+				28A3509623F9B31300F2AE60 /* fi-FI */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1543,6 +1607,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				43647BD71BFF6435004389F9 /* Base */,
+				28A3509723F9B31400F2AE60 /* fi-FI */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1551,6 +1616,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				43647BF81BFF6435004389F9 /* Base */,
+				28A3509823F9B31400F2AE60 /* fi-FI */,
 			);
 			name = Interface.storyboard;
 			sourceTree = "<group>";
@@ -1672,7 +1738,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1702,7 +1768,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1734,7 +1800,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1766,7 +1832,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1796,7 +1862,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 529;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1824,7 +1890,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 529;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1847,7 +1913,7 @@
 			baseConfigurationReference = 7400B95330C230ECDCCD5101 /* Pods-nightguardTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1867,7 +1933,7 @@
 			baseConfigurationReference = 7F9704503F86EC3FF0B48937 /* Pods-nightguardTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1886,7 +1952,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5553B4519FFD16D717473867 /* Pods-nightguardUITests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1906,7 +1972,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2CD1F1A801015AC39114CEC2 /* Pods-nightguardUITests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = BSAVUVP8PV;
+				DEVELOPMENT_TEAM = XJ7824F34P;
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

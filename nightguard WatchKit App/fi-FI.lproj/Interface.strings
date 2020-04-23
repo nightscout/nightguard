@@ -1,0 +1,90 @@
+
+/* Class = "WKInterfaceButton"; title = "20min"; ObjectID = "08g-dW-F7X"; */
+"08g-dW-F7X.title" = "20min";
+
+/* Class = "WKInterfaceButton"; title = "45min"; ObjectID = "1Bd-ZE-voa"; */
+"1Bd-ZE-voa.title" = "45min";
+
+/* Class = "WKInterfaceButton"; title = "10min"; ObjectID = "9VS-98-rhP"; */
+"9VS-98-rhP.title" = "10min";
+
+/* Class = "WKInterfaceButton"; title = "2h"; ObjectID = "AjC-71-s7w"; */
+"AjC-71-s7w.title" = "2h";
+
+/* Class = "WKInterfaceButton"; title = "1h"; ObjectID = "B6w-zl-nKO"; */
+"B6w-zl-nKO.title" = "1h";
+
+/* Class = "WKInterfaceLabel"; text = "Caches Values:"; ObjectID = "E26-VQ-ttI"; */
+"E26-VQ-ttI.text" = "Cache arvot:";
+
+/* Class = "WKInterfaceButton"; title = "1d"; ObjectID = "E2D-TG-Tr3"; */
+"E2D-TG-Tr3.title" = "1d";
+
+/* Class = "WKInterfaceLabel"; text = "Background updates:"; ObjectID = "Gob-MJ-hux"; */
+"Gob-MJ-hux.text" = "Taustapäivitykset:";
+
+/* Class = "WKInterfaceLabel"; text = "Alert Label"; ObjectID = "IdU-wH-bcW"; */
+"IdU-wH-bcW.text" = "Hälytyksen otsikko";
+
+/* Class = "WKInterfaceLabel"; text = "0"; ObjectID = "IeJ-DT-Wcg"; */
+"IeJ-DT-Wcg.text" = "0";
+
+/* Class = "WKInterfaceButton"; title = "Close"; ObjectID = "J0t-oX-olu"; */
+"J0t-oX-olu.title" = "Sulje";
+
+/* Class = "WKInterfaceButton"; title = "30min"; ObjectID = "PSv-3m-jyA"; */
+"PSv-3m-jyA.title" = "30min";
+
+/* Class = "WKInterfaceButton"; title = "6h"; ObjectID = "SKd-7S-4Ns"; */
+"SKd-7S-4Ns.title" = "6h";
+
+/* Class = "WKInterfaceLabel"; text = "V?.?.???"; ObjectID = "VJk-AO-PXu"; */
+"VJk-AO-PXu.text" = "V?.?.???";
+
+/* Class = "WKInterfaceButton"; title = "3h"; ObjectID = "Vbc-n1-Q5B"; */
+"Vbc-n1-Q5B.title" = "3h";
+
+/* Class = "WKInterfaceLabel"; text = "❌ Some error message..."; ObjectID = "Wmf-Dw-L3A"; */
+"Wmf-Dw-L3A.text" = "❌ Joku virheilmoitus...";
+
+/* Class = "WKInterfaceLabel"; text = "0"; ObjectID = "XcE-eq-aUV"; */
+"XcE-eq-aUV.text" = "0";
+
+/* Class = "WKInterfaceLabel"; text = "Clean"; ObjectID = "bBa-oK-viF"; */
+"bBa-oK-viF.text" = "Tyhjennä";
+
+/* Class = "WKInterfaceLabel"; text = "+10"; ObjectID = "frk-q8-3y9"; */
+"frk-q8-3y9.text" = "+10";
+
+/* Class = "WKInterfaceLabel"; text = "Nightscout URI:"; ObjectID = "ip5-bC-D8x"; */
+"ip5-bC-D8x.text" = "Nightscout URI:";
+
+/* Class = "WKInterfaceLabel"; text = "100%"; ObjectID = "lz8-YE-T1d"; */
+"lz8-YE-T1d.text" = "100%";
+
+/* Class = "WKInterfaceLabel"; text = "-"; ObjectID = "nnO-nW-RbM"; */
+"nnO-nW-RbM.text" = "-";
+
+/* Class = "WKInterfaceLabel"; text = "0.05U"; ObjectID = "oxQ-6L-Aqk"; */
+"oxQ-6L-Aqk.text" = "0.05U";
+
+/* Class = "WKInterfaceLabel"; text = "http://..."; ObjectID = "rQn-yu-ajp"; */
+"rQn-yu-ajp.text" = "http://...";
+
+/* Class = "WKInterfaceButton"; title = "Stop Snoozing"; ObjectID = "vBI-uK-ui8"; */
+"vBI-uK-ui8.title" = "Lopeta torkku";
+
+/* Class = "WKInterfaceLabel"; text = "---"; ObjectID = "vdn-99-EwA"; */
+"vdn-99-EwA.text" = "---";
+
+/* Class = "WKInterfaceLabel"; text = "59min"; ObjectID = "w1H-tu-XyX"; */
+"w1H-tu-XyX.text" = "59min";
+
+/* Class = "WKInterfaceButton"; title = "15min"; ObjectID = "wn2-PF-bKP"; */
+"wn2-PF-bKP.title" = "15min";
+
+/* Class = "WKInterfaceButton"; title = "5min"; ObjectID = "xxc-dE-3Kb"; */
+"xxc-dE-3Kb.title" = "5min";
+
+/* Class = "WKInterfaceLabel"; text = "191"; ObjectID = "zeh-B2-2k7"; */
+"zeh-B2-2k7.text" = "191";
