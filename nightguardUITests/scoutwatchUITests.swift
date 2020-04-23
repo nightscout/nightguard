@@ -45,11 +45,11 @@ class scoutwatchUITests: XCTestCase {
         let tabBarsQuery = app.tabBars
         XCTAssertEqual(tabBarsQuery.buttons.count, 4)
 
-        // Enter the Test-URL
+        /* Enter the Test-URL
         tabBarsQuery.buttons["Preferences"].tap()
         let tablecells = app.tables.cells
         let urlTextField = tablecells.containing(.staticText, identifier:"URL").children(matching: .textField).element
-        urlTextField.clearText(andReplaceWith: "http://night.fritz.box")
+        urlTextField.clearText(andReplaceWith: "http://night.fritz.box")*/
         
         tabBarsQuery.buttons["Main"].tap()
         snapshot("01-main")
@@ -57,18 +57,19 @@ class scoutwatchUITests: XCTestCase {
         tabBarsQuery.buttons["Alarms"].tap()
         snapshot("02-alarms")
         
+        tabBarsQuery.buttons["Stats"].tap()
         if UIDevice.current.userInterfaceIdiom == .phone {
             // only on a phone is a rotation needed if using the statistics panel
             XCUIDevice.shared.orientation = .landscapeLeft
         }
-        tabBarsQuery.buttons["Stats"].tap()
-        sleep(10)
+        sleep(3)
         snapshot("03-stats")
         
+        tabBarsQuery.buttons["Preferences"].tap()
         if UIDevice.current.userInterfaceIdiom == .phone {
             XCUIDevice.shared.orientation = .portrait
         }
-        tabBarsQuery.buttons["Preferences"].tap()
+        sleep(1)
         snapshot("04-preferences")
     }
     
