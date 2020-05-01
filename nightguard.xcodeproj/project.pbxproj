@@ -370,6 +370,15 @@
 		439C39171C0E002F00D89872 /* ChartPainter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChartPainter.swift; path = "nightguard WatchKit Extension/ChartPainter.swift"; sourceTree = SOURCE_ROOT; };
 		439C391A1C0E295C00D89872 /* ChartPainterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartPainterTest.swift; sourceTree = "<group>"; };
 		439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundUrlSessionWrapper.swift; sourceTree = "<group>"; };
+		43C5DE9B24522F3B00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		43C5DE9C24522F3D00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Alarm.strings; sourceTree = "<group>"; };
+		43C5DE9D24522F3E00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Stats.strings; sourceTree = "<group>"; };
+		43C5DE9E24522F3E00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Preferences.strings; sourceTree = "<group>"; };
+		43C5DE9F24522F3E00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Nightscout.strings; sourceTree = "<group>"; };
+		43C5DEA024522F3F00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Bedside.strings; sourceTree = "<group>"; };
+		43C5DEA124522F3F00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		43C5DEA224522F3F00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Interface.strings; sourceTree = "<group>"; };
+		43C5DEA324522F4000BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeInterfaceController.swift; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
@@ -1037,6 +1046,7 @@
 				en,
 				Base,
 				"fi-FI",
+				de,
 			);
 			mainGroup = 43647BC11BFF6435004389F9;
 			productRefGroup = 43647BCB1BFF6435004389F9 /* Products */;
@@ -1545,6 +1555,7 @@
 			children = (
 				28B03A1B23F9C3CE000939E6 /* Base */,
 				28B03A1E23F9C3E5000939E6 /* fi-FI */,
+				43C5DE9C24522F3D00BB41D9 /* de */,
 			);
 			name = Alarm.storyboard;
 			sourceTree = "<group>";
@@ -1554,6 +1565,7 @@
 			children = (
 				28B03A2023F9C3EF000939E6 /* Base */,
 				28B03A2323F9C3F4000939E6 /* fi-FI */,
+				43C5DE9D24522F3E00BB41D9 /* de */,
 			);
 			name = Stats.storyboard;
 			sourceTree = "<group>";
@@ -1563,6 +1575,7 @@
 			children = (
 				28B03A2523F9C3FA000939E6 /* Base */,
 				28B03A2823F9C402000939E6 /* fi-FI */,
+				43C5DE9E24522F3E00BB41D9 /* de */,
 			);
 			name = Preferences.storyboard;
 			sourceTree = "<group>";
@@ -1572,6 +1585,7 @@
 			children = (
 				28B03A2A23F9C408000939E6 /* Base */,
 				28B03A2D23F9C40C000939E6 /* fi-FI */,
+				43C5DE9F24522F3E00BB41D9 /* de */,
 			);
 			name = Nightscout.storyboard;
 			sourceTree = "<group>";
@@ -1581,6 +1595,7 @@
 			children = (
 				28B03A2F23F9C412000939E6 /* Base */,
 				28B03A3223F9C416000939E6 /* fi-FI */,
+				43C5DEA024522F3F00BB41D9 /* de */,
 			);
 			name = Bedside.storyboard;
 			sourceTree = "<group>";
@@ -1590,6 +1605,7 @@
 			children = (
 				28B03A3623F9CD8E000939E6 /* Base */,
 				28B03A3923F9CE6C000939E6 /* fi-FI */,
+				43C5DEA324522F4000BB41D9 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1599,6 +1615,7 @@
 			children = (
 				43647BD21BFF6435004389F9 /* Base */,
 				28A3509623F9B31300F2AE60 /* fi-FI */,
+				43C5DE9B24522F3B00BB41D9 /* de */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1608,6 +1625,7 @@
 			children = (
 				43647BD71BFF6435004389F9 /* Base */,
 				28A3509723F9B31400F2AE60 /* fi-FI */,
+				43C5DEA124522F3F00BB41D9 /* de */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1617,6 +1635,7 @@
 			children = (
 				43647BF81BFF6435004389F9 /* Base */,
 				28A3509823F9B31400F2AE60 /* fi-FI */,
+				43C5DEA224522F3F00BB41D9 /* de */,
 			);
 			name = Interface.storyboard;
 			sourceTree = "<group>";

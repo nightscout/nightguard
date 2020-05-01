@@ -1,0 +1,9 @@
+
+/* Class = "UIBarButtonItem"; title = "Close"; ObjectID = "3Bs-z4-DS6"; */
+"3Bs-z4-DS6.title" = "Schließen";
+
+/* Class = "UIBarButtonItem"; title = "Refresh"; ObjectID = "Ccu-t3-DVe"; */
+"Ccu-t3-DVe.title" = "Aktualisieren";
+
+/* Class = "UINavigationItem"; title = "Nightscout"; ObjectID = "YUj-LD-aQw"; */
+"YUj-LD-aQw.title" = "Nightscout";

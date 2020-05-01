@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "Day 2 activated"; ObjectID = "5s9-Ir-Y1w"; */
+"5s9-Ir-Y1w.text" = "Tag 2 aktiviert";
+
+/* Class = "UILabel"; text = "Day 4 activated"; ObjectID = "6w3-nX-GGA"; */
+"6w3-nX-GGA.text" = "Tag 4 aktiviert";
+
+/* Class = "UITabBarItem"; title = "Stats"; ObjectID = "Gq1-vb-adG"; */
+"Gq1-vb-adG.title" = "Statistik";
+
+/* Class = "UILabel"; text = "Day 1 activated"; ObjectID = "Z68-zn-H43"; */
+"Z68-zn-H43.text" = "Tag 1 aktiviert";
+
+/* Class = "UILabel"; text = "Day 3 activated"; ObjectID = "ZFw-0B-qy0"; */
+"ZFw-0B-qy0.text" = "Tag 3 aktiviert";
+
+/* Class = "UINavigationItem"; title = "Stats"; ObjectID = "jcp-sA-AVP"; */
+"jcp-sA-AVP.title" = "Statistik";
+
+/* Class = "UILabel"; text = "Day 5 activated"; ObjectID = "lPe-K1-SFm"; */
+"lPe-K1-SFm.text" = "Tag 5 aktiviert";
+
+/* Class = "UIButton"; normalTitle = "Edit"; ObjectID = "mfw-F5-wMB"; */
+"mfw-F5-wMB.normalTitle" = "Editieren";
