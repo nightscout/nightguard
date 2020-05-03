@@ -32,7 +32,7 @@
 "Alert when no data for more than" = "Hälytys kun tietoja ei ole yli";
 
 /* Footer for Urgent High */
-"Alerts anytime when the blood glucose raises above this value." = "Alerts anytime when the blood glucose raises above this value.";
+"Alerts anytime when the blood glucose raises above this value." = "Hälytykset aina kun verensokeri nousee yli tämän lukeman.";
 
 /* Footer for Alerts */
 "Alerts when a fast BG rise or drop is detected in the last consecutive readings." = "Hälytykset kun havaitaan nopea verensokerin nousu tai lasku peräkkäisissä lukemissa";
@@ -44,10 +44,10 @@
 "Alerts when a low BG value is predicted in the near future (if the current trend is continued)." = "Hälytykset kun ennustetaan lähitulevaisuudessa alhaista verensokeria (jos nykyinen suuntaus jatkuu).";
 
 /* footer for Persistent high */
-"Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %d)." = "Hälytykset kun verensokeri pysyy korkealla enemmän kuin %1$d minuuttia tai ylittää erittäin korkean arvon %2$d).";
+"Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %d)." = "Hälytykset kun verensokeri pysyy korkealla enemmän kuin %1$d minuuttia tai ylittää erittäin korkean lukeman %2$d).";
 
 /* Footer for Fast rise/drop */
-"Alerts when BG values are rising or dropping with %@ %@, considering the last %d consecutive readings." = "Hälytykset kun verensokeri arvo on nousemassa tai laskemassa %1$@ %2$@, ottaen huomioon %3$d peräkkäistä lukemaa.";
+"Alerts when BG values are rising or dropping with %@ %@, considering the last %d consecutive readings." = "Hälytykset kun verensokeri lukema on nousemassa tai laskemassa %1$@ %2$@, ottaen huomioon %3$d peräkkäistä lukemaa.";
 
 /* Footer for missed readings alert */
 "Alerts when no data for more than %d minutes." = "Hälytys kun ei dataa %d minuuttiin.";
@@ -59,10 +59,10 @@
 "Alerts when the BG remains high for a longer period. When on, this alert will delay the high BG alert until the period elapsed or until reaching a maximum BG level (urgent high)." = "Hälytykset kun verensokeri pysyy korkealla pitempään. Kun päällä, hälytys viivästää korkean verensokerin hälytystä valitus ajan tai kunnes ylitetään maksimi verensokeri (Hyvin korkea)";
 
 /* Footer for Low alert */
-"Alerts when the blood glucose drops below this value." = "Hälytykset kun verensokeri laskee alle tämän arvon.";
+"Alerts when the blood glucose drops below this value." = "Hälytykset kun verensokeri laskee alle tämän lukeman.";
 
 /* Footer for High alert */
-"Alerts when the blood glucose raises above this value." = "Hälytykset kun verensokeri nousee yli tämän arvon.";
+"Alerts when the blood glucose raises above this value." = "Hälytykset kun verensokeri nousee yli tämän lukeman.";
 
 /* Title for confirmation */
 "ARE YOU SURE?" = "OLETKO VARMA?";
@@ -89,7 +89,7 @@
 "Fast Rise/Drop" = "Nopea nousu/lasku";
 
 /* Body of confirmation */
-"For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!" = "Saadaksesi raakaa verensokeri ja kohinan taso arvoja, rawbg liitännäisen pitää olla käytössä Nightscout palvelimellasi. Huomioi että tämä toimii ainoastaan Dexcomin kanssa!";
+"For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!" = "Saadaksesi käsittelemättömiä verensokeri lukemia ja kohinatasoja, rawbg liitännäisen pitää olla käytössä Nightscout palvelimellasi. Huomioi että tämä toimii ainoastaan Dexcomin kanssa!";
 
 /* Body of confirmation */
 "For your safety, keep this switch ON for receiving alarms when no readings!" = "Turvallisuutesi vuoksi, pidä tämä valinta päällä saadaksesi hälytyksen puuttuvista lukemista!";
@@ -218,10 +218,10 @@
 "seconds" = "sekunttia";
 
 /* Label for Show BG on Badge */
-"Show BG on App Badge" = "Näytä verensokeri sovelluksen ikonissa";
+"Show BG on App Badge" = "Näytä lukema kuvakkeessa";
 
 /* Label for Show Raw BG */
-"Show Raw BG and Noise Level" = "Näytä raaka verensokeri ja kohinantaso";
+"Show Raw BG and Noise Level" = "Näytä raaka verensokeri";
 
 /* Label for Show statistics */
 "Show Statistics" = "Näytä tilastot";
@@ -230,13 +230,13 @@
 "Smart Snooze" = "Älykäs torkku";
 
 /* Text of snooze button */
-"snooze" = "torkku";
+"snooze" = "Torkku";
 
 /* Footer for smart snooze switch */
 "Snooze (do not alert) when values are high or low but the trend is going in the right direction." = "Torku (älä hälytä) kun verensokerit ovat korkealla tai matalalla mutta on menossa oikeaan suuntaan.";
 
 /* Snoozed duration in main page */
-"Snoozed for %dmin" = "Torkkuu %dmin";
+"Snoozed for %dmin" = "Torkku %dmin";
 
 /* Label for Snoozing actions */
 "Snoozing Actions" = "Torkkutoiminnot";
