@@ -312,7 +312,7 @@ class ChartPainter {
         let halfHours = determineEverySecondHourBetween(minimumXValue, maxTimestamp: maximumXValue)
         
         let hourFormat = DateFormatter()
-        hourFormat.dateFormat = "HH:mm"
+        hourFormat.timeStyle = .short
         for timestamp in halfHours {
             let hourString : String = hourFormat.string(from: Date(timeIntervalSince1970 : timestamp / 1000))
             let x = calcXValue(timestamp)
@@ -320,6 +320,7 @@ class ChartPainter {
                                     options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
             
             context.beginPath()
+            context.setStrokeColor(BLACK.cgColor)
             drawLine(context, x1: x, y1: 0, x2: x, y2: CGFloat(canvasHeight) - 20)
             context.strokePath()
         }
@@ -352,7 +353,7 @@ class ChartPainter {
         let hours = determineHoursBetween(minimumXValue, maxTimestamp: maximumXValue)
         
         let hourFormat = DateFormatter()
-        hourFormat.dateFormat = "HH:mm"
+        hourFormat.timeStyle = .short
         
         context.setStrokeColor(BLACK.cgColor)
         for timestamp in hours {

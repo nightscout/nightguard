@@ -21,7 +21,7 @@ class NightscoutData : NSObject, NSCoding, Codable {
             if time == 0 {
                 return "??:??"
             }
-            let formatter = DateFormatter.init()
+            let formatter = DateFormatter()
             formatter.dateFormat = "HH:mm"
             
             let date = Date.init(timeIntervalSince1970: Double(time.int64Value / 1000))

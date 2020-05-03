@@ -80,7 +80,7 @@ class BackgroundRefreshScheduler {
     
     private func formatted(scheduleTime: Date) -> String {
         let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "HH:mm"
+        timeFormatter.timeStyle = .short
         return timeFormatter.string(from: scheduleTime)
     }
 }

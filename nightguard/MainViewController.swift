@@ -388,7 +388,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     fileprivate func paintCurrentTime() {
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        formatter.timeStyle = .short
         self.timeLabel.text = formatter.string(from: Date())
     }
     

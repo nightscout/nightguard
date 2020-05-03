@@ -112,7 +112,7 @@ class BedsideViewController: UIViewController {
         
         // update current time
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        formatter.timeStyle = .short
         self.timeLabel.text = formatter.string(from: Date())
     }
 }
