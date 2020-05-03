@@ -363,6 +363,7 @@ class ChartPainter {
                                     options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
             
             context.beginPath()
+            context.setStrokeColor(BLACK.cgColor)
             drawLine(context, x1: x, y1: 0, x2: x, y2: CGFloat(canvasHeight) - 20)
             context.strokePath()
         }
