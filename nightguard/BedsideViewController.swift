@@ -45,7 +45,8 @@ class BedsideViewController: UIViewController {
         
         if AlarmRule.isSnoozed() {
             let remaininingSnoozeMinutes = AlarmRule.getRemainingSnoozeMinutes()
-            snoozeInfo = "Snoozed for \(remaininingSnoozeMinutes)min"
+            snoozeInfo = String(format: NSLocalizedString("Snoozed for %dmin",
+                comment: "Snoozed Label in Bedside Controller"), remaininingSnoozeMinutes)
             
             // show alert reason message if less than 5 minutes of snoozing (to be prepared!)
             showAlertReason = remaininingSnoozeMinutes < 5
@@ -59,7 +60,8 @@ class BedsideViewController: UIViewController {
                     
                     // no alarm, but maybe we'll show a low prediction warning...
                     if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue.value), minutesToLow > 0 {
-                        alertReason = "Low Predicted in \(minutesToLow)min"
+                        alertReason = String(format: NSLocalizedString("Low Predicted in %dmin",
+                            comment: "Low Predicted Label in Bedside Controller"), minutesToLow)
                         alertColor = .yellow
                     }
                 }

@@ -109,7 +109,7 @@ class AlarmRule {
         
         if currentReading.isOlderThanXMinutes(minutesWithoutValues.value) {
             if noDataAlarmEnabled.value {
-                return "Missed Readings"
+                return NSLocalizedString("Missed Readings", comment: "noDataAlarmEnabled.value in AlarmRule Class")
             } else {
                 
                 // no alarm at all... because old readings cannot be used for further alert evaluations
@@ -157,7 +157,7 @@ class AlarmRule {
                     // we should have at least a reading in 10 minutes for considering a persistent high
                     if !lastReadings.isEmpty && (lastReadings.count >= (persistentHighMinutes.value / 10)) {
                         if lastReadings.allSatisfy({ AlarmRule.isTooHigh($0.value) }) {
-                            return "Persistent High BG"
+                            return NSLocalizedString("Persistent High BG", comment: "Persistent High BG in AlarmRule Class")
                         } else {
                             return nil
                         }
@@ -165,26 +165,26 @@ class AlarmRule {
                 }
             }
             
-            return "High BG"
+            return NSLocalizedString("High BG", comment: "High BG in AlarmRule Class")
         } else if isTooLow {
-            return "Low BG"
+            return NSLocalizedString("Low BG", comment: "Low BG in AlarmRule Class")
         }
 
         if isEdgeDetectionAlarmEnabled.value  {
             if bloodValuesAreIncreasingTooFast(bloodValues) {
-                return "Fast Rise"
+                return NSLocalizedString("Fast Rise", comment: "Fast Rise in AlarmRule Class")
             } else if bloodValuesAreDecreasingTooFast(bloodValues) {
-                return "Fast Drop"
+                return NSLocalizedString("Fast Drop", comment: "Fast Drop in AlarmRule Class")
             }
         }
         
         if isLowPredictionEnabled.value {
             if let minutesToLow = PredictionService.singleton.minutesTo(low: alertIfBelowValue.value), minutesToLow <= minutesToPredictLow.value {
                 #if os(iOS)
-                return "Low Predicted in \(minutesToLow)min"
+                return String(format: NSLocalizedString("Low Predicted in %dmin", comment: "Low Predicted in %dmin in AlarmRule Class"), minutesToLow)
                 #else
                 // shorter text on watch
-                return "Low in \(minutesToLow)min"
+                return String(format: NSLocalizedString("Low in %dmin", comment: "Low in %dmin in AlarmRule Class"), minutesToLow)
                 #endif
             }
         }
