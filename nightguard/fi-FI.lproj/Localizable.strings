@@ -287,28 +287,28 @@
 "Yesterday" = "Eilen";
 
 /* Snoozed Label in Bedside Controller */
-"Snoozed for %dmin" = "Snoozed for %dmin";
+"Snoozed for %dmin" = "Torkku %dmin";
 
 /* Low Predicted Label in Bedside Controller */
-"Low Predicted in %dmin" = "Low Predicted in %dmin";
+"Low Predicted in %dmin" = "Matalan ennuste %dmin";
 
 /* Persistent High BG in AlarmRule Class */
-"Persistent High BG" = "Persistent High BG";
+"Persistent High BG" = "Jatkuva korkea";
 
 /* High BG in AlarmRule Class */
-"High BG" = "High BG";
+"High BG" = "Korkea";
 
 /* Low BG in AlarmRule Class */
-"Low BG" = "Low BG";
+"Low BG" = "Matala";
 
 /* Fast Rise in AlarmRule Class */
-"Fast Rise" = "Fast Rise";
+"Fast Rise" = "Nopea nousu";
 
 /* Fast Drop in AlarmRule Class */
-"Fast Drop" = "Fast Drop";
+"Fast Drop" = "Nopea lasku";
 
 /* Low Predicted in %dmin in AlarmRule Class */
-"Low Predicted in %dmin" = "Low Predicted in %dmin";
+"Low Predicted in %dmin" = "Matalan ennuste %dmin";
 
 /* shorter text for watch: Low in %dmin in AlarmRule Class */
-"Low in %dmin" = "Low in %dmin";
+"Low in %dmin" = "Matala %dmin";
