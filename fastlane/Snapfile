@@ -12,7 +12,7 @@
  languages([
     "en-US",
     "de-DE",
-    "fi-FI"
+    "fi"
  ])
 
 # The name of the scheme which contains the UI Tests

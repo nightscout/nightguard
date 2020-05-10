@@ -1,12 +1,12 @@
 
 /* Class = "WKInterfaceButton"; title = "20min"; ObjectID = "08g-dW-F7X"; */
-"08g-dW-F7X.title" = "20min";
+"08g-dW-F7X.title" = "20Min";
 
 /* Class = "WKInterfaceButton"; title = "45min"; ObjectID = "1Bd-ZE-voa"; */
-"1Bd-ZE-voa.title" = "45min";
+"1Bd-ZE-voa.title" = "45Min";
 
 /* Class = "WKInterfaceButton"; title = "10min"; ObjectID = "9VS-98-rhP"; */
-"9VS-98-rhP.title" = "10min";
+"9VS-98-rhP.title" = "10Min";
 
 /* Class = "WKInterfaceButton"; title = "2h"; ObjectID = "AjC-71-s7w"; */
 "AjC-71-s7w.title" = "2h";
@@ -15,25 +15,25 @@
 "B6w-zl-nKO.title" = "1h";
 
 /* Class = "WKInterfaceLabel"; text = "Caches Values:"; ObjectID = "E26-VQ-ttI"; */
-"E26-VQ-ttI.text" = "Caches Values:";
+"E26-VQ-ttI.text" = "Cache Werte:";
 
 /* Class = "WKInterfaceButton"; title = "1d"; ObjectID = "E2D-TG-Tr3"; */
 "E2D-TG-Tr3.title" = "1d";
 
 /* Class = "WKInterfaceLabel"; text = "Background updates:"; ObjectID = "Gob-MJ-hux"; */
-"Gob-MJ-hux.text" = "Background updates:";
+"Gob-MJ-hux.text" = "Hintergrundaktualisierungen:";
 
 /* Class = "WKInterfaceLabel"; text = "Alert Label"; ObjectID = "IdU-wH-bcW"; */
-"IdU-wH-bcW.text" = "Alert Label";
+"IdU-wH-bcW.text" = "Alarm Text";
 
 /* Class = "WKInterfaceLabel"; text = "0"; ObjectID = "IeJ-DT-Wcg"; */
 "IeJ-DT-Wcg.text" = "0";
 
 /* Class = "WKInterfaceButton"; title = "Close"; ObjectID = "J0t-oX-olu"; */
-"J0t-oX-olu.title" = "Close";
+"J0t-oX-olu.title" = "Schließen";
 
 /* Class = "WKInterfaceButton"; title = "30min"; ObjectID = "PSv-3m-jyA"; */
-"PSv-3m-jyA.title" = "30min";
+"PSv-3m-jyA.title" = "30Min";
 
 /* Class = "WKInterfaceButton"; title = "6h"; ObjectID = "SKd-7S-4Ns"; */
 "SKd-7S-4Ns.title" = "6h";
@@ -45,13 +45,13 @@
 "Vbc-n1-Q5B.title" = "3h";
 
 /* Class = "WKInterfaceLabel"; text = "❌ Some error message..."; ObjectID = "Wmf-Dw-L3A"; */
-"Wmf-Dw-L3A.text" = "❌ Some error message...";
+"Wmf-Dw-L3A.text" = "❌ Eine Fehlermeldung...";
 
 /* Class = "WKInterfaceLabel"; text = "0"; ObjectID = "XcE-eq-aUV"; */
 "XcE-eq-aUV.text" = "0";
 
 /* Class = "WKInterfaceLabel"; text = "Clean"; ObjectID = "bBa-oK-viF"; */
-"bBa-oK-viF.text" = "Clean";
+"bBa-oK-viF.text" = "Löschen";
 
 /* Class = "WKInterfaceLabel"; text = "+10"; ObjectID = "frk-q8-3y9"; */
 "frk-q8-3y9.text" = "+10";
@@ -72,7 +72,7 @@
 "rQn-yu-ajp.text" = "http://...";
 
 /* Class = "WKInterfaceButton"; title = "Stop Snoozing"; ObjectID = "vBI-uK-ui8"; */
-"vBI-uK-ui8.title" = "Stop Snoozing";
+"vBI-uK-ui8.title" = "Schlummern stoppen";
 
 /* Class = "WKInterfaceLabel"; text = "---"; ObjectID = "vdn-99-EwA"; */
 "vdn-99-EwA.text" = "---";
@@ -88,3 +88,4 @@
 
 /* Class = "WKInterfaceLabel"; text = "191"; ObjectID = "zeh-B2-2k7"; */
 "zeh-B2-2k7.text" = "191";
+

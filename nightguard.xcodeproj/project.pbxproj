@@ -104,6 +104,8 @@
 		43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 		43D28A0620321AAF003859DE /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
+		43D561172468201E00B52B1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
+		43D56118246820E400B52B1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43EE375B24478D78008C9134 /* XCUIElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EE375A24478D78008C9134 /* XCUIElement.swift */; };
@@ -1103,6 +1105,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				439BADF81C24C315006BEADB /* Media.xcassets in Resources */,
+				43D56118246820E400B52B1C /* Localizable.strings in Resources */,
 				43647BF91BFF6435004389F9 /* Interface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1112,6 +1115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43D213641C2214D60046C52D /* Assets.xcassets in Resources */,
+				43D561172468201E00B52B1C /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1879,7 +1883,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 531;
+				CURRENT_PROJECT_VERSION = 537;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;
@@ -1907,7 +1911,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 531;
+				CURRENT_PROJECT_VERSION = 537;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;

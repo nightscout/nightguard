@@ -238,6 +238,9 @@
 /* Snoozed duration in main page */
 "Snoozed for %dmin" = "Torkku %dmin";
 
+/* Snoozed duration on watch */
+"Snoozed %dmin" = "Torkku %dmin";
+
 /* Label for Snoozing actions */
 "Snoozing Actions" = "Torkkutoiminnot";
 
@@ -312,3 +315,18 @@
 
 /* shorter text for watch: Low in %dmin in AlarmRule Class */
 "Low in %dmin" = "Matala %dmin";
+
+/* Watch Popup Info Label */
+"Info" = "Info";
+
+/* Watch Popup Refresh Label */
+"Refresh" = "Refresh";
+
+/* Watch Popup Snooze Label */
+"Snooze" = "Snooze";
+
+/* Watch Popup Scroll Label */
+"Scroll" = "Scroll";
+
+/* Watch Popup Zoom Label */
+"Zoom" = "Zoom";
