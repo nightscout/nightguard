@@ -16,6 +16,12 @@ class InfoInterfaceController: WKInterfaceController {
     @IBOutlet var cachedValuesLabel: WKInterfaceLabel!
     @IBOutlet var backgroundUpdatesLabel: WKInterfaceLabel!
     
+    override public init() {
+        super.init()
+        
+        setTitle(NSLocalizedString("Cancel", comment: "Watch Interface Controller Cancel Label"))
+    }
+    
     @IBAction func doCloseAction() {
         self.dismiss()
     }

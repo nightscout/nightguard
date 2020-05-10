@@ -13,6 +13,12 @@ class SnoozeInterfaceController : WKInterfaceController {
     
     @IBOutlet var stopSnoozingButton: WKInterfaceButton!
     
+    override public init() {
+        super.init()
+        
+        setTitle(NSLocalizedString("Cancel", comment: "Watch Interface Controller Cancel Label"))
+    }
+    
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         

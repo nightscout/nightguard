@@ -330,3 +330,6 @@
 
 /* Watch Popup Zoom Label */
 "Zoom" = "Zoom";
+
+/* Watch Interface Controller Cancel Label */
+"Cancel" = "Cancel";
