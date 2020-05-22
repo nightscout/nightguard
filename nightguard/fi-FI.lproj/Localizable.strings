@@ -323,13 +323,13 @@
 "Refresh" = "Refresh";
 
 /* Watch Popup Snooze Label */
-"Snooze" = "Snooze";
+"Snooze" = "Torkku";
 
 /* Watch Popup Scroll Label */
-"Scroll" = "Scroll";
+"Scroll" = "Vieritys";
 
 /* Watch Popup Zoom Label */
-"Zoom" = "Zoom";
+"Zoom" = "Zoomaus";
 
 /* Watch Interface Controller Cancel Label */
-"Cancel" = "Cancel";
+"Cancel" = "Peruuta";
