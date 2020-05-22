@@ -22,15 +22,15 @@ extension QuickSnoozeOption: CustomStringConvertible {
         
         switch self {
         case .doNothing:
-            return "Do Nothing"
+            return NSLocalizedString("Will do Nothing", comment: "Will do Nothing Quick Snooze Option")
         case .showSnoozePopup:
-            return "Show the Snooze Dialog"
+            return NSLocalizedString("Will show the Snooze Dialog", comment: "Will show the Snooze Dialog Quick Snooze Option")
         case .snoozeOneMinute:
-            return "Snooze for 1 Minute"
+            return NSLocalizedString("Will snooze for 1 Minute", comment: "Will snooze for 1 Minute Dialog Quick Snooze Option")
         case .snoozeFiveMinutes:
-            return "Snooze for 5 Minutes"
+            return NSLocalizedString("Will snooze for 5 Minutes", comment: "Will snooze for 5 Minutes Dialog Quick Snooze Option")
         case .snoozeTenMinutes:
-            return "Snooze for 10 Minutes"
+            return NSLocalizedString("Will snooze for 10 Minutes", comment: "Will snooze for 10 Minutes Dialog Quick Snooze Option")
         }
     }
 }

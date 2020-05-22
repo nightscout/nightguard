@@ -21,10 +21,10 @@ class SnoozeActionsViewController: CustomFormViewController {
 
     override func constructForm() {
         
-        form +++ Section(footer: "After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment.")
-            +++ Section(header: "Quick Snoozing", footer: "NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)")
-            <<< makeQuickSnoozePickerRow(title: "Shaking the phone", userDefaultsValue: UserDefaultsRepository.shakingOnAlertSnoozeOption)
-            <<< makeQuickSnoozePickerRow(title: "Volume Buttons", userDefaultsValue: UserDefaultsRepository.volumeKeysOnAlertSnoozeOption)
+        form +++ Section(footer: NSLocalizedString("After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment.", comment: "SnoozeActionsViewController Quick Snooze Hint"))
+            +++ Section(header: NSLocalizedString("Quick Snoozing", comment: "Quick Snoozing Label"), footer: NSLocalizedString("NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)", comment: "Snoozing with volume button hint"))
+            <<< makeQuickSnoozePickerRow(title: NSLocalizedString("Shaking the phone", comment: "Shaking the phone Label"), userDefaultsValue: UserDefaultsRepository.shakingOnAlertSnoozeOption)
+            <<< makeQuickSnoozePickerRow(title: NSLocalizedString("Volume Buttons", comment: "Volume Buttons Label"), userDefaultsValue: UserDefaultsRepository.volumeKeysOnAlertSnoozeOption)
     }
     
     private func makeQuickSnoozePickerRow(title: String, userDefaultsValue: UserDefaultsValue<QuickSnoozeOption>) -> PickerInlineRow<Int> {
@@ -36,7 +36,7 @@ class SnoozeActionsViewController: CustomFormViewController {
                 guard let value = value else { return nil }
                 guard let quickSnoozeOption = QuickSnoozeOption(rawValue: value) else { return nil}
 
-                return "Will " + quickSnoozeOption.description
+                return quickSnoozeOption.description
             }
             row.options = quickActionCodes.map { $0.rawValue }
             row.value = userDefaultsValue.value.rawValue

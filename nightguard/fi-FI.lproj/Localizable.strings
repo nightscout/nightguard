@@ -333,3 +333,33 @@
 
 /* Watch Interface Controller Cancel Label */
 "Cancel" = "Peruuta";
+
+/* SnoozeActionsViewController Quick Snooze Hint */
+"After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment." = "After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment.";
+
+/* Quick Snoozing Label */
+"Quick Snoozing" = "Quick Snoozing";
+
+/* Snoozing with volume button hint */
+"NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)" = "NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)";
+
+/* Shaking the phone Label */
+"Shaking the phone" = "Shaking the phone";
+
+/* Volume Buttons Label */
+"Volume Buttons" = "Volume Buttons";
+
+/* Will do Nothing Quick Snooze Option */
+"Will do Nothing" = "Will do Nothing";
+
+/* Will show the Snooze Dialog Quick Snooze Option */
+"Will show the Snooze Dialog" = "Will show the Snooze Dialog";
+
+/* Will snooze for 1 Minute Dialog Quick Snooze Option */
+"Will snooze for 1 Minute" = "Will snooze for 1 Minute";
+
+/* Will snooze for 5 Minutes Dialog Quick Snooze Option */
+"Will snooze for 5 Minutes" = "Will snooze for 5 Minutes";
+
+/* Will snooze for 10 Minutes Dialog Quick Snooze Option */
+"Will snooze for 10 Minutes" = "Will snooze for 10 Minutes";
