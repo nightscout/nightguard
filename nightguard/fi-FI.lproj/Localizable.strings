@@ -335,31 +335,31 @@
 "Cancel" = "Peruuta";
 
 /* SnoozeActionsViewController Quick Snooze Hint */
-"After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment." = "After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment.";
+"After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment." = "Hälytyksen alkamisen jälkeen on joskus tarpeen olla nopea tapa lopettaa se hetkeksi.";
 
 /* Quick Snoozing Label */
-"Quick Snoozing" = "Quick Snoozing";
+"Quick Snoozing" = "Nopea torkku";
 
 /* Snoozing with volume button hint */
-"NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)" = "NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)";
+"NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)" = "HUOM: torkku äänenvoimakkuuspainikkeilla \"Ohita järjestelmän äänenvoimakkuus\" valinta on päällä (Hälytyksen voimakkuus näytössä)";
 
 /* Shaking the phone Label */
-"Shaking the phone" = "Shaking the phone";
+"Shaking the phone" = "Puhelimen ravistus";
 
 /* Volume Buttons Label */
-"Volume Buttons" = "Volume Buttons";
+"Volume Buttons" = "Äänenvoimakkuuspainikkeet";
 
 /* Will do Nothing Quick Snooze Option */
-"Will do Nothing" = "Will do Nothing";
+"Will do Nothing" = "Ei tehdä mitään";
 
 /* Will show the Snooze Dialog Quick Snooze Option */
-"Will show the Snooze Dialog" = "Will show the Snooze Dialog";
+"Will show the Snooze Dialog" = "Näytetään torkku dialogi";
 
 /* Will snooze for 1 Minute Dialog Quick Snooze Option */
-"Will snooze for 1 Minute" = "Will snooze for 1 Minute";
+"Will snooze for 1 Minute" = "Torkkuu minuutin";
 
 /* Will snooze for 5 Minutes Dialog Quick Snooze Option */
-"Will snooze for 5 Minutes" = "Will snooze for 5 Minutes";
+"Will snooze for 5 Minutes" = "Torkkuu 5 minuuttia";
 
 /* Will snooze for 10 Minutes Dialog Quick Snooze Option */
-"Will snooze for 10 Minutes" = "Will snooze for 10 Minutes";
+"Will snooze for 10 Minutes" = "Torkkuu 10 minuuttia";
