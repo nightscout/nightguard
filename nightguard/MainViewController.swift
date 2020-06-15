@@ -53,7 +53,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
                                 newCanvasWidth: self.maximumDeviceTextureWidth())
@@ -108,7 +108,11 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         // show nightscout on long press of action button
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.longPressGesture(_:)))
         self.actionsMenuButton.addGestureRecognizer(longPressGestureRecognizer)
-
+        
+        // show nightscout on force press of action button
+        let forcePressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(MainViewController.deepPressGesture(_:)))
+        self.actionsMenuButton.addGestureRecognizer(forcePressGestureRecognizer)
+        
         slideToSnoozeView.delegate = self
     }
     
@@ -216,6 +220,15 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     }
     
     @objc func longPressGesture(_ recognizer : UILongPressGestureRecognizer) {
+        
+        guard recognizer.state == UIGestureRecognizer.State.recognized else {
+            return
+        }
+        
+        showNightscout()
+    }
+    
+    @objc func deepPressGesture(_ recognizer : DeepPressGestureRecognizer) {
         
         guard recognizer.state == UIGestureRecognizer.State.recognized else {
             return

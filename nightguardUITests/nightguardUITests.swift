@@ -8,7 +8,7 @@
 
 import XCTest
 
-class scoutwatchUITests: XCTestCase {
+class nightguardUITests: XCTestCase {
     var app: XCUIApplication!
 
     override func setUp() {
@@ -40,8 +40,9 @@ class scoutwatchUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-
+    
     func testTabsBars() {
+        
         let tabBarsQuery = app.tabBars
         XCTAssertEqual(tabBarsQuery.buttons.count, 4)
 
@@ -53,14 +54,14 @@ class scoutwatchUITests: XCTestCase {
         urlTextField.tap()
         urlTextField.typeText("\n")
         
-        tabBarsQuery.firstMatch.buttons.element(boundBy: 0).tap()
-        sleep(3)
-        //tabBarsQuery.buttons["Main"].tap()
-        snapshot("01-main")
+        testMainScreen(tabBarsQuery)
+        
+        testNightscoutView()
+        
+        testFullscreenView()
         
         tabBarsQuery.firstMatch.buttons.element(boundBy: 1).tap()
-        //tabBarsQuery.buttons["Alarms"].tap()
-        snapshot("02-alarms")
+        snapshot("04-alarms")
         
         tabBarsQuery.firstMatch.buttons.element(boundBy: 2).tap()
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -68,13 +69,41 @@ class scoutwatchUITests: XCTestCase {
             XCUIDevice.shared.orientation = .landscapeLeft
         }
         sleep(6)
-        snapshot("03-stats")
+        snapshot("05-stats")
         
         tabBarsQuery.firstMatch.buttons.element(boundBy: 3).tap()
         if UIDevice.current.userInterfaceIdiom == .phone {
             XCUIDevice.shared.orientation = .portrait
         }
         sleep(1)
-        snapshot("04-preferences")
+        snapshot("06-preferences")
+    }
+    
+    fileprivate func testMainScreen(_ tabBarsQuery: XCUIElementQuery) {
+        tabBarsQuery.firstMatch.buttons.element(boundBy: 0).tap()
+        sleep(3)
+        snapshot("01-main")
+    }
+    
+    fileprivate func testNightscoutView() {
+        app.buttons["actionsMenuButton"].firstMatch.tap()
+        // open the nightscout webview
+        app.cells.element(boundBy: 0).tap()
+        sleep(5)
+        snapshot("02-nightscout")
+        
+        // close the popup
+        app.buttons.element(boundBy: 1).tap()
+    }
+    
+    fileprivate func testFullscreenView() {
+        app.buttons["actionsMenuButton"].firstMatch.tap()
+        // open the fullscreen night mode
+        app.cells.element(boundBy: 1).tap()
+        sleep(1)
+        snapshot("03-fullscreen")
+        
+        // close the popup
+        app.buttons.element(boundBy: 0).tap()
     }
 }

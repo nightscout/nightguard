@@ -16,6 +16,7 @@
 		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
 		3CE052D040FF4F7F7B59CA3F /* Pods_nightguard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7695EB5A62ACCB701AA224B3 /* Pods_nightguard.framework */; };
+		430A5F4F2495689300213F92 /* DeepPressGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */; };
 		430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */; };
 		43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
 		43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
@@ -76,7 +77,7 @@
 		4351E6B21D2EFDFE001E4AE4 /* TimeServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */; };
 		43647BD31BFF6435004389F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD11BFF6435004389F9 /* Main.storyboard */; };
 		43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */; };
-		43647BEE1BFF6435004389F9 /* scoutwatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BED1BFF6435004389F9 /* scoutwatchUITests.swift */; };
+		43647BEE1BFF6435004389F9 /* nightguardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BED1BFF6435004389F9 /* nightguardUITests.swift */; };
 		43647BF31BFF6435004389F9 /* nightguard.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 43647BF21BFF6435004389F9 /* nightguard.app */; };
 		43647BF91BFF6435004389F9 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BF71BFF6435004389F9 /* Interface.storyboard */; };
 		43647C021BFF6435004389F9 /* nightguard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 43647C011BFF6435004389F9 /* nightguard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -328,6 +329,7 @@
 		28B03A3923F9CE6C000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		2CD1F1A801015AC39114CEC2 /* Pods-nightguardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests.release.xcconfig"; sourceTree = "<group>"; };
+		430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepPressGestureRecognizer.swift; sourceTree = "<group>"; };
 		430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
 		4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NightscoutCacheService.swift; path = "nightguard WatchKit Extension/NightscoutCacheService.swift"; sourceTree = SOURCE_ROOT; };
@@ -349,7 +351,7 @@
 		43647BDE1BFF6435004389F9 /* nightguard_tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nightguard_tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BE41BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43647BE91BFF6435004389F9 /* nightguard_uitests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nightguard_uitests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		43647BED1BFF6435004389F9 /* scoutwatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scoutwatchUITests.swift; sourceTree = "<group>"; };
+		43647BED1BFF6435004389F9 /* nightguardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nightguardUITests.swift; sourceTree = "<group>"; };
 		43647BEF1BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43647BF21BFF6435004389F9 /* nightguard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nightguard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43647BF81BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -639,7 +641,7 @@
 			isa = PBXGroup;
 			children = (
 				28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */,
-				43647BED1BFF6435004389F9 /* scoutwatchUITests.swift */,
+				43647BED1BFF6435004389F9 /* nightguardUITests.swift */,
 				43647BEF1BFF6435004389F9 /* Info.plist */,
 			);
 			path = nightguardUITests;
@@ -762,6 +764,7 @@
 				D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */,
 				D1B777E52244C11B003FEDF0 /* Comparable+Extensions.swift */,
 				43EE375A24478D78008C9134 /* XCUIElement.swift */,
+				430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */,
 			);
 			name = helpers;
 			sourceTree = "<group>";
@@ -1314,6 +1317,7 @@
 				43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */,
 				43288A701D20284600EE3999 /* DoubleExtension.swift in Sources */,
 				D16C8EDF2211047300192117 /* UIViewController+Extensions.swift in Sources */,
+				430A5F4F2495689300213F92 /* DeepPressGestureRecognizer.swift in Sources */,
 				D1ECDA262202C8F0002BE6F9 /* UIColorExtension.swift in Sources */,
 				D15055AC2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */,
 				D1F94ECE223FFE2A00BB0A4D /* GlucoseDistributionView.swift in Sources */,
@@ -1449,7 +1453,7 @@
 				43EE375B24478D78008C9134 /* XCUIElement.swift in Sources */,
 				4330663F23AFB68900690C4A /* QuickSnoozeOption.swift in Sources */,
 				4330662F23AFB26700690C4A /* NightscoutData.swift in Sources */,
-				43647BEE1BFF6435004389F9 /* scoutwatchUITests.swift in Sources */,
+				43647BEE1BFF6435004389F9 /* nightguardUITests.swift in Sources */,
 				4330664023AFB6D200690C4A /* NightscoutDataRepository.swift in Sources */,
 				4330663C23AFB5F900690C4A /* ObservationToken.swift in Sources */,
 				4330663223AFB36D00690C4A /* NightscoutService.swift in Sources */,
@@ -1883,7 +1887,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 539;
+				CURRENT_PROJECT_VERSION = 542;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;
@@ -1911,7 +1915,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 539;
+				CURRENT_PROJECT_VERSION = 542;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;
