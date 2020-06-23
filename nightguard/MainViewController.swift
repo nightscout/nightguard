@@ -31,6 +31,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @IBOutlet weak var actionsMenuButtonPanelView: UIView!
     @IBOutlet weak var statsPanelView: BasicStatsPanelView!
     @IBOutlet weak var slideToSnoozeView: SlideToSnoozeView!
+    @IBOutlet weak var slideToSnoozeViewHeightConstraint: NSLayoutConstraint!
     
     // currently presented bedside view controller instance
     private var bedsideViewController: BedsideViewController?
@@ -137,6 +138,13 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             }
         }
         
+        actionsMenuButtonPanelView.isHidden = AlarmRule.areAlertsGenerallyDisabled.value
+        slideToSnoozeView.isHidden = AlarmRule.areAlertsGenerallyDisabled.value
+        if AlarmRule.areAlertsGenerallyDisabled.value {
+            slideToSnoozeViewHeightConstraint.constant = 0
+        } else {
+            slideToSnoozeViewHeightConstraint.constant = 80
+        }
         slideToSnoozeView.setNeedsLayout()
         slideToSnoozeView.layoutIfNeeded()
     }

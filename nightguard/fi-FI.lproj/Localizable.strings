@@ -363,3 +363,6 @@
 
 /* Will snooze for 10 Minutes Dialog Quick Snooze Option */
 "Will snooze for 10 Minutes" = "Torkkuu 10 minuuttia";
+
+/* Alert popup body text for disabling all alerts */
+"It is not recommended to disable all alerts! Do you really want to disable all alerts?" = "It is not recommended to disable all alerts! Do you really want to disable all alerts?";

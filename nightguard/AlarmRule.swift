@@ -32,6 +32,10 @@ class AlarmRule {
     // closure for listening to snooze timestamp changes
     static var onSnoozeTimestampChanged: (() -> ())?
     
+    static let areAlertsGenerallyDisabled = UserDefaultsValue<Bool>(key: "areAlertsGenerallyDisabled", default: false)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+    
     static let numberOfConsecutiveValues = UserDefaultsValue<Int>(key: "numberOfConsecutiveValues", default: 3)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
@@ -94,6 +98,10 @@ class AlarmRule {
      * Returns nil if the alarm is snoozed or not active.
      */
     static func getAlarmActivationReason(ignoreSnooze: Bool = false) -> String? {
+        
+        if areAlertsGenerallyDisabled.value {
+            return nil
+        }
         
         if isSnoozed() && !ignoreSnooze {
             return nil

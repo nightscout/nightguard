@@ -32,7 +32,6 @@
 		43288A711D2028CC00EE3999 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43288A6F1D20284600EE3999 /* DoubleExtension.swift */; };
 		432E62D71D0CC35100DD7978 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		432E62D81D0CC38C00DD7978 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
-		432E62D91D0CC3AC00DD7978 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		432E62DA1D0CC3DE00DD7978 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
 		432E62DF1D10ACD200DD7978 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
 		432E62E01D10AF3800DD7978 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
@@ -53,7 +52,6 @@
 		4330662E23AFB22B00690C4A /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		4330662F23AFB26700690C4A /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
 		4330663023AFB27900690C4A /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
-		4330663123AFB2A700690C4A /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		4330663223AFB36D00690C4A /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		4330663323AFB39A00690C4A /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
 		4330663423AFB3C600690C4A /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
@@ -75,6 +73,8 @@
 		4351E6AE1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6AD1D2ADFBE001E4AE4 /* StatsPrefsViewController.swift */; };
 		4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */; };
 		4351E6B21D2EFDFE001E4AE4 /* TimeServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */; };
+		4359241824A2895200F2D1A7 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
+		4359241924A2895500F2D1A7 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		43647BD31BFF6435004389F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD11BFF6435004389F9 /* Main.storyboard */; };
 		43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */; };
 		43647BEE1BFF6435004389F9 /* nightguardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BED1BFF6435004389F9 /* nightguardUITests.swift */; };
@@ -122,7 +122,6 @@
 		43F1E1071D07698000C329A2 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
 		43F1E1081D07698000C329A2 /* PrefsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FB1D07698000C329A2 /* PrefsViewController.swift */; };
 		43F1E1091D07698000C329A2 /* scoutwatch.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */; };
-		43F1E10B1D076B1D00C329A2 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		43F1E10C1D076B4100C329A2 /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
 		43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		43F1E1121D076C4500C329A2 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
@@ -708,8 +707,8 @@
 			isa = PBXGroup;
 			children = (
 				43F1E0EB1D07693300C329A2 /* AlarmRule.swift */,
-				43F1E0EC1D07693300C329A2 /* BloodSugar.swift */,
 				D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */,
+				43F1E0EC1D07693300C329A2 /* BloodSugar.swift */,
 				432E62DE1D10ACD200DD7978 /* Units.swift */,
 				D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */,
 				D18C5D8922293C220099D96E /* BasicStats.swift */,
@@ -1407,8 +1406,8 @@
 				D1B777E72244C43D003FEDF0 /* Comparable+Extensions.swift in Sources */,
 				432E62E01D10AF3800DD7978 /* Units.swift in Sources */,
 				4330663E23AFB65E00690C4A /* QuickSnoozeOption.swift in Sources */,
+				4359241824A2895200F2D1A7 /* BloodSugar.swift in Sources */,
 				D1F2F57B21EF133000CEB874 /* Matrix.swift in Sources */,
-				432E62D91D0CC3AC00DD7978 /* BloodSugar.swift in Sources */,
 				437EEDC31FB716C400694EAD /* StatisticsRepository.swift in Sources */,
 				D18C5D8B22293C230099D96E /* BasicStats.swift in Sources */,
 				D133078C21C85DAA00DC6879 /* ArrayExtension.swift in Sources */,
@@ -1461,7 +1460,6 @@
 				4330663523AFB3D900690C4A /* UserDefaultsRepository.swift in Sources */,
 				4330662D23AFB1C100690C4A /* UIApplicationExtension.swift in Sources */,
 				4330663323AFB39A00690C4A /* UserDefaultsValue.swift in Sources */,
-				4330663123AFB2A700690C4A /* BloodSugar.swift in Sources */,
 				4330663623AFB3EB00690C4A /* TimeService.swift in Sources */,
 				4330662A23AFADE200690C4A /* WatchMessage.swift in Sources */,
 				4330663723AFB3FD00690C4A /* BackgroundUrlSessionWrapper.swift in Sources */,
@@ -1508,9 +1506,9 @@
 				4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */,
 				D133079921C85FAE00DC6879 /* Regression.swift in Sources */,
 				D133079B21C85FAE00DC6879 /* Matrix.swift in Sources */,
-				43F1E10B1D076B1D00C329A2 /* BloodSugar.swift in Sources */,
 				D123EFE621FB31FF00CE8718 /* WatchMessageService.swift in Sources */,
 				43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */,
+				4359241924A2895500F2D1A7 /* BloodSugar.swift in Sources */,
 				D1CE8CC22204B07F0075FF8A /* Colors.swift in Sources */,
 				432E62E11D10AF3900DD7978 /* Units.swift in Sources */,
 				43647C0B1BFF6435004389F9 /* ExtensionDelegate.swift in Sources */,
@@ -1887,7 +1885,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 543;
+				CURRENT_PROJECT_VERSION = 544;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;
@@ -1915,7 +1913,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 543;
+				CURRENT_PROJECT_VERSION = 544;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;

@@ -491,6 +491,7 @@
                         <outlet property="lastUpdateLabel" destination="FFv-EO-ylg" id="KqE-n5-OYo"/>
                         <outlet property="rawValuesPanel" destination="XtI-XB-VeV" id="1T6-VA-eJr"/>
                         <outlet property="slideToSnoozeView" destination="MNg-kT-Em2" id="GGV-wd-gUK"/>
+                        <outlet property="slideToSnoozeViewHeightConstraint" destination="i8h-7H-LUb" id="Xe8-fP-EzS"/>
                         <outlet property="spriteKitView" destination="dot-Yq-gkc" id="VQK-0m-Y6R"/>
                         <outlet property="statsPanelView" destination="8KP-K7-ZDM" id="TEl-Rt-zAb"/>
                         <outlet property="timeLabel" destination="YvM-WS-hyk" id="t6A-d4-mVH"/>

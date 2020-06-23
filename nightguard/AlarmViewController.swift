@@ -44,12 +44,50 @@ class AlarmViewController: CustomFormViewController {
         belowSliderRow = SliderRow.glucoseLevelSlider(initialValue: AlarmRule.alertIfBelowValue.value, minimumValue: MIN_ALERT_BELOW_VALUE, maximumValue: MAX_ALERT_BELOW_VALUE)
         belowSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
-        
-        form +++ Section(header: NSLocalizedString("High BG Alert", comment: "Alarm settings title: High alert"), footer: NSLocalizedString("Alerts when the blood glucose raises above this value.", comment: "Footer for High alert")) <<< aboveSliderRow
+        form
+            +++ Section(header: "", footer: NSLocalizedString("Deactivate all alerts. This is NOT recommended. You will get no alarms whetever you select below.", comment: "Footer for disable all alerts switch."))
+            <<< SwitchRow("disableAllAlertsRow") { row in
+                row.title = NSLocalizedString("Disable all alerts", comment: "Label for disable all alerts")
+                row.value = AlarmRule.areAlertsGenerallyDisabled.value
+            }.onChange { [weak self] row in
+                guard let value = row.value else { return }
+                
+                if !value {
+                    // setting to enabled is ok
+                    AlarmRule.areAlertsGenerallyDisabled.value = value
+                    return
+                }
+                
+                // disabling alerts is critical. So show a popup:
+                self?.showYesNoAlert(
+                    title: NSLocalizedString("ARE YOU SURE?", comment: "Title for confirmation"),
+                    message: NSLocalizedString("It is not recommended to disable all alerts! Do you really want to disable all alerts?", comment: "Alert popup body text for disabling all alerts"),
+                    yesHandler: {
+                        AlarmRule.areAlertsGenerallyDisabled.value = value
+                },
+                    noHandler: {
+                        row.value = false
+                        row.updateCell()
+                })
+            }
             
-            +++ Section(header: NSLocalizedString("Low BG Alert", comment: "Alarm settings title: Low alert"), footer: NSLocalizedString("Alerts when the blood glucose drops below this value.", comment: "Footer for Low alert")) <<< belowSliderRow
+            +++ Section(header: NSLocalizedString("High BG Alert", comment: "Alarm settings title: High alert"), footer: NSLocalizedString("Alerts when the blood glucose raises above this value.", comment: "Footer for High alert")) { section in
+                                section.hidden = Condition.function(["disableAllAlertsRow"], { form in
+                    return (form.rowBy(tag: "disableAllAlertsRow") as? SwitchRow)?.value ?? false
+                })
+            } <<< aboveSliderRow
             
-            +++ Section(NSLocalizedString("Other Alerts", comment: "Alarm settings title: Other alerts"))
+            +++ Section(header: NSLocalizedString("Low BG Alert", comment: "Alarm settings title: Low alert"), footer: NSLocalizedString("Alerts when the blood glucose drops below this value.", comment: "Footer for Low alert")) { section in
+                                section.hidden = Condition.function(["disableAllAlertsRow"], { form in
+                    return (form.rowBy(tag: "disableAllAlertsRow") as? SwitchRow)?.value ?? false
+                })
+            } <<< belowSliderRow
+            
+            +++ Section(NSLocalizedString("Other Alerts", comment: "Alarm settings title: Other alerts")) { section in
+                                section.hidden = Condition.function(["disableAllAlertsRow"], { form in
+                    return (form.rowBy(tag: "disableAllAlertsRow") as? SwitchRow)?.value ?? false
+                })
+            }
             
             <<< ButtonRowWithDynamicDetails(NSLocalizedString("Missed Readings", comment: "Alarm settings title: Missed readings")) { row in
                 row.controllerProvider = { return MissedReadingsViewController() }
@@ -132,7 +170,11 @@ class AlarmViewController: CustomFormViewController {
                 }
             }
             
-            +++ Section(header: "", footer: NSLocalizedString("Snooze (do not alert) when values are high or low but the trend is going in the right direction.", comment: "Footer for smart snooze switch"))
+            +++ Section(header: "", footer: NSLocalizedString("Snooze (do not alert) when values are high or low but the trend is going in the right direction.", comment: "Footer for smart snooze switch")) { section in
+                                section.hidden = Condition.function(["disableAllAlertsRow"], { form in
+                    return (form.rowBy(tag: "disableAllAlertsRow") as? SwitchRow)?.value ?? false
+                })
+            }
             <<< SwitchRow() { row in
                 row.title = NSLocalizedString("Smart Snooze", comment: "Label for Smart snooze switch")
                 row.value = AlarmRule.isSmartSnoozeEnabled.value
@@ -141,7 +183,11 @@ class AlarmViewController: CustomFormViewController {
                     AlarmRule.isSmartSnoozeEnabled.value = value
             }
             
-            +++ Section(header: "", footer: NSLocalizedString("When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode.", comment: "Footer for Alert notifications"))
+            +++ Section(header: "", footer: NSLocalizedString("When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode.", comment: "Footer for Alert notifications")) { section in
+                                section.hidden = Condition.function(["disableAllAlertsRow"], { form in
+                    return (form.rowBy(tag: "disableAllAlertsRow") as? SwitchRow)?.value ?? false
+                })
+            }
             <<< SwitchRow() { row in
                 row.title = NSLocalizedString("Alert Notifications", comment: "Label for Alert Notifications");
                 row.value = AlarmNotificationService.singleton.enabled
@@ -150,7 +196,11 @@ class AlarmViewController: CustomFormViewController {
                     AlarmNotificationService.singleton.enabled = value
             }
             
-            +++ Section()
+            +++ Section() { section in
+                                section.hidden = Condition.function(["disableAllAlertsRow"], { form in
+                    return (form.rowBy(tag: "disableAllAlertsRow") as? SwitchRow)?.value ?? false
+                })
+            }
             <<< ButtonRowWithDynamicDetails(NSLocalizedString("Alert Volume", comment: "Label for Alert volume")) { row in
                 row.controllerProvider = { return AlertVolumeViewController()
                 }
