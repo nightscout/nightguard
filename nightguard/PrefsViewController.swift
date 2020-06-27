@@ -51,6 +51,7 @@ class PrefsViewController: CustomFormViewController {
         nightscoutURLRow = URLRow() { row in
             row.title = NSLocalizedString("URL", comment: "Title for URL")
             row.placeholder = "http://night.fritz.box"
+            row.placeholderColor = UIColor.gray
             row.value = URL(string: UserDefaultsRepository.baseUri.value)
             row.add(rule: nightscoutURLRule)
             row.validationOptions = .validatesOnDemand

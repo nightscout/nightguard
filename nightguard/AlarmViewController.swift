@@ -45,7 +45,7 @@ class AlarmViewController: CustomFormViewController {
         belowSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
         form
-            +++ Section(header: "", footer: NSLocalizedString("Deactivate all alerts. This is NOT recommended. You will get no alarms whetever you select below.", comment: "Footer for disable all alerts switch."))
+            +++ Section(header: "", footer: NSLocalizedString("Deactivate all alerts. This is NOT recommended. You will get no alarms or notifications at all anymore!", comment: "Footer for disable all alerts switch."))
             <<< SwitchRow("disableAllAlertsRow") { row in
                 row.title = NSLocalizedString("Disable all alerts", comment: "Label for disable all alerts")
                 row.value = AlarmRule.areAlertsGenerallyDisabled.value

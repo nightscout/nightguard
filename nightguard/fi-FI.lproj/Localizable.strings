@@ -366,3 +366,9 @@
 
 /* Alert popup body text for disabling all alerts */
 "It is not recommended to disable all alerts! Do you really want to disable all alerts?" = "It is not recommended to disable all alerts! Do you really want to disable all alerts?";
+
+/* Footer for disable all alerts switch */
+"Deactivate all alerts. This is NOT recommended. You will get no alarms or notifications at all anymore!" = "Deactivate all alerts. This is NOT recommended. You will get no alarms or notifications at all anymore!";
+
+/* Label for disable all alerts */
+"Disable all alerts" = "Disable all alerts";
