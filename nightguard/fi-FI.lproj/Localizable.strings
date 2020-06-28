@@ -372,3 +372,15 @@
 
 /* Label for disable all alerts */
 "Disable all alerts" = "Disable all alerts";
+
+/* Popup OK-Button */
+"OK" = "OK";
+
+/* Popup YES-Button */
+"YES" = "YES";
+
+/* Popup NO-Button */
+"NO" = "NO";
+
+/* Popup Accept-Button */
+"Accept" = "Accept";

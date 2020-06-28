@@ -19,7 +19,7 @@ extension UIViewController {
         }
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let actionOk = UIAlertAction(title: "OK", style: .default, handler: { _ in okHandler?() })
+        let actionOk = UIAlertAction(title: NSLocalizedString("OK", comment: "Popup OK-Button"), style: .default, handler: { _ in okHandler?() })
         alertController.addAction(actionOk)
         present(alertController, animated: true, completion: nil)
         
@@ -37,9 +37,9 @@ extension UIViewController {
         }
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let actionYes = UIAlertAction(title: "Yes", style: .default, handler: { _ in yesHandler?() })
+        let actionYes = UIAlertAction(title: NSLocalizedString("YES", comment: "Popup Yes-Button"), style: .default, handler: { _ in yesHandler?() })
         alertController.addAction(actionYes)
-        let actionNo = UIAlertAction(title: "No", style: .default, handler: { _ in noHandler?() })
+        let actionNo = UIAlertAction(title: NSLocalizedString("NO", comment: "Popup NO-Button"), style: .default, handler: { _ in noHandler?() })
         alertController.addAction(actionNo)
         present(alertController, animated: true, completion: nil)
         
@@ -57,7 +57,7 @@ extension UIViewController {
         }
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let actionAccept = UIAlertAction(title: "Accept", style: .default, handler: { (alert: UIAlertAction!) in
+        let actionAccept = UIAlertAction(title: NSLocalizedString("Accept", comment: "Popup Accept-Button"), style: .default, handler: { (alert: UIAlertAction!) in
             if let showOnceKey = showOnceKey {
                 UserDefaults.standard.set(true, forKey: showOnceKey)
             }
