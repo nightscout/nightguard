@@ -365,22 +365,22 @@
 "Will snooze for 10 Minutes" = "Torkkuu 10 minuuttia";
 
 /* Alert popup body text for disabling all alerts */
-"It is not recommended to disable all alerts! Do you really want to disable all alerts?" = "It is not recommended to disable all alerts! Do you really want to disable all alerts?";
+"It is not recommended to disable all alerts! Do you really want to disable all alerts?" = "Kaikkien hälytysten poistamista ei suositella! Haluatko todella poistaa kaikki hälytykset käytöstä?";
 
 /* Footer for disable all alerts switch */
-"Deactivate all alerts. This is NOT recommended. You will get no alarms or notifications at all anymore!" = "Deactivate all alerts. This is NOT recommended. You will get no alarms or notifications at all anymore!";
+"Deactivate all alerts. This is NOT recommended. You will get no alarms or notifications at all anymore!" = "Poista kaikki hälytykset käytöstä. Tätä EI suositella. Et enää saa hälytyksiä tai ilmoituksia!";
 
 /* Label for disable all alerts */
-"Disable all alerts" = "Disable all alerts";
+"Disable all alerts" = "Hylkää kaikki hälytykset";
 
 /* Popup OK-Button */
 "OK" = "OK";
 
 /* Popup YES-Button */
-"YES" = "YES";
+"YES" = "KYLLÄ";
 
 /* Popup NO-Button */
-"NO" = "NO";
+"NO" = "EI";
 
 /* Popup Accept-Button */
-"Accept" = "Accept";
+"Accept" = "Hyväksy";
