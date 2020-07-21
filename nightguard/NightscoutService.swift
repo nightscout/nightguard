@@ -366,8 +366,16 @@ class NightscoutService {
             return nil
         }
         
+        // Force mmol if that has been configured
+        var enforceMmolQueryParams : [String:String] = [:]
+        if UserDefaultsRepository.units.value == Units.mmol {
+            enforceMmolQueryParams = [
+                "units" : "mmol"
+                ]
+        }
+        
         // Get the current data from REST-Call
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams: enforceMmolQueryParams)
         guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
