@@ -22,6 +22,12 @@ class NightscoutService {
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
+    enum EventType : String {
+        case sensorStart = "Sensor Start"
+        case pumpBatteryChange = "Pump Battery Change"
+        case cannulaChange = "Site Change"
+    }
+    
     /* Reads the last 20 historic blood glucose data from the nightscout server. */
     @discardableResult
     func readChartData(_ resultHandler : @escaping (NightscoutRequestResult<[Int]>) -> Void) -> URLSessionTask? {
@@ -562,6 +568,163 @@ class NightscoutService {
         
         return "\(Int(UnitsConverter.toDisplayUnits(raw.rounded())))"
     }
+    
+    /* Reads the treatment record for the last cannula change, sensor change and battery age */
+    @discardableResult
+    func readLastTreatementEventTimestamp(eventType : EventType, daysToGoBackInTime : Int, resultHandler : @escaping (String) -> Void) -> URLSessionTask? {
+
+        
+        let baseUri = UserDefaultsRepository.baseUri.value
+        if baseUri == "" {
+            resultHandler("")
+            return nil
+        }
+        
+        // Get the current data from REST-Call
+        let lastTreatmentByEventtype = [
+            "find[eventType]" : eventType.rawValue,
+            // Go back 10 Days in time. That should be enough for even the Sensor Age
+            "find[created_at][$gte]" :  Calendar.current.date(
+                byAdding: .day, value: -daysToGoBackInTime, to: Date())!.convertToIsoDate(),
+            "count" : "1"
+            ]
+        
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/treatments", queryParams: lastTreatmentByEventtype)
+        guard url != nil else {
+            resultHandler("")
+            return nil
+        }
+
+        let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+            
+            guard error == nil else {
+                print(error!)
+                dispatchOnMain {
+                    resultHandler("")
+                }
+                return
+            }
+            
+            guard data != nil else {
+                print("The received data was nil...")
+                dispatchOnMain { [] in
+                    resultHandler("")
+                    }
+                return
+            }
+        
+            let treatmentsArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
+
+            guard let siteChangeObject = treatmentsArray as? [[String:Any]]
+            else {
+                dispatchOnMain { [] in
+                    resultHandler("")}
+                return
+            }
+            
+            if siteChangeObject.count == 0 {
+                dispatchOnMain { [] in
+                    resultHandler("")}
+                return
+            }
+            
+            dispatchOnMain { [] in
+                resultHandler(Date.convertToAge(isoTime: siteChangeObject[0]["created_at"]!))}
+        })
+        
+        task.resume()
+        return task
+    }
+    
+    /* Reads the treatment record for the last cannula change, sensor change and battery age */
+   @discardableResult
+   func readDeviceStatus(resultHandler : @escaping (String) -> Void) -> URLSessionTask? {
+
+       
+       let baseUri = UserDefaultsRepository.baseUri.value
+       if baseUri == "" {
+           resultHandler("")
+           return nil
+       }
+       
+       // We assume that the last 5 entries should contain the entry with the extended pump entries
+       let lastTwoDeviceStatusQuery = [
+           "count" : "5"
+           ]
+       
+       let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/devicestatus.json", queryParams: lastTwoDeviceStatusQuery)
+       guard url != nil else {
+           resultHandler("")
+           return nil
+       }
+
+       let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+       
+       let session = URLSession.shared
+       let task = session.dataTask(with: request, completionHandler: { data, response, error in
+           
+           guard error == nil else {
+               print(error!)
+               dispatchOnMain {
+                   resultHandler("")
+               }
+               return
+           }
+           
+           guard data != nil else {
+               print("The received data was nil...")
+               dispatchOnMain { [] in
+                   resultHandler("")
+                   }
+               return
+           }
+       
+           let deviceStatusRawArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
+
+           guard let deviceStatusArray = deviceStatusRawArray as? [[String:Any]]
+           else {
+               dispatchOnMain { [] in
+                   resultHandler("")}
+               return
+           }
+           
+            for deviceStatus in deviceStatusArray {
+                // only the pump device status are interesting here
+                if deviceStatus.contains(where: {$0.key == "pump"}) {
+                    guard let pumpEntries = deviceStatus["pump"] as? [String:Any]
+                    else {
+                            dispatchOnMain { [] in
+                                resultHandler("")}
+                            return
+                    }
+                    if pumpEntries.contains(where: {$0.key == "extended"}) {
+                        guard let extendedEntries = pumpEntries["extended"] as? [String:Any]
+                        else {
+                                dispatchOnMain { [] in
+                                    resultHandler("")}
+                                return
+                        }
+                        if extendedEntries.contains(where: {$0.key == "ActiveProfile"}) {
+                            dispatchOnMain { [] in
+                                resultHandler(extendedEntries["ActiveProfile"] as! String)}
+                            return
+                        }
+                    }
+                }
+            }
+        
+            // if no pump entry exists - return nothing
+            dispatchOnMain { [] in
+                resultHandler("")}
+            return
+       })
+       
+       task.resume()
+       return task
+   }
     
     private func createEmptyOrInvalidUriError() -> Error {
         return NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo:  [NSLocalizedDescriptionKey: NSLocalizedString("The base URI is empty or invalid!", comment: "Empty or invalid Uri error")])

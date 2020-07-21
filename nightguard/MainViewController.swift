@@ -32,6 +32,10 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @IBOutlet weak var statsPanelView: BasicStatsPanelView!
     @IBOutlet weak var slideToSnoozeView: SlideToSnoozeView!
     @IBOutlet weak var slideToSnoozeViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cannulaAgeLabel: UILabel!
+    @IBOutlet weak var sensorAgeLabel: UILabel!
+    @IBOutlet weak var batteryAgeLabel: UILabel!
+    @IBOutlet weak var activeProfileLabel: UILabel!
     
     // currently presented bedside view controller instance
     private var bedsideViewController: BedsideViewController?
@@ -314,6 +318,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         // => in that case the user has to know that the values are old!
         self.loadAndPaintCurrentBgData()
         self.loadAndPaintChartData(forceRepaint: forceRepaint)
+        self.loadAndPaintCareData()
     }
     
     func slideToSnoozeDelegateDidFinish(_ sender: SlideToSnoozeView) {
@@ -502,6 +507,22 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             
             paintChartData(todaysData: newCachedTodaysBgValues, yesterdaysData: newCachedYesterdaysBgValues)
         }
+    }
+    
+    fileprivate func loadAndPaintCareData() {
+        
+        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .sensorStart, daysToGoBackInTime: 14, resultHandler: { [unowned self] (sensorAge: String) in
+                self.sensorAgeLabel.text = "SAGE " + sensorAge
+            })
+        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .cannulaChange, daysToGoBackInTime: 3, resultHandler: { [unowned self] (cannulaAge: String) in
+                self.cannulaAgeLabel.text = "CAGE " + cannulaAge
+            })
+        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .pumpBatteryChange, daysToGoBackInTime: 40, resultHandler: { [unowned self] (batteryAge: String) in
+                self.batteryAgeLabel.text = "BAT " + batteryAge
+            })
+        NightscoutService.singleton.readDeviceStatus(resultHandler: { [unowned self] (activeProfile: String) in
+                self.activeProfileLabel.text = activeProfile
+            })
     }
     
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {

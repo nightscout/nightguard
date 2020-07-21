@@ -23,6 +23,10 @@ class NightscoutCacheService: NSObject {
     fileprivate var yesterdaysDayOfTheYear : Int? = nil
     fileprivate var currentNightscoutData : NightscoutData? = nil
     
+    fileprivate var cannulaAge : Date? = nil
+    fileprivate var sensorAge : Date? = nil
+    fileprivate var pumpBattery : Int? = nil
+    
     fileprivate var newDataReceived : Bool = false
     fileprivate let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     
@@ -59,6 +63,23 @@ class NightscoutCacheService: NSObject {
         currentNightscoutData = nil
         
         NightscoutDataRepository.singleton.clearAll()
+    }
+    
+    func getCannulaAge() -> String {
+        
+        if cannulaAge == nil {
+            return "---"
+        }
+        
+        return "123S"
+    }
+    
+    func getSensorAge() -> String {
+        return "---"
+    }
+    
+    func getPumpBattery() ->  String {
+        return "---"
     }
     
     func getCurrentNightscoutData() -> NightscoutData {
