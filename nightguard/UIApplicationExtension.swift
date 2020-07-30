@@ -17,16 +17,17 @@ extension UIApplication {
     func setCurrentBGValueOnAppBadge() {
         
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        guard let sgv = Int(nightscoutData.sgv) else {
+        guard let sgvAsDouble = Double(nightscoutData.sgv) else {
             return
         }
+        let sgvAsInt = Int(sgvAsDouble.rounded())
         
         UNUserNotificationCenter.current().requestAuthorization(options: .badge) { (granted, error) in
             if granted && error == nil {
                 
                 // success!
                 dispatchOnMain {
-                    UIApplication.shared.applicationIconBadgeNumber = sgv
+                    UIApplication.shared.applicationIconBadgeNumber = sgvAsInt
                 }
             }
         }
