@@ -10,8 +10,8 @@ import XCTest
 
 class DataRepositoryTest: XCTestCase {
     
-    // deactivated --> seems to be a bug in the test environment
-    func ignoretestStoreCurrentBgData() {
+    func testStoreCurrentBgData() {
+        
         // Given
         let nightscoutData = NightscoutData()
         nightscoutData.bgdeltaString = "12"
@@ -24,22 +24,43 @@ class DataRepositoryTest: XCTestCase {
         XCTAssertEqual(retrievedBgData.bgdeltaString, "12")
     }
     
-    // deactivated --> seems to be a bug in the test environment
-//    func ignoretestStoreHistoricBgData() {
-//        // Given
-//        let historicBgData : [BloodSugar] =
-//            [BloodSugar.init(value: 1,timestamp: 1),
-//             BloodSugar.init(value: 2,timestamp: 2),
-//             BloodSugar.init(value: 3,timestamp: 3),
-//             BloodSugar.init(value: 4,timestamp: 4),
-//             BloodSugar.init(value: 5,timestamp: 5)]
-//
-//        // When
-//        NightscoutDataRepository.singleton.storeHistoricBgData(historicBgData)
-//        let retrievedHistoricBgData = NightscoutDataRepository.singleton.loadHistoricBgData()
-//
-//        // Then
-//        XCTAssertEqual(retrievedHistoricBgData.count, 5)
-//        XCTAssertEqual(retrievedHistoricBgData[0].value, 1)
-//    }
+    func testStoreDeviceStatusData() {
+        
+        // Given
+        let datePlus10Minutes = Calendar.current.date(byAdding: .minute, value: 10, to: Date())!
+        let deviceStatusData = DeviceStatusData()
+        deviceStatusData.temporaryBasalRate = "110.0"
+        deviceStatusData.pumpProfileActiveUntil = datePlus10Minutes
+        deviceStatusData.activePumpProfile = "Test"
+        deviceStatusData.temporaryBasalRateActiveUntil = datePlus10Minutes
+        
+        // When
+        NightscoutDataRepository.singleton.storeDeviceStatusData(deviceStatusData: deviceStatusData)
+        let retrievedDeviceStatusData = NightscoutDataRepository.singleton.loadDeviceStatusData()
+        
+        // Then
+        XCTAssertEqual(retrievedDeviceStatusData.activePumpProfile, "Test")
+        XCTAssertEqual(retrievedDeviceStatusData.pumpProfileActiveUntil, datePlus10Minutes)
+        XCTAssertEqual(retrievedDeviceStatusData.temporaryBasalRate, "110.0")
+        XCTAssertEqual(retrievedDeviceStatusData.temporaryBasalRateActiveUntil, datePlus10Minutes)
+    }
+    
+    func testStoreTemporaryTargetData() {
+        
+        // Given
+        let datePlus10Minutes = Calendar.current.date(byAdding: .minute, value: 10, to: Date())!
+        let temporaryTargetData = TemporaryTargetData()
+        temporaryTargetData.targetTop = 91
+        temporaryTargetData.targetBottom = 90
+        temporaryTargetData.activeUntilDate = datePlus10Minutes
+        
+        // When
+        NightscoutDataRepository.singleton.storeTemporaryTargetData(temporaryTargetData: temporaryTargetData)
+        let retrievedTemporaryTargetData = NightscoutDataRepository.singleton.loadTemporaryTargetData()
+        
+        // Then
+        XCTAssertEqual(retrievedTemporaryTargetData.targetTop, 91)
+        XCTAssertEqual(retrievedTemporaryTargetData.targetBottom, 90)
+        XCTAssertEqual(retrievedTemporaryTargetData.activeUntilDate, datePlus10Minutes)
+    }
 }

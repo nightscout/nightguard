@@ -72,7 +72,7 @@ class NightscoutData : NSObject, NSCoding, Codable {
     // MARK:- NSCoding interface implementation
     
     /* 
-        Code to deserialize BgData content. The error handling is need in case that old serialized
+        Code to deserialize BgData content. The error handling is needed in case that old serialized
         data leads to an error.
     */
     required init(coder decoder: NSCoder) {

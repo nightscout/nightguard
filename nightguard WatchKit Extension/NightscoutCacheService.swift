@@ -34,6 +34,7 @@ class NightscoutCacheService: NSObject {
     fileprivate var todaysBgDataTasks: [URLSessionTask] = []
     fileprivate var yesterdaysBgDataTasks: [URLSessionTask] = []
     fileprivate var currentNightscoutDataTasks: [URLSessionTask] = []
+    fileprivate var temporaryTargetData: TemporaryTargetData = TemporaryTargetData()
     
     // are there any running "todays bg data" requests?
     var hasTodaysBgDataPendingRequests: Bool {
@@ -65,21 +66,36 @@ class NightscoutCacheService: NSObject {
         NightscoutDataRepository.singleton.clearAll()
     }
     
-    func getCannulaAge() -> String {
+    func getCannulaChangeTime() -> Date {
         
-        if cannulaAge == nil {
-            return "---"
-        }
+        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .cannulaChange, daysToGoBackInTime: 3, resultHandler: { (cannulaChangeTime: Date) in
+                NightscoutDataRepository.singleton.storeCannulaChangeTime(cannulaChangeTime: cannulaChangeTime)
+            })
         
-        return "123S"
+        return NightscoutDataRepository.singleton.loadCannulaChangeTime()
     }
     
-    func getSensorAge() -> String {
-        return "---"
+    func getSensorChangeTime() -> Date {
+        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .sensorStart, daysToGoBackInTime: 14, resultHandler: { (sensorChangeTime: Date) in
+                NightscoutDataRepository.singleton.storeSensorChangeTime(sensorChangeTime: sensorChangeTime)
+            })
+        return NightscoutDataRepository.singleton.loadSensorChangeTime()
     }
     
-    func getPumpBattery() ->  String {
-        return "---"
+    func getPumpBatteryChangeTime() ->  Date {
+        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .pumpBatteryChange, daysToGoBackInTime: 40, resultHandler: { (batteryChangeTime: Date) in
+                NightscoutDataRepository.singleton.storeBatteryChangeTime(batteryChangeTime: batteryChangeTime)
+            })
+        
+        return NightscoutDataRepository.singleton.loadBatteryChangeTime()
+    }
+    
+    func getDeviceStatusData() -> DeviceStatusData {
+        NightscoutService.singleton.readDeviceStatus(resultHandler: { (deviceStatusData: DeviceStatusData) in
+                NightscoutDataRepository.singleton.storeDeviceStatusData(deviceStatusData: deviceStatusData)
+            })
+        
+        return NightscoutDataRepository.singleton.loadDeviceStatusData()
     }
     
     func getCurrentNightscoutData() -> NightscoutData {
@@ -88,6 +104,18 @@ class NightscoutCacheService: NSObject {
             return NightscoutData.init()
         }
         return currentNightscoutData!
+    }
+    
+    func getTemporaryTargetData() -> TemporaryTargetData {
+        
+        NightscoutService.singleton.readLastTemporaryTarget(daysToGoBackInTime: 1, resultHandler:  { (temporaryTargetData: TemporaryTargetData?) in
+            
+                if let temporaryTargetData = temporaryTargetData {
+                    NightscoutDataRepository.singleton.storeTemporaryTargetData(temporaryTargetData: temporaryTargetData)
+                }
+            })
+        
+        return NightscoutDataRepository.singleton.loadTemporaryTargetData()
     }
     
     func getTodaysBgData() -> [BloodSugar] {

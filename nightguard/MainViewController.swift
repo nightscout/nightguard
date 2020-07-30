@@ -36,6 +36,8 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @IBOutlet weak var sensorAgeLabel: UILabel!
     @IBOutlet weak var batteryAgeLabel: UILabel!
     @IBOutlet weak var activeProfileLabel: UILabel!
+    @IBOutlet weak var temporaryBasalLabel: UILabel!
+    @IBOutlet weak var temporaryTargetLabel: UILabel!
     
     // currently presented bedside view controller instance
     private var bedsideViewController: BedsideViewController?
@@ -511,18 +513,28 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     fileprivate func loadAndPaintCareData() {
         
-        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .sensorStart, daysToGoBackInTime: 14, resultHandler: { [unowned self] (sensorAge: String) in
-                self.sensorAgeLabel.text = "SAGE " + sensorAge
-            })
-        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .cannulaChange, daysToGoBackInTime: 3, resultHandler: { [unowned self] (cannulaAge: String) in
-                self.cannulaAgeLabel.text = "CAGE " + cannulaAge
-            })
-        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .pumpBatteryChange, daysToGoBackInTime: 40, resultHandler: { [unowned self] (batteryAge: String) in
-                self.batteryAgeLabel.text = "BAT " + batteryAge
-            })
-        NightscoutService.singleton.readDeviceStatus(resultHandler: { [unowned self] (activeProfile: String) in
-                self.activeProfileLabel.text = activeProfile
-            })
+        self.sensorAgeLabel.convertToAge(prefix: "SAGE ", time: NightscoutCacheService.singleton.getSensorChangeTime(), hoursUntilWarning: 24 * 9, hoursUntilCritical: 24 * 13)
+        self.cannulaAgeLabel.convertToAge(prefix: "CAGE ", time:  NightscoutCacheService.singleton.getCannulaChangeTime(),
+                                          hoursUntilWarning: 24 * 2 - 2, hoursUntilCritical: 24 * 3 - 2)
+        self.batteryAgeLabel.convertToAge(prefix: "BAT ", time:  NightscoutCacheService.singleton.getPumpBatteryChangeTime(),
+                                          hoursUntilWarning: 24 * 28, hoursUntilCritical: 24 * 30)
+        let deviceStatusData = NightscoutCacheService.singleton.getDeviceStatusData()
+        
+        self.activeProfileLabel.text = deviceStatusData.activePumpProfile;
+        if deviceStatusData.temporaryBasalRate != "" &&
+            deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes() > 0 {
+            
+            self.temporaryBasalLabel.text = "TB \(deviceStatusData.temporaryBasalRate)% \(deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes())m"
+        } else {
+            self.temporaryBasalLabel.text = "TB --"
+        }
+        
+        let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
+        if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
+            self.temporaryTargetLabel.text = "TT \(temporaryTargetData.targetTop) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
+        } else {
+            self.temporaryTargetLabel.text = "TT --"
+        }
     }
     
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {

@@ -31,6 +31,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     @IBOutlet var nightSafeIndicator: WKInterfaceGroup!
     
+    @IBOutlet var cannulaAgeLabel: WKInterfaceLabel!
+    @IBOutlet var sensorAgeLabel: WKInterfaceLabel!
+    @IBOutlet var batteryAgeLabel: WKInterfaceLabel!
+    
+    @IBOutlet var activeProfileLabel: WKInterfaceLabel!
+    @IBOutlet var temporaryBasalLabel: WKInterfaceLabel!
+    @IBOutlet var temporaryTargetLabel: WKInterfaceLabel!
+    
     // set by AppMessageService when receiving messages/data from phone app and current bg data or charts should be repainted
     var shouldRepaintCurrentBgDataOnActivation = false
     var shouldRepaintChartsOnActivation = false
@@ -143,6 +151,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         crownSequencer.delegate = self
         
         paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: false)
+        loadAndPaintCareData()
         
         // reset the first activation flag!
         isFirstActivation = false
@@ -204,6 +213,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         loadAndPaintCurrentBgData(forceRefresh: true)
         loadAndPaintChartData(forceRepaint: true)
+        loadAndPaintCareData()
     }
     
     @objc func doToogleZoomScrollAction() {
@@ -435,6 +445,32 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             moveToLatestValue: moveToLatestValue,
             displayDaysLegend: false,
             infoLabel: determineInfoLabel())
+    }
+    
+    fileprivate func loadAndPaintCareData() {
+        
+        self.sensorAgeLabel.convertToAge(prefix: "S ", time: NightscoutCacheService.singleton.getSensorChangeTime(), hoursUntilWarning: 24 * 9, hoursUntilCritical: 24 * 13)
+        self.cannulaAgeLabel.convertToAge(prefix: "C ", time:  NightscoutCacheService.singleton.getCannulaChangeTime(),
+                                          hoursUntilWarning: 24 * 2 - 2, hoursUntilCritical: 24 * 3 - 2)
+        self.batteryAgeLabel.convertToAge(prefix: "B ", time:  NightscoutCacheService.singleton.getPumpBatteryChangeTime(),
+                                          hoursUntilWarning: 24 * 28, hoursUntilCritical: 24 * 30)
+        let deviceStatusData = NightscoutCacheService.singleton.getDeviceStatusData()
+        
+        self.activeProfileLabel.setText(deviceStatusData.activePumpProfile)
+        if deviceStatusData.temporaryBasalRate != "" &&
+            deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes() > 0 {
+            
+            self.temporaryBasalLabel.setText("TB \(deviceStatusData.temporaryBasalRate)% \(deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes())m")
+        } else {
+            self.temporaryBasalLabel.setText("TB --")
+        }
+        
+        let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
+        if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
+            self.temporaryTargetLabel.setText("TT \(temporaryTargetData.targetTop) \(temporaryTargetData.activeUntilDate.remainingMinutes())m")
+        } else {
+            self.temporaryTargetLabel.setText("TT --")
+        }
     }
     
     func determineInfoLabel() -> String {
