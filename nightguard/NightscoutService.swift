@@ -451,15 +451,14 @@ class NightscoutService {
                 
                 let nightscoutData = NightscoutData()
                 let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
-                
-                //Get Insulin On Board from Nightscout
-                var iob : NSString? = currentBgs.object(forKey: "iob") as? NSString
-                
                 if battery == nil {
                     nightscoutData.battery = ""
                 } else {
                     nightscoutData.battery = String(battery!) + "%"
                 }
+                
+                //Get Insulin On Board from Nightscout
+                var iob : NSString? = currentBgs.object(forKey: "iob") as? NSString
                 
                 //Save Insulin-On-Board data
                 if iob == "0" {
@@ -468,6 +467,14 @@ class NightscoutService {
                 }
                 if iob != nil {
                     nightscoutData.iob = String(iob!) + "U"
+                }
+                
+                //Get Carbs On Board from Nightscout
+                let cob : Double? = currentBgs.object(forKey: "cob") as? Double
+                
+                //Save Carbs-On-Board data
+                if cob != nil {
+                    nightscoutData.cob = String(cob!) + "g"
                 }
                 
                 nightscoutData.sgv = String(sgv)

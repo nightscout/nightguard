@@ -20,6 +20,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var batteryLabel: UILabel!
+    @IBOutlet weak var cobLabel: UILabel!
     @IBOutlet weak var iobLabel: UILabel!
     @IBOutlet weak var spriteKitView: UIView!
     @IBOutlet weak var errorPanelView: UIView!
@@ -474,6 +475,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             
             self.batteryLabel.text = currentNightscoutData.battery
             self.iobLabel.text = currentNightscoutData.iob
+            self.cobLabel.text = currentNightscoutData.cob
             
             self.showHideRawBGPanel(currentNightscoutData)
             self.rawValuesPanel.label.text = currentNightscoutData.noise
