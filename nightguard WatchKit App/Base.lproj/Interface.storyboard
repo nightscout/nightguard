@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch38"/>
+    <device id="watch44"/>
     <dependencies>
         <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -12,11 +12,11 @@
             <objects>
                 <controller fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="nightguard">
                     <items>
-                        <group width="1" height="58" alignment="left" id="1AH-d7-hZo">
+                        <group width="1" height="58" alignment="left" spacing="2" id="1AH-d7-hZo">
                             <items>
-                                <group width="60" alignment="left" verticalAlignment="bottom" layout="vertical" spacing="2" id="wwf-5f-pVK">
+                                <group alignment="left" verticalAlignment="bottom" layout="vertical" spacing="2" id="wwf-5f-pVK">
                                     <items>
-                                        <label width="1" height="34" alignment="left" text="---" textAlignment="left" baselineAdjustment="alignCenters" minimumScaleFactor="0.40000000000000002" id="vdn-99-EwA">
+                                        <label height="34" alignment="left" text="---" textAlignment="left" baselineAdjustment="alignCenters" minimumScaleFactor="0.40000000000000002" id="vdn-99-EwA">
                                             <fontDescription key="font" type="system" pointSize="46"/>
                                             <variation key="device=watch38mm">
                                                 <fontDescription key="font" type="system" pointSize="38"/>
@@ -43,41 +43,40 @@
                                             <edgeInsets key="margins" left="1" right="2" top="1" bottom="1"/>
                                         </group>
                                     </items>
-                                    <variation key="device=watch40mm" width="79"/>
-                                    <variation key="device=watch42mm" width="80"/>
-                                    <variation key="device=watch44mm" width="90"/>
                                 </group>
-                                <group width="72" alignment="right" verticalAlignment="bottom" layout="overlap" id="rvs-oN-6yu">
+                                <group alignment="left" layout="vertical" spacing="0.0" id="BXE-K7-ohJ">
                                     <items>
-                                        <group width="90" alignment="left" layout="vertical" spacing="1" id="2qL-lw-zuD">
+                                        <group width="1" height="17" alignment="left" id="3da-gB-Sdv"/>
+                                        <label alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
+                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                        </label>
+                                        <label alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="nnO-nW-RbM">
+                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                        </label>
+                                        <label alignment="left" text="59min" textAlignment="right" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
+                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                        </label>
+                                    </items>
+                                </group>
+                                <group alignment="right" verticalAlignment="bottom" layout="overlap" id="rvs-oN-6yu">
+                                    <items>
+                                        <group alignment="left" layout="vertical" id="2qL-lw-zuD">
                                             <items>
-                                                <group width="1" height="17" alignment="left" id="yrF-or-Bnh"/>
-                                                <group width="1" height="16" alignment="left" id="7mo-kr-osX">
+                                                <group alignment="left" id="XtE-Jq-XPU">
                                                     <items>
-                                                        <label alignment="right" text="59min" textAlignment="right" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
+                                                        <label alignment="left" text="0g" id="p7p-6Q-nld">
                                                             <fontDescription key="font" type="system" pointSize="12"/>
                                                         </label>
-                                                        <label alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
-                                                            <fontDescription key="font" type="system" pointSize="14"/>
-                                                        </label>
-                                                        <label alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.20000000000000001" id="nnO-nW-RbM">
-                                                            <fontDescription key="font" type="system" weight="medium" pointSize="16"/>
-                                                        </label>
-                                                    </items>
-                                                </group>
-                                                <group width="1" height="14" alignment="left" id="HZw-Hn-d6o">
-                                                    <items>
-                                                        <label alignment="left" text="0.05U" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
-                                                            <fontDescription key="font" type="system" pointSize="12"/>
-                                                        </label>
-                                                        <label alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
+                                                        <label alignment="right" text="0.05U" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
                                                             <fontDescription key="font" type="system" pointSize="12"/>
                                                         </label>
                                                     </items>
                                                 </group>
+                                                <label alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
+                                                    <fontDescription key="font" type="system" pointSize="12"/>
+                                                </label>
                                             </items>
                                             <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
-                                            <variation key="device=watch42mm" spacing="4"/>
                                         </group>
                                         <group alignment="left" verticalAlignment="bottom" id="Ro7-EH-y39">
                                             <items>
@@ -167,11 +166,12 @@
                         <outlet property="batteryLabel" destination="lz8-YE-T1d" id="a4A-hb-KFZ"/>
                         <outlet property="bgLabel" destination="vdn-99-EwA" id="Tg2-Yj-bDo"/>
                         <outlet property="cannulaAgeLabel" destination="B1x-EO-OUG" id="pa2-rp-70E"/>
+                        <outlet property="cobLabel" destination="p7p-6Q-nld" id="IJL-Gf-z7b"/>
                         <outlet property="deltaArrowLabel" destination="nnO-nW-RbM" id="aR3-me-buM"/>
                         <outlet property="deltaLabel" destination="frk-q8-3y9" id="KvH-er-bpE"/>
                         <outlet property="errorGroup" destination="dXq-O8-Nm3" id="oox-bn-71F"/>
                         <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="JRC-e5-KcA"/>
-                        <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="fNu-BR-2Ss"/>
+                        <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="XkH-qO-L4v"/>
                         <outlet property="nightSafeIndicator" destination="zdV-tY-qn0" id="dms-9T-ZjS"/>
                         <outlet property="noiseLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
                         <outlet property="rawValuesGroup" destination="1pi-M7-12E" id="DSq-be-TK7"/>

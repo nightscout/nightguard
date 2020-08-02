@@ -20,6 +20,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var timeLabel: WKInterfaceLabel!
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var spriteKitView: WKInterfaceSKScene!
+    @IBOutlet var cobLabel: WKInterfaceLabel!
     @IBOutlet var iobLabel: WKInterfaceLabel!
     @IBOutlet var errorLabel: WKInterfaceLabel!
     @IBOutlet var errorGroup: WKInterfaceGroup!
@@ -337,6 +338,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
             self.errorGroup.setHidden(true)
             self.iobLabel.setText(nil)
+            self.cobLabel.setText(nil)
             self.deltaArrowLabel.setText(nil)
             
             self.activityIndicatorImage.setHidden(false)
@@ -371,6 +373,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(currentNightscoutData.time))
         
         self.batteryLabel.setText(currentNightscoutData.battery)
+        self.cobLabel.setText(currentNightscoutData.cob)
         self.iobLabel.setText(currentNightscoutData.iob)
         
         // show raw values panel ONLY if configured so and we have a valid rawbg value!

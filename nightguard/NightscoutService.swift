@@ -474,7 +474,7 @@ class NightscoutService {
                 
                 //Save Carbs-On-Board data
                 if cob != nil {
-                    nightscoutData.cob = String(cob!) + "g"
+                    nightscoutData.cob = cob!.string(fractionDigits: 0) + "g"
                 }
                 
                 nightscoutData.sgv = String(sgv)
