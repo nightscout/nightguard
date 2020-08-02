@@ -90,10 +90,11 @@ class NightscoutCacheService: NSObject {
         return NightscoutDataRepository.singleton.loadBatteryChangeTime()
     }
     
-    func getDeviceStatusData() -> DeviceStatusData {
-        NightscoutService.singleton.readDeviceStatus(resultHandler: { (deviceStatusData: DeviceStatusData) in
-                NightscoutDataRepository.singleton.storeDeviceStatusData(deviceStatusData: deviceStatusData)
-            })
+    func getDeviceStatusData(_ resultHandler : @escaping (DeviceStatusData) -> Void) -> DeviceStatusData {
+            NightscoutService.singleton.readDeviceStatus(resultHandler: { (deviceStatusData: DeviceStatusData) in
+                    NightscoutDataRepository.singleton.storeDeviceStatusData(deviceStatusData: deviceStatusData)
+                resultHandler(deviceStatusData)
+        })
         
         return NightscoutDataRepository.singleton.loadDeviceStatusData()
     }

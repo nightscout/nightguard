@@ -457,8 +457,14 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
                                           hoursUntilWarning: 24 * 2 - 2, hoursUntilCritical: 24 * 3 - 2)
         self.batteryAgeLabel.convertToAge(prefix: "B ", time:  NightscoutCacheService.singleton.getPumpBatteryChangeTime(),
                                           hoursUntilWarning: 24 * 28, hoursUntilCritical: 24 * 30)
-        let deviceStatusData = NightscoutCacheService.singleton.getDeviceStatusData()
+        let deviceStatusData = NightscoutCacheService.singleton.getDeviceStatusData({ [unowned self] result in
+            self.paintDeviceStatusData(deviceStatusData: result)
+        })
         
+        self.paintDeviceStatusData(deviceStatusData: deviceStatusData)
+    }
+    
+    func paintDeviceStatusData(deviceStatusData: DeviceStatusData) {
         self.activeProfileLabel.setText(deviceStatusData.activePumpProfile)
         if deviceStatusData.temporaryBasalRate != "" &&
             deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes() > 0 {
@@ -475,7 +481,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             self.temporaryTargetLabel.setText("TT --")
         }
     }
-    
+
     func determineInfoLabel() -> String {
         
         if !AlarmRule.isSnoozed() {

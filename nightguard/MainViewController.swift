@@ -520,8 +520,15 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
                                           hoursUntilWarning: 24 * 2 - 2, hoursUntilCritical: 24 * 3 - 2)
         self.batteryAgeLabel.convertToAge(prefix: "BAT ", time:  NightscoutCacheService.singleton.getPumpBatteryChangeTime(),
                                           hoursUntilWarning: 24 * 28, hoursUntilCritical: 24 * 30)
-        let deviceStatusData = NightscoutCacheService.singleton.getDeviceStatusData()
+        let deviceStatusData = NightscoutCacheService.singleton.getDeviceStatusData { [unowned self] result in
+            self.paintDeviceStatusData(deviceStatusData: result)
+        }
         
+        self.paintDeviceStatusData(deviceStatusData: deviceStatusData)
+    }
+    
+    fileprivate func paintDeviceStatusData(deviceStatusData : DeviceStatusData) -> Void {
+    
         self.activeProfileLabel.text = deviceStatusData.activePumpProfile;
         if deviceStatusData.temporaryBasalRate != "" &&
             deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes() > 0 {
@@ -538,7 +545,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             self.temporaryTargetLabel.text = "TT --"
         }
     }
-    
+
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar]) {
         
         let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
