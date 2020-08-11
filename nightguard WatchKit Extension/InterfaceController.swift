@@ -438,7 +438,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
         
-        let bounds = WKInterfaceDevice.current().screenBounds
+        let device = WKInterfaceDevice.current()
+        let bounds = device.screenBounds
         
         let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
         self.chartScene.paintChart(

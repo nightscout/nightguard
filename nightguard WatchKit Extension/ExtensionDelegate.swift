@@ -387,6 +387,11 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         
         // extract data on main thead
         DispatchQueue.main.async { [unowned self] in
+            
+            if nightscoutData == nil {
+                return
+            }
+            
             NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] result in
                 
                 switch result {

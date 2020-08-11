@@ -75,6 +75,12 @@ class ChartPainter {
         UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
         let context = UIGraphicsGetCurrentContext()
         
+        // this can happen if fastly switching from statistics pane to main pane
+        // I think this has to do with the screen rotating
+        if context == nil {
+            return (nil, 0)
+        }
+        
         // Setup complete, do drawing here
         paintNicePartArea(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
