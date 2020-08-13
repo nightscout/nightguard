@@ -49,12 +49,21 @@
                                         <group width="1" height="17" alignment="left" id="3da-gB-Sdv"/>
                                         <label alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
                                             <fontDescription key="font" type="system" pointSize="12"/>
+                                            <variation key="device=watch38mm">
+                                                <fontDescription key="font" type="system" pointSize="10"/>
+                                            </variation>
                                         </label>
                                         <label alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="nnO-nW-RbM">
                                             <fontDescription key="font" type="system" pointSize="12"/>
+                                            <variation key="device=watch38mm">
+                                                <fontDescription key="font" type="system" pointSize="10"/>
+                                            </variation>
                                         </label>
-                                        <label alignment="left" text="59min" textAlignment="right" minimumScaleFactor="0.20000000000000001" id="w1H-tu-XyX">
+                                        <label alignment="left" text="59min" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="w1H-tu-XyX">
                                             <fontDescription key="font" type="system" pointSize="12"/>
+                                            <variation key="device=watch38mm">
+                                                <fontDescription key="font" type="system" pointSize="10"/>
+                                            </variation>
                                         </label>
                                     </items>
                                 </group>

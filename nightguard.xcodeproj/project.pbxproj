@@ -120,6 +120,7 @@
 		43BB4B0724CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB4B0424CF5DBA00DE96BB /* TemporaryTargetData.swift */; };
 		43BB4B0824CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB4B0424CF5DBA00DE96BB /* TemporaryTargetData.swift */; };
 		43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */; };
+		43CC9DF724E328950008F397 /* Care.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43CC9DF624E328950008F397 /* Care.storyboard */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 		43D28A0620321AAF003859DE /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		43D561172468201E00B52B1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
@@ -405,6 +406,7 @@
 		43C5DEA224522F3F00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Interface.strings; sourceTree = "<group>"; };
 		43C5DEA324522F4000BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeInterfaceController.swift; sourceTree = "<group>"; };
+		43CC9DF624E328950008F397 /* Care.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Care.storyboard; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
 		43EE375A24478D78008C9134 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
@@ -826,6 +828,7 @@
 				28B03A2B23F9C408000939E6 /* Nightscout.storyboard */,
 				28B03A3023F9C412000939E6 /* Bedside.storyboard */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
+				43CC9DF624E328950008F397 /* Care.storyboard */,
 				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
 				D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */,
 				28B03A3523F9CD8E000939E6 /* Localizable.strings */,
@@ -1116,6 +1119,7 @@
 				43647BD31BFF6435004389F9 /* Main.storyboard in Resources */,
 				28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */,
 				43F1E1091D07698000C329A2 /* scoutwatch.entitlements in Resources */,
+				43CC9DF724E328950008F397 /* Care.storyboard in Resources */,
 				D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */,
 				28B03A2923F9C408000939E6 /* Nightscout.storyboard in Resources */,
 				28B03A2423F9C3FA000939E6 /* Preferences.storyboard in Resources */,
@@ -1800,7 +1804,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 567;
+				CURRENT_PROJECT_VERSION = 569;
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1831,7 +1835,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 567;
+				CURRENT_PROJECT_VERSION = 569;
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1863,7 +1867,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 567;
+				CURRENT_PROJECT_VERSION = 569;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
@@ -1896,7 +1900,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 567;
+				CURRENT_PROJECT_VERSION = 569;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
@@ -1926,7 +1930,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 567;
+				CURRENT_PROJECT_VERSION = 569;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;
@@ -1954,7 +1958,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 567;
+				CURRENT_PROJECT_VERSION = 569;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;

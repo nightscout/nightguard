@@ -583,11 +583,22 @@
                         <segue destination="7pd-UE-mwp" kind="relationship" relationship="viewControllers" id="POg-Tu-jgl"/>
                         <segue destination="plA-ZV-pwP" kind="relationship" relationship="viewControllers" id="gDM-Lc-2am"/>
                         <segue destination="xQ4-Ke-Hd2" kind="relationship" relationship="viewControllers" id="O9h-fb-9MV"/>
+                        <segue destination="49Y-59-KDd" kind="relationship" relationship="viewControllers" id="QeG-Nq-cjP"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rRQ-9l-s24" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1096" y="-297"/>
+        </scene>
+        <!--Care-->
+        <scene sceneID="f1F-aI-4B3">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Care" id="49Y-59-KDd" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="d1a-XB-JSW"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YAR-1N-vud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1639" y="225"/>
         </scene>
         <!--Stats-->
         <scene sceneID="438-qH-Fr5">
