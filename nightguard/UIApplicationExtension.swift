@@ -41,4 +41,13 @@ extension UIApplication {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
+    /*
+     * function will return reference to tabbarcontroller
+     */
+    func showMain() {
+        guard let vc = self.keyWindow?.rootViewController else { return }
+        if  let tabBarController = vc as? TabBarController {
+            tabBarController.selectedIndex = 0
+        }
+    }
 }

@@ -581,9 +581,9 @@
                     <connections>
                         <segue destination="GUP-Hx-gmC" kind="relationship" relationship="viewControllers" id="ynG-z7-zf4"/>
                         <segue destination="7pd-UE-mwp" kind="relationship" relationship="viewControllers" id="POg-Tu-jgl"/>
+                        <segue destination="49Y-59-KDd" kind="relationship" relationship="viewControllers" id="QeG-Nq-cjP"/>
                         <segue destination="plA-ZV-pwP" kind="relationship" relationship="viewControllers" id="gDM-Lc-2am"/>
                         <segue destination="xQ4-Ke-Hd2" kind="relationship" relationship="viewControllers" id="O9h-fb-9MV"/>
-                        <segue destination="49Y-59-KDd" kind="relationship" relationship="viewControllers" id="QeG-Nq-cjP"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rRQ-9l-s24" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -594,7 +594,7 @@
         <scene sceneID="f1F-aI-4B3">
             <objects>
                 <viewControllerPlaceholder storyboardName="Care" id="49Y-59-KDd" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="d1a-XB-JSW"/>
+                    <tabBarItem key="tabBarItem" title="Care" image="Care" id="d1a-XB-JSW"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YAR-1N-vud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -651,6 +651,7 @@
     <resources>
         <image name="Action" width="32" height="32"/>
         <image name="Alarm" width="25" height="25"/>
+        <image name="Care" width="30" height="30"/>
         <image name="Main" width="25" height="25"/>
         <image name="Prefs" width="25" height="25"/>
         <image name="Stats" width="25" height="25"/>

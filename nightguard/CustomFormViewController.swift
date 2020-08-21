@@ -166,8 +166,19 @@ extension CustomFormViewController {
         PickerInlineRow<Int>.defaultCellUpdate = { cell, row in
             cell.customize(selectable: true)
         }
+
+        PickerInlineRow<String>.defaultCellUpdate = { cell, row in
+            cell.customize(selectable: true)
+        }
         
         PickerRow<Int>.defaultCellUpdate = { cell, row in
+            cell.customize(selectable: true)
+            cell.pickerTextAttributes = [
+                .foregroundColor : UIColor.App.Preferences.text
+            ]
+        }
+        
+        PickerRow<String>.defaultCellUpdate = { cell, row in
             cell.customize(selectable: true)
             cell.pickerTextAttributes = [
                 .foregroundColor : UIColor.App.Preferences.text

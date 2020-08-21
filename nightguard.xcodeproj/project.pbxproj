@@ -120,7 +120,8 @@
 		43BB4B0724CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB4B0424CF5DBA00DE96BB /* TemporaryTargetData.swift */; };
 		43BB4B0824CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB4B0424CF5DBA00DE96BB /* TemporaryTargetData.swift */; };
 		43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */; };
-		43CC9DF724E328950008F397 /* Care.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43CC9DF624E328950008F397 /* Care.storyboard */; };
+		43CC9DF924E818BF0008F397 /* CareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CC9DF824E818BF0008F397 /* CareViewController.swift */; };
+		43CC9DFB24E819C60008F397 /* Care.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43CC9DFD24E819C60008F397 /* Care.storyboard */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 		43D28A0620321AAF003859DE /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		43D561172468201E00B52B1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
@@ -406,7 +407,10 @@
 		43C5DEA224522F3F00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Interface.strings; sourceTree = "<group>"; };
 		43C5DEA324522F4000BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeInterfaceController.swift; sourceTree = "<group>"; };
-		43CC9DF624E328950008F397 /* Care.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Care.storyboard; sourceTree = "<group>"; };
+		43CC9DF824E818BF0008F397 /* CareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareViewController.swift; sourceTree = "<group>"; };
+		43CC9DFC24E819C60008F397 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Care.storyboard; sourceTree = "<group>"; };
+		43CC9DFF24E819D20008F397 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Care.strings"; sourceTree = "<group>"; };
+		43CC9E0124E819D30008F397 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Care.strings; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
 		43EE375A24478D78008C9134 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
@@ -565,12 +569,7 @@
 				43F1E0FA1D07698000C329A2 /* NightscoutData.swift */,
 				43F1E11A1D076D9700C329A2 /* TimeService.swift */,
 				439C39171C0E002F00D89872 /* ChartPainter.swift */,
-				432E62EA1D15EFC600DD7978 /* FloatExtension.swift */,
-				432E62EE1D17359600DD7978 /* StringExtension.swift */,
-				43288A6F1D20284600EE3999 /* DoubleExtension.swift */,
-				430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */,
 				439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */,
-				D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */,
 				D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */,
 				4303406824C9FF330088AB9A /* DeviceStatusData.swift */,
 				43BB4B0424CF5DBA00DE96BB /* TemporaryTargetData.swift */,
@@ -631,6 +630,7 @@
 		43647BCC1BFF6435004389F9 /* nightguard */ = {
 			isa = PBXGroup;
 			children = (
+				43CC9E0224E868180008F397 /* extensions */,
 				D144FFB120D7AEF60036E021 /* resources */,
 				432E62E21D1126CA00DD7978 /* app */,
 				43F1E1181D076D2800C329A2 /* domain */,
@@ -738,6 +738,26 @@
 			name = helper;
 			sourceTree = "<group>";
 		};
+		43CC9E0224E868180008F397 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				432E62EA1D15EFC600DD7978 /* FloatExtension.swift */,
+				432E62EE1D17359600DD7978 /* StringExtension.swift */,
+				43288A6F1D20284600EE3999 /* DoubleExtension.swift */,
+				430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */,
+				D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */,
+				D133078321C424A800DC6879 /* ArrayExtension.swift */,
+				D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */,
+				D1B777E52244C11B003FEDF0 /* Comparable+Extensions.swift */,
+				4334D97F24C32B6D00652D87 /* DateExtension.swift */,
+				437C8A9124C9E54A005CF5B3 /* UILabelExtension.swift */,
+				D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */,
+				D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */,
+				D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */,
+			);
+			name = extensions;
+			sourceTree = "<group>";
+		};
 		43F1E1181D076D2800C329A2 /* domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -784,23 +804,15 @@
 			isa = PBXGroup;
 			children = (
 				D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */,
-				D133078321C424A800DC6879 /* ArrayExtension.swift */,
 				D15055AF2200D31300F31C1F /* DeviceSize.swift */,
 				D1E6B896219C69D9007ED4FE /* Helpers.swift */,
-				D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */,
 				D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */,
-				D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */,
 				D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */,
 				D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */,
 				D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */,
-				D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */,
-				D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */,
 				D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */,
-				D1B777E52244C11B003FEDF0 /* Comparable+Extensions.swift */,
 				43EE375A24478D78008C9134 /* XCUIElement.swift */,
 				430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */,
-				4334D97F24C32B6D00652D87 /* DateExtension.swift */,
-				437C8A9124C9E54A005CF5B3 /* UILabelExtension.swift */,
 			);
 			name = helpers;
 			sourceTree = "<group>";
@@ -828,7 +840,7 @@
 				28B03A2B23F9C408000939E6 /* Nightscout.storyboard */,
 				28B03A3023F9C412000939E6 /* Bedside.storyboard */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
-				43CC9DF624E328950008F397 /* Care.storyboard */,
+				43CC9DFD24E819C60008F397 /* Care.storyboard */,
 				43F1E0F11D07698000C329A2 /* alarm.mp3 */,
 				D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */,
 				28B03A3523F9CD8E000939E6 /* Localizable.strings */,
@@ -921,6 +933,7 @@
 				D1C96AB221CD00F100B08C2C /* NightscoutViewController.swift */,
 				D1D55393225F8A3C006C143B /* BedsideViewController.swift */,
 				D16FC355226AE99F00AB4DE3 /* MenuActionController.swift */,
+				43CC9DF824E818BF0008F397 /* CareViewController.swift */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -1119,7 +1132,7 @@
 				43647BD31BFF6435004389F9 /* Main.storyboard in Resources */,
 				28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */,
 				43F1E1091D07698000C329A2 /* scoutwatch.entitlements in Resources */,
-				43CC9DF724E328950008F397 /* Care.storyboard in Resources */,
+				43CC9DFB24E819C60008F397 /* Care.storyboard in Resources */,
 				D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */,
 				28B03A2923F9C408000939E6 /* Nightscout.storyboard in Resources */,
 				28B03A2423F9C3FA000939E6 /* Preferences.storyboard in Resources */,
@@ -1379,6 +1392,7 @@
 				D15055B02200D31300F31C1F /* DeviceSize.swift in Sources */,
 				43EF91B222688892000E79B5 /* SlideToSnoozeView.swift in Sources */,
 				D133079421C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
+				43CC9DF924E818BF0008F397 /* CareViewController.swift in Sources */,
 				D1358AE42234F80A00D0FA87 /* SMDiagramView.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
 				D1D96CC021FB0F2E0035A60E /* UserDefaultsSyncMessage.swift in Sources */,
@@ -1685,6 +1699,16 @@
 				43C5DEA224522F3F00BB41D9 /* de */,
 			);
 			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		43CC9DFD24E819C60008F397 /* Care.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43CC9DFC24E819C60008F397 /* Base */,
+				43CC9DFF24E819D20008F397 /* fi-FI */,
+				43CC9E0124E819D30008F397 /* de */,
+			);
+			name = Care.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

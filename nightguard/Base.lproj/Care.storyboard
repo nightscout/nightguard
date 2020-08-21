@@ -12,7 +12,7 @@
         <scene sceneID="gdt-GU-uQk">
             <objects>
                 <navigationController id="RyL-c7-1b7" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="m2E-lM-taL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="m2E-lM-taL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -27,7 +27,7 @@
         <!--Care-->
         <scene sceneID="sZN-Do-y9M">
             <objects>
-                <viewController id="VPd-9a-3W2" sceneMemberID="viewController">
+                <viewController id="VPd-9a-3W2" customClass="CareViewController" customModule="nightguard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tcl-7b-EVg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -35,7 +35,7 @@
                         <viewLayoutGuide key="safeArea" id="VjA-lM-efq"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Care" image="Care" id="1MK-Nl-hRR"/>
-                    <navigationItem key="navigationItem" id="xcV-xC-wUM"/>
+                    <navigationItem key="navigationItem" title="Care" id="xcV-xC-wUM"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Exb-z8-xsM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
