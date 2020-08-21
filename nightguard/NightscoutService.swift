@@ -783,6 +783,57 @@ class NightscoutService {
         task.resume()
     }
     
+    /* Deleting works by setting a temporary target with duration 0 */
+    func deleteTemporaryTarget(resultHandler : @escaping (_ errorMessage : String?) -> Void) {
+
+        let baseUri = UserDefaultsRepository.baseUri.value
+        if baseUri == "" {
+            resultHandler("The base URI is empty!")
+            return
+        }
+        
+        // Get the current data from REST-Call
+        let createTemporaryTargetParameter = [
+            "now" : String(describing: Date.timeIntervalSince(Date()))]
+        
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/treatments", queryParams: createTemporaryTargetParameter)
+        guard url != nil else {
+            resultHandler("The url was nil. This should never happen!")
+            return
+        }
+
+        var request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        let json =
+        """
+            {"eventType": "Temporary Target",
+            "duration": 0,
+            "reason": "Canceled",
+            "enteredBy": "nightguard"}
+        """
+        request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+            
+            guard error == nil else {
+                print(error!)
+                dispatchOnMain {
+                    resultHandler(error?.localizedDescription)
+                }
+                return
+            }
+            
+            dispatchOnMain { [] in
+                resultHandler(nil)
+            }
+        })
+        
+        task.resume()
+    }
+    
     private func calculateEndDate(createdAt : String?, durationInMinutes : Int?) -> Date {
 
         if let createdAt = createdAt, let durationInMinutes = durationInMinutes {

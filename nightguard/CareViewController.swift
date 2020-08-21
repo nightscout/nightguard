@@ -77,13 +77,37 @@ class CareViewController: CustomFormViewController {
                 <<< ButtonRow() { row in
                     row.title = NSLocalizedString("Set Target", comment: "Button to activate the Temporary Target")
                 }.onCellSelection { _, _ in
+                    
                     let alertController = UIAlertController(title: "Set Target", message: "Do you want to set a temporary target to \(self.target) for \(self.duration) minutes?", preferredStyle: .alert)
+                    let actionAccept = UIAlertAction(title: NSLocalizedString("Accept", comment: "Popup Accept-Button"), style: .default, handler: { (alert: UIAlertAction!) in
+                        
+                        NightscoutService.singleton.createTemporaryTarget(
+                            reason: self.reason,
+                            target: self.target,
+                            durationInMinutes: self.duration,
+                            resultHandler: {(error: String?) in
+                            
+                            if (error == nil) {
+                                UIApplication.shared.showMain()
+                            }
+                        })
+                    })
+                    let actionDecline = UIAlertAction(title: NSLocalizedString("Decline", comment: "Popup Decline-Button"), style: .default, handler: { (alert: UIAlertAction!) in
+                    })
+                    alertController.addAction(actionAccept)
+                    alertController.addAction(actionDecline)
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            
+                +++ Section(header: NSLocalizedString("Delete an active Temporary Target", comment: "Section to delete a temporary Target"), footer: nil)
+                <<< ButtonRow() { row in
+                        row.title = NSLocalizedString("Delete Temporary Target", comment: "Button to delete a current Temporary Target")
+                    }.onCellSelection { _, _ in
+                        
+                        let alertController = UIAlertController(title: "Cancel Target", message: "Do you want to cancel an active temporary target?", preferredStyle: .alert)
                         let actionAccept = UIAlertAction(title: NSLocalizedString("Accept", comment: "Popup Accept-Button"), style: .default, handler: { (alert: UIAlertAction!) in
                             
-                            NightscoutService.singleton.createTemporaryTarget(
-                                reason: self.reason,
-                                target: self.target,
-                                durationInMinutes: self.duration,
+                            NightscoutService.singleton.deleteTemporaryTarget(
                                 resultHandler: {(error: String?) in
                                 
                                 if (error == nil) {
@@ -96,13 +120,6 @@ class CareViewController: CustomFormViewController {
                         alertController.addAction(actionAccept)
                         alertController.addAction(actionDecline)
                         self.present(alertController, animated: true, completion: nil)
-                }
-            
-                +++ Section(header: NSLocalizedString("Delete an active Temporary Target", comment: "Section to delete a temporary Target"), footer: nil)
-                <<< ButtonRow() { row in
-                        row.title = NSLocalizedString("Delete Temporary Target", comment: "Button to delete a current Temporary Target")
-                    }.onChange { row in
-                        guard let value = row.value else { return }
                 }
     }
 }
