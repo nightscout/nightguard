@@ -157,4 +157,13 @@ class UserDefaultsRepository {
         print(urlComponents.url!)
         return urlComponents.url!
     }
+    
+    static let temporaryTargetReason = UserDefaultsValue<String>(key: "temporaryTargetReason", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargeReasont") as? String) ?? "Too Low")
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let temporaryTargetDuration = UserDefaultsValue<Int>(key: "temporaryTargetDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetDuration") as? Int) ?? 60)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let temporaryTarget = UserDefaultsValue<Int>(key: "temporaryTarget", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTarget") as? Int) ?? 70)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
 }

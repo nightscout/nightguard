@@ -16,7 +16,7 @@ enum NightscoutRequestResult<T> {
 
 /* All data that is read from nightscout is accessed using this boundary. */
 class NightscoutService {
-
+    
     static let singleton = NightscoutService()
     
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
@@ -39,11 +39,11 @@ class NightscoutService {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
         }
-
+        
         let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
-           
+            
             dispatchOnMain { [unowned self] in
                 guard error == nil else {
                     resultHandler(.error(error!))
@@ -58,14 +58,14 @@ class NightscoutService {
                 let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
                 var sgvValues = [Int]()
                 for (key, value) in jsonArray {
-                   if key == "sqv" {
+                    if key == "sqv" {
                         sgvValues.insert(value as! Int, at: 0)
                     }
                     resultHandler(.data(sgvValues))
                 }
             }
         })
-                
+        
         task.resume()
         return task
     }
@@ -77,9 +77,9 @@ class NightscoutService {
             }
         }
     }
-
+    
     /* Reads the nightscout status from the backend. This is used to determine the configured
-       Unit, whether it's mg/dL or mmol/l */
+     Unit, whether it's mg/dL or mmol/l */
     @discardableResult
     func readStatus(_ resultHandler : @escaping (NightscoutRequestResult<Units>) -> Void) -> URLSessionTask? {
         
@@ -110,7 +110,7 @@ class NightscoutService {
                     }
                     let settingsDict = jsonDict.object(forKey: "settings") as! NSDictionary
                     if (settingsDict.count > 0) {
-
+                        
                         let unitsAsString = settingsDict.value(forKey: "units") as! String
                         if unitsAsString.lowercased() == "mg/dl" {
                             resultHandler(.data(Units.mgdl))
@@ -136,11 +136,11 @@ class NightscoutService {
             }
         }
     }
-
+    
     /* Reads all data between two timestamps and limits the maximum return values to 400. */
     @discardableResult
     fileprivate func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
-
+        
         let baseUri = UserDefaultsRepository.baseUri.value
         if baseUri == "" {
             resultHandler(.error(createEmptyOrInvalidUriError()))
@@ -155,14 +155,14 @@ class NightscoutService {
             "find[date][$gt]"   : "\(unixTimestamp1)",
             "find[date][$lte]"  : "\(unixTimestamp2)",
             "count"             : "400",
-            ]
+        ]
         
         let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
         guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
         }
-
+        
         let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let session = URLSession.shared
@@ -180,10 +180,10 @@ class NightscoutService {
                 print("The received data was nil...")
                 dispatchOnMain { [unowned self] in
                     resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Nightscout entries API", comment: "No data from NS entries API"))))
-                    }
+                }
                 return
             }
-        
+            
             let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
             guard !stringSgvData.contains("<html") else {
                 print("Invalid data with html received")  // TODO: pop an error alert
@@ -192,22 +192,22 @@ class NightscoutService {
                 }
                 return
             }
-
+            
             let sgvRows = stringSgvData.components(separatedBy: "\n")
             var timestampColumn : Int = 1
             var bloodSugarColumn : Int = 2
-        
+            
             var bloodSugarArray = [BloodSugar]()
             for sgvRow in sgvRows {
                 let sgvRowArray = sgvRow.components(separatedBy: "\t")
-            
+                
                 if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
                     // Nightscout return for some versions
                     if self.isDateColumn(sgvRowArray[1]) {
                         timestampColumn = 2
                         bloodSugarColumn = 3
                     }
-                
+                    
                     if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
                         if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
                             let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
@@ -289,7 +289,7 @@ class NightscoutService {
     }
     
     /* Reads all values from the current day. Beginning is 00:00 or
-       the lastReceivedTime if this time is later than the current day at 00:00. */
+     the lastReceivedTime if this time is later than the current day at 00:00. */
     @discardableResult
     func readTodaysChartData(oldValues : [BloodSugar], _ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
         
@@ -360,7 +360,7 @@ class NightscoutService {
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     @discardableResult
     func readCurrentDataForPebbleWatch(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) -> URLSessionTask? {
-
+        
         let baseUri = UserDefaultsRepository.baseUri.value
         if (baseUri == "") {
             resultHandler(.error(createEmptyOrInvalidUriError()))
@@ -372,7 +372,7 @@ class NightscoutService {
         if UserDefaultsRepository.units.value == Units.mmol {
             enforceMmolQueryParams = [
                 "units" : "mmol"
-                ]
+            ]
         }
         
         // Get the current data from REST-Call
@@ -395,7 +395,7 @@ class NightscoutService {
                 }
                 return
             }
-
+            
             guard data != nil else {
                 print("Pebble Watch Data was nil.")
                 dispatchOnMain { [unowned self] in
@@ -403,7 +403,7 @@ class NightscoutService {
                 }
                 return
             }
-
+            
             self.extractData(data : data!, resultHandler)
         })
         
@@ -482,13 +482,13 @@ class NightscoutService {
                 nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
                 
                 guard let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
-                else {
-                    nightscoutData.bgdeltaString = "?"
-                    nightscoutData.bgdelta = 0
-                    dispatchOnMain {
-                        resultHandler(.data(nightscoutData))
-                    }
-                    return
+                    else {
+                        nightscoutData.bgdeltaString = "?"
+                        nightscoutData.bgdelta = 0
+                        dispatchOnMain {
+                            resultHandler(.data(nightscoutData))
+                        }
+                        return
                 }
                 nightscoutData.bgdeltaString = self.direction(bgdelta) + String(format: "%.1f", bgdelta)
                 nightscoutData.bgdelta = bgdelta
@@ -588,7 +588,7 @@ class NightscoutService {
     /* Reads the treatment record for the last cannula change, sensor change and battery age */
     @discardableResult
     func readLastTreatementEventTimestamp(eventType : EventType, daysToGoBackInTime : Int, resultHandler : @escaping (Date) -> Void) -> URLSessionTask? {
-
+        
         
         let baseUri = UserDefaultsRepository.baseUri.value
         if baseUri == "" {
@@ -603,14 +603,14 @@ class NightscoutService {
             "find[created_at][$gte]" :  Calendar.current.date(
                 byAdding: .day, value: -daysToGoBackInTime, to: Date())!.convertToIsoDate(),
             "count" : "1"
-            ]
+        ]
         
         let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/treatments", queryParams: lastTreatmentByEventtype)
         guard url != nil else {
             resultHandler(Date())
             return nil
         }
-
+        
         let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let session = URLSession.shared
@@ -628,17 +628,17 @@ class NightscoutService {
                 print("The received data was nil...")
                 dispatchOnMain { [] in
                     resultHandler(Date())
-                    }
+                }
                 return
             }
-        
+            
             let treatmentsArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
-
+            
             guard let siteChangeObject = treatmentsArray as? [[String:Any]]
-            else {
-                dispatchOnMain { [] in
-                    resultHandler(Date())}
-                return
+                else {
+                    dispatchOnMain { [] in
+                        resultHandler(Date())}
+                    return
             }
             
             if siteChangeObject.count == 0 {
@@ -656,7 +656,7 @@ class NightscoutService {
     }
     
     func readLastTemporaryTarget(daysToGoBackInTime : Int, resultHandler : @escaping (TemporaryTargetData?) -> Void) {
-
+        
         let baseUri = UserDefaultsRepository.baseUri.value
         if baseUri == "" {
             resultHandler(nil)
@@ -669,14 +669,14 @@ class NightscoutService {
             "find[created_at][$gte]" :  Calendar.current.date(
                 byAdding: .day, value: -1, to: Date())!.convertToIsoDate(),
             "count" : "1"
-            ]
+        ]
         
         let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/treatments", queryParams: lastTreatmentByEventtype)
         guard url != nil else {
             resultHandler(nil)
             return
         }
-
+        
         let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
         let session = URLSession.shared
@@ -692,28 +692,28 @@ class NightscoutService {
             
             guard data != nil else {
                 print("The received data was nil...")
-                dispatchOnMain { [] in
+                dispatchOnMain {
                     resultHandler(nil)
-                    }
+                }
                 return
             }
-        
+            
             let treatmentsArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
-
+            
             guard let temporaryTargetObject = treatmentsArray as? [[String:Any]]
-            else {
-                dispatchOnMain { [] in
-                    resultHandler(nil)}
-                return
+                else {
+                    dispatchOnMain {
+                        resultHandler(nil)}
+                    return
             }
             
             if temporaryTargetObject.count == 0 {
-                dispatchOnMain { [] in
+                dispatchOnMain {
                     resultHandler(nil)}
                 return
             }
             
-            dispatchOnMain { [] in
+            dispatchOnMain {
                 
                 let temporaryTargetData = TemporaryTargetData()
                 temporaryTargetData.targetTop = temporaryTargetObject[0]["targetTop"] as? Int ?? 100
@@ -731,7 +731,7 @@ class NightscoutService {
     }
     
     func createTemporaryTarget(reason: String, target: Int, durationInMinutes: Int, resultHandler : @escaping (_ errorMessage : String?) -> Void) {
-
+        
         let baseUri = UserDefaultsRepository.baseUri.value
         if baseUri == "" {
             resultHandler("The base URI is empty!")
@@ -747,20 +747,20 @@ class NightscoutService {
             resultHandler("The url was nil. This should never happen!")
             return
         }
-
+        
         var request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         let json =
         """
-            {"eventType": "Temporary Target",
-            "duration": \(durationInMinutes),
-            "reason": "\(reason)\",
-            "targetBottom": \(target),
-            "targetTop": \(target),
-            "units": "mg/dl",
-            "enteredBy": "nightguard"}
+        {"eventType": "Temporary Target",
+        "duration": \(durationInMinutes),
+        "reason": "\(reason)\",
+        "targetBottom": \(target),
+        "targetTop": \(target),
+        "units": "mg/dl",
+        "enteredBy": "nightguard"}
         """
         request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
         
@@ -775,7 +775,17 @@ class NightscoutService {
                 return
             }
             
-            dispatchOnMain { [] in
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    dispatchOnMain {
+                        resultHandler(
+                            NSLocalizedString("You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?", comment: "Error hint in case of a http 401 Exception"))
+                    }
+                    return
+                }
+            }
+            
+            dispatchOnMain {
                 resultHandler(nil)
             }
         })
@@ -785,7 +795,7 @@ class NightscoutService {
     
     /* Deleting works by setting a temporary target with duration 0 */
     func deleteTemporaryTarget(resultHandler : @escaping (_ errorMessage : String?) -> Void) {
-
+        
         let baseUri = UserDefaultsRepository.baseUri.value
         if baseUri == "" {
             resultHandler("The base URI is empty!")
@@ -801,7 +811,7 @@ class NightscoutService {
             resultHandler("The url was nil. This should never happen!")
             return
         }
-
+        
         var request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -826,6 +836,16 @@ class NightscoutService {
                 return
             }
             
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    dispatchOnMain {
+                        resultHandler(
+                            NSLocalizedString("You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?", comment: "Error hint in case of a http 401 Exception"))
+                    }
+                    return
+                }
+            }
+            
             dispatchOnMain { [] in
                 resultHandler(nil)
             }
@@ -835,7 +855,7 @@ class NightscoutService {
     }
     
     private func calculateEndDate(createdAt : String?, durationInMinutes : Int?) -> Date {
-
+        
         if let createdAt = createdAt, let durationInMinutes = durationInMinutes {
             let creationDate = Date.fromIsoString(isoTime: createdAt)
             return Calendar.current.date(byAdding: .minute, value: durationInMinutes, to: creationDate) ?? Date()
@@ -845,69 +865,69 @@ class NightscoutService {
     }
     
     /* Reads the devicestatus to get pump basal rate and profile */
-   @discardableResult
-   func readDeviceStatus(resultHandler : @escaping (DeviceStatusData) -> Void) -> URLSessionTask? {
-
-       
-       let baseUri = UserDefaultsRepository.baseUri.value
-       if baseUri == "" {
-           resultHandler(DeviceStatusData())
-           return nil
-       }
-       
-       // We assume that the last 5 entries should contain the entry with the extended pump entries
-       let lastTwoDeviceStatusQuery = [
-           "count" : "5"
-           ]
-       
-       let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/devicestatus.json", queryParams: lastTwoDeviceStatusQuery)
-       guard url != nil else {
-        resultHandler(DeviceStatusData())
-           return nil
-       }
-
-       let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-       
-       let session = URLSession.shared
-       let task = session.dataTask(with: request, completionHandler: { data, response, error in
-           
-           guard error == nil else {
-               print(error!)
-               dispatchOnMain {
-                resultHandler(DeviceStatusData())
-               }
-               return
-           }
-           
-           guard data != nil else {
-               print("The received data was nil...")
-               dispatchOnMain { [] in
-                resultHandler(DeviceStatusData())
-                   }
-               return
-           }
-       
-           let deviceStatusRawArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
-
-           guard let deviceStatusArray = deviceStatusRawArray as? [[String:Any]]
-           else {
-               dispatchOnMain { [] in
-                resultHandler(DeviceStatusData())}
-               return
-           }
-           
+    @discardableResult
+    func readDeviceStatus(resultHandler : @escaping (DeviceStatusData) -> Void) -> URLSessionTask? {
+        
+        
+        let baseUri = UserDefaultsRepository.baseUri.value
+        if baseUri == "" {
+            resultHandler(DeviceStatusData())
+            return nil
+        }
+        
+        // We assume that the last 5 entries should contain the entry with the extended pump entries
+        let lastTwoDeviceStatusQuery = [
+            "count" : "5"
+        ]
+        
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/devicestatus.json", queryParams: lastTwoDeviceStatusQuery)
+        guard url != nil else {
+            resultHandler(DeviceStatusData())
+            return nil
+        }
+        
+        let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+            
+            guard error == nil else {
+                print(error!)
+                dispatchOnMain {
+                    resultHandler(DeviceStatusData())
+                }
+                return
+            }
+            
+            guard data != nil else {
+                print("The received data was nil...")
+                dispatchOnMain {
+                    resultHandler(DeviceStatusData())
+                }
+                return
+            }
+            
+            let deviceStatusRawArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
+            
+            guard let deviceStatusArray = deviceStatusRawArray as? [[String:Any]]
+                else {
+                    dispatchOnMain { [] in
+                        resultHandler(DeviceStatusData())}
+                    return
+            }
+            
             for deviceStatus in deviceStatusArray {
                 // only the pump device status are interesting here
                 if deviceStatus.contains(where: {$0.key == "pump"}) {
                     guard let pumpEntries = deviceStatus["pump"] as? [String:Any]
-                    else {
+                        else {
                             dispatchOnMain { [] in
                                 resultHandler(DeviceStatusData())}
                             return
                     }
                     if pumpEntries.contains(where: {$0.key == "extended"}) {
                         guard let extendedEntries = pumpEntries["extended"] as? [String:Any]
-                        else {
+                            else {
                                 dispatchOnMain { [] in
                                     resultHandler(DeviceStatusData())}
                                 return
@@ -920,12 +940,12 @@ class NightscoutService {
                                     //TODO: Implement and use the AAPS timestamp here
                                     pumpProfileActiveUntil: nil,
                                     temporaryBasalRate:
-                                        self.calculateTempBasalPercentage(
-                                            baseBasalRate: extendedEntries["BaseBasalRate"],
-                                            tempBasalAbsoluteRate: extendedEntries["TempBasalAbsoluteRate"]),
+                                    self.calculateTempBasalPercentage(
+                                        baseBasalRate: extendedEntries["BaseBasalRate"],
+                                        tempBasalAbsoluteRate: extendedEntries["TempBasalAbsoluteRate"]),
                                     temporaryBasalRateActiveUntil:
-                                        self.calculateTempBasalEndTime(
-                                            tempBasalRemainingMinutes: extendedEntries["TempBasalRemaining"]))
+                                    self.calculateTempBasalEndTime(
+                                        tempBasalRemainingMinutes: extendedEntries["TempBasalRemaining"]))
                                 
                                 resultHandler(deviceStatusData)}
                             return
@@ -933,16 +953,16 @@ class NightscoutService {
                     }
                 }
             }
-        
+            
             // if no pump entry exists - return nothing
             dispatchOnMain { [] in
                 resultHandler(DeviceStatusData())}
             return
-       })
-       
-       task.resume()
-       return task
-   }
+        })
+        
+        task.resume()
+        return task
+    }
     
     private func calculateTempBasalPercentage(baseBasalRate: Any?, tempBasalAbsoluteRate: Any?) -> String {
         
@@ -958,16 +978,16 @@ class NightscoutService {
         
         return Double(tempBasalAbsoluteRateAsDouble / baseBasalRateAsDouble * 100).rounded().string(fractionDigits: 0)
     }
-
+    
     private func calculateTempBasalEndTime(tempBasalRemainingMinutes: Any?) -> Date {
-
+        
         if let tempBasalRemainingMinutesAsInt = tempBasalRemainingMinutes as? Int {
             
             return Calendar.current.date(byAdding: .minute, value: tempBasalRemainingMinutesAsInt, to: Date()) ?? Date()
         }
         return Date()
     }
-
+    
     private func createEmptyOrInvalidUriError() -> Error {
         return NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo:  [NSLocalizedDescriptionKey: NSLocalizedString("The base URI is empty or invalid!", comment: "Empty or invalid Uri error")])
     }

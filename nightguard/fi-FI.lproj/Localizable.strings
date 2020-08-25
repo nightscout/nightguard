@@ -384,3 +384,66 @@
 
 /* Popup Accept-Button */
 "Accept" = "Hyväksy";
+
+/* Popup Error Message Title */
+"Error" = "Error";
+
+/* Popup Decline-Button */
+"Decline" = "Decline";
+
+/* Set Target Message Title */
+"Set Target '%@'?" = "Set Target '%@'?";
+
+/* Set Target Message Text */
+"Do you want to set a temporary target for %d minutes?" = "Do you want to set a temporary target for %d minutes?";
+
+/* Cancel Target Popup Title */
+"Cancel Target" = "Cancel Target";
+
+/* Cancel Target Popup Text */
+"Do you want to cancel an active temporary target?" = "Do you want to cancel an active temporary target?";
+
+/* Label for Temporary Target Duration */
+"Duration" = "Duration";
+
+/* Minutes TT Unit */
+"minutes" = "minutes";
+
+/* Hour TT Unit */
+"hour" = "hour";
+
+/* Hours TT Unit */
+"hours" = "hours";
+
+/* Label for Temporary Target Value */
+"Target Value" = "Target Value";
+
+/* Button to activate the Temporary Target */
+"Set Target" = "Set Target";
+
+/* Label for Temporary Target Section */
+"Set a new Temporary Target" = "Set a new Temporary Target";
+
+/* Label for the Temporary Target Reason */
+"Reason" = "Reason";
+
+/* TT Reason Picker Activity */
+"Activity" = "Activity";
+
+/* TT Reason Picker Too High */
+"Too High" = "Too High";
+
+/* TT Reason Picker Too Low */
+"Too Low" = "Too Low";
+
+/* TT Reason Picker Meal Soon */
+"Meal Soon" = "Meal Soon";
+
+/* Section to delete a temporary Target */
+"Delete an active Temporary Target" = "Delete an active Temporary Target";
+
+/* Button to delete a current Temporary Target */
+"Delete Temporary Target" = "Delete Temporary Target";
+
+/* Error hint in case of a http 401 Exception */
+"You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?" = "You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?";

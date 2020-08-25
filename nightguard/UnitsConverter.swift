@@ -45,6 +45,18 @@ class UnitsConverter {
         return value * 0.0555
     }
     
+    static func toDisplayUnits(_ value : Int) -> String {
+        
+        let units = UserDefaultsRepository.units.value
+        if units == Units.mgdl {
+            return String(describing: value)
+        }
+        
+        // convert mg/dL to mmol/l
+        let floatValue : Float = Float(value) * 0.0555
+        return String(floatValue.cleanValue)
+    }
+    
     static func toDisplayUnits(_ value : CGFloat) -> CGFloat {
         
         return CGFloat(toDisplayUnits(Float(value)))
