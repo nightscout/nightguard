@@ -85,3 +85,6 @@
 
 /* Class = "UIButton"; normalTitle = "6h"; ObjectID = "w2F-L4-3hs"; */
 "w2F-L4-3hs.normalTitle" = "6h";
+
+/* Class = "UILabel"; text = "Care"; ObjectID = "d1a-XB-JSW"; */
+"d1a-XB-JSW" = "Kümmern";"

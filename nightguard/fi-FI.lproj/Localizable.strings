@@ -83,7 +83,7 @@
 "Dim Screen When Idle" = "Himmennä näyttö idlessä";
 
 /* Footer for URL */
-"Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'" = "Kirjoita Nightscout palvelimen osoite tähän, esim. 'https://nightscout?token=minunToken'";
+"Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'. For the 'Care' actions to work you generally need to provide the security token here!" = "Kirjoita Nightscout palvelimen osoite tähän, esim. 'https://nightscout?token=minunToken'";
 
 /* Label for Fast rise/drop */
 "Fast Rise/Drop" = "Nopea nousu/lasku";

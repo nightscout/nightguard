@@ -8,7 +8,7 @@
 
 import XCTest
 
-class nightguardUITests: XCTestCase {
+class NightguardUITests: XCTestCase {
     var app: XCUIApplication!
 
     override func setUp() {
@@ -44,10 +44,10 @@ class nightguardUITests: XCTestCase {
     func testTabsBars() {
         
         let tabBarsQuery = app.tabBars
-        XCTAssertEqual(tabBarsQuery.buttons.count, 4)
+        XCTAssertEqual(tabBarsQuery.buttons.count, 5)
 
         // Refresh the Test-URL to refresh the correct Units (mg/dl) for the backend
-        tabBarsQuery.firstMatch.buttons.element(boundBy: 3).tap()
+        tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
         let tablecells = app.tables.cells
         let urlTextField = tablecells.containing(.staticText, identifier:"URL").children(matching: .textField).element
         // tap to refresh
@@ -64,19 +64,22 @@ class nightguardUITests: XCTestCase {
         snapshot("04-alarms")
         
         tabBarsQuery.firstMatch.buttons.element(boundBy: 2).tap()
+        snapshot("05-care")
+        
+        tabBarsQuery.firstMatch.buttons.element(boundBy: 3).tap()
         if UIDevice.current.userInterfaceIdiom == .phone {
             // only on a phone is a rotation needed if using the statistics panel
             XCUIDevice.shared.orientation = .landscapeLeft
         }
         sleep(6)
-        snapshot("05-stats")
+        snapshot("06-stats")
         
-        tabBarsQuery.firstMatch.buttons.element(boundBy: 3).tap()
+        tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
         if UIDevice.current.userInterfaceIdiom == .phone {
             XCUIDevice.shared.orientation = .portrait
         }
         sleep(1)
-        snapshot("06-preferences")
+        snapshot("07-preferences")
     }
     
     fileprivate func testMainScreen(_ tabBarsQuery: XCUIElementQuery) {

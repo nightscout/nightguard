@@ -96,7 +96,7 @@ class PrefsViewController: CustomFormViewController {
         }
         
         
-        form +++ Section(header: "NIGHTSCOUT", footer: NSLocalizedString("Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'", comment: "Footer for URL"))
+        form +++ Section(header: "NIGHTSCOUT", footer: NSLocalizedString("Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'. For the 'Care' actions to work you generally need to provide the security token here!", comment: "Footer for URL"))
             <<< nightscoutURLRow
             
             +++ Section(footer: NSLocalizedString("Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON.", comment: "Footer for Dim Screen"))
