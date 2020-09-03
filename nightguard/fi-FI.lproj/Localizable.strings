@@ -83,7 +83,7 @@
 "Dim Screen When Idle" = "Himmennä näyttö idlessä";
 
 /* Footer for URL */
-"Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'. For the 'Care' actions to work you generally need to provide the security token here!" = "Kirjoita Nightscout palvelimen osoite tähän, esim. 'https://nightscout?token=minunToken'";
+"Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'. For the 'Care' actions to work you generally need to provide the security token here!" = "Kirjoita Nightscout palvelimen osoite tähän, esim. 'https://nightscout?token=minunToken'. Sinun on yleensä annettava suojaustunnus (token), jotta hoitotoimet toimisivat";
 
 /* Label for Fast rise/drop */
 "Fast Rise/Drop" = "Nopea nousu/lasku";
@@ -386,64 +386,64 @@
 "Accept" = "Hyväksy";
 
 /* Popup Error Message Title */
-"Error" = "Error";
+"Error" = "Virhe";
 
 /* Popup Decline-Button */
-"Decline" = "Decline";
+"Decline" = "Peruuta";
 
 /* Set Target Message Title */
-"Set Target '%@'?" = "Set Target '%@'?";
+"Set Target '%@'?" = "Aseta tavoite '%@'?";
 
 /* Set Target Message Text */
-"Do you want to set a temporary target for %d minutes?" = "Do you want to set a temporary target for %d minutes?";
+"Do you want to set a temporary target for %d minutes?" = "Haluatko asettaa väliaikaisen tavoitteen %d minuutiksi?";
 
 /* Cancel Target Popup Title */
-"Cancel Target" = "Cancel Target";
+"Cancel Target" = "Peruuta tavoite";
 
 /* Cancel Target Popup Text */
-"Do you want to cancel an active temporary target?" = "Do you want to cancel an active temporary target?";
+"Do you want to cancel an active temporary target?" = "Haluatko keskeyttää aktiivisen väliaikaisen tavoitteen?";
 
 /* Label for Temporary Target Duration */
-"Duration" = "Duration";
+"Duration" = "Kesto";
 
 /* Minutes TT Unit */
-"minutes" = "minutes";
+"minutes" = "minuuttia";
 
 /* Hour TT Unit */
-"hour" = "hour";
+"hour" = "tunti";
 
 /* Hours TT Unit */
-"hours" = "hours";
+"hours" = "tuntia";
 
 /* Label for Temporary Target Value */
-"Target Value" = "Target Value";
+"Target Value" = "Tavoite lukema";
 
 /* Button to activate the Temporary Target */
-"Set Target" = "Set Target";
+"Set Target" = "Aseta tavoite";
 
 /* Label for Temporary Target Section */
-"Set a new Temporary Target" = "Set a new Temporary Target";
+"Set a new Temporary Target" = "Aseta uusi väliaikaistavoite";
 
 /* Label for the Temporary Target Reason */
-"Reason" = "Reason";
+"Reason" = "Syy";
 
 /* TT Reason Picker Activity */
-"Activity" = "Activity";
+"Activity" = "Aktiivisuus";
 
 /* TT Reason Picker Too High */
-"Too High" = "Too High";
+"Too High" = "Liian korkea";
 
 /* TT Reason Picker Too Low */
-"Too Low" = "Too Low";
+"Too Low" = "Liian matala";
 
 /* TT Reason Picker Meal Soon */
-"Meal Soon" = "Meal Soon";
+"Meal Soon" = "Ateria pian";
 
 /* Section to delete a temporary Target */
-"Delete an active Temporary Target" = "Delete an active Temporary Target";
+"Delete an active Temporary Target" = "Poista aktiivinen väliaikaistavoite";
 
 /* Button to delete a current Temporary Target */
-"Delete Temporary Target" = "Delete Temporary Target";
+"Delete Temporary Target" = "Poista väliaikaistavoite";
 
 /* Error hint in case of a http 401 Exception */
-"You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?" = "You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?";
+"You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?" = "Sinulla ei ole kirjoitusoikeuksia nightscout sivullesi.\nAnnoitko suojaustunnuksen nightscoutin palvelimen osoitteessa?";
