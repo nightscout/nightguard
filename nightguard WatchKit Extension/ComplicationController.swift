@@ -103,8 +103,16 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             template = modTemplate
         case .graphicCorner:
             if #available(watchOSApplicationExtension 5.0, *) {
-                 let modTemplate = CLKComplicationTemplateGraphicCornerStackText()
-                modTemplate.outerTextProvider = CLKSimpleTextProvider(text: self.getOneShortLine(currentNightscoutData))
+                let modTemplate = CLKComplicationTemplateGraphicCornerStackText()
+                if #available(watchOSApplicationExtension 6.0, *) {
+                    let bgValueTextProvider = CLKTextProvider(
+                        format: self.getOneShortLine(currentNightscoutData))
+                    bgValueTextProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+                    modTemplate.outerTextProvider = bgValueTextProvider
+                } else {
+                    // Fallback on earlier versions
+                    modTemplate.outerTextProvider = CLKSimpleTextProvider(text: self.getOneShortLine(currentNightscoutData))
+                }
                 modTemplate.innerTextProvider = CLKSimpleTextProvider(text: self.getLastReadingTime(currentNightscoutData))
                 template = modTemplate
             } else {

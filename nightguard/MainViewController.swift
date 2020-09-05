@@ -372,7 +372,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         ]
         var title = NSMutableAttributedString(string: NSLocalizedString("snooze", comment: "Text of snooze button"), attributes: titleAttributes)
         var subtitle = AlarmRule.getAlarmActivationReason(ignoreSnooze: true)
-        var subtitleColor: UIColor = (subtitle != nil) ? .red : .white
+        var subtitleColor: UIColor = (subtitle != nil) ? UIColor.nightguardRed() : .white
         var showSubtitle = true
         
         if subtitle == nil {
@@ -382,8 +382,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
                 // no alarm, but maybe we'll show a low prediction warning...
                 if let minutesToLow = PredictionService.singleton.minutesTo(low: AlarmRule.alertIfBelowValue.value), minutesToLow > 0 {
                     subtitle = String(format: NSLocalizedString("Low Predicted in %dmin", comment: "Show low prediction warning"), minutesToLow)
-                    subtitleColor = .yellow
-                }
+                    subtitleColor = .nightguardYellow()                }
             }
         }
 
@@ -440,7 +439,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             switch result {
             case .error(let error):
                 self.errorLabel.text = "❌ \(error.localizedDescription)"
-                self.errorLabel.textColor = .red
+                self.errorLabel.textColor = UIColor.nightguardRed()
                 self.errorPanelView.isHidden = false
             case .data(let newNightscoutData):
                 self.errorPanelView.isHidden = true
