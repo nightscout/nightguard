@@ -38,11 +38,11 @@ extension WKInterfaceLabel {
         }
         
         if hours > hoursUntilCritical {
-            return UIColor.red
+            return UIColor.nightguardRed()
         }
         
         if hours > hoursUntilWarning {
-            return UIColor.yellow
+            return UIColor.nightguardYellow()
         }
         
         return UIColor.white

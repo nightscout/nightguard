@@ -49,12 +49,12 @@ class PrefsViewController: CustomFormViewController {
     override func constructForm() {
         
         nightscoutURLRow = URLRow() { row in
-            row.title = NSLocalizedString("URL", comment: "Title for URL")
-            row.placeholder = "http://night.fritz.box"
-            row.placeholderColor = UIColor.gray
-            row.value = URL(string: UserDefaultsRepository.baseUri.value)
-            row.add(rule: nightscoutURLRule)
-            row.validationOptions = .validatesOnDemand
+                row.title = NSLocalizedString("URL", comment: "Title for URL")
+                row.placeholder = "http://night.fritz.box"
+                row.placeholderColor = UIColor.gray
+                row.value = URL(string: UserDefaultsRepository.baseUri.value)
+                row.add(rule: nightscoutURLRule)
+                row.validationOptions = .validatesOnDemand
             }.onChange { [weak self] row in
                 guard let urlString = row.value?.absoluteString, !urlString.isEmpty else { return }
                 if let updatedUrlString = self?.addProtocolPartIfMissing(urlString), let updatedUrl = URL(string: updatedUrlString) {
@@ -81,7 +81,7 @@ class PrefsViewController: CustomFormViewController {
                             let title = "❌ \(validationMsg)"
                             $0.title = title
                             $0.cellUpdate { cell, _ in
-                                cell.textLabel?.textColor = UIColor.red
+                                cell.textLabel?.textColor = UIColor.nightguardRed()
                             }
                             $0.cellSetup { cell, row in
                                 cell.textLabel?.numberOfLines = 0
@@ -98,6 +98,36 @@ class PrefsViewController: CustomFormViewController {
         
         form +++ Section(header: "NIGHTSCOUT", footer: NSLocalizedString("Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'. For the 'Care' actions to work you generally need to provide the security token here!", comment: "Footer for URL"))
             <<< nightscoutURLRow
+            
+            +++ Section(header: nil, footer: NSLocalizedString("If enabled, you will override your Units-Setting of your nightscout backend. Usually you can disable this. Nightguard will determine the correct Units on its own.", comment: "Footer for ManuallySetUnitsSwitch"))
+            <<< SwitchRow("ManuallySetUnitsSwitch") { row in
+                    row.title = NSLocalizedString("Manually set Units", comment: "Label for Manually set Units")
+                    row.value = UserDefaultsRepository.manuallySetUnits.value
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    UserDefaultsRepository.manuallySetUnits.value = value
+                    // trigger onChange to activate the manually defined unit:
+                    let manuallyDefinedUnitRow : PickerInlineRow<Units> =
+                        self.form.rowBy(tag: "Units") as! PickerInlineRow<Units>
+                    manuallyDefinedUnitRow.value = UserDefaultsRepository.units.value
+                    // reload all data in the same way as if a new nightscout URI has been entered:
+                    self.nightscoutURLChanged(URL(string: UserDefaultsRepository.baseUri.value)!)
+            }
+            
+            <<< PickerInlineRow<Units>("Units") { row in
+                row.hidden = "$ManuallySetUnitsSwitch == false"
+                row.title = NSLocalizedString("Use the following Units", comment: "Label for 'Use the following Units'")
+                row.options = [Units.mgdl, Units.mmol]
+                row.value = UserDefaultsRepository.units.value
+                row.displayValueFor = { value in
+                    guard let value = value else { return nil }
+                    return value.description
+                }
+            }.onChange { row in
+                UserDefaultsRepository.units.value = row.value!
+                // reload all data in the same way as if a new nightscout URI has been entered:
+                self.nightscoutURLChanged(URL(string: UserDefaultsRepository.baseUri.value)!)
+            }
             
             +++ Section(footer: NSLocalizedString("Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON.", comment: "Footer for Dim Screen"))
             <<< SwitchRow("KeepScreenActive") { row in
@@ -121,6 +151,7 @@ class PrefsViewController: CustomFormViewController {
                         })
                     }
             }
+            
             <<< PushRow<Int>() { row in
                 row.title = NSLocalizedString("Dim Screen When Idle", comment: "Label for Dim screen when idle")
                 row.hidden = "$KeepScreenActive == false"
@@ -220,6 +251,14 @@ class PrefsViewController: CustomFormViewController {
     }
     
     private func retrieveAndStoreNightscoutUnits(completion: @escaping (Error?) -> Void) {
+        
+        if UserDefaultsRepository.manuallySetUnits.value {
+            // if the user decided to manually set the display units, we don't have to determine
+            // them here. So just back off:
+            completion(nil)
+            return
+        }
+        
         NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
             
             switch result {

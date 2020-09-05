@@ -30,7 +30,7 @@ class ChartScene : SKScene {
         self.size = size
         self.backgroundColor = UIColor.black
         
-        infoLabelNode.fontColor = UIColor.red
+        infoLabelNode.fontColor = UIColor.nightguardRed()
         infoLabelNode.fontSize = CGFloat(15)
         infoLabelNode.fontName = "AvenirNext-Bold"
 

@@ -14,11 +14,24 @@ extension UIColor {
     static func redYellowGreen(for value: CGFloat, bestValue: CGFloat, worstValue: CGFloat) -> UIColor {
         if bestValue < worstValue {
             let power = max(min((worstValue - CGFloat(value)) / (worstValue - bestValue), 1), 0)
-            return UIColor(red: 1 - power, green: power, blue: 0, alpha: 1)
+            return colorForPower(power: power)
         } else {
             let power = max(min((bestValue - CGFloat(value)) / (bestValue - worstValue), 1), 0)
             return UIColor(red: power, green: 1 - power, blue: 0, alpha: 1)
         }
+    }
+    
+    fileprivate static func colorForPower(power: CGFloat) -> UIColor {
+        if power > 0.75 {
+            return UIColor.nightguardGreen()
+        }
+        if power > 0.5 {
+            return UIColor.nightguardOrange()
+        }
+        if power > 0.25 {
+            return UIColor.nightguardYellow()
+        }
+        return UIColor.nightguardRed()
     }
 }
 

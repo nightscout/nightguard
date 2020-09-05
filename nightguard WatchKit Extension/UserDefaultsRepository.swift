@@ -62,6 +62,9 @@ class UserDefaultsRepository {
     
     static let alarmNotificationState = UserDefaultsValue<Bool>(key: "alarmNotificationState", default: false)
     
+    // If this is set to true, you can override the default units setting from your backend
+    static let manuallySetUnits = UserDefaultsValue<Bool>(key: "manuallySetUnits", default: false)
+    
     // Returns true if the units (mmol or mg/dL) have already been retrieved
     // from the nightscout backend
     static let units = UserDefaultsValue<Units>(key: "units", default: Units.mgdl)

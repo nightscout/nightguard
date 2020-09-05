@@ -112,7 +112,7 @@ class NightscoutService {
                     if (settingsDict.count > 0) {
                         
                         let unitsAsString = settingsDict.value(forKey: "units") as! String
-                        if unitsAsString.lowercased() == "mg/dl" {
+                        if unitsAsString.lowercased().contains("mg") {
                             resultHandler(.data(Units.mgdl))
                         } else {
                             resultHandler(.data(Units.mmol))

@@ -13,14 +13,10 @@ import WatchKit
 #endif
 
 class ChartPainter {
-    let GREEN :  UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
     let DARK : UIColor = UIColor.init(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
     let BLACK : UIColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
     let LIGHTGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.5)
     let DARKGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.1)
-    let YELLOW : UIColor = UIColor.init(red: 1, green: 1, blue: 0, alpha: 1)
-    let RED : UIColor = UIColor.init(red: 1, green: 0, blue: 0, alpha: 1)
-    let BLUE : UIColor = UIColor.init(red: 0, green: 0, blue: 1, alpha: 1)
     let PURPLE = UIColor.purple
     
     let halfHour : Double = 1800
@@ -125,11 +121,11 @@ class ChartPainter {
         
         switch nrOfDay {
             case 2: return LIGHTGRAY
-            case 3: return YELLOW
-            case 4: return RED
-            case 5: return BLUE
+            case 3: return UIColor.nightguardYellow()
+            case 4: return UIColor.nightguardRed()
+            case 5: return UIColor.nightguardOrange()
             
-            default: return GREEN
+            default: return UIColor.nightguardGreen()
         }
     }
     
@@ -158,7 +154,7 @@ class ChartPainter {
             let maxYValue = calcYValue(Float(maxBgValue))
             
             let distanceFromNow = Date().timeIntervalSince(endBGValue.date)
-            if (foregroundColor == GREEN.cgColor) && (distanceFromNow < 0) {
+            if (foregroundColor == UIColor.nightguardGreen().cgColor) && (distanceFromNow < 0) {
                 
 //                print(endBGValue.date)
                 
@@ -202,11 +198,11 @@ class ChartPainter {
         
         if Int(beginOfLineYValue) == intMaxYDisplayValue &&
             Int(endOfLineYValue) == intMaxYDisplayValue &&
-            color == GREEN.cgColor {
+            color == UIColor.nightguardGreen().cgColor {
             
             context.strokePath();
             context.beginPath();
-            context.setStrokeColor(RED.cgColor)
+            context.setStrokeColor(UIColor.nightguardRed().cgColor)
         } else {
             context.setStrokeColor(color)
         }

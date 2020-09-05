@@ -85,7 +85,7 @@ class AlertVolumeViewController: CustomFormViewController {
                 }.cellUpdate { cell, row in
                     if AlarmSound.isPlaying {
                         cell.textLabel?.text = NSLocalizedString("Stop Alert", comment: "Stop alert button")
-                        cell.textLabel?.textColor = UIColor.red
+                        cell.textLabel?.textColor = UIColor.nightguardRed()
                     } else {
                         cell.textLabel?.text = NSLocalizedString("Test Alert", comment: "Test alert button")
                         cell.textLabel?.textColor = UIColor(netHex: 0x007AFF)  // default tint color - blue

@@ -18,10 +18,6 @@ import WatchKit
  */
 class UIColorChanger {
     
-    static var GREEN : UIColor = UIColor.init(red: 0.48, green: 0.9, blue: 0, alpha: 1)
-    static var YELLOW : UIColor = UIColor.init(red: 1, green: 0.94, blue: 0, alpha: 1)
-    static var RED : UIColor = UIColor.init(red: 1, green: 0.22, blue: 0.11, alpha: 1)
-    
     // Changes the color to red if blood glucose is bad :-/
     static func getBgColor(_ bg : String) -> UIColor {
         
@@ -29,15 +25,15 @@ class UIColorChanger {
             return UIColor.white
         }
         if bgNumber > 200 {
-            return RED
+            return UIColor.nightguardRed()
         } else if bgNumber > 180 {
-            return YELLOW
+            return UIColor.nightguardYellow()
         } else if bgNumber > 70 {
             return UIColor.white
         } else if bgNumber > 55 {
-            return YELLOW
+            return UIColor.nightguardYellow()
         } else {
-            return RED
+            return UIColor.nightguardRed()
         }
     }
     
@@ -45,9 +41,9 @@ class UIColorChanger {
         
         let absoluteDelta = abs(bgdelta.int32Value)
         if (absoluteDelta >= 10) {
-            return RED
+            return UIColor.nightguardRed()
         } else if (absoluteDelta >= 5) {
-            return YELLOW
+            return UIColor.nightguardYellow()
         } else {
             return UIColor.white
         }
@@ -58,9 +54,9 @@ class UIColorChanger {
         let lastUpdateAsNSDate : Date = Date(timeIntervalSince1970: lastUpdate.doubleValue / 1000)
         let timeInterval : Int = Int(Date().timeIntervalSince(lastUpdateAsNSDate))
         if (timeInterval > 15*60) {
-            return RED
+            return UIColor.nightguardRed()
         } else if (timeInterval > 7*60) {
-            return YELLOW
+            return UIColor.nightguardYellow()
         } else {
             return UIColor.white
         }
