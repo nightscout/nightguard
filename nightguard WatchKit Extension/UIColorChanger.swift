@@ -29,7 +29,7 @@ class UIColorChanger {
         } else if bgNumber > 180 {
             return UIColor.nightguardYellow()
         } else if bgNumber > 70 {
-            return UIColor.white
+            return UIColor.nightguardGreen()
         } else if bgNumber > 55 {
             return UIColor.nightguardYellow()
         } else {
