@@ -92,7 +92,7 @@ class NightguardUITests: XCTestCase {
         app.buttons["actionsMenuButton"].firstMatch.tap()
         // open the nightscout webview
         app.cells.element(boundBy: 0).tap()
-        sleep(5)
+        sleep(15)
         snapshot("02-nightscout")
         
         // close the popup
