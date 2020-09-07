@@ -18,7 +18,9 @@ default_platform(:ios)
 platform :ios do
   desc "Generate new localized screenshots"
   lane :screenshots do
-    capture_screenshots(workspace: "nightguard.xcworkspace", scheme: "nightguard")
+    capture_screenshots(
+        workspace: "nightguard.xcworkspace",
+        scheme: "nightguard")
     frame_screenshots
   end
 
@@ -26,6 +28,8 @@ platform :ios do
   lane :release do
     increment_build_number
     build_app(scheme: "nightguard")
-    upload_to_app_store(force: true)
+    upload_to_app_store(
+        force: true,
+        overwrite_screenshots: true)
   end
 end

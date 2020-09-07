@@ -44,7 +44,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     var shouldRepaintCurrentBgDataOnActivation = false
     var shouldRepaintChartsOnActivation = false
     
-    fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024)
+    fileprivate var chartScene : ChartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024, useContrastfulColors: false)
     
     // timer to check continuously for new bgValues
     fileprivate var timer = Timer()
@@ -67,7 +67,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         // Initialize the ChartScene
         let bounds = WKInterfaceDevice.current().screenBounds
         let chartSceneHeight = determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
-        chartScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6)
+        chartScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6, useContrastfulColors: false)
         spriteKitView.presentScene(chartScene)
         
         activityIndicatorImage.setImageNamed("Activity")
@@ -448,6 +448,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
             moveToLatestValue: moveToLatestValue,
             displayDaysLegend: false,
+            useConstrastfulColors: false,
             infoLabel: determineInfoLabel())
     }
     

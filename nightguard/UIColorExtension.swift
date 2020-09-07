@@ -26,6 +26,48 @@ extension UIColor {
         return UIColor(red: 0.57, green: 0.79, blue: 0.23, alpha: 1.00)
     }
 
+    static func nightguardContrastfulD1() -> UIColor {
+        return hexStringToUIColor(hex: "#F5793A")
+    }
+    
+    static func nightguardContrastfulD2() -> UIColor {
+        return hexStringToUIColor(hex: "#A95AA1")
+    }
+    
+    static func nightguardContrastfulD3() -> UIColor {
+        return hexStringToUIColor(hex: "#85C0F9")
+    }
+    
+    static func nightguardContrastfulD4() -> UIColor {
+        return hexStringToUIColor(hex: "#C6D4E1")
+    }
+    
+    static func nightguardContrastfulD5() -> UIColor {
+        return hexStringToUIColor(hex: "#0F2080")
+    }
+    
+    static func hexStringToUIColor(hex:String) -> UIColor {
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+
+        if ((cString.count) != 6) {
+            return UIColor.gray
+        }
+
+        var rgbValue:UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+    
     convenience init(red: UInt32, green: UInt32, blue: UInt32) {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid green component")

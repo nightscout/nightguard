@@ -23,7 +23,7 @@ class ChartScene : SKScene {
     var maxYDisplayValue : CGFloat = 350
     var infoLabelNode = SKLabelNode()
     
-    init(size: CGSize, newCanvasWidth : CGFloat) {
+    init(size: CGSize, newCanvasWidth : CGFloat, useContrastfulColors : Bool) {
         
         super.init(size: size)
 
@@ -36,7 +36,7 @@ class ChartScene : SKScene {
 
         initialPlacingOfChart()
         
-        paintChart([[], []], newCanvasWidth: newCanvasWidth, maxYDisplayValue: 350, moveToLatestValue: false)
+        paintChart([[], []], newCanvasWidth: newCanvasWidth, maxYDisplayValue: 350, moveToLatestValue: false, useContrastfulColors: useContrastfulColors)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,7 +46,7 @@ class ChartScene : SKScene {
     // maxYDisplayValue is the maximum Value that will be displayed in the chart.
     // Blood values that are higher will be set to maxYDisplayValue instead.
     func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool,
-                    displayDaysLegend : Bool, infoLabel : String) {
+                    displayDaysLegend : Bool, useConstrastfulColors : Bool, infoLabel : String) {
 
         //        let maxYDisplayValue : CGFloat = 250
         //        defaults.setFloat(Float(maxYDisplayValue), forKey: "maximumBloodGlucoseDisplayed")
@@ -65,7 +65,8 @@ class ChartScene : SKScene {
             days, maxBgValue: maxYDisplayValue,
             upperBoundNiceValue: UserDefaultsRepository.upperBound.value,
             lowerBoundNiceValue: UserDefaultsRepository.lowerBound.value,
-            displayDaysLegend: displayDaysLegend
+            displayDaysLegend: displayDaysLegend,
+            useContrastfulColors: useConstrastfulColors
         )
         
         // do nothing if the chart couldn't be created
@@ -95,9 +96,9 @@ class ChartScene : SKScene {
         
     // maxYDisplayValue is the maximum Value that will be displayed in the chart.
     // Blood values that are higher will be set to maxYDisplayValue instead.
-    func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool) {
+    func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool, useContrastfulColors : Bool) {
 
-        paintChart(days, newCanvasWidth: newCanvasWidth, maxYDisplayValue: maxYDisplayValue, moveToLatestValue: moveToLatestValue, displayDaysLegend: true, infoLabel: "")
+        paintChart(days, newCanvasWidth: newCanvasWidth, maxYDisplayValue: maxYDisplayValue, moveToLatestValue: moveToLatestValue, displayDaysLegend: true, useConstrastfulColors: useContrastfulColors, infoLabel: "")
     }
     
     fileprivate func initialPlacingOfChart() {
@@ -172,7 +173,7 @@ class ChartScene : SKScene {
             return
         }
         
-        paintChart(oldBloodSugarDays, newCanvasWidth: canvasWidth, maxYDisplayValue: newMaxYDisplayValue, moveToLatestValue: false, displayDaysLegend: false, infoLabel: infoLabelText)
+        paintChart(oldBloodSugarDays, newCanvasWidth: canvasWidth, maxYDisplayValue: newMaxYDisplayValue, moveToLatestValue: false, displayDaysLegend: false, useConstrastfulColors: false, infoLabel: infoLabelText)
         
         if keepScale {
             

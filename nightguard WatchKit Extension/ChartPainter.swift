@@ -52,7 +52,7 @@ class ChartPainter {
      * The position of the current value is returned as the second tuple element.
      * It is used to show the current value in the viewport.
      */
-    func drawImage(_ days : [[BloodSugar]], maxBgValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float, displayDaysLegend : Bool) -> (UIImage?, Int) {
+    func drawImage(_ days : [[BloodSugar]], maxBgValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float, displayDaysLegend : Bool, useContrastfulColors : Bool) -> (UIImage?, Int) {
 
         // we need at least one day => otherwise paint nothing
         if days.count == 1 {
@@ -86,7 +86,7 @@ class ChartPainter {
         var positionOfCurrentValue = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
-            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay).cgColor, maxBgValue: maxBgValue)
+            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay, useContrastfulColors: useContrastfulColors).cgColor, maxBgValue: maxBgValue)
             
             if nrOfDay == 1 && bloodValues.count > 0 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
@@ -95,7 +95,7 @@ class ChartPainter {
         
         // Don't paint the Legend on the small apple watch - so there displayDaysLegend is set to false
         if (displayDaysLegend) {
-            paintLegend(days.count)
+            paintLegend(days.count, useContrastfulColors: useContrastfulColors)
         }
         
         paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
@@ -117,7 +117,18 @@ class ChartPainter {
     }
     
     // Returns a different Color for each different day
-    fileprivate func getColor(_ nrOfDay : Int) -> UIColor {
+    fileprivate func getColor(_ nrOfDay : Int, useContrastfulColors : Bool) -> UIColor {
+        
+        if (useContrastfulColors) {
+            switch nrOfDay {
+                case 2: return UIColor.nightguardContrastfulD2()
+                case 3: return UIColor.nightguardContrastfulD3()
+                case 4: return UIColor.nightguardContrastfulD4()
+                case 5: return UIColor.nightguardContrastfulD5()
+                
+                default: return UIColor.nightguardContrastfulD1()
+            }
+        }
         
         switch nrOfDay {
             case 2: return LIGHTGRAY
@@ -283,7 +294,7 @@ class ChartPainter {
         }
     }
     
-    fileprivate func paintLegend(_ nrOfNames : Int) {
+    fileprivate func paintLegend(_ nrOfNames : Int, useContrastfulColors : Bool) {
         
         let names = ["D1", "D2", "D3", "D4", "D5"]
         let namesToDisplay = Array(names.prefix(nrOfNames))
@@ -298,7 +309,7 @@ class ChartPainter {
         for name in namesToDisplay {
             
             i = i + 1
-            attrs.updateValue(getColor(i), forKey: NSAttributedString.Key.foregroundColor)
+            attrs.updateValue(getColor(i, useContrastfulColors: useContrastfulColors), forKey: NSAttributedString.Key.foregroundColor)
             let xPosition = canvasWidth - 22 * nrOfNames + i * 20 - 20
             name.draw(with: CGRect(x: xPosition, y: 20, width: 20, height: 14),
                                 options: .usesLineFragmentOrigin, attributes: attrs, context: nil)

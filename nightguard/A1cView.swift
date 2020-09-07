@@ -25,11 +25,11 @@ extension UIColor {
         if power > 0.75 {
             return UIColor.nightguardGreen()
         }
-        if power > 0.5 {
-            return UIColor.nightguardOrange()
-        }
-        if power > 0.25 {
+        if power > 0.4 {
             return UIColor.nightguardYellow()
+        }
+        if power > 0.3 {
+            return UIColor.nightguardOrange()
         }
         return UIColor.nightguardRed()
     }
