@@ -447,3 +447,12 @@
 
 /* Error hint in case of a http 401 Exception */
 "You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?" = "Sinulla ei ole kirjoitusoikeuksia nightscout sivullesi.\nAnnoitko suojaustunnuksen nightscoutin palvelimen osoitteessa?";
+
+/* Footer for ManuallySetUnitsSwitch */
+"If enabled, you will override your Units-Setting of your nightscout backend. Usually you can disable this. Nightguard will determine the correct Units on its own." = "If enabled, you will override your Units-Setting of your nightscout backend. Usually you can disable this. Nightguard will determine the correct Units on its own.";
+
+/* Label for Manually set Units */
+"Manually set Units" = "Manually set Units";
+
+/* Label for 'Use the following Units' */
+"Use the following Units" = "Use the following Units";
