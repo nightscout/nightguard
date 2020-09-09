@@ -30,6 +30,9 @@ Have a look at www.nightscout.info for more information about how to setup your 
 
 The dark gray region in the chart marks the values that are between 80 and 180.
 
+![Nightguard Watch App](https://github.com/nightscout/nightguard/blob/master/images/watch.jpg)
+![Nightguard Watch Complication](https://github.com/nightscout/nightguard/blob/master/images/watch-complication.jpg)
+
 This small video shows how to check the configuration and demonstrates the available Apple Watch Complication:
 http://youtu.be/CEcqNyyv_kA
 
