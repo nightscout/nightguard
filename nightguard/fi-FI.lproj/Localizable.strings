@@ -449,10 +449,10 @@
 "You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?" = "Sinulla ei ole kirjoitusoikeuksia nightscout sivullesi.\nAnnoitko suojaustunnuksen nightscoutin palvelimen osoitteessa?";
 
 /* Footer for ManuallySetUnitsSwitch */
-"If enabled, you will override your Units-Setting of your nightscout backend. Usually you can disable this. Nightguard will determine the correct Units on its own." = "If enabled, you will override your Units-Setting of your nightscout backend. Usually you can disable this. Nightguard will determine the correct Units on its own.";
+"If enabled, you will override your Units-Setting of your nightscout backend. Usually you can disable this. Nightguard will determine the correct Units on its own." = "Jos tämä on käytössä, ohitat Nightscout palvelun asetuksen yksiköille. Yleensä voit jättää tämän pois käytöstä, jolloin Nightguard hakee oikeat yksiköt palvelusta";
 
 /* Label for Manually set Units */
-"Manually set Units" = "Manually set Units";
+"Manually set Units" = "Aseta yksiköt manuaalisesti";
 
 /* Label for 'Use the following Units' */
-"Use the following Units" = "Use the following Units";
+"Use the following Units" = "Käytä seuraavia yksiköitä";
