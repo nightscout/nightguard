@@ -481,7 +481,7 @@ class NightscoutService {
                 nightscoutData.time = time
                 nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
                 
-                guard let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
+                guard let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")))
                     else {
                         nightscoutData.bgdeltaString = "?"
                         nightscoutData.bgdelta = 0
@@ -966,13 +966,13 @@ class NightscoutService {
     
     private func calculateTempBasalPercentage(baseBasalRate: Any?, tempBasalAbsoluteRate: Any?) -> String {
         
-        guard let baseBasalRateAsDouble = Double.fromAny(baseBasalRate!) else {
+        guard let baseBasalRateAsDouble = Double.fromAny(baseBasalRate as Any) else {
             return ""
         }
         if (tempBasalAbsoluteRate == nil) {
             return ""
         }
-        guard let tempBasalAbsoluteRateAsDouble = Double.fromAny(tempBasalAbsoluteRate!) else {
+        guard let tempBasalAbsoluteRateAsDouble = Double.fromAny(tempBasalAbsoluteRate as Any) else {
             return ""
         }
         
