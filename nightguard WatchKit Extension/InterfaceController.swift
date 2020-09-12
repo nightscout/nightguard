@@ -336,11 +336,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         if NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests {
             
-            // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
+            // show the activity indicator (hide the iob & cob & battery overlapping views); also hide the errors
             self.errorGroup.setHidden(true)
             self.iobLabel.setText(nil)
             self.cobLabel.setText(nil)
-            self.deltaArrowLabel.setText(nil)
+            self.batteryLabel.setText(nil)
             
             self.activityIndicatorImage.setHidden(false)
             self.activityIndicatorImage.startAnimatingWithImages(in: NSRange(1...15), duration: 1.0, repeatCount: 0)

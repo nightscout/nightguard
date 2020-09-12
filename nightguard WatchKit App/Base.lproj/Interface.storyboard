@@ -87,9 +87,9 @@
                                             </items>
                                             <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
                                         </group>
-                                        <group alignment="left" verticalAlignment="bottom" id="Ro7-EH-y39">
+                                        <group alignment="right" verticalAlignment="bottom" id="Ro7-EH-y39">
                                             <items>
-                                                <imageView width="26" height="26" alignment="left" id="8b4-VL-pZs">
+                                                <imageView width="26" height="26" alignment="right" id="8b4-VL-pZs">
                                                     <variation key="device=watch42mm" height="30" width="30"/>
                                                 </imageView>
                                             </items>
