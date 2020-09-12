@@ -23,7 +23,7 @@ class NightscoutService {
     let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
     enum EventType : String {
-        case sensorStart = "Sensor Start"
+        case sensorStart = "Sensor Change"
         case pumpBatteryChange = "Pump Battery Change"
         case cannulaChange = "Site Change"
         case temporaryTarget = "Temporary Target"
@@ -481,7 +481,16 @@ class NightscoutService {
                 nightscoutData.time = time
                 nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
                 
-                guard let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")!))
+                guard let bgDeltaObjectUnwrapped = currentBgs.object(forKey: "bgdelta")
+                    else {
+                        nightscoutData.bgdeltaString = "?"
+                        nightscoutData.bgdelta = 0
+                        dispatchOnMain {
+                            resultHandler(.data(nightscoutData))
+                        }
+                        return
+                }
+                guard let bgdelta = Float(String(describing: bgDeltaObjectUnwrapped))
                     else {
                         nightscoutData.bgdeltaString = "?"
                         nightscoutData.bgdelta = 0
@@ -648,7 +657,11 @@ class NightscoutService {
             }
             
             dispatchOnMain { [] in
-                resultHandler(Date.fromIsoString(isoTime: siteChangeObject[0]["created_at"] as! String))}
+                guard let siteChangeUnwrapped = siteChangeObject[0]["created_at"]
+                    else {
+                        return
+                }
+                resultHandler(Date.fromIsoString(isoTime: String(describing: siteChangeUnwrapped)))}
         })
         
         task.resume()
@@ -925,6 +938,10 @@ class NightscoutService {
                                 resultHandler(DeviceStatusData())}
                             return
                     }
+                    var reservoirUnits = 0
+                    if let reservoirUnitsProbe = pumpEntries["reservoir"] as? Int {
+                        reservoirUnits = reservoirUnitsProbe
+                    }
                     if pumpEntries.contains(where: {$0.key == "extended"}) {
                         guard let extendedEntries = pumpEntries["extended"] as? [String:Any]
                             else {
@@ -939,6 +956,7 @@ class NightscoutService {
                                     activePumpProfile: extendedEntries["ActiveProfile"] as! String,
                                     //TODO: Implement and use the AAPS timestamp here
                                     pumpProfileActiveUntil: nil,
+                                    reservoirUnits: reservoirUnits,
                                     temporaryBasalRate:
                                     self.calculateTempBasalPercentage(
                                         baseBasalRate: extendedEntries["BaseBasalRate"],
@@ -966,13 +984,13 @@ class NightscoutService {
     
     private func calculateTempBasalPercentage(baseBasalRate: Any?, tempBasalAbsoluteRate: Any?) -> String {
         
-        guard let baseBasalRateAsDouble = Double.fromAny(baseBasalRate!) else {
+        guard let baseBasalRateAsDouble = Double.fromAny(baseBasalRate as Any) else {
             return ""
         }
         if (tempBasalAbsoluteRate == nil) {
             return ""
         }
-        guard let tempBasalAbsoluteRateAsDouble = Double.fromAny(tempBasalAbsoluteRate!) else {
+        guard let tempBasalAbsoluteRateAsDouble = Double.fromAny(tempBasalAbsoluteRate as Any) else {
             return ""
         }
         

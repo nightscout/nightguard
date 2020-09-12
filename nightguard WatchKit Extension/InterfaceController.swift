@@ -18,6 +18,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var deltaLabel: WKInterfaceLabel!
     @IBOutlet var deltaArrowLabel: WKInterfaceLabel!
     @IBOutlet var timeLabel: WKInterfaceLabel!
+    @IBOutlet var reservoirLabel: WKInterfaceLabel!
     @IBOutlet var batteryLabel: WKInterfaceLabel!
     @IBOutlet var spriteKitView: WKInterfaceSKScene!
     @IBOutlet var cobLabel: WKInterfaceLabel!
@@ -467,6 +468,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     }
     
     func paintDeviceStatusData(deviceStatusData: DeviceStatusData) {
+        
+        self.reservoirLabel.setText("R \(String(describing: deviceStatusData.reservoirUnits))")
         self.activeProfileLabel.setText(deviceStatusData.activePumpProfile)
         if deviceStatusData.temporaryBasalRate != "" &&
             deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes() > 0 {
@@ -478,7 +481,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
         if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
-            self.temporaryTargetLabel.setText("TT \(temporaryTargetData.targetTop) \(temporaryTargetData.activeUntilDate.remainingMinutes())m")
+            self.temporaryTargetLabel.setText("TT \(UnitsConverter.toDisplayUnits(temporaryTargetData.targetTop)) \(temporaryTargetData.activeUntilDate.remainingMinutes())m")
         } else {
             self.temporaryTargetLabel.setText("TT --")
         }

@@ -68,7 +68,7 @@ class NightscoutCacheService: NSObject {
     
     func getCannulaChangeTime() -> Date {
         
-        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .cannulaChange, daysToGoBackInTime: 3, resultHandler: { (cannulaChangeTime: Date) in
+        NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .cannulaChange, daysToGoBackInTime: 5, resultHandler: { (cannulaChangeTime: Date) in
                 NightscoutDataRepository.singleton.storeCannulaChangeTime(cannulaChangeTime: cannulaChangeTime)
             })
         

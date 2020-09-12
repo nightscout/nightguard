@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.3" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zZT-1m-QPq">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.3" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch44"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -113,15 +113,18 @@
                             </gestureRecognizers>
                             <variation key="device=watch38mm" height="52"/>
                         </group>
-                        <group width="1" alignment="left" radius="0.0" id="AoU-6l-JOe">
+                        <group width="1" alignment="left" radius="0.0" spacing="10" id="AoU-6l-JOe">
                             <items>
-                                <label alignment="left" text="CAGE" minimumScaleFactor="0.5" id="B1x-EO-OUG">
+                                <label alignment="left" text="CAGE --" minimumScaleFactor="0.5" id="B1x-EO-OUG">
                                     <fontDescription key="font" type="system" pointSize="10"/>
                                 </label>
-                                <label alignment="center" text="SAGE" textAlignment="center" minimumScaleFactor="0.5" id="lDW-iC-Ham">
+                                <label alignment="center" text="SAGE --" textAlignment="center" minimumScaleFactor="0.5" id="lDW-iC-Ham">
                                     <fontDescription key="font" type="system" pointSize="10"/>
                                 </label>
-                                <label alignment="right" text="BAT" textAlignment="right" minimumScaleFactor="0.5" id="1eC-zS-iza">
+                                <label alignment="center" text="RES --" minimumScaleFactor="0.5" id="oj1-Z4-GyD" userLabel="Reservoir Label">
+                                    <fontDescription key="font" type="system" pointSize="10"/>
+                                </label>
+                                <label alignment="right" text="BAT --" textAlignment="right" minimumScaleFactor="0.5" id="1eC-zS-iza">
                                     <fontDescription key="font" type="system" pointSize="10"/>
                                 </label>
                             </items>
@@ -191,6 +194,7 @@
                         <outlet property="noiseLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
                         <outlet property="rawValuesGroup" destination="1pi-M7-12E" id="DSq-be-TK7"/>
                         <outlet property="rawbgLabel" destination="zeh-B2-2k7" id="9WF-fI-jiV"/>
+                        <outlet property="reservoirLabel" destination="oj1-Z4-GyD" id="j7x-qC-uSe"/>
                         <outlet property="sensorAgeLabel" destination="lDW-iC-Ham" id="D4w-Gt-VvS"/>
                         <outlet property="spriteKitView" destination="HJ3-mD-NFS" id="hnU-4D-1mD"/>
                         <outlet property="temporaryBasalLabel" destination="B0e-Th-iPg" id="cdg-YW-RxV"/>

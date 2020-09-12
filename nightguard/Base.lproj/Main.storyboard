@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -401,7 +401,13 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAGE --" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nI6-k9-3yy">
-                                                <rect key="frame" x="151.5" y="0.0" width="56.5" height="18"/>
+                                                <rect key="frame" x="102.5" y="0.0" width="56.5" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RES ---" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fxs-zK-owl" userLabel="Reservoir Label">
+                                                <rect key="frame" x="204.5" y="0.0" width="52.5" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -554,6 +560,7 @@
                         <outlet property="iobLabel" destination="sxg-9W-FFR" id="DEM-gT-C3j"/>
                         <outlet property="lastUpdateLabel" destination="FFv-EO-ylg" id="KqE-n5-OYo"/>
                         <outlet property="rawValuesPanel" destination="XtI-XB-VeV" id="1T6-VA-eJr"/>
+                        <outlet property="reservoirLabel" destination="fxs-zK-owl" id="S5G-uw-ww1"/>
                         <outlet property="sensorAgeLabel" destination="nI6-k9-3yy" id="ofa-jt-208"/>
                         <outlet property="slideToSnoozeView" destination="MNg-kT-Em2" id="GGV-wd-gUK"/>
                         <outlet property="slideToSnoozeViewHeightConstraint" destination="i8h-7H-LUb" id="Xe8-fP-EzS"/>
