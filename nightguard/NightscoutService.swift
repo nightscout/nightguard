@@ -23,7 +23,7 @@ class NightscoutService {
     let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
     enum EventType : String {
-        case sensorStart = "Sensor Start"
+        case sensorStart = "Sensor Change"
         case pumpBatteryChange = "Pump Battery Change"
         case cannulaChange = "Site Change"
         case temporaryTarget = "Temporary Target"
@@ -481,7 +481,16 @@ class NightscoutService {
                 nightscoutData.time = time
                 nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
                 
-                guard let bgdelta = Float(String(describing: currentBgs.object(forKey: "bgdelta")))
+                guard let bgDeltaObjectUnwrapped = currentBgs.object(forKey: "bgdelta")
+                    else {
+                        nightscoutData.bgdeltaString = "?"
+                        nightscoutData.bgdelta = 0
+                        dispatchOnMain {
+                            resultHandler(.data(nightscoutData))
+                        }
+                        return
+                }
+                guard let bgdelta = Float(String(describing: bgDeltaObjectUnwrapped))
                     else {
                         nightscoutData.bgdeltaString = "?"
                         nightscoutData.bgdelta = 0
@@ -648,7 +657,11 @@ class NightscoutService {
             }
             
             dispatchOnMain { [] in
-                resultHandler(Date.fromIsoString(isoTime: siteChangeObject[0]["created_at"] as! String))}
+                guard let siteChangeUnwrapped = siteChangeObject[0]["created_at"]
+                    else {
+                        return
+                }
+                resultHandler(Date.fromIsoString(isoTime: String(describing: siteChangeUnwrapped)))}
         })
         
         task.resume()

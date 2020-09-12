@@ -539,7 +539,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         
         let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
         if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
-            self.temporaryTargetLabel.text = "TT \(temporaryTargetData.targetTop) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
+            self.temporaryTargetLabel.text = "TT \(UnitsConverter.toDisplayUnits(temporaryTargetData.targetTop)) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
         } else {
             self.temporaryTargetLabel.text = "TT --"
         }

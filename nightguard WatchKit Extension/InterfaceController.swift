@@ -478,7 +478,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
         if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
-            self.temporaryTargetLabel.setText("TT \(temporaryTargetData.targetTop) \(temporaryTargetData.activeUntilDate.remainingMinutes())m")
+            self.temporaryTargetLabel.setText("TT \(UnitsConverter.toDisplayUnits(temporaryTargetData.targetTop)) \(temporaryTargetData.activeUntilDate.remainingMinutes())m")
         } else {
             self.temporaryTargetLabel.setText("TT --")
         }
