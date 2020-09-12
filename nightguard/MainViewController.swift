@@ -20,6 +20,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var batteryLabel: UILabel!
+    @IBOutlet weak var reservoirLabel: UILabel!
     @IBOutlet weak var cobLabel: UILabel!
     @IBOutlet weak var iobLabel: UILabel!
     @IBOutlet weak var spriteKitView: UIView!
@@ -528,6 +529,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     fileprivate func paintDeviceStatusData(deviceStatusData : DeviceStatusData) -> Void {
     
+        self.reservoirLabel.text = "RES \(deviceStatusData.reservoirUnits)U"
         self.activeProfileLabel.text = deviceStatusData.activePumpProfile;
         if deviceStatusData.temporaryBasalRate != "" &&
             deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes() > 0 {
