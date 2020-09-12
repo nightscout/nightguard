@@ -938,6 +938,10 @@ class NightscoutService {
                                 resultHandler(DeviceStatusData())}
                             return
                     }
+                    var reservoirUnits = 0
+                    if let reservoirUnitsProbe = pumpEntries["reservoir"] as? Int {
+                        reservoirUnits = reservoirUnitsProbe
+                    }
                     if pumpEntries.contains(where: {$0.key == "extended"}) {
                         guard let extendedEntries = pumpEntries["extended"] as? [String:Any]
                             else {
@@ -952,6 +956,7 @@ class NightscoutService {
                                     activePumpProfile: extendedEntries["ActiveProfile"] as! String,
                                     //TODO: Implement and use the AAPS timestamp here
                                     pumpProfileActiveUntil: nil,
+                                    reservoirUnits: reservoirUnits,
                                     temporaryBasalRate:
                                     self.calculateTempBasalPercentage(
                                         baseBasalRate: extendedEntries["BaseBasalRate"],

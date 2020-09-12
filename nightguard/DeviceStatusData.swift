@@ -15,21 +15,25 @@ class DeviceStatusData: NSObject, NSCoding, Codable {
     var activePumpProfile: String = "---"
     var pumpProfileActiveUntil: Date = Date()
     
+    var reservoirUnits: Int = 0
+    
     var temporaryBasalRate: String = ""
     var temporaryBasalRateActiveUntil: Date = Date()
     
     enum CodingKeys: String, CodingKey {
         case activePumpProfile
         case pumpProfileActiveUntil
+        case reservoirUnits
         case temporaryBasalRate
         case temporaryBasalRateActiveUntil
     }
     
     override init() { super.init() }
     
-    init(activePumpProfile: String, pumpProfileActiveUntil: Date?, temporaryBasalRate: String, temporaryBasalRateActiveUntil: Date) {
+    init(activePumpProfile: String, pumpProfileActiveUntil: Date?, reservoirUnits: Int, temporaryBasalRate: String, temporaryBasalRateActiveUntil: Date) {
         
         self.activePumpProfile = activePumpProfile
+        self.reservoirUnits = reservoirUnits
         self.temporaryBasalRate = temporaryBasalRate
         self.temporaryBasalRateActiveUntil = temporaryBasalRateActiveUntil
         self.pumpProfileActiveUntil = pumpProfileActiveUntil ?? Date()
@@ -53,6 +57,11 @@ class DeviceStatusData: NSObject, NSCoding, Codable {
         }
         self.pumpProfileActiveUntil = pumpProfileActiveUntil
         
+        guard let reservoirUnits = decoder.decodeObject(forKey: "reservoirUnits") as? Int else {
+            return
+        }
+        self.reservoirUnits = reservoirUnits
+        
         guard let temporaryBasalRate = decoder.decodeObject(forKey: "temporaryBasalRate") as? String else {
             return
         }
@@ -70,6 +79,7 @@ class DeviceStatusData: NSObject, NSCoding, Codable {
     func encode(with aCoder: NSCoder) {
         aCoder.encode(self.activePumpProfile, forKey: "activePumpProfile")
         aCoder.encode(self.pumpProfileActiveUntil, forKey: "pumpProfileActiveUntil")
+        aCoder.encode(self.reservoirUnits, forKey: "reservoirUnits")
         aCoder.encode(self.temporaryBasalRate, forKey: "temporaryBasalRate")
         aCoder.encode(self.temporaryBasalRateActiveUntil, forKey: "temporaryBasalRateActiveUntil")
     }
@@ -87,6 +97,7 @@ class DeviceStatusData: NSObject, NSCoding, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.activePumpProfile = try container.decode(String.self, forKey: .activePumpProfile)
         self.pumpProfileActiveUntil = try container.decode(Date.self, forKey: .pumpProfileActiveUntil)
+        self.reservoirUnits = try container.decode(Int.self, forKey: .reservoirUnits)
         self.temporaryBasalRate = try container.decode(String.self, forKey: .temporaryBasalRate)
         self.temporaryBasalRateActiveUntil = try container.decode(Date.self, forKey: .temporaryBasalRateActiveUntil)
     }
@@ -104,6 +115,7 @@ class DeviceStatusData: NSObject, NSCoding, Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.activePumpProfile, forKey: .activePumpProfile)
         try container.encode(self.pumpProfileActiveUntil, forKey: .pumpProfileActiveUntil)
+        try container.encode(self.reservoirUnits, forKey: .reservoirUnits)
         try container.encode(self.temporaryBasalRate, forKey: .temporaryBasalRate)
         try container.encode(self.temporaryBasalRateActiveUntil, forKey: .temporaryBasalRateActiveUntil)
     }
