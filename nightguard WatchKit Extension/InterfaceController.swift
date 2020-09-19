@@ -7,6 +7,7 @@
 //
 
 import WatchKit
+import ClockKit
 import Foundation
 import WatchConnectivity
 import SpriteKit
@@ -145,9 +146,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
                 
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state
-        if #available(watchOSApplicationExtension 4.0, *) {
-            WKExtension.shared().isFrontmostTimeoutExtended = true
-        }
+        WKExtension.shared().isFrontmostTimeoutExtended = true
         
         crownSequencer.focus()
         crownSequencer.delegate = self

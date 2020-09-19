@@ -8,6 +8,7 @@
 
 import WatchKit
 import WatchConnectivity
+import ClockKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
     
@@ -174,7 +175,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 handleRefreshTask(refreshTask)
             } else {
                 // not handled!
-                task.setTaskCompleted()
+                task.setTaskCompletedWithSnapshot(false)
             }
         }
     }
@@ -188,7 +189,7 @@ extension ExtensionDelegate {
     func handleWatchConnectivityBackgroundTask (_ watchConnectivityBackgroundTask: WKWatchConnectivityRefreshBackgroundTask) {
     
         BackgroundRefreshLogger.info("WKWatchConnectivityRefreshBackgroundTask received")
-        watchConnectivityBackgroundTask.setTaskCompleted()
+        watchConnectivityBackgroundTask.setTaskCompletedWithSnapshot(false)
     }
     
     @available(watchOSApplicationExtension 3.0, *)
@@ -215,7 +216,7 @@ extension ExtensionDelegate {
         // schedule the next background refresh
         BackgroundRefreshScheduler.instance.schedule()
         
-        task.setTaskCompleted()
+        task.setTaskCompletedWithSnapshot(false)
     }
     
     @available(watchOSApplicationExtension 3.0, *)
@@ -444,7 +445,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         self.downloadTask = nil
         self.sessionStartTime = nil
         if #available(watchOSApplicationExtension 3.0, *) {
-            (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompleted()
+            (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompletedWithSnapshot(false)
         }
         self.pendingBackgroundURLTask = nil
         

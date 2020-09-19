@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1130"
+   LastUpgradeVersion = "1200"
    version = "2.0">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -80,8 +80,8 @@
       launchAutomaticallySubstyle = "32">
       <RemoteRunnable
          runnableDebuggingMode = "2"
-         BundleIdentifier = "com.apple.carousel"
-         RemotePath = "/nightguard">
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/Nightguard">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
@@ -100,8 +100,8 @@
       launchAutomaticallySubstyle = "32">
       <RemoteRunnable
          runnableDebuggingMode = "2"
-         BundleIdentifier = "com.apple.carousel"
-         RemotePath = "/nightguard">
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/Nightguard">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"

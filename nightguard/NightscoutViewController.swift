@@ -114,15 +114,15 @@ extension NightscoutViewController: WKNavigationDelegate, WKUIDelegate {
         decisionHandler(.allow)
     }
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
-        
-        guard let url = request.url else {
-            return false
-        }
-        
-        NSLog("Should start: \(url.absoluteString)")
-        return true
-    }
+//    func webView(_ webView: WKWebView, shouldStartLoadWith request: URLRequest, navigationType: WKWebView.NavigationType) -> Bool {
+//
+//        guard let url = request.url else {
+//            return false
+//        }
+//
+//        NSLog("Should start: \(url.absoluteString)")
+//        return true
+//    }
     
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         

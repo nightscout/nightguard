@@ -43,7 +43,10 @@ class NightscoutDataRepository {
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         NSKeyedArchiver.setClassName("NightscoutData", for: NightscoutData.self)
-        defaults!.set(NSKeyedArchiver.archivedData(withRootObject: bgData), forKey: Constants.currentBgData)
+        try?
+            defaults!.set(
+                NSKeyedArchiver.archivedData(withRootObject: bgData, requiringSecureCoding: false),
+                forKey: Constants.currentBgData)
     }
     
     func loadCurrentNightscoutData() -> NightscoutData {
@@ -58,7 +61,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(NightscoutData.self, forClassName: "NightscoutData")
-        guard let nightscoutData = NSKeyedUnarchiver.unarchiveObject(with: data) as? NightscoutData else {
+        guard let nightscoutData = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)) as? NightscoutData else {
             return NightscoutData()
         }
         return nightscoutData
@@ -153,7 +156,7 @@ class NightscoutDataRepository {
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         NSKeyedArchiver.setClassName("DeviceStatusData", for: DeviceStatusData.self)
-        defaults!.set(NSKeyedArchiver.archivedData(withRootObject: deviceStatusData), forKey: Constants.deviceStatus)
+        defaults!.set(try? NSKeyedArchiver.archivedData(withRootObject: deviceStatusData, requiringSecureCoding: false), forKey: Constants.deviceStatus)
     }
     
     func loadDeviceStatusData() -> DeviceStatusData {
@@ -168,7 +171,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(DeviceStatusData.self, forClassName: "DeviceStatusData")
-        guard let deviceStatusData = NSKeyedUnarchiver.unarchiveObject(with: data) as? DeviceStatusData else {
+        guard let deviceStatusData = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)) as? DeviceStatusData else {
             return DeviceStatusData()
         }
         return deviceStatusData
@@ -178,7 +181,7 @@ class NightscoutDataRepository {
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         NSKeyedArchiver.setClassName("TemporaryTargetData", for: TemporaryTargetData.self)
-        defaults!.set(NSKeyedArchiver.archivedData(withRootObject: temporaryTargetData), forKey: Constants.temporaryTarget)
+        defaults!.set(try? NSKeyedArchiver.archivedData(withRootObject: temporaryTargetData, requiringSecureCoding: false), forKey: Constants.temporaryTarget)
     }
     
     func loadTemporaryTargetData() -> TemporaryTargetData {
@@ -193,7 +196,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(TemporaryTargetData.self, forClassName: "TemporaryTargetData")
-        guard let temporaryTargetData = NSKeyedUnarchiver.unarchiveObject(with: data) as? TemporaryTargetData else {
+        guard let temporaryTargetData = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)) as? TemporaryTargetData else {
             return TemporaryTargetData()
         }
         return temporaryTargetData
@@ -204,7 +207,9 @@ class NightscoutDataRepository {
         print("Storing \(bgData.count) using key \(keyName)")
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(NSKeyedArchiver.archivedData(withRootObject: bgData), forKey: keyName)
+        defaults!.set(
+            try? NSKeyedArchiver.archivedData(withRootObject: bgData, requiringSecureCoding: false),
+            forKey: keyName)
     }
     
     fileprivate func loadBgData(keyName : String) -> [BloodSugar] {
@@ -218,7 +223,7 @@ class NightscoutDataRepository {
             return []
         }
         
-        guard let bgData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [BloodSugar] else {
+        guard let bgData = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [BloodSugar] else {
             return []
         }
         return bgData
