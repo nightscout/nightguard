@@ -17,7 +17,7 @@ extension UIApplication {
     func setCurrentBGValueOnAppBadge() {
         
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        guard let sgvAsDouble = Double(nightscoutData.sgv) else {
+        guard let sgvAsDouble = Double(UnitsConverter.toDisplayUnits(nightscoutData.sgv)) else {
             return
         }
         let sgvAsInt = Int(sgvAsDouble.rounded())
