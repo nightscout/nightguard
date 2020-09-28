@@ -111,21 +111,17 @@ class UnitsConverter {
     
     static func toMmol(_ uncertainValue : String) -> String {
         
-        // determine whether mmol is already contained
-        if (uncertainValue.contains(".")) {
-            return uncertainValue.cleanFloatValue
-        }
-        
-        var floatValue : Float = Float(uncertainValue)!
-        if (floatValue < 40) {
+        // determine whether mmol is already contained        
+        var doubleValue : Double = Double(uncertainValue)!
+        if (doubleValue < 40) {
             // the value seems to be already mmol -> nothing to do
             return uncertainValue.cleanFloatValue
         }
         
         // looks like mgdl is contained
         // convert mg/dL to mmol/l
-        floatValue = floatValue * 0.0555
-        return floatValue.cleanValue
+        doubleValue = doubleValue * 0.0555
+        return doubleValue.cleanValue
     }
     
     static func toMmolDelta(_ uncertainValue : String) -> String {

@@ -239,7 +239,7 @@ extension BasicStats {
     }
     
     var formattedStandardDeviation: String? {
-        return formattedUnits(standardDeviation)
+        return String(standardDeviation.rounded())
     }
     
     var formattedCoefficientOfVariation: String? {
@@ -255,7 +255,7 @@ extension BasicStats {
     }
     
     private func formattedPercent(_ value: Float) -> String? {
-        return value.isNaN ? nil : "\((value * 100).cleanValue)%"
+        return value.isNaN ? nil : "\((value * 100).rounded().cleanValue)%"
     }
     
     private func formattedUnits(_ value: Float) -> String? {

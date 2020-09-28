@@ -20,14 +20,14 @@ extension String {
         return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
     
-    // remove the decimal part of the float if it is ".0" and trim whitespaces
+    // treat the String as float and round if regarding the first decimal.
+    // If that doesn't work - return self
     var cleanFloatValue: String {
         
-        if self.contains(".0") {
-            return String(self[..<self.firstIndex(of: ".")!])
+        guard let doubleValue = Double(self)?.cleanValue else {
+            return self
         }
-        
-        return self
+        return String(doubleValue)
     }
     
     // remove all characters in the middle of the String.
