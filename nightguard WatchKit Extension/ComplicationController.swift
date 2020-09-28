@@ -43,12 +43,14 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             
             if useRelativeTimeWhenPossible {
                 modTemplate.line1TextProvider = CLKSimpleTextProvider(text: getSgvAndArrow(currentNightscoutData, " "))
-                modTemplate.line1TextProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+                modTemplate.line1TextProvider.tintColor = UIColorChanger.getBgColor(
+                    UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
                 modTemplate.line2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
             } else {
                 modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
-                modTemplate.line1TextProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
-                modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)\(currentNightscoutData.bgdeltaString.cleanFloatValue)\(currentNightscoutData.bgdeltaArrow)")
+                modTemplate.line1TextProvider.tintColor = UIColorChanger.getBgColor(
+                    UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
+                modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)\(UnitsConverter.toDisplayDeltaUnits(currentNightscoutData.bgdeltaString))\(currentNightscoutData.bgdeltaArrow)")
             }
             template = modTemplate
         case .modularLarge:
@@ -56,7 +58,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                 let modTemplate = CLKComplicationTemplateModularLargeColumns()
                 
                 modTemplate.row1Column1TextProvider = CLKSimpleTextProvider(text: getOneLine(currentNightscoutData))
-                modTemplate.row1Column1TextProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+                modTemplate.row1Column1TextProvider.tintColor = UIColorChanger.getBgColor(
+                    UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
                 modTemplate.row1Column2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
                 modTemplate.row2Column1TextProvider = CLKSimpleTextProvider(text: "")
                 modTemplate.row2Column2TextProvider = CLKSimpleTextProvider(text: "")
@@ -91,18 +94,21 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .utilitarianSmall:
             let modTemplate = CLKComplicationTemplateUtilitarianSmallFlat()
             modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(
+                UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
             template = modTemplate
         case .utilitarianLarge:
             let modTemplate = CLKComplicationTemplateUtilitarianLargeFlat()
             modTemplate.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
             modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(
+                UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
             template = modTemplate
         case .circularSmall:
             let modTemplate = CLKComplicationTemplateCircularSmallRingText()
-            modTemplate.textProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
-            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+            modTemplate.textProvider = CLKSimpleTextProvider(text: UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
+            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(
+                UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
             
             modTemplate.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
             modTemplate.ringStyle = CLKComplicationRingStyle.closed
@@ -111,7 +117,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             if #available(watchOSApplicationExtension 5.0, *) {
                 let modTemplate = CLKComplicationTemplateGraphicCornerStackText()
                 modTemplate.outerTextProvider = CLKSimpleTextProvider(text: self.getOneShortLine(currentNightscoutData))
-                modTemplate.outerTextProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+                modTemplate.outerTextProvider.tintColor = UIColorChanger.getBgColor(
+                    UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
                 modTemplate.innerTextProvider = CLKSimpleTextProvider(text: self.getLastReadingTime(currentNightscoutData))
                 template = modTemplate
             } else {
@@ -120,8 +127,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .graphicCircular:
             if #available(watchOSApplicationExtension 5.0, *) {
                 let modTemplate = CLKComplicationTemplateGraphicCircularClosedGaugeText()
-                modTemplate.centerTextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.sgv)")
-                modTemplate.centerTextProvider.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+                modTemplate.centerTextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))")
+                modTemplate.centerTextProvider.tintColor = UIColorChanger.getBgColor(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
                 modTemplate.gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: 0.0)
                 template = modTemplate
             } else {
@@ -131,7 +138,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             if #available(watchOSApplicationExtension 5.0, *) {
                 let modTemplate = CLKComplicationTemplateGraphicBezelCircularText()
                 modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-                modTemplate.textProvider?.tintColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+                modTemplate.textProvider?.tintColor = UIColorChanger.getBgColor(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
                 let modImageTemplate = CLKComplicationTemplateGraphicCircularImage()
                 modImageTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
                 modTemplate.circularTemplate = modImageTemplate
@@ -166,7 +173,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     // Display 11:24 113+2
     func getOneBigLine(_ data : NightscoutData) -> String {
-        return "\(data.hourAndMinutes) \(data.sgv)\(data.bgdeltaString.cleanFloatValue)\(data.bgdeltaArrow)"
+        return "\(data.hourAndMinutes) \(UnitsConverter.toDisplayUnits(data.sgv))\(UnitsConverter.toDisplayDeltaUnits(data.bgdeltaString))\(data.bgdeltaArrow)"
     }
     
     // Display 11:24
@@ -176,12 +183,12 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     // Displays 113 ↗ +2
     func getOneLine(_ data : NightscoutData) -> String {
-        return "\(getSgvAndArrow(data, " "))\t\(data.bgdeltaString.cleanFloatValue)"
+        return "\(getSgvAndArrow(data, " "))\t\(UnitsConverter.toDisplayDeltaUnits(data.bgdeltaString))"
     }
     
     // Displays 113↗+2
     func getOneShortLine(_ data : NightscoutData) -> String {
-        return "\(getSgvAndArrow(data, ""))\(data.bgdeltaString.cleanFloatValue)"
+        return "\(getSgvAndArrow(data, ""))\(UnitsConverter.toDisplayDeltaUnits(data.bgdeltaString))"
     }
     
     func getSgvAndArrow(_ data: NightscoutData, _ separator: String) -> String {
@@ -194,7 +201,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             bgdeltaArrow = "⇊"
         }
         
-        return [data.sgv, bgdeltaArrow].joined(separator: separator)
+        return [UnitsConverter.toDisplayUnits(data.sgv), bgdeltaArrow].joined(separator: separator)
     }
     
     // If the age is older than 59 minutes => return 60 in that case

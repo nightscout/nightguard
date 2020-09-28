@@ -67,7 +67,7 @@ class UserDefaultsRepository {
     
     // Returns true if the units (mmol or mg/dL) have already been retrieved
     // from the nightscout backend
-    static let units = UserDefaultsValue<Units>(key: "units", default: Units.mgdl)
+    static let units = UserDefaultsValue<Units>(key: "units", default: Units.mmol)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     // The last watch sync update id

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.3" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <device id="watch44"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17034"/>
     </dependencies>
     <scenes>
         <!--Hosting Controller-->
@@ -93,9 +94,9 @@
                                             </items>
                                             <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
                                         </group>
-                                        <group alignment="left" verticalAlignment="bottom" id="Ro7-EH-y39">
+                                        <group alignment="right" verticalAlignment="bottom" id="Ro7-EH-y39">
                                             <items>
-                                                <imageView width="26" height="26" alignment="left" id="8b4-VL-pZs">
+                                                <imageView width="26" height="26" alignment="right" id="8b4-VL-pZs">
                                                     <variation key="device=watch42mm" height="30" width="30"/>
                                                 </imageView>
                                             </items>
@@ -274,7 +275,7 @@
                 <controller identifier="SnoozeInterfaceController" fullScreen="YES" id="W3J-ff-Ny6" customClass="SnoozeInterfaceController" customModule="nightguard">
                     <items>
                         <button width="1" height="38" alignment="left" title="Stop Snoozing" id="vBI-uK-ui8">
-                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="titleColor" systemColor="darkTextColor"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="font" type="boldSystem" pointSize="15"/>
                             <connections>
@@ -376,4 +377,9 @@
             <point key="canvasLocation" x="167" y="281"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

@@ -461,14 +461,14 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             if currentNightscoutData.sgv == "---" {
                 self.bgLabel.text = "---"
             } else {
-                self.bgLabel.text = currentNightscoutData.sgv
+                self.bgLabel.text = UnitsConverter.toDisplayUnits(currentNightscoutData.sgv)
             }
-            self.bgLabel.textColor = UIColorChanger.getBgColor(currentNightscoutData.sgv)
+            self.bgLabel.textColor = UIColorChanger.getBgColor(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
             
-            self.deltaLabel.text = currentNightscoutData.bgdeltaString.cleanFloatValue
+            self.deltaLabel.text = UnitsConverter.toDisplayDeltaUnits(currentNightscoutData.bgdeltaString)
             self.deltaArrowsLabel.text = currentNightscoutData.bgdeltaArrow
-            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(NSNumber(value: currentNightscoutData.bgdelta))
-            self.deltaArrowsLabel.textColor = UIColorChanger.getDeltaLabelColor(NSNumber(value: currentNightscoutData.bgdelta))
+            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(currentNightscoutData.bgdelta)
+            self.deltaArrowsLabel.textColor = UIColorChanger.getDeltaLabelColor(currentNightscoutData.bgdelta)
             
             self.lastUpdateLabel.text = currentNightscoutData.timeString
             self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(currentNightscoutData.time)
@@ -530,7 +530,8 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     fileprivate func paintDeviceStatusData(deviceStatusData : DeviceStatusData) -> Void {
     
         self.reservoirLabel.text = "RES \(deviceStatusData.reservoirUnits)U"
-        self.activeProfileLabel.text = deviceStatusData.activePumpProfile;
+        self.activeProfileLabel.text =
+            deviceStatusData.activePumpProfile.trimInfix(keepPrefixCharacterCount: 7, keepPostfixCharacterCount: 7);
         if deviceStatusData.temporaryBasalRate != "" &&
             deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes() > 0 {
             

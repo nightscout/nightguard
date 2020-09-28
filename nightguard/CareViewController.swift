@@ -50,7 +50,7 @@ class CareViewController: CustomFormViewController {
                     }
                     if row.value == NSLocalizedString("Too High", comment: "TT Reason Picker Too High") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTarget.value = 70
+                        UserDefaultsRepository.temporaryTarget.value = 72
                         targetValueRow.value = UserDefaultsRepository.temporaryTarget.value
                         targetValueRow.reload()
                     }
@@ -83,7 +83,7 @@ class CareViewController: CustomFormViewController {
                             return "\(value / 60) " + NSLocalizedString("hours", comment: "Hour TT Unit")
                         }
                     }
-                    row.options = [30, 60, 90, 120, 180]
+                    row.options = [30, 60, 90, 120, 180, 360]
                     row.value = UserDefaultsRepository.temporaryTargetDuration.value
                 }.onChange { row in
                     UserDefaultsRepository.temporaryTargetDuration.value = row.value!
@@ -92,7 +92,7 @@ class CareViewController: CustomFormViewController {
                 <<< PickerInlineRow<Int>() { row in
                     row.tag = "Value"
                     row.title = NSLocalizedString("Target Value", comment: "Label for Temporary Target Value")
-                    row.options = [70, 80, 100, 120]
+                    row.options = [72, 80, 100, 120]
                     row.value = UserDefaultsRepository.temporaryTarget.value
                     row.displayValueFor = { value in
                         guard let value = value else { return nil }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1130"
+   LastUpgradeVersion = "1200"
    version = "2.0">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -79,10 +79,8 @@
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "32"
       notificationPayloadFile = "nightguard WatchKit Extension/PushNotificationPayload.apns">
-      <RemoteRunnable
-         runnableDebuggingMode = "2"
-         BundleIdentifier = "com.apple.carousel"
-         RemotePath = "/nightguard">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
@@ -90,7 +88,7 @@
             BlueprintName = "nightguard WatchKit App"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
-      </RemoteRunnable>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -98,10 +96,8 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <RemoteRunnable
-         runnableDebuggingMode = "2"
-         BundleIdentifier = "com.apple.carousel"
-         RemotePath = "/nightguard">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
@@ -109,16 +105,7 @@
             BlueprintName = "nightguard WatchKit App"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
-      </RemoteRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "43647BF11BFF6435004389F9"
-            BuildableName = "nightguard.app"
-            BlueprintName = "nightguard WatchKit App"
-            ReferencedContainer = "container:nightguard.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

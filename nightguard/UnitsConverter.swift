@@ -24,12 +24,24 @@ class UnitsConverter {
         
         let units = UserDefaultsRepository.units.value
         if units == Units.mgdl {
-            return removeDecimals(value)
+            return toMgdl(value)
         }
         
-        // convert mg/dL to mmol/l
-        let floatValue : Float = Float(value)! * 0.0555
-        return String(floatValue.cleanValue)
+        return toMmol(value)
+    }
+    
+    static func toDisplayDeltaUnits(_ value : String) -> String {
+        
+        if value == "---" {
+            return value
+        }
+        
+        let units = UserDefaultsRepository.units.value
+        if units == Units.mgdl {
+            return toMgdlDelta(value)
+        }
+        
+        return toMmolDelta(value)
     }
     
     // Converts the internally mg/dL to mmol if thats the defined
@@ -97,6 +109,37 @@ class UnitsConverter {
         return mmolValue * 0.0555
     }
     
+    static func toMmol(_ uncertainValue : String) -> String {
+        
+        // determine whether mmol is already contained
+        if (uncertainValue.contains(".")) {
+            return uncertainValue
+        }
+        
+        var floatValue : Float = Float(uncertainValue)!
+        if (floatValue < 40) {
+            // the value seems to be already mmol -> nothing to do
+            return uncertainValue
+        }
+        
+        // looks like mgdl is contained
+        // convert mg/dL to mmol/l
+        floatValue = floatValue * 0.0555
+        return floatValue.cleanValue
+    }
+    
+    static func toMmolDelta(_ uncertainValue : String) -> String {
+        
+        var floatValue : Float = Float(uncertainValue)!
+        // Looks like we have a mg/dl delta value. Convert to mmol:
+        if floatValue < 1 && floatValue > -1 {
+            // seems to be already a mmol delta
+            return String(floatValue.cleanSignedValue)
+        }
+        floatValue = floatValue * 0.0555
+        return floatValue.cleanSignedValue
+    }
+    
     // Converts the value in Display Units to Mg/dL.
     static func toMgdl(_ value : Float) -> Float {
         let units = UserDefaultsRepository.units.value
@@ -115,6 +158,35 @@ class UnitsConverter {
             return 0
         }
         return toMgdl(floatValue)
+    }
+    
+    static func toMgdl(_ uncertainValue : String) -> String {
+        
+        var floatValue : Float = Float(uncertainValue)!
+        if (floatValue > 40) {
+            // the value seems to be already mgdl -> nothing to do
+            return uncertainValue
+        }
+        
+        // looks like mmol is contained
+        // convert mmol to mg/dl
+        floatValue = floatValue * (1 / 0.0555)
+        return String(floatValue.cleanValue)
+    }
+    
+    static func toMgdlDelta(_ uncertainValue : String) -> String {
+        
+        var floatValue : Float = Float(uncertainValue)!
+        
+        if (floatValue >= 1 || floatValue <= -1) {
+            // the value seems to be already mgdl -> nothing to do
+            return floatValue.rounded().cleanSignedValue
+        }
+        
+        // looks like mmol is contained
+        // convert mmol to mg/dl
+        floatValue = floatValue * (1 / 0.0555)
+        return floatValue.rounded().cleanSignedValue
     }
     
     // if a "." is contained, simply takes the left part of the string only

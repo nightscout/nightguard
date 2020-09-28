@@ -17,6 +17,20 @@ extension Float {
             : String(format: "%5.1f", self).trimmingCharacters(in: CharacterSet.whitespaces)
     }
     
+    // remove the decimal part of the float if it is ".0" and trim whitespaces
+    // add a sign "+" or "-"
+    var cleanSignedValue: String {
+        
+        var sign = ""
+        if self >= 0 {
+            sign = "+"
+        }
+        
+        return self.truncatingRemainder(dividingBy: 1) == 0
+            ? sign + String(format: "%5.0f", self).trimmingCharacters(in: CharacterSet.whitespaces)
+            : sign + String(format: "%5.1f", self).trimmingCharacters(in: CharacterSet.whitespaces)
+    }
+    
     var roundTo3f: Float {
         return round(to: 3)
     }

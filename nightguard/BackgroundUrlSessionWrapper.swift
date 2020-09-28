@@ -10,7 +10,8 @@ import Foundation
 
 class BackgroundUrlSessionWrapper {
     
-    public static var urlSession : URLSession = URLSession.init()
+    private static var optionalUrlSession : URLSession? = nil
+    public var urlSession : URLSession!
     
     public static let singleton = BackgroundUrlSessionWrapper()
     
@@ -28,7 +29,11 @@ class BackgroundUrlSessionWrapper {
         }
         
         let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: "de.my-wan.dhe.nightguard")
-        BackgroundUrlSessionWrapper.urlSession = URLSession.init(configuration: backgroundConfiguration, delegate: delegate, delegateQueue: nil)
+        urlSession = URLSession.init(configuration: backgroundConfiguration, delegate: delegate, delegateQueue: nil)
+    }
+    
+    func start(_ request: URLRequest) {
+         urlSession.downloadTask(with: request).resume()
     }
 }
 

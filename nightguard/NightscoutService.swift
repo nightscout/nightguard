@@ -367,16 +367,8 @@ class NightscoutService {
             return nil
         }
         
-        // Force mmol if that has been configured
-        var enforceMmolQueryParams : [String:String] = [:]
-        if UserDefaultsRepository.units.value == Units.mmol {
-            enforceMmolQueryParams = [
-                "units" : "mmol"
-            ]
-        }
-        
         // Get the current data from REST-Call
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams: enforceMmolQueryParams)
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams: ["": ""])
         guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
@@ -420,8 +412,7 @@ class NightscoutService {
         }
         let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
-        let task = BackgroundUrlSessionWrapper.urlSession.downloadTask(with: request);
-        task.resume()
+        BackgroundUrlSessionWrapper.singleton.start(request)
     }
     
     public func extractData(data : Data, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) {

@@ -7,6 +7,7 @@
 //
 
 import WatchKit
+import ClockKit
 import Foundation
 import WatchConnectivity
 import SpriteKit
@@ -145,9 +146,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
                 
         // Ask to get 8 minutes of cpu runtime to get the next values if
         // the app stays in frontmost state
-        if #available(watchOSApplicationExtension 4.0, *) {
-            WKExtension.shared().isFrontmostTimeoutExtended = true
-        }
+        WKExtension.shared().isFrontmostTimeoutExtended = true
         
         crownSequencer.focus()
         crownSequencer.delegate = self
@@ -336,11 +335,11 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         if NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests {
             
-            // show the activity indicator (hide the iob & arrow overlapping views); also hide the errors
+            // show the activity indicator (hide the iob & cob & battery overlapping views); also hide the errors
             self.errorGroup.setHidden(true)
             self.iobLabel.setText(nil)
             self.cobLabel.setText(nil)
-            self.deltaArrowLabel.setText(nil)
+            self.batteryLabel.setText(nil)
             
             self.activityIndicatorImage.setHidden(false)
             self.activityIndicatorImage.startAnimatingWithImages(in: NSRange(1...15), duration: 1.0, repeatCount: 0)
@@ -363,12 +362,13 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
         
-        self.bgLabel.setText(currentNightscoutData.sgv)
-        self.bgLabel.setTextColor(UIColorChanger.getBgColor(currentNightscoutData.sgv))
+        self.bgLabel.setText(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
+        self.bgLabel.setTextColor(UIColorChanger.getBgColor(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv)))
         
-        self.deltaLabel.setText(currentNightscoutData.bgdeltaString.cleanFloatValue)
+        self.deltaLabel.setText(UnitsConverter.toDisplayDeltaUnits(currentNightscoutData.bgdeltaString))
         self.deltaArrowLabel.setText(currentNightscoutData.bgdeltaArrow)
-        self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(NSNumber(value : currentNightscoutData.bgdelta)))
+        self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(
+                                        UnitsConverter.toDisplayUnits(currentNightscoutData.bgdelta)))
         
         self.timeLabel.setText(currentNightscoutData.timeString)
         self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(currentNightscoutData.time))
@@ -470,7 +470,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     func paintDeviceStatusData(deviceStatusData: DeviceStatusData) {
         
         self.reservoirLabel.setText("R \(String(describing: deviceStatusData.reservoirUnits))")
-        self.activeProfileLabel.setText(deviceStatusData.activePumpProfile)
+        self.activeProfileLabel.setText(
+            deviceStatusData.activePumpProfile.trimInfix(keepPrefixCharacterCount: 4, keepPostfixCharacterCount: 6))
         if deviceStatusData.temporaryBasalRate != "" &&
             deviceStatusData.temporaryBasalRateActiveUntil.remainingMinutes() > 0 {
             

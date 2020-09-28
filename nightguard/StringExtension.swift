@@ -29,4 +29,17 @@ extension String {
         
         return self
     }
+    
+    // remove all characters in the middle of the String.
+    // The new size of the string will be
+    // keepPrefixCharacterCount + keepPostfixCharacterCount + 3
+    func trimInfix(keepPrefixCharacterCount: Int, keepPostfixCharacterCount: Int) -> String {
+        
+        if self.count <= (keepPrefixCharacterCount + keepPostfixCharacterCount + 3) {
+            // string is not too long => do nothing
+            return self
+        }
+        
+        return self.prefix(keepPrefixCharacterCount) + "..." + self.suffix(keepPostfixCharacterCount)
+    }
 }
