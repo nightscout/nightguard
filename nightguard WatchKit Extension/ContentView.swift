@@ -11,30 +11,13 @@ import SpriteKit
 
 struct ContentView: View {
     
-    var bgLabel: String = "---"
-    var deltaLabel: String = "-"
-    var deltaArrowLabel: String = "-"
-    var timeLabel: String = "0min"
-    var reservoirLabel: String = "0U"
-    var batteryLabel: String = "100%"
-    var cobLabel: String = "0g"
-    var iobLabel: String = "1U"
-    var errorLabel: String = ""
-    
-    var rawbgLabel: String = ""
-    var noiseLabel: String = ""
-    
-    var cannulaAgeLabel: String = "0d 0h"
-    var sensorAgeLabel: String = "0d 0h"
-    var batteryAgeLabel: String = "0d 0h"
-    
-    var activeProfileLabel: String = "---"
-    var temporaryBasalLabel: String = "--"
-    var temporaryTargetLabel: String = "--"
+    @ObservedObject var viewModel: MainViewModel
     
     let chartScene: SKScene
     
-    init() {
+    init(mainViewModel: MainViewModel) {
+        
+        self.viewModel = mainViewModel
         
         // Apple Watch 38mm
         var sceneHeight : CGFloat = 125.0
@@ -55,60 +38,68 @@ struct ContentView: View {
 
     var body: some View {
         VStack() {
-            HStack(alignment: .bottom, spacing: 10, content: {
-                VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
-                    Text(bgLabel)
-                        .font(.system(size: 46))
-                })
+            HStack(spacing: 5, content: {
+                Text(UnitsConverter.toDisplayUnits(
+                        viewModel.nightscoutData?.sgv ?? "---"))
+                    .foregroundColor(viewModel.sgvColor)
+                    .font(.system(size: 45))
+                    .frame(alignment: .topLeading)
                 VStack() {
-                    Text(deltaLabel)
+                    Text(UnitsConverter.toDisplayDeltaUnits(
+                            viewModel.nightscoutData?.bgdeltaString ?? "?"))
+                        .foregroundColor(viewModel.sgvDeltaColor)
                         .font(.system(size: 12))
-                    Text(deltaArrowLabel)
+                    Text(viewModel.nightscoutData?.bgdeltaArrow ?? "-")
+                        .foregroundColor(viewModel.arrowColor)
                         .font(.system(size: 12))
-                    Text(timeLabel)
+                    Text(viewModel.nightscoutData?.timeString ?? "-")
+                        .foregroundColor(viewModel.timeColor)
                         .font(.system(size: 12))
                 }
-                VStack() {
+                VStack(alignment: .trailing, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
                     HStack(){
-                        Text(cobLabel)
-                        Text(iobLabel)
+                        Text(viewModel.nightscoutData?.cob ?? "")
+                            .font(.system(size: 12))
+                        Text(viewModel.nightscoutData?.iob ?? "-")
+                            .font(.system(size: 12))
                     }
-                    Text(batteryLabel)
-                }.frame(minWidth: 0,
+                    Text(viewModel.nightscoutData?.battery ?? "-")
+                        .font(.system(size: 12))
+                }).frame(minWidth: 0,
                          maxWidth: .infinity,
                          alignment: .bottomTrailing)
             }).frame(minWidth: 0,
                      maxWidth: .infinity,
                      alignment: .topLeading)
             HStack() {
-                Text(cannulaAgeLabel)
+                Text(viewModel.cannulaAge ?? "?d ?h")
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity,
                            alignment: .leading)
-                Text(sensorAgeLabel)
+                Text(viewModel.sensorAge ?? "?d ?h")
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity)
-                Text(reservoirLabel)
+                Text(viewModel.reservoir)
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity)
-                Text(batteryAgeLabel)
+                Text(viewModel.batteryAge ?? "?d ?h")
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity,
                            alignment: .trailing)
             }.frame(minWidth: 0,
                     maxWidth: .infinity)
-            HStack() {
-                Text(activeProfileLabel)
+            HStack(spacing: 5) {
+                Text(viewModel.activeProfile)
+                    .lineLimit(1)
                     .font(.system(size: 10))
-                    .frame(maxWidth: .infinity,
-                           alignment: .leading)
-                Text(temporaryBasalLabel)
+                    .frame(idealWidth: 100, maxWidth: .infinity, alignment: .leading)
+                Text(viewModel.temporaryBasal)
+                    .lineLimit(1)
                     .font(.system(size: 10))
-                    .frame(maxWidth: .infinity)
-                Text(temporaryTargetLabel)
+                    .frame(idealWidth: 100, maxWidth: .infinity)
+                Text(viewModel.temporaryTarget)
                     .font(.system(size: 10))
-                    .frame(maxWidth: .infinity,
-                           alignment: .trailing)
+                    .frame(idealWidth: 100, maxWidth: .infinity, alignment: .trailing)
             }.frame(minWidth: 0,
                     maxWidth: .infinity)
             VStack() {
@@ -118,11 +109,13 @@ struct ContentView: View {
                     minHeight: 0,
                     maxHeight: .infinity)
         }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        .edgesIgnoringSafeArea(.bottom)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(mainViewModel: MainViewModel())
     }
 }

@@ -43,4 +43,20 @@ extension Date {
         
         return Calendar.current.dateComponents([.minute], from: Date(), to: self).minute ?? 0
     }
+    
+    // forms a new string like so
+    // prefix + ageOf(isoTime)
+    func convertToAge(prefix: String) -> String {
+        
+        let dateComponentsFormatter = DateComponentsFormatter()
+        dateComponentsFormatter.allowedUnits = [.day,.hour]
+        dateComponentsFormatter.maximumUnitCount = 2
+        dateComponentsFormatter.unitsStyle = .abbreviated
+        
+        guard let differenceString = dateComponentsFormatter.string(from: self, to: Date()) else {
+            return prefix + "---"
+        }
+        
+        return prefix + differenceString
+    }
 }
