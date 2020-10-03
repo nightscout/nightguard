@@ -461,14 +461,17 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             if currentNightscoutData.sgv == "---" {
                 self.bgLabel.text = "---"
             } else {
-                self.bgLabel.text = UnitsConverter.toDisplayUnits(currentNightscoutData.sgv)
+                self.bgLabel.text = UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv)
             }
-            self.bgLabel.textColor = UIColorChanger.getBgColor(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
+            self.bgLabel.textColor = UIColorChanger.getBgColor(
+                    UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
             
-            self.deltaLabel.text = UnitsConverter.toDisplayDeltaUnits(currentNightscoutData.bgdeltaString)
+            self.deltaLabel.text = UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdeltaString)
             self.deltaArrowsLabel.text = currentNightscoutData.bgdeltaArrow
-            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(currentNightscoutData.bgdelta)
-            self.deltaArrowsLabel.textColor = UIColorChanger.getDeltaLabelColor(currentNightscoutData.bgdelta)
+            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(
+                UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdelta))
+            self.deltaArrowsLabel.textColor = UIColorChanger.getDeltaLabelColor(
+                UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdelta))
             
             self.lastUpdateLabel.text = currentNightscoutData.timeString
             self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(currentNightscoutData.time)
@@ -542,7 +545,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         
         let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
         if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
-            self.temporaryTargetLabel.text = "TT \(UnitsConverter.toDisplayUnits(temporaryTargetData.targetTop)) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
+            self.temporaryTargetLabel.text = "TT \(UnitsConverter.mgdlToDisplayUnits("\(temporaryTargetData.targetTop)")) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
         } else {
             self.temporaryTargetLabel.text = "TT --"
         }

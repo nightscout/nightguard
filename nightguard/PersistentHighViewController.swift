@@ -33,7 +33,10 @@ class PersistentHighViewController: CustomFormViewController {
             }
         }
         
-        urgentHighSliderRow = SliderRow.glucoseLevelSlider(initialValue: AlarmRule.persistentHighUpperBound.value, minimumValue: AlarmRule.alertIfAboveValue.value, maximumValue: 300)
+        urgentHighSliderRow = SliderRow.glucoseLevelSlider(
+            initialValue: UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value),
+                minimumValue: UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value),
+                maximumValue: UnitsConverter.mgdlToDisplayUnits(300))
         urgentHighSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
         let urgentHighSection = Section(header: NSLocalizedString("Urgent High", comment: "Label for Urgent High"), footer: NSLocalizedString("Alerts anytime when the blood glucose raises above this value.", comment: "Footer for Urgent High"))
@@ -65,7 +68,7 @@ class PersistentHighViewController: CustomFormViewController {
                 guard let value = urgentHighSliderRow.value else { return }
                 let mgdlValue = UnitsConverter.toMgdl(value)
                 
-                print("Changed (persistent) urgent high slider to \(mgdlValue) \(UserDefaultsRepository.units.value.description)")
+                print("Changed (persistent) urgent high slider to \(value) \(UserDefaultsRepository.units.value.description)")
                 AlarmRule.persistentHighUpperBound.value = mgdlValue
             }
             

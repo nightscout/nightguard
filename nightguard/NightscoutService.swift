@@ -368,7 +368,11 @@ class NightscoutService {
         }
         
         // Get the current data from REST-Call
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams: ["": ""])
+        // Force mgdl here, since all values are kept internall in mgdl.
+        // Only for the UI, they are transformed to mmol. This enables us to let the user manually
+        // switch to the wished units.
+        // All other endpoints deliver in mgdl, too. So this makes sence to enforce it here, too:
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams: ["units": "mgdl"])
         guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil

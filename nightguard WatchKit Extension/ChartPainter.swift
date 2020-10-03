@@ -251,18 +251,18 @@ class ChartPainter {
             // paint the maximum BGValue Label only if it has enought space and doesn't intersect with
             // the upper bound BGValue
             if maxBgValueAsFloat > upperBoundNiceValue + 25 {
-                let maxBgValueString = UnitsConverter.toDisplayUnits(maxBgValueAsFloat.cleanValue)
+                let maxBgValueString = UnitsConverter.mgdlToDisplayUnits(maxBgValueAsFloat.cleanValue)
                 maxBgValueString.draw(
                     with: CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(maxBgValueAsFloat)) + 3, width: 40, height: 14),
                     options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
             }
             
-            let upperBoundString = UnitsConverter.toDisplayUnits(upperBoundNiceValue.cleanValue)
+            let upperBoundString = UnitsConverter.mgdlToDisplayUnits(upperBoundNiceValue.cleanValue)
             upperBoundString.draw(
                 with: CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(upperBoundNiceValue)), width: 40, height: 14),
                 options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
             
-            let lowerBoundString = UnitsConverter.toDisplayUnits(lowerBoundNiceValue.cleanValue)
+            let lowerBoundString = UnitsConverter.mgdlToDisplayUnits(lowerBoundNiceValue.cleanValue)
             lowerBoundString.draw(
                 with: CGRect(x: CGFloat(x), y: CGFloat.init(calcYValue(lowerBoundNiceValue))-15, width: 40, height: 14),
                 options: .usesLineFragmentOrigin, attributes: attrs, context: nil)

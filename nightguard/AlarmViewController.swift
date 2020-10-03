@@ -38,7 +38,10 @@ class AlarmViewController: CustomFormViewController {
     
     override func constructForm() {
         
-        aboveSliderRow = SliderRow.glucoseLevelSlider(initialValue: AlarmRule.alertIfAboveValue.value, minimumValue: MIN_ALERT_ABOVE_VALUE, maximumValue: MAX_ALERT_ABOVE_VALUE)
+        aboveSliderRow = SliderRow.glucoseLevelSlider(
+                            initialValue: UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value),
+                            minimumValue: UnitsConverter.mgdlToDisplayUnits(MIN_ALERT_ABOVE_VALUE),
+                            maximumValue: UnitsConverter.mgdlToDisplayUnits(MAX_ALERT_ABOVE_VALUE))
         aboveSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
         belowSliderRow = SliderRow.glucoseLevelSlider(initialValue: AlarmRule.alertIfBelowValue.value, minimumValue: MIN_ALERT_BELOW_VALUE, maximumValue: MAX_ALERT_BELOW_VALUE)
@@ -111,7 +114,7 @@ class AlarmViewController: CustomFormViewController {
                     if AlarmRule.isEdgeDetectionAlarmEnabled.value {
                         
                         let deltaInMgdl = AlarmRule.deltaAmount.value
-                        let delta = UnitsConverter.toDisplayUnits("\(deltaInMgdl)")
+                        let delta = UnitsConverter.mgdlToDisplayUnits("\(deltaInMgdl)")
                         let units = UserDefaultsRepository.units.value.description
                         let consecutiveValue = AlarmRule.numberOfConsecutiveValues.value
                         
@@ -135,7 +138,7 @@ class AlarmViewController: CustomFormViewController {
                 row.detailTextProvider = {
                     
                     let urgentHighInMgdl = AlarmRule.persistentHighUpperBound.value
-                    let urgentHigh = UnitsConverter.toDisplayUnits("\(urgentHighInMgdl)")
+                    let urgentHigh = UnitsConverter.mgdlToDisplayUnits("\(urgentHighInMgdl)")
                     let units = UserDefaultsRepository.units.value.description
                     let urgentHighWithUnits = "\(urgentHigh) \(units)"
                     
@@ -259,9 +262,9 @@ class AlarmViewController: CustomFormViewController {
     }
     
     private func updateSliderRowsFromUserDefaultsValues() {
-        aboveSliderRow.value = Float(UnitsConverter.toDisplayUnits("\(AlarmRule.alertIfAboveValue.value)"))!
+        aboveSliderRow.value = Float(UnitsConverter.mgdlToDisplayUnits("\(AlarmRule.alertIfAboveValue.value)"))
         aboveSliderRow.updateCell()
-        belowSliderRow.value = Float(UnitsConverter.toDisplayUnits("\(AlarmRule.alertIfBelowValue.value)"))!
+        belowSliderRow.value = Float(UnitsConverter.mgdlToDisplayUnits("\(AlarmRule.alertIfBelowValue.value)"))
         belowSliderRow.updateCell()
     }
 }

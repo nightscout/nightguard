@@ -16,6 +16,26 @@ class UnitsConverter {
     
     // Converts the internally mg/dL to mmol if thats the defined
     // Unit to be used.
+    static func mgdlToDisplayUnits(_ value : String) -> String {
+        
+        if value == "---" {
+            return value
+        }
+        
+        let units = UserDefaultsRepository.units.value
+        if units == Units.mgdl {
+            // nothing to do here - just remove decimals
+            if value.contains(".") {
+                return String(value.prefix(upTo: value.firstIndex(of: ".") ?? value.endIndex))
+            }
+            return value
+        }
+        
+        return toMmol(value)
+    }
+    
+    // Converts uncertain value to the wished unit
+    // Unit to be used.
     static func toDisplayUnits(_ value : String) -> String {
         
         if value == "---" {
@@ -46,6 +66,17 @@ class UnitsConverter {
     
     // Converts the internally mg/dL to mmol if thats the defined
     // Unit to be used.
+    static func mgdlToDisplayUnits(_ value : Float) -> Float {
+        
+        let units = UserDefaultsRepository.units.value
+        if units == Units.mgdl {
+            return removeDecimals(value)
+        }
+        
+        // convert mg/dL to mmol/l
+        return value * 0.0555
+    }
+    
     static func toDisplayUnits(_ value : Float) -> Float {
         
         let units = UserDefaultsRepository.units.value
@@ -111,9 +142,9 @@ class UnitsConverter {
     
     static func toMmol(_ uncertainValue : String) -> String {
         
-        // determine whether mmol is already contained        
+        // determine whether mmol is already contained
         var doubleValue : Double = Double(uncertainValue)!
-        if (doubleValue < 40) {
+        if uncertainValue.contains(".") {
             // the value seems to be already mmol -> nothing to do
             return uncertainValue.cleanFloatValue
         }
@@ -159,13 +190,7 @@ class UnitsConverter {
     static func toMgdl(_ uncertainValue : String) -> String {
         
         var floatValue : Float = Float(uncertainValue)!
-        if (floatValue > 40) {
-            // the value seems to be already mgdl -> nothing to do
-            return String(floatValue.cleanValue)
-        }
-        
-        // looks like mmol is contained
-        // convert mmol to mg/dl
+
         floatValue = floatValue * (1 / 0.0555)
         return String(floatValue.cleanValue)
     }

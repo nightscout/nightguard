@@ -362,13 +362,16 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     
     fileprivate func paintCurrentBgData(currentNightscoutData : NightscoutData) {
         
-        self.bgLabel.setText(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
-        self.bgLabel.setTextColor(UIColorChanger.getBgColor(UnitsConverter.toDisplayUnits(currentNightscoutData.sgv)))
+        self.bgLabel.setText(
+            UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
+        self.bgLabel.setTextColor(UIColorChanger.getBgColor(
+            UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv)))
         
-        self.deltaLabel.setText(UnitsConverter.toDisplayDeltaUnits(currentNightscoutData.bgdeltaString))
+        self.deltaLabel.setText(
+            UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdeltaString))
         self.deltaArrowLabel.setText(currentNightscoutData.bgdeltaArrow)
         self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(
-                                        UnitsConverter.toDisplayUnits(currentNightscoutData.bgdelta)))
+            UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdelta)))
         
         self.timeLabel.setText(currentNightscoutData.timeString)
         self.timeLabel.setTextColor(UIColorChanger.getTimeLabelColor(currentNightscoutData.time))

@@ -250,11 +250,11 @@ extension SliderRow {
     class func glucoseLevelSlider(initialValue: Float, minimumValue: Float, maximumValue: Float, snapIncrementForMgDl: Float = 10.0) -> SliderRow {
         
         return SliderRow() { row in
-            row.value = Float(UnitsConverter.toDisplayUnits("\(initialValue)"))!
+            row.value = initialValue
             }.cellSetup { cell, row in
                 
-                let minimumValue = Float(UnitsConverter.toDisplayUnits("\(minimumValue)"))!
-                let maximumValue = Float(UnitsConverter.toDisplayUnits("\(maximumValue)"))!
+                let minimumValue = Float(UnitsConverter.mgdlToDisplayUnits("\(minimumValue)"))!
+                let maximumValue = Float(UnitsConverter.mgdlToDisplayUnits("\(maximumValue)"))!
                 let snapIncrement = (UserDefaultsRepository.units.value == .mgdl) ? snapIncrementForMgDl : 0.1
                 
                 let steps = (maximumValue - minimumValue) / snapIncrement
