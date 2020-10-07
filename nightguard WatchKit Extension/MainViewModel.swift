@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import SpriteKit
 
 class MainViewModel: ObservableObject, Identifiable {
     
@@ -30,10 +31,65 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var error: Error?
     @Published var active: Bool = false
     
+    @Published var skScene: ChartScene?
+    
+    // Old values that have been read before
+    @Published var cachedTodaysBgValues : [BloodSugar] = []
+    @Published var cachedYesterdaysBgValues : [BloodSugar] = []
+
     init() {
         loadCurrentBgData(forceRefresh: false)
         loadCareData()
         loadDeviceStatusData()
+        loadChartData(forceRepaint: false)
+    }
+    
+    fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
+        
+        let device = WKInterfaceDevice.current()
+        let bounds = device.screenBounds
+        
+        let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
+        
+        let chartSceneHeight = determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
+        skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6, useContrastfulColors: false)
+        skScene!.paintChart(
+            [todaysDataWithPrediction, yesterdaysData],
+            newCanvasWidth: bounds.width * 6,
+            maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
+            moveToLatestValue: moveToLatestValue,
+            displayDaysLegend: false,
+            useConstrastfulColors: false,
+            infoLabel: determineInfoLabel())
+    }
+   
+    func determineInfoLabel() -> String {
+        
+        if !AlarmRule.isSnoozed() {
+            if let alarmReason = AlarmRule.getAlarmActivationReason() {
+                return  alarmReason
+            } else {
+                return ""
+            }
+        }
+        
+        return String(format: NSLocalizedString("Snoozed %dmin", comment: "Snoozed duration on watch"), AlarmRule.getRemainingSnoozeMinutes())
+    }
+    
+    fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
+        
+        if (interfaceBounds.height >= 224.0) {
+            // Apple Watch 44mm
+            return 165.0
+        }
+        if (interfaceBounds.height >= 195.0) {
+            // Apple Watch 42mm
+            return 145.0
+        }
+        
+        // interfaceBounds.height == 170.0
+        // Apple Watch 38mm
+        return 125.0
     }
     
     func loadCurrentBgData(forceRefresh: Bool) {
@@ -70,11 +126,12 @@ class MainViewModel: ObservableObject, Identifiable {
     
     fileprivate func calculateColors(nightscoutData: NightscoutData) {
         
-        self.sgvColor = Color(UIColorChanger.getBgColor(UnitsConverter.toDisplayUnits(nightscoutData.sgv)))
+        self.sgvColor = Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)))
         self.sgvDeltaColor = Color(UIColorChanger.getDeltaLabelColor(
-                UnitsConverter.toDisplayUnits(nightscoutData.bgdelta)))
+                UnitsConverter.mgdlToDisplayUnits(nightscoutData.bgdelta)))
         self.arrowColor = Color(
-                UIColorChanger.getDeltaLabelColor(nightscoutData.bgdelta))
+                UIColorChanger.getDeltaLabelColor(
+                    UnitsConverter.mgdlToDisplayUnits(nightscoutData.bgdelta)))
         self.timeColor = Color(UIColorChanger.getTimeLabelColor(nightscoutData.time))
     }
     
@@ -109,9 +166,58 @@ class MainViewModel: ObservableObject, Identifiable {
         
         let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
         if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
-            self.temporaryTarget = "TT \(UnitsConverter.toDisplayUnits(temporaryTargetData.targetTop)) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
+            self.temporaryTarget = "TT \(UnitsConverter.mgdlToDisplayUnits(String(describing: temporaryTargetData.targetTop))) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
         } else {
             self.temporaryTarget = "TT --"
         }
+    }
+    
+    func loadChartData(forceRepaint : Bool) {
+        
+        // show a message if the today & yesterday data is missing, we're gonna load them now (will show on first install and when URI changes)
+        if UserDefaultsRepository.baseUri.exists && NightscoutCacheService.singleton.isEmpty && NightscoutDataRepository.singleton.isEmpty {
+            //TODO
+            //showMessage("Loading BG data...")
+        }
+        
+        let newCachedTodaysBgValues: [BloodSugar]
+        if NightscoutCacheService.singleton.hasTodaysBgDataPendingRequests {
+           newCachedTodaysBgValues = NightscoutDataRepository.singleton.loadTodaysBgData()
+        } else {
+            newCachedTodaysBgValues = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
+                guard let result = result else { return }
+
+                dispatchOnMain { [unowned self] in
+                    guard active else { return }
+                    
+                    if case .data(let newTodaysData) = result {
+                        self.cachedTodaysBgValues = newTodaysData
+                        paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : true)
+                    }
+                }
+            }
+        }
+        cachedTodaysBgValues = newCachedTodaysBgValues
+        
+        let newCachedYesterdaysBgValues: [BloodSugar]
+        if NightscoutCacheService.singleton.hasYesterdaysBgDataPendingRequests {
+            newCachedYesterdaysBgValues = NightscoutDataRepository.singleton.loadYesterdaysBgData()
+        } else {
+            newCachedYesterdaysBgValues = NightscoutCacheService.singleton.loadYesterdaysData { [unowned self] result in
+                guard let result = result else { return }
+
+                dispatchOnMain { [unowned self] in
+                    guard active else { return }
+                    
+                    if case .data(let newYesterdaysData) = result {
+                        self.cachedYesterdaysBgValues = newYesterdaysData
+                        paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : true)
+                    }
+                }
+            }
+        }
+        
+        cachedYesterdaysBgValues = newCachedYesterdaysBgValues
+        paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : true)
     }
 }

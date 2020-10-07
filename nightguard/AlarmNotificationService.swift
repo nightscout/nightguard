@@ -74,10 +74,16 @@ class AlarmNotificationService {
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
         let units = UserDefaultsRepository.units.value.description
 
-        content.title = "\(nightscoutData.sgv) \(nightscoutData.bgdeltaArrow)\t\(nightscoutData.bgdeltaString) \(units)"
-        content.body = "\(alarmActivationReason) alert"
-        if let sgv = Float(nightscoutData.sgv) {
-            content.badge = NSNumber(value: sgv)
+        content.title =
+            "\(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)) " +
+            "\(nightscoutData.bgdeltaArrow)\t\(UnitsConverter.mgdlToDisplayUnitsWithSign(nightscoutData.bgdeltaString)) " +
+            "\(units)"
+        content.body = "\(alarmActivationReason)"
+        if let sgv = Float(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)) {
+            // display the current sgv on appbadge only if the user actived it:
+            if UserDefaultsRepository.showBGOnAppBadge.value {
+                content.badge = NSNumber(value: sgv)
+            }
         }
         if #available(iOS 12.0, *) {
             content.sound = UNNotificationSound.criticalSoundNamed(convertToUNNotificationSoundName("alarm-notification.m4a"), withAudioVolume: 0.6)

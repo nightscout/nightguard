@@ -96,7 +96,7 @@ class CareViewController: CustomFormViewController {
                     row.value = UserDefaultsRepository.temporaryTarget.value
                     row.displayValueFor = { value in
                         guard let value = value else { return nil }
-                        return UnitsConverter.toDisplayUnits(value)
+                        return UnitsConverter.mgdlToDisplayUnits(String(describing: value))
                     }
                 }.onChange { row in
                     UserDefaultsRepository.temporaryTarget.value = row.value!

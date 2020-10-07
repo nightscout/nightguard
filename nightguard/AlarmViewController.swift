@@ -44,7 +44,10 @@ class AlarmViewController: CustomFormViewController {
                             maximumValue: UnitsConverter.mgdlToDisplayUnits(MAX_ALERT_ABOVE_VALUE))
         aboveSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
-        belowSliderRow = SliderRow.glucoseLevelSlider(initialValue: AlarmRule.alertIfBelowValue.value, minimumValue: MIN_ALERT_BELOW_VALUE, maximumValue: MAX_ALERT_BELOW_VALUE)
+        belowSliderRow = SliderRow.glucoseLevelSlider(
+                            initialValue: UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfBelowValue.value),
+                            minimumValue: UnitsConverter.mgdlToDisplayUnits(MIN_ALERT_BELOW_VALUE),
+                            maximumValue: UnitsConverter.mgdlToDisplayUnits(MAX_ALERT_BELOW_VALUE))
         belowSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
         
         form
@@ -213,7 +216,7 @@ class AlarmViewController: CustomFormViewController {
                 }
         }
     }
-    
+            
     @objc func onSliderValueChanged(slider: UISlider, event: UIEvent) {
         guard let touchEvent = event.allTouches?.first else { return }
         

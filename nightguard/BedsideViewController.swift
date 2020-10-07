@@ -100,13 +100,14 @@ class BedsideViewController: UIViewController {
             return
         }
         
-        self.bgLabel.text = UnitsConverter.toDisplayUnits(currentNightscoutData.sgv)
+        self.bgLabel.text = UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv)
         self.bgLabel.textColor = UIColorChanger.getBgColor(
-                UnitsConverter.toDisplayUnits(currentNightscoutData.sgv))
+                UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
         
-        self.deltaLabel.text = UnitsConverter.toDisplayDeltaUnits(currentNightscoutData.bgdeltaString)
-        if let displayDelta = Float(UnitsConverter.toDisplayDeltaUnits(currentNightscoutData.bgdeltaString)) {
-            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(displayDelta)
+        self.deltaLabel.text = UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString)
+        if let displayDelta = Float(UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString)) {
+            self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(
+                UnitsConverter.mgdlToDisplayUnits(displayDelta))
         } else {
             self.deltaLabel.textColor = UIColor.white
         }

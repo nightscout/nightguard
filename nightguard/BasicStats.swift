@@ -260,6 +260,6 @@ extension BasicStats {
     
     private func formattedUnits(_ value: Float) -> String? {
         return value.isNaN ? nil :
-        UnitsConverter.toDisplayUnits("\(value)") + " \(UserDefaultsRepository.units.value.description)"
+        UnitsConverter.mgdlToDisplayUnits("\(value)") + " \(UserDefaultsRepository.units.value.description)"
     }
 }

@@ -50,7 +50,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                 modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
                 modTemplate.line1TextProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdeltaString))\(currentNightscoutData.bgdeltaArrow)")
+                modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))\(UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString))\(currentNightscoutData.bgdeltaArrow)")
             }
             template = modTemplate
         case .modularLarge:
@@ -176,7 +176,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     // Display 11:24 113+2
     func getOneBigLine(_ data : NightscoutData) -> String {
-        return "\(data.hourAndMinutes) \(UnitsConverter.mgdlToDisplayUnits(data.sgv))\(UnitsConverter.mgdlToDisplayUnits(data.bgdeltaString))\(data.bgdeltaArrow)"
+        return "\(data.hourAndMinutes) \(UnitsConverter.mgdlToDisplayUnits(data.sgv))\(UnitsConverter.mgdlToDisplayUnitsWithSign(data.bgdeltaString))\(data.bgdeltaArrow)"
     }
     
     // Display 11:24
@@ -186,12 +186,12 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     // Displays 113 ↗ +2
     func getOneLine(_ data : NightscoutData) -> String {
-        return "\(getSgvAndArrow(data, " "))\t\(UnitsConverter.mgdlToDisplayUnits(data.bgdeltaString))"
+        return "\(getSgvAndArrow(data, " "))\t\(UnitsConverter.mgdlToDisplayUnitsWithSign(data.bgdeltaString))"
     }
     
     // Displays 113↗+2
     func getOneShortLine(_ data : NightscoutData) -> String {
-        return "\(getSgvAndArrow(data, ""))\(UnitsConverter.mgdlToDisplayUnits(data.bgdeltaString))"
+        return "\(getSgvAndArrow(data, ""))\(UnitsConverter.mgdlToDisplayUnitsWithSign(data.bgdeltaString))"
     }
     
     func getSgvAndArrow(_ data: NightscoutData, _ separator: String) -> String {

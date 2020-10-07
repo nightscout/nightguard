@@ -250,11 +250,9 @@ extension SliderRow {
     class func glucoseLevelSlider(initialValue: Float, minimumValue: Float, maximumValue: Float, snapIncrementForMgDl: Float = 10.0) -> SliderRow {
         
         return SliderRow() { row in
-            row.value = initialValue
+                row.value = initialValue
             }.cellSetup { cell, row in
                 
-                let minimumValue = Float(UnitsConverter.mgdlToDisplayUnits("\(minimumValue)"))!
-                let maximumValue = Float(UnitsConverter.mgdlToDisplayUnits("\(maximumValue)"))!
                 let snapIncrement = (UserDefaultsRepository.units.value == .mgdl) ? snapIncrementForMgDl : 0.1
                 
                 let steps = (maximumValue - minimumValue) / snapIncrement
@@ -264,6 +262,18 @@ extension SliderRow {
                 row.displayValueFor = { value in
                     guard let value = value else { return "" }
                     let units = UserDefaultsRepository.units.value.description
+                    
+                    // Play haptic sound
+                    if value.truncatingRemainder(dividingBy: snapIncrement) == 0 {
+                        if let lastAssignedValue = row.lastSelectedValue {
+                            if Int(lastAssignedValue * 10) != Int(value * 10) {
+                                let uiImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+                                uiImpactFeedbackGenerator.impactOccurred()
+                            }
+                        }
+                    }
+                    row.lastSelectedValue = value
+                    
                     return String("\(value.cleanValue) \(units)")
                 }
                 

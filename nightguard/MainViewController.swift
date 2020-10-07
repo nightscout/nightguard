@@ -466,7 +466,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             self.bgLabel.textColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
             
-            self.deltaLabel.text = UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdeltaString)
+            self.deltaLabel.text = UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString)
             self.deltaArrowsLabel.text = currentNightscoutData.bgdeltaArrow
             self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(
                 UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdelta))

@@ -586,7 +586,7 @@ class NightscoutService {
             raw = scale * (unfiltered - intercept) / slope / ratio
         }
         
-        return "\(Int(UnitsConverter.toDisplayUnits(raw.rounded())))"
+        return "\(Int(UnitsConverter.mgdlToDisplayUnits(raw.rounded())))"
     }
     
     /* Reads the treatment record for the last cannula change, sensor change and battery age */

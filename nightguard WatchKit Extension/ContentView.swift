@@ -8,12 +8,12 @@
 
 import SwiftUI
 import SpriteKit
+import Combine
 
 struct ContentView: View {
     
+    @State var crownValue = 0.1
     @ObservedObject var viewModel: MainViewModel
-    
-    let chartScene: SKScene
     
     init(mainViewModel: MainViewModel) {
         
@@ -31,21 +31,18 @@ struct ContentView: View {
             // Apple Watch 42mm
             sceneHeight = 145.0
         }
-        
-        chartScene = ChartScene(size: CGSize(width: screenBounds.width, height: sceneHeight),
-                                newCanvasWidth: screenBounds.width * 6, useContrastfulColors: false)
-    }
+   }
 
     var body: some View {
         VStack() {
             HStack(spacing: 5, content: {
-                Text(UnitsConverter.toDisplayUnits(
+                Text(UnitsConverter.mgdlToDisplayUnits(
                         viewModel.nightscoutData?.sgv ?? "---"))
                     .foregroundColor(viewModel.sgvColor)
-                    .font(.system(size: 45))
+                    .font(.system(size: 40))
                     .frame(alignment: .topLeading)
                 VStack() {
-                    Text(UnitsConverter.toDisplayDeltaUnits(
+                    Text(UnitsConverter.mgdlToDisplayUnits(
                             viewModel.nightscoutData?.bgdeltaString ?? "?"))
                         .foregroundColor(viewModel.sgvDeltaColor)
                         .font(.system(size: 12))
@@ -103,7 +100,11 @@ struct ContentView: View {
             }.frame(minWidth: 0,
                     maxWidth: .infinity)
             VStack() {
-                SpriteView(scene: chartScene)
+                if #available(watchOSApplicationExtension 7.0, *) {
+                    SpriteView(scene: viewModel.skScene!)
+                } else {
+                    // Fallback on earlier versions
+                }
             }.frame(minWidth: 0,
                     maxWidth: .infinity,
                     minHeight: 0,
@@ -111,6 +112,13 @@ struct ContentView: View {
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
         .edgesIgnoringSafeArea(.bottom)
+        .focusable(false)
+        .digitalCrownRotation($crownValue, from: 0.1, through: 5.0, sensitivity: .low, isContinuous: false, isHapticFeedbackEnabled: true)
+          .onAppear() {
+
+          }.onReceive(Just(crownValue)) { output in
+              print(output) // Here is the answer.
+          }
     }
 }
 

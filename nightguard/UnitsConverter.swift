@@ -22,7 +22,13 @@ class UnitsConverter {
             return value
         }
         
-        let units = UserDefaultsRepository.units.value
+        // if the UI is locked, looks like we are not allowed to access the userdefaults
+        // so do this on main Thread only:
+        var units = Units.mmol
+        dispatchOnMain {
+            units = UserDefaultsRepository.units.value
+        }
+       
         if units == Units.mgdl {
             // nothing to do here - just remove decimals
             if value.contains(".") {
@@ -34,101 +40,43 @@ class UnitsConverter {
         return toMmol(value)
     }
     
-    // Converts uncertain value to the wished unit
-    // Unit to be used.
-    static func toDisplayUnits(_ value : String) -> String {
+    static func mgdlToDisplayUnitsWithSign(_ value : String) -> String {
         
-        if value == "---" {
-            return value
+        let valueInDisplayUnits = mgdlToDisplayUnits(value)
+        if valueInDisplayUnits == "---" {
+            return valueInDisplayUnits
         }
         
-        let units = UserDefaultsRepository.units.value
-        if units == Units.mgdl {
-            return toMgdl(value)
+        // add a sign
+        guard let floatValue = Float(valueInDisplayUnits) else {
+            return valueInDisplayUnits
         }
         
-        return toMmol(value)
-    }
-    
-    static func toDisplayDeltaUnits(_ value : String) -> String {
-        
-        if value == "---" {
-            return value
+        if floatValue >= 0 {
+            // remove .0 decimals and add a sign
+            return "\(floatValue.cleanSignedValue)"
         }
         
-        let units = UserDefaultsRepository.units.value
-        if units == Units.mgdl {
-            return toMgdlDelta(value)
-        }
-        
-        return toMmolDelta(value)
+        return valueInDisplayUnits
     }
     
     // Converts the internally mg/dL to mmol if thats the defined
     // Unit to be used.
     static func mgdlToDisplayUnits(_ value : Float) -> Float {
         
-        let units = UserDefaultsRepository.units.value
+        // if the UI is locked, looks like we are not allowed to access the userdefaults
+        // so do this on main Thread only:
+        var units = Units.mmol
+        dispatchOnMain {
+            units = UserDefaultsRepository.units.value
+        }
+        
         if units == Units.mgdl {
             return removeDecimals(value)
         }
         
         // convert mg/dL to mmol/l
         return value * 0.0555
-    }
-    
-    static func toDisplayUnits(_ value : Float) -> Float {
-        
-        let units = UserDefaultsRepository.units.value
-        if units == Units.mgdl {
-            return removeDecimals(value)
-        }
-        
-        // convert mg/dL to mmol/l
-        return value * 0.0555
-    }
-    
-    static func toDisplayUnits(_ value : Int) -> String {
-        
-        let units = UserDefaultsRepository.units.value
-        if units == Units.mgdl {
-            return String(describing: value)
-        }
-        
-        // convert mg/dL to mmol/l
-        let floatValue : Float = Float(value) * 0.0555
-        return String(floatValue.cleanValue)
-    }
-    
-    static func toDisplayUnits(_ value : CGFloat) -> CGFloat {
-        
-        return CGFloat(toDisplayUnits(Float(value)))
-    }
-    
-    static func toDisplayUnits(_ mgValues : [BloodSugar]) -> [BloodSugar] {
-        
-        let units = UserDefaultsRepository.units.value
-        if units == Units.mgdl {
-            return mgValues
-        }
-        
-        var mmolValues : [BloodSugar] = []
-        for value in mgValues {
-            mmolValues.append(toMmol(value))
-        }
-        
-        return mmolValues
-    }
-    
-    static func toDisplayUnits(_ days : [[BloodSugar]]) -> [[BloodSugar]] {
-        
-        var newDays : [[BloodSugar]] = []
-        
-        for day in days {
-            newDays.append(toDisplayUnits(day))
-        }
-        
-        return newDays
     }
     
     static func toMmol(_ bloodSugar : BloodSugar) -> BloodSugar {
@@ -140,31 +88,12 @@ class UnitsConverter {
         return Float(mmolValue * 0.0555).round(to: 1)
     }
     
-    static func toMmol(_ uncertainValue : String) -> String {
+    static func toMmol(_ mgdlValue : String) -> String {
         
-        // determine whether mmol is already contained
-        var doubleValue : Double = Double(uncertainValue)!
-        if uncertainValue.contains(".") {
-            // the value seems to be already mmol -> nothing to do
-            return uncertainValue.cleanFloatValue
+        guard let mmolValue = Float(mgdlValue) else {
+            return "??"
         }
-        
-        // looks like mgdl is contained
-        // convert mg/dL to mmol/l
-        doubleValue = doubleValue * 0.0555
-        return doubleValue.cleanValue
-    }
-    
-    static func toMmolDelta(_ uncertainValue : String) -> String {
-        
-        var floatValue : Float = Float(uncertainValue)!
-        // Looks like we have a mg/dl delta value. Convert to mmol:
-        if floatValue < 1 && floatValue > -1 {
-            // seems to be already a mmol delta
-            return String(floatValue.cleanSignedValue)
-        }
-        floatValue = floatValue * 0.0555
-        return floatValue.cleanSignedValue
+        return (mmolValue * 0.0555).cleanValue
     }
     
     // Converts the value in Display Units to Mg/dL.
@@ -193,21 +122,6 @@ class UnitsConverter {
 
         floatValue = floatValue * (1 / 0.0555)
         return String(floatValue.cleanValue)
-    }
-    
-    static func toMgdlDelta(_ uncertainValue : String) -> String {
-        
-        var floatValue : Float = Float(uncertainValue)!
-        
-        if (floatValue >= 1 || floatValue <= -1) {
-            // the value seems to be already mgdl -> nothing to do
-            return floatValue.rounded().cleanSignedValue
-        }
-        
-        // looks like mmol is contained
-        // convert mmol to mg/dl
-        floatValue = floatValue * (1 / 0.0555)
-        return floatValue.rounded().cleanSignedValue
     }
     
     // if a "." is contained, simply takes the left part of the string only

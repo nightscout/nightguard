@@ -368,7 +368,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv)))
         
         self.deltaLabel.setText(
-            UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdeltaString))
+            UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString))
         self.deltaArrowLabel.setText(currentNightscoutData.bgdeltaArrow)
         self.deltaLabel.setTextColor(UIColorChanger.getDeltaLabelColor(
             UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.bgdelta)))
@@ -485,7 +485,8 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         
         let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
         if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
-            self.temporaryTargetLabel.setText("TT \(UnitsConverter.toDisplayUnits(temporaryTargetData.targetTop)) \(temporaryTargetData.activeUntilDate.remainingMinutes())m")
+            self.temporaryTargetLabel.setText(
+                "TT \(UnitsConverter.mgdlToDisplayUnits(String(describing: temporaryTargetData.targetTop))) \(temporaryTargetData.activeUntilDate.remainingMinutes())m")
         } else {
             self.temporaryTargetLabel.setText("TT --")
         }
