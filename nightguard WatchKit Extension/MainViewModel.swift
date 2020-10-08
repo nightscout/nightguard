@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import SpriteKit
 
+@available(watchOSApplicationExtension 6.0, *)
 class MainViewModel: ObservableObject, Identifiable {
     
     @Published var nightscoutData: NightscoutData?
