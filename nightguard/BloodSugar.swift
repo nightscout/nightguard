@@ -10,6 +10,7 @@ import Foundation
 
 // This class contains the Bloodsugar Value for a certain point in time.
 // this class is immutable. Recreate the object in order to change values.
+// Values are always stored as mgdl - no matter what the backend is configured for.
 class BloodSugar : NSCoder {
     let value : Float
     let timestamp : Double
@@ -29,7 +30,7 @@ class BloodSugar : NSCoder {
     }
     
     static func isValid(value: Float) -> Bool {
-        return UnitsConverter.toMgdl(value) > 10
+        return value > 10
     }
     
     override var debugDescription: String {

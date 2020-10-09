@@ -79,11 +79,6 @@ class UnitsConverter {
         return value * 0.0555
     }
     
-    static func toMmol(_ bloodSugar : BloodSugar) -> BloodSugar {
-        
-        return BloodSugar.init(value: toMmol(bloodSugar.value), timestamp: bloodSugar.timestamp)
-    }
-    
     static func toMmol(_ mmolValue : Float) -> Float {
         return Float(mmolValue * 0.0555).round(to: 1)
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch44"/>
+    <device id="watch42"/>
     <dependencies>
         <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
@@ -28,11 +28,11 @@
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="nightguard">
+                <controller spacing="1" fullBounds="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="nightguard">
                     <items>
-                        <group width="1" height="58" alignment="left" spacing="2" id="1AH-d7-hZo">
+                        <group width="1" alignment="left" spacing="2" id="1AH-d7-hZo">
                             <items>
-                                <group alignment="left" verticalAlignment="bottom" layout="vertical" spacing="2" id="wwf-5f-pVK">
+                                <group alignment="left" layout="vertical" spacing="2" id="wwf-5f-pVK">
                                     <items>
                                         <label height="34" alignment="left" text="---" textAlignment="left" baselineAdjustment="alignCenters" minimumScaleFactor="0.40000000000000002" id="vdn-99-EwA">
                                             <fontDescription key="font" type="system" pointSize="46"/>
@@ -64,19 +64,22 @@
                                 </group>
                                 <group alignment="left" layout="vertical" spacing="0.0" id="BXE-K7-ohJ">
                                     <items>
-                                        <group width="1" height="17" alignment="left" id="3da-gB-Sdv"/>
-                                        <label alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
-                                            <fontDescription key="font" type="system" pointSize="12"/>
-                                            <variation key="device=watch38mm">
-                                                <fontDescription key="font" type="system" pointSize="10"/>
-                                            </variation>
-                                        </label>
-                                        <label alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="nnO-nW-RbM">
-                                            <fontDescription key="font" type="system" pointSize="12"/>
-                                            <variation key="device=watch38mm">
-                                                <fontDescription key="font" type="system" pointSize="10"/>
-                                            </variation>
-                                        </label>
+                                        <group width="1" alignment="left" id="Xnj-k5-EVT">
+                                            <items>
+                                                <label alignment="left" text="+10" minimumScaleFactor="0.10000000000000001" id="frk-q8-3y9">
+                                                    <fontDescription key="font" type="system" pointSize="12"/>
+                                                    <variation key="device=watch38mm">
+                                                        <fontDescription key="font" type="system" pointSize="10"/>
+                                                    </variation>
+                                                </label>
+                                                <label alignment="left" text="-" textAlignment="left" minimumScaleFactor="0.10000000000000001" id="nnO-nW-RbM">
+                                                    <fontDescription key="font" type="system" pointSize="12"/>
+                                                    <variation key="device=watch38mm">
+                                                        <fontDescription key="font" type="system" pointSize="10"/>
+                                                    </variation>
+                                                </label>
+                                            </items>
+                                        </group>
                                         <label alignment="left" text="59min" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="w1H-tu-XyX">
                                             <fontDescription key="font" type="system" pointSize="12"/>
                                             <variation key="device=watch38mm">
@@ -85,23 +88,30 @@
                                         </label>
                                     </items>
                                 </group>
-                                <group alignment="right" verticalAlignment="bottom" layout="overlap" id="rvs-oN-6yu">
+                                <group alignment="right" layout="overlap" id="rvs-oN-6yu">
                                     <items>
                                         <group alignment="left" layout="vertical" id="2qL-lw-zuD">
                                             <items>
                                                 <group alignment="left" id="XtE-Jq-XPU">
                                                     <items>
-                                                        <label alignment="left" text="0g" id="p7p-6Q-nld">
-                                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                                        <label alignment="left" text="0g" minimumScaleFactor="0.10000000000000001" id="p7p-6Q-nld">
+                                                            <fontDescription key="font" type="system" pointSize="10"/>
                                                         </label>
                                                         <label alignment="right" text="0.05U" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="oxQ-6L-Aqk">
-                                                            <fontDescription key="font" type="system" pointSize="12"/>
+                                                            <fontDescription key="font" type="system" pointSize="10"/>
                                                         </label>
                                                     </items>
                                                 </group>
-                                                <label alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
-                                                    <fontDescription key="font" type="system" pointSize="12"/>
-                                                </label>
+                                                <group width="1" alignment="left" id="COe-YH-XLM">
+                                                    <items>
+                                                        <label alignment="right" text="R --" minimumScaleFactor="0.10000000000000001" id="oj1-Z4-GyD" userLabel="Reservoir Label">
+                                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                                        </label>
+                                                        <label alignment="right" text="100%" textAlignment="right" minimumScaleFactor="0.10000000000000001" id="lz8-YE-T1d">
+                                                            <fontDescription key="font" type="system" pointSize="10"/>
+                                                        </label>
+                                                    </items>
+                                                </group>
                                             </items>
                                             <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
                                         </group>
@@ -123,7 +133,6 @@
                                     </connections>
                                 </tapGestureRecognizer>
                             </gestureRecognizers>
-                            <variation key="device=watch38mm" height="52"/>
                         </group>
                         <group width="1" alignment="left" radius="0.0" spacing="10" id="AoU-6l-JOe">
                             <items>
@@ -131,9 +140,6 @@
                                     <fontDescription key="font" type="system" pointSize="10"/>
                                 </label>
                                 <label alignment="center" text="SAGE --" textAlignment="center" minimumScaleFactor="0.5" id="lDW-iC-Ham">
-                                    <fontDescription key="font" type="system" pointSize="10"/>
-                                </label>
-                                <label alignment="center" text="RES --" minimumScaleFactor="0.5" id="oj1-Z4-GyD" userLabel="Reservoir Label">
                                     <fontDescription key="font" type="system" pointSize="10"/>
                                 </label>
                                 <label alignment="right" text="BAT --" textAlignment="right" minimumScaleFactor="0.5" id="1eC-zS-iza">

@@ -102,10 +102,11 @@ extension Array where Element: BloodSugar {
         
         if (self.last?.timestamp ?? 0) < nightscoutData.time.doubleValue {
             
-            // NOTE: convert current reading units to mg/dL (readings are always in mg/dL)
-            self.append(
-                Element (value: UnitsConverter.toMgdl(Float(nightscoutData.sgv)!), timestamp: nightscoutData.time.doubleValue)
-            )
+            if let sgvAsFloat = Float(nightscoutData.sgv) {
+                self.append(
+                    Element (value: sgvAsFloat, timestamp: nightscoutData.time.doubleValue)
+                )
+            }
         }
     }
     
