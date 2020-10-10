@@ -44,26 +44,26 @@ class CareViewController: CustomFormViewController {
                     
                     if row.value == NSLocalizedString("Activity", comment: "TT Reason Picker Activity") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTarget.value = 130
-                        targetValueRow.value = UserDefaultsRepository.temporaryTarget.value
+                        UserDefaultsRepository.temporaryTargetAmount.value = 130
+                        targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
                         targetValueRow.reload()
                     }
                     if row.value == NSLocalizedString("Too High", comment: "TT Reason Picker Too High") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTarget.value = 72
-                        targetValueRow.value = UserDefaultsRepository.temporaryTarget.value
+                        UserDefaultsRepository.temporaryTargetAmount.value = 72
+                        targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
                         targetValueRow.reload()
                     }
                     if row.value == NSLocalizedString("Too Low", comment: "TT Reason Picker Too Low") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTarget.value = 120
-                        targetValueRow.value = UserDefaultsRepository.temporaryTarget.value
+                        UserDefaultsRepository.temporaryTargetAmount.value = 120
+                        targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
                         targetValueRow.reload()
                     }
                     if row.value == NSLocalizedString("Meal Soon", comment: "TT Reason Picker Meal Soon") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTarget.value = 80
-                        targetValueRow.value = UserDefaultsRepository.temporaryTarget.value
+                        UserDefaultsRepository.temporaryTargetAmount.value = 80
+                        targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
                         targetValueRow.reload()
                     }
                 }
@@ -93,13 +93,13 @@ class CareViewController: CustomFormViewController {
                     row.tag = "Value"
                     row.title = NSLocalizedString("Target Value", comment: "Label for Temporary Target Value")
                     row.options = [72, 80, 100, 120]
-                    row.value = UserDefaultsRepository.temporaryTarget.value
+                    row.value = UserDefaultsRepository.temporaryTargetAmount.value
                     row.displayValueFor = { value in
                         guard let value = value else { return nil }
                         return UnitsConverter.mgdlToDisplayUnits(String(describing: value))
                     }
                 }.onChange { row in
-                    UserDefaultsRepository.temporaryTarget.value = row.value!
+                    UserDefaultsRepository.temporaryTargetAmount.value = row.value!
                 }
         
                 <<< ButtonRow() { row in
@@ -150,7 +150,7 @@ class CareViewController: CustomFormViewController {
             
             NightscoutService.singleton.createTemporaryTarget(
                 reason: UserDefaultsRepository.temporaryTargetReason.value,
-                target: UserDefaultsRepository.temporaryTarget.value,
+                target: UserDefaultsRepository.temporaryTargetAmount.value,
                 durationInMinutes: UserDefaultsRepository.temporaryTargetDuration.value,
                 resultHandler: {(error: String?) in
                     
