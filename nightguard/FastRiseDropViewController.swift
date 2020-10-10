@@ -57,7 +57,7 @@ class FastRiseDropViewController: CustomFormViewController {
 
                 }.onChange { row in
                     guard let value = row.value else { return }
-                    AlarmRule.deltaAmount.value = UnitsConverter.toMgdl(Float(value))
+                    AlarmRule.deltaAmount.value = UnitsConverter.displayValueToMgdl(Float(value))
                     print(AlarmRule.deltaAmount.value)
         }
     }

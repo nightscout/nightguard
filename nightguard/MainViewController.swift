@@ -565,7 +565,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     fileprivate func showHideRawBGPanel(_ nightscoutData: NightscoutData? = nil) {
         
         let currentNightscoutData = nightscoutData ?? NightscoutCacheService.singleton.getCurrentNightscoutData()
-        let isValidRawBGValue = UnitsConverter.toMgdl(currentNightscoutData.rawbg) > 0
+        let isValidRawBGValue = UnitsConverter.displayValueToMgdl(currentNightscoutData.rawbg) > 0
 
         // show raw values panel ONLY if configured so and we have a valid rawbg value!
         self.rawValuesPanel.isHidden = !UserDefaultsRepository.showRawBG.value || !isValidRawBGValue

@@ -148,7 +148,7 @@ class AlarmViewController: CustomFormViewController {
                     if AlarmRule.isPersistentHighEnabled.value {
                         if #available(iOS 11.0, *) {
                             return String(format: NSLocalizedString(
-                                "Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %d).",
+                                "Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %@.",
                                 comment: "footer for Persistent high"), AlarmRule.persistentHighMinutes.value, urgentHighWithUnits)
                         } else {
                             // single line, as iOS 10 doesn't expand cell for more lines
@@ -226,7 +226,7 @@ class AlarmViewController: CustomFormViewController {
             if slider === aboveSliderRow.cell.slider {
                 
                 guard let value = aboveSliderRow.value else { return }
-                let mgdlValue = UnitsConverter.toMgdl(value)
+                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
                 
                 guard mgdlValue > UserDefaultsRepository.lowerBound.value else {
                     alertInvalidChange(message: "High BG value should be above low BG value!")
@@ -240,7 +240,7 @@ class AlarmViewController: CustomFormViewController {
             } else if slider === belowSliderRow.cell.slider {
                 
                 guard let value = belowSliderRow.value else { return }
-                let mgdlValue = UnitsConverter.toMgdl(value)
+                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
                 
                 guard mgdlValue < UserDefaultsRepository.upperBound.value else {
                     alertInvalidChange(message: "Low BG value should be below high BG value!")

@@ -92,7 +92,7 @@ class UnitsConverter {
     }
     
     // Converts the value in Display Units to Mg/dL.
-    static func toMgdl(_ value : Float) -> Float {
+    static func displayValueToMgdl(_ value : Float) -> Float {
         let units = UserDefaultsRepository.units.value
         if units == Units.mgdl {
             return removeDecimals(value)
@@ -103,12 +103,17 @@ class UnitsConverter {
     }
     
     // Converts the value in Display Units to Mg/dL.
-    static func toMgdl(_ value : String) -> Float {
+    static func displayValueToMgdl(_ value : String) -> Float {
         
         guard let floatValue = Float(value.trimmingCharacters(in: CharacterSet.whitespaces)) else {
             return 0
         }
-        return toMgdl(floatValue)
+        return displayValueToMgdl(floatValue)
+    }
+    
+    static func mmolToMgdl(_ mmolValue : Float) -> Float {
+        
+        return mmolValue * 18.02
     }
     
     static func toMgdl(_ uncertainValue : String) -> String {

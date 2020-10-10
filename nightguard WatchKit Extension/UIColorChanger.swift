@@ -26,7 +26,7 @@ class UIColorChanger {
         }
         
         if (UserDefaultsRepository.units.value == Units.mmol) {
-            bgNumber = UnitsConverter.toMgdl(bgNumber)
+            bgNumber = UnitsConverter.displayValueToMgdl(bgNumber)
         }
         
         if bgNumber > 200 {

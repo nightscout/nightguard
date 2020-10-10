@@ -485,7 +485,8 @@ class NightscoutService {
                         }
                         return
                 }
-                guard let bgdelta = Float(String(describing: bgDeltaObjectUnwrapped))
+                let bgDeltaAsString = String(describing: bgDeltaObjectUnwrapped)
+                guard var bgdeltaAsMgdl = Float(bgDeltaAsString)
                     else {
                         nightscoutData.bgdeltaString = "?"
                         nightscoutData.bgdelta = 0
@@ -494,8 +495,14 @@ class NightscoutService {
                         }
                         return
                 }
-                nightscoutData.bgdeltaString = self.direction(bgdelta) + String(format: "%.1f", bgdelta)
-                nightscoutData.bgdelta = bgdelta
+                // Workaround a nightscout bug: even if mgdl has been request, the bgdelta will be
+                // returned in mmol. So convert it to mgdl in that case:
+                if bgDeltaAsString.contains(".") {
+                    // looks like its mmol: convert mmol to mgdl
+                    bgdeltaAsMgdl = UnitsConverter.mmolToMgdl(bgdeltaAsMgdl)
+                }
+                nightscoutData.bgdeltaString = self.direction(bgdeltaAsMgdl) + String(format: "%.1f", bgdeltaAsMgdl)
+                nightscoutData.bgdelta = bgdeltaAsMgdl
                 
                 let cals = jsonDict.object(forKey: "cals") as? NSArray
                 let currentCals = cals?.firstObject as? NSDictionary
@@ -554,7 +561,7 @@ class NightscoutService {
         case 4:
             return "Heavy"
         default:
-            if UnitsConverter.toMgdl(sgv) < 40 {
+            if UnitsConverter.displayValueToMgdl(sgv) < 40.0 {
                 return "Heavy"
             } else {
                 return "~~~"
@@ -574,7 +581,7 @@ class NightscoutService {
         let intercept: Float = (cals?.object(forKey: "intercept") as? NSNumber)?.floatValue ?? 0
         
         let sgv = bgs.object(forKey: "sgv") as! NSString
-        let sgvmgdl: Float = UnitsConverter.toMgdl(String(sgv))
+        let sgvmgdl: Float = UnitsConverter.displayValueToMgdl(String(sgv))
         
         var raw: Float = 0
         if slope == 0 || unfiltered == 0 || scale == 0 {

@@ -66,9 +66,9 @@ class PersistentHighViewController: CustomFormViewController {
             if slider === urgentHighSliderRow.cell.slider {
                 
                 guard let value = urgentHighSliderRow.value else { return }
-                let mgdlValue = UnitsConverter.toMgdl(value)
+                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
                 
-                print("Changed (persistent) urgent high slider to \(value) \(UserDefaultsRepository.units.value.description)")
+                print("Changed (persistent) urgent high slider to \(value) \(UserDefaultsRepository.units.value.description). \(mgdlValue) in mg/dl.")
                 AlarmRule.persistentHighUpperBound.value = mgdlValue
             }
             

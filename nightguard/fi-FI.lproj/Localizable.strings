@@ -44,7 +44,7 @@
 "Alerts when a low BG value is predicted in the near future (if the current trend is continued)." = "Hälytykset kun ennustetaan lähitulevaisuudessa alhaista verensokeria (jos nykyinen suuntaus jatkuu).";
 
 /* footer for Persistent high */
-"Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %d)." = "Hälytykset kun verensokeri pysyy korkealla enemmän kuin %1$d minuuttia tai ylittää erittäin korkean lukeman %2$d).";
+"Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %@." = "Hälytykset kun verensokeri pysyy korkealla enemmän kuin %1$d minuuttia tai ylittää erittäin korkean lukeman %2$@.";
 
 /* Footer for Fast rise/drop */
 "Alerts when BG values are rising or dropping with %@ %@, considering the last %d consecutive readings." = "Hälytykset kun verensokeri lukema on nousemassa tai laskemassa %1$@ %2$@, ottaen huomioon %3$d peräkkäistä lukemaa.";
