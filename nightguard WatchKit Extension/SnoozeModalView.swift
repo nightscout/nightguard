@@ -12,8 +12,8 @@ import Combine
 
 @available(watchOSApplicationExtension 6.0, *)
 struct SnoozeModalView: View {
-     @Environment(\.presentationMode) var presentationMode
 
+    @Environment(\.presentationMode) var presentationMode
     @Binding var isPresented: Bool
     
     var body: some View {

@@ -183,19 +183,6 @@ class PrefsViewController: CustomFormViewController {
             }
 
             <<< SwitchRow() { row in
-                row.title = NSLocalizedString("Show Raw BG and Noise Level", comment: "Label for Show Raw BG")
-                row.value = UserDefaultsRepository.showRawBG.value
-                }.onChange { [weak self] row in
-                    guard let value = row.value else { return }
-                    
-                    if value {
-                        self?.showAlert(title: NSLocalizedString("IMPORTANT", comment: "Title for confirmation"), message: NSLocalizedString("For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!", comment: "Body of confirmation"))
-                    }
-                    
-                    UserDefaultsRepository.showRawBG.value = value
-            }
-
-            <<< SwitchRow() { row in
                 row.title = NSLocalizedString("Show BG on App Badge", comment: "Label for Show BG on Badge")
                 row.value = UserDefaultsRepository.showBGOnAppBadge.value
                 }.onChange { row in

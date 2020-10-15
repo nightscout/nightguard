@@ -32,19 +32,31 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var error: Error?
     @Published var active: Bool = false
     
-    @Published var skScene: ChartScene?
+    @Published var skScene: ChartScene
     
     // Old values that have been read before
     @Published var cachedTodaysBgValues : [BloodSugar] = []
     @Published var cachedYesterdaysBgValues : [BloodSugar] = []
 
     init() {
+        let bounds = WKInterfaceDevice.current().screenBounds
+        let chartSceneHeight = MainViewModel.determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
+        
+        skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6, useContrastfulColors: false)
+        
         loadCurrentBgData(forceRefresh: false)
         loadCareData()
         loadDeviceStatusData()
-        loadChartData(forceRepaint: false)
+        loadChartData(forceRepaint: true, moveToLatestValue: true)
     }
     
+    func refreshData(forceRefresh : Bool, moveToLatestValue : Bool) {
+        loadCurrentBgData(forceRefresh: forceRefresh)
+        loadCareData()
+        loadDeviceStatusData()
+        loadChartData(forceRepaint: forceRefresh, moveToLatestValue: moveToLatestValue)
+    }
+
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
         
         let device = WKInterfaceDevice.current()
@@ -52,9 +64,9 @@ class MainViewModel: ObservableObject, Identifiable {
         
         let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
         
-        let chartSceneHeight = determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
+        let chartSceneHeight = MainViewModel.determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
         skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6, useContrastfulColors: false)
-        skScene!.paintChart(
+        skScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: bounds.width * 6,
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
@@ -77,7 +89,7 @@ class MainViewModel: ObservableObject, Identifiable {
         return String(format: NSLocalizedString("Snoozed %dmin", comment: "Snoozed duration on watch"), AlarmRule.getRemainingSnoozeMinutes())
     }
     
-    fileprivate func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
+    fileprivate static func determineSceneHeightFromCurrentWatchType(interfaceBounds : CGRect) -> CGFloat {
         
         if (interfaceBounds.height >= 224.0) {
             // Apple Watch 44mm
@@ -173,7 +185,7 @@ class MainViewModel: ObservableObject, Identifiable {
         }
     }
     
-    func loadChartData(forceRepaint : Bool) {
+    func loadChartData(forceRepaint : Bool, moveToLatestValue : Bool) {
         
         // show a message if the today & yesterday data is missing, we're gonna load them now (will show on first install and when URI changes)
         if UserDefaultsRepository.baseUri.exists && NightscoutCacheService.singleton.isEmpty && NightscoutDataRepository.singleton.isEmpty {
@@ -219,6 +231,8 @@ class MainViewModel: ObservableObject, Identifiable {
         }
         
         cachedYesterdaysBgValues = newCachedYesterdaysBgValues
-        paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : true)
+        if forceRepaint {
+            paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : moveToLatestValue)
+        }
     }
 }

@@ -13,7 +13,9 @@ import Combine
 @available(watchOSApplicationExtension 6.0, *)
 struct ContentView: View {
     
-    @State var crownValue = 0.1
+    @State var crownValue = 0.0
+    @State var oldCrownValue = 0.0
+    
     @ObservedObject var viewModel: MainViewModel
     
     init(mainViewModel: MainViewModel) {
@@ -61,8 +63,12 @@ struct ContentView: View {
                         Text(viewModel.nightscoutData?.iob ?? "-")
                             .font(.system(size: 12))
                     }
-                    Text(viewModel.nightscoutData?.battery ?? "-")
-                        .font(.system(size: 12))
+                    HStack(){
+                        Text(viewModel.reservoir)
+                            .font(.system(size: 12))
+                        Text(viewModel.nightscoutData?.battery ?? "-")
+                            .font(.system(size: 12))
+                    }
                 }).frame(minWidth: 0,
                          maxWidth: .infinity,
                          alignment: .bottomTrailing)
@@ -75,9 +81,6 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity,
                            alignment: .leading)
                 Text(viewModel.sensorAge ?? "?d ?h")
-                    .font(.system(size: 10))
-                    .frame(maxWidth: .infinity)
-                Text(viewModel.reservoir)
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity)
                 Text(viewModel.batteryAge ?? "?d ?h")
@@ -102,9 +105,18 @@ struct ContentView: View {
                     maxWidth: .infinity)
             VStack() {
                 if #available(watchOSApplicationExtension 7.0, *) {
-                    SpriteView(scene: viewModel.skScene!)
-                } else {
-                    // Fallback on earlier versions
+                    SpriteView(scene: viewModel.skScene)
+                        .focusable(true)
+                        .digitalCrownRotation($crownValue, from: 0, through: 10000, by: 15, sensitivity: .high, isContinuous: true, isHapticFeedbackEnabled: true)
+                        .onReceive(Just(crownValue)) { output in
+                            if abs(oldCrownValue - crownValue) > 1000 {
+                                // the counter jumped from 0 to 1000 (or vice versa). Ignore this
+                                oldCrownValue = crownValue
+                                return
+                            }
+                            viewModel.skScene.moveChart(-1 * (oldCrownValue - crownValue))
+                            self.oldCrownValue = crownValue
+                        }
                 }
             }.frame(minWidth: 0,
                     maxWidth: .infinity,
@@ -114,12 +126,9 @@ struct ContentView: View {
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
         .edgesIgnoringSafeArea(.bottom)
         .focusable(false)
-        .digitalCrownRotation($crownValue, from: 0.1, through: 5.0, sensitivity: .low, isContinuous: false, isHapticFeedbackEnabled: true)
-          .onAppear() {
-
-          }.onReceive(Just(crownValue)) { output in
-              print(output) // Here is the answer.
-          }
+        .onAppear() {
+            viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
+        }
     }
 }
 

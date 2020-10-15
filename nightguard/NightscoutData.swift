@@ -50,8 +50,6 @@ class NightscoutData : NSObject, NSCoding, Codable {
     var battery : String = "---"
     var iob : String = ""
     var cob : String = ""
-    var rawbg: String = "---"
-    var noise: String = "---"
     
     override init () {
         super.init()
@@ -118,16 +116,6 @@ class NightscoutData : NSObject, NSCoding, Codable {
             return
         }
         self.cob = cob
-        
-        guard let rawbg = decoder.decodeObject(forKey: "rawbg") as? String else {
-            return
-        }
-        self.rawbg = rawbg
-        
-        guard let noise = decoder.decodeObject(forKey: "noise") as? String else {
-            return
-        }
-        self.noise = noise
     }
     
     /*
@@ -142,8 +130,6 @@ class NightscoutData : NSObject, NSCoding, Codable {
         aCoder.encode(self.battery, forKey: "battery")
         aCoder.encode(self.iob, forKey: "iob")
         aCoder.encode(self.cob, forKey: "cob")
-        aCoder.encode(self.rawbg, forKey: "rawbg")
-        aCoder.encode(self.noise, forKey: "noise")
     }
     
     
@@ -165,8 +151,6 @@ class NightscoutData : NSObject, NSCoding, Codable {
         self.battery = try container.decode(String.self, forKey: .battery)
         self.iob = try container.decode(String.self, forKey: .iob)
         self.cob = try container.decode(String.self, forKey: .cob)
-        self.rawbg = try container.decode(String.self, forKey: .rawbg)
-        self.noise = try container.decode(String.self, forKey: .noise)
     }
     
     /// Encodes this value into the given encoder.
@@ -188,8 +172,6 @@ class NightscoutData : NSObject, NSCoding, Codable {
         try container.encode(self.battery, forKey: .battery)
         try container.encode(self.iob, forKey: .iob)
         try container.encode(self.cob, forKey: .cob)
-        try container.encode(self.rawbg, forKey: .rawbg)
-        try container.encode(self.noise, forKey: .noise)
     }
     
     func isOlderThan5Minutes() -> Bool {

@@ -104,8 +104,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             // we should repaint current value if some used defaults values were changed
             let hasChangedUri = updatedKeys.contains(UserDefaultsRepository.baseUri.key)
             let hasChangedUnits = updatedKeys.contains(UserDefaultsRepository.units.key)
-            let hasChangedShowRawBG = updatedKeys.contains(UserDefaultsRepository.showRawBG.key)
-//            let hasChangedBounds = updatedKeys.contains(UserDefaultsRepository.upperBound.key) || updatedKeys.contains(UserDefaultsRepository.lowerBound.key)
             
             if hasChangedUri {
                 
@@ -114,7 +112,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 NightscoutCacheService.singleton.resetCache()
             }
             
-            let shouldRepaintCurrentBgData = hasChangedUri || hasChangedUnits || hasChangedShowRawBG
+            let shouldRepaintCurrentBgData = hasChangedUri || hasChangedUnits
             let shouldRepaintCharts = true // do it always!
             if shouldRepaintCurrentBgData || shouldRepaintCharts {
                 if #available(watchOSApplicationExtension 3.0, *) {

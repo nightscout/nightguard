@@ -28,10 +28,6 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
     @IBOutlet var errorGroup: WKInterfaceGroup!
     @IBOutlet var activityIndicatorImage: WKInterfaceImage!
     
-    @IBOutlet var rawbgLabel: WKInterfaceLabel!
-    @IBOutlet var noiseLabel: WKInterfaceLabel!
-    @IBOutlet var rawValuesGroup: WKInterfaceGroup!
-    
     @IBOutlet var nightSafeIndicator: WKInterfaceGroup!
     
     @IBOutlet var cannulaAgeLabel: WKInterfaceLabel!
@@ -379,12 +375,6 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
         self.batteryLabel.setText(currentNightscoutData.battery)
         self.cobLabel.setText(currentNightscoutData.cob)
         self.iobLabel.setText(currentNightscoutData.iob)
-        
-        // show raw values panel ONLY if configured so and we have a valid rawbg value!
-        let isValidRawBGValue = UnitsConverter.displayValueToMgdl(currentNightscoutData.rawbg) > 0
-        self.rawValuesGroup.setHidden(!UserDefaultsRepository.showRawBG.value || !isValidRawBGValue)
-        self.rawbgLabel.setText(currentNightscoutData.rawbg)
-        self.noiseLabel.setText(currentNightscoutData.noise)
     }
     
     func loadAndPaintChartData(forceRepaint : Bool) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
-    <device id="watch42"/>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zZT-1m-QPq">
+    <device id="watch38"/>
     <dependencies>
         <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
@@ -10,20 +10,35 @@
         <!--Hosting Controller-->
         <scene sceneID="LWL-dY-REl">
             <objects>
-                <hostingController id="zZT-1m-QPq" customClass="HostingController" customModule="nightguard"/>
+                <hostingController id="zZT-1m-QPq" customClass="HostingController" customModule="nightguard">
+                    <connections>
+                        <segue destination="ymg-17-TBh" kind="relationship" relationship="nextPage" id="rOf-EO-JOp"/>
+                    </connections>
+                </hostingController>
             </objects>
             <point key="canvasLocation" x="-129" y="-607"/>
         </scene>
         <!--Action Button Controller-->
         <scene sceneID="bxz-Z6-DaQ">
             <objects>
-                <controller id="ymg-17-TBh" customClass="ActionButtonController" customModule="nightguard">
+                <controller fullScreen="YES" id="ymg-17-TBh" customClass="ActionButtonController" customModule="nightguard">
                     <connections>
-                        <segue destination="wky-cb-ykJ" kind="relationship" relationship="nextPage" id="oPp-bk-zxe"/>
+                        <segue destination="z4E-zz-Dx9" kind="relationship" relationship="nextPage" id="DZO-NX-iqc"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="102" y="-321"/>
+            <point key="canvasLocation" x="104" y="-321"/>
+        </scene>
+        <!--Temporary Target Controller-->
+        <scene sceneID="wJJ-2v-O5N">
+            <objects>
+                <controller id="z4E-zz-Dx9" customClass="TemporaryTargetController" customModule="nightguard">
+                    <connections>
+                        <segue destination="wky-cb-ykJ" kind="relationship" relationship="nextPage" id="Y5T-7E-pa0"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="355" y="-321"/>
         </scene>
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
@@ -41,25 +56,6 @@
                                             </variation>
                                             <variation key="device=watch42mm" height="40"/>
                                         </label>
-                                        <group alignment="center" verticalAlignment="center" radius="2" id="1pi-M7-12E">
-                                            <items>
-                                                <group alignment="left" verticalAlignment="center" radius="2" id="Sv9-wJ-4Nu">
-                                                    <items>
-                                                        <label alignment="left" text="191" textAlignment="center" id="zeh-B2-2k7">
-                                                            <fontDescription key="font" type="system" pointSize="10"/>
-                                                        </label>
-                                                    </items>
-                                                    <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <edgeInsets key="margins" left="2" right="2" top="0.0" bottom="0.0"/>
-                                                </group>
-                                                <label alignment="left" verticalAlignment="center" text="Clean" textAlignment="right" numberOfLines="2" minimumScaleFactor="0.20000000000000001" id="bBa-oK-viF">
-                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="font" type="system" pointSize="7"/>
-                                                </label>
-                                            </items>
-                                            <color key="backgroundColor" white="1" alpha="0.50470890410958902" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <edgeInsets key="margins" left="1" right="2" top="1" bottom="1"/>
-                                        </group>
                                     </items>
                                 </group>
                                 <group alignment="left" layout="vertical" spacing="0.0" id="BXE-K7-ohJ">
@@ -92,7 +88,7 @@
                                     <items>
                                         <group alignment="left" layout="vertical" id="2qL-lw-zuD">
                                             <items>
-                                                <group alignment="left" id="XtE-Jq-XPU">
+                                                <group alignment="right" id="XtE-Jq-XPU">
                                                     <items>
                                                         <label alignment="left" text="0g" minimumScaleFactor="0.10000000000000001" id="p7p-6Q-nld">
                                                             <fontDescription key="font" type="system" pointSize="10"/>
@@ -102,7 +98,7 @@
                                                         </label>
                                                     </items>
                                                 </group>
-                                                <group width="1" alignment="left" id="COe-YH-XLM">
+                                                <group alignment="right" id="COe-YH-XLM">
                                                     <items>
                                                         <label alignment="right" text="R --" minimumScaleFactor="0.10000000000000001" id="oj1-Z4-GyD" userLabel="Reservoir Label">
                                                             <fontDescription key="font" type="system" pointSize="10"/>
@@ -209,15 +205,13 @@
                         <outlet property="errorLabel" destination="Wmf-Dw-L3A" id="JRC-e5-KcA"/>
                         <outlet property="iobLabel" destination="oxQ-6L-Aqk" id="XkH-qO-L4v"/>
                         <outlet property="nightSafeIndicator" destination="zdV-tY-qn0" id="dms-9T-ZjS"/>
-                        <outlet property="noiseLabel" destination="bBa-oK-viF" id="3e1-rU-UFt"/>
-                        <outlet property="rawValuesGroup" destination="1pi-M7-12E" id="DSq-be-TK7"/>
-                        <outlet property="rawbgLabel" destination="zeh-B2-2k7" id="9WF-fI-jiV"/>
                         <outlet property="reservoirLabel" destination="oj1-Z4-GyD" id="j7x-qC-uSe"/>
                         <outlet property="sensorAgeLabel" destination="lDW-iC-Ham" id="D4w-Gt-VvS"/>
                         <outlet property="spriteKitView" destination="HJ3-mD-NFS" id="hnU-4D-1mD"/>
                         <outlet property="temporaryBasalLabel" destination="B0e-Th-iPg" id="cdg-YW-RxV"/>
                         <outlet property="temporaryTargetLabel" destination="Sai-cz-jRz" id="Dg0-82-LSf"/>
                         <outlet property="timeLabel" destination="w1H-tu-XyX" id="KWM-Y9-FDg"/>
+                        <segue destination="ymg-17-TBh" kind="relationship" relationship="nextPage" id="cYs-nj-Pup"/>
                     </connections>
                 </controller>
             </objects>
@@ -284,7 +278,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="339" y="-321"/>
+            <point key="canvasLocation" x="607" y="-321"/>
         </scene>
         <!--SnoozeInterfaceController-->
         <scene sceneID="Wo6-eU-PUk">
@@ -394,6 +388,9 @@
             <point key="canvasLocation" x="110" y="102"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="cYs-nj-Pup"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

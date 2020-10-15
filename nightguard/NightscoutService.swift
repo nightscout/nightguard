@@ -504,13 +504,6 @@ class NightscoutService {
                 nightscoutData.bgdeltaString = self.direction(bgdeltaAsMgdl) + String(format: "%.1f", bgdeltaAsMgdl)
                 nightscoutData.bgdelta = bgdeltaAsMgdl
                 
-                let cals = jsonDict.object(forKey: "cals") as? NSArray
-                let currentCals = cals?.firstObject as? NSDictionary
-                nightscoutData.rawbg = self.getRawBGValue(bgs: currentBgs, cals: currentCals)
-                if let noiseCode = currentBgs.object(forKey: "noise") as? NSNumber {
-                    nightscoutData.noise = self.getNoiseLevel(noiseCode.intValue, sgv: String(sgv))
-                }
-                
                 dispatchOnMain {
                     resultHandler(.data(nightscoutData))
                 }
@@ -567,33 +560,6 @@ class NightscoutService {
                 return "~~~"
             }
         }
-    }
-    
-    fileprivate func getRawBGValue(bgs: NSDictionary, cals: NSDictionary?) -> String {
-        
-        // as implemented in https://github.com/nightscout/cgm-remote-monitor/blob/d407bab2096d739708f365eae3c78847291bc997/lib/plugins/rawbg.js
-        
-        let filtered: Float = (bgs.object(forKey: "filtered") as? NSNumber)?.floatValue ?? 0
-        let unfiltered: Float = (bgs.object(forKey: "unfiltered") as? NSNumber)?.floatValue ?? 0
-        
-        let scale: Float = (cals?.object(forKey: "scale") as? NSNumber)?.floatValue ?? 0
-        let slope: Float = (cals?.object(forKey: "slope") as? NSNumber)?.floatValue ?? 0
-        let intercept: Float = (cals?.object(forKey: "intercept") as? NSNumber)?.floatValue ?? 0
-        
-        let sgv = bgs.object(forKey: "sgv") as! NSString
-        let sgvmgdl: Float = UnitsConverter.displayValueToMgdl(String(sgv))
-        
-        var raw: Float = 0
-        if slope == 0 || unfiltered == 0 || scale == 0 {
-            raw = 0
-        } else if filtered == 0 || sgvmgdl < 40 {
-            raw = scale * (unfiltered - intercept) / slope
-        } else {
-            let ratio = scale * (filtered - intercept) / slope / sgvmgdl
-            raw = scale * (unfiltered - intercept) / slope / ratio
-        }
-        
-        return "\(Int(UnitsConverter.mgdlToDisplayUnits(raw.rounded())))"
     }
     
     /* Reads the treatment record for the last cannula change, sensor change and battery age */

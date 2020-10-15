@@ -89,9 +89,6 @@
 "Fast Rise/Drop" = "Nopea nousu/lasku";
 
 /* Body of confirmation */
-"For receiving the raw BG and noise level values, the rawbg plugin should be enabled on your Nightscout Server. Please note that this works on Dexcom only!" = "Saadaksesi käsittelemättömiä verensokeri lukemia ja kohinatasoja, rawbg liitännäisen pitää olla käytössä Nightscout palvelimellasi. Huomioi että tämä toimii ainoastaan Dexcomin kanssa!";
-
-/* Body of confirmation */
 "For your safety, keep this switch ON for receiving alarms when no readings!" = "Turvallisuutesi vuoksi, pidä tämä valinta päällä saadaksesi hälytyksen puuttuvista lukemista!";
 
 /* Fullscreen monitor */
@@ -219,9 +216,6 @@
 
 /* Label for Show BG on Badge */
 "Show BG on App Badge" = "Näytä lukema kuvakkeessa";
-
-/* Label for Show Raw BG */
-"Show Raw BG and Noise Level" = "Näytä raaka verensokeri";
 
 /* Label for Show statistics */
 "Show Statistics" = "Näytä tilastot";
@@ -456,3 +450,6 @@
 
 /* Label for 'Use the following Units' */
 "Use the following Units" = "Käytä seuraavia yksiköitä";
+
+/* Watch-Button to delete a current Temporary Target */
+"Delete Target" = "Delete Target";

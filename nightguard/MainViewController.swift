@@ -26,7 +26,6 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @IBOutlet weak var spriteKitView: UIView!
     @IBOutlet weak var errorPanelView: UIView!
     @IBOutlet weak var errorLabel: UILabel!
-    @IBOutlet weak var rawValuesPanel: GroupedLabelsView!
     @IBOutlet weak var bgStackView: UIStackView!
     
     @IBOutlet weak var actionsMenuButton: UIButton!
@@ -79,13 +78,6 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         
         errorPanelView.isHidden = true
         
-        // decide where to present the raw bg panel, depending on the device screen size: for small screens (under 4.7 inches) the raw bg panel is stacked under the bg label; for larger screens, the raw bg panel is near (right side of) the bg label
-        let screenSize = UIScreen.main.bounds.size
-        let height = max(screenSize.width, screenSize.height)
-        let isLargeEnoughScreen = height >= 667 // 4.7 inches or larger (iPhone 6, etc.)
-        rawValuesPanel.axis = isLargeEnoughScreen ? .vertical : .horizontal
-        bgStackView.axis = isLargeEnoughScreen ? .horizontal : .vertical
-        
         actionsMenuButton.tintColor = UIColor.gray
         let actionImage = UIImage(named: "Action")?.withRenderingMode(.alwaysTemplate)
         actionsMenuButton.setImage(actionImage, for: .normal)
@@ -129,7 +121,6 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        showHideRawBGPanel()
 
         // show/hide the stats panel, using user preference value
         let statsShouldBeHidden = !UserDefaultsRepository.showStats.value
@@ -479,10 +470,6 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             self.batteryLabel.text = currentNightscoutData.battery
             self.iobLabel.text = currentNightscoutData.iob
             self.cobLabel.text = currentNightscoutData.cob
-            
-            self.showHideRawBGPanel(currentNightscoutData)
-            self.rawValuesPanel.label.text = currentNightscoutData.noise
-            self.rawValuesPanel.highlightedLabel.text = currentNightscoutData.rawbg
         })
     }
     
@@ -532,7 +519,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     fileprivate func paintDeviceStatusData(deviceStatusData : DeviceStatusData) -> Void {
     
-        self.reservoirLabel.text = "RES \(deviceStatusData.reservoirUnits)U"
+        self.reservoirLabel.text = "R \(deviceStatusData.reservoirUnits)U"
         self.activeProfileLabel.text =
             deviceStatusData.activePumpProfile.trimInfix(keepPrefixCharacterCount: 7, keepPostfixCharacterCount: 7);
         if deviceStatusData.temporaryBasalRate != "" &&
@@ -560,15 +547,6 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             newCanvasWidth: self.maximumDeviceTextureWidth(),
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
             moveToLatestValue: true, useContrastfulColors: false)
-    }
-    
-    fileprivate func showHideRawBGPanel(_ nightscoutData: NightscoutData? = nil) {
-        
-        let currentNightscoutData = nightscoutData ?? NightscoutCacheService.singleton.getCurrentNightscoutData()
-        let isValidRawBGValue = UnitsConverter.displayValueToMgdl(currentNightscoutData.rawbg) > 0
-
-        // show raw values panel ONLY if configured so and we have a valid rawbg value!
-        self.rawValuesPanel.isHidden = !UserDefaultsRepository.showRawBG.value || !isValidRawBGValue
     }
     
     fileprivate func updateBasicStats() {

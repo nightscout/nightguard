@@ -13,10 +13,15 @@ import Combine
 @available(watchOSApplicationExtension 6.0, *)
 struct ActionButtonView: View {
     
-    @State private var snoozeModalIsPresented = false
+    @State var snoozeModalIsPresented = false
     @Environment(\.presentationMode) var presentation
     
-    init() {}
+    @ObservedObject var viewModel: MainViewModel
+    
+    init(mainViewModel: MainViewModel) {
+        
+        self.viewModel = mainViewModel
+    }
 
     var body: some View {
         VStack(content: {
@@ -38,7 +43,7 @@ struct ActionButtonView: View {
                     })
                 }
                 Button(action: {
-                    print("Button")
+                    viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 }) {
                     VStack() {
                         Image(systemName: "arrow.clockwise")
@@ -53,7 +58,6 @@ struct ActionButtonView: View {
             Spacer()
         })
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .edgesIgnoringSafeArea(.bottom)
         .focusable(false)
     }
 }
@@ -61,6 +65,6 @@ struct ActionButtonView: View {
 @available(watchOSApplicationExtension 6.0, *)
 struct ActionButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        ActionButtonView()
+        ActionButtonView(mainViewModel: MainViewModel())
     }
 }

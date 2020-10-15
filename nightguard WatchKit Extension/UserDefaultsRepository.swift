@@ -44,9 +44,6 @@ class UserDefaultsRepository {
         })
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let showRawBG = UserDefaultsValue<Bool>(key: "showRawBG", default: false)
-        .group(UserDefaultsValueGroups.GroupNames.watchSync)
-    
     static let showBGOnAppBadge = UserDefaultsValue<Bool>(
         key: "showBGOnAppBadge",
         default: false,
