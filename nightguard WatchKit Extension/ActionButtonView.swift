@@ -39,7 +39,9 @@ struct ActionButtonView: View {
                         }
                     }
                     .fullScreenCover(isPresented: self.$snoozeModalIsPresented, content: {
-                                        SnoozeModalView(isPresented: self.$snoozeModalIsPresented)
+                        SnoozeModalView(
+                            mainViewModel: viewModel,
+                            isPresented: self.$snoozeModalIsPresented)
                     })
                 }
                 Button(action: {

@@ -127,7 +127,7 @@ struct ContentView: View {
         .edgesIgnoringSafeArea(.bottom)
         .focusable(false)
         .onAppear() {
-            viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
+            viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
         }
     }
 }

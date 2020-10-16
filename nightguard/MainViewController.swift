@@ -456,6 +456,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             }
             self.bgLabel.textColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
+            self.bgLabel.sizeToFit()
             
             self.deltaLabel.text = UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString)
             self.deltaArrowsLabel.text = currentNightscoutData.bgdeltaArrow
@@ -468,8 +469,12 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(currentNightscoutData.time)
             
             self.batteryLabel.text = currentNightscoutData.battery
-            self.iobLabel.text = currentNightscoutData.iob
-            self.cobLabel.text = currentNightscoutData.cob
+            if !currentNightscoutData.iob.isEmpty {
+                self.iobLabel.text = currentNightscoutData.iob
+            }
+            if !currentNightscoutData.cob.isEmpty {
+                self.cobLabel.text = currentNightscoutData.cob
+            }
         })
     }
     
