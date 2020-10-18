@@ -845,6 +845,66 @@ class NightscoutService {
         return Date()
     }
     
+    func createCarbsCorrection(carbs: Int, resultHandler : @escaping (_ errorMessage : String?) -> Void) {
+        
+        let baseUri = UserDefaultsRepository.baseUri.value
+        if baseUri == "" {
+            resultHandler("The base URI is empty!")
+            return
+        }
+        
+        // Get the current data from REST-Call
+        let createTemporaryTargetParameter = [
+            "now" : String(describing: Date.timeIntervalSince(Date()))]
+        
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/treatments", queryParams: createTemporaryTargetParameter)
+        guard url != nil else {
+            resultHandler("The url was nil. This should never happen!")
+            return
+        }
+        
+        var request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        let json =
+        """
+        {"eventType": "Carb Correction",
+        "carbs": \(carbs),
+        "duration": 0,
+        "enteredBy": "nightguard"}
+        """
+        request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+            
+            guard error == nil else {
+                print(error!)
+                dispatchOnMain {
+                    resultHandler(error?.localizedDescription)
+                }
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    dispatchOnMain {
+                        resultHandler(
+                            NSLocalizedString("You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?", comment: "Error hint in case of a http 401 Exception"))
+                    }
+                    return
+                }
+            }
+            
+            dispatchOnMain {
+                resultHandler(nil)
+            }
+        })
+        
+        task.resume()
+    }
+    
     /* Reads the devicestatus to get pump basal rate and profile */
     @discardableResult
     func readDeviceStatus(resultHandler : @escaping (DeviceStatusData) -> Void) -> URLSessionTask? {

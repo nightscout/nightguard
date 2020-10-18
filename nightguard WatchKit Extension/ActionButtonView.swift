@@ -45,6 +45,7 @@ struct ActionButtonView: View {
                     })
                 }
                 Button(action: {
+                    WKInterfaceDevice.current().play(.success)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 }) {
                     VStack() {

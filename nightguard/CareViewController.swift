@@ -116,6 +116,51 @@ class CareViewController: CustomFormViewController {
                         
                         self.displayCancelTargetPopup()
                 }
+        
+                +++ Section(header: NSLocalizedString("Enter new consumed Carbs", comment: "Section to enter Carbs"), footer: nil)
+                <<< PickerInlineRow<Int>() { row in
+                    row.tag = "Carbs"
+                    row.title = NSLocalizedString("Gramms [g]", comment: "Label for the amount of carbs in gramm")
+                    row.displayValueFor = { value in
+                        guard let value = value else { return nil }
+                        return "\(value)g"
+                    }
+                    row.options = [3, 5, 10, 15, 20, 30, 40, 50, 60]
+                    row.value = UserDefaultsRepository.carbs.value
+                }.onChange { row in
+                    UserDefaultsRepository.carbs.value = row.value!
+                }
+                <<< ButtonRow() { row in
+                        row.title = NSLocalizedString("Add Carbs", comment: "Button to add consumed Carbs")
+                    }.onCellSelection { _, _ in
+                        
+                        self.displayEnterCarbsPopup(carbs: UserDefaultsRepository.carbs.value)
+                }
+    }
+    
+    fileprivate func displayEnterCarbsPopup(carbs : Int) {
+
+        let alertController = UIAlertController(
+            title: NSLocalizedString("Add Carbs", comment: "Add Carbs Popup Title"),
+            message: String(format: NSLocalizedString("Do you want to enter %dg of consumed carbs?", comment: "Cancel Target Popup Text"), carbs),
+            preferredStyle: .alert)
+        let actionAccept = UIAlertAction(title: NSLocalizedString("Accept", comment: "Popup Accept-Button"), style: .default, handler: { (alert: UIAlertAction!) in
+            
+            self.playSuccessFeedback()
+            NightscoutService.singleton.createCarbsCorrection(carbs: carbs, resultHandler: {(error: String?) in
+                    
+                    if (error != nil) {
+                        self.displayErrorMessagePopup(message: error!)
+                    } else {
+                        UIApplication.shared.showMain()
+                    }
+            })
+        })
+        let actionDecline = UIAlertAction(title: NSLocalizedString("Decline", comment: "Popup Decline-Button"), style: .default, handler: { (alert: UIAlertAction!) in
+        })
+        alertController.addAction(actionAccept)
+        alertController.addAction(actionDecline)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     fileprivate func displayCancelTargetPopup() {
@@ -125,6 +170,7 @@ class CareViewController: CustomFormViewController {
             preferredStyle: .alert)
         let actionAccept = UIAlertAction(title: NSLocalizedString("Accept", comment: "Popup Accept-Button"), style: .default, handler: { (alert: UIAlertAction!) in
             
+            self.playSuccessFeedback()
             NightscoutService.singleton.deleteTemporaryTarget(
                 resultHandler: {(error: String?) in
                     
@@ -148,6 +194,7 @@ class CareViewController: CustomFormViewController {
             message: String(format: NSLocalizedString("Do you want to set a temporary target for %d minutes?", comment: "Set Target Message Text"), UserDefaultsRepository.temporaryTargetDuration.value), preferredStyle: .alert)
         let actionAccept = UIAlertAction(title: NSLocalizedString("Accept", comment: "Popup Accept-Button"), style: .default, handler: { (alert: UIAlertAction!) in
             
+            self.playSuccessFeedback()
             NightscoutService.singleton.createTemporaryTarget(
                 reason: UserDefaultsRepository.temporaryTargetReason.value,
                 target: UserDefaultsRepository.temporaryTargetAmount.value,
@@ -174,5 +221,11 @@ class CareViewController: CustomFormViewController {
         })
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    fileprivate func playSuccessFeedback() {
+        let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .light)
+        impactFeedbackgenerator.prepare()
+        impactFeedbackgenerator.impactOccurred()
     }
 }

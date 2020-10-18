@@ -23,6 +23,9 @@ struct ActivateTemporaryTargetPopupView: View {
                     "\n (\(UnitsConverter.mgdlToDisplayUnits(Float(UserDefaultsRepository.temporaryTargetAmount.value))) \(UserDefaultsRepository.units.value.description))")
             HStack() {
                 Button(action: {
+                    
+                    WKInterfaceDevice.current().play(.success)
+                    
                     NightscoutService.singleton.createTemporaryTarget(
                         reason: UserDefaultsRepository.temporaryTargetReason.value,
                         target: UserDefaultsRepository.temporaryTargetAmount.value,

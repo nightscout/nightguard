@@ -166,4 +166,7 @@ class UserDefaultsRepository {
     
     static let temporaryTargetAmount = UserDefaultsValue<Int>(key: "temporaryTargetAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetAmount") as? Int) ?? 72)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let carbs = UserDefaultsValue<Int>(key: "carbs", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "carbs") as? Int) ?? 3)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
 }

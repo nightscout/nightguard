@@ -29,6 +29,7 @@ struct SnoozeModalView: View {
         VStack {
             if (AlarmRule.isSnoozed()) {
                 Button("Stop Snoozing", action: {
+                    WKInterfaceDevice.current().play(.success)
                     AlarmRule.disableSnooze()
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                     self.isPresented.toggle()
@@ -38,11 +39,13 @@ struct SnoozeModalView: View {
             }
             HStack {
                 Button("5min", action: {
+                    WKInterfaceDevice.current().play(.success)
                     AlarmRule.snooze(5)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                     self.isPresented.toggle()
                 })
                 Button("10min", action: {
+                    WKInterfaceDevice.current().play(.success)
                     AlarmRule.snooze(10)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                     self.isPresented.toggle()
@@ -50,47 +53,56 @@ struct SnoozeModalView: View {
             }
             HStack {
                 Button("15min", action: {
+                    WKInterfaceDevice.current().play(.success)
                     AlarmRule.snooze(15)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                     self.isPresented.toggle()
                 })
                 Button("20min", action: {
+                    WKInterfaceDevice.current().play(.success)
                     AlarmRule.snooze(20)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                     self.isPresented.toggle()
                 })
             }
             Button("30min", action: {
+                WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(30)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
             Button("45min", action: {
+                WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(45)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
             Button("1h", action: {
+                WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(60)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
             Button("2h", action: {
+                WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(120)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
             Button("3h", action: {
+                WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(180)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
             Button("6h", action: {
+                WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(6*60)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
             Button("1d", action: {
+                WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(24*60)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()

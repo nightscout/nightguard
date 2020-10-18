@@ -23,6 +23,9 @@ struct CancelTemporaryTargetPopupView: View {
                 NSLocalizedString("Do you want to cancel an active temporary target?", comment: "Cancel Target Popup Text"))
             HStack() {
                 Button(action: {
+                    
+                    WKInterfaceDevice.current().play(.success)
+                    
                     NightscoutService.singleton.deleteTemporaryTarget(
                         resultHandler: {(error: String?) in
                             
@@ -39,6 +42,7 @@ struct CancelTemporaryTargetPopupView: View {
                         .font(.system(size: 12))
                 }
                 Button(action: {
+                    
                     isPresented = false
                 }) {
                     Text(NSLocalizedString("Decline", comment: "Popup Decline-Button"))

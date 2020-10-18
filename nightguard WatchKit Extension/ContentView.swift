@@ -16,6 +16,9 @@ struct ContentView: View {
     @State var crownValue = 0.0
     @State var oldCrownValue = 0.0
     
+    // update the ui every 30 seconds:
+    let timer = Timer.publish(every: 30, on: .current, in: .common).autoconnect()
+    
     @ObservedObject var viewModel: MainViewModel
     
     init(mainViewModel: MainViewModel) {
@@ -42,8 +45,8 @@ struct ContentView: View {
                 Text(UnitsConverter.mgdlToDisplayUnits(
                         viewModel.nightscoutData?.sgv ?? "---"))
                     .foregroundColor(viewModel.sgvColor)
-                    .font(.system(size: 40))
-                    .frame(alignment: .topLeading)
+                    .font(.system(size: 50))
+                    .frame(width: 80, height: 55, alignment: .topLeading)
                 VStack() {
                     Text(UnitsConverter.mgdlToDisplayUnits(
                             viewModel.nightscoutData?.bgdeltaString ?? "?"))
@@ -63,9 +66,9 @@ struct ContentView: View {
                         Text(viewModel.nightscoutData?.iob ?? "-")
                             .font(.system(size: 12))
                     }
+                    Text(viewModel.reservoir)
+                        .font(.system(size: 12))
                     HStack(){
-                        Text(viewModel.reservoir)
-                            .font(.system(size: 12))
                         Text(viewModel.nightscoutData?.battery ?? "-")
                             .font(.system(size: 12))
                     }
@@ -128,6 +131,9 @@ struct ContentView: View {
         .focusable(false)
         .onAppear() {
             viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
+        }
+        .onReceive(timer) { _ in
+            viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
         }
     }
 }

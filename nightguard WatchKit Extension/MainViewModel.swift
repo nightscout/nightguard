@@ -13,6 +13,8 @@ import SpriteKit
 @available(watchOSApplicationExtension 6.0, *)
 class MainViewModel: ObservableObject, Identifiable {
     
+    @Published var refreshingData = false
+    
     @Published var nightscoutData: NightscoutData?
     
     @Published var sgvColor = Color.white
@@ -112,17 +114,21 @@ class MainViewModel: ObservableObject, Identifiable {
             return
         }
 
+        self.refreshingData = true
+        
         self.nightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: forceRefresh) { [unowned self] result in
             
             guard let result = result else { return }
             
              dispatchOnMain { [unowned self] in
+                
+                self.refreshingData = false
                 guard self.active else { return }
                 
                 switch result {
                 case .data(let newNightscoutData):
-                    self.nightscoutData = newNightscoutData
                     calculateColors(nightscoutData: newNightscoutData)
+                    self.nightscoutData = newNightscoutData
                     self.active = false
                 case .error(let error):
                     self.error = error

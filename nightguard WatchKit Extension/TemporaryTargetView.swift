@@ -82,6 +82,8 @@ struct TemporaryTargetView: View {
             if #available(watchOSApplicationExtension 7.0, *) {
                 Button(action: {
                     
+                    UserDefaultsRepository.temporaryTargetAmount.value =
+                        calculateDefaultTargetAmountFrom(reason: UserDefaultsRepository.temporaryTargetReason.value)
                     self.temporaryTargetModalIsPresented.toggle()
                 }) {
                     Text(NSLocalizedString("Set Target", comment: "Button to activate the Temporary Target"))
@@ -101,6 +103,18 @@ struct TemporaryTargetView: View {
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
         .edgesIgnoringSafeArea(.all)
         .focusable(false)
+    }
+    
+    /** on the watch we define default Target Amounts depending on the reason */
+    fileprivate func calculateDefaultTargetAmountFrom(reason: String) -> Int {
+        
+        switch reason {
+            case "Activity": return 130
+            case "Too High": return 72
+            case "Too Low": return 120
+            case "Meal Soon": return 80
+            default: return 80
+        }
     }
 }
 
