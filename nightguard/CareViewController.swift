@@ -117,7 +117,7 @@ class CareViewController: CustomFormViewController {
                         self.displayCancelTargetPopup()
                 }
         
-                +++ Section(header: NSLocalizedString("Enter new consumed Carbs", comment: "Section to enter Carbs"), footer: nil)
+                +++ Section(header: NSLocalizedString("Enter consumed Carbs", comment: "Section to enter Carbs"), footer: nil)
                 <<< PickerInlineRow<Int>() { row in
                     row.tag = "Carbs"
                     row.title = NSLocalizedString("Gramms [g]", comment: "Label for the amount of carbs in gramm")
@@ -125,7 +125,7 @@ class CareViewController: CustomFormViewController {
                         guard let value = value else { return nil }
                         return "\(value)g"
                     }
-                    row.options = [3, 5, 10, 15, 20, 30, 40, 50, 60]
+                    row.options = [3, 5, 10, 15, 20, 30, 40, 50, 60, 70]
                     row.value = UserDefaultsRepository.carbs.value
                 }.onChange { row in
                     UserDefaultsRepository.carbs.value = row.value!

@@ -34,11 +34,22 @@
             <objects>
                 <controller id="z4E-zz-Dx9" customClass="TemporaryTargetController" customModule="nightguard">
                     <connections>
-                        <segue destination="wky-cb-ykJ" kind="relationship" relationship="nextPage" id="Y5T-7E-pa0"/>
+                        <segue destination="JP1-Zi-RYo" kind="relationship" relationship="nextPage" id="Hwi-bg-GjQ"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="355" y="-321"/>
+        </scene>
+        <!--Carbs Controller-->
+        <scene sceneID="eXn-X6-KWb">
+            <objects>
+                <hostingController id="JP1-Zi-RYo" customClass="CarbsController" customModule="nightguard">
+                    <connections>
+                        <segue destination="wky-cb-ykJ" kind="relationship" relationship="nextPage" id="GAO-Dx-nLw"/>
+                    </connections>
+                </hostingController>
+            </objects>
+            <point key="canvasLocation" x="603" y="-320"/>
         </scene>
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
@@ -278,7 +289,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="607" y="-321"/>
+            <point key="canvasLocation" x="858" y="-321"/>
         </scene>
         <!--SnoozeInterfaceController-->
         <scene sceneID="Wo6-eU-PUk">

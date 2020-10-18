@@ -59,7 +59,7 @@ struct TemporaryTargetView: View {
                             TemporaryTargetView.userDefaultsToTemporaryTargetReasons.key(
                                 from: $selectedLocalizedTemporaryTargetReason.wrappedValue) ?? ""
                     }
-                    .frame(height: 50)
+                    .frame(height: 45)
                 }
                 if #available(watchOSApplicationExtension 7.0, *) {
                     Picker(selection: self.$selectedTemporaryTargetDuration, label: Text(
@@ -73,11 +73,11 @@ struct TemporaryTargetView: View {
                         UserDefaultsRepository.temporaryTargetDuration.value =
                             $selectedTemporaryTargetDuration.wrappedValue 
                     }
-                    .frame(width: 50, height: 50)
+                    .frame(width: 50, height: 45)
                 } else {
                     // Fallback on earlier versions
                 }
-            }).padding(.bottom, 10)
+            }).padding(.bottom, 5)
             
             if #available(watchOSApplicationExtension 7.0, *) {
                 Button(action: {
@@ -87,7 +87,8 @@ struct TemporaryTargetView: View {
                     self.temporaryTargetModalIsPresented.toggle()
                 }) {
                     Text(NSLocalizedString("Set Target", comment: "Button to activate the Temporary Target"))
-                }.fullScreenCover(isPresented: self.$temporaryTargetModalIsPresented, content: {
+                }
+                .fullScreenCover(isPresented: self.$temporaryTargetModalIsPresented, content: {
                     ActivateTemporaryTargetPopupView(isPresented: self.$temporaryTargetModalIsPresented)
                 })
                 Button(action: {
@@ -102,7 +103,6 @@ struct TemporaryTargetView: View {
         })
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
         .edgesIgnoringSafeArea(.all)
-        .focusable(false)
     }
     
     /** on the watch we define default Target Amounts depending on the reason */

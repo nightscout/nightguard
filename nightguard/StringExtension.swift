@@ -42,4 +42,10 @@ extension String {
         
         return self.prefix(keepPrefixCharacterCount) + "..." + self.suffix(keepPostfixCharacterCount)
     }
+    
+    func removing(charactersOf string: String) -> String {
+         let characterSet = CharacterSet(charactersIn: string)
+         let components = self.components(separatedBy: characterSet)
+         return components.joined(separator: "")
+     }
 }

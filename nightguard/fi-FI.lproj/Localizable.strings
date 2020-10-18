@@ -461,10 +461,13 @@
 "Do you want to enter %dg of consumed carbs?" = "Do you want to enter %dg of consumed carbs?";
 
 /* Section to enter Carbs */
-"Enter new consumed Carbs" = "Enter new consumed Carbs";
+"Enter consumed Carbs" = "Enter consumed Carbs";
 
 /* Label for the amount of carbs in gramm */
 "Gramms [g]" = "Gramms [g]";
 
 /* Button to add consumed Carbs */
 "Add Carbs" = "Add Carbs";
+
+/* Add carbs popup modal text */
+"Do you want to add %dg of carbs?" = "Do you want to add %dg of carbs?";
