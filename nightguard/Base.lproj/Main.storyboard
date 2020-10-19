@@ -572,7 +572,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktO-hG-udg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="601.875" y="-306.33802816901408"/>
+            <point key="canvasLocation" x="585" y="-297.88732394366195"/>
         </scene>
         <!--Nightscout-->
         <scene sceneID="pNU-Te-rip">

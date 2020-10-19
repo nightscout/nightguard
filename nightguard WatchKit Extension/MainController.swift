@@ -11,11 +11,11 @@ import Foundation
 import SwiftUI
 
 @available(watchOSApplicationExtension 6.0, *)
-class HostingController: WKHostingController<ContentView> {
+class MainController: WKHostingController<MainView> {
     
     static var mainViewModel = MainViewModel()
     
-    override var body: ContentView {
-        return ContentView(mainViewModel: HostingController.mainViewModel)
+    override var body: MainView {
+        return MainView(mainViewModel: MainController.mainViewModel)
     }
 }

@@ -11,7 +11,7 @@ import SpriteKit
 import Combine
 
 @available(watchOSApplicationExtension 6.0, *)
-struct ContentView: View {
+struct MainView: View {
     
     @State var crownValue = 0.0
     @State var oldCrownValue = 0.0
@@ -46,8 +46,10 @@ struct ContentView: View {
                         viewModel.nightscoutData?.sgv ?? "---"))
                     .foregroundColor(viewModel.sgvColor)
                     .font(.system(size: 50))
+                    .scaledToFill()
+                    .minimumScaleFactor(0.5)
                     .frame(width: 80, height: 55, alignment: .topLeading)
-                VStack() {
+                VStack(alignment: .leading, content: {
                     Text(UnitsConverter.mgdlToDisplayUnits(
                             viewModel.nightscoutData?.bgdeltaString ?? "?"))
                         .foregroundColor(viewModel.sgvDeltaColor)
@@ -58,7 +60,7 @@ struct ContentView: View {
                     Text(viewModel.nightscoutData?.timeString ?? "-")
                         .foregroundColor(viewModel.timeColor)
                         .font(.system(size: 12))
-                }
+                })
                 VStack(alignment: .trailing, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
                     HStack(){
                         Text(viewModel.nightscoutData?.cob ?? "")
@@ -107,20 +109,29 @@ struct ContentView: View {
             }.frame(minWidth: 0,
                     maxWidth: .infinity)
             VStack() {
-                if #available(watchOSApplicationExtension 7.0, *) {
-                    SpriteView(scene: viewModel.skScene)
-                        .focusable(true)
-                        .digitalCrownRotation($crownValue, from: 0, through: 10000, by: 15, sensitivity: .high, isContinuous: true, isHapticFeedbackEnabled: true)
-                        .onReceive(Just(crownValue)) { output in
-                            if abs(oldCrownValue - crownValue) > 1000 {
-                                // the counter jumped from 0 to 1000 (or vice versa). Ignore this
-                                oldCrownValue = crownValue
-                                return
+                ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom), content: {
+                    if #available(watchOSApplicationExtension 7.0, *) {
+                        SpriteView(scene: viewModel.skScene)
+                            .focusable(true)
+                            .digitalCrownRotation($crownValue, from: 0, through: 10000, by: 15, sensitivity: .high, isContinuous: true, isHapticFeedbackEnabled: true)
+                            .onReceive(Just(crownValue)) { output in
+                                if abs(oldCrownValue - crownValue) > 1000 {
+                                    // the counter jumped from 0 to 1000 (or vice versa). Ignore this
+                                    oldCrownValue = crownValue
+                                    return
+                                }
+                                viewModel.skScene.moveChart(-1 * (oldCrownValue - crownValue))
+                                self.oldCrownValue = crownValue
                             }
-                            viewModel.skScene.moveChart(-1 * (oldCrownValue - crownValue))
-                            self.oldCrownValue = crownValue
-                        }
-                }
+                    }
+                    VStack() {
+                        Text(viewModel.alarmRuleMessage)
+                            .padding(15)
+                            .font(.system(size: 14, weight: .heavy))
+                            .foregroundColor(
+                                Color(UIColor.nightguardRed()))
+                    }
+                })
             }.frame(minWidth: 0,
                     maxWidth: .infinity,
                     minHeight: 0,
@@ -139,8 +150,8 @@ struct ContentView: View {
 }
 
 @available(watchOSApplicationExtension 6.0.0, *)
-struct ContentView_Previews: PreviewProvider {
+struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(mainViewModel: MainViewModel())
+        MainView(mainViewModel: MainViewModel())
     }
 }

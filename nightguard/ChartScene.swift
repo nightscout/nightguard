@@ -21,7 +21,6 @@ class ChartScene : SKScene {
     var oldBloodSugarDays : [[BloodSugar]] = []
     // the maximum blood glucose value that will be displayed in the chart
     var maxYDisplayValue : CGFloat = 350
-    var infoLabelNode = SKLabelNode()
     
     init(size: CGSize, newCanvasWidth : CGFloat, useContrastfulColors : Bool) {
         
@@ -29,10 +28,6 @@ class ChartScene : SKScene {
 
         self.size = size
         self.backgroundColor = UIColor.black
-        
-        infoLabelNode.fontColor = UIColor.nightguardRed()
-        infoLabelNode.fontSize = CGFloat(15)
-        infoLabelNode.fontName = "AvenirNext-Bold"
 
         initialPlacingOfChart()
         
@@ -46,7 +41,7 @@ class ChartScene : SKScene {
     // maxYDisplayValue is the maximum Value that will be displayed in the chart.
     // Blood values that are higher will be set to maxYDisplayValue instead.
     func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool,
-                    displayDaysLegend : Bool, useConstrastfulColors : Bool, infoLabel : String) {
+                    displayDaysLegend : Bool, useConstrastfulColors : Bool) {
 
         //        let maxYDisplayValue : CGFloat = 250
         //        defaults.setFloat(Float(maxYDisplayValue), forKey: "maximumBloodGlucoseDisplayed")
@@ -80,9 +75,6 @@ class ChartScene : SKScene {
         self.chartNode.size = chartImage!.size
         self.chartNode.zPosition = 1
         
-        infoLabelNode.text = infoLabel
-        infoLabelNode.zPosition = 1000
-        
         // only show the move animation, if we have data at all.
         // In the latter case, displayPosition is 0
         if moveToLatestValue && displayPosition > 0 {
@@ -98,7 +90,7 @@ class ChartScene : SKScene {
     // Blood values that are higher will be set to maxYDisplayValue instead.
     func paintChart(_ days : [[BloodSugar]], newCanvasWidth : CGFloat, maxYDisplayValue : CGFloat, moveToLatestValue : Bool, useContrastfulColors : Bool) {
 
-        paintChart(days, newCanvasWidth: newCanvasWidth, maxYDisplayValue: maxYDisplayValue, moveToLatestValue: moveToLatestValue, displayDaysLegend: true, useConstrastfulColors: useContrastfulColors, infoLabel: "")
+        paintChart(days, newCanvasWidth: newCanvasWidth, maxYDisplayValue: maxYDisplayValue, moveToLatestValue: moveToLatestValue, displayDaysLegend: true, useConstrastfulColors: useContrastfulColors)
     }
     
     fileprivate func initialPlacingOfChart() {
@@ -106,13 +98,9 @@ class ChartScene : SKScene {
         self.chartNode.anchorPoint = CGPoint(x: 0, y: 0)
         self.chartNode.position = CGPoint(x: 0, y: 0)
         
-        self.infoLabelNode.position = CGPoint(x: self.size.width / 2, y: 23)
-        
         self.removeAllChildren()
         self.insertChild(self.chartNode, at: 0)
         self.chartNode.zPosition = -1
-        self.addChild(infoLabelNode)
-        self.infoLabelNode.zPosition = 1000
     }
     
     fileprivate func boundLayerPos(_ aNewPosition: CGPoint) -> CGPoint {
@@ -173,7 +161,7 @@ class ChartScene : SKScene {
             return
         }
         
-        paintChart(oldBloodSugarDays, newCanvasWidth: canvasWidth, maxYDisplayValue: newMaxYDisplayValue, moveToLatestValue: false, displayDaysLegend: false, useConstrastfulColors: false, infoLabel: infoLabelText)
+        paintChart(oldBloodSugarDays, newCanvasWidth: canvasWidth, maxYDisplayValue: newMaxYDisplayValue, moveToLatestValue: false, displayDaysLegend: false, useConstrastfulColors: false)
         
         if keepScale {
             

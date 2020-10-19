@@ -168,8 +168,8 @@
 		43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */; };
 		43CC9DF924E818BF0008F397 /* CareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CC9DF824E818BF0008F397 /* CareViewController.swift */; };
 		43CC9DFB24E819C60008F397 /* Care.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43CC9DFD24E819C60008F397 /* Care.storyboard */; };
-		43CE59AA25080D6B00D71B77 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE59A925080D6A00D71B77 /* ContentView.swift */; };
-		43CE59AC250813D700D71B77 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE59AB250813D700D71B77 /* HostingController.swift */; };
+		43CE59AA25080D6B00D71B77 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE59A925080D6A00D71B77 /* MainView.swift */; };
+		43CE59AC250813D700D71B77 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE59AB250813D700D71B77 /* MainController.swift */; };
 		43D213641C2214D60046C52D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D213631C2214D60046C52D /* Assets.xcassets */; };
 		43D28A0620321AAF003859DE /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		43D561172468201E00B52B1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
@@ -470,8 +470,8 @@
 		43CC9DFC24E819C60008F397 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Care.storyboard; sourceTree = "<group>"; };
 		43CC9DFF24E819D20008F397 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Care.strings"; sourceTree = "<group>"; };
 		43CC9E0124E819D30008F397 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Care.strings; sourceTree = "<group>"; };
-		43CE59A925080D6A00D71B77 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		43CE59AB250813D700D71B77 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
+		43CE59A925080D6A00D71B77 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		43CE59AB250813D700D71B77 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		43D213631C2214D60046C52D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
 		43EE375A24478D78008C9134 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
@@ -800,7 +800,7 @@
 		4398937A252BBF88007A252F /* controllers */ = {
 			isa = PBXGroup;
 			children = (
-				43CE59AB250813D700D71B77 /* HostingController.swift */,
+				43CE59AB250813D700D71B77 /* MainController.swift */,
 				43989364252BB91C007A252F /* ActionButtonController.swift */,
 				43961F6D25336F0600B1492B /* TemporaryTargetController.swift */,
 				43647C081BFF6435004389F9 /* InterfaceController.swift */,
@@ -816,7 +816,7 @@
 		4398937B252BBFB0007A252F /* views */ = {
 			isa = PBXGroup;
 			children = (
-				43CE59A925080D6A00D71B77 /* ContentView.swift */,
+				43CE59A925080D6A00D71B77 /* MainView.swift */,
 				4398937C252BBFE5007A252F /* ActionButtonView.swift */,
 				43989388252CEB15007A252F /* SnoozeModalView.swift */,
 				43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */,
@@ -1666,7 +1666,7 @@
 				D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */,
 				43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */,
 				D123EFE921FB643D00CE8718 /* EmptyWatchMessage.swift in Sources */,
-				43CE59AC250813D700D71B77 /* HostingController.swift in Sources */,
+				43CE59AC250813D700D71B77 /* MainController.swift in Sources */,
 				D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */,
 				D1ECDA212201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				43A0476B24D2023C0040D853 /* WKInterfaceLabel.swift in Sources */,
@@ -1696,7 +1696,7 @@
 				D133079721C85FAE00DC6879 /* Matrix+Description.swift in Sources */,
 				D15055AD2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */,
 				4368A0FA252279CA0013E425 /* MainViewModel.swift in Sources */,
-				43CE59AA25080D6B00D71B77 /* ContentView.swift in Sources */,
+				43CE59AA25080D6B00D71B77 /* MainView.swift in Sources */,
 				4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */,
 				D133079921C85FAE00DC6879 /* Regression.swift in Sources */,
 				43961F752533708D00B1492B /* TemporaryTargetView.swift in Sources */,

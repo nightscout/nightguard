@@ -7,10 +7,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17034"/>
     </dependencies>
     <scenes>
-        <!--Hosting Controller-->
+        <!--Main Controller-->
         <scene sceneID="LWL-dY-REl">
             <objects>
-                <hostingController id="zZT-1m-QPq" customClass="HostingController" customModule="nightguard">
+                <hostingController id="zZT-1m-QPq" customClass="MainController" customModule="nightguard">
                     <connections>
                         <segue destination="ymg-17-TBh" kind="relationship" relationship="nextPage" id="rOf-EO-JOp"/>
                     </connections>

@@ -442,8 +442,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
             moveToLatestValue: moveToLatestValue,
             displayDaysLegend: false,
-            useConstrastfulColors: false,
-            infoLabel: determineInfoLabel())
+            useConstrastfulColors: false)
     }
     
     fileprivate func loadAndPaintCareData() {

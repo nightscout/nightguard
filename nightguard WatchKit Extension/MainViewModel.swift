@@ -37,19 +37,20 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var skScene: ChartScene
     
     // Old values that have been read before
-    @Published var cachedTodaysBgValues : [BloodSugar] = []
-    @Published var cachedYesterdaysBgValues : [BloodSugar] = []
+    @Published var cachedTodaysBgValues: [BloodSugar] = []
+    @Published var cachedYesterdaysBgValues: [BloodSugar] = []
 
+    @Published var alarmRuleMessage: String = ""
+    
     init() {
         let bounds = WKInterfaceDevice.current().screenBounds
         let chartSceneHeight = MainViewModel.determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
         
         skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6, useContrastfulColors: false)
         
-        loadCurrentBgData(forceRefresh: false)
-        loadCareData()
-        loadDeviceStatusData()
-        loadChartData(forceRepaint: true, moveToLatestValue: true)
+        refreshData(forceRefresh: true, moveToLatestValue: true)
+        
+        alarmRuleMessage = determineInfoLabel()
     }
     
     func refreshData(forceRefresh : Bool, moveToLatestValue : Bool) {
@@ -57,6 +58,8 @@ class MainViewModel: ObservableObject, Identifiable {
         loadCareData()
         loadDeviceStatusData()
         loadChartData(forceRepaint: forceRefresh, moveToLatestValue: moveToLatestValue)
+        
+        alarmRuleMessage = determineInfoLabel()
     }
 
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
@@ -74,15 +77,14 @@ class MainViewModel: ObservableObject, Identifiable {
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
             moveToLatestValue: moveToLatestValue,
             displayDaysLegend: false,
-            useConstrastfulColors: false,
-            infoLabel: determineInfoLabel())
+            useConstrastfulColors: false)
     }
    
     func determineInfoLabel() -> String {
         
         if !AlarmRule.isSnoozed() {
             if let alarmReason = AlarmRule.getAlarmActivationReason() {
-                return  alarmReason
+                return alarmReason
             } else {
                 return ""
             }
