@@ -60,6 +60,9 @@ class MainViewModel: ObservableObject, Identifiable {
         loadChartData(forceRepaint: forceRefresh, moveToLatestValue: moveToLatestValue)
         
         alarmRuleMessage = determineInfoLabel()
+        if AlarmRule.isAlarmActivated() {
+            WKInterfaceDevice.current().play(.notification)
+        }
     }
 
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
