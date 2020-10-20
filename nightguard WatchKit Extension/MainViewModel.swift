@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import SpriteKit
+import ClockKit
 
 @available(watchOSApplicationExtension 6.0, *)
 class MainViewModel: ObservableObject, Identifiable {
@@ -135,6 +136,7 @@ class MainViewModel: ObservableObject, Identifiable {
                     calculateColors(nightscoutData: newNightscoutData)
                     self.nightscoutData = newNightscoutData
                     self.active = false
+                    updateComplication()
                 case .error(let error):
                     self.error = error
                     self.active = false
@@ -145,6 +147,13 @@ class MainViewModel: ObservableObject, Identifiable {
         if NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests {
             
             self.active = true
+        }
+    }
+    
+    fileprivate func updateComplication() {
+        let complicationServer = CLKComplicationServer.sharedInstance()
+        for complication in complicationServer.activeComplications! {
+            complicationServer.reloadTimeline(for: complication)
         }
     }
     
