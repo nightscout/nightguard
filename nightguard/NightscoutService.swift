@@ -157,7 +157,7 @@ class NightscoutService {
             "count"             : "400",
         ]
         
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries", queryParams: chartDataWithinPeriodOfTimeQueryParams)
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v2/entries.json", queryParams: chartDataWithinPeriodOfTimeQueryParams)
         guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
@@ -176,50 +176,51 @@ class NightscoutService {
                 return
             }
             
-            guard data != nil else {
-                print("The received data was nil...")
-                dispatchOnMain { [unowned self] in
-                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Nightscout entries API", comment: "No data from NS entries API"))))
-                }
-                return
-            }
-            
-            let stringSgvData = String(data: data!, encoding: String.Encoding.utf8)!
-            guard !stringSgvData.contains("<html") else {
-                print("Invalid data with html received")  // TODO: pop an error alert
-                dispatchOnMain { [unowned self] in
-                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("Invalid data with HTML received from Nightscout entries API", comment: "Invalid data from NS entries API"))))
-                }
-                return
-            }
-            
-            let sgvRows = stringSgvData.components(separatedBy: "\n")
-            var timestampColumn : Int = 1
-            var bloodSugarColumn : Int = 2
-            
-            var bloodSugarArray = [BloodSugar]()
-            for sgvRow in sgvRows {
-                let sgvRowArray = sgvRow.components(separatedBy: "\t")
-                
-                if sgvRowArray.count > 2 && sgvRowArray[2] != "" {
-                    // Nightscout return for some versions
-                    if self.isDateColumn(sgvRowArray[1]) {
-                        timestampColumn = 2
-                        bloodSugarColumn = 3
+            do {
+                guard data != nil else {
+                    print("The received data was nil...")
+                    dispatchOnMain { [unowned self] in
+                        resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Nightscout entries API", comment: "No data from NS entries API"))))
                     }
+                    return
+                }
+                
+                let json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                guard let bgs = json as? NSArray else {
+                    let error = NSError(domain: "Entries JSON Error", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from Entries V2 API", comment: "Invalid JSON from Entries V2 API")])
+                    dispatchOnMain {
+                        resultHandler(.error(error))
+                    }
+                    return
+                }
+                
+                var bloodSugarArray = [BloodSugar]()
+                for singleBgValue in bgs {
                     
-                    if let bloodValue = Float(sgvRowArray[bloodSugarColumn]) {
-                        if let bloodValueTimestamp = Double(sgvRowArray[timestampColumn]) {
-                            let bloodSugar = BloodSugar(value: bloodValue, timestamp: bloodValueTimestamp)
-                            bloodSugarArray.insert(bloodSugar, at: 0)
+                    if let bgDict = singleBgValue as? Dictionary<String, Any> {
+                        if let bloodValue = bgDict["sgv"] as? Float {
+                            if let bloodValueTimestamp = bgDict["date"] as? Double {
+                                let bloodSugar = BloodSugar(
+                                        value: bloodValue,
+                                        timestamp: bloodValueTimestamp)
+                                bloodSugarArray.insert(bloodSugar, at: 0)
+                            }
                         }
                     }
                 }
-            }
-            
-            bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
-            dispatchOnMain {
-                resultHandler(.data(bloodSugarArray))
+                
+                bloodSugarArray = self.mergeInTheNewData(oldValues: oldValues, newValues: bloodSugarArray)
+                dispatchOnMain {
+                    resultHandler(.data(bloodSugarArray))
+                }
+            } catch {
+                print("Catched unknown exception.")
+                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Unknown error while extracting data from Pebble Watch API", comment: "Unkown error while extracting Pebble API data")])
+                
+                dispatchOnMain {
+                    resultHandler(.error(error))
+                }
+                return
             }
         })
         

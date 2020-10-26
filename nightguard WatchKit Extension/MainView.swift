@@ -48,47 +48,76 @@ struct MainView: View {
                     .font(.system(size: 50))
                     .scaledToFill()
                     .minimumScaleFactor(0.5)
-                    .frame(width: 80, height: 55, alignment: .topLeading)
+                    .frame(height: 55, alignment: .topLeading)
                 VStack(alignment: .leading, content: {
                     Text(UnitsConverter.mgdlToDisplayUnits(
                             viewModel.nightscoutData?.bgdeltaString ?? "?"))
                         .foregroundColor(viewModel.sgvDeltaColor)
                         .font(.system(size: 12))
+                        .lineLimit(1)
                     Text(viewModel.nightscoutData?.bgdeltaArrow ?? "-")
                         .foregroundColor(viewModel.arrowColor)
                         .font(.system(size: 12))
+                        .lineLimit(1)
                     Text(viewModel.nightscoutData?.timeString ?? "-")
                         .foregroundColor(viewModel.timeColor)
                         .font(.system(size: 12))
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
                 })
-                VStack(alignment: .trailing, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
-                    HStack(){
-                        Text(viewModel.nightscoutData?.cob ?? "")
-                            .font(.system(size: 12))
-                        Text(viewModel.nightscoutData?.iob ?? "-")
-                            .font(.system(size: 12))
+                ZStack(alignment: Alignment(horizontal: .trailing, vertical: .center), content: {
+                    if #available(watchOSApplicationExtension 7.0, *) {
+                        if (viewModel.active == true) {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .frame(width: 5, height: 5)
+                        } else {
+                            VStack(alignment: .trailing, spacing: nil, content: {
+                                HStack(){
+                                    Text(viewModel.nightscoutData?.cob ?? "")
+                                        .font(.system(size: 12))
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
+                                    Text(viewModel.nightscoutData?.iob ?? "-")
+                                        .font(.system(size: 12))
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
+                                }
+                                Text(viewModel.reservoir)
+                                    .font(.system(size: 12))
+                                    .minimumScaleFactor(0.5)
+                                    .lineLimit(1)
+                                HStack(){
+                                    Text(viewModel.nightscoutData?.battery ?? "-")
+                                        .font(.system(size: 12))
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
+                                }
+                            }).frame(minWidth: 0,
+                                     maxWidth: .infinity,
+                                     alignment: .bottomTrailing)
+                        }
                     }
-                    Text(viewModel.reservoir)
-                        .font(.system(size: 12))
-                    HStack(){
-                        Text(viewModel.nightscoutData?.battery ?? "-")
-                            .font(.system(size: 12))
-                    }
-                }).frame(minWidth: 0,
-                         maxWidth: .infinity,
-                         alignment: .bottomTrailing)
+                }).frame(maxWidth: .infinity)
             }).frame(minWidth: 0,
                      maxWidth: .infinity,
                      alignment: .topLeading)
             HStack() {
                 Text(viewModel.cannulaAge ?? "?d ?h")
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity,
                            alignment: .leading)
                 Text(viewModel.sensorAge ?? "?d ?h")
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                     .font(.system(size: 10))
+                    .minimumScaleFactor(0.5)
                     .frame(maxWidth: .infinity)
                 Text(viewModel.batteryAge ?? "?d ?h")
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity,
                            alignment: .trailing)
@@ -97,13 +126,17 @@ struct MainView: View {
             HStack(spacing: 5) {
                 Text(viewModel.activeProfile)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                     .font(.system(size: 10))
                     .frame(idealWidth: 100, maxWidth: .infinity, alignment: .leading)
                 Text(viewModel.temporaryBasal)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                     .font(.system(size: 10))
                     .frame(idealWidth: 100, maxWidth: .infinity)
                 Text(viewModel.temporaryTarget)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                     .font(.system(size: 10))
                     .frame(idealWidth: 100, maxWidth: .infinity, alignment: .trailing)
             }.frame(minWidth: 0,
