@@ -272,7 +272,7 @@ class NightscoutCacheService: NSObject {
     fileprivate func transformToCurrentDay(yesterdaysValues : [BloodSugar]) -> [BloodSugar] {
         var transformedValues : [BloodSugar] = []
         for yesterdaysValue in yesterdaysValues {
-            let transformedValue = BloodSugar.init(value: yesterdaysValue.value, timestamp: yesterdaysValue.timestamp + self.ONE_DAY_IN_MICROSECONDS)
+            let transformedValue = BloodSugar.init(value: yesterdaysValue.value, timestamp: yesterdaysValue.timestamp + self.ONE_DAY_IN_MICROSECONDS, isMeteredBloodGlucoseValue: yesterdaysValue.isMeteredBloodGlucoseValue)
             transformedValues.append(transformedValue)
         }
         

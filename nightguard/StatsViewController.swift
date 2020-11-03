@@ -105,7 +105,9 @@ class StatsViewController: UIViewController {
             let normalizedTimeWithYear1971 = calendar.date(from: components)
             
             normalizedBgValues.insert(
-                BloodSugar.init(value: bgValue.value, timestamp: (normalizedTimeWithYear1971?.timeIntervalSince1970)! * 1000), at: 0)
+                BloodSugar.init(value: bgValue.value,
+                                timestamp: (normalizedTimeWithYear1971?.timeIntervalSince1970)! * 1000,
+                                isMeteredBloodGlucoseValue: bgValue.isMeteredBloodGlucoseValue), at: 0)
         }
         
         return normalizedBgValues

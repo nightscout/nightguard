@@ -148,7 +148,8 @@ class PredictionService {
         
         // cache the prediction...
         prediction = (0..<nextHour.count).map { index in
-            return BloodSugar(value: Float(round(y[index])), timestamp: nextHour[index] * 1000)
+            return BloodSugar(value: Float(round(y[index])), timestamp: nextHour[index] * 1000,
+                              isMeteredBloodGlucoseValue: false)
         }
         
         print("Prediction update:")

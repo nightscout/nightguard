@@ -86,8 +86,11 @@ class ChartPainter {
         var positionOfCurrentValue = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
-            paintBloodValues(context!, bgValues: bloodValues, foregroundColor: getColor(nrOfDay, useContrastfulColors: useContrastfulColors).cgColor, maxBgValue: maxBgValue)
-            
+            let (sgvs, mbgs) = extractSgvs(allValues: bloodValues)
+            paintBloodValues(context!, bgValues: sgvs, foregroundColor: getColor(nrOfDay, useContrastfulColors: useContrastfulColors).cgColor, maxBgValue: maxBgValue)
+            if (nrOfDay == 1) {
+                paintMeteredBloodValues(context!, mbgs: mbgs, maxBgValue: maxBgValue)
+            }
             if nrOfDay == 1 && bloodValues.count > 0 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
             }
@@ -106,6 +109,21 @@ class ChartPainter {
         return (image, positionOfCurrentValue)
     }
     
+    // Extract all sensor measured values. Remove meatered blood glucose values.
+    fileprivate func extractSgvs(allValues : [BloodSugar]) -> ([BloodSugar], [BloodSugar]) {
+        var sgvs : [BloodSugar] = []
+        var mbgs : [BloodSugar] = []
+        for value in allValues {
+            if value.isMeteredBloodGlucoseValue {
+                mbgs.append(value)
+            } else {
+                sgvs.append(value)
+            }
+        }
+        
+        return (sgvs, mbgs)
+    }
+
     fileprivate func justOneOrLessValuesPerDiagram(_ days : [[BloodSugar]]) -> Bool {
         for bloodValues in days {
             if bloodValues.count > 1 {
@@ -141,12 +159,13 @@ class ChartPainter {
     }
     
     fileprivate func paintBloodValues(_ context : CGContext, bgValues : [BloodSugar], foregroundColor : CGColor, maxBgValue : CGFloat) {
+        
         context.setStrokeColor(foregroundColor)
         context.beginPath()
         
         let maxPoints : Int = bgValues.count
         if maxPoints <= 1 {
-            // at least to points are needed to paint a stroke
+            // at least two points are needed to paint a stroke
             return
         }
         for currentPoint in 1...maxPoints-1 {
@@ -201,6 +220,19 @@ class ChartPainter {
         context.strokePath()
     }
     
+    fileprivate func paintMeteredBloodValues(_ context : CGContext, mbgs : [BloodSugar], maxBgValue : CGFloat) {
+        let maxPoints : Int = mbgs.count
+        if maxPoints == 0 {
+            return
+        }
+        
+        for currentValue in mbgs {
+            drawMeteredValue(context,
+                             x: calcXValue(currentValue.timestamp),
+                             y: calcYValue(Float(min(CGFloat(currentValue.value), value2: maxBgValue))))
+        }
+    }
+
     fileprivate func useRedColorIfLineWillBeReducedToMaxYValue(_ context : CGContext,
                                                            beginOfLineYValue : CGFloat, endOfLineYValue : CGFloat,
                                                            maxYDisplayValue : CGFloat, color : CGColor) {
@@ -225,6 +257,12 @@ class ChartPainter {
         context.addLine(to: CGPoint(x: x2, y: y2))
     }
     
+    fileprivate func drawMeteredValue(_ context : CGContext, x : CGFloat, y : CGFloat) {
+        
+        context.setFillColor(UIColor.nightguardRed().cgColor)
+        context.fillEllipse(in: CGRect(x: x-3, y: y-3, width: 6, height: 6))
+    }
+
     // Paint the part between upperBound and lowerBoundValue in gray
     fileprivate func paintNicePartArea(_ context : CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) {
         

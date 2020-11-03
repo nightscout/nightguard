@@ -11,17 +11,23 @@ import Foundation
 // This class contains the Bloodsugar Value for a certain point in time.
 // this class is immutable. Recreate the object in order to change values.
 // Values are always stored as mgdl - no matter what the backend is configured for.
+//
+// Normally these are sensor glucose values (sgv).
+// If the value is a metered value, isMeteredBloodGlucoseValue will be true.
+// These values will be rendered as red dots in the chart later on.
 class BloodSugar : NSCoder {
     let value : Float
     let timestamp : Double
+    let isMeteredBloodGlucoseValue : Bool
     
     var date: Date {
         return Date(timeIntervalSince1970: timestamp / 1000)
     }
     
-    required init(value : Float, timestamp : Double) {
+    required init(value : Float, timestamp : Double, isMeteredBloodGlucoseValue : Bool) {
         self.value = value
         self.timestamp = timestamp
+        self.isMeteredBloodGlucoseValue = isMeteredBloodGlucoseValue
     }
     
     // when the noise is very strong, values are not computable... and we should exclude them from any logic & presentation
@@ -56,13 +62,15 @@ class BloodSugar : NSCoder {
         // only initialize if base values could be decoded
         let value = decoder.decodeFloat(forKey: "value")
         let timestamp = decoder.decodeDouble(forKey: "timestamp")
+        let isMeteredBloodGlucoseValue = decoder.decodeBool(forKey: "isMeteredBloodGlucoseValue")
         
-        self.init(value : value, timestamp :  timestamp)
+        self.init(value : value, timestamp :  timestamp, isMeteredBloodGlucoseValue: isMeteredBloodGlucoseValue)
     }
 
     @objc func encodeWithCoder(_ coder: NSCoder) {
         coder.encode(self.value, forKey: "value")
         coder.encode(self.timestamp, forKey: "timestamp")
+        coder.encode(self.isMeteredBloodGlucoseValue, forKey: "isMeteredBloodGlucoseValue")
     }
     
     func isOlderThanXMinutes(_ minutes : Int) -> Bool {
