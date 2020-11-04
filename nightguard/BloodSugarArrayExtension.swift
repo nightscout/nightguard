@@ -84,7 +84,11 @@ extension Array where Element: BloodSugar {
         return self.reversed().prefix(while: { reading in
             let readingDate = Date(timeIntervalSince1970: reading.timestamp / 1000)
             return now.timeIntervalSince(readingDate) < (Double(minutes) * 60)
-        }).reversed()
+        }).reversed().filter { bgValue in
+            // just take the sensor glucose values for the prediction
+            // into account:
+            return !bgValue.isMeteredBloodGlucoseValue
+        }
     }
     
     /// Get the most recent consecutive X readings, tolerating a number of missed readings.
