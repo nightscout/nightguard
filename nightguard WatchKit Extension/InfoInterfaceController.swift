@@ -18,12 +18,6 @@ class InfoInterfaceController: WKInterfaceController {
     
     override public init() {
         super.init()
-        
-        setTitle(NSLocalizedString("Cancel", comment: "Watch Interface Controller Cancel Label"))
-    }
-    
-    @IBAction func doCloseAction() {
-        self.dismiss()
     }
     
     override func willActivate() {

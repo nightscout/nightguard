@@ -231,7 +231,7 @@
         <!--InfoInterfaceController-->
         <scene sceneID="uNG-cf-2tk">
             <objects>
-                <controller identifier="InfoInterfaceController" fullScreen="YES" id="wky-cb-ykJ" customClass="InfoInterfaceController" customModule="nightguard">
+                <controller identifier="InfoInterfaceController" id="wky-cb-ykJ" customClass="InfoInterfaceController" customModule="nightguard">
                     <items>
                         <label alignment="right" text="V?.?.???" textAlignment="right" id="VJk-AO-PXu" userLabel="Version Label">
                             <fontDescription key="font" type="system" pointSize="14"/>
