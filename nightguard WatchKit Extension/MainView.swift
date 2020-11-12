@@ -174,10 +174,14 @@ struct MainView: View {
         .edgesIgnoringSafeArea(.bottom)
         .focusable(false)
         .onAppear() {
-            viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
+            viewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
+            
+            // Request Data from the main app
+            // especially the baseUri if missing
+            WatchSyncRequestMessage().send()
         }
         .onReceive(timer) { _ in
-            viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
+            viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
         }
     }
 }

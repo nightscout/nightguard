@@ -130,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         WatchMessageService.singleton.onMessage { (message: WatchSyncRequestMessage) in
             
-            // compare the "last sync update id" received from watch and compare it with phone value: if not equal, the watch has not the latest user defaults data ana a sync should be performed
+            // compare the "last sync update id" received from watch and compare it with phone value: if not equal, the watch has not the latest user defaults data and a sync should be performed
             if let anyWatchUpdateId = message.dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] {
                 let watchUpdateId = type(of: UserDefaultsRepository.lastWatchSyncUpdateId).ValueType.fromAny(anyWatchUpdateId)
                 if UserDefaultsRepository.lastWatchSyncUpdateId.value != watchUpdateId {

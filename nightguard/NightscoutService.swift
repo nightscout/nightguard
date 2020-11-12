@@ -620,27 +620,38 @@ class NightscoutService {
                 return
             }
             
-            let treatmentsArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
+            do {
+                guard let treatmentsArray = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any] else {
+                    print("Unexpected treatments received...")
+                    dispatchOnMain { [] in
+                        resultHandler(Date())
+                    }
+                    return
+                }
             
-            guard let siteChangeObject = treatmentsArray as? [[String:Any]]
-                else {
+                guard let siteChangeObject = treatmentsArray as? [[String:Any]]
+                    else {
+                        dispatchOnMain { [] in
+                            resultHandler(Date())}
+                        return
+                }
+                
+                if siteChangeObject.count == 0 {
                     dispatchOnMain { [] in
                         resultHandler(Date())}
                     return
-            }
-            
-            if siteChangeObject.count == 0 {
+                }
+                
                 dispatchOnMain { [] in
-                    resultHandler(Date())}
+                    guard let siteChangeUnwrapped = siteChangeObject[0]["created_at"]
+                        else {
+                            return
+                    }
+                    resultHandler(Date.fromIsoString(isoTime: String(describing: siteChangeUnwrapped)))}
+            } catch {
+                print("Exception catched during treatements parsing. Ignoring the result...")
                 return
             }
-            
-            dispatchOnMain { [] in
-                guard let siteChangeUnwrapped = siteChangeObject[0]["created_at"]
-                    else {
-                        return
-                }
-                resultHandler(Date.fromIsoString(isoTime: String(describing: siteChangeUnwrapped)))}
         })
         
         task.resume()
@@ -690,32 +701,36 @@ class NightscoutService {
                 return
             }
             
-            let treatmentsArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
-            
-            guard let temporaryTargetObject = treatmentsArray as? [[String:Any]]
-                else {
+            do {
+                let treatmentsArray = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
+                
+                guard let temporaryTargetObject = treatmentsArray as? [[String:Any]]
+                    else {
+                        dispatchOnMain {
+                            resultHandler(nil)}
+                        return
+                }
+                
+                if temporaryTargetObject.count == 0 {
                     dispatchOnMain {
                         resultHandler(nil)}
                     return
-            }
-            
-            if temporaryTargetObject.count == 0 {
+                }
+                
                 dispatchOnMain {
-                    resultHandler(nil)}
-                return
-            }
-            
-            dispatchOnMain {
-                
-                let temporaryTargetData = TemporaryTargetData()
-                temporaryTargetData.targetTop = temporaryTargetObject[0]["targetTop"] as? Int ?? 100
-                temporaryTargetData.targetBottom = temporaryTargetObject[0]["targetBottom"] as? Int ?? 100
-                
-                let createdAt = temporaryTargetObject[0]["created_at"] as? String
-                let duration = temporaryTargetObject[0]["duration"] as? Int
-                temporaryTargetData.activeUntilDate = self.calculateEndDate(createdAt: createdAt, durationInMinutes: duration)
-                
-                resultHandler(temporaryTargetData)
+                    
+                    let temporaryTargetData = TemporaryTargetData()
+                    temporaryTargetData.targetTop = temporaryTargetObject[0]["targetTop"] as? Int ?? 100
+                    temporaryTargetData.targetBottom = temporaryTargetObject[0]["targetBottom"] as? Int ?? 100
+                    
+                    let createdAt = temporaryTargetObject[0]["created_at"] as? String
+                    let duration = temporaryTargetObject[0]["duration"] as? Int
+                    temporaryTargetData.activeUntilDate = self.calculateEndDate(createdAt: createdAt, durationInMinutes: duration)
+                    
+                    resultHandler(temporaryTargetData)
+                }
+            } catch {
+                print("Exception during reading of the temporary target. Ignoring the result...")
             }
         })
         
@@ -959,56 +974,61 @@ class NightscoutService {
                 return
             }
             
-            let deviceStatusRawArray = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
-            
-            guard let deviceStatusArray = deviceStatusRawArray as? [[String:Any]]
-                else {
-                    dispatchOnMain { [] in
-                        resultHandler(DeviceStatusData())}
-                    return
-            }
-            
-            for deviceStatus in deviceStatusArray {
-                // only the pump device status are interesting here
-                if deviceStatus.contains(where: {$0.key == "pump"}) {
-                    guard let pumpEntries = deviceStatus["pump"] as? [String:Any]
-                        else {
-                            dispatchOnMain { [] in
-                                resultHandler(DeviceStatusData())}
-                            return
-                    }
-                    var reservoirUnits = 0
-                    if let reservoirUnitsProbe = pumpEntries["reservoir"] as? Int {
-                        reservoirUnits = reservoirUnitsProbe
-                    }
-                    if pumpEntries.contains(where: {$0.key == "extended"}) {
-                        guard let extendedEntries = pumpEntries["extended"] as? [String:Any]
+            do {
+                let deviceStatusRawArray = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any]
+                
+                guard let deviceStatusArray = deviceStatusRawArray as? [[String:Any]]
+                    else {
+                        dispatchOnMain { [] in
+                            resultHandler(DeviceStatusData())}
+                        return
+                }
+                
+                for deviceStatus in deviceStatusArray {
+                    // only the pump device status are interesting here
+                    if deviceStatus.contains(where: {$0.key == "pump"}) {
+                        guard let pumpEntries = deviceStatus["pump"] as? [String:Any]
                             else {
                                 dispatchOnMain { [] in
                                     resultHandler(DeviceStatusData())}
                                 return
                         }
-                        if extendedEntries.contains(where: {$0.key == "ActiveProfile"}) {
-                            dispatchOnMain { [] in
-                                
-                                let deviceStatusData = DeviceStatusData(
-                                    activePumpProfile: extendedEntries["ActiveProfile"] as! String,
-                                    //TODO: Implement and use the AAPS timestamp here
-                                    pumpProfileActiveUntil: nil,
-                                    reservoirUnits: reservoirUnits,
-                                    temporaryBasalRate:
-                                    self.calculateTempBasalPercentage(
-                                        baseBasalRate: extendedEntries["BaseBasalRate"],
-                                        tempBasalAbsoluteRate: extendedEntries["TempBasalAbsoluteRate"]),
-                                    temporaryBasalRateActiveUntil:
-                                    self.calculateTempBasalEndTime(
-                                        tempBasalRemainingMinutes: extendedEntries["TempBasalRemaining"]))
-                                
-                                resultHandler(deviceStatusData)}
-                            return
+                        var reservoirUnits = 0
+                        if let reservoirUnitsProbe = pumpEntries["reservoir"] as? Int {
+                            reservoirUnits = reservoirUnitsProbe
+                        }
+                        if pumpEntries.contains(where: {$0.key == "extended"}) {
+                            guard let extendedEntries = pumpEntries["extended"] as? [String:Any]
+                                else {
+                                    dispatchOnMain { [] in
+                                        resultHandler(DeviceStatusData())}
+                                    return
+                            }
+                            if extendedEntries.contains(where: {$0.key == "ActiveProfile"}) {
+                                dispatchOnMain { [] in
+                                    
+                                    let deviceStatusData = DeviceStatusData(
+                                        activePumpProfile: extendedEntries["ActiveProfile"] as! String,
+                                        //TODO: Implement and use the AAPS timestamp here
+                                        pumpProfileActiveUntil: nil,
+                                        reservoirUnits: reservoirUnits,
+                                        temporaryBasalRate:
+                                        self.calculateTempBasalPercentage(
+                                            baseBasalRate: extendedEntries["BaseBasalRate"],
+                                            tempBasalAbsoluteRate: extendedEntries["TempBasalAbsoluteRate"]),
+                                        temporaryBasalRateActiveUntil:
+                                        self.calculateTempBasalEndTime(
+                                            tempBasalRemainingMinutes: extendedEntries["TempBasalRemaining"]))
+                                    
+                                    resultHandler(deviceStatusData)}
+                                return
+                            }
                         }
                     }
                 }
+            } catch {
+                print("Exception reading device status. Ignoring the result.")
+                return
             }
             
             // if no pump entry exists - return nothing

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17156" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zZT-1m-QPq">
-    <device id="watch38"/>
+    <device id="watch44"/>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17034"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17035"/>
     </dependencies>
     <scenes>
         <!--Main Controller-->
@@ -245,12 +245,11 @@
                                 <fontDescription key="font" type="system" pointSize="14"/>
                             </variation>
                         </label>
-                        <label width="1" alignment="center" text="http://..." textAlignment="center" numberOfLines="3" minimumScaleFactor="0.10000000000000001" id="rQn-yu-ajp">
-                            <fontDescription key="font" type="system" pointSize="12"/>
-                            <variation key="device=watch38mm">
-                                <fontDescription key="font" type="system" pointSize="10"/>
-                            </variation>
-                        </label>
+                        <textField width="1" alignment="left" text="http://..." id="mL4-z2-Pcn">
+                            <connections>
+                                <action selector="baseUriChanged:" destination="wky-cb-ykJ" id="25d-Ly-15a"/>
+                            </connections>
+                        </textField>
                         <label alignment="center" text="Caches Values:" textAlignment="left" id="E26-VQ-ttI">
                             <fontDescription key="font" type="system" pointSize="16"/>
                             <variation key="device=watch38mm">
@@ -275,16 +274,11 @@
                                 <fontDescription key="font" type="system" pointSize="10"/>
                             </variation>
                         </label>
-                        <button width="1" height="31" alignment="left" title="Close" id="J0t-oX-olu">
-                            <connections>
-                                <action selector="doCloseAction" destination="wky-cb-ykJ" id="J6Y-PP-x8b"/>
-                            </connections>
-                        </button>
                     </items>
                     <connections>
                         <outlet property="backgroundUpdatesLabel" destination="XcE-eq-aUV" id="i3o-WH-bxk"/>
                         <outlet property="cachedValuesLabel" destination="IeJ-DT-Wcg" id="edG-OD-P0g"/>
-                        <outlet property="serverUriLabel" destination="rQn-yu-ajp" id="chR-Cb-I8J"/>
+                        <outlet property="serverUriTextField" destination="mL4-z2-Pcn" id="wNZ-dd-Gwu"/>
                         <outlet property="versionLabel" destination="VJk-AO-PXu" id="9Je-rN-Q8U"/>
                     </connections>
                 </controller>
@@ -400,7 +394,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cYs-nj-Pup"/>
+        <segue reference="rOf-EO-JOp"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="darkTextColor">

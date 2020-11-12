@@ -47,7 +47,7 @@ class MainViewModel: ObservableObject, Identifiable {
         let bounds = WKInterfaceDevice.current().screenBounds
         let chartSceneHeight = MainViewModel.determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
         
-        skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6, useContrastfulColors: false)
+        skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 4, useContrastfulColors: false)
         
         refreshData(forceRefresh: true, moveToLatestValue: true)
         
@@ -101,16 +101,16 @@ class MainViewModel: ObservableObject, Identifiable {
         
         if (interfaceBounds.height >= 224.0) {
             // Apple Watch 44mm
-            return 165.0
+            return 150.0
         }
         if (interfaceBounds.height >= 195.0) {
             // Apple Watch 42mm
-            return 145.0
+            return 135.0
         }
         
         // interfaceBounds.height == 170.0
-        // Apple Watch 38mm
-        return 125.0
+        // Apple Watch 40mm/38mm
+        return 115.0
     }
     
     func loadCurrentBgData(forceRefresh: Bool) {

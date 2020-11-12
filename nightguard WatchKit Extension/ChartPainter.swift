@@ -278,7 +278,7 @@ class ChartPainter {
         // paint the upper/lower bounds text
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
-        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: 14)!,
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.gray]
         
@@ -309,6 +309,16 @@ class ChartPainter {
         }
     }
     
+    fileprivate func fontSizeForChartSize() -> CGFloat {
+        
+        if self.canvasHeight < 500 {
+            // On the watch: use smaller fonts
+            return 12
+        }
+        
+        return 14
+    }
+
     fileprivate func min(_ value1 : CGFloat, value2 : CGFloat) -> CGFloat {
         if value1 < value2 {
             return value1
@@ -321,7 +331,7 @@ class ChartPainter {
         // Draw the time
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: 14)!,
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.gray]
         

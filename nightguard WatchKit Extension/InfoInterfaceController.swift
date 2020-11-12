@@ -9,10 +9,11 @@
 import Foundation
 import WatchKit
 
+@available(watchOSApplicationExtension 6.0, *)
 class InfoInterfaceController: WKInterfaceController {
     
     @IBOutlet var versionLabel: WKInterfaceLabel!
-    @IBOutlet var serverUriLabel: WKInterfaceLabel!
+    @IBOutlet var serverUriTextField: WKInterfaceTextField!
     @IBOutlet var cachedValuesLabel: WKInterfaceLabel!
     @IBOutlet var backgroundUpdatesLabel: WKInterfaceLabel!
     
@@ -28,9 +29,18 @@ class InfoInterfaceController: WKInterfaceController {
         displayLabels()
     }
     
+    @IBAction func baseUriChanged(_ value: NSString?) {
+        
+        guard let baseUri = value else {
+            return
+        }
+        UserDefaultsRepository.baseUri.value = baseUri as String
+    }
+    
     func displayLabels() {
         
-        serverUriLabel.setText(UserDefaultsRepository.baseUri.value)
+        serverUriTextField.setText(UserDefaultsRepository.baseUri.value)
+        serverUriTextField.sizeToFitWidth()
         
         // version number
         let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
