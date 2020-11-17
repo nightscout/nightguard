@@ -189,7 +189,7 @@ class InterfaceController: WKInterfaceController, WKCrownDelegate {
             // only recognize every third rotation => Otherwise the watch will crash
             // because of too many calls a second
             if nrOfCrownRotations % 5 == 0 && abs(rotationalDelta) > 0.01 {
-                chartScene.scale(1 + CGFloat(rotationalDelta), keepScale: true, infoLabelText: determineInfoLabel())
+                chartScene.scale(1 + CGFloat(rotationalDelta), keepScale: true)
             }
         } else {
             chartScene.moveChart(rotationalDelta * 200)

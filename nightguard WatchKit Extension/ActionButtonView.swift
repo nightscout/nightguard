@@ -26,23 +26,35 @@ struct ActionButtonView: View {
     var body: some View {
         VStack(content: {
             HStack(spacing: 5, content: {
-                if #available(watchOSApplicationExtension 7.0, *) {
+                
+                if viewModel.crownScrolls {
                     Button(action: {
-                        self.snoozeModalIsPresented.toggle()
+                        WKInterfaceDevice.current().play(.success)
+                        viewModel.toggleCrownScrolls()
                     }) {
                         VStack() {
-                            Image(systemName: "moon.zzz")
+                            Image(systemName: "rectangle.portrait.arrowtriangle.2.outward")
                                 .resizable()
                                 .frame(width: 30, height:30)
-                            Text("Snooze")
+                            Text("Crown Scrolls")
+                                .lineLimit(1)
                                 .font(.system(size: 10))
                         }
                     }
-                    .fullScreenCover(isPresented: self.$snoozeModalIsPresented, content: {
-                        SnoozeModalView(
-                            mainViewModel: viewModel,
-                            isPresented: self.$snoozeModalIsPresented)
-                    })
+                } else {
+                    Button(action: {
+                        WKInterfaceDevice.current().play(.success)
+                        viewModel.toggleCrownScrolls()
+                    }) {
+                        VStack() {
+                            Image(systemName: "plus.magnifyingglass")
+                                .resizable()
+                                .frame(width: 30, height:30)
+                            Text("Crown Zooms")
+                                .lineLimit(1)
+                                .font(.system(size: 10))
+                        }
+                    }
                 }
                 Button(action: {
                     WKInterfaceDevice.current().play(.success)
@@ -58,6 +70,24 @@ struct ActionButtonView: View {
                     }
                 }
             })
+            if #available(watchOSApplicationExtension 7.0, *) {
+                Button(action: {
+                    self.snoozeModalIsPresented.toggle()
+                }) {
+                    VStack() {
+                        Image(systemName: "moon.zzz")
+                            .resizable()
+                            .frame(width: 30, height:30)
+                        Text("Snooze")
+                            .font(.system(size: 10))
+                    }
+                }
+                .fullScreenCover(isPresented: self.$snoozeModalIsPresented, content: {
+                    SnoozeModalView(
+                        mainViewModel: viewModel,
+                        isPresented: self.$snoozeModalIsPresented)
+                })
+            }
             Spacer()
         })
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)

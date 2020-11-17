@@ -146,7 +146,7 @@ class ChartScene : SKScene {
     
     // Called when the user pinches the display. Used to scale the maximum blood glucose value up
     // or down. This effectively zoom in or out on the chart.
-    func scale(_ scale : CGFloat, keepScale : Bool, infoLabelText : String) {
+    func scale(_ scale : CGFloat, keepScale : Bool) {
         
         let oldValue = maxYDisplayValue
         var scaleUnequalZero = scale

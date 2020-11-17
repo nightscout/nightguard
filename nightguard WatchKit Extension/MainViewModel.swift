@@ -14,8 +14,6 @@ import ClockKit
 @available(watchOSApplicationExtension 6.0, *)
 class MainViewModel: ObservableObject, Identifiable {
     
-    @Published var refreshingData = false
-    
     @Published var nightscoutData: NightscoutData?
     
     @Published var sgvColor = Color.white
@@ -42,6 +40,7 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var cachedYesterdaysBgValues: [BloodSugar] = []
 
     @Published var alarmRuleMessage: String = ""
+    @Published var crownScrolls: Bool = true
     
     init() {
         let bounds = WKInterfaceDevice.current().screenBounds
@@ -73,8 +72,8 @@ class MainViewModel: ObservableObject, Identifiable {
         
         let todaysDataWithPrediction = todaysData + PredictionService.singleton.nextHourGapped
         
-        let chartSceneHeight = MainViewModel.determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
-        skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6, useContrastfulColors: false)
+        //let chartSceneHeight = MainViewModel.determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
+        //skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 6, useContrastfulColors: false)
         skScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: bounds.width * 6,
@@ -120,15 +119,12 @@ class MainViewModel: ObservableObject, Identifiable {
             return
         }
 
-        self.refreshingData = true
-        
         self.nightscoutData = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: forceRefresh) { [unowned self] result in
             
             guard let result = result else { return }
             
              dispatchOnMain { [unowned self] in
                 
-                self.refreshingData = false
                 guard self.active else { return }
                 
                 switch result {
@@ -144,10 +140,7 @@ class MainViewModel: ObservableObject, Identifiable {
             }
         }
         
-        if NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests {
-            
-            self.active = true
-        }
+        self.active = NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests
     }
     
     fileprivate func updateComplication() {
@@ -221,8 +214,6 @@ class MainViewModel: ObservableObject, Identifiable {
                 guard let result = result else { return }
 
                 dispatchOnMain { [unowned self] in
-                    guard active else { return }
-                    
                     if case .data(let newTodaysData) = result {
                         self.cachedTodaysBgValues = newTodaysData
                         paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : true)
@@ -240,8 +231,6 @@ class MainViewModel: ObservableObject, Identifiable {
                 guard let result = result else { return }
 
                 dispatchOnMain { [unowned self] in
-                    guard active else { return }
-                    
                     if case .data(let newYesterdaysData) = result {
                         self.cachedYesterdaysBgValues = newYesterdaysData
                         paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : true)
@@ -254,5 +243,9 @@ class MainViewModel: ObservableObject, Identifiable {
         if forceRepaint {
             paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : moveToLatestValue)
         }
+    }
+    
+    func toggleCrownScrolls() {
+        crownScrolls = !crownScrolls
     }
 }

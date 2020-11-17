@@ -220,9 +220,9 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @objc func pinchGesture(_ recognizer : UIPinchGestureRecognizer) {
         
         if recognizer.state == UIGestureRecognizer.State.ended {
-            chartScene.scale(recognizer.scale, keepScale: true, infoLabelText: "")
+            chartScene.scale(recognizer.scale, keepScale: true)
         } else {
-            chartScene.scale(recognizer.scale, keepScale: false, infoLabelText: "")
+            chartScene.scale(recognizer.scale, keepScale: false)
         }        
     }
     

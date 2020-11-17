@@ -69,6 +69,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 InterfaceController.onMain {
                     $0.loadAndPaintChartData(forceRepaint: true)
                 }
+                if #available(watchOSApplicationExtension 6.0, *) {
+                    MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
+                }
+                InterfaceController.onMain {
+                    $0.loadAndPaintChartData(forceRepaint: true)
+                }
             }
         }
         
@@ -115,6 +121,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             let shouldRepaintCurrentBgData = hasChangedUri || hasChangedUnits
             let shouldRepaintCharts = true // do it always!
             if shouldRepaintCurrentBgData || shouldRepaintCharts {
+                if #available(watchOSApplicationExtension 6.0, *) {
+                    MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
+                }
                 if #available(watchOSApplicationExtension 3.0, *) {
                     if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
                         if WKExtension.shared().applicationState == .active {

@@ -16,8 +16,8 @@ struct MainView: View {
     @State var crownValue = 0.0
     @State var oldCrownValue = 0.0
     
-    // update the ui every 30 seconds:
-    let timer = Timer.publish(every: 30, on: .current, in: .common).autoconnect()
+    // update the ui every 15 seconds:
+    let timer = Timer.publish(every: 15, on: .current, in: .common).autoconnect()
     
     @ObservedObject var viewModel: MainViewModel
     
@@ -37,8 +37,31 @@ struct MainView: View {
             // Apple Watch 42mm
             sceneHeight = 145.0
         }
+        
+        viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
    }
 
+    fileprivate func scrollChart() {
+        if abs(oldCrownValue - crownValue) > 1000 {
+            // the counter jumped from 0 to 1000 (or vice versa). Ignore this
+            oldCrownValue = crownValue
+            return
+        }
+        viewModel.skScene.moveChart(-1 * (oldCrownValue - crownValue))
+        self.oldCrownValue = crownValue
+    }
+    
+    fileprivate func zoomChart() {
+        let rotationDelta = oldCrownValue - crownValue
+        if abs(rotationDelta) > 1000 {
+            // the counter jumped from 0 to 1000 (or vice versa). Ignore this
+            oldCrownValue = crownValue
+            return
+        }
+        self.oldCrownValue = crownValue
+        viewModel.skScene.scale(1 + CGFloat(-1 * rotationDelta / 500), keepScale: true)
+    }
+    
     var body: some View {
         VStack() {
             HStack(spacing: 5, content: {
@@ -148,13 +171,11 @@ struct MainView: View {
                             .focusable(true)
                             .digitalCrownRotation($crownValue, from: 0, through: 10000, by: 15, sensitivity: .high, isContinuous: true, isHapticFeedbackEnabled: true)
                             .onReceive(Just(crownValue)) { output in
-                                if abs(oldCrownValue - crownValue) > 1000 {
-                                    // the counter jumped from 0 to 1000 (or vice versa). Ignore this
-                                    oldCrownValue = crownValue
-                                    return
+                                if viewModel.crownScrolls {
+                                    scrollChart()
+                                } else {
+                                    zoomChart()
                                 }
-                                viewModel.skScene.moveChart(-1 * (oldCrownValue - crownValue))
-                                self.oldCrownValue = crownValue
                             }
                     }
                     VStack() {
@@ -174,14 +195,14 @@ struct MainView: View {
         .edgesIgnoringSafeArea(.bottom)
         .focusable(false)
         .onAppear() {
-            viewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
+            viewModel.refreshData(forceRefresh: false, moveToLatestValue: true)
             
             // Request Data from the main app
             // especially the baseUri if missing
             WatchSyncRequestMessage().send()
         }
         .onReceive(timer) { _ in
-            viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
+            viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
         }
     }
 }
