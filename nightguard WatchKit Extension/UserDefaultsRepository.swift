@@ -103,6 +103,10 @@ class UserDefaultsRepository {
     // show/hide stats
     static let showStats = UserDefaultsValue<Bool>(key: "showStats", default: true)
     
+    // show/hide Care and Loop Data
+    static let showCareAndLoopData = UserDefaultsValue<Bool>(key: "showCareAndLoopData", default: true)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
     /* Parses the URI entered in the UI and extracts the token if one is present. */
     fileprivate static func parseBaseUri() {
         url = nil

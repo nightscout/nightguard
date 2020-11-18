@@ -31,6 +31,8 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @IBOutlet weak var actionsMenuButton: UIButton!
     @IBOutlet weak var actionsMenuButtonPanelView: UIView!
     @IBOutlet weak var statsPanelView: BasicStatsPanelView!
+    @IBOutlet weak var careView: UIStackView!
+    @IBOutlet weak var loopView: UIStackView!
     @IBOutlet weak var slideToSnoozeView: SlideToSnoozeView!
     @IBOutlet weak var slideToSnoozeViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var cannulaAgeLabel: UILabel!
@@ -135,6 +137,18 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
                     self.statsPanelView.updateModel()
                 }
             }
+        }
+        // show/hide the Careportal and Loopdata
+        let careDataShouldBeHidden = !UserDefaultsRepository.showCareAndLoopData.value
+        if careView.isHidden != careDataShouldBeHidden {
+            careView.isHidden = careDataShouldBeHidden
+            view.setNeedsLayout()
+            view.layoutIfNeeded()
+        }
+        if loopView.isHidden != careDataShouldBeHidden {
+            loopView.isHidden = careDataShouldBeHidden
+            view.setNeedsLayout()
+            view.layoutIfNeeded()
         }
         
         actionsMenuButtonPanelView.isHidden = AlarmRule.areAlertsGenerallyDisabled.value

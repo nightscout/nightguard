@@ -42,7 +42,11 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var alarmRuleMessage: String = ""
     @Published var crownScrolls: Bool = true
     
+    @Published var showCareAndLoopData: Bool = true
+    
     init() {
+        showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
+        
         let bounds = WKInterfaceDevice.current().screenBounds
         let chartSceneHeight = MainViewModel.determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
         
@@ -54,6 +58,9 @@ class MainViewModel: ObservableObject, Identifiable {
     }
     
     func refreshData(forceRefresh : Bool, moveToLatestValue : Bool) {
+        
+        showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
+        
         loadCurrentBgData(forceRefresh: forceRefresh)
         loadCareData()
         loadDeviceStatusData()

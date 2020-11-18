@@ -183,6 +183,14 @@ class PrefsViewController: CustomFormViewController {
             }
 
             <<< SwitchRow() { row in
+                row.title = NSLocalizedString("Show Care/Loop Data", comment: "Label for Show Care/Loop Data")
+                row.value = UserDefaultsRepository.showCareAndLoopData.value
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    UserDefaultsRepository.showCareAndLoopData.value = value
+            }
+            
+            <<< SwitchRow() { row in
                 row.title = NSLocalizedString("Show BG on App Badge", comment: "Label for Show BG on Badge")
                 row.value = UserDefaultsRepository.showBGOnAppBadge.value
                 }.onChange { row in

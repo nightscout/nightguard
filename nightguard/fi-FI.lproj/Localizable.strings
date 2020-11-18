@@ -471,3 +471,54 @@
 
 /* Add carbs popup modal text */
 "Do you want to add %dg of carbs?" = "Do you want to add %dg of carbs?";
+
+/* Snooze Menu Popup Button Text */
+"Stop Snoozing" = "Stop Snoozing";
+
+/* Watch Snooze Menu Button 5min */
+"5min" = "5min";
+
+/* Watch Snooze Menu Button 10min */
+"10min" = "10min";
+
+/* Watch Snooze Menu Button 15min */
+"15min" = "15min";
+
+/* Watch Snooze Menu Button 20min */
+"20min" = "20min";
+
+/* Watch Snooze Menu Button 30min */
+"30min" = "30min";
+
+/* Watch Snooze Menu Button 45min */
+"45min" = "45min";
+
+/* Watch Snooze Menu Button 1h */
+"1h" = "1h";
+
+/* Watch Snooze Menu Button 2h */
+"2h" = "2h";
+
+/* Watch Snooze Menu Button 3h */
+"3h" = "3h";
+
+/* Watch Snooze Menu Button 6h */
+"6h" = "6h";
+
+/* Watch Snooze Menu Button 1d */
+"1d" = "1d";
+
+/* Watch Action Button Menu */
+"Crown Scrolls" = "Crown Scrolls";
+
+/* Watch Action Button Menu */
+"Crown Zooms" = "Crown Zooms";
+
+/* Watch Action Button Menu */
+"Refresh" = "Refresh";
+
+/* Watch Action Button Menu */
+"Snooze" = "Snooze";
+
+/* Label for Show Care/Loop Data */
+"Show Care/Loop Data" = "Show Care/Loop Data";

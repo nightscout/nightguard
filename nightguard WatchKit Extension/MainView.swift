@@ -125,45 +125,47 @@ struct MainView: View {
             }).frame(minWidth: 0,
                      maxWidth: .infinity,
                      alignment: .topLeading)
-            HStack() {
-                Text(viewModel.cannulaAge ?? "?d ?h")
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .font(.system(size: 10))
-                    .frame(maxWidth: .infinity,
-                           alignment: .leading)
-                Text(viewModel.sensorAge ?? "?d ?h")
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .font(.system(size: 10))
-                    .minimumScaleFactor(0.5)
-                    .frame(maxWidth: .infinity)
-                Text(viewModel.batteryAge ?? "?d ?h")
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .font(.system(size: 10))
-                    .frame(maxWidth: .infinity,
-                           alignment: .trailing)
-            }.frame(minWidth: 0,
-                    maxWidth: .infinity)
-            HStack(spacing: 5) {
-                Text(viewModel.activeProfile)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .font(.system(size: 10))
-                    .frame(idealWidth: 100, maxWidth: .infinity, alignment: .leading)
-                Text(viewModel.temporaryBasal)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .font(.system(size: 10))
-                    .frame(idealWidth: 100, maxWidth: .infinity)
-                Text(viewModel.temporaryTarget)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                    .font(.system(size: 10))
-                    .frame(idealWidth: 100, maxWidth: .infinity, alignment: .trailing)
-            }.frame(minWidth: 0,
-                    maxWidth: .infinity)
+            if viewModel.showCareAndLoopData {
+                HStack() {
+                    Text(viewModel.cannulaAge ?? "?d ?h")
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 10))
+                        .frame(maxWidth: .infinity,
+                               alignment: .leading)
+                    Text(viewModel.sensorAge ?? "?d ?h")
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 10))
+                        .minimumScaleFactor(0.5)
+                        .frame(maxWidth: .infinity)
+                    Text(viewModel.batteryAge ?? "?d ?h")
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 10))
+                        .frame(maxWidth: .infinity,
+                               alignment: .trailing)
+                }.frame(minWidth: 0,
+                        maxWidth: .infinity)
+                HStack(spacing: 5) {
+                    Text(viewModel.activeProfile)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 10))
+                        .frame(idealWidth: 100, maxWidth: .infinity, alignment: .leading)
+                    Text(viewModel.temporaryBasal)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 10))
+                        .frame(idealWidth: 100, maxWidth: .infinity)
+                    Text(viewModel.temporaryTarget)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 10))
+                        .frame(idealWidth: 100, maxWidth: .infinity, alignment: .trailing)
+                }.frame(minWidth: 0,
+                        maxWidth: .infinity)
+            }
             VStack() {
                 ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom), content: {
                     if #available(watchOSApplicationExtension 7.0, *) {

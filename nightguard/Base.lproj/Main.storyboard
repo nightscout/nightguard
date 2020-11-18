@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oic-Vn-yoT">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -552,6 +552,7 @@
                         <outlet property="batteryLabel" destination="3ZI-eY-05Z" id="pgN-9h-ivx"/>
                         <outlet property="bgLabel" destination="aNX-u1-teT" id="miL-Ac-Dj8"/>
                         <outlet property="cannulaAgeLabel" destination="sSr-ZX-y1v" id="caI-6m-BGT"/>
+                        <outlet property="careView" destination="hJ3-pd-qys" id="ymD-BK-MUe"/>
                         <outlet property="cobLabel" destination="Iq3-B5-F4M" id="3uh-hD-rpE"/>
                         <outlet property="deltaArrowsLabel" destination="SLx-m6-8iP" id="t6g-8R-QAw"/>
                         <outlet property="deltaLabel" destination="7OG-w8-xXQ" id="S7C-cg-gQ2"/>
@@ -559,6 +560,7 @@
                         <outlet property="errorPanelView" destination="1rF-Wm-FbJ" id="VhD-o3-WnA"/>
                         <outlet property="iobLabel" destination="sxg-9W-FFR" id="DEM-gT-C3j"/>
                         <outlet property="lastUpdateLabel" destination="FFv-EO-ylg" id="KqE-n5-OYo"/>
+                        <outlet property="loopView" destination="Dco-QM-e0j" id="pmc-kX-mEE"/>
                         <outlet property="reservoirLabel" destination="fxs-zK-owl" id="S5G-uw-ww1"/>
                         <outlet property="sensorAgeLabel" destination="nI6-k9-3yy" id="ofa-jt-208"/>
                         <outlet property="slideToSnoozeView" destination="MNg-kT-Em2" id="GGV-wd-gUK"/>

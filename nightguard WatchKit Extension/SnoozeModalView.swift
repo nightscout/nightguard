@@ -28,7 +28,7 @@ struct SnoozeModalView: View {
         ScrollView {
         VStack {
             if (AlarmRule.isSnoozed()) {
-                Button("Stop Snoozing", action: {
+                Button(NSLocalizedString("Stop Snoozing", comment: "Snooze Menu Popup Button Text"), action: {
                     WKInterfaceDevice.current().play(.success)
                     AlarmRule.disableSnooze()
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
@@ -38,13 +38,13 @@ struct SnoozeModalView: View {
                 .foregroundColor(Color.black)
             }
             HStack {
-                Button("5min", action: {
+                Button(NSLocalizedString("5min", comment: "Snooze Menu Popup Button 5min"), action: {
                     WKInterfaceDevice.current().play(.success)
                     AlarmRule.snooze(5)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                     self.isPresented.toggle()
                 })
-                Button("10min", action: {
+                Button(NSLocalizedString("10min", comment: "Snooze Menu Popup Button 10min"), action: {
                     WKInterfaceDevice.current().play(.success)
                     AlarmRule.snooze(10)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
@@ -52,56 +52,56 @@ struct SnoozeModalView: View {
                 })
             }
             HStack {
-                Button("15min", action: {
+                Button(NSLocalizedString("15min", comment: "Snooze Menu Popup Button 15min"), action: {
                     WKInterfaceDevice.current().play(.success)
                     AlarmRule.snooze(15)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                     self.isPresented.toggle()
                 })
-                Button("20min", action: {
+                Button(NSLocalizedString("20min", comment: "Snooze Menu Popup Button 20min"), action: {
                     WKInterfaceDevice.current().play(.success)
                     AlarmRule.snooze(20)
                     viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                     self.isPresented.toggle()
                 })
             }
-            Button("30min", action: {
+            Button(NSLocalizedString("30min", comment: "Snooze Menu Popup Button 30min"), action: {
                 WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(30)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
-            Button("45min", action: {
+            Button(NSLocalizedString("45min", comment: "Snooze Menu Popup Button 45min"), action: {
                 WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(45)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
-            Button("1h", action: {
+            Button(NSLocalizedString("1h", comment: "Snooze Menu Popup Button 1h"), action: {
                 WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(60)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
-            Button("2h", action: {
+            Button(NSLocalizedString("2h", comment: "Snooze Menu Popup Button 2h"), action: {
                 WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(120)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
-            Button("3h", action: {
+            Button(NSLocalizedString("3h", comment: "Snooze Menu Popup Button 3h"), action: {
                 WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(180)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
-            Button("6h", action: {
+            Button(NSLocalizedString("6h", comment: "Snooze Menu Popup Button 6h"), action: {
                 WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(6*60)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
                 self.isPresented.toggle()
             })
-            Button("1d", action: {
+            Button(NSLocalizedString("1d", comment: "Snooze Menu Popup Button 1d"), action: {
                 WKInterfaceDevice.current().play(.success)
                 AlarmRule.snooze(24*60)
                 viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
