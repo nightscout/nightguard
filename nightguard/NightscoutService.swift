@@ -108,10 +108,14 @@ class NightscoutService {
                     guard let jsonDict :NSDictionary = json as? NSDictionary else {
                         return
                     }
-                    let settingsDict = jsonDict.object(forKey: "settings") as! NSDictionary
+                    guard let settingsDict = jsonDict.object(forKey: "settings") as? NSDictionary else {
+                        return
+                    }
                     if (settingsDict.count > 0) {
                         
-                        let unitsAsString = settingsDict.value(forKey: "units") as! String
+                        guard let unitsAsString = settingsDict.value(forKey: "units") as? String else {
+                            return
+                        }
                         if unitsAsString.lowercased().contains("mg") {
                             resultHandler(.data(Units.mgdl))
                         } else {
