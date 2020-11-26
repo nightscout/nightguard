@@ -452,25 +452,25 @@
 "Use the following Units" = "Käytä seuraavia yksiköitä";
 
 /* Watch-Button to delete a current Temporary Target */
-"Delete Target" = "Delete Target";
+"Delete Target" = "Poista tavoite";
 
 /* Add Carbs Popup Title */
-"Add Carbs" = "Add Carbs";
+"Add Carbs" = "Lisää hiilihydraatit";
 
 /* Cancel Target Popup Text */
-"Do you want to enter %dg of consumed carbs?" = "Do you want to enter %dg of consumed carbs?";
+"Do you want to enter %dg of consumed carbs?" = "Haluatko syöttää %dg kulutettuja hiilihydraatteja?";
 
 /* Section to enter Carbs */
-"Enter consumed Carbs" = "Enter consumed Carbs";
+"Enter consumed Carbs" = "Syötä kulutetut hiilihydraatit";
 
 /* Label for the amount of carbs in gramm */
-"Gramms [g]" = "Gramms [g]";
+"Gramms [g]" = "Määrä [g]";
 
 /* Button to add consumed Carbs */
-"Add Carbs" = "Add Carbs";
+"Add Carbs" = "Lisää hiilihydraatit";
 
 /* Add carbs popup modal text */
-"Do you want to add %dg of carbs?" = "Do you want to add %dg of carbs?";
+"Do you want to add %dg of carbs?" = "Haluatko lisätä %dg hiilihydraatteja?";
 
 /* Snooze Menu Popup Button Text */
 "Stop Snoozing" = "Stop Snoozing";
@@ -522,3 +522,4 @@
 
 /* Label for Show Care/Loop Data */
 "Show Care/Loop Data" = "Show Care/Loop Data";
+
