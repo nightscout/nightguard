@@ -451,9 +451,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
         self.backgroundSession = nil
         self.downloadTask = nil
         self.sessionStartTime = nil
-        if #available(watchOSApplicationExtension 3.0, *) {
-            (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompletedWithSnapshot(false)
-        }
+        (self.pendingBackgroundURLTask as? WKRefreshBackgroundTask)?.setTaskCompletedWithSnapshot(false)
         self.pendingBackgroundURLTask = nil
         
         BackgroundRefreshLogger.info("URL session COMPLETED")
