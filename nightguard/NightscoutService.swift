@@ -998,8 +998,8 @@ class NightscoutService {
                                 return
                         }
                         var reservoirUnits = 0
-                        if let reservoirUnitsProbe = pumpEntries["reservoir"] as? Int {
-                            reservoirUnits = reservoirUnitsProbe
+                        if let reservoirUnitsProbe = pumpEntries["reservoir"] as? Double {
+                            reservoirUnits = Int(reservoirUnitsProbe)
                         }
                         if pumpEntries.contains(where: {$0.key == "extended"}) {
                             guard let extendedEntries = pumpEntries["extended"] as? [String:Any]
@@ -1027,6 +1027,19 @@ class NightscoutService {
                                     resultHandler(deviceStatusData)}
                                 return
                             }
+                        } else {
+                            // no extended data => just return the reservoir units
+                            dispatchOnMain { [] in
+                                let deviceStatusData = DeviceStatusData(
+                                    activePumpProfile: "---",
+                                    //TODO: Implement and use the AAPS timestamp here
+                                    pumpProfileActiveUntil: nil,
+                                    reservoirUnits: reservoirUnits,
+                                    temporaryBasalRate: "--",
+                                    temporaryBasalRateActiveUntil: Date())
+                                
+                                    resultHandler(deviceStatusData)}
+                            return
                         }
                     }
                 }
