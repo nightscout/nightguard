@@ -24,9 +24,9 @@ Features are:
 
 For the alarms to work the app has to be active. So you can enable a screen lock that keeps the app running all night long.
 
-Have a look at nightscout.github.io for more information about how to setup your own Nightscout backend.
+Have a look at https://nightscout.github.io for more information about how to setup your own Nightscout backend.
 
-![Nightguard App](https://github.com/nightscout/nightguard/blob/master/images/nightguard24.jpg)
+[![Nightguard App](https://github.com/nightscout/nightguard/blob/master/images/nightguard24.jpg)]
 
 The dark gray region in the chart marks the values that are between 80 and 180.
 
