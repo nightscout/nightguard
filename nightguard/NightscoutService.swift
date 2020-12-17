@@ -161,7 +161,7 @@ class NightscoutService {
             "count"             : "400",
         ]
         
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v2/entries.json", queryParams: chartDataWithinPeriodOfTimeQueryParams)
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries.json", queryParams: chartDataWithinPeriodOfTimeQueryParams)
         guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
