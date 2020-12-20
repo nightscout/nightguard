@@ -92,7 +92,7 @@ class CareViewController: CustomFormViewController {
                 <<< PickerInlineRow<Int>() { row in
                     row.tag = "Value"
                     row.title = NSLocalizedString("Target Value", comment: "Label for Temporary Target Value")
-                    row.options = [72, 80, 100, 120]
+                    row.options = [72, 80, 100, 120, 145, 160]
                     row.value = UserDefaultsRepository.temporaryTargetAmount.value
                     row.displayValueFor = { value in
                         guard let value = value else { return nil }
@@ -125,7 +125,7 @@ class CareViewController: CustomFormViewController {
                         guard let value = value else { return nil }
                         return "\(value)g"
                     }
-                    row.options = [3, 5, 10, 15, 20, 30, 40, 50, 60, 70]
+                    row.options = [3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
                     row.value = UserDefaultsRepository.carbs.value
                 }.onChange { row in
                     UserDefaultsRepository.carbs.value = row.value!
