@@ -17,7 +17,7 @@ struct CarbsView: View {
     @Environment(\.presentationMode) var presentation
     @State var carbsModalIsPresented = false
 
-    var carbs = ["3g", "5g", "10g", "15g", "20g", "25g", "30g", "35g", "40g", "45g", "50g", "55g", "60g", "65g", "70g"]
+    var carbs = ["3g", "5g", "10g", "15g", "20g", "25g", "30g", "35g", "40g", "45g", "50g", "55g", "60g", "65g", "70g", "75g", "80g", "85g", "90g", "95g", "100g"]
     @State var selectedCarbs : String
 
     init() {
