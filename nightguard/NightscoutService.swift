@@ -180,6 +180,17 @@ class NightscoutService {
                 return
             }
             
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    dispatchOnMain {
+                        resultHandler(
+                            .error(self.createUnauthorizedError(description:
+                                NSLocalizedString("You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?", comment: "Error hint in case of a http 401 Exception"))))
+                    }
+                    return
+                }
+            }
+            
             do {
                 guard data != nil else {
                     print("The received data was nil...")
@@ -405,6 +416,17 @@ class NightscoutService {
                     resultHandler(.error(error!))
                 }
                 return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    dispatchOnMain {
+                        resultHandler(
+                            .error(self.createUnauthorizedError(description:
+                                NSLocalizedString("You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?", comment: "Error hint in case of a http 401 Exception"))))
+                    }
+                    return
+                }
             }
             
             guard data != nil else {
@@ -1087,6 +1109,10 @@ class NightscoutService {
     }
     
     private func createNoDataError(description: String ) -> Error {
+        return NSError(domain: "NightguardError", code: -1, userInfo: [NSLocalizedDescriptionKey: description])
+    }
+    
+    private func createUnauthorizedError(description: String ) -> Error {
         return NSError(domain: "NightguardError", code: -1, userInfo: [NSLocalizedDescriptionKey: description])
     }
 }

@@ -1976,7 +1976,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 659;
+				CURRENT_PROJECT_VERSION = 661;
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1984,7 +1984,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2007,7 +2007,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 659;
+				CURRENT_PROJECT_VERSION = 661;
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = "nightguard WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2015,7 +2015,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2039,7 +2039,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 659;
+				CURRENT_PROJECT_VERSION = 661;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
@@ -2049,7 +2049,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2072,7 +2072,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 659;
+				CURRENT_PROJECT_VERSION = 661;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				IBSC_MODULE = scoutwatch_WatchKit_Extension;
@@ -2082,7 +2082,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2102,7 +2102,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 659;
+				CURRENT_PROJECT_VERSION = 661;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;
@@ -2111,7 +2111,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2130,7 +2130,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 659;
+				CURRENT_PROJECT_VERSION = 661;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = YES;
@@ -2139,7 +2139,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.2.1;
+				MARKETING_VERSION = 3.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";

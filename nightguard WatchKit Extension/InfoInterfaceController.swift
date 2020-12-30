@@ -35,6 +35,22 @@ class InfoInterfaceController: WKInterfaceController {
             return
         }
         UserDefaultsRepository.baseUri.value = baseUri as String
+        
+        if UserDefaultsRepository.manuallySetUnits.value {
+            // if the user decided to manually set the display units, we don't have to determine
+            // them here. So just back off:
+            return
+        }
+        
+        NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
+            
+            switch result {
+            case .data(let units):
+                UserDefaultsRepository.units.value = units
+            case .error(_):
+                print("Unable to determine units on the watch. Using the synced values from the ios app.")
+            }
+        }
     }
     
     func displayLabels() {
