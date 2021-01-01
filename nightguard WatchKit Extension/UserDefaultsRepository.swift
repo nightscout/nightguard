@@ -171,6 +171,55 @@ class UserDefaultsRepository {
     static let temporaryTargetAmount = UserDefaultsValue<Int>(key: "temporaryTargetAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetAmount") as? Int) ?? 72)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
+    
+    static let temporaryTargetActivityDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetActivityDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetActivityDefaultAmount") as? Int) ?? 130)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let temporaryTargetTooLowDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetTooLowDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetTooLowDefaultAmount") as? Int) ?? 120)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let temporaryTargetTooHighDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetTooHighDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetTooHighDefaultAmount") as? Int) ?? 72)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let temporaryTargetMealSoonDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetMealSoonDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetMealSoonDefaultAmount") as? Int) ?? 80)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static func setNewDefaultTemporaryTargetAmount(temporaryTargetAmount : Int) {
+        
+        switch UserDefaultsRepository.temporaryTargetReason.value {
+        case "Activity":
+            UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value = temporaryTargetAmount
+            break;
+        case "Too High":
+            UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value = temporaryTargetAmount
+            break;
+        case "Too Low":
+            UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value = temporaryTargetAmount
+            break;
+        case "Meal Soon":
+            UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value = temporaryTargetAmount
+            break;
+        default:
+            break;
+        }
+    }
+    
+    static func getDefaultTemporaryTargetAmountForReason() -> Int {
+        
+        switch UserDefaultsRepository.temporaryTargetReason.value {
+        case "Activity":
+            return UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
+        case "Too High":
+            return UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value
+        case "Too Low":
+            return UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value
+        case "Meal Soon":
+            return UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value
+        default:
+            return UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
+        }
+    }
+    
     static let carbs = UserDefaultsValue<Int>(key: "carbs", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "carbs") as? Int) ?? 3)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
 }

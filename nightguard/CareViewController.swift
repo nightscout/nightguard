@@ -44,25 +44,28 @@ class CareViewController: CustomFormViewController {
                     
                     if row.value == NSLocalizedString("Activity", comment: "TT Reason Picker Activity") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTargetAmount.value = 130
+                        UserDefaultsRepository.temporaryTargetAmount.value = UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
                         targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
                         targetValueRow.reload()
                     }
                     if row.value == NSLocalizedString("Too High", comment: "TT Reason Picker Too High") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTargetAmount.value = 72
+                        UserDefaultsRepository.temporaryTargetAmount.value =
+                            UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value
                         targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
                         targetValueRow.reload()
                     }
                     if row.value == NSLocalizedString("Too Low", comment: "TT Reason Picker Too Low") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTargetAmount.value = 120
+                        UserDefaultsRepository.temporaryTargetAmount.value =
+                            UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value
                         targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
                         targetValueRow.reload()
                     }
                     if row.value == NSLocalizedString("Meal Soon", comment: "TT Reason Picker Meal Soon") {
                         let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTargetAmount.value = 80
+                        UserDefaultsRepository.temporaryTargetAmount.value =
+                            UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value
                         targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
                         targetValueRow.reload()
                     }
@@ -100,6 +103,7 @@ class CareViewController: CustomFormViewController {
                     }
                 }.onChange { row in
                     UserDefaultsRepository.temporaryTargetAmount.value = row.value!
+                    UserDefaultsRepository.setNewDefaultTemporaryTargetAmount(temporaryTargetAmount: row.value!)
                 }
         
                 <<< ButtonRow() { row in
