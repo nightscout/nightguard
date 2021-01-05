@@ -483,6 +483,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             self.lastUpdateLabel.textColor = UIColorChanger.getTimeLabelColor(currentNightscoutData.time)
             
             self.batteryLabel.text = currentNightscoutData.battery
+            self.batteryLabel.textColor = UIColorChanger.getBatteryLabelColor(currentNightscoutData.battery)
             if !currentNightscoutData.iob.isEmpty {
                 self.iobLabel.text = currentNightscoutData.iob
             }
@@ -524,11 +525,16 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     
     fileprivate func loadAndPaintCareData() {
         
-        self.sensorAgeLabel.convertToAge(prefix: "SAGE ", time: NightscoutCacheService.singleton.getSensorChangeTime(), hoursUntilWarning: 24 * 9, hoursUntilCritical: 24 * 13)
+        self.sensorAgeLabel.convertToAge(prefix: "SAGE ", time: NightscoutCacheService.singleton.getSensorChangeTime(),
+                                         hoursUntilWarning: UserDefaultsRepository.sensorAgeHoursUntilWarning,
+                                         hoursUntilCritical: UserDefaultsRepository.sensorAgeHoursUntilCritical)
         self.cannulaAgeLabel.convertToAge(prefix: "CAGE ", time:  NightscoutCacheService.singleton.getCannulaChangeTime(),
-                                          hoursUntilWarning: 24 * 2 - 2, hoursUntilCritical: 24 * 3 - 2)
+                                          hoursUntilWarning: UserDefaultsRepository.cannulaAgeHoursUntilWarning,
+                                          hoursUntilCritical: UserDefaultsRepository.cannulaAgeHoursUntilCritical)
         self.batteryAgeLabel.convertToAge(prefix: "BAT ", time:  NightscoutCacheService.singleton.getPumpBatteryChangeTime(),
-                                          hoursUntilWarning: 24 * 28, hoursUntilCritical: 24 * 30)
+                                          hoursUntilWarning: UserDefaultsRepository.batteryAgeHoursUntilWarning,
+                                          hoursUntilCritical: UserDefaultsRepository.batteryAgeHoursUntilCritical)
+        
         let deviceStatusData = NightscoutCacheService.singleton.getDeviceStatusData { [unowned self] result in
             self.paintDeviceStatusData(deviceStatusData: result)
         }

@@ -27,24 +27,6 @@ extension UILabel {
         }
         
         self.text = prefix + differenceString
-        self.textColor = determineColorDependingOn(time: time, hoursUntilWarning: hoursUntilWarning, hoursUntilCritical: hoursUntilCritical)
-    }
-    
-    fileprivate func determineColorDependingOn(time: Date, hoursUntilWarning: Int, hoursUntilCritical: Int) -> UIColor {
-        
-        let diffComponents = Calendar.current.dateComponents([.hour], from: time, to: Date())
-        guard let hours = diffComponents.hour else {
-            return UIColor.white
-        }
-        
-        if hours > hoursUntilCritical {
-            return UIColor.nightguardRed()
-        }
-        
-        if hours > hoursUntilWarning {
-            return UIColor.nightguardYellow()
-        }
-        
-        return UIColor.white
+        self.textColor = time.determineUIColorDependingOn(hoursUntilWarning: hoursUntilWarning, hoursUntilCritical: hoursUntilCritical)
     }
 }

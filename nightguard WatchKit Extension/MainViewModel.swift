@@ -15,15 +15,19 @@ import ClockKit
 class MainViewModel: ObservableObject, Identifiable {
     
     @Published var nightscoutData: NightscoutData?
+    @Published var uploaderBatteryColor: Color = Color.white
     
     @Published var sgvColor = Color.white
     @Published var sgvDeltaColor = Color.white
     @Published var arrowColor = Color.white
     @Published var timeColor = Color.white
     
-    @Published var cannulaAge: String?
-    @Published var batteryAge: String?
-    @Published var sensorAge: String?
+    @Published var cannulaAgeString: String?
+    @Published var cannulaAgeColor: Color = Color.white
+    @Published var batteryAgeString: String?
+    @Published var batteryAgeColor: Color = Color.white
+    @Published var sensorAgeString: String?
+    @Published var sensorAgeColor: Color = Color.white
     
     @Published var reservoir: String = "?U"
     @Published var activeProfile: String = "---"
@@ -166,13 +170,28 @@ class MainViewModel: ObservableObject, Identifiable {
                 UIColorChanger.getDeltaLabelColor(
                     UnitsConverter.mgdlToDisplayUnits(nightscoutData.bgdelta)))
         self.timeColor = Color(UIColorChanger.getTimeLabelColor(nightscoutData.time))
+        self.uploaderBatteryColor = Color(UIColorChanger.getBatteryLabelColor(nightscoutData.battery))
     }
     
     fileprivate func loadCareData() {
         
-        self.sensorAge = NightscoutCacheService.singleton.getSensorChangeTime().convertToAge(prefix: "S ")
-        self.cannulaAge = NightscoutCacheService.singleton.getCannulaChangeTime().convertToAge(prefix: "C ")
-        self.batteryAge = NightscoutCacheService.singleton.getPumpBatteryChangeTime().convertToAge(prefix: "B ")
+        let sensorAge : Date = NightscoutCacheService.singleton.getSensorChangeTime()
+        self.sensorAgeColor = sensorAge.determineColorDependingOn(
+            hoursUntilWarning: UserDefaultsRepository.sensorAgeHoursUntilWarning,
+            hoursUntilCritical: UserDefaultsRepository.sensorAgeHoursUntilCritical)
+        self.sensorAgeString = sensorAge.convertToAge(prefix: "S ")
+        
+        let cannulaAge : Date = NightscoutCacheService.singleton.getCannulaChangeTime()
+        self.cannulaAgeColor = cannulaAge.determineColorDependingOn(
+            hoursUntilWarning: UserDefaultsRepository.cannulaAgeHoursUntilWarning,
+            hoursUntilCritical: UserDefaultsRepository.cannulaAgeHoursUntilCritical)
+        self.cannulaAgeString = cannulaAge.convertToAge(prefix: "C ")
+        
+        let batteryAge : Date = NightscoutCacheService.singleton.getPumpBatteryChangeTime()
+        self.batteryAgeColor = batteryAge.determineColorDependingOn(
+            hoursUntilWarning: UserDefaultsRepository.batteryAgeHoursUntilWarning,
+            hoursUntilCritical: UserDefaultsRepository.batteryAgeHoursUntilCritical)
+        self.batteryAgeString = batteryAge.convertToAge(prefix: "B ")
     }
     
     fileprivate func loadDeviceStatusData() {

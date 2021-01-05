@@ -222,4 +222,19 @@ class UserDefaultsRepository {
     
     static let carbs = UserDefaultsValue<Int>(key: "carbs", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "carbs") as? Int) ?? 3)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    // Definition of the Age Colors
+    
+    static let sensorAgeHoursUntilWarning = 24 * 9
+    
+    static let cannulaAgeHoursUntilWarning = 24 * 2 - 4
+    
+    static let batteryAgeHoursUntilWarning = 24 * 27
+    
+    
+    static let sensorAgeHoursUntilCritical = 24 * 13
+    
+    static let cannulaAgeHoursUntilCritical = 24 * 3 - 4
+    
+    static let batteryAgeHoursUntilCritical = 24 * 30
 }

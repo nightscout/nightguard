@@ -113,6 +113,7 @@ struct MainView: View {
                                 HStack(){
                                     Text(viewModel.nightscoutData?.battery ?? "-")
                                         .font(.system(size: 12))
+                                        .foregroundColor(viewModel.uploaderBatteryColor)
                                         .minimumScaleFactor(0.5)
                                         .lineLimit(1)
                                 }
@@ -127,22 +128,25 @@ struct MainView: View {
                      alignment: .topLeading)
             if viewModel.showCareAndLoopData {
                 HStack() {
-                    Text(viewModel.cannulaAge ?? "?d ?h")
+                    Text(viewModel.cannulaAgeString ?? "?d ?h")
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
                         .font(.system(size: 10))
+                        .foregroundColor(viewModel.cannulaAgeColor)
                         .frame(maxWidth: .infinity,
                                alignment: .leading)
-                    Text(viewModel.sensorAge ?? "?d ?h")
+                    Text(viewModel.sensorAgeString ?? "?d ?h")
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
                         .font(.system(size: 10))
+                        .foregroundColor(viewModel.sensorAgeColor)
                         .minimumScaleFactor(0.5)
                         .frame(maxWidth: .infinity)
-                    Text(viewModel.batteryAge ?? "?d ?h")
+                    Text(viewModel.batteryAgeString ?? "?d ?h")
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
                         .font(.system(size: 10))
+                        .foregroundColor(viewModel.batteryAgeColor)
                         .frame(maxWidth: .infinity,
                                alignment: .trailing)
                 }.frame(minWidth: 0,

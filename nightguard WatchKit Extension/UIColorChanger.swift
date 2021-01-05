@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 #if !os(iOS)
 import WatchKit
 #endif
@@ -75,5 +76,26 @@ class UIColorChanger {
         } else {
             return UIColor.white
         }
+    }
+    
+    static func getBatteryLabelColor(_ percentageString : String) -> UIColor {
+        
+        guard let percentage : Int = Int(percentageString.removing(charactersOf: "%")) else {
+            return UIColor.white
+        }
+        
+        if (percentage < 20) {
+            return UIColor.nightguardRed()
+        } else if (percentage < 40) {
+            return UIColor.nightguardYellow()
+        } else {
+            return UIColor.white
+        }
+    }
+    
+    @available(watchOSApplicationExtension 6.0, *)
+    @available(iOS 13.0, *)
+    static func calculateCannulaAgeColor(cannulaAgeDate : Date) -> Color {
+        return Color.white
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2020 private. All rights reserved.
 //
 import Foundation
+import UIKit
+import SwiftUI
 
 extension Date {
     
@@ -58,5 +60,30 @@ extension Date {
         }
         
         return prefix + differenceString
+    }
+    
+    func determineUIColorDependingOn(hoursUntilWarning: Int, hoursUntilCritical: Int) -> UIColor {
+        
+        let diffComponents = Calendar.current.dateComponents([.hour], from: self, to: Date())
+        guard let hours = diffComponents.hour else {
+            return UIColor.white
+        }
+        
+        if hours > hoursUntilCritical {
+            return UIColor.nightguardRed()
+        }
+        
+        if hours > hoursUntilWarning {
+            return UIColor.nightguardYellow()
+        }
+        
+        return UIColor.white
+    }
+    
+    @available(watchOSApplicationExtension 6.0, *)
+    @available(iOS 13.0, *)
+    func determineColorDependingOn(hoursUntilWarning: Int, hoursUntilCritical: Int) -> Color {
+        
+        return Color(determineUIColorDependingOn(hoursUntilWarning: hoursUntilWarning, hoursUntilCritical: hoursUntilCritical))
     }
 }
