@@ -82,6 +82,14 @@ struct TemporaryTargetView: View {
             if #available(watchOSApplicationExtension 7.0, *) {
                 Button(action: {
                     
+                    // Take care that all selected values are in sync with the userdefaultsrepository
+                    UserDefaultsRepository.temporaryTargetReason.value =
+                        TemporaryTargetView.userDefaultsToTemporaryTargetReasons.key(
+                            from: $selectedLocalizedTemporaryTargetReason.wrappedValue) ?? ""
+                    
+                    UserDefaultsRepository.temporaryTargetDuration.value =
+                        $selectedTemporaryTargetDuration.wrappedValue
+                    
                     UserDefaultsRepository.temporaryTargetAmount.value =
                         UserDefaultsRepository.getDefaultTemporaryTargetAmountForReason()
                     self.temporaryTargetModalIsPresented.toggle()
