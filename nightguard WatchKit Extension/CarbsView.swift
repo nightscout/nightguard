@@ -17,7 +17,7 @@ struct CarbsView: View {
     @Environment(\.presentationMode) var presentation
     @State var carbsModalIsPresented = false
 
-    var carbs = ["3g", "5g", "10g", "15g", "20g", "25g", "30g", "35g", "40g", "45g", "50g", "55g", "60g", "65g", "70g", "75g", "80g", "85g", "90g", "95g", "100g"]
+    var carbs = ["1g", "2g", "3g", "4g", "5g", "6g", "7g", "8g", "9g", "10g", "15g", "20g", "25g", "30g", "35g", "40g", "45g", "50g", "55g", "60g", "65g", "70g", "75g", "80g", "85g", "90g", "95g", "100g"]
     @State var selectedCarbs : String
 
     init() {
@@ -62,7 +62,7 @@ struct CarbsView: View {
     }
     
     fileprivate func convertCarbsToInt(carbsString : String) -> Int {
-        return Int(carbsString.removing(charactersOf: "g")) ?? 3
+        return Int(carbsString.removing(charactersOf: "g")) ?? 5
     }
 }
 
