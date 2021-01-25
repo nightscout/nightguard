@@ -314,7 +314,7 @@
 "Info" = "Info";
 
 /* Watch Popup Refresh Label */
-"Refresh" = "Refresh";
+"Refresh" = "Päivitä";
 
 /* Watch Popup Snooze Label */
 "Snooze" = "Torkku";
@@ -473,7 +473,7 @@
 "Do you want to add %dg of carbs?" = "Haluatko lisätä %dg hiilihydraatteja?";
 
 /* Snooze Menu Popup Button Text */
-"Stop Snoozing" = "Stop Snoozing";
+"Stop Snoozing" = "Lopeta torkku";
 
 /* Watch Snooze Menu Button 5min */
 "5min" = "5min";
@@ -506,20 +506,20 @@
 "6h" = "6h";
 
 /* Watch Snooze Menu Button 1d */
-"1d" = "1d";
+"1d" = "1pv";
 
 /* Watch Action Button Menu */
-"Crown Scrolls" = "Crown Scrolls";
+"Crown Scrolls" = "Crown vierittää";
 
 /* Watch Action Button Menu */
-"Crown Zooms" = "Crown Zooms";
+"Crown Zooms" = "Crown zoomaa";
 
 /* Watch Action Button Menu */
-"Refresh" = "Refresh";
+"Refresh" = "Päivitä";
 
 /* Watch Action Button Menu */
-"Snooze" = "Snooze";
+"Snooze" = "Torkku";
 
 /* Label for Show Care/Loop Data */
-"Show Care/Loop Data" = "Show Care/Loop Data";
+"Show Care/Loop Data" = "Näytä Care/Loop tiedot";
 
