@@ -2,6 +2,8 @@
 # platform :ios, '9.0'
 
 target 'nightguard' do
+  platform :ios, '12.4'
+
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
@@ -24,6 +26,8 @@ target 'nightguard' do
 end
 
 target 'nightguard WatchKit App' do
+  platform :watchos, '4.3'
+
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
@@ -32,6 +36,8 @@ target 'nightguard WatchKit App' do
 end
 
 target 'nightguard WatchKit Extension' do
+  platform :watchos, '4.3'
+
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
