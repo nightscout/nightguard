@@ -117,6 +117,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AlarmRule.snoozeFromMessage(message)
         }
         
+        // Request an Alarm Notification Message
+        WatchMessageService.singleton.onMessage { (message: RequestAlarmNotificationMessage) in
+            
+            AlarmNotificationService.singleton.notifyIfAlarmActivated()
+        }
+        
         // request night safe phone settings
         WatchMessageService.singleton.onRequest { (request: RequestNightSafeMessage) in
             return ResponseNightSafeMessage(
@@ -192,8 +198,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // just refresh the current nightscout data
         let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
             
-            // trigger notification alarm if needed
-            AlarmNotificationService.singleton.notifyIfAlarmActivated()
+            // trigger notification alarm if needed and app is in background
+            if UIApplication.shared.applicationState != .active {
+                AlarmNotificationService.singleton.notifyIfAlarmActivated()
+            }
             
             // update app badge
             if UserDefaultsRepository.showBGOnAppBadge.value {

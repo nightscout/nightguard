@@ -90,9 +90,8 @@ class AlarmNotificationService {
         } else {
             content.sound = UNNotificationSound(named: convertToUNNotificationSoundName("alarm-notification.m4a"))
         }
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         
-        let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
     }
     

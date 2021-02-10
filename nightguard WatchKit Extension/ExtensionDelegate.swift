@@ -66,14 +66,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             AlarmRule.snoozeFromMessage(message)
             
             if #available(watchOSApplicationExtension 3.0, *) {
-                InterfaceController.onMain {
-                    $0.loadAndPaintChartData(forceRepaint: true)
-                }
                 if #available(watchOSApplicationExtension 6.0, *) {
                     MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
-                }
-                InterfaceController.onMain {
-                    $0.loadAndPaintChartData(forceRepaint: true)
                 }
             }
         }
@@ -124,38 +118,20 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 if #available(watchOSApplicationExtension 6.0, *) {
                     MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
                 }
-                if #available(watchOSApplicationExtension 3.0, *) {
-                    if let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController {
-                        if WKExtension.shared().applicationState == .active {
-                            InterfaceController.onMain { interfaceController in
-                                if shouldRepaintCurrentBgData {
-                                    print("ExtensionDelegate.handleWatchMessages - repainting current bg data!")
-                                    interfaceController.loadAndPaintCurrentBgData(forceRefresh: true)
-                                }
-                                if shouldRepaintCharts {
-                                    print("ExtensionDelegate.handleWatchMessages - repainting charts!")
-                                    interfaceController.loadAndPaintChartData(forceRepaint: true)
-                                }
-                            }
-                        } else {
-                            interfaceController.shouldRepaintChartsOnActivation = shouldRepaintCharts
-                            interfaceController.shouldRepaintCurrentBgDataOnActivation = shouldRepaintCurrentBgData
-                        }
-                    }
-                }
             }
-
         }
-        
     }
     
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        AppState.isUIActive = true
     }
 
     func applicationWillResignActive() {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, etc.
+        
+        AppState.isUIActive = false
         
         print("Application will resign active.")
         if #available(watchOSApplicationExtension 3.0, *) {
@@ -206,8 +182,9 @@ extension ExtensionDelegate {
         
         // update user interface with current nightscout data (or error)
         let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        let interfaceController = WKExtension.shared().rootInterfaceController as? InterfaceController
-        interfaceController?.updateInterface(withNightscoutData: currentNightscoutData, error: self.sessionError)
+        if #available(watchOSApplicationExtension 6.0, *) {
+            MainController.mainViewModel.pushBackgroundData(newNightscoutData: currentNightscoutData)
+        }
         
         snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
     }

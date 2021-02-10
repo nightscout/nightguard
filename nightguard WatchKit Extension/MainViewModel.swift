@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import SpriteKit
 import ClockKit
+import WatchConnectivity
 
 @available(watchOSApplicationExtension 6.0, *)
 class MainViewModel: ObservableObject, Identifiable {
@@ -61,6 +62,16 @@ class MainViewModel: ObservableObject, Identifiable {
         alarmRuleMessage = determineInfoLabel()
     }
     
+    // Retrieve data that has been optained from a background task.
+    // Update the UI, Complication and send Notifications
+    func pushBackgroundData(newNightscoutData : NightscoutData) {
+        
+        calculateColors(nightscoutData: newNightscoutData)
+        self.nightscoutData = newNightscoutData
+        self.active = false
+        updateComplication()
+    }
+    
     func refreshData(forceRefresh : Bool, moveToLatestValue : Bool) {
         
         showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
@@ -71,9 +82,32 @@ class MainViewModel: ObservableObject, Identifiable {
         loadChartData(forceRepaint: forceRefresh, moveToLatestValue: moveToLatestValue)
         
         alarmRuleMessage = determineInfoLabel()
-        if AlarmRule.isAlarmActivated() {
-            WKInterfaceDevice.current().play(.notification)
+        eventuallyPlayAlarmSound()
+    }
+
+    func eventuallyNotify() {
+        
+        if !AlarmRule.isAlarmActivated() {
+            return
         }
+        
+        RequestAlarmNotificationMessage().send()
+    }
+
+    func eventuallyPlayAlarmSound() {
+        
+        if !AlarmRule.isAlarmActivated() {
+            return
+        }
+        
+        if !AppState.isUIActive {
+            // We don't like to have alarms e.g. if the watch is on the charger and in background
+            // State. So don't play sounds in that case
+            return
+        }
+        
+        // Play an alarm if the app user interface is active on the watch
+        WKInterfaceDevice.current().play(.notification)
     }
 
     fileprivate func paintChartData(todaysData : [BloodSugar], yesterdaysData : [BloodSugar], moveToLatestValue : Bool) {
@@ -141,9 +175,12 @@ class MainViewModel: ObservableObject, Identifiable {
                 switch result {
                 case .data(let newNightscoutData):
                     calculateColors(nightscoutData: newNightscoutData)
+                    
                     self.nightscoutData = newNightscoutData
                     self.active = false
                     updateComplication()
+                    alarmRuleMessage = determineInfoLabel()
+                    eventuallyNotify()
                 case .error(let error):
                     self.error = error
                     self.active = false
