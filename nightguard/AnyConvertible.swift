@@ -99,6 +99,18 @@ extension UUID: AnyConvertible {
     }
 }
 
+extension Treatment: AnyConvertible {
+    
+    func toAny() -> Any {
+        let encodedTreatment = try! JSONEncoder().encode(self) as Any
+        return encodedTreatment
+    }
+    
+    static func fromAny(_ anyValue: Any) -> Self? {
+        return try? JSONDecoder().decode(Treatment.self, from: anyValue as! Data) as? Self
+    }
+}
+
 //extension Array: AnyConvertible {
 //    func toAny() -> Any {
 //        return self

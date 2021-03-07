@@ -89,7 +89,8 @@ class ChartPainter {
             let (sgvs, mbgs) = extractSgvs(allValues: bloodValues)
             paintBloodValues(context!, bgValues: sgvs, foregroundColor: getColor(nrOfDay, useContrastfulColors: useContrastfulColors).cgColor, maxBgValue: maxBgValue)
             if (nrOfDay == 1) {
-                paintMeteredBloodValues(context!, mbgs: mbgs, maxBgValue: maxBgValue)
+                paintMeteredBloodValues(context!, mbgs: mbgs, sgvs: sgvs, maxBgValue: maxBgValue)
+                paintTreatments(context!, bgValues: sgvs, maxBgValue: maxBgValue)
             }
             if nrOfDay == 1 && bloodValues.count > 0 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
@@ -220,7 +221,7 @@ class ChartPainter {
         context.strokePath()
     }
     
-    fileprivate func paintMeteredBloodValues(_ context : CGContext, mbgs : [BloodSugar], maxBgValue : CGFloat) {
+    fileprivate func paintMeteredBloodValues(_ context : CGContext, mbgs : [BloodSugar], sgvs : [BloodSugar], maxBgValue : CGFloat) {
         let maxPoints : Int = mbgs.count
         if maxPoints == 0 {
             return
@@ -228,11 +229,75 @@ class ChartPainter {
         
         for currentValue in mbgs {
             drawMeteredValue(context,
+                             meaturedValue: currentValue.value,
+                             nearestBg: nearestBg(timestamp: currentValue.timestamp, bgs: sgvs),
                              x: calcXValue(currentValue.timestamp),
                              y: calcYValue(Float(min(CGFloat(currentValue.value), value2: maxBgValue))))
         }
     }
 
+    fileprivate func paintTreatments(_ context : CGContext, bgValues : [BloodSugar], maxBgValue : CGFloat) {
+        for treatment in TreatmentsStream.singleton.treatments {
+            if let mealBolusTreatment = treatment as? MealBolusTreatment {
+                drawMealBolusValue(context,
+                                   carbs: mealBolusTreatment.carbs,
+                                   insulin: mealBolusTreatment.insulin,
+                                   x: calcXValue(Double(mealBolusTreatment.timestamp)),
+                                   y: CGFloat(paintableHeight - treatmentsYOffset()))
+            }
+            if let correctionBolusTreatment = treatment as? CorrectionBolusTreatment {
+                drawCorrectionBolusValue(context,
+                                   insulin: correctionBolusTreatment.insulin,
+                                   x: calcXValue(Double(correctionBolusTreatment.timestamp)),
+                                   y: calcYValue(Float(
+                                                    min(nearestBgValueYValue(timestamp: correctionBolusTreatment.timestamp, bgs: bgValues), value2: maxBgValue))))
+            }
+            if let bolusWizardTreatment = treatment as? BolusWizardTreatment {
+                drawBolusWizardValue(context, insulin: bolusWizardTreatment.insulin,
+                                     x: calcXValue(Double(bolusWizardTreatment.timestamp)),
+                                     y: CGFloat(paintableHeight - treatmentsYOffset()))
+            }
+            if let carbCorrectionTreatment = treatment as? CarbCorrectionTreatment {
+                drawMealBolusValue(context,
+                                   carbs: carbCorrectionTreatment.carbs,
+                                   insulin: 0,
+                                   x: calcXValue(Double(carbCorrectionTreatment.timestamp)),
+                                   y: CGFloat(paintableHeight - treatmentsYOffset()))
+            }
+        }
+    }
+    
+    // determines how low treatments like carbs should be displayed on the
+    // chart. If on the apple watch, this should differ to the main ios app.
+    fileprivate func treatmentsYOffset() -> Int {
+        if self.canvasHeight < 500 {
+            // On the watch: use smaller fonts
+            return 10
+        }
+        
+        return 20
+    }
+    
+    fileprivate func nearestBgValueYValue(timestamp : Double, bgs : [BloodSugar]) -> CGFloat {
+        
+        return CGFloat(nearestBg(timestamp: timestamp, bgs: bgs)?.value ?? 0)
+    }
+    
+    fileprivate func nearestBg(timestamp : Double, bgs : [BloodSugar]) -> BloodSugar? {
+        
+        var nearestBg : BloodSugar?
+        var closestDifference : Double = 999999999999
+        
+        for bg in bgs {
+            if abs(bg.timestamp - timestamp) < closestDifference {
+                closestDifference = abs(bg.timestamp - timestamp)
+                nearestBg = bg
+            }
+        }
+        
+        return nearestBg
+    }
+    
     fileprivate func useRedColorIfLineWillBeReducedToMaxYValue(_ context : CGContext,
                                                            beginOfLineYValue : CGFloat, endOfLineYValue : CGFloat,
                                                            maxYDisplayValue : CGFloat, color : CGColor) {
@@ -257,12 +322,83 @@ class ChartPainter {
         context.addLine(to: CGPoint(x: x2, y: y2))
     }
     
-    fileprivate func drawMeteredValue(_ context : CGContext, x : CGFloat, y : CGFloat) {
+    fileprivate func drawMeteredValue(_ context : CGContext, meaturedValue : Float,  nearestBg: BloodSugar?, x : CGFloat, y : CGFloat) {
         
-        context.setFillColor(UIColor.nightguardRed().cgColor)
+        // paint the upper/lower bounds text
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .left
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForMeteredBg())!,
+                     NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                     NSAttributedString.Key.foregroundColor: UIColor.nightguardYellow()]
+        
+    
+        var meaturedValueString = "\(UnitsConverter.mgdlToDisplayUnits(meaturedValue.cleanValue))"
+        if let nearestBgValue = nearestBg?.value {
+            meaturedValueString = meaturedValueString
+                + "/\(UnitsConverter.mgdlToDisplayUnits(nearestBgValue.cleanValue))"
+        }
+        meaturedValueString.draw(
+            with: CGRect(x: CGFloat(x), y: y + 3, width: 80, height: 18),
+            options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
+        
+        context.setFillColor(UIColor.nightguardYellow().cgColor)
         context.fillEllipse(in: CGRect(x: x-3, y: y-3, width: 6, height: 6))
     }
 
+    fileprivate func drawMealBolusValue(_ context : CGContext, carbs : Int, insulin : Double, x : CGFloat, y : CGFloat) {
+        
+        // paint the upper/lower bounds text
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .left
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
+                     NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                     NSAttributedString.Key.foregroundColor: UIColor.gray]
+        
+    
+        var carbsString = String("\(carbs)g")
+        if (insulin > 0) {
+            carbsString = carbsString + "/\(insulin)U"
+        }
+        carbsString.draw(
+            with: CGRect(x: CGFloat(x), y: y + 3, width: 60, height: 18),
+            options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
+                
+        context.setFillColor(UIColor.gray.cgColor)
+        context.fillEllipse(in: CGRect(x: x-3, y: y-3, width: 7, height: 7))
+    }
+    
+    fileprivate func drawBolusWizardValue(_ context : CGContext, insulin : Double, x : CGFloat, y : CGFloat) {
+        
+        // paint the upper/lower bounds text
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .left
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
+                     NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                     NSAttributedString.Key.foregroundColor: UIColor.gray]
+        
+    
+        let insulinString = String("\(insulin)U")
+        insulinString.draw(
+            with: CGRect(x: CGFloat(x - 15), y: y - 18, width: 40, height: 14),
+            options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
+                
+        context.setFillColor(UIColor.gray.cgColor)
+        context.fillEllipse(in: CGRect(x: x-3, y: y-3, width: 7, height: 7))
+    }
+    
+    fileprivate func drawCorrectionBolusValue(_ context : CGContext, insulin : Double, x : CGFloat, y : CGFloat) {
+                        
+        context.setFillColor(UIColor.nightguardYellow().cgColor)
+        
+        context.move(to: CGPoint(x: x + 3, y: y))
+        context.addLine(to: CGPoint(x: x - 7, y: y))
+        context.addLine(to: CGPoint(x: x - 2, y: y + 5))
+        context.addLine(to: CGPoint(x: x + 3, y: y))
+        
+        context.closePath()
+        context.fillPath()
+    }
+    
     // Paint the part between upperBound and lowerBoundValue in gray
     fileprivate func paintNicePartArea(_ context : CGContext, upperBoundNiceValue : Float, lowerBoundNiceValue : Float) {
         
@@ -309,11 +445,20 @@ class ChartPainter {
         }
     }
     
-    fileprivate func fontSizeForChartSize() -> CGFloat {
-        
-        if self.canvasHeight < 500 {
+    fileprivate func fontSizeForMeteredBg() -> CGFloat {
+        if self.canvasHeight < 400 {
             // On the watch: use smaller fonts
             return 12
+        }
+        
+        return 18
+    }
+    
+    fileprivate func fontSizeForChartSize() -> CGFloat {
+        
+        if self.canvasHeight < 400 {
+            // On the watch: use smaller fonts
+            return 10
         }
         
         return 14

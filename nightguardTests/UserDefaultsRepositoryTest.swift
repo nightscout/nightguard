@@ -25,6 +25,7 @@ class UserDefaultsRepositoryTest : XCTestCase {
     }
     
     func testScreenLockStateIsSaved() {
+        
         // Given
         let initialPosition : Bool = false
         
@@ -34,5 +35,26 @@ class UserDefaultsRepositoryTest : XCTestCase {
         
         // Then
         XCTAssertEqual(retrievedPosition, initialPosition)
+    }
+    
+    func testSaveTreatments() {
+        
+        // Given
+        var treatments : [Treatment] = []
+        treatments.append(Treatment.init(id: "id0", timestamp: 0))
+        treatments.append(Treatment.init(id: "id1", timestamp: 1))
+        
+        // When
+        UserDefaultsRepository.treatments.value = treatments
+        let retrievedTreatments : [Treatment] = UserDefaultsRepository.treatments.value
+        
+        // Then
+        XCTAssertEqual(retrievedTreatments.count, 2)
+        
+        XCTAssertEqual(retrievedTreatments[0].id, "id0")
+        XCTAssertEqual(retrievedTreatments[0].timestamp, 0)
+        
+        XCTAssertEqual(retrievedTreatments[1].id, "id1")
+        XCTAssertEqual(retrievedTreatments[1].timestamp, 1)
     }
 }

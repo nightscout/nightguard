@@ -33,10 +33,10 @@ class DeviceStatusData: NSObject, NSCoding, Codable {
     init(activePumpProfile: String, pumpProfileActiveUntil: Date?, reservoirUnits: Int, temporaryBasalRate: String, temporaryBasalRateActiveUntil: Date) {
         
         self.activePumpProfile = activePumpProfile
+        self.pumpProfileActiveUntil = pumpProfileActiveUntil ?? Date()
         self.reservoirUnits = reservoirUnits
         self.temporaryBasalRate = temporaryBasalRate
         self.temporaryBasalRateActiveUntil = temporaryBasalRateActiveUntil
-        self.pumpProfileActiveUntil = pumpProfileActiveUntil ?? Date()
     }
 
     // MARK:- NSCoding interface implementation
@@ -52,25 +52,26 @@ class DeviceStatusData: NSObject, NSCoding, Codable {
         }
         self.activePumpProfile = activePumpProfile
         
-        guard let pumpProfileActiveUntil = decoder.decodeObject(forKey: "pumpProfileActiveUntil") as? Date else {
-            return
+        if decoder.containsValue(forKey: "pumpProfileActiveUntil") {
+            guard let pumpProfileActiveUntil = decoder.decodeObject(forKey: "pumpProfileActiveUntil") as? Date else {
+                return
+            }
+            self.pumpProfileActiveUntil = pumpProfileActiveUntil
         }
-        self.pumpProfileActiveUntil = pumpProfileActiveUntil
         
-        guard let reservoirUnits = decoder.decodeObject(forKey: "reservoirUnits") as? Int else {
-            return
-        }
-        self.reservoirUnits = reservoirUnits
+        self.reservoirUnits = decoder.decodeInteger(forKey: "reservoirUnits")
         
         guard let temporaryBasalRate = decoder.decodeObject(forKey: "temporaryBasalRate") as? String else {
             return
         }
         self.temporaryBasalRate = temporaryBasalRate
         
-        guard let temporaryBasalRateActiveUntil = decoder.decodeObject(forKey: "temporaryBasalRateActiveUntil") as? Date else {
-            return
+        if (decoder.containsValue(forKey: "temporaryBasalRateActiveUntil")) {
+            guard let temporaryBasalRateActiveUntil = decoder.decodeObject(forKey: "temporaryBasalRateActiveUntil") as? Date else {
+                return
+            }
+            self.temporaryBasalRateActiveUntil = temporaryBasalRateActiveUntil
         }
-        self.temporaryBasalRateActiveUntil = temporaryBasalRateActiveUntil
     }
     
     /*

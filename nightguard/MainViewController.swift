@@ -539,6 +539,9 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             self.paintDeviceStatusData(deviceStatusData: result)
         }
         
+        NightscoutService.singleton.readLatestTreatements { treatments in
+            TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: treatments)
+        }
         self.paintDeviceStatusData(deviceStatusData: deviceStatusData)
     }
     

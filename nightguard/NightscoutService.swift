@@ -1080,6 +1080,77 @@ class NightscoutService {
         return task
     }
     
+    // Simply read the latest Treatements without giving any more informations.
+    // This is preferred on the nightscout backend, because this result can be efficiently cache
+    // and updated on the server side.
+    
+    // So we are switching to this simply way in nightguard...
+    @discardableResult
+    func readLatestTreatements(resultHandler : @escaping ([[String:Any]]) -> Void) -> URLSessionTask? {
+        
+        
+        let baseUri = UserDefaultsRepository.baseUri.value
+        if baseUri == "" {
+            resultHandler([])
+            return nil
+        }
+        
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/treatments.json", queryParams: [String : String]())
+        guard url != nil else {
+            resultHandler([])
+            return nil
+        }
+        
+        let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: { data, response, error in
+            
+            guard error == nil else {
+                print(error!)
+                dispatchOnMain {
+                    resultHandler([])
+                }
+                return
+            }
+            
+            guard data != nil else {
+                print("The received data was nil...")
+                dispatchOnMain { [] in
+                    resultHandler([])
+                }
+                return
+            }
+            
+            do {
+                guard let treatmentsArray = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any] else {
+                    print("Unexpected treatments received...")
+                    dispatchOnMain { [] in
+                        resultHandler([])
+                    }
+                    return
+                }
+            
+                guard let treatments = treatmentsArray as? [[String:Any]]
+                    else {
+                        dispatchOnMain { [] in
+                            resultHandler([])}
+                        return
+                }
+                
+                dispatchOnMain { [] in
+                    resultHandler(treatments)}
+            } catch {
+                print("Exception catched during treatements parsing. Ignoring the result...")
+                return
+            }
+        })
+        
+        task.resume()
+        return task
+    }
+    
+    
     private func calculateTempBasalPercentage(baseBasalRate: Any?, tempBasalAbsoluteRate: Any?) -> String {
         
         guard let baseBasalRateAsDouble = Double.fromAny(baseBasalRate as Any) else {

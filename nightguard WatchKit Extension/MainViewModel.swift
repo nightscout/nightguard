@@ -57,6 +57,9 @@ class MainViewModel: ObservableObject, Identifiable {
         
         skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 4, useContrastfulColors: false)
         
+        // Read stored historical data
+        TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
+        
         refreshData(forceRefresh: true, moveToLatestValue: true)
         
         alarmRuleMessage = determineInfoLabel()
@@ -80,11 +83,18 @@ class MainViewModel: ObservableObject, Identifiable {
         loadCareData()
         loadDeviceStatusData()
         loadChartData(forceRepaint: forceRefresh, moveToLatestValue: moveToLatestValue)
+        loadTreatments()
         
         alarmRuleMessage = determineInfoLabel()
         eventuallyPlayAlarmSound()
     }
 
+    fileprivate func loadTreatments() {
+        NightscoutService.singleton.readLatestTreatements { treatments in
+            TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: treatments)
+        }
+    }
+    
     func eventuallyNotify() {
         
         if !AlarmRule.isAlarmActivated() {
@@ -145,11 +155,11 @@ class MainViewModel: ObservableObject, Identifiable {
         
         if (interfaceBounds.height >= 224.0) {
             // Apple Watch 44mm
-            return 150.0
+            return 130.0
         }
         if (interfaceBounds.height >= 195.0) {
             // Apple Watch 42mm
-            return 135.0
+            return 115.0
         }
         
         // interfaceBounds.height == 170.0
