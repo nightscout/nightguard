@@ -11,6 +11,7 @@ import MediaPlayer
 import WatchConnectivity
 import SpriteKit
 import XLActionController
+import StoreKit
 
 class MainViewController: UIViewController, SlideToSnoozeDelegate {
 
@@ -318,6 +319,21 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     // check whether new Values should be retrieved
     @objc func timerDidEnd(_ timer:Timer) {
         self.doPeriodicUpdate(forceRepaint: false)
+        
+        askForAReviewOnceForEachVersion()
+    }
+    
+    func askForAReviewOnceForEachVersion() {
+        // Try to ask for an app review once for each new nightguard version only
+        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        
+        guard !UserDefaults.standard.bool(forKey: "askForReview\(versionNumber)") else {
+            return
+        }
+
+        // Maybe this is a good time to kindly ask for a app review
+        UserDefaults.standard.set(true, forKey: "askForReview\(versionNumber)")
+        SKStoreReviewController.requestReview()
     }
     
     func doPeriodicUpdate(forceRepaint: Bool) {
