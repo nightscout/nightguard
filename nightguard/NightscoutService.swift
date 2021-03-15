@@ -746,8 +746,22 @@ class NightscoutService {
                 dispatchOnMain {
                     
                     let temporaryTargetData = TemporaryTargetData()
-                    temporaryTargetData.targetTop = temporaryTargetObject[0]["targetTop"] as? Int ?? 100
-                    temporaryTargetData.targetBottom = temporaryTargetObject[0]["targetBottom"] as? Int ?? 100
+                    
+                    let targetTopString = String(describing: temporaryTargetObject[0]["targetTop"])
+                    if targetTopString.contains(".") {
+                        // Looks like targetTop is stored as mmol => convert to mgdl
+                        temporaryTargetData.targetTop = Int(UnitsConverter.toMgdl(targetTopString)) ?? 100
+                    } else {
+                        temporaryTargetData.targetTop = temporaryTargetObject[0]["targetTop"] as? Int ?? 100
+                    }
+                    
+                    let targetBottomString = String(describing: temporaryTargetObject[0]["targetBottom"])
+                    if targetBottomString.contains(".") {
+                        // looks like targetBottom is stored as mmol => convert to mgdl
+                        temporaryTargetData.targetTop = Int(UnitsConverter.toMgdl(targetBottomString)) ?? 100
+                    } else {
+                        temporaryTargetData.targetBottom = temporaryTargetObject[0]["targetBottom"] as? Int ?? 100
+                    }
                     
                     let createdAt = temporaryTargetObject[0]["created_at"] as? String
                     let duration = temporaryTargetObject[0]["duration"] as? Int
