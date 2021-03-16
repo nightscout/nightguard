@@ -1,0 +1,71 @@
+{
+  "default": {
+    "keyword": {
+      "fonts": [
+        {
+          "font": "./fonts/Bosk.ttf",
+          "supported": ["de-DE", "en-US", "es-ES", "fr-FR", "it-IT", "nl-NL", "sv-SE", "pt-BR"]
+        }
+      ]
+    },
+    "title": {
+      "fonts": [
+        {
+          "font": "./fonts/FatCow.ttf",
+          "supported": ["de-DE", "en-US", "es-ES", "fr-FR", "it-IT", "nl-NL", "sv-SE", "pt-BR"]
+        }
+      ],
+      "color": "#545454"
+    },
+    "background": "./background.jpg",
+    "font_scale_factor": 0.10,
+    "title_min_height": "20%",
+    "padding": 30
+  },
+
+
+  "data": [
+    {
+      "filter": "main",
+      "keyword": {
+        "color": "#d21559"
+      }
+    },
+    {
+      "filter": "nightscout",
+      "keyword": {
+        "color": "#d21559"
+      }
+    },
+    {
+      "filter": "fullscreen",
+      "keyword": {
+        "color": "#d21559"
+      }
+    },
+    {
+      "filter": "care",
+      "keyword": {
+        "color": "#d21559"
+      }
+    },
+    {
+      "filter": "alarms",
+      "keyword": {
+        "color": "#d21559"
+      }
+    },
+    {
+      "filter": "stats",
+      "keyword": {
+        "color": "#d21559"
+      }
+    },
+    {
+      "filter": "preferences",
+      "keyword": {
+        "color": "#d21559"
+      }
+    }
+  ]
+}
