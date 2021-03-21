@@ -84,26 +84,26 @@ class AlarmSound {
         
         do {
             self.audioPlayer = try AVAudioPlayer(contentsOf: self.soundURL)
-            self.audioPlayer!.delegate = self.audioPlayerDelegate
+            self.audioPlayer?.delegate = self.audioPlayerDelegate
             
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playback)))
             try AVAudioSession.sharedInstance().setActive(true)
             
             // Play endless loops
-            self.audioPlayer!.numberOfLoops = -1
+            self.audioPlayer?.numberOfLoops = -1
             
             // init volume before start playing (mute if fade-in)
             
-            self.audioPlayer!.volume = (self.muted || (self.fadeInTimeInterval.value > 0)) ? 0.0 : 1.0
+            self.audioPlayer?.volume = (self.muted || (self.fadeInTimeInterval.value > 0)) ? 0.0 : 1.0
             
-            if !self.audioPlayer!.prepareToPlay() {
+            if !(self.audioPlayer?.prepareToPlay() ?? false) {
                 NSLog("AlarmSound - audio player failed preparing to play")
             }
             
-            if self.audioPlayer!.play() {
+            if self.audioPlayer?.play() ?? false {
                 if !self.isPlaying {
                     NSLog("AlarmSound - not playing after calling play")
-                    NSLog("AlarmSound - rate value: \(self.audioPlayer!.rate)")
+                    NSLog("AlarmSound - rate value: \(String(describing: self.audioPlayer?.rate))")
                 }
             } else {
                 NSLog("AlarmSound - audio player failed to play")
@@ -112,7 +112,7 @@ class AlarmSound {
             
             // do fade-in
             if !self.muted && (self.fadeInTimeInterval.value > 0) {
-                self.audioPlayer!.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
+                self.audioPlayer?.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
             }
             
             self.playingTimer = Timer.schedule(repeatInterval: 1.0, handler: self.onPlayingTimer)

@@ -71,9 +71,15 @@ class PrefsViewController: CustomFormViewController {
                 }
             }
             .onRowValidationChanged { cell, row in
-                let rowIndex = row.indexPath!.row
-                while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
-                    row.section?.remove(at: rowIndex + 1)
+                
+                guard let rowIndex = row.indexPath?.row else {
+                    return
+                }
+                guard let section = row.section else {
+                    return
+                }
+                while section.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                    section.remove(at: rowIndex + 1)
                 }
                 if !row.isValid {
                     for (index, validationMsg) in row.validationErrors.map({ $0.msg }).enumerated() {

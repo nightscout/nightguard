@@ -295,6 +295,13 @@ extension ExtensionDelegate {
     
     fileprivate func updateNightscoutData(_ newNightscoutData: NightscoutData, updateComplication: Bool = true) -> UpdateResult {
         
+        // synchronize the background update to prevent concurrent modifications
+        objc_sync_enter(self)
+        
+        defer {
+            objc_sync_exit(self)
+        }
+        
         // check the data that already exists on the watch... maybe is newer that the received data
         let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
         if currentNightscoutData.time.doubleValue > newNightscoutData.time.doubleValue {
@@ -322,6 +329,12 @@ extension ExtensionDelegate {
         }
         
         return .updated
+    }
+    
+    func synced(_ lock: Any, closure: () -> ()) {
+        objc_sync_enter(lock)
+        closure()
+        objc_sync_exit(lock)
     }
     
     func scheduleURLSessionIfNeeded() {

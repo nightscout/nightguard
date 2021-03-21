@@ -7,5 +7,8 @@ nightguard.xcodeproj/project.xcworkspace/xcuserdata/
 nightguard.xcodeproj/xcuserdata/
 nightguard.xcworkspace/xcuserdata/
 fastlane/Preview.html
-fastlane/screenshots
 fastlane/report.xml
+fastlane/screenshots/en-US/*.png
+fastlane/screenshots/de-DE/*.png
+fastlane/screenshots/fi/*.png
+fastlane/screenshots/screenshots.html

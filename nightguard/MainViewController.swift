@@ -331,6 +331,11 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             return
         }
 
+        // Don't ask if in UITest Mode
+        if CommandLine.arguments.contains("--uitesting") {
+            return
+        }
+        
         // Maybe this is a good time to kindly ask for a app review
         UserDefaults.standard.set(true, forKey: "askForReview\(versionNumber)")
         SKStoreReviewController.requestReview()

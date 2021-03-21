@@ -13,6 +13,7 @@ import WatchKit
 #endif
 
 class ChartPainter {
+    
     let DARK : UIColor = UIColor.init(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
     let BLACK : UIColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 1)
     let LIGHTGRAY : UIColor = UIColor.init(red: 1, green: 1, blue: 1, alpha: 0.5)
@@ -73,14 +74,14 @@ class ChartPainter {
         
         // this can happen if fastly switching from statistics pane to main pane
         // I think this has to do with the screen rotating
-        if context == nil {
+        guard let safeContext = context else {
             return (nil, 0)
         }
         
         // Setup complete, do drawing here
-        paintNicePartArea(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
+        paintNicePartArea(safeContext, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
-        paintFullHourText(context!)
+        paintFullHourText(safeContext)
         
         var nrOfDay = 0
         var positionOfCurrentValue = 0
@@ -93,7 +94,7 @@ class ChartPainter {
                 paintTreatments(context!, bgValues: sgvs, maxBgValue: maxBgValue)
             }
             if nrOfDay == 1 && bloodValues.count > 0 {
-                positionOfCurrentValue = Int(calcXValue(bloodValues.last!.timestamp))
+                positionOfCurrentValue = Int(calcXValue(bloodValues.last?.timestamp ?? 0))
             }
         }
         

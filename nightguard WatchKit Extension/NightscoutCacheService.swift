@@ -14,14 +14,16 @@ class NightscoutCacheService: NSObject {
     
     static let singleton = NightscoutCacheService()
     
+    let serialQueue = DispatchQueue(label: "de.my-wan.dhe.nightscoutCacheServiceSerialQueue")
+    
     var isEmpty: Bool {
-        return (yesterdaysBgData ?? []).isEmpty && (todaysBgData ?? []).isEmpty
+        return yesterdaysBgData.isEmpty && todaysBgData.isEmpty
     }
     
-    fileprivate var todaysBgData : [BloodSugar]? = nil
-    fileprivate var yesterdaysBgData : [BloodSugar]? = nil
+    fileprivate var todaysBgData : [BloodSugar] = []
+    fileprivate var yesterdaysBgData : [BloodSugar] = []
     fileprivate var yesterdaysDayOfTheYear : Int? = nil
-    fileprivate var currentNightscoutData : NightscoutData? = nil
+    fileprivate var currentNightscoutData : NightscoutData = NightscoutData.init()
     
     fileprivate var cannulaAge : Date? = nil
     fileprivate var sensorAge : Date? = nil
@@ -53,16 +55,17 @@ class NightscoutCacheService: NSObject {
 
     // During background updates, this value is modified from the ExtensionDelegate
     func updateCurrentNightscoutData(newNightscoutData : NightscoutData) {
-        currentNightscoutData = newNightscoutData
-        NightscoutDataRepository.singleton.storeCurrentNightscoutData(newNightscoutData)
+        
+        // synchronize here to prevent concurrent modifciations when doing background
+        // upates
+        serialQueue.sync {
+            currentNightscoutData = newNightscoutData
+            NightscoutDataRepository.singleton.storeCurrentNightscoutData(newNightscoutData)
+        }
     }
     
     func resetCache() {
-        todaysBgData = nil
-        yesterdaysBgData = nil
         yesterdaysDayOfTheYear = nil
-        currentNightscoutData = nil
-        
         NightscoutDataRepository.singleton.clearAll()
     }
     
@@ -101,10 +104,7 @@ class NightscoutCacheService: NSObject {
     
     func getCurrentNightscoutData() -> NightscoutData {
         
-        if (currentNightscoutData == nil) {
-            return NightscoutData.init()
-        }
-        return currentNightscoutData!
+        return currentNightscoutData
     }
     
     func getTemporaryTargetData() -> TemporaryTargetData {
@@ -120,17 +120,11 @@ class NightscoutCacheService: NSObject {
     }
     
     func getTodaysBgData() -> [BloodSugar] {
-        if todaysBgData == nil {
-            return []
-        }
-        return todaysBgData!
+        return todaysBgData
     }
     
     func getYesterdaysBgData() -> [BloodSugar] {
-        if yesterdaysBgData == nil {
-            return []
-        }
-        return yesterdaysBgData!
+        return yesterdaysBgData
     }
     
     // Returns true, if the size of one array changed
@@ -146,13 +140,11 @@ class NightscoutCacheService: NSObject {
     
     func loadCurrentNightscoutData(forceRefresh: Bool, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void) -> NightscoutData {
     
-        if currentNightscoutData == nil {
-            currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
-        }
+        currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         
         checkIfRefreshIsNeeded(resultHandler, forceRefresh: forceRefresh)
         
-        return currentNightscoutData!
+        return currentNightscoutData
     }
     
     func loadCurrentNightscoutData(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void) -> NightscoutData {
@@ -163,16 +155,12 @@ class NightscoutCacheService: NSObject {
     func loadTodaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>?) -> Void)
         -> [BloodSugar] {
         
-        if todaysBgData == nil {
-           todaysBgData = NightscoutDataRepository.singleton.loadTodaysBgData()
-        }
+        todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData)
         
-        todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData!)
-        
-        if todaysBgData!.count == 0 || currentNightscoutData == nil || currentNightscoutData!.isOlderThan5Minutes()
-            || currentNightscoutWasFetchedInBackground(todaysBgData: todaysBgData!) {
+        if todaysBgData.count == 0 || currentNightscoutData.isOlderThan5Minutes()
+            || currentNightscoutWasFetchedInBackground(todaysBgData: todaysBgData) {
             
-            if let task = NightscoutService.singleton.readTodaysChartData(oldValues: todaysBgData!, { [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
+            if let task = NightscoutService.singleton.readTodaysChartData(oldValues: todaysBgData, { [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
                 
                 if case .data(let todaysBgData) = result {
                     self.newDataReceived = true
@@ -193,7 +181,7 @@ class NightscoutCacheService: NSObject {
             resultHandler(nil)
         }
             
-        return todaysBgData!
+        return todaysBgData
     }
     
     fileprivate func currentNightscoutWasFetchedInBackground(todaysBgData : [BloodSugar]) -> Bool {
@@ -201,7 +189,7 @@ class NightscoutCacheService: NSObject {
         // consider also the case when the current nightscout data is newer than newest 
         // "todays data" (are out of sync because probably the ns data was obtained 
         // while the app was in background)
-        return currentNightscoutData!.time.doubleValue > (todaysBgData.last?.timestamp ?? 0)
+        return currentNightscoutData.time.doubleValue > (todaysBgData.last?.timestamp ?? 0)
     }
     
     fileprivate func removeYesterdaysEntries(bgValues : [BloodSugar]) -> [BloodSugar] {
@@ -223,12 +211,12 @@ class NightscoutCacheService: NSObject {
     func loadYesterdaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>?) -> Void)
         -> [BloodSugar] {
         
-        if yesterdaysBgData == nil {
+        if yesterdaysBgData.count == 0 {
             yesterdaysBgData = NightscoutDataRepository.singleton.loadYesterdaysBgData()
             yesterdaysDayOfTheYear = NightscoutDataRepository.singleton.loadYesterdaysDayOfTheYear()
         }
         
-        if yesterdaysBgData!.count == 0 || currentNightscoutData == nil || yesterdaysValuesAreOutdated() {
+        if yesterdaysBgData.count == 0 || yesterdaysValuesAreOutdated() {
             
             if let task = NightscoutService.singleton.readYesterdaysChartData({ [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
                 
@@ -238,12 +226,12 @@ class NightscoutCacheService: NSObject {
                     // transform the yesterdays values to the current day, so that they can be easily displayed in
                     // one diagram
                     self.yesterdaysBgData = self.transformToCurrentDay(yesterdaysValues: yesterdaysValues)
-                    NightscoutDataRepository.singleton.storeYesterdaysBgData(self.yesterdaysBgData!)
+                    NightscoutDataRepository.singleton.storeYesterdaysBgData(self.yesterdaysBgData)
                     let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
                     self.yesterdaysDayOfTheYear = Calendar.current.ordinality(of: .day, in: .year, for: yesterday)!
                     NightscoutDataRepository.singleton.storeYesterdaysDayOfTheYear(yesterdaysDayOfTheYear: self.yesterdaysDayOfTheYear!)
                     
-                    resultHandler(.data(self.yesterdaysBgData!))
+                    resultHandler(.data(self.yesterdaysBgData))
                 } else {
                     resultHandler(result)
                 }
@@ -258,7 +246,7 @@ class NightscoutCacheService: NSObject {
             resultHandler(nil)
         }
             
-        return yesterdaysBgData!
+        return yesterdaysBgData
     }
     
     // check if the stored yesterdaysvalues are from a day before
@@ -281,7 +269,7 @@ class NightscoutCacheService: NSObject {
     
     fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void, forceRefresh: Bool = false) {
         
-        guard forceRefresh || currentNightscoutData!.isOlderThan5Minutes() else {
+        guard forceRefresh || currentNightscoutData.isOlderThan5Minutes() else {
             resultHandler(nil)
             return
         }
@@ -291,7 +279,7 @@ class NightscoutCacheService: NSObject {
             if case .data(let newNightscoutData) = result {
                 self.currentNightscoutData = newNightscoutData
             
-                NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData!)
+                NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData)
             }
             
             resultHandler(result)

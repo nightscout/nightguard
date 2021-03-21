@@ -25,19 +25,6 @@ struct MainView: View {
         
         self.viewModel = mainViewModel
         
-        // Apple Watch 38mm
-        var sceneHeight : CGFloat = 125.0
-        
-        let screenBounds = WKInterfaceDevice.current().screenBounds
-        if (screenBounds.height >= 224.0) {
-            // Apple Watch 44mm
-            sceneHeight = 165.0
-        }
-        if (screenBounds.height >= 195.0) {
-            // Apple Watch 42mm
-            sceneHeight = 145.0
-        }
-        
         viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
    }
 

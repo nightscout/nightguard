@@ -348,7 +348,7 @@ class NightscoutService {
             return Date.init(timeIntervalSince1970: 0)
         }
         
-        return Date.init(timeIntervalSince1970: oldValues.last!.timestamp / 1000)
+        return Date.init(timeIntervalSince1970: oldValues.last?.timestamp ?? 0 / 1000)
     }
     
     @discardableResult
@@ -467,16 +467,16 @@ class NightscoutService {
                 }
                 return
             }
-            let bgs = jsonDict.object(forKey: "bgs") as? NSArray
-            guard bgs != nil else {
+            guard let bgs = jsonDict.object(forKey: "bgs") as? NSArray else {
                 let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. ", comment: "Invalid JSON from Pebble API, missing bgs, check NS conf")])
                 dispatchOnMain {
                     resultHandler(.error(error))
                 }
                 return
             }
-            if ((bgs?.count)! > 0) {
-                let currentBgs : NSDictionary = bgs!.object(at: 0) as! NSDictionary
+
+            if (bgs.count > 0) {
+                let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
                 
                 let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
                 let time = currentBgs.object(forKey: "datetime") as! NSNumber
@@ -502,11 +502,8 @@ class NightscoutService {
                 }
                 
                 //Get Carbs On Board from Nightscout
-                let cob : Double? = currentBgs.object(forKey: "cob") as? Double
-                
-                //Save Carbs-On-Board data
-                if cob != nil {
-                    nightscoutData.cob = cob!.string(fractionDigits: 0) + "g"
+                if let cob : Double = currentBgs.object(forKey: "cob") as? Double {
+                    nightscoutData.cob = cob.string(fractionDigits: 0) + "g"
                 }
                 
                 nightscoutData.sgv = String(sgv)
@@ -611,11 +608,12 @@ class NightscoutService {
         }
         
         // Get the current data from REST-Call
+        let daysBackInTime = Calendar.current.date(
+                byAdding: .day, value: -daysToGoBackInTime, to: Date()) ?? Date()
         let lastTreatmentByEventtype = [
             "find[eventType]" : eventType.rawValue,
             // Go back 10 Days in time. That should be enough for even the Sensor Age
-            "find[created_at][$gte]" :  Calendar.current.date(
-                byAdding: .day, value: -daysToGoBackInTime, to: Date())!.convertToIsoDate(),
+            "find[created_at][$gte]" :  daysBackInTime.convertToIsoDate(),
             "count" : "1"
         ]
         
@@ -747,25 +745,12 @@ class NightscoutService {
                     
                     let temporaryTargetData = TemporaryTargetData()
                     
-                    let targetTopString = String(describing: temporaryTargetObject[0]["targetTop"])
-                    if targetTopString.contains(".") {
-                        // Looks like targetTop is stored as mmol => convert to mgdl
-                        temporaryTargetData.targetTop = Int(UnitsConverter.toMgdl(targetTopString)) ?? 100
-                    } else {
-                        temporaryTargetData.targetTop = temporaryTargetObject[0]["targetTop"] as? Int ?? 100
-                    }
-                    
-                    let targetBottomString = String(describing: temporaryTargetObject[0]["targetBottom"])
-                    if targetBottomString.contains(".") {
-                        // looks like targetBottom is stored as mmol => convert to mgdl
-                        temporaryTargetData.targetTop = Int(UnitsConverter.toMgdl(targetBottomString)) ?? 100
-                    } else {
-                        temporaryTargetData.targetBottom = temporaryTargetObject[0]["targetBottom"] as? Int ?? 100
-                    }
-                    
-                    let createdAt = temporaryTargetObject[0]["created_at"] as? String
-                    let duration = temporaryTargetObject[0]["duration"] as? Int
-                    temporaryTargetData.activeUntilDate = self.calculateEndDate(createdAt: createdAt, durationInMinutes: duration)
+                    let temporaryTarget = TemporaryTarget.parse(
+                        temporaryTargetDict: temporaryTargetObject[0])
+                    temporaryTargetData.targetTop = temporaryTarget.targetTop
+                    temporaryTargetData.targetBottom = temporaryTarget.targetBottom
+                    temporaryTargetData.activeUntilDate = self.calculateEndDate(
+                        createdAt: temporaryTarget.createdAt, durationInMinutes: temporaryTarget.duration)
                     
                     resultHandler(temporaryTargetData)
                 }

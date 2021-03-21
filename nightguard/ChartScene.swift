@@ -72,7 +72,7 @@ class ChartScene : SKScene {
         let chartTexture = SKTexture(image: chartImage!)
         let changeTextureAction = SKAction.setTexture(chartTexture)
         self.chartNode.run(changeTextureAction)
-        self.chartNode.size = chartImage!.size
+        self.chartNode.size = chartImage?.size ?? CGSize(width: 0, height: 0)
         self.chartNode.zPosition = 1
         
         // only show the move animation, if we have data at all.

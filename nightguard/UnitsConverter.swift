@@ -118,7 +118,9 @@ class UnitsConverter {
     
     static func toMgdl(_ uncertainValue : String) -> String {
         
-        var floatValue : Float = Float(uncertainValue)!
+        guard var floatValue : Float = Float(uncertainValue) else {
+            return uncertainValue
+        }
 
         floatValue = floatValue * (1 / 0.0555)
         return String(floatValue.cleanValue)
