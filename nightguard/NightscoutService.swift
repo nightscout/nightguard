@@ -348,7 +348,7 @@ class NightscoutService {
             return Date.init(timeIntervalSince1970: 0)
         }
         
-        return Date.init(timeIntervalSince1970: oldValues.last?.timestamp ?? 0 / 1000)
+        return Date.init(timeIntervalSince1970: (oldValues.last?.timestamp ?? 0) / 1000)
     }
     
     @discardableResult
