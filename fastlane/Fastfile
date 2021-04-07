@@ -31,6 +31,6 @@ platform :ios do
     upload_to_app_store(
         force: true,
         overwrite_screenshots: false,
-        skip_screenshots: false)
+        skip_screenshots: true)
   end
 end
