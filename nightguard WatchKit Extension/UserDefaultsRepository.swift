@@ -149,7 +149,9 @@ class UserDefaultsRepository {
         }
         var requestUri = url!
         requestUri.appendPathComponent(path, isDirectory: false)
-        var urlComponents = URLComponents(string: String(describing: requestUri))!
+        guard var urlComponents = URLComponents(string: String(describing: requestUri)) else {
+            return nil
+        }
         urlComponents.queryItems = []
         for (queryParam, queryValue) in queryParams {
             urlComponents.queryItems?.append(URLQueryItem(name: queryParam, value: queryValue))
