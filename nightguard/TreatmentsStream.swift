@@ -77,13 +77,13 @@ class TreatmentsStream {
         
         if let id = jsonTreatment["_id"] as? String {
             if isNew(id: id) {
-                if let date = jsonTreatment["date"] as? Double {
+                if let createdAt = jsonTreatment["created_at"] as? String {
                     let carbs = jsonTreatment["carbs"] as? Int ?? 0
                     let insulin = jsonTreatment["insulin"] as? Double ?? 0.0
                     
                     addTreatment(
                         treatment:
-                            MealBolusTreatment.init(id: id, timestamp: date, carbs: carbs, insulin: insulin))
+                            MealBolusTreatment.init(id: id, timestamp: Double.fromIsoString(isoTime: createdAt), carbs: carbs, insulin: insulin))
                 }
             }
         }
@@ -93,12 +93,12 @@ class TreatmentsStream {
         
         if let id = jsonTreatment["_id"] as? String {
             if isNew(id: id) {
-                if let date = jsonTreatment["date"] as? Double {
+                if let createdAt = jsonTreatment["created_at"] as? String {
                     let insulin = jsonTreatment["insulin"] as? Double ?? 0.0
                     
                     addTreatment(
                         treatment:
-                            CorrectionBolusTreatment.init(id: id, timestamp: date, insulin: insulin))
+                            CorrectionBolusTreatment.init(id: id, timestamp: Double.fromIsoString(isoTime: createdAt), insulin: insulin))
                 }
             }
         }
@@ -108,12 +108,12 @@ class TreatmentsStream {
         
         if let id = jsonTreatment["_id"] as? String {
             if isNew(id: id) {
-                if let date = jsonTreatment["date"] as? Double {
+                if let createdAt = jsonTreatment["created_at"] as? String {
                     let insulin = jsonTreatment["insulin"] as? Double ?? 0.0
                     
                     addTreatment(
                         treatment:
-                            BolusWizardTreatment.init(id: id, timestamp: date, insulin: insulin))
+                            BolusWizardTreatment.init(id: id, timestamp: Double.fromIsoString(isoTime: createdAt), insulin: insulin))
                 }
             }
         }

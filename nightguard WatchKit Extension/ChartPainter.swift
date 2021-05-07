@@ -238,13 +238,14 @@ class ChartPainter {
     }
 
     fileprivate func paintTreatments(_ context : CGContext, bgValues : [BloodSugar], maxBgValue : CGFloat) {
+        var isOddTreatment = true
         for treatment in TreatmentsStream.singleton.treatments {
             if let mealBolusTreatment = treatment as? MealBolusTreatment {
                 drawMealBolusValue(context,
                                    carbs: mealBolusTreatment.carbs,
                                    insulin: mealBolusTreatment.insulin,
                                    x: calcXValue(Double(mealBolusTreatment.timestamp)),
-                                   y: CGFloat(paintableHeight - treatmentsYOffset()))
+                                   y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
             }
             if let correctionBolusTreatment = treatment as? CorrectionBolusTreatment {
                 drawCorrectionBolusValue(context,
@@ -256,27 +257,38 @@ class ChartPainter {
             if let bolusWizardTreatment = treatment as? BolusWizardTreatment {
                 drawBolusWizardValue(context, insulin: bolusWizardTreatment.insulin,
                                      x: calcXValue(Double(bolusWizardTreatment.timestamp)),
-                                     y: CGFloat(paintableHeight - treatmentsYOffset()))
+                                     y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
             }
             if let carbCorrectionTreatment = treatment as? CarbCorrectionTreatment {
                 drawMealBolusValue(context,
                                    carbs: carbCorrectionTreatment.carbs,
                                    insulin: 0,
                                    x: calcXValue(Double(carbCorrectionTreatment.timestamp)),
-                                   y: CGFloat(paintableHeight - treatmentsYOffset()))
+                                   y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
             }
+            // toggle the odd/even marker. This is used to prevent close treatments to be painted
+            // on the same position in the chart
+            isOddTreatment = !isOddTreatment
         }
     }
     
     // determines how low treatments like carbs should be displayed on the
     // chart. If on the apple watch, this should differ to the main ios app.
-    fileprivate func treatmentsYOffset() -> Int {
+    fileprivate func treatmentsYOffset(isOddTreatment : Bool) -> Int {
         if self.canvasHeight < 500 {
             // On the watch: use smaller fonts
-            return 10
+            if (isOddTreatment) {
+                return 30
+            } else {
+                return 10
+            }
         }
         
-        return 20
+        if (isOddTreatment) {
+            return 50
+        } else {
+            return 25
+        }
     }
     
     fileprivate func nearestBgValueYValue(timestamp : Double, bgs : [BloodSugar]) -> CGFloat {
@@ -516,7 +528,10 @@ class ChartPainter {
     }
     
     fileprivate func paintEverySecondHour(_ context : CGContext, attrs : [NSAttributedString.Key : Any]) {
-        let halfHours = determineEverySecondHourBetween(minimumXValue, maxTimestamp: maximumXValue)
+        
+        guard let halfHours = determineEverySecondHourBetween(minimumXValue, maxTimestamp: maximumXValue) else {
+            return
+        }
         
         let hourFormat = DateFormatter()
         hourFormat.timeStyle = .short
@@ -533,7 +548,7 @@ class ChartPainter {
         }
     }
     
-    fileprivate func determineEverySecondHourBetween(_ minTimestamp : Double, maxTimestamp : Double) -> [Double] {
+    fileprivate func determineEverySecondHourBetween(_ minTimestamp : Double, maxTimestamp : Double) -> [Double]? {
         
         let minDate = Date(timeIntervalSince1970: minTimestamp / 1000)
         let maxDate = Date(timeIntervalSince1970: maxTimestamp / 1000)
@@ -543,7 +558,9 @@ class ChartPainter {
         var stop : Bool
         
         repeat {
-            let nextEvenHour = getNextEvenHour(currentDate);
+            guard let nextEvenHour = getNextEvenHour(currentDate) else {
+                return nil
+            }
             if nextEvenHour.compare(maxDate) == .orderedAscending {
                 evenHours.append(nextEvenHour.timeIntervalSince1970 * 1000)
                 stop = false
@@ -600,13 +617,15 @@ class ChartPainter {
     }
     
     // Returns e.g. 04:00 for 02:00 o'clock.
-    fileprivate func getNextEvenHour(_ date : Date) -> Date {
+    fileprivate func getNextEvenHour(_ date : Date) -> Date? {
         
         let cal = Calendar.current
         
         let hour = (cal as NSCalendar).component(NSCalendar.Unit.hour, from: date)
         
-        let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!
+        guard let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options()) else {
+            return nil
+        }
         var nextHour = currentHour.addingTimeInterval(
             isEven(hour + 1) ? fullHour : 2 * fullHour
         )

@@ -26,7 +26,9 @@ extension Date {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         
         let isoTimeAsString = String(describing: isoTime)
-        guard let convertedDate = dateFormatter.date(from: isoTimeAsString) else { return Date() }
+        guard let convertedDate = dateFormatter.date(from: isoTimeAsString) else {
+            return Date()
+        }
         
         return convertedDate
     }

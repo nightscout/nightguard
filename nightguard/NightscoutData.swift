@@ -87,35 +87,17 @@ class NightscoutData : NSObject, NSCoding, Codable {
         }
         self.bgdeltaString = bgdeltaString
         
-        guard let bgdeltaArrow = decoder.decodeObject(forKey: "bgdeltaArrow") as? String else {
-            return
-        }
-        self.bgdeltaArrow = bgdeltaArrow
+        bgdeltaArrow = decoder.decodeObject(forKey: "bgdeltaArrow") as? String ?? "?"
         
-        guard let bgdelta = decoder.decodeObject(forKey: "bgdelta") as? Float else {
-            return
-        }
-        self.bgdelta = bgdelta
+        self.bgdelta = decoder.decodeObject(forKey: "bgdelta") as? Float ?? 0.0
         
-        guard let time = decoder.decodeObject(forKey: "time") as? NSNumber else {
-            return
-        }
-        self.time = time
+        self.time = decoder.decodeObject(forKey: "time") as? NSNumber ?? 0
         
-        guard let battery = decoder.decodeObject(forKey: "battery") as? String else {
-            return
-        }
-        self.battery = battery
+        self.battery = decoder.decodeObject(forKey: "battery") as? String ?? "?"
         
-        guard let iob = decoder.decodeObject(forKey: "iob") as? String else {
-            return
-        }
-        self.iob = iob
+        self.iob = decoder.decodeObject(forKey: "iob") as? String ?? "?"
         
-        guard let cob = decoder.decodeObject(forKey: "cob") as? String else {
-            return
-        }
-        self.cob = cob
+        self.cob = decoder.decodeObject(forKey: "cob") as? String ?? "?"
     }
     
     /*

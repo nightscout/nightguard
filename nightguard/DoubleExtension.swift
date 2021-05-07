@@ -23,4 +23,9 @@ extension Double {
         formatter.maximumFractionDigits = fractionDigits
         return formatter.string(from: NSNumber(value: self)) ?? "\(self)"
     }
+    
+    static func fromIsoString(isoTime: String) -> Double {
+        
+        return Date.fromIsoString(isoTime: isoTime).timeIntervalSince1970 * 1000
+    }
 }
