@@ -83,7 +83,7 @@ class AlarmRule {
     static var persistentHighUpperBound = UserDefaultsValue<Float>(key: "persistentHighUpperBound", default: 250)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
-
+    
     /*
      * Returns true if the alarm should be played.
      * Snooze is true if the Alarm has been manually deactivated.

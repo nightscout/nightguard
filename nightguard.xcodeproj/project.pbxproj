@@ -104,6 +104,7 @@
 		433A021A24FECD6D00224774 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */; };
 		433AD0171CCE3E89001A76CD /* NightscoutServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433AD0161CCE3E89001A76CD /* NightscoutServiceTest.swift */; };
 		433AD0181CCE3FCB001A76CD /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
+		4340D39626639F070015F0C7 /* AlarmSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4340D39526639F070015F0C7 /* AlarmSoundViewController.swift */; };
 		4346F9841D0773F700487541 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
 		434982352534DE4F00CF0014 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434982342534DE4F00CF0014 /* DictionaryExtension.swift */; };
 		4349823B2534E07200CF0014 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434982342534DE4F00CF0014 /* DictionaryExtension.swift */; };
@@ -449,6 +450,7 @@
 		4330E3EE25D3239C0054A0A6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		4334D97F24C32B6D00652D87 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		433AD0161CCE3E89001A76CD /* NightscoutServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutServiceTest.swift; sourceTree = "<group>"; };
+		4340D39526639F070015F0C7 /* AlarmSoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSoundViewController.swift; sourceTree = "<group>"; };
 		4344E7E825D4728600F54DC2 /* Pods */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pods; sourceTree = "<group>"; };
 		4344E7EE25D472A600F54DC2 /* Eureka */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Eureka; path = Pods/Eureka; sourceTree = "<group>"; };
 		434982342534DE4F00CF0014 /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
@@ -1042,6 +1044,7 @@
 				D160D091220E4248002B4633 /* AlertVolumeViewController.swift */,
 				D16C8ED62210377000192117 /* SnoozeActionsViewController.swift */,
 				D17F7937224D3C500074907B /* PersistentHighViewController.swift */,
+				4340D39526639F070015F0C7 /* AlarmSoundViewController.swift */,
 			);
 			name = forms;
 			sourceTree = "<group>";
@@ -1240,7 +1243,7 @@
 					};
 					43647BF11BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1250;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -1601,6 +1604,7 @@
 				D1D1623E221AAC05006F990A /* WatchSyncRequestMessage.swift in Sources */,
 				43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */,
 				D16C8EDB221068F000192117 /* VolumeChangeDetector.swift in Sources */,
+				4340D39626639F070015F0C7 /* AlarmSoundViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2084,7 +2088,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.4.0;
+				MARKETING_VERSION = 3.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2115,7 +2119,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.4.0;
+				MARKETING_VERSION = 3.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.watchkitextension";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2149,7 +2153,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.4.0;
+				MARKETING_VERSION = 3.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2182,7 +2186,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.4.0;
+				MARKETING_VERSION = 3.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2211,7 +2215,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.4.0;
+				MARKETING_VERSION = 3.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2239,7 +2243,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.4.0;
+				MARKETING_VERSION = 3.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";

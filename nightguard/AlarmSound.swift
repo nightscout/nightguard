@@ -16,6 +16,20 @@ import UIKit
  */
 class AlarmSound {
     
+    static var playCustomAlarmSound = UserDefaultsValue<Bool>(key: "playCustomAlarmSound", default: false)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
+    
+    static var alarmSoundUri : String {
+        set {
+            UserDefaultsRepository.alarmSoundUri.value = newValue
+            // delete old cached local mp3-file reference:
+            localSoundURL = ""
+        }
+        get {
+            return UserDefaultsRepository.alarmSoundUri.value
+        }
+    }
+    
     static var isPlaying: Bool {
         return self.audioPlayer?.isPlaying == true
     }
@@ -40,6 +54,7 @@ class AlarmSound {
     fileprivate static var playingTimer: Timer?
     
     fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")!
+    fileprivate static var localSoundURL = ""
     fileprivate static var audioPlayer: AVAudioPlayer?
     fileprivate static let audioPlayerDelegate = AudioPlayerDelegate()
     
@@ -82,8 +97,67 @@ class AlarmSound {
             return
         }
         
+        if self.playCustomAlarmSound.value {
+            if let customUrl = URL(string: self.localSoundURL) {
+                play(url: customUrl)
+                return
+            } else if let audioUrl = URL(string: self.alarmSoundUri) {
+                
+                // then lets create your document folder url
+                /*let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                
+                // lets create your destination file url
+                let destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
+                self.audioPlayer = try AVAudioPlayer(contentsOf: destinationUrl)*/
+                
+                downloadFileFromURL(url: audioUrl)
+                return
+            }
+        }
+        
+        // As a fallback: Play the default mp3 file
+        play(url: self.soundURL)
+    }
+    
+    static func playDefaultSound() {
+        
+        guard !self.isPlaying else {
+            return
+        }
+        
+        play(url: self.soundURL)
+    }
+
+    fileprivate static func downloadFileFromURL(url: URL){
+        var downloadTask:URLSessionDownloadTask
+        downloadTask = URLSession.shared.downloadTask(with: url) { (url, response, error) in
+            
+            guard error == nil else {
+                // the file can't be downloaded => Play the default alarm
+                self.playDefaultSound()
+                return
+            }
+            
+            let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            // lets create your destination file url
+            let localUrl = documentsDirectoryURL.appendingPathComponent("customAlarmSound2.mp3")
+            
+            do {
+                try? FileManager.default.removeItem(at: localUrl)
+                try FileManager.default.copyItem(at: url!, to: localUrl)
+                self.localSoundURL = localUrl.absoluteString
+            } catch (let writeError) {
+                 print("error writing file \(localUrl) : \(writeError)")
+            }
+            self.play(url: url!)
+        }
+        downloadTask.resume()
+    }
+    
+    fileprivate static func play(url : URL) {
+        
         do {
-            self.audioPlayer = try AVAudioPlayer(contentsOf: self.soundURL)
+            self.audioPlayer = try AVAudioPlayer(contentsOf: url)
             self.audioPlayer?.delegate = self.audioPlayerDelegate
             
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playback)))
@@ -109,7 +183,6 @@ class AlarmSound {
                 NSLog("AlarmSound - audio player failed to play")
             }
             
-            
             // do fade-in
             if !self.muted && (self.fadeInTimeInterval.value > 0) {
                 self.audioPlayer?.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
@@ -118,7 +191,14 @@ class AlarmSound {
             self.playingTimer = Timer.schedule(repeatInterval: 1.0, handler: self.onPlayingTimer)
             
         } catch let error {
-            NSLog("AlarmSound - unable to play sound; error: \(error)")
+            NSLog("AlarmSound - unable to play sound; error: \(error). Removing the cached reference to the local file.")
+            if (url != self.soundURL) {
+                // Fallback to the default sound since the custom sound seems to be broken:
+                localSoundURL = ""
+                self.playDefaultSound()
+                return
+            }
+            localSoundURL = ""
         }
     }
     

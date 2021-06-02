@@ -44,6 +44,20 @@ class UserDefaultsRepository {
         })
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
+    static let alarmSoundUri = UserDefaultsValue<String>(
+        key: "alarmSoundUri",
+        default: "",
+        validation: { alarmSoundUri in
+            let trimmedUri = uriWithoutTrailingSlashes(alarmSoundUri).trimmingCharacters(
+                in: CharacterSet.whitespacesAndNewlines)
+            
+            if (!validateUrl(trimmedUri)) {
+                return ""
+            }
+            
+            return trimmedUri
+        })
+    
     static let showBGOnAppBadge = UserDefaultsValue<Bool>(
         key: "showBGOnAppBadge",
         default: false,

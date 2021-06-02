@@ -95,6 +95,17 @@ class AlarmViewController: CustomFormViewController {
                 })
             }
             
+            <<< ButtonRowWithDynamicDetails(NSLocalizedString("Alarm Sound", comment: "Alarm settings title: Alarm Sound")) { row in
+                row.controllerProvider = { return AlarmSoundViewController() }
+                row.detailTextProvider = {
+                    if AlarmRule.isLowPredictionEnabled.value {
+                        return String(format: NSLocalizedString("Alerts when a low BG value is predicted in less than %d minutes.", comment: "Footer for predicted low"), AlarmRule.minutesToPredictLow.value)
+                    } else {
+                        return NSLocalizedString("Off", comment: "Alert off")
+                    }
+                }
+            }
+            
             <<< ButtonRowWithDynamicDetails(NSLocalizedString("Missed Readings", comment: "Alarm settings title: Missed readings")) { row in
                 row.controllerProvider = { return MissedReadingsViewController() }
                 row.detailTextProvider = {
