@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public protocol SMDiagramViewDataSource: class {
+@objc public protocol SMDiagramViewDataSource: AnyObject {
     
     @objc func numberOfSegmentsIn(diagramView: SMDiagramView) -> Int
     
