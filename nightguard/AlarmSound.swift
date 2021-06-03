@@ -19,16 +19,8 @@ class AlarmSound {
     static var playCustomAlarmSound = UserDefaultsValue<Bool>(key: "playCustomAlarmSound", default: false)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
     
-    static var alarmSoundUri : String {
-        set {
-            UserDefaultsRepository.alarmSoundUri.value = newValue
-            // delete old cached local mp3-file reference:
-            localSoundURL = ""
-        }
-        get {
-            return UserDefaultsRepository.alarmSoundUri.value
-        }
-    }
+    static var alarmSoundUri = UserDefaultsRepository.alarmSoundUri
+    static var customName = UserDefaultsRepository.alarmSoundFileName
     
     static var isPlaying: Bool {
         return self.audioPlayer?.isPlaying == true
@@ -54,7 +46,6 @@ class AlarmSound {
     fileprivate static var playingTimer: Timer?
     
     fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")!
-    fileprivate static var localSoundURL = ""
     fileprivate static var audioPlayer: AVAudioPlayer?
     fileprivate static let audioPlayerDelegate = AudioPlayerDelegate()
     
@@ -98,19 +89,8 @@ class AlarmSound {
         }
         
         if self.playCustomAlarmSound.value {
-            if let customUrl = URL(string: self.localSoundURL) {
+            if let customUrl = URL(string: self.alarmSoundUri.value) {
                 play(url: customUrl)
-                return
-            } else if let audioUrl = URL(string: self.alarmSoundUri) {
-                
-                // then lets create your document folder url
-                /*let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                
-                // lets create your destination file url
-                let destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
-                self.audioPlayer = try AVAudioPlayer(contentsOf: destinationUrl)*/
-                
-                downloadFileFromURL(url: audioUrl)
                 return
             }
         }
@@ -126,32 +106,6 @@ class AlarmSound {
         }
         
         play(url: self.soundURL)
-    }
-
-    fileprivate static func downloadFileFromURL(url: URL){
-        var downloadTask:URLSessionDownloadTask
-        downloadTask = URLSession.shared.downloadTask(with: url) { (url, response, error) in
-            
-            guard error == nil else {
-                // the file can't be downloaded => Play the default alarm
-                self.playDefaultSound()
-                return
-            }
-            
-            let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            // lets create your destination file url
-            let localUrl = documentsDirectoryURL.appendingPathComponent("customAlarmSound2.mp3")
-            
-            do {
-                try? FileManager.default.removeItem(at: localUrl)
-                try FileManager.default.copyItem(at: url!, to: localUrl)
-                self.localSoundURL = localUrl.absoluteString
-            } catch (let writeError) {
-                 print("error writing file \(localUrl) : \(writeError)")
-            }
-            self.play(url: url!)
-        }
-        downloadTask.resume()
     }
     
     fileprivate static func play(url : URL) {
@@ -194,11 +148,9 @@ class AlarmSound {
             NSLog("AlarmSound - unable to play sound; error: \(error). Removing the cached reference to the local file.")
             if (url != self.soundURL) {
                 // Fallback to the default sound since the custom sound seems to be broken:
-                localSoundURL = ""
                 self.playDefaultSound()
                 return
             }
-            localSoundURL = ""
         }
     }
     

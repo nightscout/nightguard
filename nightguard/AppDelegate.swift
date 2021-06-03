@@ -70,6 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rootViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
 
         self.window = UserInteractionDetectorWindow(frame: UIScreen.main.bounds)
+        if #available(iOS 13.0, *) {
+            // Always force a dark theme for nightguard. Otherwise e.g. the file picker would be white ^^
+            self.window?.overrideUserInterfaceStyle = .dark
+        }
         self.window?.rootViewController = rootViewController
         self.window?.makeKeyAndVisible()
         

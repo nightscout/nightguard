@@ -97,6 +97,13 @@ class AlarmViewController: CustomFormViewController {
             
             <<< ButtonRowWithDynamicDetails(NSLocalizedString("Alarm Sound", comment: "Alarm settings title: Alarm Sound")) { row in
                 row.controllerProvider = { return AlarmSoundViewController() }
+                
+                // since the filepicker controller is available in iOS 14 and higher only:
+                // hide this option if below:
+                row.hidden = true
+                if #available(iOS 14.0, *) {
+                    row.hidden = false
+                }
                 row.detailTextProvider = {
                     if AlarmRule.isLowPredictionEnabled.value {
                         return String(format: NSLocalizedString("Alerts when a low BG value is predicted in less than %d minutes.", comment: "Footer for predicted low"), AlarmRule.minutesToPredictLow.value)

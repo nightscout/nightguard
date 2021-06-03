@@ -58,6 +58,10 @@ class UserDefaultsRepository {
             return trimmedUri
         })
     
+    static let alarmSoundFileName = UserDefaultsValue<String>(
+        key: "alarmSoundFileName",
+        default: "")
+    
     static let showBGOnAppBadge = UserDefaultsValue<Bool>(
         key: "showBGOnAppBadge",
         default: false,
