@@ -105,11 +105,7 @@ class AlarmViewController: CustomFormViewController {
                     row.hidden = false
                 }
                 row.detailTextProvider = {
-                    if AlarmRule.isLowPredictionEnabled.value {
-                        return String(format: NSLocalizedString("Alerts when a low BG value is predicted in less than %d minutes.", comment: "Footer for predicted low"), AlarmRule.minutesToPredictLow.value)
-                    } else {
-                        return NSLocalizedString("Off", comment: "Alert off")
-                    }
+                    return NSLocalizedString("Define your own Alarm Sound by uploading an mp3 file from your iCloud account.", comment: "Footer for Alarm Sound")
                 }
             }
             
