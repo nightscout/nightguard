@@ -83,24 +83,25 @@ class AlarmSoundViewController: CustomFormViewController, UIDocumentPickerDelega
         // create a local copy
         let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         // lets create your destination file url
-        let localUrl = documentsDirectoryURL.appendingPathComponent("customAlarmSound.mp3")
+        let localUrl = URL(string: "customAlarmSound.mp3", relativeTo: documentsDirectoryURL)
         
         do {
-            try? FileManager.default.removeItem(at: localUrl)
+            try? FileManager.default.removeItem(at: localUrl!)
             // Call this to get access to the icloud files:
-            customSoundUrl.startAccessingSecurityScopedResource()
-            try FileManager.default.copyItem(at: customSoundUrl, to: localUrl)
-            
-            AlarmSound.alarmSoundUri.value = localUrl.absoluteString
-            if let filename = customSoundUrl.pathComponents.last {
-                AlarmSound.customName.value = filename
-                if let row : TextRow = form.rowBy(tag: "alarmNameRow") {
-                    row.value = filename
-                    row.updateCell()
+            if customSoundUrl.startAccessingSecurityScopedResource() {
+                try FileManager.default.copyItem(at: customSoundUrl, to: localUrl!)
+                
+                AlarmSound.alarmSoundUri.value = localUrl!.relativeString
+                if let filename = customSoundUrl.pathComponents.last {
+                    AlarmSound.customName.value = filename
+                    if let row : TextRow = form.rowBy(tag: "alarmNameRow") {
+                        row.value = filename
+                        row.updateCell()
+                    }
                 }
             }
         } catch (let writeError) {
-             print("error writing file \(localUrl) : \(writeError)")
+             print("error writing file \(localUrl!) : \(writeError)")
         }
     }
 }

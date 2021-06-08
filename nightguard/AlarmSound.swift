@@ -90,7 +90,10 @@ class AlarmSound {
         
         if self.playCustomAlarmSound.value {
             if let customUrl = URL(string: self.alarmSoundUri.value) {
-                play(url: customUrl)
+                // a relative URL has to be kept => otherwise the URL will be
+                // invalid after an app update, since Apple copies all files to a new
+                // base dir. So convert here to the correct base URL:
+                play(url: calculateAbsoluteUrl(relativeURL: customUrl))
                 return
             }
         }
@@ -241,4 +244,9 @@ class AudioPlayerDelegate: NSObject, AVAudioPlayerDelegate {
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
 	return input.rawValue
+}
+
+fileprivate func calculateAbsoluteUrl(relativeURL : URL) -> URL {
+    let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    return URL(string: relativeURL.relativeString, relativeTo: documentsDirectoryURL) ?? relativeURL
 }
