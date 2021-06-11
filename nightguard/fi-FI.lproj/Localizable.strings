@@ -524,19 +524,19 @@
 "Show Care/Loop Data" = "Näytä Care/Loop tiedot";
 
 /* Alarm settings title: Custom Alarm Sound */
-"Alarm Sound" = "Alarm Sound";
+"Alarm Sound" = "Hälytysääni";
 
 /* Footer for Custom Alarm Sound */
-"Define your own Alarm Sound by uploading an mp3 file from your iCloud account." = "Define your own Alarm Sound by uploading an mp3 file from your iCloud account.";
+"Define your own Alarm Sound by uploading an mp3 file from your iCloud account." = "Aseta oma hälytysääni lataamalla mp3-tiedosto iCloud-tililtäsi.";
 
 /* Footer in Custom Alarm Sound settings */
-"If activated, a user defined alarm sound will be used." = "If activated, a user defined alarm sound will be used.";
+"If activated, a user defined alarm sound will be used." = "Jos aktivoitu, käytetään käyttäjän asettamaa hälytysääntä.";
 
 /* Title in Custom Alarm Sound settings */
-"Custom Alarm Sound" = "Custom Alarm Sound";
+"Custom Alarm Sound" = "Mukautettu hälytysääni";
 
 /* Title for Alarm Name */
-"Alarm Name" = "Alarm Name";
+"Alarm Name" = "Hälytyksen nimi";
 
 /* Button Pick Custom Alarm Sound */
-"Pick Custom Alarm Sound" = "Pick Custom Alarm Sound";
+"Pick Custom Alarm Sound" = "Valitse mukautettu hälytysääni";
