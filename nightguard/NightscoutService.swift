@@ -519,7 +519,7 @@ class NightscoutService {
                         }
                         return
                 }
-                let bgDeltaAsString = String(describing: bgDeltaObjectUnwrapped)
+                var bgDeltaAsString = String(describing: bgDeltaObjectUnwrapped)
                 guard var bgdeltaAsMgdl = Float(bgDeltaAsString)
                     else {
                         nightscoutData.bgdeltaString = "?"
@@ -529,10 +529,10 @@ class NightscoutService {
                         }
                         return
                 }
-                // Workaround a nightscout bug: even if mgdl has been request, the bgdelta will be
+                // Workaround a nightscout bug: even if mgdl has been requested, the bgdelta will be
                 // returned in mmol. So convert it to mgdl in that case:
-                if bgDeltaAsString.contains(".") {
-                    // looks like its mmol: convert mmol to mgdl
+                if UserDefaultsRepository.units.value == Units.mmol {
+                    // if the backend is mmol: convert mmol to mgdl
                     bgdeltaAsMgdl = UnitsConverter.mmolToMgdl(bgdeltaAsMgdl)
                 }
                 nightscoutData.bgdeltaString = self.direction(bgdeltaAsMgdl) + String(format: "%.1f", bgdeltaAsMgdl)
