@@ -519,7 +519,7 @@ class NightscoutService {
                         }
                         return
                 }
-                var bgDeltaAsString = String(describing: bgDeltaObjectUnwrapped)
+                let bgDeltaAsString = String(describing: bgDeltaObjectUnwrapped)
                 guard var bgdeltaAsMgdl = Float(bgDeltaAsString)
                     else {
                         nightscoutData.bgdeltaString = "?"
