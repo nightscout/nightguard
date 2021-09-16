@@ -1,8 +1,8 @@
 PODS:
   - Eureka (5.3.3)
-  - XLActionController (5.0.2):
-    - XLActionController/Core (= 5.0.2)
-  - XLActionController/Core (5.0.2)
+  - XLActionController (5.1.0):
+    - XLActionController/Core (= 5.1.0)
+  - XLActionController/Core (5.1.0)
 
 DEPENDENCIES:
   - Eureka
@@ -15,7 +15,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Eureka: e6d720290c56bb23333ad1a0e020b2a98a0e9a43
-  XLActionController: f1f2226d2c6629db197d4a41f2da907085a4cb9d
+  XLActionController: 24140d835ab9e260270711afebc5efabebe9d392
 
 PODFILE CHECKSUM: 1c26e83c4e68aaeb4d532a440a7a96138b0118a1
 

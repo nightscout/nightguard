@@ -217,18 +217,4 @@ class CareViewController: CustomFormViewController {
         alertController.addAction(actionDecline)
         self.present(alertController, animated: true, completion: nil)
     }
-    
-    fileprivate func displayErrorMessagePopup(message : String) {
-        let alertController = UIAlertController(title: NSLocalizedString("Error", comment: "Popup Error Message Title"), message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("Ok", comment: "Popup Error-Ok-Button"), style: .default, handler: { (alert: UIAlertAction!) in
-        })
-        alertController.addAction(okAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    fileprivate func playSuccessFeedback() {
-        let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .light)
-        impactFeedbackgenerator.prepare()
-        impactFeedbackgenerator.impactOccurred()
-    }
 }

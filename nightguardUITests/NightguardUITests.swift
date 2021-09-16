@@ -30,6 +30,10 @@ class NightguardUITests: XCTestCase {
         app = XCUIApplication()
         setupSnapshot(app)
         app.launchArguments.append("--uitesting")
+        app.launchArguments.append("--AppleLanguages")
+        app.launchArguments.append("(en-US)")
+        app.launchArguments.append("--AppleLocale")
+        app.launchArguments.append("\"en-US\"")
         app.launchEnvironment["TEST"] = "1"
         app.launch()
 
@@ -48,7 +52,10 @@ class NightguardUITests: XCTestCase {
 
         // Refresh the Test-URL to refresh the correct Units (mg/dl) for the backend
         tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+        // Double Tab to be sure that the TabBar-Popup appears:
+        //tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
         let tablecells = app.tables.cells
+        tablecells.containing(.staticText, identifier: "Preferences").element.tap()
         let urlTextField = tablecells.containing(.staticText, identifier:"URL").children(matching: .textField).element
         // tap to refresh
         urlTextField.tap()
@@ -60,26 +67,37 @@ class NightguardUITests: XCTestCase {
         
         testFullscreenView()
         
+        // Test the Alarms Tab:
         tabBarsQuery.firstMatch.buttons.element(boundBy: 1).tap()
         snapshot("04-alarms")
         
+        // Test the Care Tab:
         tabBarsQuery.firstMatch.buttons.element(boundBy: 2).tap()
         snapshot("05-care")
-        
+
+        // Test the Duration Tab:
         tabBarsQuery.firstMatch.buttons.element(boundBy: 3).tap()
+        snapshot("06-duration")
+        
+        // Test the Statistics Tab:
+        tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+        // Double Tab to be sure that the TabBar-Popup appears:
+        tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+        tablecells.containing(.staticText, identifier: "Stats").element.tap()
         if UIDevice.current.userInterfaceIdiom == .phone {
             // only on a phone is a rotation needed if using the statistics panel
             XCUIDevice.shared.orientation = .landscapeLeft
         }
         sleep(6)
-        snapshot("06-stats")
+        snapshot("07-stats")
         
-        tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+        // Test the Preferences Tab:
+        tabBarsQuery.firstMatch.buttons.element(boundBy: 5).tap()
         if UIDevice.current.userInterfaceIdiom == .phone {
             XCUIDevice.shared.orientation = .portrait
         }
         sleep(1)
-        snapshot("07-preferences")
+        snapshot("08-preferences")
     }
     
     fileprivate func testMainScreen(_ tabBarsQuery: XCUIElementQuery) {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="daa-ut-wGy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="daa-ut-wGy">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,6 +13,7 @@
             <objects>
                 <navigationController id="daa-ut-wGy" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="wBC-cf-Aki">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -32,10 +33,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t6p-F9-bVn" customClass="SKView">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="jIU-pM-VZd"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
@@ -44,12 +46,11 @@
                             <constraint firstItem="jIU-pM-VZd" firstAttribute="bottom" secondItem="t6p-F9-bVn" secondAttribute="bottom" id="gHA-7y-aVk"/>
                             <constraint firstItem="t6p-F9-bVn" firstAttribute="top" secondItem="jIU-pM-VZd" secondAttribute="top" id="pQb-IT-O6X"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="jIU-pM-VZd"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Stats" image="Stats" id="Gq1-vb-adG"/>
                     <navigationItem key="navigationItem" title="Stats" id="jcp-sA-AVP">
                         <barButtonItem key="leftBarButtonItem" id="wFn-PF-b6m">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mfw-F5-wMB">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="mfw-F5-wMB">
                                 <rect key="frame" x="16" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Edit"/>
@@ -76,56 +77,57 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AjO-G9-ggQ">
-                                <rect key="frame" x="16" y="80" width="51" height="31"/>
+                                <rect key="frame" x="16" y="60" width="51" height="31"/>
                                 <viewLayoutGuide key="safeArea" id="LXL-XT-32Y"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 1 activated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z68-zn-H43">
-                                <rect key="frame" x="73" y="85" width="117" height="21"/>
+                                <rect key="frame" x="73" y="65" width="116" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 2 activated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5s9-Ir-Y1w">
-                                <rect key="frame" x="73" y="132" width="119" height="21"/>
+                                <rect key="frame" x="73" y="112" width="118" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 3 activated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZFw-0B-qy0">
-                                <rect key="frame" x="74" y="179" width="119" height="21"/>
+                                <rect key="frame" x="74" y="159" width="119" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 4 activated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6w3-nX-GGA">
-                                <rect key="frame" x="73" y="226" width="120" height="21"/>
+                                <rect key="frame" x="73" y="206" width="119" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6xS-Pn-dmb">
-                                <rect key="frame" x="16" y="127" width="51" height="31"/>
+                                <rect key="frame" x="16" y="107" width="51" height="31"/>
                                 <viewLayoutGuide key="safeArea" id="Jqh-VF-TIu"/>
                             </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOO-2M-lJG">
-                                <rect key="frame" x="16" y="174" width="51" height="31"/>
+                                <rect key="frame" x="16" y="154" width="51" height="31"/>
                                 <viewLayoutGuide key="safeArea" id="0Ei-Hs-dNg"/>
                             </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1kC-9L-9VQ">
-                                <rect key="frame" x="16" y="221" width="51" height="31"/>
+                                <rect key="frame" x="16" y="201" width="51" height="31"/>
                                 <viewLayoutGuide key="safeArea" id="sVI-31-uPq"/>
                             </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bZ3-do-hD6">
-                                <rect key="frame" x="16" y="268" width="51" height="31"/>
+                                <rect key="frame" x="16" y="248" width="51" height="31"/>
                                 <viewLayoutGuide key="safeArea" id="A3K-sx-86N"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 5 activated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPe-K1-SFm">
-                                <rect key="frame" x="73" y="273" width="119" height="21"/>
+                                <rect key="frame" x="73" y="253" width="119" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="LhV-Uy-cMH"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="LOO-2M-lJG" firstAttribute="top" secondItem="6xS-Pn-dmb" secondAttribute="bottom" constant="16" id="2Xx-Ae-p8w"/>
@@ -149,7 +151,6 @@
                             <constraint firstItem="1kC-9L-9VQ" firstAttribute="top" secondItem="LOO-2M-lJG" secondAttribute="bottom" constant="16" id="vti-gy-2KK"/>
                             <constraint firstItem="lPe-K1-SFm" firstAttribute="leading" secondItem="bZ3-do-hD6" secondAttribute="trailing" constant="8" id="z4m-JN-Scg"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="LhV-Uy-cMH"/>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>

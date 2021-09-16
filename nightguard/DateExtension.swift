@@ -33,12 +33,34 @@ extension Date {
         return convertedDate
     }
     
+    func toDateTimeString() -> String {
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        
+        return dateFormatter.string(from: self)
+    }
+    
+    func toMillis() -> String {
+        
+        return String(Int64((self.timeIntervalSince1970 * 1000.0).rounded()))
+    }
+
     func convertToIsoDate() -> String {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         dateFormatter.locale = Locale(identifier: "en_US")
         dateFormatter.timeZone = TimeZone.init(secondsFromGMT: 0)
+        
+        return dateFormatter.string(from: self)
+    }
+    
+    func convertToIsoDateTime() -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         
         return dateFormatter.string(from: self)
     }

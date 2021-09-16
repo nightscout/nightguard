@@ -590,13 +590,15 @@
                         <segue destination="GUP-Hx-gmC" kind="relationship" relationship="viewControllers" id="ynG-z7-zf4"/>
                         <segue destination="7pd-UE-mwp" kind="relationship" relationship="viewControllers" id="POg-Tu-jgl"/>
                         <segue destination="49Y-59-KDd" kind="relationship" relationship="viewControllers" id="QeG-Nq-cjP"/>
+                        <segue destination="pjF-5Q-I3s" kind="relationship" relationship="viewControllers" id="laH-Qh-VGh"/>
                         <segue destination="plA-ZV-pwP" kind="relationship" relationship="viewControllers" id="gDM-Lc-2am"/>
                         <segue destination="xQ4-Ke-Hd2" kind="relationship" relationship="viewControllers" id="O9h-fb-9MV"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rRQ-9l-s24" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tabBarItem title="Item" id="qIl-yD-S9G" userLabel="Timer"/>
             </objects>
-            <point key="canvasLocation" x="-1096" y="-297"/>
+            <point key="canvasLocation" x="-1304" y="-335"/>
         </scene>
         <!--Care-->
         <scene sceneID="f1F-aI-4B3">
@@ -653,6 +655,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zLf-by-LN5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1097" y="225"/>
+        </scene>
+        <!--Duration-->
+        <scene sceneID="Exk-gw-SqY">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="Timer" storyboardName="Duration" id="pjF-5Q-I3s" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="UYe-TJ-2aZ"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bmx-02-sPb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1504" y="225"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.96517526286328037" green="0.96381590185596999" blue="0.98756055269162302" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
