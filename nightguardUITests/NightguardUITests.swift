@@ -48,17 +48,17 @@ class NightguardUITests: XCTestCase {
     func testTabsBars() {
         
         let tabBarsQuery = app.tabBars
-        XCTAssertEqual(tabBarsQuery.buttons.count, 5)
+        let tablecells = app.tables.cells
+        XCTAssertTrue(tabBarsQuery.buttons.count == 5 || tabBarsQuery.buttons.count == 6)
 
         // Refresh the Test-URL to refresh the correct Units (mg/dl) for the backend
-        tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
-        // Double Tab to be sure that the TabBar-Popup appears:
-        //tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
-        let tablecells = app.tables.cells
-        tablecells.containing(.staticText, identifier: "Preferences").element.tap()
+        selectPreferencesTab()
         let urlTextField = tablecells.containing(.staticText, identifier:"URL").children(matching: .textField).element
         // tap to refresh
         urlTextField.tap()
+        urlTextField.clearText()
+        urlTextField.tap()
+        urlTextField.clearText(andReplaceWith: "http://night.fritz.box")
         urlTextField.typeText("\n")
         
         testMainScreen(tabBarsQuery)
@@ -80,10 +80,7 @@ class NightguardUITests: XCTestCase {
         snapshot("06-duration")
         
         // Test the Statistics Tab:
-        tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
-        // Double Tab to be sure that the TabBar-Popup appears:
-        tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
-        tablecells.containing(.staticText, identifier: "Stats").element.tap()
+        selectStatsTab()
         if UIDevice.current.userInterfaceIdiom == .phone {
             // only on a phone is a rotation needed if using the statistics panel
             XCUIDevice.shared.orientation = .landscapeLeft
@@ -92,7 +89,7 @@ class NightguardUITests: XCTestCase {
         snapshot("07-stats")
         
         // Test the Preferences Tab:
-        tabBarsQuery.firstMatch.buttons.element(boundBy: 5).tap()
+        selectPreferencesTab()
         if UIDevice.current.userInterfaceIdiom == .phone {
             XCUIDevice.shared.orientation = .portrait
         }
@@ -100,7 +97,51 @@ class NightguardUITests: XCTestCase {
         snapshot("08-preferences")
     }
     
+    fileprivate func selectPreferencesTab() {
+        
+        let tabBarsQuery = app.tabBars
+        let tablecells = app.tables.cells
+        
+        // On small devices like the iPhone => the preferences tab is hidden in a separate popup:
+        if tabBarsQuery.buttons.count == 5 {
+            
+            tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+            // Double Tab to be sure that the TabBar-Popup appears:
+            //tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+            
+            tablecells.containing(.staticText, identifier: "Preferences").element.tap()
+        }
+        
+        // On iPads the preferences tab can be selected directly:
+        if tabBarsQuery.buttons.count == 6 {
+            
+            tabBarsQuery.firstMatch.buttons.element(boundBy: 5).tap()
+        }
+    }
+    
+    fileprivate func selectStatsTab() {
+        
+        let tabBarsQuery = app.tabBars
+        let tablecells = app.tables.cells
+        
+        // On small devices like the iPhone => the preferences tab is hidden in a separate popup:
+        if tabBarsQuery.buttons.count == 5 {
+                
+            tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+            // Double Tab to be sure that the TabBar-Popup appears:
+            tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+            tablecells.containing(.staticText, identifier: "Stats").element.tap()
+        }
+        
+        // On iPads the preferences tab can be selected directly:
+        if tabBarsQuery.buttons.count == 6 {
+            
+            tabBarsQuery.firstMatch.buttons.element(boundBy: 4).tap()
+        }
+    }
+
     fileprivate func testMainScreen(_ tabBarsQuery: XCUIElementQuery) {
+        
         tabBarsQuery.firstMatch.buttons.element(boundBy: 0).tap()
         sleep(3)
         snapshot("01-main")

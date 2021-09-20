@@ -7,6 +7,8 @@
 
 "care" = "Set temporary targets";
 
+"duration" = "Keep track of change durations";
+
 "alarms" = "Tune all the details";
 
 "stats" = "Compare every single day";
