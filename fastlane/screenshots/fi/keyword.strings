@@ -4,6 +4,10 @@
 
 "fullscreen" = "NIGHTMODE";
 
+"care" = "CARE";
+
+"duration" = "DURATION";
+
 "alarms" = "ALARMS";
 
 "stats" = "STATS";

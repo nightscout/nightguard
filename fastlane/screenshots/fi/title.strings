@@ -7,6 +7,10 @@
 
 "alarms" = "Tune all the details";
 
+"care" = "Set temporary targets";
+
+"duration" = "Keep track of cannula age";
+
 "stats" = "Compare every single day";
 
 "preferences" = "By entering Nightscout-URL";
