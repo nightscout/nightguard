@@ -50,6 +50,12 @@
       }
     },
     {
+      "filter": "duration",
+      "keyword": {
+        "color": "#d21559"
+      }
+    },
+    {
       "filter": "alarms",
       "keyword": {
         "color": "#d21559"
