@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>733</string>
+	<string>737</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -29,6 +29,8 @@
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
 	<string>de.my-wan.dhe.nightguard</string>
+	<key>WKSupportsAlwaysOnDisplay</key>
+	<true/>
 	<key>WKWatchKitApp</key>
 	<true/>
 </dict>
