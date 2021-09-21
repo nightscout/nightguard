@@ -39,113 +39,119 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             
         switch complication.family {
         case .modularSmall:
-            let modTemplate = CLKComplicationTemplateModularSmallStackText()
-            
+           
+            var line1TextProvider : CLKTextProvider
+            var line2TextProvider : CLKTextProvider
             if useRelativeTimeWhenPossible {
-                modTemplate.line1TextProvider = CLKSimpleTextProvider(text: getSgvAndArrow(currentNightscoutData, " "))
-                modTemplate.line1TextProvider.tintColor = UIColorChanger.getBgColor(
+                line1TextProvider = CLKSimpleTextProvider(text: getSgvAndArrow(currentNightscoutData, " "))
+                line1TextProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                modTemplate.line2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
+                line2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
             } else {
-                modTemplate.line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
-                modTemplate.line1TextProvider.tintColor = UIColorChanger.getBgColor(
+                line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
+                line1TextProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                modTemplate.line2TextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))\(UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString))\(currentNightscoutData.bgdeltaArrow)")
+                line2TextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))\(UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString))\(currentNightscoutData.bgdeltaArrow)")
             }
+            let modTemplate = CLKComplicationTemplateModularSmallStackText(line1TextProvider: line1TextProvider,
+                                                                           line2TextProvider: line2TextProvider)
             template = modTemplate
         case .modularLarge:
+            
             if useRelativeTimeWhenPossible {
-                let modTemplate = CLKComplicationTemplateModularLargeColumns()
-                
-                modTemplate.row1Column1TextProvider = CLKSimpleTextProvider(text: getOneLine(currentNightscoutData))
-                modTemplate.row1Column1TextProvider.tintColor = UIColorChanger.getBgColor(
+
+                let row1Col1 = CLKSimpleTextProvider(text: getOneLine(currentNightscoutData))
+                row1Col1.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                modTemplate.row1Column2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
-                modTemplate.row2Column1TextProvider = CLKSimpleTextProvider(text: "")
-                modTemplate.row2Column2TextProvider = CLKSimpleTextProvider(text: "")
-                modTemplate.row3Column1TextProvider = CLKSimpleTextProvider(text: "")
-                modTemplate.row3Column2TextProvider = CLKSimpleTextProvider(text: "")
+                let row1Col2 = getRelativeDateTextProvider(for: currentNightscoutData.time)
+                var row2Col1 = CLKSimpleTextProvider(text: "")
+                var row2Col2 = CLKSimpleTextProvider(text: "")
+                var row3Col1 = CLKSimpleTextProvider(text: "")
+                var row3Col2 = CLKSimpleTextProvider(text: "")
                 if self.oldNightscoutData.count > 1 {
                     let nightscoutData = self.oldNightscoutData[1]
-                    modTemplate.row2Column1TextProvider = CLKSimpleTextProvider(text: getOneLine(nightscoutData))
-                    modTemplate.row2Column2TextProvider = getRelativeDateTextProvider(for: nightscoutData.time)
+                    row2Col1 = CLKSimpleTextProvider(text: getOneLine(nightscoutData))
+                    row2Col2 = getRelativeDateTextProvider(for: nightscoutData.time) as? CLKSimpleTextProvider ?? row2Col2
                 }
                 if self.oldNightscoutData.count > 2 {
                     let nightscoutData = self.oldNightscoutData[2]
-                    modTemplate.row3Column1TextProvider = CLKSimpleTextProvider(text: getOneLine(nightscoutData))
-                    modTemplate.row3Column2TextProvider = getRelativeDateTextProvider(for: nightscoutData.time)
+                    row3Col1 = CLKSimpleTextProvider(text: getOneLine(nightscoutData))
+                    row3Col2 = getRelativeDateTextProvider(for: nightscoutData.time) as? CLKSimpleTextProvider ?? row3Col2
                 }
                 
-                template = modTemplate
+                template = CLKComplicationTemplateModularLargeColumns(
+                    row1Column1TextProvider: row1Col1, row1Column2TextProvider: row1Col2,
+                    row2Column1TextProvider: row2Col1, row2Column2TextProvider: row2Col2,
+                    row3Column1TextProvider: row3Col1, row3Column2TextProvider: row3Col2)
             } else {
-                let modTemplate = CLKComplicationTemplateModularLargeStandardBody()
                 
-                modTemplate.headerTextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-                modTemplate.body1TextProvider = CLKSimpleTextProvider(text: "")
-                modTemplate.body2TextProvider = CLKSimpleTextProvider(text: "")
+                let headerTextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                var body1TextProvider = CLKSimpleTextProvider(text: "")
+                var body2TextProvider = CLKSimpleTextProvider(text: "")
                 if self.oldNightscoutData.count > 1 {
-                    modTemplate.body1TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[1]))
+                    body1TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[1]))
                 }
                 if self.oldNightscoutData.count > 2 {
-                    modTemplate.body2TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[2]))
+                    body2TextProvider = CLKSimpleTextProvider(text: self.getOneBigLine(self.oldNightscoutData[2]))
                 }
-                template = modTemplate
+                template = CLKComplicationTemplateModularLargeStandardBody(headerTextProvider: headerTextProvider, body1TextProvider: body1TextProvider, body2TextProvider:  body2TextProvider)
+
             }
         case .utilitarianSmall:
-            let modTemplate = CLKComplicationTemplateUtilitarianSmallFlat()
-            modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(
+
+            let textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+            textProvider.tintColor = UIColorChanger.getBgColor(
                 UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-            template = modTemplate
+            template = CLKComplicationTemplateUtilitarianSmallFlat(textProvider: textProvider)
         case .utilitarianLarge:
-            let modTemplate = CLKComplicationTemplateUtilitarianLargeFlat()
-            modTemplate.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
-            modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(
+            
+            let imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
+            let textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+            textProvider.tintColor = UIColorChanger.getBgColor(
                 UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-            template = modTemplate
+            template = CLKComplicationTemplateUtilitarianLargeFlat(textProvider: textProvider, imageProvider: imageProvider)
         case .circularSmall:
-            let modTemplate = CLKComplicationTemplateCircularSmallRingText()
-            modTemplate.textProvider = CLKSimpleTextProvider(text:
+
+            let textProvider = CLKSimpleTextProvider(text:
                 UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-            modTemplate.textProvider.tintColor = UIColorChanger.getBgColor(
+            textProvider.tintColor = UIColorChanger.getBgColor(
                 UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
             
-            modTemplate.fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
-            modTemplate.ringStyle = CLKComplicationRingStyle.closed
-            template = modTemplate
+            let fillFraction = self.getAgeOfDataInMinutes(currentNightscoutData.time) / 60
+            let ringStyle = CLKComplicationRingStyle.closed
+            template = CLKComplicationTemplateCircularSmallRingText(textProvider: textProvider,
+                                                                    fillFraction: fillFraction,
+                                                                    ringStyle: ringStyle)
         case .graphicCorner:
             if #available(watchOSApplicationExtension 5.0, *) {
-                let modTemplate = CLKComplicationTemplateGraphicCornerStackText()
-                modTemplate.outerTextProvider = CLKSimpleTextProvider(text: self.getOneShortLine(currentNightscoutData))
-                modTemplate.outerTextProvider.tintColor = UIColorChanger.getBgColor(
+
+                let outerTextProvider = CLKSimpleTextProvider(text: self.getOneShortLine(currentNightscoutData))
+                outerTextProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                modTemplate.innerTextProvider = CLKSimpleTextProvider(text: self.getLastReadingTime(currentNightscoutData))
-                template = modTemplate
+                let innerTextProvider = CLKSimpleTextProvider(text: self.getLastReadingTime(currentNightscoutData))
+                template = CLKComplicationTemplateGraphicCornerStackText(innerTextProvider: innerTextProvider, outerTextProvider: outerTextProvider)
             } else {
                 abort()
             }
         case .graphicCircular:
             if #available(watchOSApplicationExtension 5.0, *) {
-                let modTemplate = CLKComplicationTemplateGraphicCircularClosedGaugeText()
-                modTemplate.centerTextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))")
-                modTemplate.centerTextProvider.tintColor = UIColorChanger.getBgColor(
+
+                let centerTextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))")
+                centerTextProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                modTemplate.gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: 0.0)
-                template = modTemplate
+                let gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: 0.0)
+                template = CLKComplicationTemplateGraphicCircularClosedGaugeText(gaugeProvider: gaugeProvider, centerTextProvider: centerTextProvider)
             } else {
                 abort()
             }
         case .graphicBezel:
             if #available(watchOSApplicationExtension 5.0, *) {
-                let modTemplate = CLKComplicationTemplateGraphicBezelCircularText()
-                modTemplate.textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
-                modTemplate.textProvider?.tintColor = UIColorChanger.getBgColor(
+
+                let textProvider = CLKSimpleTextProvider(text: self.getOneBigLine(currentNightscoutData))
+                textProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                let modImageTemplate = CLKComplicationTemplateGraphicCircularImage()
-                modImageTemplate.imageProvider = CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!)
-                modTemplate.circularTemplate = modImageTemplate
-                template = modTemplate
+                let modImageTemplate = CLKComplicationTemplateGraphicCircularImage(imageProvider: CLKFullColorImageProvider(fullColorImage: UIImage(named: "Complication/Graphic Circular")!))
+                template = CLKComplicationTemplateGraphicBezelCircularText(circularTemplate: modImageTemplate)
             } else {
                 abort()
             }
@@ -243,11 +249,26 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .utilitarianLarge:
             template = nil
         case .circularSmall:
-            let template = CLKComplicationTemplateCircularSmallRingImage()
-            template.imageProvider = CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!)
+            template = CLKComplicationTemplateCircularSmallRingImage(
+                imageProvider: CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!), fillFraction: 0.0, ringStyle: CLKComplicationRingStyle.closed)
         default: break
         }
         handler(template)
     }
     
+    func getComplicationDescriptors(handler: @escaping ([CLKComplicationDescriptor]) -> Void) {
+        let descriptors = [
+            CLKComplicationDescriptor(identifier: "nightguardComplication", displayName: "Nightguard",
+                                      supportedFamilies: [CLKComplicationFamily.circularSmall,
+                                                          CLKComplicationFamily.graphicBezel,
+                                                          CLKComplicationFamily.graphicCorner,
+                                                          CLKComplicationFamily.graphicCircular,
+                                                          CLKComplicationFamily.modularLarge,
+                                                          CLKComplicationFamily.modularSmall,
+                                                          CLKComplicationFamily.utilitarianLarge,
+                                                          CLKComplicationFamily.utilitarianSmall])
+        ]
+        // Call the handler with the currently supported complication descriptors
+        handler(descriptors)
+    }
 }
