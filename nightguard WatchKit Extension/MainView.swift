@@ -25,6 +25,7 @@ struct MainView: View {
         
         self.viewModel = mainViewModel
         
+        updateUnits()
         viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
    }
 
@@ -196,6 +197,18 @@ struct MainView: View {
         }
         .onReceive(timer) { _ in
             viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
+        }
+    }
+    
+    fileprivate func updateUnits() {
+        NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
+            
+            switch result {
+            case .data(let units):
+                UserDefaultsRepository.units.value = units
+            case .error(_):
+                print("Unable to determine units on the watch. Using the synced values from the ios app.")
+            }
         }
     }
 }

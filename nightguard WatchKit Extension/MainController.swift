@@ -18,4 +18,6 @@ class MainController: WKHostingController<MainView> {
     override var body: MainView {
         return MainView(mainViewModel: MainController.mainViewModel)
     }
+    
+    
 }
