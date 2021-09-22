@@ -32,7 +32,7 @@ class DurationViewController: CustomFormViewController {
         
         form
             
-        +++ Section(header: "Cannula", footer: NSLocalizedString("Set the time when you changed your cannula. This will be displayed on the main screen as CAGE.", comment: "Footer for Cannula Change Date"))
+        +++ Section(header: NSLocalizedString("Cannula", comment: "Cannula Row Header"), footer: NSLocalizedString("Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date.", comment: "Footer for Cannula Change Date"))
         
             <<< DateTimeRow() { row in
                 row.title = NSLocalizedString("Cannula change date", comment: "Label for Cannula Change Time")
@@ -41,7 +41,7 @@ class DurationViewController: CustomFormViewController {
             }
             
             <<< ButtonRow() { row in
-                row.title = NSLocalizedString("Reset Cannula Change Date", comment: "Button to reset the new Cannula Change Date")
+                row.title = NSLocalizedString("Reset", comment: "Button to reset the Cannula Change Date")
             }.onCellSelection { _, _ in
                 
                 let dateTimeRow = (self.form.rowBy(tag: "cannulaChangeDate") as? DateTimeRow)
@@ -50,7 +50,7 @@ class DurationViewController: CustomFormViewController {
             }
             
             <<< ButtonRow() { row in
-                row.title = NSLocalizedString("Set new Cannula Change Date", comment: "Button to activate the new Cannula Change Date")
+                row.title = NSLocalizedString("Save", comment: "Button to activate the Cannula Change Date")
             }.onCellSelection { _, _ in
                 
                 let changeDate = (self.form.rowBy(tag: "cannulaChangeDate") as? DateTimeRow)?.value ?? Date()
@@ -67,7 +67,7 @@ class DurationViewController: CustomFormViewController {
                 }
             }
         
-        +++ Section(header: "Sensor", footer: NSLocalizedString("Set the time when you changed your sensor. This will be displayed on the main screen as SAGE.", comment: "Footer for Sensor"))
+        +++ Section(header: NSLocalizedString("Sensor", comment: "Sensor Row Header"), footer: NSLocalizedString("Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date.", comment: "Footer for Sensor"))
        
             <<< DateTimeRow() { row in
                 row.title = NSLocalizedString("Sensor change date", comment: "Label for Sensor Change Time")
@@ -76,7 +76,7 @@ class DurationViewController: CustomFormViewController {
             }
             
             <<< ButtonRow() { row in
-                row.title = NSLocalizedString("Reset Sensor Change Date", comment: "Button to reset the new Sensor Change Date")
+                row.title = NSLocalizedString("Reset", comment: "Button to reset the Change Date")
             }.onCellSelection { _, _ in
                 
                 let dateTimeRow = (self.form.rowBy(tag: "sensorChangeDate") as? DateTimeRow)
@@ -85,7 +85,7 @@ class DurationViewController: CustomFormViewController {
             }
             
             <<< ButtonRow() { row in
-                row.title = NSLocalizedString("Set new Sensor Change Date", comment: "Button to activate the new Sensor Change Date")
+                row.title = NSLocalizedString("Save", comment: "Button to activate the new Change Date")
             }.onCellSelection { _, _ in
                 
                 let changeDate = (self.form.rowBy(tag: "sensorChangeDate") as? DateTimeRow)?.value ?? Date()
@@ -103,7 +103,7 @@ class DurationViewController: CustomFormViewController {
                 }
             }
         
-        +++ Section(header: "Battery", footer: NSLocalizedString("Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE.", comment: "Footer for Battery"))
+        +++ Section(header: NSLocalizedString("Battery", comment: "Battery Row Header"), footer: NSLocalizedString("Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date.", comment: "Footer for Battery"))
        
             <<< DateTimeRow() { row in
                 row.title = NSLocalizedString("Battery change date", comment: "Label for Battery Change Time")
@@ -112,7 +112,7 @@ class DurationViewController: CustomFormViewController {
             }
         
             <<< ButtonRow() { row in
-                row.title = NSLocalizedString("Reset Battery Change Date", comment: "Button to reset the new Battery Change Date")
+                row.title = NSLocalizedString("Reset", comment: "Button to reset the Change Date")
             }.onCellSelection { _, _ in
                 
                 let dateTimeRow = (self.form.rowBy(tag: "batteryChangeDate") as? DateTimeRow)
@@ -121,12 +121,12 @@ class DurationViewController: CustomFormViewController {
             }
             
             <<< ButtonRow() { row in
-                row.title = NSLocalizedString("Set new Battery Change Date", comment: "Button to activate the new Sensor Change Date")
+                row.title = NSLocalizedString("Save", comment: "Button to activate the new Change Date")
             }.onCellSelection { _, _ in
                 
                 let changeDate = (self.form.rowBy(tag: "batteryChangeDate") as? DateTimeRow)?.value ?? Date()
                 self.displayModifyChangeDatePopup(title: NSLocalizedString("Modify Battery Change Date", comment: "Modify Battery Change Date Popup Title"), changeDate: changeDate) {
-                    NightscoutService.singleton.createSensorChangeTreatment(changeDate: changeDate, resultHandler: {(error: String?) in
+                    NightscoutService.singleton.createBatteryChangeTreatment(changeDate: changeDate, resultHandler: {(error: String?) in
                             
                             if (error != nil) {
                                 self.displayErrorMessagePopup(message: error!)

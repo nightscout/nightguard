@@ -540,3 +540,61 @@
 
 /* Button Pick Custom Alarm Sound */
 "Pick Custom Alarm Sound" = "Valitse mukautettu hälytysääni";
+
+/* Cannula Row Header */
+"Cannula" = "Cannula";
+
+/* Footer for Cannula Change Date */
+"Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date." = "Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date.";
+
+/* Label for Cannula Change Time */
+"Cannula change date" = "Cannula change date";
+
+/* Button to reset the new Cannula Change Date */
+"Reset Cannula Change Date" = "Reset Cannula Change Date";
+
+/* Button to activate the new Cannula Change Date */
+"Set new Cannula Change Date" = "Set new Cannula Change Date";
+
+/* Modify Cannula Change Date Popup Title */
+"Modify Cannula Change Date" = "Modify Cannula Change Date";
+
+/* Sensor Row Header */
+"Sensor" = "Sensor";
+
+/* Footer for Sensor */
+"Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date." = "Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date.";
+
+/* Label for Sensor Change Time */
+"Sensor change date" = "Sensor change date";
+
+/* Button to reset the new Sensor Change Date */
+"Reset Sensor Change Date" = "Reset Sensor Change Date";
+
+/* Button to activate the new Sensor Change Date */
+"Set new Sensor Change Date" = "Set new Sensor Change Date";
+
+/* Modify Sensor Change Date Popup Title */
+"Modify Sensor Change Date" = "Modify Sensor Change Date";
+
+/* Battery Row Header */
+"Battery" = "Battery";
+
+/* Footer for Battery */
+"Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date." = "Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date.";
+
+/* Label for Battery Change Time */
+"Battery change date" = "Battery change date";
+
+/* Button to reset the new Battery Change Date */
+"Reset Battery Change Date" = "Reset Battery Change Date";
+
+/* Button to activate the new Sensor Change Date */
+"Set new Battery Change Date" = "Set new Battery Change Date";
+
+/* Modify Battery Change Date Popup Title */
+"Modify Battery Change Date" = "Modify Battery Change Date";
+
+/* Cancel Target Popup Text */
+"Do you want to modify the change date to " = "Do you want to modify the change date to ";
+
