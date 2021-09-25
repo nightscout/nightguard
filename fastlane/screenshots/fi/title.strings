@@ -1,16 +1,16 @@
 
-"main" = "Your values at a glance";
+"main" = "Arvot yhdellä silmäyksellä";
 
-"nightscout" = "Fast access to your nightscout site";
+"nightscout" = "Nopea pääsy nightscout sivustollesi";
 
-"fullscreen" = "Extra readability at night";
+"fullscreen" = "Parempi luettavuus yötilassa";
 
-"alarms" = "Tune all the details";
+"alarms" = "Säädä yksityiskohdat";
 
-"care" = "Set temporary targets";
+"care" = "Aseta väliaikaiset tavoitteet";
 
-"duration" = "Keep track of cannula age";
+"duration" = "Seuraa kanyylin ikää";
 
-"stats" = "Compare every single day";
+"stats" = "Vertaa päiviä";
 
-"preferences" = "By entering Nightscout-URL";
+"preferences" = "Syötä Nightscout URL";

@@ -542,59 +542,65 @@
 "Pick Custom Alarm Sound" = "Valitse mukautettu hälytysääni";
 
 /* Cannula Row Header */
-"Cannula" = "Cannula";
+"Cannula" = "Kanyyli";
 
 /* Footer for Cannula Change Date */
-"Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date." = "Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date.";
+"Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date." = "Aseta aika, jolloin vaihdoit kanyylin. Tämä näkyy päänäytön CAGE:ssa. Muista että voit päivittää tätä päivämäärää vain eteenpäin.";
 
 /* Label for Cannula Change Time */
-"Cannula change date" = "Cannula change date";
+"Cannula change date" = "Kanyyli vaihdettu";
 
 /* Button to reset the new Cannula Change Date */
-"Reset Cannula Change Date" = "Reset Cannula Change Date";
+"Reset" = "Nollaa";
 
 /* Button to activate the new Cannula Change Date */
-"Set new Cannula Change Date" = "Set new Cannula Change Date";
+"Save" = "Tallenna";
+
+/* Button to reset the new Cannula Change Date */
+"Reset Cannula Change Date" = "Nollaa kanyylin vaihtopäivämäärä";
+
+/* Button to activate the new Cannula Change Date */
+"Set new Cannula Change Date" = "Aseta kanyylin vaihtopäivämäärä";
 
 /* Modify Cannula Change Date Popup Title */
-"Modify Cannula Change Date" = "Modify Cannula Change Date";
+"Modify Cannula Change Date" = "Muokkaa kanyylin vaihtopäivämäärä";
 
 /* Sensor Row Header */
-"Sensor" = "Sensor";
+"Sensor" = "Sensori";
 
 /* Footer for Sensor */
-"Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date." = "Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date.";
+"Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date." = "Aseta aika, jolloin vaihdoit sensorin. Tämä näkyy päänäytön SAGE:ssa. Muista että voit päivittää tätä päivämäärää vain eteenpäin.";
 
 /* Label for Sensor Change Time */
-"Sensor change date" = "Sensor change date";
+"Sensor change date" = "Sensori vaihdettu";
 
 /* Button to reset the new Sensor Change Date */
-"Reset Sensor Change Date" = "Reset Sensor Change Date";
+"Reset Sensor Change Date" = "Nollaa sensorin vaihtopäivämäärä";
 
 /* Button to activate the new Sensor Change Date */
-"Set new Sensor Change Date" = "Set new Sensor Change Date";
+"Set new Sensor Change Date" = "Aseta sensorin vaihtopäivämäärä";
 
 /* Modify Sensor Change Date Popup Title */
-"Modify Sensor Change Date" = "Modify Sensor Change Date";
+"Modify Sensor Change Date" = "Muokkaa sensorin vaihtopäivämäärä";
 
 /* Battery Row Header */
-"Battery" = "Battery";
+"Battery" = "Akku";
 
 /* Footer for Battery */
-"Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date." = "Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date.";
+"Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date." = "Aseta aika, jolloin vaihdoit pumpun akun. Tämä näkyy päänäytön BAGE:ssa. Muista että voit päivittää tätä päivämäärää vain eteenpäin.";
 
 /* Label for Battery Change Time */
-"Battery change date" = "Battery change date";
+"Battery change date" = "Akku vaihdettu";
 
 /* Button to reset the new Battery Change Date */
-"Reset Battery Change Date" = "Reset Battery Change Date";
+"Reset Battery Change Date" = "Nollaa akun vaihtopäivämäärä";
 
 /* Button to activate the new Sensor Change Date */
-"Set new Battery Change Date" = "Set new Battery Change Date";
+"Set new Battery Change Date" = "Aseta akun vaihtopäivämäärä";
 
 /* Modify Battery Change Date Popup Title */
-"Modify Battery Change Date" = "Modify Battery Change Date";
+"Modify Battery Change Date" = "Muokkaa akun vaihtopäivämäärä";
 
 /* Cancel Target Popup Text */
-"Do you want to modify the change date to " = "Do you want to modify the change date to ";
+"Do you want to modify the change date to " = "Haluatko muuttaa päivämääräksi ";
 
