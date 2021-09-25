@@ -2,14 +2,14 @@
 
 "nightscout" = "NIGHTSCOUT";
 
-"fullscreen" = "NIGHTMODE";
+"fullscreen" = "YÖTILA";
 
 "care" = "CARE";
 
-"duration" = "DURATION";
+"duration" = "KESTO";
 
-"alarms" = "ALARMS";
+"alarms" = "HÄLYTYKSET";
 
-"stats" = "STATS";
+"stats" = "TILASTOT";
 
-"preferences" = "START";
+"preferences" = "ASETUKSET";
