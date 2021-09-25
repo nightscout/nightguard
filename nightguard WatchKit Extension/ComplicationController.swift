@@ -139,7 +139,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                 let centerTextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))")
                 centerTextProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                let gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: 0.0)
+                let gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: CLKSimpleGaugeProviderFillFractionEmpty)
                 template = CLKComplicationTemplateGraphicCircularClosedGaugeText(gaugeProvider: gaugeProvider, centerTextProvider: centerTextProvider)
             } else {
                 abort()
@@ -250,7 +250,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             template = nil
         case .circularSmall:
             template = CLKComplicationTemplateCircularSmallRingImage(
-                imageProvider: CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!), fillFraction: 0.0, ringStyle: CLKComplicationRingStyle.closed)
+                imageProvider: CLKImageProvider(onePieceImage: UIImage(named: "Complication/Circular")!), fillFraction: CLKSimpleGaugeProviderFillFractionEmpty, ringStyle: CLKComplicationRingStyle.closed)
         default: break
         }
         handler(template)
