@@ -40,6 +40,32 @@ class UnitsConverter {
         return toMmol(value)
     }
     
+    // Converts the internally mg/dL to mmol if thats the defined
+    // Unit to be used.
+    static func mgdlToShortDisplayUnits(_ value : String) -> String {
+        
+        if value == "---" {
+            return value
+        }
+        
+        // if the UI is locked, looks like we are not allowed to access the userdefaults
+        // so do this on main Thread only:
+        var units = Units.mmol
+        dispatchOnMain {
+            units = UserDefaultsRepository.units.value
+        }
+       
+        if units == Units.mgdl {
+            // nothing to do here - just remove decimals
+            if value.contains(".") {
+                return String(value.prefix(upTo: value.firstIndex(of: ".") ?? value.endIndex))
+            }
+            return value
+        }
+        
+        return toMmol(value)
+    }
+    
     static func mgdlToDisplayUnitsWithSign(_ value : String) -> String {
         
         let valueInDisplayUnits = mgdlToDisplayUnits(value)
@@ -89,6 +115,14 @@ class UnitsConverter {
             return "??"
         }
         return (mmolValue * 0.0555).cleanValue
+    }
+    
+    static func toRoundedMmol(_ mgdlValue : String) -> String {
+        
+        guard let mmolValue = Float(mgdlValue) else {
+            return "??"
+        }
+        return (mmolValue * 0.0555).round(to: 0).cleanValue
     }
     
     // Converts the value in Display Units to Mg/dL.

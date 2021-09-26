@@ -136,7 +136,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .graphicCircular:
             if #available(watchOSApplicationExtension 5.0, *) {
 
-                let centerTextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))")
+                let sgvLong = "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))"
+                let sgvShort = "\(UnitsConverter.mgdlToShortDisplayUnits(currentNightscoutData.sgv))"
+                let centerTextProvider = CLKSimpleTextProvider(text: sgvLong, shortText: sgvShort)
                 centerTextProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
                 let gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: CLKSimpleGaugeProviderFillFractionEmpty)
