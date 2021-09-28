@@ -41,7 +41,8 @@ class UnitsConverter {
     }
     
     // Converts the internally mg/dL to mmol if thats the defined
-    // Unit to be used.
+    // Unit to be used. To save some space, the mmol values are rounded.
+    // This is used to display the values on the circular complication
     static func mgdlToShortDisplayUnits(_ value : String) -> String {
         
         if value == "---" {
@@ -63,7 +64,7 @@ class UnitsConverter {
             return value
         }
         
-        return toMmol(value)
+        return toRoundedMmol(value)
     }
     
     static func mgdlToDisplayUnitsWithSign(_ value : String) -> String {
