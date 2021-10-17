@@ -385,7 +385,7 @@ class NightscoutService {
     
     /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
     @discardableResult
-    func readCurrentDataForPebbleWatch(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) -> URLSessionTask? {
+    func readCurrentData(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) -> URLSessionTask? {
         
         let baseUri = UserDefaultsRepository.baseUri.value
         if (baseUri == "") {
@@ -398,7 +398,7 @@ class NightscoutService {
         // Only for the UI, they are transformed to mmol. This enables us to let the user manually
         // switch to the wished units.
         // All other endpoints deliver in mgdl, too. So this makes sence to enforce it here, too:
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams: ["units": "mgdl"])
+        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v2/properties", queryParams: [:])
         guard url != nil else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
@@ -410,7 +410,7 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print("Error receiving Pepple Watch Data.")
+                print("Error receiving api/v2/properties Data.")
                 print(error!)
                 dispatchOnMain {
                     resultHandler(.error(error!))
@@ -430,14 +430,14 @@ class NightscoutService {
             }
             
             guard data != nil else {
-                print("Pebble Watch Data was nil.")
+                print("API V2 Properties Data was nil.")
                 dispatchOnMain { [unowned self] in
-                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Pebble Watch API", comment: "No data from Pebble API"))))
+                    resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from API V2 Properties", comment: "No data received from API V2 Properties"))))
                 }
                 return
             }
             
-            self.extractData(data : data!, resultHandler)
+            self.extractApiV2PropertiesData(data : data!, resultHandler)
         })
         
         task.resume()
@@ -456,92 +456,97 @@ class NightscoutService {
         BackgroundUrlSessionWrapper.singleton.start(request)
     }
     
-    public func extractData(data : Data, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) {
+    public func extractApiV2PropertiesData(data : Data, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) {
         
         do {
             let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
             guard let jsonDict :NSDictionary = json as? NSDictionary else {
-                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from Pebble Watch API", comment: "Invalid JSON from Pebble API")])
+                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties", comment: "Invalid JSON received from API V2 Properties")])
                 dispatchOnMain {
                     resultHandler(.error(error))
                 }
                 return
             }
-            guard let bgs = jsonDict.object(forKey: "bgs") as? NSArray else {
-                let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. ", comment: "Invalid JSON from Pebble API, missing bgs, check NS conf")])
+            
+            let nightscoutData = NightscoutData()
+            
+            guard let currentBgs = jsonDict.object(forKey: "bgnow") as? NSDictionary else {
+                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
                 dispatchOnMain {
                     resultHandler(.error(error))
                 }
                 return
             }
-
-            if (bgs.count > 0) {
-                let currentBgs : NSDictionary = bgs.object(at: 0) as! NSDictionary
-                
-                let sgv : NSString = currentBgs.object(forKey: "sgv") as! NSString
-                let time = currentBgs.object(forKey: "datetime") as! NSNumber
-                
-                let nightscoutData = NightscoutData()
-                let battery : NSString? = currentBgs.object(forKey: "battery") as? NSString
-                if battery == nil {
-                    nightscoutData.battery = ""
-                } else {
-                    nightscoutData.battery = String(battery!) + "%"
-                }
-                
-                //Get Insulin On Board from Nightscout
-                var iob : NSString? = currentBgs.object(forKey: "iob") as? NSString
-                
-                //Save Insulin-On-Board data
-                if iob == "0" {
-                    // make iob invisible, if nothing is on board
-                    iob = nil
-                }
-                if iob != nil {
-                    nightscoutData.iob = String(iob!) + "U"
-                }
-                
-                //Get Carbs On Board from Nightscout
-                if let cob : Double = currentBgs.object(forKey: "cob") as? Double {
-                    nightscoutData.cob = cob.string(fractionDigits: 0) + "g"
-                }
-                
-                nightscoutData.sgv = String(sgv)
-                nightscoutData.time = time
-                nightscoutData.bgdeltaArrow = self.getDirectionCharacter(currentBgs.object(forKey: "trend") as! NSNumber)
-                
-                guard let bgDeltaObjectUnwrapped = currentBgs.object(forKey: "bgdelta")
-                    else {
-                        nightscoutData.bgdeltaString = "?"
-                        nightscoutData.bgdelta = 0
-                        dispatchOnMain {
-                            resultHandler(.data(nightscoutData))
-                        }
-                        return
-                }
-                let bgDeltaAsString = String(describing: bgDeltaObjectUnwrapped)
-                guard var bgdeltaAsMgdl = Float(bgDeltaAsString)
-                    else {
-                        nightscoutData.bgdeltaString = "?"
-                        nightscoutData.bgdelta = 0
-                        dispatchOnMain {
-                            resultHandler(.data(nightscoutData))
-                        }
-                        return
-                }
-                // Workaround a nightscout bug: even if mgdl has been requested, the bgdelta will be
-                // returned in mmol. So convert it to mgdl in that case:
-                if UserDefaultsRepository.units.value == Units.mmol {
-                    // if the backend is mmol: convert mmol to mgdl
-                    bgdeltaAsMgdl = UnitsConverter.mmolToMgdl(bgdeltaAsMgdl)
-                }
-                nightscoutData.bgdeltaString = self.direction(bgdeltaAsMgdl) + String(format: "%.1f", bgdeltaAsMgdl)
-                nightscoutData.bgdelta = bgdeltaAsMgdl
-                
+            let sgv : NSNumber = currentBgs.object(forKey: "last") as? NSNumber ?? 0
+            let time = currentBgs.object(forKey: "mills") as? NSNumber ?? 0
+            
+            guard let upbat = jsonDict.object(forKey: "upbat") as? NSDictionary else {
+                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
                 dispatchOnMain {
-                    resultHandler(.data(nightscoutData))
+                    resultHandler(.error(error))
                 }
+                return
             }
+            
+            nightscoutData.battery = upbat.object(forKey: "display") as? String ?? "?"
+            
+            //Get Insulin On Board from Nightscout
+            guard let iobDict = jsonDict.object(forKey: "iob") as? NSDictionary else {
+                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
+                dispatchOnMain {
+                    resultHandler(.error(error))
+                }
+                return
+            }
+            var iob = iobDict.object(forKey: "display") as? String
+            
+            //Save Insulin-On-Board data
+            if iob == "0" {
+                // make iob invisible, if nothing is on board
+                iob = nil
+            }
+            if iob != nil {
+                nightscoutData.iob = String(iob!) + "U"
+            }
+            
+            //Get Carbs On Board from Nightscout
+            guard let cobDict = jsonDict.object(forKey: "cob") as? NSDictionary else {
+                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
+                dispatchOnMain {
+                    resultHandler(.error(error))
+                }
+                return
+            }
+            if let cob : Double = cobDict.object(forKey: "display") as? Double {
+                nightscoutData.cob = cob.string(fractionDigits: 0) + "g"
+            }
+            
+            nightscoutData.sgv = String(describing: sgv)
+            nightscoutData.time = time
+            
+            guard let directionDict = jsonDict.object(forKey: "direction") as? NSDictionary else {
+                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
+                dispatchOnMain {
+                    resultHandler(.error(error))
+                }
+                return
+            }
+            nightscoutData.bgdeltaArrow = directionDict.object(forKey: "label") as? String ?? "---"
+            
+            guard let deltaDict = jsonDict.object(forKey: "delta") as? NSDictionary else {
+                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
+                dispatchOnMain {
+                    resultHandler(.error(error))
+                }
+                return
+            }
+            nightscoutData.bgdeltaString = String(describing: deltaDict.object(forKey: "absolute") as? NSNumber ?? 0)
+            nightscoutData.bgdelta = deltaDict.object(forKey: "mgdl") as? Float ?? 0.0
+            
+            dispatchOnMain {
+                resultHandler(.data(nightscoutData))
+            }
+            
         } catch {
             print("Catched unknown exception.")
             let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Unknown error while extracting data from Pebble Watch API", comment: "Unkown error while extracting Pebble API data")])

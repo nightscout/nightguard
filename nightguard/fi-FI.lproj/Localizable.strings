@@ -121,12 +121,6 @@
 /* Invalid data from NS entries API */
 "Invalid data with HTML received from Nightscout entries API" = "Virheellinen HTML data Nightscout merkintä APIsta";
 
-/* Invalid JSON from Pebble API */
-"Invalid JSON received from Pebble Watch API" = "Virheellinen JSON Pebble Watch APIsta";
-
-/* Invalid JSON from Pebble API, missing bgs, check NS conf */
-"Invalid JSON received from Pebble Watch API, missing bgs array. Check Nightscout configuration. " = "Virheellinen JSON Pebble Watch APIsta, bgs taulukko puuttuu. Tarkista Nightscout asetukset. ";
-
 /* Invalid readings */
 "Invalid readings" = "Virheelliset lukemat";
 
@@ -604,3 +598,11 @@
 /* Cancel Target Popup Text */
 "Do you want to modify the change date to " = "Haluatko muuttaa päivämääräksi ";
 
+/* Invalid JSON received from API V2 Properties */
+"Invalid JSON received from API V2 Properties" = "Invalid JSON received from Pebble Watch API";
+
+/* Invalid JSON from API V2 Properties, missing bgs, check NS conf */
+"Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration." = "Invalid JSON received from API V2 Properties, missing bgs array. Check Nightscout configuration. ";
+
+/* No data from API V2 Properties Endpoint */
+"No data received from API V2 Properties" = "No data received from API V2 Properties";

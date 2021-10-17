@@ -390,7 +390,7 @@ extension ExtensionDelegate: URLSessionDownloadDelegate {
                 return
             }
             
-            NightscoutService.singleton.extractData(data: nightscoutData! as Data, { [unowned self] result in
+            NightscoutService.singleton.extractApiV2PropertiesData(data: nightscoutData! as Data, { [unowned self] result in
                 
                 switch result {
                 case .error(let error):

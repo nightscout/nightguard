@@ -274,7 +274,7 @@ class NightscoutCacheService: NSObject {
             return
         }
         
-        if let task = NightscoutService.singleton.readCurrentDataForPebbleWatch ({ [unowned self] (result: NightscoutRequestResult<NightscoutData>) in
+        if let task = NightscoutService.singleton.readCurrentData({ [unowned self] (result: NightscoutRequestResult<NightscoutData>) in
             
             if case .data(let newNightscoutData) = result {
                 self.currentNightscoutData = newNightscoutData
