@@ -444,18 +444,6 @@ class NightscoutService {
         return task
     }
     
-    /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
-    func readCurrentDataForPebbleWatchInBackground() {
-        // Get the current data from REST-Call
-        let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "pebble", queryParams:[:])
-        guard url != nil else {
-            return
-        }
-        let request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-        
-        BackgroundUrlSessionWrapper.singleton.start(request)
-    }
-    
     public func extractApiV2PropertiesData(data : Data, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) {
         
         do {
@@ -491,32 +479,13 @@ class NightscoutService {
             nightscoutData.battery = upbat.object(forKey: "display") as? String ?? "?"
             
             //Get Insulin On Board from Nightscout
-            guard let iobDict = jsonDict.object(forKey: "iob") as? NSDictionary else {
-                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
-                dispatchOnMain {
-                    resultHandler(.error(error))
-                }
-                return
-            }
-            var iob = iobDict.object(forKey: "display") as? String
-            
-            //Save Insulin-On-Board data
-            if iob == "0" {
-                // make iob invisible, if nothing is on board
-                iob = nil
-            }
-            if iob != nil {
-                nightscoutData.iob = String(iob!) + "U"
+            let iobDict = jsonDict.object(forKey: "iob") as? NSDictionary ?? NSDictionary()
+            if let iob = iobDict.object(forKey: "display") as? String {
+                nightscoutData.iob = String(iob) + "U"
             }
             
             //Get Carbs On Board from Nightscout
-            guard let cobDict = jsonDict.object(forKey: "cob") as? NSDictionary else {
-                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
-                dispatchOnMain {
-                    resultHandler(.error(error))
-                }
-                return
-            }
+            let cobDict = jsonDict.object(forKey: "cob") as? NSDictionary ?? NSDictionary()
             if let cob : Double = cobDict.object(forKey: "display") as? Double {
                 nightscoutData.cob = cob.string(fractionDigits: 0) + "g"
             }
@@ -540,7 +509,7 @@ class NightscoutService {
                 }
                 return
             }
-            nightscoutData.bgdeltaString = String(describing: deltaDict.object(forKey: "absolute") as? NSNumber ?? 0)
+            nightscoutData.bgdeltaString = deltaDict.object(forKey: "display") as? String ?? "?"
             nightscoutData.bgdelta = deltaDict.object(forKey: "mgdl") as? Float ?? 0.0
             
             dispatchOnMain {
