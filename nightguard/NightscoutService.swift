@@ -468,14 +468,7 @@ class NightscoutService {
             let sgv : NSNumber = currentBgs.object(forKey: "last") as? NSNumber ?? 0
             let time = currentBgs.object(forKey: "mills") as? NSNumber ?? 0
             
-            guard let upbat = jsonDict.object(forKey: "upbat") as? NSDictionary else {
-                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
-                dispatchOnMain {
-                    resultHandler(.error(error))
-                }
-                return
-            }
-            
+            let upbat = jsonDict.object(forKey: "upbat") as? NSDictionary ?? NSDictionary()
             nightscoutData.battery = upbat.object(forKey: "display") as? String ?? "?"
             
             //Get Insulin On Board from Nightscout
@@ -493,22 +486,10 @@ class NightscoutService {
             nightscoutData.sgv = String(describing: sgv)
             nightscoutData.time = time
             
-            guard let directionDict = jsonDict.object(forKey: "direction") as? NSDictionary else {
-                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
-                dispatchOnMain {
-                    resultHandler(.error(error))
-                }
-                return
-            }
-            nightscoutData.bgdeltaArrow = directionDict.object(forKey: "label") as? String ?? "---"
+            let directionDict = jsonDict.object(forKey: "direction") as? NSDictionary ?? NSDictionary()
+            nightscoutData.bgdeltaArrow = directionDict.object(forKey: "label") as? String ?? "-"
             
-            guard let deltaDict = jsonDict.object(forKey: "delta") as? NSDictionary else {
-                let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
-                dispatchOnMain {
-                    resultHandler(.error(error))
-                }
-                return
-            }
+            let deltaDict = jsonDict.object(forKey: "delta") as? NSDictionary ?? NSDictionary()
             nightscoutData.bgdeltaString = deltaDict.object(forKey: "display") as? String ?? "?"
             nightscoutData.bgdelta = deltaDict.object(forKey: "mgdl") as? Float ?? 0.0
             
