@@ -197,6 +197,9 @@ class MainViewModel: ObservableObject, Identifiable {
                 }
             }
         }
+        if let nsData = self.nightscoutData {
+            calculateColors(nightscoutData: nsData)
+        }
         
         self.active = NightscoutCacheService.singleton.hasCurrentNightscoutDataPendingRequests
     }
@@ -212,7 +215,7 @@ class MainViewModel: ObservableObject, Identifiable {
         
         self.sgvColor = Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)))
         self.sgvDeltaColor = Color(UIColorChanger.getDeltaLabelColor(
-                UnitsConverter.mgdlToDisplayUnits(nightscoutData.bgdelta)))
+            UnitsConverter.mgdlToDisplayUnits(nightscoutData.bgdelta)))
         self.arrowColor = Color(
                 UIColorChanger.getDeltaLabelColor(
                     UnitsConverter.mgdlToDisplayUnits(nightscoutData.bgdelta)))

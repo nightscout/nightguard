@@ -62,8 +62,7 @@ struct MainView: View {
                         .minimumScaleFactor(0.5)
                         .frame(height: 55, alignment: .topLeading)
                     VStack(alignment: .leading, content: {
-                        Text(UnitsConverter.mgdlToDisplayUnits(
-                                viewModel.nightscoutData?.bgdeltaString ?? "?"))
+                        Text(viewModel.nightscoutData?.bgdeltaString ?? "?")
                             .foregroundColor(viewModel.sgvDeltaColor)
                             .font(.system(size: 12))
                             .lineLimit(1)

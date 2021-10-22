@@ -13,8 +13,10 @@ import Foundation
 class NightscoutData : NSObject, NSCoding, Codable {
     
     var sgv : String = "---"
+    // the delta Value in Display Units
     var bgdeltaString : String = "---"
     var bgdeltaArrow : String = "-"
+    // the delta value in mgdl
     var bgdelta : Float = 0.0
     var hourAndMinutes : String {
         get {
@@ -89,7 +91,7 @@ class NightscoutData : NSObject, NSCoding, Codable {
         
         bgdeltaArrow = decoder.decodeObject(forKey: "bgdeltaArrow") as? String ?? "?"
         
-        self.bgdelta = decoder.decodeObject(forKey: "bgdelta") as? Float ?? 0.0
+        self.bgdelta = decoder.decodeFloat(forKey: "bgdelta")
         
         self.time = decoder.decodeObject(forKey: "time") as? NSNumber ?? 0
         
