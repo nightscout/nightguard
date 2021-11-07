@@ -465,6 +465,12 @@ class NightscoutService {
                 }
                 return
             }
+            
+            if currentBgs.object(forKey: "last") == nil {
+                // if no more glucose values can't be retrieved: backout - so that the last retrieved value is preserved
+                // this is useful to see how old the last retrieved value is
+                return
+            }
             let sgv : NSNumber = currentBgs.object(forKey: "last") as? NSNumber ?? 0
             let time = currentBgs.object(forKey: "mills") as? NSNumber ?? 0
             

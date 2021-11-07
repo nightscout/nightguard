@@ -51,7 +51,7 @@ struct MainView: View {
     }
     
     var body: some View {
-        TimelineView(EveryMinuteTimelineSchedule()) { context in
+        // TimelineView(EveryMinuteTimelineSchedule()) { context in
             VStack() {
                 HStack(spacing: 5, content: {
                     Text(UnitsConverter.mgdlToDisplayUnits(
@@ -198,7 +198,7 @@ struct MainView: View {
             .onReceive(timer) { _ in
                 viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
             }
-        }
+        //}
     }
     
     fileprivate func updateUnits() {

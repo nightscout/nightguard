@@ -104,7 +104,7 @@ class BedsideViewController: UIViewController {
         self.bgLabel.textColor = UIColorChanger.getBgColor(
                 UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
         
-        self.deltaLabel.text = UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString)
+        self.deltaLabel.text = currentNightscoutData.bgdeltaString
         if let displayDelta = Float(UnitsConverter.mgdlToDisplayUnitsWithSign(currentNightscoutData.bgdeltaString)) {
             self.deltaLabel.textColor = UIColorChanger.getDeltaLabelColor(
                 UnitsConverter.mgdlToDisplayUnits(displayDelta))
