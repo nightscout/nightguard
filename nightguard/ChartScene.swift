@@ -65,7 +65,9 @@ class ChartScene : SKScene {
         )
         
         // do nothing if the chart couldn't be created
-        if chartImage == nil || (chartImage?.size.width)! <= CGFloat(0) || (chartImage?.size.height)! <= CGFloat(0) {
+        if chartImage == nil
+            || ((chartImage?.size.width ?? 0) <= CGFloat(0))
+            || ((chartImage?.size.height ?? 0) <= CGFloat(0)) {
             return
         }
         
