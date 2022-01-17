@@ -456,8 +456,6 @@ class NightscoutService {
                 return
             }
             
-            let nightscoutData = NightscoutData()
-            
             guard let currentBgs = jsonDict.object(forKey: "bgnow") as? NSDictionary else {
                 let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
                 dispatchOnMain {
@@ -467,6 +465,15 @@ class NightscoutService {
             }
             
             if currentBgs.object(forKey: "last") == nil {
+                if currentBgs.object(forKey: "errors") != nil {
+                    // Looks like we have values, but these are marked as erroneous
+                    // Give a hint to the user by removing the old values and
+                    // displaying empty data:
+                    dispatchOnMain {
+                        resultHandler(.data(NightscoutData()))
+                    }
+                    return
+                }
                 // if no more glucose values can't be retrieved: backout - so that the last retrieved value is preserved
                 // this is useful to see how old the last retrieved value is
                 return
@@ -475,6 +482,7 @@ class NightscoutService {
             let time = currentBgs.object(forKey: "mills") as? NSNumber ?? 0
             
             let upbat = jsonDict.object(forKey: "upbat") as? NSDictionary ?? NSDictionary()
+            let nightscoutData = NightscoutData()
             nightscoutData.battery = upbat.object(forKey: "display") as? String ?? "?"
             
             //Get Insulin On Board from Nightscout

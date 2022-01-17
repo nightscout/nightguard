@@ -477,6 +477,10 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             }
         }
         
+        // if no new values are received, we have to check whether a "missed readings alarm" should
+        // be fired (the above eventhandler will in such a case not be exected):
+        self.evaluateAlarmActivationState()
+        
         paintCurrentBgData(currentNightscoutData: currentNightscoutData)
         self.bedsideViewController?.currentNightscoutData = currentNightscoutData
     }
