@@ -20,7 +20,7 @@ class AppleHealthService: NSObject {
         guard !bgData.isEmpty else { return }
 
         let unit: HKUnit = HKUnit.init(from: UserDefaultsRepository.units.value.description)
-        let lastSyncDate: Date = UserDefaultsRepository.appleHealthkitLastSyncDate.value
+        let lastSyncDate: Date = UserDefaultsRepository.appleHealthLastSyncDate.value
         
         let hkQuantitySamples: [HKQuantitySample] = bgData
             .filter{ bloodGlucose in bloodGlucose.date > lastSyncDate }
@@ -39,7 +39,7 @@ class AppleHealthService: NSObject {
         let mostRecentBloodGlucose = bgData.max(by: { $0.date < $1.date })
         
         if (mostRecentBloodGlucose != nil && !hkQuantitySamples.isEmpty) {
-            UserDefaultsRepository.appleHealthkitLastSyncDate.value = mostRecentBloodGlucose!.date
+            UserDefaultsRepository.appleHealthLastSyncDate.value = mostRecentBloodGlucose!.date
             
             healthKitStore.save(hkQuantitySamples) { (success, error) in
                 if let error = error {
