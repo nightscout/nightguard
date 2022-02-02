@@ -18,7 +18,7 @@ class AppleHealthService: NSObject {
     
     private func doSync(bgData: [BloodSugar]) {
         guard !bgData.isEmpty else { return }
-
+        
         let unit: HKUnit = HKUnit.init(from: UserDefaultsRepository.units.value.description)
         let lastSyncDate: Date = UserDefaultsRepository.appleHealthLastSyncDate.value
         
@@ -26,20 +26,19 @@ class AppleHealthService: NSObject {
             .filter{ bloodGlucose in bloodGlucose.date > lastSyncDate }
             .compactMap{ bloodGlucose in
                 let date: Date = bloodGlucose.date
-                let value = Double(bloodGlucose.value)
-            
+                let value: Double = Double(bloodGlucose.value)
+                
                 return HKQuantitySample(
                     type: getHkQuantityType(),
                     quantity: HKQuantity(unit: unit, doubleValue: value),
                     start: date,
                     end: date
                 )
-        }
+            }
         
-        let mostRecentBloodGlucose = bgData.max(by: { $0.date < $1.date })
-        
-        if (mostRecentBloodGlucose != nil && !hkQuantitySamples.isEmpty) {
-            UserDefaultsRepository.appleHealthLastSyncDate.value = mostRecentBloodGlucose!.date
+        if (!hkQuantitySamples.isEmpty) {
+            let mostRecent: BloodSugar = bgData.max(by: { $0.date < $1.date })!
+            UserDefaultsRepository.appleHealthLastSyncDate.value = mostRecent.date
             
             healthKitStore.save(hkQuantitySamples) { (success, error) in
                 if let error = error {
@@ -67,7 +66,7 @@ class AppleHealthService: NSObject {
         guard HKHealthStore.isHealthDataAvailable(),
               isAuthorized()
         else { return }
-                
+        
         _ = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
             guard let result = result else { return }
             
