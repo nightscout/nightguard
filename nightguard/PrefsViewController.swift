@@ -211,8 +211,8 @@ class PrefsViewController: CustomFormViewController {
             }.onChange { row in
                 AppleHealthService.singleton.requestAuthorization()
             }.onCellSelection { _, row in
-                let title:String = NSLocalizedString("Synchronization", comment: "Title for AH revocation")
-                let message: String = NSLocalizedString("Please revoke access in Apple Health", comment: "Message for AH revocation")
+                let title:String = NSLocalizedString("Synchronize with Apple Health", comment: "Label for Apple Health synchronization")
+                let message: String = NSLocalizedString("Revoke access in Apple Health", comment: "Label for Apple Health access revocation")
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
                 self.present(alert, animated: true, completion: nil)

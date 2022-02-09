@@ -205,6 +205,9 @@
 /* Footer for Reduce screen brightness */
 "Reduce screen brightness after detecting user inactivity for more than selected time period." = "Vähennä näytön kirkkautta kun passiivisuus yli valitun ajan.";
 
+/* Label for Apple Health access revocation */
+"Revoke access in Apple Health" = "Pääsyn peruuttaminen Apple Health";
+
 /* plurar unit */
 "seconds" = "sekunttia";
 
@@ -240,6 +243,9 @@
 
 /* Stop alert button */
 "Stop Alert" = "Pysäytä hälytys";
+
+/* Label for Apple Health synchronization */
+"Synchronize with Apple Health" = "Synkronoi kanssa Apple Health";
 
 /* Test alert button */
 "Test Alert" = "Testaa hälytystä";
