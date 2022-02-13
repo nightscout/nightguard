@@ -42,7 +42,7 @@ class AppleHealthService: NSObject {
 
             healthKitStore.save(hkQuantitySamples) { (success, error) in
                 if let error = error {
-                    print("Error saving glucose sample")
+                    print("Error saving glucose sample: ", error)
                 }
             }
         }
@@ -53,6 +53,8 @@ class AppleHealthService: NSObject {
     }
 
     public func requestAuthorization() {
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+
         healthKitStore.requestAuthorization(toShare: [getHkQuantityType()], read: nil, completion:  { (success, error) in
             return
         })
@@ -66,13 +68,8 @@ class AppleHealthService: NSObject {
         guard HKHealthStore.isHealthDataAvailable(),
               isAuthorized()
         else { return }
-
-        _ = NightscoutCacheService.singleton.loadTodaysData { [unowned self] result in
-            guard let result = result else { return }
-
-            if case .data(let bgData) = result {
-                doSync(bgData: bgData)
-            }
-        }
+        
+        let bgData: [BloodSugar] = NightscoutDataRepository.singleton.loadTodaysBgData()
+        doSync(bgData: bgData)
     }
 }
