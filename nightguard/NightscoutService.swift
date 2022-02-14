@@ -143,7 +143,7 @@ class NightscoutService {
     
     /* Reads all data between two timestamps and limits the maximum return values to 400. */
     @discardableResult
-    fileprivate func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
+    func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
         
         let baseUri = UserDefaultsRepository.baseUri.value
         if baseUri == "" {
