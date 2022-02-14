@@ -15,6 +15,27 @@ class AppleHealthService: NSObject {
     static let singleton = AppleHealthService()
 
     let healthKitStore: HKHealthStore = HKHealthStore()
+    
+    let MAX_BACKFILL_COUNT: Int = 10000
+    
+    private func backFillAndDoSync(currentBgData: [BloodSugar]) -> Void {
+        let earliest: Date = currentBgData.map { $0.date }.min(by: { $0 < $1 })!
+        let lastSyncDate: Date = UserDefaultsRepository.appleHealthLastSyncDate.value
+        
+        if (earliest < lastSyncDate) {
+            doSync(bgData: currentBgData)
+        } else {
+            NightscoutService.singleton.readChartDataWithinPeriodOfTime(oldValues: currentBgData, lastSyncDate, timestamp2: earliest) {[unowned self] result in
+                if case .data(let bgData) = result {
+                    if (currentBgData.count == bgData.count || currentBgData.count >= MAX_BACKFILL_COUNT) {
+                        doSync(bgData: bgData)
+                    } else {
+                        backFillAndDoSync(currentBgData: bgData)
+                    }
+                }
+            }
+        }
+    }
 
     private func doSync(bgData: [BloodSugar]) {
         guard !bgData.isEmpty else { return }
@@ -37,8 +58,8 @@ class AppleHealthService: NSObject {
             }
 
         if (!hkQuantitySamples.isEmpty) {
-            let mostRecent: BloodSugar = bgData.max(by: { $0.date < $1.date })!
-            UserDefaultsRepository.appleHealthLastSyncDate.value = mostRecent.date
+            let mostRecent: Date = bgData.map{ $0.date }.max(by: { $0 < $1 })!
+            UserDefaultsRepository.appleHealthLastSyncDate.value = mostRecent
 
             healthKitStore.save(hkQuantitySamples) { (success, error) in
                 if let error = error {
@@ -51,6 +72,10 @@ class AppleHealthService: NSObject {
     private func getHkQuantityType() -> HKQuantityType {
         return HKQuantityType.quantityType(forIdentifier: .bloodGlucose)!
     }
+    
+    public func isAuthorized() -> Bool {
+        return healthKitStore.authorizationStatus(for: getHkQuantityType()) == HKAuthorizationStatus.sharingAuthorized
+    }
 
     public func requestAuthorization() {
         guard HKHealthStore.isHealthDataAvailable() else { return }
@@ -60,16 +85,15 @@ class AppleHealthService: NSObject {
         })
     }
 
-    public func isAuthorized() -> Bool {
-        return healthKitStore.authorizationStatus(for: getHkQuantityType()) == HKAuthorizationStatus.sharingAuthorized
-    }
-
     public func sync() {
         guard HKHealthStore.isHealthDataAvailable(),
               isAuthorized()
         else { return }
         
-        let bgData: [BloodSugar] = NightscoutDataRepository.singleton.loadTodaysBgData()
-        doSync(bgData: bgData)
+        let cachedBgData: [BloodSugar] = NightscoutDataRepository.singleton.loadTodaysBgData()
+
+        if (!cachedBgData.isEmpty) {
+            backFillAndDoSync(currentBgData: cachedBgData)
+        }
     }
 }
