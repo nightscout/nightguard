@@ -18,7 +18,7 @@ class AppleHealthService: NSObject {
     
     let MAX_BACKFILL_COUNT: Int = 10000
     
-    private func backFillAndDoSync(currentBgData: [BloodSugar]) -> Void {
+    private func backFillAndSync(currentBgData: [BloodSugar]) -> Void {
         let earliest: Date = currentBgData.map { $0.date }.min(by: { $0 < $1 })!
         let lastSyncDate: Date = UserDefaultsRepository.appleHealthLastSyncDate.value
         
@@ -30,7 +30,7 @@ class AppleHealthService: NSObject {
                     if (currentBgData.count == bgData.count || currentBgData.count >= MAX_BACKFILL_COUNT) {
                         doSync(bgData: bgData)
                     } else {
-                        backFillAndDoSync(currentBgData: bgData)
+                        backFillAndSync(currentBgData: bgData)
                     }
                 }
             }
@@ -93,7 +93,7 @@ class AppleHealthService: NSObject {
         let cachedBgData: [BloodSugar] = NightscoutDataRepository.singleton.loadTodaysBgData()
 
         if (!cachedBgData.isEmpty) {
-            backFillAndDoSync(currentBgData: cachedBgData)
+            backFillAndSync(currentBgData: cachedBgData)
         }
     }
 }
