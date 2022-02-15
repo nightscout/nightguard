@@ -28,7 +28,7 @@ class AppleHealthService: NSObject {
             NightscoutService.singleton.readChartDataWithinPeriodOfTime(oldValues: [], lastSyncDate, timestamp2: earliest) {[unowned self] result in
                 if case .data(var bgData) = result {
                     if (!bgData.isEmpty) {
-                        bgData.removeLast()
+                        bgData.removeFirst()
                     }
 
                     if (bgData.count == 0 || currentBgData.count >= MAX_BACKFILL_COUNT) {
