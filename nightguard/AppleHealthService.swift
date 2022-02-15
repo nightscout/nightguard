@@ -19,17 +19,22 @@ class AppleHealthService: NSObject {
     let MAX_BACKFILL_COUNT: Int = 10000
     
     private func backFillAndSync(currentBgData: [BloodSugar]) -> Void {
-        let earliest: Date = currentBgData.map { $0.date }.min(by: { $0 < $1 })!
+        let earliest: Date = currentBgData.map { $0.date }.min()!
         let lastSyncDate: Date = UserDefaultsRepository.appleHealthLastSyncDate.value
         
-        if (earliest < lastSyncDate) {
+        if (earliest <= lastSyncDate) {
             doSync(bgData: currentBgData)
         } else {
-            NightscoutService.singleton.readChartDataWithinPeriodOfTime(oldValues: currentBgData, lastSyncDate, timestamp2: earliest) {[unowned self] result in
-                if case .data(let bgData) = result {
-                    if (currentBgData.count == bgData.count || currentBgData.count >= MAX_BACKFILL_COUNT) {
-                        doSync(bgData: bgData)
+            NightscoutService.singleton.readChartDataWithinPeriodOfTime(oldValues: [], lastSyncDate, timestamp2: earliest) {[unowned self] result in
+                if case .data(var bgData) = result {
+                    if (!bgData.isEmpty) {
+                        bgData.removeLast()
+                    }
+
+                    if (bgData.count == 0 || currentBgData.count >= MAX_BACKFILL_COUNT) {
+                        doSync(bgData: currentBgData)
                     } else {
+                        bgData.append(contentsOf: currentBgData)
                         backFillAndSync(currentBgData: bgData)
                     }
                 }
@@ -58,7 +63,7 @@ class AppleHealthService: NSObject {
             }
 
         if (!hkQuantitySamples.isEmpty) {
-            let mostRecent: Date = bgData.map{ $0.date }.max(by: { $0 < $1 })!
+            let mostRecent: Date = bgData.map{ $0.date }.max()!
             UserDefaultsRepository.appleHealthLastSyncDate.value = mostRecent
 
             healthKitStore.save(hkQuantitySamples) { (success, error) in
