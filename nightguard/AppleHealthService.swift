@@ -25,16 +25,14 @@ class AppleHealthService: NSObject {
         if (earliest <= lastSyncDate) {
             doSync(bgData: currentBgData)
         } else {
-            NightscoutService.singleton.readChartDataWithinPeriodOfTime(oldValues: [], lastSyncDate, timestamp2: earliest) {[unowned self] result in
-                if case .data(var bgData) = result {
-                    if (!bgData.isEmpty) {
-                        bgData.removeFirst()
-                    }
-
-                    if (bgData.count == 0 || currentBgData.count >= MAX_BACKFILL_COUNT) {
+            NightscoutService.singleton.readChartDataWithinPeriodOfTime(oldValues: [], lastSyncDate, timestamp2: earliest) {[unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
+                if case .data(let bgData) = result {
+                    var filteredBgData:[BloodSugar] = bgData.filter{ bloodGlucose in bloodGlucose.date != earliest }
+                    
+                    if (filteredBgData.count == 0 || currentBgData.count >= MAX_BACKFILL_COUNT) {
                         doSync(bgData: currentBgData)
                     } else {
-                        bgData.append(contentsOf: currentBgData)
+                        filteredBgData.append(contentsOf: currentBgData)
                         backFillAndSync(currentBgData: bgData)
                     }
                 }
