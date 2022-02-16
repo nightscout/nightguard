@@ -33,7 +33,7 @@ class AppleHealthService: NSObject {
                         doSync(bgData: currentBgData)
                     } else {
                         filteredBgData.append(contentsOf: currentBgData)
-                        backFillAndSync(currentBgData: bgData)
+                        backFillAndSync(currentBgData: filteredBgData)
                     }
                 }
             }
@@ -43,7 +43,7 @@ class AppleHealthService: NSObject {
     private func doSync(bgData: [BloodSugar]) {
         guard !bgData.isEmpty else { return }
 
-        let unit: HKUnit = HKUnit.init(from: UserDefaultsRepository.units.value.description)
+        let unit: HKUnit = getUnit()
         let lastSyncDate: Date = UserDefaultsRepository.appleHealthLastSyncDate.value
 
         let hkQuantitySamples: [HKQuantitySample] = bgData
@@ -76,6 +76,12 @@ class AppleHealthService: NSObject {
         return HKQuantityType.quantityType(forIdentifier: .bloodGlucose)!
     }
     
+    private func getUnit() -> HKUnit {
+        return UserDefaultsRepository.units.value == Units.mmol
+            ? HKUnit.moleUnit(with: .milli, molarMass: HKUnitMolarMassBloodGlucose).unitDivided(by: HKUnit.liter())
+            : HKUnit.gramUnit(with: .milli).unitDivided(by: HKUnit.literUnit(with: .deci))
+    }
+    
     public func isAuthorized() -> Bool {
         return healthKitStore.authorizationStatus(for: getHkQuantityType()) == HKAuthorizationStatus.sharingAuthorized
     }
@@ -83,8 +89,8 @@ class AppleHealthService: NSObject {
     public func requestAuthorization() {
         guard HKHealthStore.isHealthDataAvailable() else { return }
 
-        healthKitStore.requestAuthorization(toShare: [getHkQuantityType()], read: nil, completion:  { (success, error) in
-            return
+        healthKitStore.requestAuthorization(toShare: [getHkQuantityType()], read: nil, completion:  {[unowned self] (success, error) in
+            sync()
         })
     }
 
