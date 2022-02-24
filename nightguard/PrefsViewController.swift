@@ -203,6 +203,21 @@ class PrefsViewController: CustomFormViewController {
                     guard let value = row.value else { return }
                     UserDefaultsRepository.showBGOnAppBadge.value = value
             }
+        
+            <<< SwitchRow() { row in
+                row.disabled = Condition(booleanLiteral: AppleHealthService.singleton.isAuthorized())
+                row.title = NSLocalizedString("Synchronize with Apple Health", comment: "Label for Apple Health synchronization")
+                row.value = AppleHealthService.singleton.isAuthorized()
+            }.onChange { row in
+                AppleHealthService.singleton.requestAuthorization()
+            }.onCellSelection { _, row in
+                let title:String = NSLocalizedString("Synchronize with Apple Health", comment: "Label for Apple Health synchronization")
+                let message: String = NSLocalizedString("Revoke access in Apple Health", comment: "Label for Apple Health access revocation")
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+                self.present(alert, animated: true, completion: nil)
+                Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+            }
             
             <<< LabelRow() { row in
                 row.title = NSLocalizedString("Version", comment: "Label for Version")

@@ -260,4 +260,6 @@ class UserDefaultsRepository {
     
     static let treatments = UserDefaultsValue<[Treatment]>(key: "treatments", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "treatments") as? [Treatment]) ?? [])
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let appleHealthLastSyncDate = UserDefaultsValue<Date>(key: "appleHealthLastSyncDate", default: .distantPast)
 }

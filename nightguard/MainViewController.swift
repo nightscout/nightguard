@@ -349,6 +349,8 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         self.loadAndPaintCurrentBgData()
         self.loadAndPaintChartData(forceRepaint: forceRepaint)
         self.loadAndPaintCareData()
+        
+        AppleHealthService.singleton.sync()
     }
     
     func slideToSnoozeDelegateDidFinish(_ sender: SlideToSnoozeView) {
