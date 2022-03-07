@@ -205,11 +205,13 @@ class PrefsViewController: CustomFormViewController {
             }
         
             <<< SwitchRow() { row in
-                row.disabled = Condition(booleanLiteral: AppleHealthService.singleton.isAuthorized())
+                row.disabled = Condition(booleanLiteral: !AppleHealthService.singleton.isAuthorized())
                 row.title = NSLocalizedString("Synchronize with Apple Health", comment: "Label for Apple Health synchronization")
                 row.value = AppleHealthService.singleton.isAuthorized()
             }.onChange { row in
-                AppleHealthService.singleton.requestAuthorization()
+                if (row.value ?? false) {
+                    AppleHealthService.singleton.requestAuthorization()
+                }
             }.onCellSelection { _, row in
                 let title:String = NSLocalizedString("Synchronize with Apple Health", comment: "Label for Apple Health synchronization")
                 let message: String = NSLocalizedString("Revoke access in Apple Health", comment: "Label for Apple Health access revocation")
