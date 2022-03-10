@@ -216,7 +216,7 @@ class PrefsViewController: CustomFormViewController {
                     self.present(alert, animated: true, completion: nil)
                     Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
 
-                    row.value = AppleHealthService.singleton.isAuthorized()
+                    row.value = true
                 } else {
                     AppleHealthService.singleton.requestAuthorization()
                 }
