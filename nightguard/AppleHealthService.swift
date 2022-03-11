@@ -49,8 +49,10 @@ class AppleHealthService: NSObject {
         let hkQuantitySamples: [HKQuantitySample] = bgData
             .filter{ bloodGlucose in bloodGlucose.date > lastSyncDate }
             .compactMap{ bloodGlucose in
+                let effectiveValue: Float = UnitsConverter.mgdlToDisplayUnits(bloodGlucose.value)
+                
                 let date: Date = bloodGlucose.date
-                let value: Double = Double(bloodGlucose.value)
+                let value: Double = Double(effectiveValue)
 
                 return HKQuantitySample(
                     type: getHkQuantityType(),
