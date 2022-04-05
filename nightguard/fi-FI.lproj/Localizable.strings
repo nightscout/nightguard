@@ -245,7 +245,7 @@
 "Stop Alert" = "Pysäytä hälytys";
 
 /* Label for Apple Health synchronization */
-"Synchronize with Apple Health" = "Synkronoi kanssa Apple Health";
+"Synchronize with Apple Health" = "Synkronoi kanssa Apple Healthkit";
 
 /* Test alert button */
 "Test Alert" = "Testaa hälytystä";
