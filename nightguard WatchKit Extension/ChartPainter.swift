@@ -238,26 +238,38 @@ class ChartPainter {
     }
 
     fileprivate func paintTreatments(_ context : CGContext, bgValues : [BloodSugar], maxBgValue : CGFloat) {
+        
         var isOddTreatment = true
         for treatment in TreatmentsStream.singleton.treatments {
             if let mealBolusTreatment = treatment as? MealBolusTreatment {
+                
                 drawMealBolusValue(context,
                                    carbs: mealBolusTreatment.carbs,
                                    insulin: mealBolusTreatment.insulin,
                                    x: calcXValue(Double(mealBolusTreatment.timestamp)),
                                    y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
+                // toggle the odd/even marker. This is used to prevent close treatments to be painted
+                // on the same position in the chart
+                isOddTreatment = !isOddTreatment
             }
             if let correctionBolusTreatment = treatment as? CorrectionBolusTreatment {
+                
                 drawCorrectionBolusValue(context,
                                    insulin: correctionBolusTreatment.insulin,
                                    x: calcXValue(Double(correctionBolusTreatment.timestamp)),
                                    y: calcYValue(Float(
                                                     min(nearestBgValueYValue(timestamp: correctionBolusTreatment.timestamp, bgs: bgValues), value2: maxBgValue))))
+                isOddTreatment = !isOddTreatment
             }
             if let bolusWizardTreatment = treatment as? BolusWizardTreatment {
-                drawBolusWizardValue(context, insulin: bolusWizardTreatment.insulin,
-                                     x: calcXValue(Double(bolusWizardTreatment.timestamp)),
-                                     y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
+                
+                if bolusWizardTreatment.insulin > 0 {
+                
+                    drawBolusWizardValue(context, insulin: bolusWizardTreatment.insulin,
+                                         x: calcXValue(Double(bolusWizardTreatment.timestamp)),
+                                         y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
+                    isOddTreatment = !isOddTreatment
+                }
             }
             if let carbCorrectionTreatment = treatment as? CarbCorrectionTreatment {
                 drawMealBolusValue(context,
@@ -265,10 +277,8 @@ class ChartPainter {
                                    insulin: 0,
                                    x: calcXValue(Double(carbCorrectionTreatment.timestamp)),
                                    y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
+                isOddTreatment = !isOddTreatment
             }
-            // toggle the odd/even marker. This is used to prevent close treatments to be painted
-            // on the same position in the chart
-            isOddTreatment = !isOddTreatment
         }
     }
     
@@ -367,10 +377,16 @@ class ChartPainter {
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.gray]
         
-    
-        var carbsString = String("\(carbs)g")
-        if (insulin > 0) {
-            carbsString = carbsString + "/\(insulin)U"
+        var carbsString = ""
+        if carbs > 0 {
+            carbsString = String("\(carbs)g")
+            if insulin > 0 {
+                carbsString = carbsString + "/"
+            }
+        }
+        
+        if insulin > 0 {
+            carbsString = carbsString + "\(insulin)U"
         }
         carbsString.draw(
             with: CGRect(x: CGFloat(x), y: y + 3, width: 60, height: 18),
