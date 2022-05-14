@@ -361,10 +361,10 @@ class ChartPainter {
                 + "/\(UnitsConverter.mgdlToDisplayUnits(nearestBgValue.cleanValue))"
         }
         meaturedValueString.draw(
-            with: CGRect(x: CGFloat(x), y: y + 3, width: 80, height: 18),
+            with: CGRect(x: CGFloat(x), y: y + 30, width: 80, height: 18),
             options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
         
-        context.setFillColor(UIColor.nightguardYellow().cgColor)
+        context.setFillColor(UIColor.gray.cgColor)
         context.fillEllipse(in: CGRect(x: x-3, y: y-3, width: 6, height: 6))
     }
 
@@ -375,7 +375,7 @@ class ChartPainter {
         paragraphStyle.alignment = .left
         let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                     NSAttributedString.Key.foregroundColor: UIColor.gray]
+                     NSAttributedString.Key.foregroundColor: UIColor.nightguardRed()]
         
         var carbsString = ""
         if carbs > 0 {
@@ -403,7 +403,7 @@ class ChartPainter {
         paragraphStyle.alignment = .left
         let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                     NSAttributedString.Key.foregroundColor: UIColor.gray]
+                     NSAttributedString.Key.foregroundColor: UIColor.nightguardRed()]
         
     
         let insulinString = String("\(insulin)U")
