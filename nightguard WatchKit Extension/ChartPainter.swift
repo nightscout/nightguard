@@ -361,7 +361,7 @@ class ChartPainter {
                 + "/\(UnitsConverter.mgdlToDisplayUnits(nearestBgValue.cleanValue))"
         }
         meaturedValueString.draw(
-            with: CGRect(x: CGFloat(x), y: y + 30, width: 80, height: 18),
+            with: CGRect(x: CGFloat(x) - 40, y: y - 20, width: 80, height: 18),
             options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
         
         context.setFillColor(UIColor.gray.cgColor)
