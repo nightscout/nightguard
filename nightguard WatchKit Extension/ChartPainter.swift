@@ -375,7 +375,7 @@ class ChartPainter {
         paragraphStyle.alignment = .left
         let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                     NSAttributedString.Key.foregroundColor: UIColor.nightguardOrange()]
+                     NSAttributedString.Key.foregroundColor: UIColor.white]
         
         var carbsString = ""
         if carbs > 0 {
@@ -403,7 +403,7 @@ class ChartPainter {
         paragraphStyle.alignment = .left
         let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                     NSAttributedString.Key.foregroundColor: UIColor.nightguardOrange()]
+                     NSAttributedString.Key.foregroundColor: UIColor.white]
         
     
         let insulinString = String("\(insulin)U")
