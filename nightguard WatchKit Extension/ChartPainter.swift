@@ -81,6 +81,8 @@ class ChartPainter {
         // Setup complete, do drawing here
         paintNicePartArea(safeContext, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
+        paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
+        
         paintFullHourText(safeContext)
         
         var nrOfDay = 0
@@ -102,8 +104,6 @@ class ChartPainter {
         if (displayDaysLegend) {
             paintLegend(days.count, useContrastfulColors: useContrastfulColors)
         }
-        
-        paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
         
         // Drawing complete, retrieve the finished image and cleanup
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -375,7 +375,7 @@ class ChartPainter {
         paragraphStyle.alignment = .left
         let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                     NSAttributedString.Key.foregroundColor: UIColor.nightguardRed()]
+                     NSAttributedString.Key.foregroundColor: UIColor.nightguardOrange()]
         
         var carbsString = ""
         if carbs > 0 {
@@ -403,7 +403,7 @@ class ChartPainter {
         paragraphStyle.alignment = .left
         let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                     NSAttributedString.Key.foregroundColor: UIColor.nightguardRed()]
+                     NSAttributedString.Key.foregroundColor: UIColor.nightguardOrange()]
         
     
         let insulinString = String("\(insulin)U")
