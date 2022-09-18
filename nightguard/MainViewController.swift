@@ -457,7 +457,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             self.evaluateAlarmActivationState()
 
             // update app badge
-            if UserDefaultsRepository.showBGOnAppBadge.value {
+            if SharedUserDefaultsRepository.showBGOnAppBadge.value {
                 UIApplication.shared.setCurrentBGValueOnAppBadge()
             }
             

@@ -81,7 +81,7 @@ class AlarmNotificationService {
         content.body = "\(alarmActivationReason)"
         if let sgv = Float(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)) {
             // display the current sgv on appbadge only if the user actived it:
-            if UserDefaultsRepository.showBGOnAppBadge.value {
+            if SharedUserDefaultsRepository.showBGOnAppBadge.value {
                 content.badge = NSNumber(value: sgv)
             }
         }

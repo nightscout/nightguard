@@ -22,7 +22,7 @@ extension UIApplication {
         }
         let sgvAsInt = Int(sgvAsDouble.rounded())
         
-        UNUserNotificationCenter.current().requestAuthorization(options: .badge) { (granted, error) in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound, .criticalAlert]) { (granted, error) in
             if granted && error == nil {
                 
                 // success!

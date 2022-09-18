@@ -62,19 +62,6 @@ class UserDefaultsRepository {
         key: "alarmSoundFileName",
         default: "")
     
-    static let showBGOnAppBadge = UserDefaultsValue<Bool>(
-        key: "showBGOnAppBadge",
-        default: false,
-        onChange: { show in
-            #if os(iOS)
-            if show {
-                UIApplication.shared.setCurrentBGValueOnAppBadge()
-            } else {
-                UIApplication.shared.clearAppBadge()
-            }
-            #endif
-    })
-    
     static let alarmNotificationState = UserDefaultsValue<Bool>(key: "alarmNotificationState", default: false)
     
     // If this is set to true, you can override the default units setting from your backend
@@ -101,13 +88,6 @@ class UserDefaultsRepository {
     static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
     
     #if os(iOS)
-    static let screenlockSwitchState = UserDefaultsValue<Bool>(
-        key: "screenlockSwitchState",
-        default: UIApplication.shared.isIdleTimerDisabled,
-        onChange: { screenlock in
-            UIApplication.shared.isIdleTimerDisabled = screenlock
-    })
-    
     static let nightscoutUris = UserDefaultsValue<[String]>(key: "nightscoutUris", default: [])
     
     // minutes of idle (user inactivity) before dimming the screen (0 means never)

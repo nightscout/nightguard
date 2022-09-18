@@ -138,18 +138,18 @@ class PrefsViewController: CustomFormViewController {
             +++ Section(footer: NSLocalizedString("Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON.", comment: "Footer for Dim Screen"))
             <<< SwitchRow("KeepScreenActive") { row in
                 row.title = NSLocalizedString("Keep the Screen Active", comment: "Label for Keep the Screen Active")
-                row.value = UserDefaultsRepository.screenlockSwitchState.value
+                row.value = SharedUserDefaultsRepository.screenlockSwitchState.value
                 }.onChange { [weak self] row in
                     guard let value = row.value else { return }
                     
                     if value {
-                        UserDefaultsRepository.screenlockSwitchState.value = value
+                        SharedUserDefaultsRepository.screenlockSwitchState.value = value
                     } else {
                         self?.showYesNoAlert(
                             title: NSLocalizedString("ARE YOU SURE?", comment: "Title for confirmation"),
                             message: NSLocalizedString("Keep this switch ON to disable the screenlock and prevent the app to get stopped!", comment: "Message for confirmation"),
                             yesHandler: {
-                                UserDefaultsRepository.screenlockSwitchState.value = value
+                                SharedUserDefaultsRepository.screenlockSwitchState.value = value
                             },
                             noHandler: {
                                 row.value = true
@@ -198,10 +198,10 @@ class PrefsViewController: CustomFormViewController {
             
             <<< SwitchRow() { row in
                 row.title = NSLocalizedString("Show BG on App Badge", comment: "Label for Show BG on Badge")
-                row.value = UserDefaultsRepository.showBGOnAppBadge.value
+                row.value = SharedUserDefaultsRepository.showBGOnAppBadge.value
                 }.onChange { row in
                     guard let value = row.value else { return }
-                    UserDefaultsRepository.showBGOnAppBadge.value = value
+                    SharedUserDefaultsRepository.showBGOnAppBadge.value = value
             }
         
             <<< SwitchRow() { row in

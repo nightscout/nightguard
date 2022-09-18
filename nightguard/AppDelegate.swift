@@ -42,12 +42,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
         
         // set "prevent screen lock" to ON when the app is started for the first time
-        if !UserDefaultsRepository.screenlockSwitchState.exists {
-            UserDefaultsRepository.screenlockSwitchState.value = true
+        if !SharedUserDefaultsRepository.screenlockSwitchState.exists {
+            SharedUserDefaultsRepository.screenlockSwitchState.value = true
         }
         
         // set the "prevent screen lock" option when the app is started
-        UIApplication.shared.isIdleTimerDisabled = UserDefaultsRepository.screenlockSwitchState.value
+        UIApplication.shared.isIdleTimerDisabled = SharedUserDefaultsRepository.screenlockSwitchState.value
         
         AlarmSound.volumeChangeDetector.onVolumeChange = { [weak self] in
             self?.window?.rootViewController?.handleQuickSnooze(option: UserDefaultsRepository.volumeKeysOnAlertSnoozeOption.value)
@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let updateWindowUserInteractionTimeout = {
-            if UserDefaultsRepository.screenlockSwitchState.value {
+            if SharedUserDefaultsRepository.screenlockSwitchState.value {
                 window.timeout = TimeInterval(UserDefaultsRepository.dimScreenWhenIdle.value * 60)
             } else {
                 window.timeout = nil
@@ -100,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaultsRepository.dimScreenWhenIdle.observeChanges { _ in
             updateWindowUserInteractionTimeout()
         }
-        UserDefaultsRepository.screenlockSwitchState.observeChanges { _ in
+        SharedUserDefaultsRepository.screenlockSwitchState.observeChanges { _ in
             updateWindowUserInteractionTimeout()
         }
         
@@ -217,7 +217,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             // update app badge
-            if UserDefaultsRepository.showBGOnAppBadge.value {
+            if SharedUserDefaultsRepository.showBGOnAppBadge.value {
                 UIApplication.shared.setCurrentBGValueOnAppBadge()
             }
             

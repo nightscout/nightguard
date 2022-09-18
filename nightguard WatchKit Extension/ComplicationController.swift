@@ -30,6 +30,26 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         handler([])
     }
     
+    fileprivate func createLine1And2TextProvider(_ currentNightscoutData: NightscoutData) -> (CLKTextProvider, CLKTextProvider) {
+        
+        var line1TextProvider : CLKTextProvider
+        var line2TextProvider : CLKTextProvider
+        
+        if useRelativeTimeWhenPossible {
+            line1TextProvider = CLKSimpleTextProvider(text: getSgvAndArrow(currentNightscoutData, " "))
+            line1TextProvider.tintColor = UIColorChanger.getBgColor(
+                UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
+            line2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
+        } else {
+            line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
+            line1TextProvider.tintColor = UIColorChanger.getBgColor(
+                UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
+            line2TextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))\(currentNightscoutData.bgdeltaString)\(currentNightscoutData.bgdeltaArrow)")
+        }
+        
+        return (line1TextProvider, line2TextProvider)
+    }
+    
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
         
         let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
@@ -40,19 +60,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         switch complication.family {
         case .modularSmall:
            
-            var line1TextProvider : CLKTextProvider
-            var line2TextProvider : CLKTextProvider
-            if useRelativeTimeWhenPossible {
-                line1TextProvider = CLKSimpleTextProvider(text: getSgvAndArrow(currentNightscoutData, " "))
-                line1TextProvider.tintColor = UIColorChanger.getBgColor(
-                    UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                line2TextProvider = getRelativeDateTextProvider(for: currentNightscoutData.time)
-            } else {
-                line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
-                line1TextProvider.tintColor = UIColorChanger.getBgColor(
-                    UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                line2TextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))\(currentNightscoutData.bgdeltaString)\(currentNightscoutData.bgdeltaArrow)")
-            }
+            let (line1TextProvider, line2TextProvider) = createLine1And2TextProvider(currentNightscoutData)
             let modTemplate = CLKComplicationTemplateModularSmallStackText(line1TextProvider: line1TextProvider,
                                                                            line2TextProvider: line2TextProvider)
             template = modTemplate
@@ -110,6 +118,23 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             textProvider.tintColor = UIColorChanger.getBgColor(
                 UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
             template = CLKComplicationTemplateUtilitarianLargeFlat(textProvider: textProvider, imageProvider: imageProvider)
+        case .extraLarge:
+            let row1Col1 = CLKSimpleTextProvider(text: getOneLine(currentNightscoutData))
+            row1Col1.tintColor = UIColorChanger.getBgColor(
+                UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
+            let row1Col2 = getRelativeDateTextProvider(for: currentNightscoutData.time)
+            var row2Col1 = CLKSimpleTextProvider(text: "")
+            var row2Col2 = CLKSimpleTextProvider(text: "")
+            if self.oldNightscoutData.count > 1 {
+                let nightscoutData = self.oldNightscoutData[1]
+                row2Col1 = CLKSimpleTextProvider(text: getOneLine(nightscoutData))
+                row2Col2 = getRelativeDateTextProvider(for: nightscoutData.time) as? CLKSimpleTextProvider ?? row2Col2
+            }
+            
+            template = CLKComplicationTemplateExtraLargeColumnsText(
+                row1Column1TextProvider: row1Col1, row1Column2TextProvider: row1Col2,
+                row2Column1TextProvider: row2Col1, row2Column2TextProvider: row2Col2)
+            
         case .circularSmall:
 
             let textProvider = CLKSimpleTextProvider(text:
@@ -136,13 +161,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .graphicCircular:
             if #available(watchOSApplicationExtension 5.0, *) {
 
-                let sgvLong = "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))"
-                let sgvShort = "\(UnitsConverter.mgdlToShortDisplayUnits(currentNightscoutData.sgv))"
-                let centerTextProvider = CLKSimpleTextProvider(text: sgvLong, shortText: sgvShort)
-                centerTextProvider.tintColor = UIColorChanger.getBgColor(
+                let line2TextProvider = CLKSimpleTextProvider(text: "\(UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))")
+                line2TextProvider.tintColor = UIColorChanger.getBgColor(
                     UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
-                let gaugeProvider = CLKSimpleGaugeProvider(style: .fill, gaugeColor: UIColor.black, fillFraction: CLKSimpleGaugeProviderFillFractionEmpty)
-                template = CLKComplicationTemplateGraphicCircularClosedGaugeText(gaugeProvider: gaugeProvider, centerTextProvider: centerTextProvider)
+                
+                let line1TextProvider = CLKSimpleTextProvider(text: "\(currentNightscoutData.hourAndMinutes)")
+                line1TextProvider.tintColor = UIColorChanger.getBgColor(
+                    UnitsConverter.mgdlToDisplayUnits(currentNightscoutData.sgv))
+                
+                template = CLKComplicationTemplateGraphicCircularStackText(line1TextProvider: line1TextProvider, line2TextProvider: line2TextProvider)
             } else {
                 abort()
             }
@@ -157,6 +184,14 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             } else {
                 abort()
             }
+        case .graphicExtraLarge:
+            
+            let (line1TextProvider, line2TextProvider) = createLine1And2TextProvider(currentNightscoutData)
+            
+            let modTemplate = CLKComplicationTemplateGraphicExtraLargeCircularStackText(
+                line1TextProvider: line1TextProvider, line2TextProvider: line2TextProvider)
+            
+            template = modTemplate
         default: break
         }
         
@@ -242,9 +277,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     func getPlaceholderTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Void) {
         var template: CLKComplicationTemplate? = nil
         switch complication.family {
+        case .graphicExtraLarge:
+            template = nil
         case .modularSmall:
             template = nil
         case .modularLarge:
+            template = nil
+        case .extraLarge:
             template = nil
         case .utilitarianSmall:
             template = nil
@@ -260,13 +299,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getComplicationDescriptors(handler: @escaping ([CLKComplicationDescriptor]) -> Void) {
         let descriptors = [
-            CLKComplicationDescriptor(identifier: "nightguardComplication", displayName: "Nightguard",
+            CLKComplicationDescriptor(identifier: "nightguardComplication", displayName: "BG Values",
                                       supportedFamilies: [CLKComplicationFamily.circularSmall,
                                                           CLKComplicationFamily.graphicBezel,
                                                           CLKComplicationFamily.graphicCorner,
                                                           CLKComplicationFamily.graphicCircular,
+                                                          CLKComplicationFamily.graphicExtraLarge,
                                                           CLKComplicationFamily.modularLarge,
                                                           CLKComplicationFamily.modularSmall,
+                                                          CLKComplicationFamily.extraLarge,
                                                           CLKComplicationFamily.utilitarianLarge,
                                                           CLKComplicationFamily.utilitarianSmall])
         ]

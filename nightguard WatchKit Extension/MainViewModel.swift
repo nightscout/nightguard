@@ -206,8 +206,10 @@ class MainViewModel: ObservableObject, Identifiable {
     
     fileprivate func updateComplication() {
         let complicationServer = CLKComplicationServer.sharedInstance()
-        for complication in complicationServer.activeComplications! {
-            complicationServer.reloadTimeline(for: complication)
+        if complicationServer.activeComplications != nil {
+            for complication in complicationServer.activeComplications! {
+                complicationServer.reloadTimeline(for: complication)
+            }
         }
     }
     

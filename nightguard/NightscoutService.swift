@@ -141,7 +141,7 @@ class NightscoutService {
         }
     }
     
-    /* Reads all data between two timestamps and limits the maximum return values to 400. */
+    /* Reads all data between two timestamps and limits the maximum return values to 1440. */
     @discardableResult
     func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
         
@@ -158,7 +158,7 @@ class NightscoutService {
         let chartDataWithinPeriodOfTimeQueryParams = [
             "find[date][$gt]"   : "\(unixTimestamp1)",
             "find[date][$lte]"  : "\(unixTimestamp2)",
-            "count"             : "400",
+            "count"             : "1440",
         ]
         
         let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: "api/v1/entries.json", queryParams: chartDataWithinPeriodOfTimeQueryParams)
