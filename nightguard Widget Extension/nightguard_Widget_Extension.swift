@@ -108,7 +108,7 @@ struct nightguard_Widget_ExtensionEntryView : View {
         
         switch widgetFamily {
             case .accessoryInline:
-            Text("| \(entry.hourAndMinutes) \(UnitsConverter.mgdlToDisplayUnits(entry.sgv))\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString))\(entry.bgdeltaArrow)")
+                Text("| \(Date(timeIntervalSince1970: entry.time.doubleValue / 1000).toLocalTimeString()) " + "\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString))\(entry.bgdeltaArrow)")
             case .accessoryRectangular:
                 VStack(alignment: .leading) {
                         Text(Date(timeIntervalSince1970: entry.time.doubleValue / 1000), style: .relative)
@@ -117,7 +117,7 @@ struct nightguard_Widget_ExtensionEntryView : View {
                 }
             case .accessoryCircular:
                 VStack {
-                    Text(entry.hourAndMinutes)
+                    Text(Date(timeIntervalSince1970: entry.time.doubleValue / 1000).toLocalTimeString())
                     Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString))")
                     Text("\(entry.bgdeltaArrow)")
                 }

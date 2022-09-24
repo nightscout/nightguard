@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
 
 // Repository to store BgData using the NSUserDefaults
 class NightscoutDataRepository {
@@ -47,6 +50,11 @@ class NightscoutDataRepository {
             defaults!.set(
                 NSKeyedArchiver.archivedData(withRootObject: bgData, requiringSecureCoding: false),
                 forKey: Constants.currentBgData)
+        
+        if #available(iOS 14.0, *), #available(watchOS 9.0, *){
+            // New BG values are there. Force updates of all Widget Timelines:
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
     
     func loadCurrentNightscoutData() -> NightscoutData {

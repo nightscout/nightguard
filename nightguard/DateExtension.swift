@@ -42,6 +42,16 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
+    func toLocalTimeString() -> String {
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+        dateFormatter.pmSymbol = ""
+        dateFormatter.amSymbol = ""
+        
+        return dateFormatter.string(from: self)
+    }
     func toUTCMillis() -> String {
         
         return String(Int64((self.toGlobalTime().timeIntervalSince1970 * 1000.0).rounded()))
