@@ -81,9 +81,9 @@ class ChartPainter {
         // Setup complete, do drawing here
         paintNicePartArea(safeContext, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
-        paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
-        
         paintFullHourText(safeContext)
+     
+        paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
         
         var nrOfDay = 0
         var positionOfCurrentValue = 0
@@ -239,7 +239,7 @@ class ChartPainter {
 
     fileprivate func paintTreatments(_ context : CGContext, bgValues : [BloodSugar], maxBgValue : CGFloat) {
         
-        var isOddTreatment = true
+        var treatmentNumber = 0
         for treatment in TreatmentsStream.singleton.treatments {
             if let mealBolusTreatment = treatment as? MealBolusTreatment {
                 
@@ -247,10 +247,10 @@ class ChartPainter {
                                    carbs: mealBolusTreatment.carbs,
                                    insulin: mealBolusTreatment.insulin,
                                    x: calcXValue(Double(mealBolusTreatment.timestamp)),
-                                   y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
+                                   y: CGFloat(paintableHeight - treatmentsYOffset(treatmentNumber)))
                 // toggle the odd/even marker. This is used to prevent close treatments to be painted
                 // on the same position in the chart
-                isOddTreatment = !isOddTreatment
+                treatmentNumber = treatmentNumber + 1
             }
             if let correctionBolusTreatment = treatment as? CorrectionBolusTreatment {
                 
@@ -259,7 +259,7 @@ class ChartPainter {
                                    x: calcXValue(Double(correctionBolusTreatment.timestamp)),
                                    y: calcYValue(Float(
                                                     min(nearestBgValueYValue(timestamp: correctionBolusTreatment.timestamp, bgs: bgValues), value2: maxBgValue))))
-                isOddTreatment = !isOddTreatment
+                treatmentNumber = treatmentNumber + 1
             }
             if let bolusWizardTreatment = treatment as? BolusWizardTreatment {
                 
@@ -267,8 +267,8 @@ class ChartPainter {
                 
                     drawBolusWizardValue(context, insulin: bolusWizardTreatment.insulin,
                                          x: calcXValue(Double(bolusWizardTreatment.timestamp)),
-                                         y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
-                    isOddTreatment = !isOddTreatment
+                                         y: CGFloat(paintableHeight - treatmentsYOffset(treatmentNumber)))
+                    treatmentNumber = treatmentNumber + 1
                 }
             }
             if let carbCorrectionTreatment = treatment as? CarbCorrectionTreatment {
@@ -276,29 +276,21 @@ class ChartPainter {
                                    carbs: carbCorrectionTreatment.carbs,
                                    insulin: 0,
                                    x: calcXValue(Double(carbCorrectionTreatment.timestamp)),
-                                   y: CGFloat(paintableHeight - treatmentsYOffset(isOddTreatment: isOddTreatment)))
-                isOddTreatment = !isOddTreatment
+                                   y: CGFloat(paintableHeight - treatmentsYOffset(treatmentNumber)))
+                treatmentNumber = treatmentNumber + 1
             }
         }
     }
     
     // determines how low treatments like carbs should be displayed on the
     // chart. If on the apple watch, this should differ to the main ios app.
-    fileprivate func treatmentsYOffset(isOddTreatment : Bool) -> Int {
+    fileprivate func treatmentsYOffset(_ treatmentNumber : Int) -> Int {
         if self.canvasHeight < 500 {
             // On the watch: use smaller fonts
-            if (isOddTreatment) {
-                return 30
-            } else {
-                return 10
-            }
+            return 10 + (treatmentNumber % 5) * 20
         }
         
-        if (isOddTreatment) {
-            return 50
-        } else {
-            return 25
-        }
+        return 25 + (treatmentNumber % 5) * 25
     }
     
     fileprivate func nearestBgValueYValue(timestamp : Double, bgs : [BloodSugar]) -> CGFloat {
@@ -368,7 +360,7 @@ class ChartPainter {
         context.fillEllipse(in: CGRect(x: x-3, y: y-3, width: 6, height: 6))
     }
 
-    fileprivate func drawMealBolusValue(_ context : CGContext, carbs : Int, insulin : Double, x : CGFloat, y : CGFloat) {
+    fileprivate func drawMealBolusValue(_ context : CGContext, carbs : Int, insulin : Double, x : CGFloat, y: CGFloat) {
         
         // paint the upper/lower bounds text
         let paragraphStyle = NSMutableParagraphStyle()
