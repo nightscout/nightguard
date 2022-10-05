@@ -197,6 +197,14 @@ class PrefsViewController: CustomFormViewController {
             }
             
             <<< SwitchRow() { row in
+                row.title = NSLocalizedString("Show Yesterdays BGs", comment: "Label for Show Yesterdays BG values in chart")
+                row.value = UserDefaultsRepository.showYesterdaysBgs.value
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    UserDefaultsRepository.showYesterdaysBgs.value = value
+            }
+        
+            <<< SwitchRow() { row in
                 row.title = NSLocalizedString("Show BG on App Badge", comment: "Label for Show BG on Badge")
                 row.value = SharedUserDefaultsRepository.showBGOnAppBadge.value
                 }.onChange { row in

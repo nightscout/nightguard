@@ -214,6 +214,12 @@
 /* Label for Show BG on Badge */
 "Show BG on App Badge" = "Näytä lukema kuvakkeessa";
 
+/* Label for Show Care/Loop Data */
+"Show Care/Loop Data" = "Show Care/Loop Data";
+
+/* Label for Show Yesterdays BG values in chart */
+"Show Yesterdays BGs" = "Show Yesterdays BGs";
+
 /* Label for Show statistics */
 "Show Statistics" = "Näytä tilastot";
 

@@ -105,6 +105,10 @@ class UserDefaultsRepository {
     static let showCareAndLoopData = UserDefaultsValue<Bool>(key: "showCareAndLoopData", default: true)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
+    // show Yesterdays BGs in the chart
+    static let showYesterdaysBgs = UserDefaultsValue<Bool>(key: "showYesterdaysBgs", default: true)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
     /* Parses the URI entered in the UI and extracts the token if one is present. */
     fileprivate static func parseBaseUri() {
         url = nil

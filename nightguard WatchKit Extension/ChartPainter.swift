@@ -53,7 +53,7 @@ class ChartPainter {
      * The position of the current value is returned as the second tuple element.
      * It is used to show the current value in the viewport.
      */
-    func drawImage(_ days : [[BloodSugar]], maxBgValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float, displayDaysLegend : Bool, useContrastfulColors : Bool) -> (UIImage?, Int) {
+    func drawImage(_ days : [[BloodSugar]], maxBgValue : CGFloat, upperBoundNiceValue : Float, lowerBoundNiceValue : Float, displayDaysLegend : Bool, showYesterdaysBGValues : Bool, useContrastfulColors : Bool) -> (UIImage?, Int) {
 
         // we need at least one day => otherwise paint nothing
         if days.count == 1 {
@@ -89,6 +89,10 @@ class ChartPainter {
         var positionOfCurrentValue = 0
         for bloodValues in days {
             nrOfDay = nrOfDay + 1
+            if nrOfDay == 2 && !showYesterdaysBGValues {
+                // omit yesterdays bgvalues if the user has requested this
+                continue
+            }
             let (sgvs, mbgs) = extractSgvs(allValues: bloodValues)
             paintBloodValues(context!, bgValues: sgvs, foregroundColor: getColor(nrOfDay, useContrastfulColors: useContrastfulColors).cgColor, maxBgValue: maxBgValue)
             if (nrOfDay == 1) {
@@ -101,7 +105,8 @@ class ChartPainter {
         }
         
         // Don't paint the Legend on the small apple watch - so there displayDaysLegend is set to false
-        if (displayDaysLegend) {
+        // And don't paint the Legend if yesterdays values shouldn't be displayed at all
+        if (displayDaysLegend && showYesterdaysBGValues) {
             paintLegend(days.count, useContrastfulColors: useContrastfulColors)
         }
         

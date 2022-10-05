@@ -61,6 +61,7 @@ class ChartScene : SKScene {
             upperBoundNiceValue: UserDefaultsRepository.upperBound.value,
             lowerBoundNiceValue: UserDefaultsRepository.lowerBound.value,
             displayDaysLegend: displayDaysLegend,
+            showYesterdaysBGValues: UserDefaultsRepository.showYesterdaysBgs.value,
             useContrastfulColors: useConstrastfulColors
         )
         
