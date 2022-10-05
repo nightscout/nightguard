@@ -611,10 +611,10 @@
 "Do you want to modify the change date to " = "Haluatko muuttaa päivämääräksi ";
 
 /* Invalid JSON received from API V2 Properties */
-"Invalid JSON received from API V2 Properties" = "Invalid JSON received from Pebble Watch API";
+"Invalid JSON received from API V2 Properties" = "Virheellinen JSON vastaanotettu API V2 Properties päätepisteestä";
 
 /* Invalid JSON from API V2 Properties, missing bgs, check NS conf */
-"Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration." = "Invalid JSON received from API V2 Properties, missing bgs array. Check Nightscout configuration. ";
+"Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration." = "Virheellinen JSON vastaanotettu API V2 Properties päätepisteestä, bgs-taulukko puuttuu. Tarkista Nightscout asetukset. ";
 
 /* No data from API V2 Properties Endpoint */
-"No data received from API V2 Properties" = "No data received from API V2 Properties";
+"No data received from API V2 Properties" = "Tietoja ei vastaanotettu API V2 Properties päätepisteestä";
