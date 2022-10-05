@@ -49,7 +49,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     // the way that has already been moved during a pan gesture
     var oldXTranslation : CGFloat = 0
     
-    var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024, useContrastfulColors: false)
+    var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024, useContrastfulColors: false, showYesterdaysBgs: true)
     // timer to check continuously for new bgValues
     var timer = Timer()
     // check every 30 Seconds whether new bgvalues should be retrieved
@@ -67,7 +67,8 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
         
         // Initialize the ChartScene
         chartScene = ChartScene(size: CGSize(width: spriteKitView.bounds.width, height: spriteKitView.bounds.height),
-                                newCanvasWidth: self.maximumDeviceTextureWidth(), useContrastfulColors: false)
+                                newCanvasWidth: self.maximumDeviceTextureWidth(), useContrastfulColors: false,
+                                showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value)
         let skView = spriteKitView as! SKView
         skView.presentScene(chartScene)
         
@@ -601,7 +602,7 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: self.maximumDeviceTextureWidth(),
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
-            moveToLatestValue: true, useContrastfulColors: false)
+            moveToLatestValue: true, useContrastfulColors: false, showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value)
     }
     
     fileprivate func updateBasicStats() {

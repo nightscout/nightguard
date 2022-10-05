@@ -14,7 +14,7 @@ class StatsViewController: UIViewController {
     
     @IBOutlet weak var chartSpriteKitView: UIView!
     
-    var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024, useContrastfulColors: true)
+    var chartScene = ChartScene(size: CGSize(width: 320, height: 280), newCanvasWidth: 1024, useContrastfulColors: true, showYesterdaysBgs: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +88,7 @@ class StatsViewController: UIViewController {
                     newCanvasWidth: min(self.maximumDeviceTextureWidth(),
                     self.chartSpriteKitView.bounds.width),
                     maxYDisplayValue: 300,
-                    moveToLatestValue: false, useContrastfulColors: true)
+                    moveToLatestValue: false, useContrastfulColors: true, showYesterdaysBgs: true)
         }
     }
     
@@ -125,7 +125,7 @@ class StatsViewController: UIViewController {
         
         if chartSpriteKitView != nil {
             // Initialize the ChartScene
-            chartScene = ChartScene(size: size, newCanvasWidth: min(self.maximumDeviceTextureWidth(), size.width), useContrastfulColors: true)
+            chartScene = ChartScene(size: size, newCanvasWidth: min(self.maximumDeviceTextureWidth(), size.width), useContrastfulColors: true, showYesterdaysBgs: true)
             let skView = chartSpriteKitView as! SKView
             skView.presentScene(chartScene)
             paintSelectedDays()

@@ -55,7 +55,7 @@ class MainViewModel: ObservableObject, Identifiable {
         let bounds = WKInterfaceDevice.current().screenBounds
         let chartSceneHeight = MainViewModel.determineSceneHeightFromCurrentWatchType(interfaceBounds: bounds)
         
-        skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 4, useContrastfulColors: false)
+        skScene = ChartScene(size: CGSize(width: bounds.width, height: chartSceneHeight), newCanvasWidth: bounds.width * 4, useContrastfulColors: false, showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value)
         
         // Read stored historical data
         TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
@@ -135,7 +135,8 @@ class MainViewModel: ObservableObject, Identifiable {
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
             moveToLatestValue: moveToLatestValue,
             displayDaysLegend: false,
-            useConstrastfulColors: false)
+            useConstrastfulColors: false,
+            showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value)
     }
    
     func determineInfoLabel() -> String {
