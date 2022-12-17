@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>792</string>
+	<string>805</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
@@ -37,6 +37,10 @@
 	<string>Synchronize your glucose data from nightscout to apple health. This was a user requested feature. Users wanted to be able to analyze glucose data with other third party apps.</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>Synchronize your glucose data from nightscout to apple health. This was a user requested feature. Users wanted to be able to analyze glucose data with other third party apps.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>ConfigurationIntent</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

@@ -35,6 +35,24 @@ The dark gray region in the chart marks the values that are between 80 and 180.
 This small video shows how to check the configuration and demonstrates the available Apple Watch Complication:
 http://youtu.be/CEcqNyyv_kA
 
+# Developer Hints
+
+I had to modify the Eureka SliderRow. If you would like to compile the project of your own, you will have to modify
+the SliderRow in the following way:
+
+```
+public final class SliderRow: Row<SliderCell>, RowType {
+
+    public var steps: UInt = 20
+    public var shouldHideValue = false
+    public var lastSelectedValue : Float?
+
+    required public init(tag: String?) {
+        super.init(tag: tag)
+    }
+}
+```
+
 # License
 
 [agpl-3]: http://www.gnu.org/licenses/agpl-3.0.txt
