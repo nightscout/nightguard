@@ -31,7 +31,7 @@ struct TemporaryTargetView: View {
 
     @State var selectedLocalizedTemporaryTargetReason : String
     
-    var temporaryTargetDurations = [30, 60, 90, 120, 180, 360]
+    var temporaryTargetDurations = [30, 60, 90, 120, 180, 360, 480, 600, 720]
     @State var selectedTemporaryTargetDuration : Int
 
     init() {
