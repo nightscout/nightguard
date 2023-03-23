@@ -85,7 +85,7 @@ class CareViewController: CustomFormViewController {
                             return "\(value / 60) " + NSLocalizedString("hours", comment: "Hour TT Unit")
                         }
                     }
-                    row.options = [30, 60, 90, 120, 180, 360]
+                    row.options = [30, 60, 90, 120, 180, 360, 480, 600, 720]
                     row.value = UserDefaultsRepository.temporaryTargetDuration.value
                 }.onChange { row in
                     UserDefaultsRepository.temporaryTargetDuration.value = row.value!
