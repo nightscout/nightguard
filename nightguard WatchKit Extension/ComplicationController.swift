@@ -282,7 +282,10 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         case .modularSmall:
             template = nil
         case .modularLarge:
-            template = nil
+            template = CLKComplicationTemplateModularLargeStandardBody(
+                headerTextProvider: CLKSimpleTextProvider(text: "---"),
+                body1TextProvider: CLKSimpleTextProvider(text: "---"))
+            break
         case .extraLarge:
             template = nil
         case .utilitarianSmall:
