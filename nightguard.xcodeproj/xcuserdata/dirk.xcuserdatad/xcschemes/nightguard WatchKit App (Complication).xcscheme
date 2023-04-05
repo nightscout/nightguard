@@ -77,7 +77,8 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
-      launchAutomaticallySubstyle = "32">
+      launchAutomaticallySubstyle = "32"
+      notificationPayloadFile = "nightguard WatchKit Extension/PushNotificationPayload.apns">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
