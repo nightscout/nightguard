@@ -16,7 +16,7 @@ import WatchKit
 ///
 /// For example, if the refresh rate is 15 (minutes), the scheduled times will be xx:00, xx:15, xx:30 and xx:45.
 /// If calling schedule() at xx:18, the next refresh will be scheduled at xx:30. NOTE that watchOS can delay (or
-/// even skip!) calling the WKExtensionDelegate.handle(_) method on scheduled time (the delay can be from seconds
+/// even skip!) calling the WKApplicationDelegate.handle(_) method on scheduled time (the delay can be from seconds
 /// to some minutes).
 @available(watchOSApplicationExtension 3.0, *)
 class BackgroundRefreshScheduler {
@@ -43,7 +43,7 @@ class BackgroundRefreshScheduler {
         let logRefreshTime = self.lastScheduledTime != scheduleTime
         self.lastScheduledTime = scheduleTime
         
-        WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
+        WKApplication.shared().scheduleBackgroundRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
             
             if logRefreshTime {
                 BackgroundRefreshLogger.info("Scheduled next background refresh at \(self.formatted(scheduleTime: scheduleTime))")

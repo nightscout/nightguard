@@ -10,7 +10,8 @@ import WatchKit
 import WatchConnectivity
 import ClockKit
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate {
+@main
+class ExtensionDelegate: NSObject, WKApplicationDelegate {
     
     // trick: keep the extension delegate ALIVE (because it seems it hangs when the watch app moves in the backround and will stop processing background tasks)
     // the idea came from this solution (https://stackoverflow.com/questions/41156386/wkurlsessionrefreshbackgroundtask-isnt-called-when-attempting-to-do-background)
@@ -154,7 +155,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
                 handleSnapshotTask(snapshotTask)
             } else if let sessionTask = task as? WKURLSessionRefreshBackgroundTask {
                 handleURLSessionTask(sessionTask)
-            } else if let refreshTask = task as? WKApplicationRefreshBackgroundTask, WKExtension.shared().applicationState == .background {
+            } else if let refreshTask = task as? WKApplicationRefreshBackgroundTask, WKApplication.shared().applicationState == .background {
                 handleRefreshTask(refreshTask)
             } else {
                 // not handled!
@@ -254,7 +255,7 @@ extension ExtensionDelegate {
 //    fileprivate func scheduleSnapshotRefresh() {
 //
 //        let scheduleTime = Date(timeIntervalSinceNow: 10) // do it now!
-//        WKExtension.shared().scheduleSnapshotRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
+//        WKApplication.shared().scheduleSnapshotRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
 //
 //            BackgroundRefreshLogger.info("Scheduled next snapshot refresh (NOW!)")
 //
