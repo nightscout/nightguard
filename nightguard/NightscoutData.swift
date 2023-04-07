@@ -12,7 +12,7 @@ import Foundation
 // This data can be stored in the user defaults.
 class NightscoutData : NSObject, NSCoding, Codable {
     
-    var sgv : String = "---"
+    var sgv : String = "--1"
     // the delta Value in Display Units
     var bgdeltaString : String = "---"
     var bgdeltaArrow : String = "-"

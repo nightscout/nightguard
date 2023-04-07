@@ -17,7 +17,6 @@ struct NightguardTimelineProvider: IntentTimelineProvider {
         ]
     }
     
-    
     func placeholder(in context: Context) -> NightscoutDataEntry {
         
         NightscoutDataEntry(configuration: ConfigurationIntent())
@@ -39,11 +38,12 @@ struct NightguardTimelineProvider: IntentTimelineProvider {
     }
     
     private func getTimelineData(configuration: ConfigurationIntent) -> NightscoutDataEntry {
+        
         let data = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         
         let entry = NightscoutDataEntry(
             date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
-            sgv: data.sgv,
+            sgv: "200",
             bgdeltaString: data.bgdeltaString,
             bgdeltaArrow: data.bgdeltaArrow,
             bgdelta: data.bgdelta,

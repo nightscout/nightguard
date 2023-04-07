@@ -226,9 +226,6 @@ extension ExtensionDelegate {
             BackgroundRefreshLogger.info("📱Rejected nightscout data (>1hr old!)")
             return false
         }
-
-//        let updateComplication = message["updateComplication"] as? Bool ?? false
-        BackgroundRefreshLogger.info("📱Updating nightscout data (update complication: \(String(describing: updateComplication)))")
         
         let updateResult = updateNightscoutData(nightscoutData, updateComplication: true) // always update complication!
         BackgroundRefreshLogger.nightscoutDataReceived(nightscoutData, updateResult: updateResult, updateSource: .phoneApp)
@@ -249,28 +246,6 @@ extension ExtensionDelegate {
     @available(watchOSApplicationExtension 3.0, *)
     fileprivate func scheduleBackgroundRefresh() {
         BackgroundRefreshScheduler.instance.schedule()
-    }
-    
-//    @available(watchOSApplicationExtension 3.0, *)
-//    fileprivate func scheduleSnapshotRefresh() {
-//
-//        let scheduleTime = Date(timeIntervalSinceNow: 10) // do it now!
-//        WKApplication.shared().scheduleSnapshotRefresh(withPreferredDate: scheduleTime, userInfo: nil) { (error: Error?) in
-//
-//            BackgroundRefreshLogger.info("Scheduled next snapshot refresh (NOW!)")
-//
-//            if let error = error {
-//                BackgroundRefreshLogger.info("Error occurred while scheduling snapshot refresh: \(error.localizedDescription)")
-//            }
-//        }
-//    }
-    
-    fileprivate func updateComplication() {
-        
-        let complicationServer = CLKComplicationServer.sharedInstance()
-        for complication in complicationServer.activeComplications ?? [] {
-            complicationServer.reloadTimeline(for: complication)
-        }
     }
     
     enum UpdateSource {
@@ -324,10 +299,6 @@ extension ExtensionDelegate {
 //        if #available(watchOSApplicationExtension 3.0, *) {
 //            scheduleSnapshotRefresh()
 //        }
-        
-        if updateComplication {
-            self.updateComplication()
-        }
         
         return .updated
     }
