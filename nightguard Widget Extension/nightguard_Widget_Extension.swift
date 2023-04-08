@@ -24,11 +24,7 @@ struct nightguard_Widget_ExtensionEntryView : View {
             case .accessoryRectangular:
                 AccessoryRectangularView(entry: entry)
             case .accessoryCircular:
-                VStack {
-                    Text(Date(timeIntervalSince1970: entry.time.doubleValue / 1000).toLocalTimeString())
-                    Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString))")
-                    Text("\(entry.bgdeltaArrow)")
-                }
+                AccessoryCircularView(entry: entry)
                 
             default:
                 Text("Not implemented.")

@@ -43,7 +43,7 @@ struct NightguardTimelineProvider: IntentTimelineProvider {
         
         let entry = NightscoutDataEntry(
             date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
-            sgv: "200",
+            sgv: data.sgv,
             bgdeltaString: data.bgdeltaString,
             bgdeltaArrow: data.bgdeltaArrow,
             bgdelta: data.bgdelta,

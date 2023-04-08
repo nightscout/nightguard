@@ -18,9 +18,9 @@ struct nightguard_Complication_ExtensionEntryView : View {
     var body: some View {
         switch widgetFamily {
             case .accessoryCorner:
-                AccessoryInlineView(entry: entry)
+                AccessoryCornerView(entry: entry)
             case .accessoryCircular:
-                AccessoryInlineView(entry: entry)
+                AccessoryCircularView(entry: entry)
             case .accessoryInline:
                 AccessoryInlineView(entry: entry)
             case .accessoryRectangular:
