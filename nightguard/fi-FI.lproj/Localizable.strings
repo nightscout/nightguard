@@ -206,7 +206,7 @@
 "Reduce screen brightness after detecting user inactivity for more than selected time period." = "Vähennä näytön kirkkautta kun passiivisuus yli valitun ajan.";
 
 /* Label for Apple Health access revocation */
-"Revoke access in Apple Health" = "Pääsyn peruuttaminen Apple Health";
+"Revoke access in Apple Health" = "Peru Apple Terveyden käyttöoikeus";
 
 /* plurar unit */
 "seconds" = "sekunttia";
@@ -215,10 +215,10 @@
 "Show BG on App Badge" = "Näytä lukema kuvakkeessa";
 
 /* Label for Show Care/Loop Data */
-"Show Care/Loop Data" = "Show Care/Loop Data";
+"Show Care/Loop Data" = "Näytä Care/Loop tiedot";
 
 /* Label for Show Yesterdays BG values in chart */
-"Show Yesterdays BGs" = "Show Yesterdays BGs";
+"Show Yesterdays BGs" = "Näytä eiliset lukemat";
 
 /* Label for Show statistics */
 "Show Statistics" = "Näytä tilastot";
@@ -251,7 +251,7 @@
 "Stop Alert" = "Pysäytä hälytys";
 
 /* Label for Apple Health synchronization */
-"Synchronize with Apple Health" = "Synkronoi kanssa Apple Healthkit";
+"Synchronize with Apple Health" = "Synkronoi Apple Terveys-appiin";
 
 /* Test alert button */
 "Test Alert" = "Testaa hälytystä";
