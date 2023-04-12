@@ -22,22 +22,12 @@ struct AccessoryCornerView : View {
         .widgetLabel {
             Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))" +
                  "\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString)) " +
-                 "\(calculateAgeInMinutes(from: entry.time))")
+                 "\(calculateAgeInMinutes(from: entry.time))m")
                     .foregroundColor(
                         Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
         }
         .widgetAccentable(true)
         .unredacted()
-    }
-    
-    func calculateAgeInMinutes(from timestamp: NSNumber) -> String {
-        let timestampAsDate = Date(timeIntervalSince1970: timestamp.doubleValue / 1000)
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.minute], from: timestampAsDate, to: Date())
-        if let ageInMinutes = components.minute {
-            return "\(ageInMinutes)m"
-        }
-        return "?"
     }
 }
 

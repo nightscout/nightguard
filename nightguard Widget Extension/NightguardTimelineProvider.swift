@@ -40,6 +40,17 @@ struct NightguardTimelineProvider: IntentTimelineProvider {
     private func getTimelineData(configuration: ConfigurationIntent) -> NightscoutDataEntry {
         
         let data = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
+        let bloodSugarValues = NightscoutCacheService.singleton.loadTodaysData {_ in }
+        
+        let bgEntries = bloodSugarValues.map() {bgValue in
+            return BgEntry(value: bgValue.value, timestamp: bgValue.timestamp)
+        }
+        var firstTwoEntries = bgEntries
+        if bgEntries.count > 3 {
+            firstTwoEntries = []
+            firstTwoEntries.append(bgEntries[bgEntries.count-2])
+            firstTwoEntries.append(bgEntries[bgEntries.count-3])
+        }
         
         let entry = NightscoutDataEntry(
             date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
@@ -51,6 +62,7 @@ struct NightguardTimelineProvider: IntentTimelineProvider {
             battery: data.battery,
             iob: data.iob,
             cob: data.cob,
+            lastBGValues: firstTwoEntries,
             configuration: configuration)
         
         return entry

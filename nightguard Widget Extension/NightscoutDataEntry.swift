@@ -54,5 +54,13 @@ struct NightscoutDataEntry: TimelineEntry {
     var battery : String = "---"
     var iob : String = ""
     var cob : String = ""
+    var lastBGValues : [BgEntry] = []
     let configuration: ConfigurationIntent
+}
+
+struct BgEntry : Identifiable, Hashable {
+    
+    let id = UUID() 
+    let value : Float
+    let timestamp : Double
 }
