@@ -30,7 +30,7 @@ struct AccessoryRectangularView : View {
                     .foregroundColor(Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
-                    Text("\(Int(UnitsConverter.mgdlToDisplayUnits(bgEntry.value)))")
+                    Text("\(UnitsConverter.mgdlToShortDisplayUnits(String(bgEntry.value)))")
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
