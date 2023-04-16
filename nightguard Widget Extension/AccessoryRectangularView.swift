@@ -17,20 +17,16 @@ struct AccessoryRectangularView : View {
     var body: some View {
         HStack {
             VStack {
-                Text("\(calculateAgeInMinutes(from: entry.time))m")
-                    .foregroundColor(Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
                 ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
                     Text("\(calculateAgeInMinutes(from:NSNumber(value: bgEntry.timestamp)))m")
+                        .foregroundColor(Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
             }
             VStack {
-                Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString))\(entry.bgdeltaArrow)")
-                    .foregroundColor(Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
-                    Text("\(UnitsConverter.mgdlToShortDisplayUnits(String(bgEntry.value)))")
+                    Text("\(UnitsConverter.mgdlToDisplayUnits(String(bgEntry.value))) \(UnitsConverter.mgdlToDisplayUnitsWithSign(bgEntry.delta.cleanSignedValue))")
+                        .foregroundColor(Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }

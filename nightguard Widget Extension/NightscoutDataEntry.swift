@@ -61,6 +61,7 @@ struct NightscoutDataEntry: TimelineEntry {
 struct BgEntry : Identifiable, Hashable {
     
     let id = UUID() 
-    let value : Float
-    let timestamp : Double
+    let value: Float
+    let delta: Float
+    let timestamp: Double
 }

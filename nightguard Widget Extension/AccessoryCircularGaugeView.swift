@@ -16,7 +16,7 @@ struct AccessoryCircularGaugeView : View {
     
     var body: some View {
         
-        Gauge(value: Double(calculateAgeInMinutes(from: entry.time)) ?? 0, in: 0...30) {
+        Gauge(value: Double(calculateAgeInMinutes(from: entry.time)) ?? 0, in: 0...60) {
             Text("\(entry.bgdeltaArrow)")
             .foregroundColor(
                 Color(UIColorChanger.getDeltaLabelColor(entry.bgdelta)))

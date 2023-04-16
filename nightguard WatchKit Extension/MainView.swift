@@ -62,7 +62,8 @@ struct MainView: View {
                         .minimumScaleFactor(0.5)
                         .frame(height: 55, alignment: .topLeading)
                     VStack(alignment: .leading, content: {
-                        Text(viewModel.nightscoutData?.bgdeltaString ?? "?")
+                        Text(
+                            UnitsConverter.mgdlToDisplayUnitsWithSign(viewModel.nightscoutData?.bgdeltaString ?? "?"))
                             .foregroundColor(viewModel.sgvDeltaColor)
                             .font(.system(size: 12))
                             .lineLimit(1)
@@ -201,7 +202,9 @@ struct MainView: View {
     }
     
     fileprivate func updateUnits() {
-        NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
+        
+        print(UserDefaultsRepository.units.value)
+        /*NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
             
             switch result {
             case .data(let units):
@@ -209,7 +212,7 @@ struct MainView: View {
             case .error(_):
                 print("Unable to determine units on the watch. Using the synced values from the ios app.")
             }
-        }
+        }*/
     }
 }
 

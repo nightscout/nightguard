@@ -10,57 +10,108 @@ import WidgetKit
 import SwiftUI
 import Intents
 
-struct nightguard_Widget_ExtensionEntryView : View {
+@main
+struct NightguardWidgetsBundle: WidgetBundle {
+    var body: some Widget {
+        NightguardDefaultWidgets()
+        NightguardGaugeWidgets()
+    }
+}
+
+struct NightguardDefaultWidgets: Widget {
     
-    @Environment(\.widgetFamily)
-    var widgetFamily
+    var provider = NightguardTimelineProvider(displayName: "BG Text")
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(
+            kind: "org.duckdns.dhe.nightguard.NightguardDefaultWidgets",
+            provider: provider
+        ) { entry in
+            NightguardEntryView(entry: entry)
+        }
+        .configurationDisplayName("Nightguard BG Values Text Complication")
+        .description(provider.displayName)
+        .supportedFamilies([
+            .accessoryInline,
+            .accessoryCircular,
+            .accessoryRectangular,
+        ])
+    }
+}
+
+struct NightguardGaugeWidgets: Widget {
+    
+    var provider = NightguardTimelineProvider(displayName: "BG Gauge")
+    
+    var body: some WidgetConfiguration {
+        StaticConfiguration(
+            kind: "org.duckdns.dhe.nightguard.NightguardGaugeWidgets",
+            provider: provider
+        ) { entry in
+            NightguardGaugeEntryView(entry: entry)
+        }
+        .configurationDisplayName("Nightguard BG Values as Gauge Complication")
+        .description(provider.displayName)
+        .supportedFamilies([
+            .accessoryCircular
+        ])
+    }
+}
+
+struct NightguardEntryView : View {
+    
+    @Environment(\.widgetFamily) var widgetFamily
     var entry: NightscoutDataEntry
 
     var body: some View {
-        
         switch widgetFamily {
+            case .accessoryCircular:
+                AccessoryCircularView(entry: entry)
             case .accessoryInline:
                 AccessoryInlineView(entry: entry)
             case .accessoryRectangular:
                 AccessoryRectangularView(entry: entry)
-            case .accessoryCircular:
-                AccessoryCircularView(entry: entry)
-                
+            
             default:
-                Text("Not implemented.")
+                //mandatory as there are more widget families as in lockscreen widgets etc
+                Text("Not an implemented widget yet")
         }
     }
 }
 
-@main
-struct nightguard_Widget_Extension: Widget {
-    let kind: String = "nightguard_Widget_Extension"
+struct NightguardGaugeEntryView : View {
+    
+    @Environment(\.widgetFamily) var widgetFamily
+    var entry: NightscoutDataEntry
 
-    var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: NightguardTimelineProvider()) { entry in
-            nightguard_Widget_ExtensionEntryView(entry: entry)
+    var body: some View {
+        switch widgetFamily {
+            case .accessoryCircular:
+                AccessoryCircularGaugeView(entry: entry)
+            
+            default:
+                //mandatory as there are more widget families as in lockscreen widgets etc
+                Text("No Gauge Support for this widget!")
         }
-        .configurationDisplayName("nightguard widgets")
-        .description("Nightguard lockscreen widgets.")
-        .supportedFamilies(
-            [.accessoryInline,
-             .accessoryCircular,
-             .accessoryRectangular])
     }
 }
 
 struct nightguard_Widget_Extension_Previews: PreviewProvider {
     static var previews: some View {
         
-        nightguard_Widget_ExtensionEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .accessoryInline))
             .previewDisplayName("Inline")
         
-        nightguard_Widget_ExtensionEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
             .previewDisplayName("Circular")
         
-        nightguard_Widget_ExtensionEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardGaugeEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+            .previewContext(WidgetPreviewContext(family: .accessoryCircular))
+            .previewDisplayName("Circular")
+        
+        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
             .previewDisplayName("Rectangular")
     }

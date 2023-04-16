@@ -15,17 +15,15 @@ struct AccessoryCornerGaugeView : View {
     var entry: NightscoutDataEntry
     
     var body: some View {
-        Text("\(entry.bgdeltaArrow)")
+        
+        Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))")
             .font(.system(size: 20))
             .foregroundColor(
-                Color(UIColorChanger.getDeltaLabelColor(entry.bgdelta)))
-        .widgetLabel {
-            Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))" +
-                 "\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString)) " +
-                 "\(calculateAgeInMinutes(from: entry.time))m")
-                    .foregroundColor(
-                        Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
-        }
+               Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
+            .widgetLabel {
+               ProgressView(value: (Double(calculateAgeInMinutes(from: entry.time)) ?? 100) / 60)
+                 .tint(Color(UIColorChanger.getTimeLabelColor(entry.time)))
+           }
         .widgetAccentable(true)
         .unredacted()
     }
