@@ -11,6 +11,7 @@ import SwiftUI
 import SpriteKit
 import ClockKit
 import WatchConnectivity
+import WidgetKit
 
 @available(watchOSApplicationExtension 6.0, *)
 class MainViewModel: ObservableObject, Identifiable {
@@ -77,6 +78,7 @@ class MainViewModel: ObservableObject, Identifiable {
     
     func refreshData(forceRefresh : Bool, moveToLatestValue : Bool) {
         
+        WidgetCenter.shared.reloadAllTimelines()
         showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
         
         loadCurrentBgData(forceRefresh: forceRefresh)
@@ -206,6 +208,9 @@ class MainViewModel: ObservableObject, Identifiable {
     }
     
     fileprivate func updateComplication() {
+        
+        WidgetCenter.shared.reloadAllTimelines()
+        
         let complicationServer = CLKComplicationServer.sharedInstance()
         if complicationServer.activeComplications != nil {
             for complication in complicationServer.activeComplications! {
@@ -295,6 +300,7 @@ class MainViewModel: ObservableObject, Identifiable {
                 dispatchOnMain { [unowned self] in
                     if case .data(let newTodaysData) = result {
                         self.cachedTodaysBgValues = newTodaysData
+                        updateComplication()
                         paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : true)
                     }
                 }

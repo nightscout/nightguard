@@ -9,14 +9,17 @@
 import Foundation
 import WidgetKit
 import Intents
+import SwiftUI
 
 struct NightscoutDataEntry: TimelineEntry {
     
     var date: Date = Date()
     
     var sgv : String = "---"
+    var sgvColor : UIColor = UIColor.white
     // the delta Value in Display Units
     var bgdeltaString : String = "---"
+    var bgdeltaColor : UIColor = UIColor.white
     var bgdeltaArrow : String = "-"
     // the delta value in mgdl
     var bgdelta : Float = 0.0
@@ -61,7 +64,8 @@ struct NightscoutDataEntry: TimelineEntry {
 struct BgEntry : Identifiable, Hashable {
     
     let id = UUID() 
-    let value: Float
-    let delta: Float
+    let value: String
+    let valueColor: UIColor
+    let delta: String
     let timestamp: Double
 }

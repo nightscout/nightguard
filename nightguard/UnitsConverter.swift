@@ -25,9 +25,9 @@ class UnitsConverter {
         // if the UI is locked, looks like we are not allowed to access the userdefaults
         // so do this on main Thread only:
         var units = Units.mmol
-        dispatchOnMain {
-            units = UserDefaultsRepository.units.value
-        }
+        //dispatchOnMain {
+        units = Units.fromAny(UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.value(forKey: "units") ?? Units.mmol.rawValue) ?? Units.mmol
+        //}
        
         if units == Units.mgdl {
             // nothing to do here - just remove decimals

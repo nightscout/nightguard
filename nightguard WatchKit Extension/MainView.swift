@@ -25,6 +25,7 @@ struct MainView: View {
         
         self.viewModel = mainViewModel
         
+        //UserDefaultsRepository.units.value = Units.mmol
         updateUnits()
         viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
    }
@@ -194,6 +195,8 @@ struct MainView: View {
                 // Request Data from the main app
                 // especially the baseUri if missing
                 WatchSyncRequestMessage().send()
+                print("*************** \(UserDefaultsRepository.units.value)")
+                UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(UserDefaultsRepository.units.value.rawValue, forKey: "units")
             }
             .onReceive(timer) { _ in
                 viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
@@ -203,7 +206,6 @@ struct MainView: View {
     
     fileprivate func updateUnits() {
         
-        print(UserDefaultsRepository.units.value)
         /*NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
             
             switch result {

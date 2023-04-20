@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import WidgetKit
 
 class PrefsViewController: CustomFormViewController {
     
@@ -291,6 +292,7 @@ class PrefsViewController: CustomFormViewController {
             switch result {
             case .data(let units):
                 UserDefaultsRepository.units.value = units
+                WidgetCenter.shared.reloadAllTimelines()
                 completion(nil)
                 
             case .error(let error):
@@ -306,7 +308,8 @@ class PrefsViewController: CustomFormViewController {
         }
         
         let bookmarkToolbar = UIToolbar(frame:CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 30))
-        bookmarkToolbar.barStyle = .blackTranslucent
+        bookmarkToolbar.barStyle = UIBarStyle.black
+        bookmarkToolbar.isTranslucent = true
         bookmarkToolbar.items = [
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(toggleKeyboardAndBookmarks))

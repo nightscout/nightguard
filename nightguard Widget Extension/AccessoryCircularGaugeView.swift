@@ -19,11 +19,11 @@ struct AccessoryCircularGaugeView : View {
         Gauge(value: Double(calculateAgeInMinutes(from: entry.time)) ?? 0, in: 0...60) {
             Text("\(entry.bgdeltaArrow)")
             .foregroundColor(
-                Color(UIColorChanger.getDeltaLabelColor(entry.bgdelta)))
+                Color(entry.bgdeltaColor))
         } currentValueLabel: {
-            Text(UnitsConverter.mgdlToDisplayUnits(entry.sgv))
+            Text(entry.sgv)
             .foregroundColor(
-                Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
+                Color(entry.sgvColor))
         }
         .tint(
             Color(UIColorChanger.getTimeLabelColor(entry.time)))

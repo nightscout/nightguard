@@ -16,10 +16,10 @@ struct AccessoryCornerGaugeView : View {
     
     var body: some View {
         
-        Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))")
+        Text("\(entry.sgv)")
             .font(.system(size: 20))
             .foregroundColor(
-               Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
+               Color(entry.sgvColor))
             .widgetLabel {
                ProgressView(value: (Double(calculateAgeInMinutes(from: entry.time)) ?? 100) / 60)
                  .tint(Color(UIColorChanger.getTimeLabelColor(entry.time)))

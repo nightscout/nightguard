@@ -16,10 +16,9 @@ struct AccessoryCircularView : View {
     
     var body: some View {
         Text("\(calculateAgeInMinutes(from: entry.time))m")
-        Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))")
-            .foregroundColor(
-                Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
-        Text("\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString))")
+        Text("\(entry.sgv)")
+            .foregroundColor(Color(entry.sgvColor))
+        Text("\(entry.bgdeltaString)")
             .foregroundColor(
                 Color(UIColorChanger.getDeltaLabelColor(entry.bgdelta)))
         .widgetAccentable(true)

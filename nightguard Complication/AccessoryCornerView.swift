@@ -18,13 +18,13 @@ struct AccessoryCornerView : View {
         Text("\(entry.bgdeltaArrow)")
             .font(.system(size: 20))
             .foregroundColor(
-                Color(UIColorChanger.getDeltaLabelColor(entry.bgdelta)))
+                Color(entry.bgdeltaColor))
         .widgetLabel {
-            Text("\(UnitsConverter.mgdlToDisplayUnits(entry.sgv))" +
-                 "\(UnitsConverter.mgdlToDisplayUnits(entry.bgdeltaString)) " +
+            Text("\(entry.sgv)" +
+                 "\(entry.bgdeltaString) " +
                  "\(calculateAgeInMinutes(from: entry.time))m")
                     .foregroundColor(
-                        Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
+                        Color(entry.sgvColor))
         }
         .widgetAccentable(true)
         .unredacted()

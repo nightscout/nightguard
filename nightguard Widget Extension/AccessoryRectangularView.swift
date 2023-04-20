@@ -19,14 +19,14 @@ struct AccessoryRectangularView : View {
             VStack {
                 ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
                     Text("\(calculateAgeInMinutes(from:NSNumber(value: bgEntry.timestamp)))m")
-                        .foregroundColor(Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
+                        .foregroundColor(Color(entry.sgvColor))
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
             }
             VStack {
                 ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
-                    Text("\(UnitsConverter.mgdlToDisplayUnits(String(bgEntry.value))) \(UnitsConverter.mgdlToDisplayUnitsWithSign(bgEntry.delta.cleanSignedValue))")
-                        .foregroundColor(Color(UIColorChanger.getBgColor(UnitsConverter.mgdlToDisplayUnits(entry.sgv))))
+                    Text("\(String(bgEntry.value)) \(bgEntry.delta)")
+                        .foregroundColor(Color(entry.sgvColor))
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }

@@ -65,7 +65,10 @@ struct NightguardTimelineProvider: TimelineProvider {
         let bloodSugarValues = NightscoutCacheService.singleton.loadTodaysData {_ in }
         
         let bgEntries = bloodSugarValues.map() {bgValue in
-            return BgEntry(value: bgValue.value, delta: 0, timestamp: bgValue.timestamp)
+            return BgEntry(
+                value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
+                valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
+                delta: "0", timestamp: bgValue.timestamp)
         }
         var reducedEntries = bgEntries
         if bgEntries.count > 3 {
@@ -75,19 +78,21 @@ struct NightguardTimelineProvider: TimelineProvider {
             }
         }
         
-        let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries.reversed())
+        let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries)
         
         let entry = NightscoutDataEntry(
             date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
-            sgv: data.sgv,
-            bgdeltaString: data.bgdeltaString,
+            sgv: UnitsConverter.mgdlToDisplayUnits(data.sgv),
+            sgvColor: UIColorChanger.getBgColor(data.sgv),
+            bgdeltaString: UnitsConverter.mgdlToDisplayUnitsWithSign(data.bgdeltaString),
+            bgdeltaColor: UIColorChanger.getDeltaLabelColor(data.bgdelta),
             bgdeltaArrow: data.bgdeltaArrow,
             bgdelta: data.bgdelta,
             time: data.time,
             battery: data.battery,
             iob: data.iob,
             cob: data.cob,
-            lastBGValues: reducedEntriesWithDelta,
+            lastBGValues: reducedEntriesWithDelta.reversed(),
             configuration: ConfigurationIntent())
         
         return entry
@@ -99,9 +104,12 @@ struct NightguardTimelineProvider: TimelineProvider {
         var newEntries: [BgEntry] = []
         for bgEntry in reducedEntries {
             if preceedingEntry?.value != nil {
+                let v1AsFloat: Float = Float(bgEntry.value) ?? Float.zero
+                let v2AsFloat: Float = Float(preceedingEntry?.value ?? bgEntry.value) ?? v1AsFloat
                 let newEntry = BgEntry(
                     value: bgEntry.value,
-                    delta: bgEntry.value - (preceedingEntry?.value ?? bgEntry.value),
+                    valueColor: UIColorChanger.getBgColor(bgEntry.value),
+                    delta: Float(v1AsFloat - v2AsFloat).cleanSignedValue,
                     timestamp: bgEntry.timestamp)
                 newEntries.append(newEntry)
             }
