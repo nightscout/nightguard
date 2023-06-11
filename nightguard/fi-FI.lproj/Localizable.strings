@@ -618,3 +618,21 @@
 
 /* No data from API V2 Properties Endpoint */
 "No data received from API V2 Properties" = "Tietoja ei vastaanotettu API V2 Properties päätepisteestä";
+
+/* Widget Configuration Display Name */
+"BG Values as Text" = "BG Values as Text";
+
+/* Text Widget Display Name */
+"BG Text" = "BG Text";
+
+/* Gauge Widget Display Name */
+"BG Gauge" = "BG Gauge";
+
+/* Gauge Widget Configuration Display Name */
+"BG Values as Gauge" = "BG Values as Gauge";
+
+/* Gauge Widget Not Implemented Error Message */
+"Not an implemented widget yet" = "Not an implemented widget yet";
+
+/* Gauge Widget Not Supported Error Message */
+"No Gauge Support for this widget!" = "No Gauge Support for this widget!";

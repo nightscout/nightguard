@@ -20,7 +20,8 @@ struct NightguardWidgetsBundle: WidgetBundle {
 
 struct NightguardDefaultWidgets: Widget {
     
-    var provider = NightguardTimelineProvider(displayName: "BG Text")
+    var provider = NightguardTimelineProvider(displayName:
+        NSLocalizedString("BG Text", comment: "Text Widget Display Name"))
 
     var body: some WidgetConfiguration {
         StaticConfiguration(
@@ -29,7 +30,8 @@ struct NightguardDefaultWidgets: Widget {
         ) { entry in
             NightguardEntryView(entry: entry)
         }
-        .configurationDisplayName("Nightguard BG Values Text Complication")
+        .configurationDisplayName(
+            NSLocalizedString("BG Values as Text", comment: "Widget Configuration Display Name"))
         .description(provider.displayName)
         .supportedFamilies([
             .accessoryInline,
@@ -41,7 +43,8 @@ struct NightguardDefaultWidgets: Widget {
 
 struct NightguardGaugeWidgets: Widget {
     
-    var provider = NightguardTimelineProvider(displayName: "BG Gauge")
+    var provider = NightguardTimelineProvider(displayName:
+        NSLocalizedString("BG Gauge", comment: "Gauge Widget Display Name"))
     
     var body: some WidgetConfiguration {
         StaticConfiguration(
@@ -50,7 +53,8 @@ struct NightguardGaugeWidgets: Widget {
         ) { entry in
             NightguardGaugeEntryView(entry: entry)
         }
-        .configurationDisplayName("Nightguard BG Values as Gauge Complication")
+        .configurationDisplayName(
+            NSLocalizedString("BG Values as Gauge", comment: "Gauge Widget Configuration Display Name"))
         .description(provider.displayName)
         .supportedFamilies([
             .accessoryCircular
@@ -74,7 +78,8 @@ struct NightguardEntryView : View {
             
             default:
                 //mandatory as there are more widget families as in lockscreen widgets etc
-                Text("Not an implemented widget yet")
+                Text(
+                    NSLocalizedString("Not an implemented widget yet", comment: "Gauge Widget Not Implemented Error Message"))
         }
     }
 }
@@ -91,7 +96,7 @@ struct NightguardGaugeEntryView : View {
             
             default:
                 //mandatory as there are more widget families as in lockscreen widgets etc
-                Text("No Gauge Support for this widget!")
+                Text(NSLocalizedString("No Gauge Support for this widget!", comment: "Gauge Widget Not Supported Error Message"))
         }
     }
 }
