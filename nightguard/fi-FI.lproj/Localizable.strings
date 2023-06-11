@@ -605,7 +605,7 @@
 "Set new Battery Change Date" = "Aseta akun vaihtopäivämäärä";
 
 /* Modify Battery Change Date Popup Title */
-"Modify Battery Change Date" = "Muokkaa akun vaihtopäivämäärä";
+"Modify Battery Change Date" = "Muokkaa akun vaihtopäivämäärää";
 
 /* Cancel Target Popup Text */
 "Do you want to modify the change date to " = "Haluatko muuttaa päivämääräksi ";
@@ -620,19 +620,19 @@
 "No data received from API V2 Properties" = "Tietoja ei vastaanotettu API V2 Properties päätepisteestä";
 
 /* Widget Configuration Display Name */
-"BG Values as Text" = "BG Values as Text";
+"BG Values as Text" = "VS lukemat tekstinä";
 
 /* Text Widget Display Name */
-"BG Text" = "BG Text";
+"BG Text" = "VS teksti";
 
 /* Gauge Widget Display Name */
-"BG Gauge" = "BG Gauge";
+"BG Gauge" = "VS kaavio";
 
 /* Gauge Widget Configuration Display Name */
-"BG Values as Gauge" = "BG Values as Gauge";
+"BG Values as Gauge" = "VS lukemat kaaviona";
 
 /* Gauge Widget Not Implemented Error Message */
-"Not an implemented widget yet" = "Not an implemented widget yet";
+"Not an implemented widget yet" = "Widgettiä ei ole toteutettu";
 
 /* Gauge Widget Not Supported Error Message */
-"No Gauge Support for this widget!" = "No Gauge Support for this widget!";
+"No Gauge Support for this widget!" = "Ei kaavio tukea tälle widgetille!";
