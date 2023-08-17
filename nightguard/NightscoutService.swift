@@ -213,19 +213,19 @@ class NightscoutService {
                 for singleBgValue in bgs {
                     
                     if let bgDict = singleBgValue as? Dictionary<String, Any> {
-                        if let bloodValue = bgDict["sgv"] as? Float {
+                        if let bloodValue = bgDict["sgv"] as? Double {
                             if let bloodValueTimestamp = bgDict["date"] as? Double {
                                 let bloodSugar = BloodSugar(
-                                        value: bloodValue,
+                                        value: Float(bloodValue),
                                         timestamp: bloodValueTimestamp,
                                         isMeteredBloodGlucoseValue: false)
                                 bloodSugarArray.insert(bloodSugar, at: 0)
                             }
                         }
-                        if let bloodValue = bgDict["mbg"] as? Float {
+                        if let bloodValue = bgDict["mbg"] as? Double {
                             if let bloodValueTimestamp = bgDict["date"] as? Double {
                                 let bloodSugar = BloodSugar(
-                                        value: bloodValue,
+                                        value: Float(bloodValue),
                                         timestamp: bloodValueTimestamp,
                                         isMeteredBloodGlucoseValue: true)
                                 bloodSugarArray.insert(bloodSugar, at: 0)
