@@ -261,7 +261,7 @@ extension SelectorViewController {
 
 extension SliderRow {
     
-    class func glucoseLevelSlider(initialValue: Float, minimumValue: Float, maximumValue: Float, snapIncrementForMgDl: Float = 10.0) -> SliderRow {
+    class func glucoseLevelSlider(initialValue: Float, minimumValue: Float, maximumValue: Float, snapIncrementForMgDl: Float = 5.0) -> SliderRow {
         
         return SliderRow() { row in
                 row.value = initialValue
