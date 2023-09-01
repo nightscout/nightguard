@@ -32,6 +32,7 @@ class CareViewController: CustomFormViewController {
         form +++ Section(header: NSLocalizedString("Set a new Temporary Target", comment: "Label for Temporary Target Section"), footer: nil)
                 
                 <<< PickerInlineRow<String>() { row in
+                    row.tag = "Reason"
                     row.title = NSLocalizedString("Reason", comment: "Label for the Temporary Target Reason")
                     row.options = ["Activity", "Too High", "Too Low", "Meal Soon"]
                     row.value = UserDefaultsRepository.temporaryTargetReason.value
@@ -40,34 +41,8 @@ class CareViewController: CustomFormViewController {
                     }
                 }.onChange { row in
                     UserDefaultsRepository.temporaryTargetReason.value = row.value!
-                    
-                    if row.value == "Activity" {
-                        let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTargetAmount.value = UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
-                        targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
-                        targetValueRow.reload()
-                    }
-                    if row.value == "Too High" {
-                        let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTargetAmount.value =
-                            UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value
-                        targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
-                        targetValueRow.reload()
-                    }
-                    if row.value == "Too Low" {
-                        let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTargetAmount.value =
-                            UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value
-                        targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
-                        targetValueRow.reload()
-                    }
-                    if row.value == "Meal Soon" {
-                        let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
-                        UserDefaultsRepository.temporaryTargetAmount.value =
-                            UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value
-                        targetValueRow.value = UserDefaultsRepository.temporaryTargetAmount.value
-                        targetValueRow.reload()
-                    }
+                    self.restoreDefaultTargetValueFor(reason: row.value!)
+                    self.restoreDefaultDurationFor(reason: row.value!)
                 }
             
                 <<< PickerInlineRow<Int>() { row in
@@ -89,6 +64,7 @@ class CareViewController: CustomFormViewController {
                     row.value = UserDefaultsRepository.temporaryTargetDuration.value
                 }.onChange { row in
                     UserDefaultsRepository.temporaryTargetDuration.value = row.value!
+                    self.storeNewDefault(duration: row.value!)
                 }
         
                 <<< PickerInlineRow<Int>() { row in
@@ -102,7 +78,7 @@ class CareViewController: CustomFormViewController {
                     }
                 }.onChange { row in
                     UserDefaultsRepository.temporaryTargetAmount.value = row.value!
-                    UserDefaultsRepository.setNewDefaultTemporaryTargetAmount(temporaryTargetAmount: row.value!)
+                    self.storeNewDefault(value: row.value!)
                 }
         
                 <<< ButtonRow() { row in
@@ -139,6 +115,69 @@ class CareViewController: CustomFormViewController {
                         
                         self.displayEnterCarbsPopup(carbs: UserDefaultsRepository.carbs.value)
                 }
+    }
+    
+    fileprivate func restoreDefaultTargetValueFor(reason: String) {
+        
+        let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Value") as! PickerInlineRow<Int>
+        switch reason {
+            case "Activity":
+                targetValueRow.value = UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
+            case "Too High":
+                targetValueRow.value = UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value
+            case "Too Low":
+                targetValueRow.value = UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value
+            default:
+                targetValueRow.value =
+                    UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value
+        }
+        targetValueRow.reload()
+    }
+    
+    fileprivate func restoreDefaultDurationFor(reason: String) {
+        let targetValueRow : PickerInlineRow<Int> = self.form.rowBy(tag: "Duration") as! PickerInlineRow<Int>
+        switch reason {
+            case "Activity":
+                targetValueRow.value = UserDefaultsRepository.temporaryTargetActivityDefaultDuration.value
+            case "Too High":
+                targetValueRow.value = UserDefaultsRepository.temporaryTargetTooHighDefaultDuration.value
+            case "Too Low":
+                targetValueRow.value = UserDefaultsRepository.temporaryTargetTooLowDefaultDuration.value
+            default:
+                targetValueRow.value =
+                    UserDefaultsRepository.temporaryTargetMealSoonDefaultDuration.value
+        }
+        targetValueRow.reload()
+    }
+    
+    fileprivate func storeNewDefault(duration: Int) {
+        let reasonValueRow : PickerInlineRow<String> = self.form.rowBy(tag: "Reason") as! PickerInlineRow<String>
+        let reason = reasonValueRow.value
+        switch reason {
+            case "Activity":
+                UserDefaultsRepository.temporaryTargetActivityDefaultDuration.value = duration
+            case "Too High":
+                UserDefaultsRepository.temporaryTargetTooHighDefaultDuration.value = duration
+            case "Too Low":
+                UserDefaultsRepository.temporaryTargetTooLowDefaultDuration.value = duration
+            default:
+                UserDefaultsRepository.temporaryTargetMealSoonDefaultDuration.value = duration
+        }
+    }
+    
+    fileprivate func storeNewDefault(value: Int) {
+        let reasonValueRow : PickerInlineRow<String> = self.form.rowBy(tag: "Reason") as! PickerInlineRow<String>
+        let reason = reasonValueRow.value
+        switch reason {
+            case "Activity":
+                UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value = value
+            case "Too High":
+                UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value = value
+            case "Too Low":
+                UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value = value
+            default:
+                UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value = value
+        }
     }
     
     fileprivate func displayEnterCarbsPopup(carbs : Int) {

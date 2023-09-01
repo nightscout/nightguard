@@ -58,6 +58,7 @@ struct TemporaryTargetView: View {
                         UserDefaultsRepository.temporaryTargetReason.value =
                             TemporaryTargetView.userDefaultsToTemporaryTargetReasons.key(
                                 from: $selectedLocalizedTemporaryTargetReason.wrappedValue) ?? ""
+                        selectedTemporaryTargetDuration = UserDefaultsRepository.getDefaultTemporaryTargetDurationForReason()
                     }
                     .frame(height: 45)
                 }

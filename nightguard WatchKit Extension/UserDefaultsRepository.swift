@@ -187,40 +187,49 @@ class UserDefaultsRepository {
     
     static let temporaryTargetMealSoonDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetMealSoonDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetMealSoonDefaultAmount") as? Int) ?? 80)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
+
+    static let temporaryTargetActivityDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetActivityDefaultDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetActivityDefaultDuration") as? Int) ?? 120)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static func setNewDefaultTemporaryTargetAmount(temporaryTargetAmount : Int) {
-        
-        switch UserDefaultsRepository.temporaryTargetReason.value {
-        case "Activity":
-            UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value = temporaryTargetAmount
-            break;
-        case "Too High":
-            UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value = temporaryTargetAmount
-            break;
-        case "Too Low":
-            UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value = temporaryTargetAmount
-            break;
-        case "Meal Soon":
-            UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value = temporaryTargetAmount
-            break;
-        default:
-            break;
-        }
-    }
+    static let temporaryTargetTooLowDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetTooLowDefaultDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetTooLowDefaultDuration") as? Int) ?? 60)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let temporaryTargetTooHighDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetTooHighDefaultDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetTooHighDefaultDuration") as? Int) ?? 60)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+    
+    static let temporaryTargetMealSoonDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetMealSoonDefaultDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetMealSoonDefaultDuration") as? Int) ?? 60)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     static func getDefaultTemporaryTargetAmountForReason() -> Int {
         
         switch UserDefaultsRepository.temporaryTargetReason.value {
-        case "Activity":
-            return UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
-        case "Too High":
-            return UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value
-        case "Too Low":
-            return UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value
-        case "Meal Soon":
-            return UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value
-        default:
-            return UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
+            case "Activity":
+                return UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
+            case "Too High":
+                return UserDefaultsRepository.temporaryTargetTooHighDefaultAmount.value
+            case "Too Low":
+                return UserDefaultsRepository.temporaryTargetTooLowDefaultAmount.value
+            case "Meal Soon":
+                return UserDefaultsRepository.temporaryTargetMealSoonDefaultAmount.value
+            default:
+                return UserDefaultsRepository.temporaryTargetActivityDefaultAmount.value
+        }
+    }
+    
+    static func getDefaultTemporaryTargetDurationForReason() -> Int {
+        
+        switch UserDefaultsRepository.temporaryTargetReason.value {
+            case "Activity":
+                return UserDefaultsRepository.temporaryTargetActivityDefaultDuration.value
+            case "Too High":
+                return UserDefaultsRepository.temporaryTargetTooHighDefaultDuration.value
+            case "Too Low":
+                return UserDefaultsRepository.temporaryTargetTooLowDefaultDuration.value
+            case "Meal Soon":
+                return UserDefaultsRepository.temporaryTargetMealSoonDefaultDuration.value
+            default:
+                return UserDefaultsRepository.temporaryTargetActivityDefaultDuration.value
         }
     }
     
