@@ -61,7 +61,12 @@ class ChartPainter {
         }
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if justOneOrLessValuesPerDiagram(days) {
-            return (UIImage.emptyImage(with: CGSize(width: 0, height: 0)), 0)
+            let size = CGSize(width: 0, height: 0)
+            
+            let emptyImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            return (emptyImage, 0)
         }
         
         adjustMinMaxXYCoordinates(days, maxYDisplayValue: maxBgValue, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
