@@ -69,7 +69,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(NightscoutData.self, forClassName: "NightscoutData")
-        guard let nightscoutData = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)) as? NightscoutData else {
+        guard let nightscoutData = (try? NSKeyedUnarchiver.unarchivedObject(ofClass: NightscoutData.self, from: data)) else {
             return NightscoutData()
         }
         return nightscoutData
@@ -179,7 +179,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(DeviceStatusData.self, forClassName: "DeviceStatusData")
-        guard let deviceStatusData = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)) as? DeviceStatusData else {
+        guard let deviceStatusData = (try? NSKeyedUnarchiver.unarchivedObject(ofClass: DeviceStatusData.self, from: data)) else {
             return DeviceStatusData()
         }
         return deviceStatusData
@@ -204,7 +204,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(TemporaryTargetData.self, forClassName: "TemporaryTargetData")
-        guard let temporaryTargetData = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)) as? TemporaryTargetData else {
+        guard let temporaryTargetData = (try? NSKeyedUnarchiver.unarchivedObject(ofClass: TemporaryTargetData.self, from: data)) else {
             return TemporaryTargetData()
         }
         return temporaryTargetData
@@ -231,7 +231,7 @@ class NightscoutDataRepository {
             return []
         }
         
-        guard let bgData = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [BloodSugar] else {
+        guard let bgData = try? NSKeyedUnarchiver.unarchivedArrayOfObjects(ofClass: BloodSugar.self, from: data) else {
             return []
         }
         return bgData

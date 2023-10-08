@@ -24,7 +24,6 @@ class NightscoutViewController: UIViewController {
         super.viewDidLoad()
         
         let webConfiguration = WKWebViewConfiguration()
-        webConfiguration.preferences.javaScriptEnabled = true
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.navigationDelegate = self
         webView.uiDelegate = self

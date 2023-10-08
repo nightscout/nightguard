@@ -61,8 +61,6 @@ class ChartPainter {
         }
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if justOneOrLessValuesPerDiagram(days) {
-            let size = CGSize(width: 0, height: 0)
-            
             let emptyImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             

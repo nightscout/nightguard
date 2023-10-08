@@ -15,7 +15,12 @@ import Foundation
 // Normally these are sensor glucose values (sgv).
 // If the value is a metered value, isMeteredBloodGlucoseValue will be true.
 // These values will be rendered as red dots in the chart later on.
-class BloodSugar : NSCoder {
+class BloodSugar : NSCoder, NSSecureCoding, NSCoding {
+    
+    static var supportsSecureCoding: Bool {
+        return true
+    }
+    
     let value : Float
     let timestamp : Double
     let isMeteredBloodGlucoseValue : Bool
@@ -67,7 +72,7 @@ class BloodSugar : NSCoder {
         self.init(value : value, timestamp :  timestamp, isMeteredBloodGlucoseValue: isMeteredBloodGlucoseValue)
     }
 
-    @objc func encodeWithCoder(_ coder: NSCoder) {
+    @objc func encode(with coder: NSCoder) {
         coder.encode(self.value, forKey: "value")
         coder.encode(self.timestamp, forKey: "timestamp")
         coder.encode(self.isMeteredBloodGlucoseValue, forKey: "isMeteredBloodGlucoseValue")
