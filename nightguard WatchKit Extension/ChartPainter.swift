@@ -57,7 +57,7 @@ class ChartPainter {
 
         // we need at least one day => otherwise paint nothing
         if days.count == 1 {
-            return (UIImage.emptyImage(with: CGSize(width: 0, height: 0)), 0)
+            return (UIImage.emptyImage(with: CGSize(width: 10, height: 10)), 0)
         }
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if justOneOrLessValuesPerDiagram(days) {
@@ -78,7 +78,7 @@ class ChartPainter {
         // this can happen if fastly switching from statistics pane to main pane
         // I think this has to do with the screen rotating
         guard let safeContext = context else {
-            return (UIImage.emptyImage(with: CGSize(width: 0, height: 0)), 0)
+            return (UIImage.emptyImage(with: CGSize(width: 10, height: 10)), 0)
         }
         
         // Setup complete, do drawing here
