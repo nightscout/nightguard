@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TemporaryTargetData: NSObject, NSCoding, Codable {
+class TemporaryTargetData: NSObject, NSCoding, Codable, NSSecureCoding {
     
     var targetTop : Int = 100
     var targetBottom : Int = 100
@@ -44,6 +44,10 @@ class TemporaryTargetData: NSObject, NSCoding, Codable {
         if let activeUntilDate = decoder.decodeObject(forKey: "activeUntilDate") as? Date {
             self.activeUntilDate = activeUntilDate
         }
+    }
+    
+    static var supportsSecureCoding: Bool {
+        return true
     }
     
     /*

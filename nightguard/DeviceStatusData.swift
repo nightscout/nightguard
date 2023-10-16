@@ -10,7 +10,7 @@ import Foundation
 
 // Containing Data of the extended DeviceStatus of the pump.
 // This is the active profile and informations about the temp basal rate.
-class DeviceStatusData: NSObject, NSCoding, Codable {
+class DeviceStatusData: NSObject, NSCoding, Codable, NSSecureCoding {
     
     var activePumpProfile: String = "---"
     var pumpProfileActiveUntil: Date = Date()
@@ -72,6 +72,10 @@ class DeviceStatusData: NSObject, NSCoding, Codable {
             }
             self.temporaryBasalRateActiveUntil = temporaryBasalRateActiveUntil
         }
+    }
+    
+    static var supportsSecureCoding: Bool {
+        return true
     }
     
     /*

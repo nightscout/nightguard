@@ -10,9 +10,9 @@ import Foundation
 
 // Contains all available information of a current Blood Glucose value.
 // This data can be stored in the user defaults.
-class NightscoutData : NSObject, NSCoding, Codable {
+class NightscoutData : NSObject, NSCoding, Codable, NSSecureCoding {
     
-    var sgv : String = "--1"
+    var sgv : String = "---"
     // the delta Value in Display Units
     var bgdeltaString : String = "---"
     var bgdeltaArrow : String = "-"
@@ -55,6 +55,10 @@ class NightscoutData : NSObject, NSCoding, Codable {
     
     override init () {
         super.init()
+    }
+    
+    static var supportsSecureCoding: Bool {
+        return true
     }
     
     enum CodingKeys: String, CodingKey {
