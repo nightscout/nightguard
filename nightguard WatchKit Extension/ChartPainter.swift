@@ -61,13 +61,15 @@ class ChartPainter {
         }
         // we need at least 2 values - otherwise paint nothing and return empty image!
         if justOneOrLessValuesPerDiagram(days) {
-            let emptyImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            return (emptyImage, 0)
+            return (UIImage.emptyImage(with: CGSize(width: 10, height: 10)), 0)
         }
         
         adjustMinMaxXYCoordinates(days, maxYDisplayValue: maxBgValue, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
+        
+        // An empty size can cause crashes, so return an empty Image in that case, too:
+        if size.debugDescription.isEmpty {
+            return (UIImage.emptyImage(with: CGSize(width: 10, height: 10)), 0)
+        }
         
         // Setup our context
         let opaque = false
