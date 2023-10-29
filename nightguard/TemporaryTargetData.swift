@@ -8,11 +8,15 @@
 
 import Foundation
 
-class TemporaryTargetData: NSObject, NSCoding, Codable, NSSecureCoding {
+class TemporaryTargetData: NSObject, Codable, NSSecureCoding {
     
     var targetTop : Int = 100
     var targetBottom : Int = 100
     var activeUntilDate : Date = Date()
+    
+    static var supportsSecureCoding: Bool {
+        return true
+    }
     
     enum CodingKeys: String, CodingKey {
         case targetTop
@@ -29,8 +33,6 @@ class TemporaryTargetData: NSObject, NSCoding, Codable, NSSecureCoding {
         self.activeUntilDate = activeUntilDate
     }
 
-    // MARK:- NSCoding interface implementation
-    
     /*
         Code to deserialize BgData content. The error handling is needed in case that old serialized
         data leads to an error.
@@ -44,10 +46,6 @@ class TemporaryTargetData: NSObject, NSCoding, Codable, NSSecureCoding {
         if let activeUntilDate = decoder.decodeObject(forKey: "activeUntilDate") as? Date {
             self.activeUntilDate = activeUntilDate
         }
-    }
-    
-    static var supportsSecureCoding: Bool {
-        return true
     }
     
     /*

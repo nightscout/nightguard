@@ -15,7 +15,7 @@ import Foundation
 // Normally these are sensor glucose values (sgv).
 // If the value is a metered value, isMeteredBloodGlucoseValue will be true.
 // These values will be rendered as red dots in the chart later on.
-class BloodSugar : NSCoder, NSSecureCoding, NSCoding {
+class BloodSugar : NSCoder, NSSecureCoding {
     
     static var supportsSecureCoding: Bool {
         return true

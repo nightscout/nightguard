@@ -8,10 +8,13 @@
 
 import Foundation
 
-class Treatment: NSObject, NSCoding, Codable {
+class Treatment: NSObject, NSSecureCoding, Codable {
     
     public var id : String
     public var timestamp : Double
+    static var supportsSecureCoding: Bool {
+        return true
+    }
     
     public init(id : String, timestamp : Double) {
         self.id = id
@@ -22,8 +25,6 @@ class Treatment: NSObject, NSCoding, Codable {
         case id
         case timestamp
     }
-    
-    // MARK:- NSCoding interface implementation
     
     /*
         Code to deserialize Treatment content. The error handling is needed in case that old serialized

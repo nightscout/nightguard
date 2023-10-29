@@ -13,17 +13,19 @@ struct NightguardTimelineProvider: TimelineProvider {
     
     func getSnapshot(in context: Context, completion: @escaping (NightscoutDataEntry) -> Void) {
         
-        completion(getTimelineData())
+        getTimelineData { nightscoutDataEntry in
+            completion(nightscoutDataEntry)
+        }
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<NightscoutDataEntry>) -> Void) {
         
-        var entries: [NightscoutDataEntry] = []
-
-        entries.append(getTimelineData())
-        
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+        getTimelineData { nightscoutDataEntry in
+            
+            var entries: [NightscoutDataEntry] = []
+            entries.append(nightscoutDataEntry)
+            completion(Timeline(entries: entries, policy: .atEnd))
+        }
     }
     
     
@@ -59,43 +61,46 @@ struct NightguardTimelineProvider: TimelineProvider {
         completion(timeline)
     }*/
     
-    private func getTimelineData() -> NightscoutDataEntry {
+    private func getTimelineData(completion: @escaping (NightscoutDataEntry) -> Void) {
         
         let data = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
-        let bloodSugarValues = NightscoutCacheService.singleton.loadTodaysData {_ in }
         
-        let bgEntries = bloodSugarValues.map() {bgValue in
-            return BgEntry(
-                value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
-                valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                delta: "0", timestamp: bgValue.timestamp)
-        }
-        var reducedEntries = bgEntries
-        if bgEntries.count > 3 {
-            reducedEntries = []
-            for i in bgEntries.count-4..<bgEntries.count {
-                reducedEntries.append(bgEntries[i])
+        NightscoutService.singleton.readTodaysChartData(oldValues: []) { (bloodSugarValues: [BloodSugar]) in
+            
+            
+            let bgEntries = bloodSugarValues.map() {bgValue in
+                return BgEntry(
+                    value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
+                    valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
+                    delta: "0", timestamp: bgValue.timestamp)
             }
+            var reducedEntries = bgEntries
+            if bgEntries.count > 3 {
+                reducedEntries = []
+                for i in bgEntries.count-4..<bgEntries.count {
+                    reducedEntries.append(bgEntries[i])
+                }
+            }
+            
+            let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries)
+            
+            let entry = NightscoutDataEntry(
+                date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
+                sgv: UnitsConverter.mgdlToDisplayUnits(data.sgv),
+                sgvColor: UIColorChanger.getBgColor(data.sgv),
+                bgdeltaString: UnitsConverter.mgdlToDisplayUnitsWithSign(data.bgdeltaString),
+                bgdeltaColor: UIColorChanger.getDeltaLabelColor(data.bgdelta),
+                bgdeltaArrow: data.bgdeltaArrow,
+                bgdelta: data.bgdelta,
+                time: data.time,
+                battery: data.battery,
+                iob: data.iob,
+                cob: data.cob,
+                lastBGValues: reducedEntriesWithDelta.reversed(),
+                configuration: ConfigurationIntent())
+            
+            completion(entry)
         }
-        
-        let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries)
-        
-        let entry = NightscoutDataEntry(
-            date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
-            sgv: UnitsConverter.mgdlToDisplayUnits(data.sgv),
-            sgvColor: UIColorChanger.getBgColor(data.sgv),
-            bgdeltaString: UnitsConverter.mgdlToDisplayUnitsWithSign(data.bgdeltaString),
-            bgdeltaColor: UIColorChanger.getDeltaLabelColor(data.bgdelta),
-            bgdeltaArrow: data.bgdeltaArrow,
-            bgdelta: data.bgdelta,
-            time: data.time,
-            battery: data.battery,
-            iob: data.iob,
-            cob: data.cob,
-            lastBGValues: reducedEntriesWithDelta.reversed(),
-            configuration: ConfigurationIntent())
-        
-        return entry
     }
     
     private func calculateDeltaValues(_ reducedEntries: [BgEntry]) -> [BgEntry] {

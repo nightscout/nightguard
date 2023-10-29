@@ -25,8 +25,6 @@ class CarbCorrectionTreatment : Treatment {
         case carbs
     }
     
-    // MARK:- NSCoding interface implementation
-    
     /*
         Code to deserialize Treatment content. The error handling is needed in case that old serialized
         data leads to an error.
