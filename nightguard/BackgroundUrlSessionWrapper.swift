@@ -11,7 +11,7 @@ import Foundation
 class BackgroundUrlSessionWrapper {
     
     private static var optionalUrlSession : URLSession? = nil
-    public var urlSession : URLSession!
+    public var urlSession : URLSession
     
     public static let singleton = BackgroundUrlSessionWrapper()
     

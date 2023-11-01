@@ -88,7 +88,7 @@ class ChartPainter {
         
         paintFullHourText(safeContext)
      
-        paintBGValueLabels(context!, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
+        paintBGValueLabels(safeContext, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue, maxBgValue: CGFloat(maximumYValue))
         
         var nrOfDay = 0
         var positionOfCurrentValue = 0
@@ -99,10 +99,10 @@ class ChartPainter {
                 continue
             }
             let (sgvs, mbgs) = extractSgvs(allValues: bloodValues)
-            paintBloodValues(context!, bgValues: sgvs, foregroundColor: getColor(nrOfDay, useContrastfulColors: useContrastfulColors).cgColor, maxBgValue: maxBgValue)
+            paintBloodValues(safeContext, bgValues: sgvs, foregroundColor: getColor(nrOfDay, useContrastfulColors: useContrastfulColors).cgColor, maxBgValue: maxBgValue)
             if (nrOfDay == 1) {
-                paintMeteredBloodValues(context!, mbgs: mbgs, sgvs: sgvs, maxBgValue: maxBgValue)
-                paintTreatments(context!, bgValues: sgvs, maxBgValue: maxBgValue)
+                paintMeteredBloodValues(safeContext, mbgs: mbgs, sgvs: sgvs, maxBgValue: maxBgValue)
+                paintTreatments(safeContext, bgValues: sgvs, maxBgValue: maxBgValue)
             }
             if nrOfDay == 1 && bloodValues.count > 0 {
                 positionOfCurrentValue = Int(calcXValue(bloodValues.last?.timestamp ?? 0))
@@ -352,7 +352,7 @@ class ChartPainter {
         // paint the upper/lower bounds text
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
-        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForMeteredBg())!,
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForMeteredBg()) ?? UIFont.systemFont(ofSize: fontSizeForChartSize()),
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.nightguardYellow()]
         
@@ -375,7 +375,7 @@ class ChartPainter {
         // paint the upper/lower bounds text
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
-        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize()) ?? UIFont.systemFont(ofSize: fontSizeForChartSize()),
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.white]
         
@@ -403,7 +403,7 @@ class ChartPainter {
         // paint the upper/lower bounds text
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
-        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize()) ?? UIFont.systemFont(ofSize: fontSizeForChartSize()),
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.white]
         
@@ -445,7 +445,7 @@ class ChartPainter {
         // paint the upper/lower bounds text
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
-        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize()) ?? UIFont.systemFont(ofSize: fontSizeForChartSize()),
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.gray]
         
@@ -507,7 +507,7 @@ class ChartPainter {
         // Draw the time
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize())!,
+        let attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: fontSizeForChartSize()) ?? UIFont.systemFont(ofSize: fontSizeForChartSize()),
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.gray]
         
@@ -525,7 +525,7 @@ class ChartPainter {
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        var attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: 14)!,
+        var attrs = [NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: 14) ?? UIFont.systemFont(ofSize: 14),
                      NSAttributedString.Key.paragraphStyle: paragraphStyle,
                      NSAttributedString.Key.foregroundColor: UIColor.gray]
         
@@ -667,7 +667,7 @@ class ChartPainter {
         
         let hour = (cal as NSCalendar).component(NSCalendar.Unit.hour, from: date)
         
-        let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options())!
+        let currentHour = (cal as NSCalendar).date(bySettingHour: hour, minute: 0, second: 0, of: date, options: NSCalendar.Options()) ?? Date()
         var nextHour = currentHour.addingTimeInterval(fullHour)
         
         // During daylight-savings the next hour can be the still the same

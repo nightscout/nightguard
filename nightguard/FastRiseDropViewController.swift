@@ -48,7 +48,7 @@ class FastRiseDropViewController: CustomFormViewController {
                 }
                 
                 }.cellSetup { cell, row in
-                    row.value = Double(UnitsConverter.mgdlToDisplayUnits("\(AlarmRule.deltaAmount.value)"))!
+                    row.value = Double(UnitsConverter.mgdlToDisplayUnits("\(AlarmRule.deltaAmount.value)"))
                     
                     let mmolUnits = (UserDefaultsRepository.units.value == .mmol)
                     cell.stepper.stepValue = mmolUnits ? 0.1 : 1

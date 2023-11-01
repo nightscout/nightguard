@@ -55,7 +55,7 @@ class NightscoutService {
                     return
                 }
                 
-                let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:Any]
+                let jsonArray : [String:Any] = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String : Any]
                 var sgvValues = [Int]()
                 for (key, value) in jsonArray {
                     if key == "sqv" {

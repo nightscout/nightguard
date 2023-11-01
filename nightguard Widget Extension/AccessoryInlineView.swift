@@ -15,8 +15,7 @@ struct AccessoryInlineView : View {
     var entry: NightscoutDataEntry
     
     var body: some View {
-        Text("| \(Date(timeIntervalSince1970: entry.time.doubleValue / 1000).toLocalTimeString()) " + "\(entry.sgv)\(entry.bgdeltaString)\(entry.bgdeltaArrow)")
-        
+        Text("| \(Date(timeIntervalSince1970:entry.lastBGValues.first?.timestamp ?? (Date().timeIntervalSinceNow - 3600) / 1000).toLocalTimeString()) " + "\(entry.lastBGValues.first?.value ?? "?")\(entry.lastBGValues.first?.delta ?? "?")")
             .widgetAccentable(true)
             .unredacted()
     }

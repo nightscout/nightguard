@@ -274,11 +274,12 @@ class MainViewModel: ObservableObject, Identifiable {
             self.temporaryBasal = "TB --"
         }
         
-        let temporaryTargetData = NightscoutCacheService.singleton.getTemporaryTargetData()
-        if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
-            self.temporaryTarget = "TT \(UnitsConverter.mgdlToDisplayUnits(String(describing: temporaryTargetData.targetTop))) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
-        } else {
-            self.temporaryTarget = "TT --"
+        NightscoutCacheService.singleton.getTemporaryTargetData() { temporaryTargetData in
+            if temporaryTargetData.activeUntilDate.remainingMinutes() > 0 {
+                self.temporaryTarget = "TT \(UnitsConverter.mgdlToDisplayUnits(String(describing: temporaryTargetData.targetTop))) \(temporaryTargetData.activeUntilDate.remainingMinutes())m"
+            } else {
+                self.temporaryTarget = "TT --"
+            }
         }
     }
     

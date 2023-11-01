@@ -74,7 +74,7 @@ class ChartScene : SKScene {
             return
         }
         
-        let chartTexture = SKTexture(image: chartImage!)
+        let chartTexture = SKTexture(image: chartImage ?? UIImage())
         let changeTextureAction = SKAction.setTexture(chartTexture)
         self.chartNode.run(changeTextureAction)
         self.chartNode.size = chartImage?.size ?? CGSize(width: 0, height: 0)

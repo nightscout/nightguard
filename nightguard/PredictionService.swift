@@ -70,7 +70,10 @@ class PredictionService {
             return 0
         }
         
-        let offsetMinutes = Int(Date().timeIntervalSince(nextHourReadings.first!.date) / 60)
+        guard let firstElement = nextHourReadings.first else {
+            return nil
+        }
+        let offsetMinutes = Int(Date().timeIntervalSince(firstElement.date) / 60)
         
         if let index = nextHourReadings.firstIndex(where: { $0.value < lowValue }) {
             return (index + 1) - offsetMinutes
@@ -94,8 +97,10 @@ class PredictionService {
             return 0
         }
 
-        
-        let offsetMinutes = Int(Date().timeIntervalSince(nextHourReadings.first!.date) / 60)
+        guard let firstElement = nextHourReadings.first else {
+            return nil
+        }
+        let offsetMinutes = Int(Date().timeIntervalSince(firstElement.date) / 60)
         
         if let index = nextHourReadings.firstIndex(where: { $0.value > highValue }) {
             return (index + 1) - offsetMinutes
@@ -131,7 +136,7 @@ class PredictionService {
             let yValues = readings.map { Double($0.value) }
 
             self.regression = BestMatchRegression()
-            self.regression!.train(x: xValues, y: yValues)
+            self.regression?.train(x: xValues, y: yValues)
             
             // cache the training readings
             self.trainingReadings = predictionTrainingReadings
@@ -142,13 +147,13 @@ class PredictionService {
         
         // get predictions for the next hour, for each minute
         let nextHour = (0...59).map { Date().addingTimeInterval(Double($0) * 60).timeIntervalSince1970 }
-        let y = nextHour.map { self.regression!.predict(x: $0) }
+        let y = nextHour.map { self.regression?.predict(x: $0) }
         
 //        print(y)
         
         // cache the prediction...
         prediction = (0..<nextHour.count).map { index in
-            return BloodSugar(value: Float(round(y[index])), timestamp: nextHour[index] * 1000,
+            return BloodSugar(value: Float(round(y[index] ?? 0)), timestamp: nextHour[index] * 1000,
                               isMeteredBloodGlucoseValue: false)
         }
         

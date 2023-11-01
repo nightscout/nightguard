@@ -30,6 +30,9 @@ struct AccessoryRectangularView : View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
+            if entry.lastBGValues.isEmpty {
+                Text("--- --- ---")
+            }
         }
         .widgetAccentable(true)
         .unredacted()

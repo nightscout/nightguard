@@ -45,7 +45,7 @@ class AlarmSound {
     
     fileprivate static var playingTimer: Timer?
     
-    fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")!
+    fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")
     fileprivate static var audioPlayer: AVAudioPlayer?
     fileprivate static let audioPlayerDelegate = AudioPlayerDelegate()
     
@@ -99,7 +99,10 @@ class AlarmSound {
         }
         
         // As a fallback: Play the default mp3 file
-        play(url: self.soundURL)
+        guard let soundURL = self.soundURL else {
+            return;
+        }
+        play(url: soundURL)
     }
     
     static func playDefaultSound() {
@@ -108,7 +111,10 @@ class AlarmSound {
             return
         }
         
-        play(url: self.soundURL)
+        guard let soundURL = self.soundURL else {
+            return;
+        }
+        play(url: soundURL)
     }
     
     fileprivate static func play(url : URL) {
@@ -247,6 +253,6 @@ fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Categ
 }
 
 fileprivate func calculateAbsoluteUrl(relativeURL : URL) -> URL {
-    let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     return URL(string: relativeURL.relativeString, relativeTo: documentsDirectoryURL) ?? relativeURL
 }

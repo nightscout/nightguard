@@ -19,4 +19,14 @@ extension View {
         }
         return "?"
     }
+    
+    func calculateAgeInMinutes(fromDouble timestamp: Double) -> String {
+        let timestampAsDate = Date(timeIntervalSince1970: timestamp / 1000)
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.minute], from: timestampAsDate, to: Date())
+        if let ageInMinutes = components.minute {
+            return "\(ageInMinutes)"
+        }
+        return "?"
+    }
 }

@@ -16,17 +16,22 @@ struct AccessoryCircularGaugeView : View {
     
     var body: some View {
         
-        Gauge(value: Double(calculateAgeInMinutes(from: entry.time)) ?? 0, in: 0...60) {
-            Text("\(entry.bgdeltaArrow)")
+        Gauge(value: Double(
+            calculateAgeInMinutes(
+                fromDouble: entry.lastBGValues.first?.timestamp ?? Date().timeIntervalSinceNow - 3600)) ?? 60,
+              in: 0...60) {
+            Text("\(entry.lastBGValues.first?.delta ?? "?")")
             .foregroundColor(
-                Color(entry.bgdeltaColor))
+                Color(UIColorChanger.getDeltaLabelColor(
+                    Float(entry.lastBGValues.first?.delta ?? "99") ?? 99)))
         } currentValueLabel: {
-            Text(entry.sgv)
+            Text(entry.lastBGValues.first?.value ?? "??")
             .foregroundColor(
-                Color(entry.sgvColor))
+                Color(UIColorChanger.getBgColor(entry.lastBGValues.first?.value ?? "999")))
         }
         .tint(
-            Color(UIColorChanger.getTimeLabelColor(entry.time)))
+            Color(UIColorChanger.getTimeLabelColor(
+                fromDouble: entry.lastBGValues.first?.timestamp ?? Date().timeIntervalSinceNow - 3600)))
         
         .gaugeStyle(.accessoryCircular)
         .widgetAccentable(true)

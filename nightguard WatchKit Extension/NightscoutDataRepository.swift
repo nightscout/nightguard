@@ -47,7 +47,7 @@ class NightscoutDataRepository {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         NSKeyedArchiver.setClassName("NightscoutData", for: NightscoutData.self)
         try?
-            defaults!.set(
+            defaults?.set(
                 NSKeyedArchiver.archivedData(withRootObject: bgData, requiringSecureCoding: true),
                 forKey: Constants.currentBgData)
         
@@ -107,7 +107,7 @@ class NightscoutDataRepository {
     
     func storeYesterdaysDayOfTheYear(yesterdaysDayOfTheYear : Int) {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(yesterdaysDayOfTheYear, forKey: Constants.yesterdaysDayOfTheYear)
+        defaults?.set(yesterdaysDayOfTheYear, forKey: Constants.yesterdaysDayOfTheYear)
     }
     
     func loadCannulaChangeTime() -> Date {
@@ -124,7 +124,7 @@ class NightscoutDataRepository {
     
     func storeCannulaChangeTime(cannulaChangeTime : Date) {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(cannulaChangeTime, forKey: Constants.cannulaChangeTime)
+        defaults?.set(cannulaChangeTime, forKey: Constants.cannulaChangeTime)
     }
     
     func loadSensorChangeTime() -> Date {
@@ -141,7 +141,7 @@ class NightscoutDataRepository {
     
     func storeSensorChangeTime(sensorChangeTime : Date) {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(sensorChangeTime, forKey: Constants.sensorChangeTime)
+        defaults?.set(sensorChangeTime, forKey: Constants.sensorChangeTime)
     }
     
     func loadBatteryChangeTime() -> Date {
@@ -158,14 +158,14 @@ class NightscoutDataRepository {
     
     func storeBatteryChangeTime(batteryChangeTime : Date) {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(batteryChangeTime, forKey: Constants.batteryChangeTime)
+        defaults?.set(batteryChangeTime, forKey: Constants.batteryChangeTime)
     }
     
     func storeDeviceStatusData(deviceStatusData : DeviceStatusData) {
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         NSKeyedArchiver.setClassName("DeviceStatusData", for: DeviceStatusData.self)
-        defaults!.set(try? NSKeyedArchiver.archivedData(withRootObject: deviceStatusData, requiringSecureCoding: true), forKey: Constants.deviceStatus)
+        defaults?.set(try? NSKeyedArchiver.archivedData(withRootObject: deviceStatusData, requiringSecureCoding: true), forKey: Constants.deviceStatus)
     }
     
     func loadDeviceStatusData() -> DeviceStatusData {
@@ -191,7 +191,7 @@ class NightscoutDataRepository {
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
         NSKeyedArchiver.setClassName("TemporaryTargetData", for: TemporaryTargetData.self)
-        defaults!.set(try? NSKeyedArchiver.archivedData(withRootObject: temporaryTargetData, requiringSecureCoding: true), forKey: Constants.temporaryTarget)
+        defaults?.set(try? NSKeyedArchiver.archivedData(withRootObject: temporaryTargetData, requiringSecureCoding: true), forKey: Constants.temporaryTarget)
     }
     
     func loadTemporaryTargetData() -> TemporaryTargetData {
@@ -218,7 +218,7 @@ class NightscoutDataRepository {
         print("Storing \(bgData.count) using key \(keyName)")
         
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults!.set(
+        defaults?.set(
             try? NSKeyedArchiver.archivedData(withRootObject: bgData, requiringSecureCoding: true),
             forKey: keyName)
     }

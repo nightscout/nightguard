@@ -107,16 +107,22 @@ class NightscoutCacheService: NSObject {
         return currentNightscoutData
     }
     
-    func getTemporaryTargetData() -> TemporaryTargetData {
+    func getTemporaryTargetData(_ completion: @escaping (TemporaryTargetData) -> Void) {
+        
+        let temporaryTargetData = NightscoutDataRepository.singleton.loadTemporaryTargetData()
+        // Load new Targets after 5 minutes only:
+        if temporaryTargetData.isUpToDate() {
+            completion(temporaryTargetData)
+            return
+        }
         
         NightscoutService.singleton.readLastTemporaryTarget(daysToGoBackInTime: 1, resultHandler:  { (temporaryTargetData: TemporaryTargetData?) in
             
                 if let temporaryTargetData = temporaryTargetData {
                     NightscoutDataRepository.singleton.storeTemporaryTargetData(temporaryTargetData: temporaryTargetData)
+                    completion(temporaryTargetData)
                 }
             })
-        
-        return NightscoutDataRepository.singleton.loadTemporaryTargetData()
     }
     
     func getTodaysBgData() -> [BloodSugar] {
@@ -251,8 +257,12 @@ class NightscoutCacheService: NSObject {
     
     // check if the stored yesterdaysvalues are from a day before
     fileprivate func yesterdaysValuesAreOutdated() -> Bool {
-        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-        let newYesterdayDayOfTheYear = Calendar.current.ordinality(of: .day, in: .year, for: yesterday)!
+        guard let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date()) else {
+            return false
+        }
+        guard let newYesterdayDayOfTheYear = Calendar.current.ordinality(of: .day, in: .year, for: yesterday) else {
+            return false
+        }
         
         return newYesterdayDayOfTheYear != yesterdaysDayOfTheYear
     }

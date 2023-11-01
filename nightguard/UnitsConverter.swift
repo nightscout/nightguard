@@ -167,7 +167,7 @@ class UnitsConverter {
             return value
         }
         
-        return String(value[..<value.firstIndex(of: ".")!])
+        return String(value[..<(value.firstIndex(of: ".") ?? value.endIndex)])
     }
     
     static fileprivate func removeDecimals(_ value : Float) -> Float {

@@ -78,6 +78,18 @@ class UIColorChanger {
         }
     }
     
+    static func getTimeLabelColor(fromDouble lastUpdate : Double) -> UIColor {
+        
+        let lastUpdateAsNSDate : Date = Date(timeIntervalSince1970: lastUpdate / 1000)
+        let timeInterval : Int = Int(Date().timeIntervalSince(lastUpdateAsNSDate))
+        if (timeInterval > 15*60) {
+            return UIColor.nightguardRed()
+        } else if (timeInterval > 7*60) {
+            return UIColor.nightguardYellow()
+        } else {
+            return UIColor.white
+        }
+    }
     static func getBatteryLabelColor(_ percentageString : String) -> UIColor {
         
         guard let percentage : Int = Int(percentageString.removing(charactersOf: "%")) else {

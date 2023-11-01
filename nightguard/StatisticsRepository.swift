@@ -21,7 +21,7 @@ class StatisticsRepository {
     // If the day is not available or older than 30 Minutes, nil will be returned
     func readDay(_ nr : Int) -> [BloodSugar]? {
         
-        if lastSave == nil || TimeService.isOlderThan30Minutes(lastSave!) {
+        if lastSave == nil || TimeService.isOlderThan30Minutes(lastSave ?? Date()) {
             return nil
         }
         

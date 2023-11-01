@@ -19,7 +19,9 @@ class AppleHealthService: NSObject {
     let MAX_BACKFILL_COUNT: Int = 10000
     
     private func backFillAndSync(currentBgData: [BloodSugar]) -> Void {
-        let earliest: Date = currentBgData.map { $0.date }.min()!
+        guard let earliest: Date = (currentBgData.map { $0.date }.min()) else {
+            return
+        }
         let lastSyncDate: Date = UserDefaultsRepository.appleHealthLastSyncDate.value
         
         if (earliest <= lastSyncDate) {
@@ -63,7 +65,9 @@ class AppleHealthService: NSObject {
             }
 
         if (!hkQuantitySamples.isEmpty) {
-            let mostRecent: Date = bgData.map{ $0.date }.max()!
+            guard let mostRecent: Date = (bgData.map{ $0.date }.max()) else {
+                return
+            }
             UserDefaultsRepository.appleHealthLastSyncDate.value = mostRecent
 
             healthKitStore.save(hkQuantitySamples) { (success, error) in

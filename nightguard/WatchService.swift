@@ -44,7 +44,7 @@ class WatchService {
             if lastSentNightscoutDataTime != nightscoutData.time {
                 // Assuring we are sending ONLY once a nightscout data...
                 // ... and respecting the update rate!
-                if let lastWatchUpdateTime = self.lastWatchUpdateTime, Calendar.current.date(byAdding: .minute, value: self.watchUpdateRate, to: lastWatchUpdateTime)! >= Date() {
+                if let lastWatchUpdateTime = self.lastWatchUpdateTime, (Calendar.current.date(byAdding: .minute, value: self.watchUpdateRate, to: lastWatchUpdateTime) ?? Date()) >= Date() {
                     
                     // do nothing, last watch update was more recent than update rate, will skip updating it now!
                 } else {

@@ -135,7 +135,11 @@ class UserInteractionDetectorWindow: UIWindow {
             // create the overlay "dim view" - a transparent view will be a default, it will catch the first user interaction, then it will be removed from screen
             let viewType = dimScreenViewType ?? UIView.self
             dimView = viewType.init(frame: CGRect(origin: self.bounds.origin, size: self.bounds.size))
-            addSubview(dimView!)
+            
+            guard let dimView = dimView else {
+                return
+            }
+            addSubview(dimView)
     
             // reduce screen brightness
             DispatchQueue.main.async {

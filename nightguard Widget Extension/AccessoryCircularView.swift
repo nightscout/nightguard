@@ -15,12 +15,13 @@ struct AccessoryCircularView : View {
     var entry: NightscoutDataEntry
     
     var body: some View {
-        Text("\(calculateAgeInMinutes(from: entry.time))m")
-        Text("\(entry.sgv)")
-            .foregroundColor(Color(entry.sgvColor))
-        Text("\(entry.bgdeltaString)")
+        Text("\(calculateAgeInMinutes(fromDouble: entry.lastBGValues.first?.timestamp ?? Date().timeIntervalSinceNow-3600))m")
+        Text("\(entry.lastBGValues.first?.value ?? "??")")
             .foregroundColor(
-                Color(UIColorChanger.getDeltaLabelColor(entry.bgdelta)))
+                Color(UIColorChanger.getBgColor(entry.lastBGValues.first?.value ?? "999")))
+        Text("\(entry.lastBGValues.first?.delta ?? "?")")
+            .foregroundColor(
+                Color(UIColorChanger.getDeltaLabelColor(Float(entry.lastBGValues.first?.delta ?? "99") ?? 99.0)))
         .widgetAccentable(true)
         .unredacted()
     }

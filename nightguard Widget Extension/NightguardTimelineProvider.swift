@@ -24,7 +24,9 @@ struct NightguardTimelineProvider: TimelineProvider {
             
             var entries: [NightscoutDataEntry] = []
             entries.append(nightscoutDataEntry)
-            completion(Timeline(entries: entries, policy: .atEnd))
+            // ask for a refresh after 5 Minutes:
+            completion(Timeline(entries: entries, policy:
+                    .after(Calendar.current.date(byAdding: .minute, value: 5, to: Date()) ?? Date())))
         }
     }
     
@@ -66,7 +68,6 @@ struct NightguardTimelineProvider: TimelineProvider {
         let data = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         
         NightscoutService.singleton.readTodaysChartData(oldValues: []) { (bloodSugarValues: [BloodSugar]) in
-            
             
             let bgEntries = bloodSugarValues.map() {bgValue in
                 return BgEntry(
