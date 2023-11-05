@@ -115,11 +115,11 @@ class UserDefaultsRepository {
         token = nil
         let urlString = baseUri.value
         if !urlString.isEmpty {
-            url = URL(string: urlString)
+            url = URL(string: urlString)!
             let tokenString = url?.valueOf("token")
             if ((tokenString) != nil) {
-                token = String(describing: tokenString)
-                print(token ?? "Token can't be extracted from url...")
+                token = String(describing: tokenString!)
+                print(token!)
             }
         }
     }
@@ -146,11 +146,12 @@ class UserDefaultsRepository {
         if (url == nil) {
             parseBaseUri()
         }
-        guard var url = url else {
+        guard url != nil else {
             return nil
         }
-        url.appendPathComponent(path, isDirectory: false)
-        guard var urlComponents = URLComponents(string: String(describing: url)) else {
+        var requestUri = url!
+        requestUri.appendPathComponent(path, isDirectory: false)
+        guard var urlComponents = URLComponents(string: String(describing: requestUri)) else {
             return nil
         }
         urlComponents.queryItems = []
@@ -161,8 +162,8 @@ class UserDefaultsRepository {
         if (token != nil) {
             urlComponents.queryItems?.append(URLQueryItem(name: "token", value: String(describing: token!)))
         }
-        print(urlComponents.url ?? "Url can't be parsed!")
-        return urlComponents.url ?? nil
+        print(urlComponents.url)
+        return urlComponents.url
     }
     
     static let temporaryTargetReason = UserDefaultsValue<String>(key: "temporaryTargetReason", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargeReasont") as? String) ?? "Too Low")
