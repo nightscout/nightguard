@@ -162,7 +162,7 @@ class UserDefaultsRepository {
         if (token != nil) {
             urlComponents.queryItems?.append(URLQueryItem(name: "token", value: String(describing: token!)))
         }
-        print(urlComponents.url)
+        print(urlComponents.url ?? "")
         return urlComponents.url
     }
     

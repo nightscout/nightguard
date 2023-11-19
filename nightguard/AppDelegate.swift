@@ -9,11 +9,13 @@
 import UIKit
 import MediaPlayer
 import WatchConnectivity
+import BackgroundTasks
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let appProcessingTaskId = "de.my-wan.dhe.nightguard.background"
     
     // Delegate Requests from the Watch to the WatchMessageService
     var session: WCSession? {
@@ -35,11 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = UIColor.white
 
         UITextField.appearance().keyboardAppearance = .dark
-        
-        // This application should be called in background every X Minutes
-        UIApplication.shared.setMinimumBackgroundFetchInterval(
-            TimeInterval(BackgroundRefreshSettings.backgroundFetchInterval * 60)
-        )
         
         // set "prevent screen lock" to ON when the app is started for the first time
         if !SharedUserDefaultsRepository.screenlockSwitchState.exists {
@@ -79,8 +76,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         dimScreenOnIdle()
         
+        // Enable Background Updates
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: appProcessingTaskId, using: nil) { task in
+
+            self.handelBackgroundProcessing(task as! BGProcessingTask)
+        }
+        
         return true
     }
+    
+    func handelBackgroundProcessing(_ task: BGProcessingTask) {
+        
+        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
+            
+            guard let result = result else {
+                task.setTaskCompleted(success: false)
+                return
+            }
+            
+            switch result {
+            case .error(let error):
+                NSLog("handelBackgroundProcessing - unable to load current Nightscout Data: \(error)")
+                task.setTaskCompleted(success: false)
+            case .data(_):
+                // The new data has already been stored locally. Use it to determine wheter alerts have to be send:
+                AlarmNotificationService.singleton.notifyIfAlarmActivated()
+                WatchService.singleton.sendToWatchCurrentNightwatchData()
+                task.setTaskCompleted(success: true)
+            }
+        }
+        
+        scheduleBackgroundProcessing()
+    }
+    
+    func scheduleBackgroundProcessing() {
+         let request = BGProcessingTaskRequest(identifier: appProcessingTaskId)
+         request.requiresNetworkConnectivity = true
+         request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
+
+         do {
+             BGTaskScheduler.shared.cancelAllTaskRequests()
+             try BGTaskScheduler.shared.submit(request)
+         } catch {
+             print("Could not schedule background fetch: (error)")
+         }
+     }
     
     func dimScreenOnIdle() {
         
@@ -191,6 +231,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Store the In-Memory Treatments
         UserDefaultsRepository.treatments.value = TreatmentsStream.singleton.treatments
+        
+        // Schedule Background Updates:
+        self.scheduleBackgroundProcessing()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

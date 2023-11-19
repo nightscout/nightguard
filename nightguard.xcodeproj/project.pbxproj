@@ -88,7 +88,6 @@
 		4330663423AFB3C600690C4A /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
 		4330663523AFB3D900690C4A /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
 		4330663623AFB3EB00690C4A /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
-		4330663723AFB3FD00690C4A /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		4330663823AFB41200690C4A /* UnitsConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62E81D143CF900DD7978 /* UnitsConverter.swift */; };
 		4330663923AFB58500690C4A /* AnyConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */; };
 		4330663A23AFB5B100690C4A /* UserDefaultsValueGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */; };
@@ -235,12 +234,9 @@
 		439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C391A1C0E295C00D89872 /* ChartPainterTest.swift */; };
 		439CBB1D28EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 439CBB2028EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition */; };
 		439CBB1E28EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 439CBB2028EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition */; };
-		439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
-		439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		43A0476B24D2023C0040D853 /* WKInterfaceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0476A24D2023C0040D853 /* WKInterfaceLabel.swift */; };
 		43AE645929E0172A000BEC95 /* NightguardTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D005E429DC9CBF003BCE92 /* NightguardTimelineProvider.swift */; };
 		43AE645A29E0173D000BEC95 /* NightscoutDataEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D005E529DC9CBF003BCE92 /* NightscoutDataEntry.swift */; };
-		43B16087200D37560058198B /* BackgroundUrlSessionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */; };
 		43B303DC29E54BD100AB260B /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		43B303DD29E54BD200AB260B /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		43B303DE29E54C7700AB260B /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
@@ -636,7 +632,6 @@
 		439CBB2128EED15A0036A0E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/nightguard_Widget_Extension.intentdefinition; sourceTree = "<group>"; };
 		439CBB2528EED3490036A0E8 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/nightguard_Widget_Extension.strings"; sourceTree = "<group>"; };
 		439CBB2628EED3520036A0E8 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/nightguard_Widget_Extension.strings; sourceTree = "<group>"; };
-		439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundUrlSessionWrapper.swift; sourceTree = "<group>"; };
 		43A0476A24D2023C0040D853 /* WKInterfaceLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKInterfaceLabel.swift; sourceTree = "<group>"; };
 		43B303E229E9F52D00AB260B /* AccessoryCornerGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryCornerGaugeView.swift; sourceTree = "<group>"; };
 		43B303E529E9F68800AB260B /* AccessoryCircularGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryCircularGaugeView.swift; sourceTree = "<group>"; };
@@ -883,7 +878,6 @@
 				43F1E0FA1D07698000C329A2 /* NightscoutData.swift */,
 				43F1E11A1D076D9700C329A2 /* TimeService.swift */,
 				439C39171C0E002F00D89872 /* ChartPainter.swift */,
-				439FCEB71FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift */,
 				D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */,
 				4303406824C9FF330088AB9A /* DeviceStatusData.swift */,
 				43BB4B0424CF5DBA00DE96BB /* TemporaryTargetData.swift */,
@@ -1751,7 +1745,6 @@
 				D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */,
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
 				43E9F70227386C9900C6AEB3 /* UIImageExtension.swift in Sources */,
-				439FCEB81FD5E97F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				D1D96CBA21FB0E910035A60E /* WatchMessageService.swift in Sources */,
 				D160D088220C537C002B4633 /* LowPredictionViewController.swift in Sources */,
 				D1ECDA1F2201075B002BE6F9 /* ObservationToken.swift in Sources */,
@@ -1900,7 +1893,6 @@
 				4330662B23AFB05800690C4A /* WatchMessageService.swift in Sources */,
 				D15055AE2200CF1F00F31C1F /* UserDefaultsValueGroups.swift in Sources */,
 				433AD0181CCE3FCB001A76CD /* UserDefaultsRepository.swift in Sources */,
-				43B16087200D37560058198B /* BackgroundUrlSessionWrapper.swift in Sources */,
 				4389A5282602AADE001F10AD /* TargetDataTest.swift in Sources */,
 				432E62F11D188A2A00DD7978 /* UnitsConverter.swift in Sources */,
 				D112DD3C21EB507E00ECFB5E /* PredictionServiceTest.swift in Sources */,
@@ -1976,7 +1968,6 @@
 				4378768524FAACD8009E163E /* TimerExtension.swift in Sources */,
 				4378767D24FAAC6D009E163E /* UIViewController+Extensions.swift in Sources */,
 				4378768224FAACAD009E163E /* Matrix.swift in Sources */,
-				4330663723AFB3FD00690C4A /* BackgroundUrlSessionWrapper.swift in Sources */,
 				4330662E23AFB22B00690C4A /* NightscoutCacheService.swift in Sources */,
 				4378768A24FAACFF009E163E /* ArrayExtension.swift in Sources */,
 				4378767424FAAB96009E163E /* UIApplicationExtension.swift in Sources */,
@@ -2006,7 +1997,6 @@
 				D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */,
 				D1ECDA212201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				43A0476B24D2023C0040D853 /* WKInterfaceLabel.swift in Sources */,
-				439FCEB91FD5EC2F009D18FD /* BackgroundUrlSessionWrapper.swift in Sources */,
 				D133079521C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
 				432E62EC1D15EFEC00DD7978 /* FloatExtension.swift in Sources */,
 				D133079F21C8D4CF00DC6879 /* PredictionService.swift in Sources */,
@@ -2453,7 +2443,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit Extension/scoutwatch WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 836;
+				CURRENT_PROJECT_VERSION = 837;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
@@ -2484,7 +2474,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit Extension/scoutwatch WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 836;
+				CURRENT_PROJECT_VERSION = 837;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
@@ -2513,7 +2503,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 836;
+				CURRENT_PROJECT_VERSION = 837;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = NO;
@@ -2543,7 +2533,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 836;
+				CURRENT_PROJECT_VERSION = 837;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = NO;
@@ -2660,7 +2650,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 836;
+				CURRENT_PROJECT_VERSION = 837;
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2701,7 +2691,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 836;
+				CURRENT_PROJECT_VERSION = 837;
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2737,10 +2727,9 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 836;
+				CURRENT_PROJECT_VERSION = 837;
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2758,6 +2747,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.complication2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -2780,10 +2770,9 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 836;
+				CURRENT_PROJECT_VERSION = 837;
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2800,6 +2789,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.complication2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

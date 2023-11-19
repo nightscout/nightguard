@@ -85,11 +85,7 @@ class AlarmNotificationService {
                 content.badge = NSNumber(value: sgv)
             }
         }
-        if #available(iOS 12.0, *) {
-            content.sound = UNNotificationSound.criticalSoundNamed(convertToUNNotificationSoundName("alarm-notification.m4a"), withAudioVolume: 0.6)
-        } else {
-            content.sound = UNNotificationSound(named: convertToUNNotificationSoundName("alarm-notification.m4a"))
-        }
+        content.sound = UNNotificationSound.criticalSoundNamed(convertToUNNotificationSoundName("alarm-notification.m4a"), withAudioVolume: 0.6)
         
         let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)

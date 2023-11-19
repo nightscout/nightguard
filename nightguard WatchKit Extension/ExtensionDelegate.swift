@@ -35,8 +35,6 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
     
     func applicationDidFinishLaunching() {
         
-        // Initialize the BackgroundUrlSession. This has to be an singleton that is used throughout the whole app
-//        BackgroundUrlSessionWrapper.setup(delegate: self)
         // Perform any final initialization of your application.
         activateWatchConnectivity()
         
