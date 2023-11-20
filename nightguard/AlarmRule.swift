@@ -94,6 +94,44 @@ class AlarmRule {
     }
     
     /*
+     Simpler alarm activation reason by just using the alarm ranges.
+     Therefore just the nightscoutData is sufficient for it to operate.
+     This is used during background updates and works faster consuming less
+     background budget.
+     */
+    static func determineAlarmActivationReasonBy(_ nightscoutData: NightscoutData) -> String? {
+        
+        if areAlertsGenerallyDisabled.value {
+            return nil
+        }
+        
+        if isSnoozed() {
+            return nil
+        }
+        
+        if nightscoutData.isOlderThanXMinutes(minutesWithoutValues.value) {
+            if noDataAlarmEnabled.value {
+                return NSLocalizedString("Missed Readings", comment: "noDataAlarmEnabled.value in AlarmRule Class")
+            } else {
+                
+                // no alarm at all... because old readings cannot be used for further alert evaluations
+                return nil
+            }
+        }
+        
+        let isTooHigh = AlarmRule.isTooHigh(Float(nightscoutData.sgv) ?? 0.0)
+        let isTooLow = AlarmRule.isTooLow(Float(nightscoutData.sgv) ?? 0.0)
+
+        if isTooHigh {
+            return NSLocalizedString("High BG", comment: "High BG in AlarmRule Class")
+        } else if isTooLow {
+            return NSLocalizedString("Low BG", comment: "Low BG in AlarmRule Class")
+        }
+        
+        return nil
+    }
+    
+    /*
      * Returns a reason (string) if the alarm is activated.
      * Returns nil if the alarm is snoozed or not active.
      */

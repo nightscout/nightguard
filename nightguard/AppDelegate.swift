@@ -98,9 +98,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             case .error(let error):
                 NSLog("handelBackgroundProcessing - unable to load current Nightscout Data: \(error)")
                 task.setTaskCompleted(success: false)
-            case .data(_):
+            case .data(let nightscoutData):
                 // The new data has already been stored locally. Use it to determine wheter alerts have to be send:
-                AlarmNotificationService.singleton.notifyIfAlarmActivated()
+                AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
                 task.setTaskCompleted(success: true)
             }

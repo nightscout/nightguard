@@ -91,6 +91,43 @@ class AlarmNotificationService {
         UNUserNotificationCenter.current().add(request)
     }
     
+    /*
+     * Trigger a local notification if alarm is activated (and the app is in background).
+     */
+    func notifyIfAlarmActivated(_ nightscoutData: NightscoutData) {
+        
+        // PRECONDITIONS:
+        // 1. service should be enabled
+        guard enabled else {
+            return
+        }
+        
+        // s. alarm should be active
+        guard let alarmActivationReason = AlarmRule.determineAlarmActivationReasonBy(nightscoutData) else {
+            return
+        }
+
+        // trigger notification
+        let content = UNMutableNotificationContent()
+        let units = UserDefaultsRepository.units.value.description
+
+        content.title =
+            "\(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)) " +
+            "\(nightscoutData.bgdeltaArrow)\t\(UnitsConverter.mgdlToDisplayUnitsWithSign(nightscoutData.bgdeltaString)) " +
+            "\(units)"
+        content.body = "\(alarmActivationReason)"
+        if let sgv = Float(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)) {
+            // display the current sgv on appbadge only if the user actived it:
+            if SharedUserDefaultsRepository.showBGOnAppBadge.value {
+                content.badge = NSNumber(value: sgv)
+            }
+        }
+        content.sound = UNNotificationSound.criticalSoundNamed(convertToUNNotificationSoundName("alarm-notification.m4a"), withAudioVolume: 0.6)
+        
+        let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request)
+    }
+    
     private init() {
     }
 }
