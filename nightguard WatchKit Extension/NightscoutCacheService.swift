@@ -40,23 +40,29 @@ class NightscoutCacheService: NSObject {
     
     // are there any running "todays bg data" requests?
     var hasTodaysBgDataPendingRequests: Bool {
-        return todaysBgDataTasks.contains(where: { task in task.state == .running })
+        serialQueue.sync {
+            return todaysBgDataTasks.contains(where: { task in task.state == .running })
+        }
     }
 
     // are there any running "yesterdays bg data" requests?
     var hasYesterdaysBgDataPendingRequests: Bool {
-        return yesterdaysBgDataTasks.contains(where: { task in task.state == .running })
+        serialQueue.sync {
+            return yesterdaysBgDataTasks.contains(where: { task in task.state == .running })
+        }
     }
 
     // are there any running "current nightscout data" requests?
     var hasCurrentNightscoutDataPendingRequests: Bool {
-        return currentNightscoutDataTasks.contains(where: { task in task.state == .running })
+        serialQueue.sync {
+            return currentNightscoutDataTasks.contains(where: { task in task.state == .running })
+        }
     }
 
     // During background updates, this value is modified from the ExtensionDelegate
     func updateCurrentNightscoutData(newNightscoutData : NightscoutData) {
         
-        // synchronize here to prevent concurrent modifciations when doing background
+        // synchronize here to prevent concurrent modifications when doing background
         // upates
         serialQueue.sync {
             currentNightscoutData = newNightscoutData
@@ -146,14 +152,16 @@ class NightscoutCacheService: NSObject {
     
     func loadCurrentNightscoutData(forceRefresh: Bool, _ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void) -> NightscoutData {
     
-        currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
-        
-        checkIfRefreshIsNeeded(resultHandler, forceRefresh: forceRefresh)
+        serialQueue.sync {
+            currentNightscoutData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
+            checkIfRefreshIsNeeded(resultHandler, forceRefresh: forceRefresh)
+        }
         
         return currentNightscoutData
     }
     
     func loadCurrentNightscoutData(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void) -> NightscoutData {
+        
         return loadCurrentNightscoutData(forceRefresh: false, resultHandler)
     }
     
@@ -161,33 +169,36 @@ class NightscoutCacheService: NSObject {
     func loadTodaysData(_ resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>?) -> Void)
         -> [BloodSugar] {
         
-        todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData)
-        
-        if todaysBgData.count == 0 || currentNightscoutData.isOlderThan5Minutes()
-            || currentNightscoutWasFetchedInBackground(todaysBgData: todaysBgData) {
+        serialQueue.sync {
+            todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData)
             
-            if let task = NightscoutService.singleton.readTodaysChartData(oldValues: todaysBgData, { [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
+            if todaysBgData.count == 0 || currentNightscoutData.isOlderThan5Minutes()
+                || currentNightscoutWasFetchedInBackground(todaysBgData: todaysBgData) {
                 
-                if case .data(let todaysBgData) = result {
-                    self.newDataReceived = true
-                
-                    self.todaysBgData = todaysBgData
-                    NightscoutDataRepository.singleton.storeTodaysBgData(todaysBgData)
+                if let task = NightscoutService.singleton.readTodaysChartData(oldValues: todaysBgData, { [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
+                    
+                    if case .data(let todaysBgData) = result {
+                        self.newDataReceived = true
+                    
+                        self.todaysBgData = todaysBgData
+                        NightscoutDataRepository.singleton.storeTodaysBgData(todaysBgData)
+                    }
+                    
+                    resultHandler(result)
+                }) {
+                    // cleanup (delete not running tasks) and add the current started one
+                    todaysBgDataTasks.removeAll(where: { task in task.state != .running })
+                    todaysBgDataTasks.append(task)
+                } else {
+                    resultHandler(nil)
                 }
-                
-                resultHandler(result)
-            }) {
-                // cleanup (delete not running tasks) and add the current started one
-                todaysBgDataTasks.removeAll(where: { task in task.state != .running })
-                todaysBgDataTasks.append(task)
             } else {
                 resultHandler(nil)
             }
-        } else {
-            resultHandler(nil)
+                
+            return todaysBgData
         }
-            
-        return todaysBgData
+ 
     }
     
     fileprivate func currentNightscoutWasFetchedInBackground(todaysBgData : [BloodSugar]) -> Bool {
@@ -242,9 +253,11 @@ class NightscoutCacheService: NSObject {
                     resultHandler(result)
                 }
             }) {
-                // cleanup (delete not running tasks) and add the current started one
-                yesterdaysBgDataTasks.removeAll(where: { task in task.state != .running })
-                yesterdaysBgDataTasks.append(task)
+                serialQueue.sync {
+                    // cleanup (delete not running tasks) and add the current started one
+                    yesterdaysBgDataTasks.removeAll(where: { task in task.state != .running })
+                    yesterdaysBgDataTasks.append(task)
+                }
             } else {
                 resultHandler(nil)
             }
@@ -287,9 +300,11 @@ class NightscoutCacheService: NSObject {
         if let task = NightscoutService.singleton.readCurrentData({ [unowned self] (result: NightscoutRequestResult<NightscoutData>) in
             
             if case .data(let newNightscoutData) = result {
-                self.currentNightscoutData = newNightscoutData
+                serialQueue.sync {
+                    self.currentNightscoutData = newNightscoutData
+                }
             
-                NightscoutDataRepository.singleton.storeCurrentNightscoutData(self.currentNightscoutData)
+                NightscoutDataRepository.singleton.storeCurrentNightscoutData(newNightscoutData)
             }
             
             resultHandler(result)
