@@ -164,12 +164,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AlarmRule.snoozeFromMessage(message)
         }
         
-        // Request an Alarm Notification Message
-        WatchMessageService.singleton.onMessage { (message: RequestAlarmNotificationMessage) in
-            
-            AlarmNotificationService.singleton.notifyIfAlarmActivated()
-        }
-        
         // request night safe phone settings
         WatchMessageService.singleton.onRequest { (request: RequestNightSafeMessage) in
             return ResponseNightSafeMessage(
@@ -246,38 +240,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
-    func application(_ application: UIApplication,
-        performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
-        // just refresh the current nightscout data
-        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
-            
-            // trigger notification alarm if needed and app is in background
-            if UIApplication.shared.applicationState != .active {
-                AlarmNotificationService.singleton.notifyIfAlarmActivated()
-            }
-            
-            // update app badge
-            if SharedUserDefaultsRepository.showBGOnAppBadge.value {
-                UIApplication.shared.setCurrentBGValueOnAppBadge()
-            }
-            
-            guard let result = result else {
-                completionHandler(.noData)
-                return
-            }
-            
-            // send data to watch & announce completion handler
-            switch result {
-            case .data:
-                WatchService.singleton.sendToWatchCurrentNightwatchData()
-                completionHandler(.newData)
-            case .error:
-                completionHandler(.failed)
-            }
-        }
     }
 }
 

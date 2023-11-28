@@ -12,7 +12,7 @@ import WidgetKit
 
 struct AccessoryCornerView : View {
     
-    var entry: NightscoutDataEntry
+    @State var entry: NightscoutDataEntry
     
     var body: some View {
         Text("\(entry.bgdeltaArrow)")

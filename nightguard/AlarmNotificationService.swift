@@ -34,11 +34,7 @@ class AlarmNotificationService {
         
         // enable local notifications (alarms in background)
         let authorizationOptions: UNAuthorizationOptions
-        if #available(iOS 12.0, *) {
-            authorizationOptions = [.badge, .alert, .sound, .criticalAlert]
-        } else {
-            authorizationOptions = [.badge, .alert, .sound]
-        }
+        authorizationOptions = [.badge, .alert, .sound, .criticalAlert]
         
         UNUserNotificationCenter.current().requestAuthorization(options: authorizationOptions) { (granted, error) in
             // Enable or disable features based on authorization.
@@ -59,12 +55,7 @@ class AlarmNotificationService {
             return
         }
         
-        // 2. app should be in background
-        guard UIApplication.shared.applicationState != .active else {
-            return
-        }
-        
-        // 3. alarm should be active
+        // 2. alarm should be active
         guard let alarmActivationReason = AlarmRule.getAlarmActivationReason() else {
             return
         }

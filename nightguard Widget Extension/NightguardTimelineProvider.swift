@@ -8,6 +8,7 @@
 
 import Foundation
 import WidgetKit
+import UserNotifications
 
 struct NightguardTimelineProvider: TimelineProvider {
     
@@ -100,8 +101,63 @@ struct NightguardTimelineProvider: TimelineProvider {
                 lastBGValues: reducedEntriesWithDelta.reversed(),
                 configuration: ConfigurationIntent())
             
+            let nightscoutData = NightscoutData()
+            nightscoutData.sgv = data.sgv
+            nightscoutData.bgdelta = data.bgdelta
+            nightscoutData.time = data.time
+            
+            notifyIfAlarmActivated(nightscoutData)
+            
             completion(entry)
         }
+    }
+    
+    private func notifyIfAlarmActivated(_ nightscoutData: NightscoutData) {
+        
+        // s. alarm should be active
+        guard let alarmActivationReason = determineAlarmActivationReasonBy(nightscoutData) else {
+            return
+        }
+
+        // trigger notification
+        let content = UNMutableNotificationContent()
+        let units = UserDefaultsRepository.units.value.description
+
+        content.title =
+            "\(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)) " +
+            "\(nightscoutData.bgdeltaArrow)\t\(UnitsConverter.mgdlToDisplayUnitsWithSign(nightscoutData.bgdeltaString)) " +
+            "\(units)"
+        content.body = "\(alarmActivationReason)"
+        content.sound = .defaultCritical
+        
+        let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    private func determineAlarmActivationReasonBy(_ nightscoutData: NightscoutData) -> String? {
+        
+        if nightscoutData.isOlderThanXMinutes(35) {
+            return NSLocalizedString("Missed Readings", comment: "noDataAlarmEnabled.value in AlarmRule Class")
+        }
+        
+        let isTooHigh = isTooHigh(Float(nightscoutData.sgv) ?? 0.0)
+        let isTooLow = isTooLow(Float(nightscoutData.sgv) ?? 0.0)
+
+        if isTooHigh {
+            return NSLocalizedString("High BG", comment: "High BG in AlarmRule Class")
+        } else if isTooLow {
+            return NSLocalizedString("Low BG", comment: "Low BG in AlarmRule Class")
+        }
+        
+        return nil
+    }
+    
+    private func isTooLow(_ bloodGlucose : Float) -> Bool {
+        return bloodGlucose < 80
+    }
+    
+    private func isTooHigh(_ bloodGlucose : Float) -> Bool {
+        return bloodGlucose > 80
     }
     
     private func calculateDeltaValues(_ reducedEntries: [BgEntry]) -> [BgEntry] {

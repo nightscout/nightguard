@@ -43,6 +43,26 @@ class UIColorChanger {
         }
     }
     
+    // Changes the color to red if blood glucose is bad :-/
+    static func getBgColorFromMgdl(_ bgInMgdl : String) -> UIColor {
+
+        guard let bgNumber : Float = Float(bgInMgdl) else {
+            return UIColor.white
+        }
+        
+        if bgNumber > 200 {
+            return UIColor.nightguardRed()
+        } else if bgNumber > 180 {
+            return UIColor.nightguardYellow()
+        } else if bgNumber > 70 {
+            return UIColor.nightguardGreen()
+        } else if bgNumber > 55 {
+            return UIColor.nightguardYellow()
+        } else {
+            return UIColor.nightguardRed()
+        }
+    }
+    
     static func getDeltaLabelColor(_ bgdelta : Float) -> UIColor {
         
         let absoluteDelta = abs(bgdelta)
