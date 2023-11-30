@@ -170,11 +170,6 @@ class AlarmSound {
             return
         }
         
-        // application should be in active state!
-        guard UIApplication.shared.applicationState == .active else {
-            return
-        }
-        
         if self.overrideSystemOutputVolume.value {
 
             // keep the system output volume before overriding it

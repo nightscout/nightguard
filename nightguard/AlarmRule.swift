@@ -304,6 +304,7 @@ class AlarmRule {
         return true
     }
     
+    #if MAIN_APP || WATCH_APP
     /*
      * Snoozes all alarms for the next x minutes.
      */
@@ -335,6 +336,7 @@ class AlarmRule {
         snoozedUntilTimestamp.value = TimeInterval()
         SnoozeMessage(timestamp: snoozedUntilTimestamp.value).send()
     }
+    #endif
     
     /*
      * Returns true if the alarms are currently snoozed.

@@ -76,7 +76,9 @@ class AlarmNotificationService {
                 content.badge = NSNumber(value: sgv)
             }
         }
+        #if os(iOS)
         content.sound = UNNotificationSound.criticalSoundNamed(convertToUNNotificationSoundName("alarm-notification.m4a"), withAudioVolume: 0.6)
+        #endif
         
         let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
@@ -104,7 +106,7 @@ class AlarmNotificationService {
 
         content.title =
             "\(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)) " +
-            "\(nightscoutData.bgdeltaArrow)\t\(UnitsConverter.mgdlToDisplayUnitsWithSign(nightscoutData.bgdeltaString)) " +
+            "\(UnitsConverter.mgdlToDisplayUnitsWithSign(nightscoutData.bgdeltaString)) " +
             "\(units)"
         content.body = "\(alarmActivationReason)"
         if let sgv = Float(UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)) {
@@ -113,7 +115,7 @@ class AlarmNotificationService {
                 content.badge = NSNumber(value: sgv)
             }
         }
-        content.sound = UNNotificationSound.criticalSoundNamed(convertToUNNotificationSoundName("alarm-notification.m4a"), withAudioVolume: 0.6)
+        content.sound = .defaultCritical
         
         let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)

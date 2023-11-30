@@ -85,33 +85,47 @@ struct NightguardTimelineProvider: TimelineProvider {
             }
             
             let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries)
+            let updatedData = updateDataWith(reducedEntriesWithDelta, data)
+            let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta)
             
-            let entry = NightscoutDataEntry(
-                date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
-                sgv: UnitsConverter.mgdlToDisplayUnits(data.sgv),
-                sgvColor: UIColorChanger.getBgColor(data.sgv),
-                bgdeltaString: UnitsConverter.mgdlToDisplayUnitsWithSign(data.bgdeltaString),
-                bgdeltaColor: UIColorChanger.getDeltaLabelColor(data.bgdelta),
-                bgdeltaArrow: data.bgdeltaArrow,
-                bgdelta: data.bgdelta,
-                time: data.time,
-                battery: data.battery,
-                iob: data.iob,
-                cob: data.cob,
-                lastBGValues: reducedEntriesWithDelta.reversed(),
-                configuration: ConfigurationIntent())
-            
-            let nightscoutData = NightscoutData()
-            nightscoutData.sgv = data.sgv
-            nightscoutData.bgdelta = data.bgdelta
-            nightscoutData.time = data.time
-            
-            notifyIfAlarmActivated(nightscoutData)
+            AlarmNotificationService.singleton.notifyIfAlarmActivated(updatedData)
             
             completion(entry)
         }
     }
     
+    private func updateDataWith(_ reducedEntries : [BgEntry], _ data: NightscoutData) -> NightscoutData{
+        // use the more recent retrieved bgEntries (if available):
+        if reducedEntries.isEmpty {
+            return data
+        }
+        
+        let updatedNightscoutData = NightscoutData()
+        updatedNightscoutData.sgv = reducedEntries.last?.value ?? "?"
+        updatedNightscoutData.bgdeltaString = reducedEntries.last?.delta ?? "?"
+        updatedNightscoutData.time = NSNumber(value: (reducedEntries.last?.timestamp ?? 0) * 1000)
+        
+        return updatedNightscoutData
+    }
+    
+    private func convertToTimelineEntry(_ data: NightscoutData, _ bgValues: [BgEntry]) -> NightscoutDataEntry {
+        
+        return NightscoutDataEntry(
+            date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
+            sgv: UnitsConverter.mgdlToDisplayUnits(data.sgv),
+            sgvColor: UIColorChanger.getBgColor(data.sgv),
+            bgdeltaString: UnitsConverter.mgdlToDisplayUnitsWithSign(data.bgdeltaString),
+            bgdeltaColor: UIColorChanger.getDeltaLabelColor(data.bgdelta),
+            bgdeltaArrow: data.bgdeltaArrow,
+            bgdelta: data.bgdelta,
+            time: data.time,
+            battery: data.battery,
+            iob: data.iob,
+            cob: data.cob,
+            lastBGValues: bgValues.reversed(),
+            configuration: ConfigurationIntent())
+    }
+
     private func notifyIfAlarmActivated(_ nightscoutData: NightscoutData) {
         
         // s. alarm should be active

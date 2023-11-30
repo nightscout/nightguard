@@ -20,7 +20,8 @@ class SharedUserDefaultsRepository {
         key: "showBGOnAppBadge",
         default: false,
         onChange: { show in
-            #if os(iOS)
+            // Should not be executed in Widgets or Complications:
+            #if os(iOS) && MAIN_APP
             if show {
                 UIApplication.shared.setCurrentBGValueOnAppBadge()
             } else {
@@ -29,7 +30,8 @@ class SharedUserDefaultsRepository {
             #endif
     })
     
-    #if os(iOS)
+    // Should not be executed in Widgets or Complications:
+    #if os(iOS) && MAIN_APP
     static let screenlockSwitchState = UserDefaultsValue<Bool>(
         key: "screenlockSwitchState",
         default: UIApplication.shared.isIdleTimerDisabled,

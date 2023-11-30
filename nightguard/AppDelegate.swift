@@ -118,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              BGTaskScheduler.shared.cancelAllTaskRequests()
              try BGTaskScheduler.shared.submit(request)
          } catch {
-             print("Could not schedule background fetch: (error)")
+             print("Could not schedule background fetch: \(error)")
          }
      }
     

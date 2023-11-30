@@ -9,6 +9,7 @@
 import UIKit
 import UserNotifications
 
+#if os(iOS) && MAIN_APP
 extension UIApplication {
     
     /*
@@ -27,6 +28,7 @@ extension UIApplication {
                 
                 // success!
                 dispatchOnMain {
+                    
                     UIApplication.shared.applicationIconBadgeNumber = sgvAsInt
                 }
             }
@@ -51,3 +53,4 @@ extension UIApplication {
         }
     }
 }
+#endif
