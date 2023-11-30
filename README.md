@@ -37,6 +37,15 @@ http://youtu.be/CEcqNyyv_kA
 
 # Developer Hints
 
+First install cocoapods and do a 
+```
+pod install
+```
+afterwards.
+
+Then simply open the Nightguard folder "nightguard" in xcode.
+If no scheme "nightguard" is existing, select "new Scheme" from the "Product|Scheme" Menu.
+
 I had to modify the Eureka SliderRow. If you would like to compile the project of your own, you will have to modify
 the SliderRow in the following way:
 
@@ -52,6 +61,8 @@ public final class SliderRow: Row<SliderCell>, RowType {
     }
 }
 ```
+
+Now you should be able to launch the app in the simulator. Happy Coding!
 
 # License
 
