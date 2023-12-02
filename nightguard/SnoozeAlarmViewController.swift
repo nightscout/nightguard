@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import WidgetKit
 
 class SnoozeAlarmViewController: UIViewController {
     
@@ -112,6 +113,7 @@ class SnoozeAlarmViewController: UIViewController {
         
         AlarmSound.unmuteVolume()
         AlarmRule.disableSnooze()
+        
         self.dismiss(animated: true, completion: nil)
         //self.presentingViewController?.dismiss(animated: true, completion: nil)
     }

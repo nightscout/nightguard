@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import WidgetKit
 
 /// A type that presents a key and a mutable value (type erased key-value)
 protocol UserDefaultsAnyValue {
@@ -53,6 +54,9 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
             
             // notify UserDefaultsValueGroups that value has changed
             UserDefaultsValueGroups.valueChanged(self)
+            
+            UserDefaultsValue.defaults.synchronize()
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     

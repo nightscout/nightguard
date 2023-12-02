@@ -25,8 +25,9 @@ class AlarmRule {
         key: "snoozedUntilTimestamp",
         default: TimeInterval(),
         onChange: { _ in
-            onSnoozeTimestampChanged?()
-    }).group(UserDefaultsValueGroups.GroupNames.alarm)
+            onSnoozeTimestampChanged?()})
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+        .group(UserDefaultsValueGroups.GroupNames.alarm)
     // NOTE that we're not synchronizing the snoozeTimestamp with watch. It is the custom SnoozeMessage that does that.
     
     // closure for listening to snooze timestamp changes
@@ -247,6 +248,7 @@ class AlarmRule {
     }
 
     fileprivate static func isTooLow(_ bloodGlucose : Float) -> Bool {
+        print(alertIfBelowValue.value)
         return bloodGlucose < alertIfBelowValue.value
     }
     
@@ -323,13 +325,6 @@ class AlarmRule {
     }
     
     /*
-     * Snooze called from a message received from the connected device (watch or phone).
-     */
-    static func snoozeFromMessage(_ message: SnoozeMessage) {
-        snoozedUntilTimestamp.value = message.timestamp
-    }
-    
-    /*
      * An eventually activated snooze will be disabled again.
      */
     static func disableSnooze() {
@@ -339,10 +334,18 @@ class AlarmRule {
     #endif
     
     /*
+     * Snooze called from a message received from the connected device (watch or phone).
+     */
+    static func snoozeFromMessage(_ message: SnoozeMessage) {
+        snoozedUntilTimestamp.value = message.timestamp
+    }
+    
+    /*
      * Returns true if the alarms are currently snoozed.
      */
     static func isSnoozed() -> Bool {
         let currentTimestamp = Date().timeIntervalSince1970
+        print(snoozedUntilTimestamp.value)
         return currentTimestamp < snoozedUntilTimestamp.value
     }
     

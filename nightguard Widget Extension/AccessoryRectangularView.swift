@@ -15,24 +15,27 @@ struct AccessoryRectangularView : View {
     var entry: NightscoutDataEntry
     
     var body: some View {
-        HStack {
-            VStack {
-                ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
-                    Text("\(calculateAgeInMinutes(from:NSNumber(value: bgEntry.timestamp)))m")
-                        .foregroundColor(Color(entry.sgvColor))
-                        .frame(maxWidth: .infinity, alignment: .trailing)
+        VStack {
+            HStack {
+                VStack {
+                    ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
+                        Text("\(calculateAgeInMinutes(from:NSNumber(value: bgEntry.timestamp)))m")
+                            .foregroundColor(Color(entry.sgvColor))
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
+                }
+                VStack {
+                    ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
+                        Text("\(String(bgEntry.value)) \(bgEntry.delta)")
+                            .foregroundColor(Color(entry.sgvColor))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                if entry.lastBGValues.isEmpty {
+                    Text("--- --- ---")
                 }
             }
-            VStack {
-                ForEach(entry.lastBGValues, id: \.self.id) { bgEntry in
-                    Text("\(String(bgEntry.value)) \(bgEntry.delta)")
-                        .foregroundColor(Color(entry.sgvColor))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-            if entry.lastBGValues.isEmpty {
-                Text("--- --- ---")
-            }
+            Text("\(entry.snoozedMinutes)min Snoozed")
         }
         .widgetAccentable(true)
         .unredacted()

@@ -91,9 +91,9 @@ class AlarmNotificationService {
         
         // PRECONDITIONS:
         // 1. service should be enabled
-        guard enabled else {
+        /*guard enabled else {
             return
-        }
+        }*/
         
         // s. alarm should be active
         guard let alarmActivationReason = AlarmRule.determineAlarmActivationReasonBy(nightscoutData) else {
