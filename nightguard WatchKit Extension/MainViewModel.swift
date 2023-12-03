@@ -78,7 +78,6 @@ class MainViewModel: ObservableObject, Identifiable {
     
     func refreshData(forceRefresh : Bool, moveToLatestValue : Bool) {
         
-        WidgetCenter.shared.reloadAllTimelines()
         showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
         
         loadCurrentBgData(forceRefresh: forceRefresh)

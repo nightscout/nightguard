@@ -26,6 +26,7 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     typealias ValueType = T
     
     // the value (strong typed)
+    var defaultValue: T
     var value: T {
         didSet {
             
@@ -107,8 +108,20 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
         }
         self.onChange = onChange
         self.validation = validation
+        self.defaultValue = defaultValue
     }
     
+    func getUpdatedValueFromUserDefaults() -> T {
+        if let anyValue = UserDefaultsValue.defaults.object(forKey: key), let value = T.fromAny(anyValue) as T? {
+            if let validation = validation {
+                return validation(value) ?? defaultValue
+            } else {
+                return value
+            }
+        } else {
+            return defaultValue
+        }
+    }
     /// Insert this value in a group, useful for observing changes in the whole group, instead of particular values
     func group(_ groupName: String) -> Self {
         UserDefaultsValueGroups.add(self, to: groupName)

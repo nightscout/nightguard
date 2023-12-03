@@ -122,7 +122,8 @@ struct NightguardTimelineProvider: TimelineProvider {
             battery: data.battery,
             iob: data.iob,
             cob: data.cob,
-            snoozedMinutes: AlarmRule.getRemainingSnoozeMinutes(),
+            snoozedUntilTimestamp: 
+                AlarmRule.snoozedUntilTimestamp.getUpdatedValueFromUserDefaults(),
             lastBGValues: bgValues.reversed(),
             configuration: ConfigurationIntent())
     }

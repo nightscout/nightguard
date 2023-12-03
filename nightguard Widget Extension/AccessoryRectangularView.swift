@@ -35,9 +35,18 @@ struct AccessoryRectangularView : View {
                     Text("--- --- ---")
                 }
             }
-            Text("\(entry.snoozedMinutes)min Snoozed")
+            Text("\(snoozedForMinutes(snoozeTimestamp: entry.snoozedUntilTimestamp))min Snoozed")
         }
         .widgetAccentable(true)
         .unredacted()
+    }
+    
+    func snoozedForMinutes(snoozeTimestamp: TimeInterval) -> Int {
+        let currentTimestamp = Date().timeIntervalSince1970
+        let snoozedMinutes = Int((snoozeTimestamp - currentTimestamp) / 60)
+        if snoozedMinutes < 0 {
+            return 0
+        }
+        return snoozedMinutes
     }
 }

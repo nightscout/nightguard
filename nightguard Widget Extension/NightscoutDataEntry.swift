@@ -57,7 +57,7 @@ struct NightscoutDataEntry: TimelineEntry {
     var battery : String = "---"
     var iob : String = ""
     var cob : String = ""
-    var snoozedMinutes : Int = 0
+    var snoozedUntilTimestamp : TimeInterval = 0
     var lastBGValues : [BgEntry] = []
     let configuration: ConfigurationIntent
 }

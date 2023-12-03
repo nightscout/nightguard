@@ -362,4 +362,8 @@ class AlarmRule {
         
         return Int(ceil((snoozedUntilTimestamp.value - currentTimestamp) / 60.0))
     }
+    
+    static func getSnoozedUntilTimestamp() -> TimeInterval {
+        return snoozedUntilTimestamp.value
+    }
 }
