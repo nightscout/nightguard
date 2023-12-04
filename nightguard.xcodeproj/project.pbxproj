@@ -2341,8 +2341,8 @@
 				431E587E26DBCD300037F8EA /* de */,
 			);
 			name = Duration.storyboard;
-			path = /Users/dirk/workspace/nightguard/nightguard;
-			sourceTree = "<absolute>";
+			path = nightguard;
+			sourceTree = SOURCE_ROOT;
 		};
 		434300E72A35EFC100B5D33A /* nightguard_Complication.intentdefinition */ = {
 			isa = PBXVariantGroup;
