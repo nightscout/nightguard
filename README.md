@@ -64,6 +64,16 @@ public final class SliderRow: Row<SliderCell>, RowType {
 
 Now you should be able to launch the app in the simulator. Happy Coding!
 
+## Uploading the app
+
+If you would like to run a local compiled version, you might wan't to disable the critical notification entitlement.
+This can be done in File nightguard/scoutwatch.entitlements by changing the value to false:
+
+```
+    <key>com.apple.developer.usernotifications.critical-alerts</key>
+    <false/>
+```
+
 # License
 
 [agpl-3]: http://www.gnu.org/licenses/agpl-3.0.txt
