@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "78ECACD6-8FC0-4475-B36E-80C6EE6B5044",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:nightguard.xcodeproj",
+      "identifier" : "43647BC91BFF6435004389F9",
+      "name" : "nightguard"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:nightguard.xcodeproj",
+        "identifier" : "43647BDD1BFF6435004389F9",
+        "name" : "nightguardTests"
+      }
+    }
+  ],
+  "version" : 1
+}

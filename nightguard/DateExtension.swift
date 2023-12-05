@@ -52,41 +52,25 @@ extension Date {
         
         return dateFormatter.string(from: self)
     }
+
     func toUTCMillis() -> String {
         
-        return String(Int64((self.toGlobalTime().timeIntervalSince1970 * 1000.0).rounded()))
+        return String(Int64((self.timeIntervalSince1970 * 1000.0).rounded()))
     }
 
     func convertToIsoDate() -> String {
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.locale = Locale(identifier: "en_US")
-        dateFormatter.timeZone = TimeZone.init(secondsFromGMT: 0)
-        
-        return dateFormatter.string(from: self)
+        return ISO8601DateFormatter.string(
+            from: self,
+            timeZone: TimeZone.init(identifier: "UTC")!,
+            formatOptions: [.withYear, .withMonth, .withDay, .withDashSeparatorInDate]
+        )
     }
     
     func convertToIsoDateTime() -> String {
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        
-        return dateFormatter.string(from: self.toGlobalTime())
-    }
-    
-    // Convert local time to UTC (or GMT)
-    func toGlobalTime() -> Date {
-        let timezone = TimeZone.current
-        let seconds = -TimeInterval(timezone.secondsFromGMT(for: self))
-        return Date(timeInterval: seconds, since: self)
-    }
-
-    // Convert UTC (or GMT) to local time
-    func toLocalTime() -> Date {
-        let timezone = TimeZone.current
-        let seconds = TimeInterval(timezone.secondsFromGMT(for: self))
-        return Date(timeInterval: seconds, since: self)
+        let dateFormatter = ISO8601DateFormatter()
+                        
+        return dateFormatter.string(from: self)
     }
     
     func remainingMinutes() -> Int {

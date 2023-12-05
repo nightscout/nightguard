@@ -345,6 +345,7 @@
 		43F1E1121D076C4500C329A2 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
 		43FCE625208B80840080DA0A /* SnoozeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */; };
+		4BD05B7C2B1E33F700A74E9B /* DateExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */; };
 		7FCFB7190EB96C437CD9908C /* Pods_nightguard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F5A4E6048F7A6F26B9C31E /* Pods_nightguard.framework */; };
 		BD9486CCE1790AB9D245579D /* Pods_nightguard_Widget_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5AA741119F937A9FEA0FE16 /* Pods_nightguard_Widget_Extension.framework */; };
 		C21FEAA8173DC84337CC0E33 /* Pods_nightguard_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A960E5B86E46012C3B88556F /* Pods_nightguard_WatchKit_App.framework */; };
@@ -710,6 +711,7 @@
 		43F1E1101D076C1C00C329A2 /* NightscoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutService.swift; path = nightguard/NightscoutService.swift; sourceTree = SOURCE_ROOT; };
 		43F1E11A1D076D9700C329A2 /* TimeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeService.swift; path = nightguard/TimeService.swift; sourceTree = SOURCE_ROOT; };
 		43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeAlarmViewController.swift; sourceTree = "<group>"; };
+		4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTest.swift; sourceTree = "<group>"; };
 		5560CB94CC76B8F0F7F5C440 /* Pods-nightguardTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardTests.release.xcconfig"; path = "Target Support Files/Pods-nightguardTests/Pods-nightguardTests.release.xcconfig"; sourceTree = "<group>"; };
 		77D200A6D5933D628408130C /* Pods_nightguardUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguardUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		89358A3E8C5372AE643A47B4 /* Pods-nightguard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard.debug.xcconfig"; path = "Target Support Files/Pods-nightguard/Pods-nightguard.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1008,6 +1010,7 @@
 				D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */,
 				D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */,
 				4389A5262602AADE001F10AD /* TargetDataTest.swift */,
+				4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */,
 			);
 			path = nightguardTests;
 			sourceTree = "<group>";
@@ -1965,6 +1968,7 @@
 				D1D96CB221F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
 				432E62D71D0CC35100DD7978 /* NightscoutService.swift in Sources */,
 				D112DD3821EA61A700ECFB5E /* NightscoutCacheService.swift in Sources */,
+				4BD05B7C2B1E33F700A74E9B /* DateExtensionTest.swift in Sources */,
 				432E62D81D0CC38C00DD7978 /* NightscoutData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2594,7 +2598,7 @@
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = nightguard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2625,7 +2629,7 @@
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2649,6 +2653,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = nightguardTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2669,6 +2674,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = nightguardTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2688,6 +2694,7 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2709,6 +2716,7 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = BSAVUVP8PV;
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
