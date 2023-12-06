@@ -334,15 +334,6 @@ class NightscoutService {
         return readChartDataWithinPeriodOfTime(oldValues : oldValues, beginOfDay, timestamp2: endOfDay, resultHandler: resultHandler)
     }
     
-    func readTodaysChartData(oldValues : [BloodSugar], _ resultHandler : @escaping ([BloodSugar]) -> Void) {
-        
-        self.readTodaysChartData(oldValues: oldValues) { (result: NightscoutRequestResult<[BloodSugar]>)  in
-            if case .data(let data) = result {
-                resultHandler(data)
-            }
-        }
-    }
-    
     fileprivate func determineTheLatestValueOf(oldValues : [BloodSugar]) -> Date {
         if oldValues.count == 0 || oldValues.last == nil {
             return Date.init(timeIntervalSince1970: 0)

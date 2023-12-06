@@ -27,31 +27,33 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     
     // the value (strong typed)
     var defaultValue: T
+    private var _value: T
     var value: T {
-        didSet {
+        set {
             
             // continue only if the new value is different than old value
-            guard self.value != oldValue else {
+            guard self._value != newValue else {
                 return
             }
 
             if let validation = validation {
-                guard let validatedValue = validation(value) else {
-                    value = oldValue
+                guard let validatedValue = validation(newValue) else {
                     return
                 }
                 
-                value = validatedValue
+                _value = validatedValue
+            } else {
+                _value = newValue
             }
             
             // store value to user defaults
-            UserDefaultsValue.defaults.setValue(value.toAny(), forKey: key)
+            UserDefaultsValue.defaults.setValue(_value.toAny(), forKey: key)
             
             // execute custom closure
             onChange?(value)
             
             // notify observers
-            observers.values.forEach { $0(value) }
+            observers.values.forEach { $0(_value) }
             
             // notify UserDefaultsValueGroups that value has changed
             UserDefaultsValueGroups.valueChanged(self)
@@ -59,20 +61,23 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
             UserDefaultsValue.defaults.synchronize()
             WidgetCenter.shared.reloadAllTimelines()
         }
+        get {
+            
+            return getUpdatedValueFromUserDefaults()
+        }
     }
     
     /// get/set the value from Any value (UserDefaultsAnyValue protocol implementation)
     var anyValue: Any {
         get {
-            return self.value.toAny()
+            return self._value.toAny()
         }
         
         set {
             guard let newValue = T.fromAny(newValue) as T? else {
                 return
             }
-            
-            self.value = newValue
+            value = newValue
         }
     }
     
@@ -99,12 +104,12 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
         self.key = key
         if let anyValue = UserDefaultsValue.defaults.object(forKey: key), let value = T.fromAny(anyValue) as T? {
             if let validation = validation {
-                self.value = validation(value) ?? defaultValue
+                self._value = validation(value) ?? defaultValue
             } else {
-                self.value = value
+                self._value = value
             }
         } else {
-            self.value = defaultValue
+            self._value = defaultValue
         }
         self.onChange = onChange
         self.validation = validation

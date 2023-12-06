@@ -86,12 +86,10 @@ class WatchMessageService: NSObject {
             return
         }
         
-        if #available(iOS 9.3, watchOSApplicationExtension 2.2, *) {
-            guard WCSession.default.activationState == .activated else {
+        guard WCSession.default.activationState == .activated else {
                 
-                // paired device is not active, cannot continue!
-                return
-            }
+            // paired device is not active, cannot continue!
+            return
         }
         
         // send message if paired device is reachable

@@ -110,6 +110,7 @@ class AlarmRule {
             return nil
         }
         
+        print(minutesWithoutValues.value)
         if nightscoutData.isOlderThanXMinutes(minutesWithoutValues.value) {
             if noDataAlarmEnabled.value {
                 return NSLocalizedString("Missed Readings", comment: "noDataAlarmEnabled.value in AlarmRule Class")
@@ -312,6 +313,8 @@ class AlarmRule {
      */
     static func snooze(_ minutes : Int) {
         snoozedUntilTimestamp.value = Date().timeIntervalSince1970 + Double(60 * minutes)
+        print("Current time \(Date().timeIntervalSince1970)")
+        print("Snoozed till \(snoozedUntilTimestamp.value)")
         SnoozeMessage(timestamp: snoozedUntilTimestamp.value).send()
     }
     

@@ -9,6 +9,7 @@
 import WatchKit
 import WatchConnectivity
 import ClockKit
+import WidgetKit
 
 @main
 class ExtensionDelegate: NSObject, WKApplicationDelegate {
@@ -64,16 +65,16 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
             // update snooze from message
             AlarmRule.snoozeFromMessage(message)
             
-            if #available(watchOSApplicationExtension 3.0, *) {
-                if #available(watchOSApplicationExtension 6.0, *) {
-                    MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
-                }
-            }
+            MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
+            
+            WidgetCenter.shared.reloadAllTimelines()
         }
         
         // nightscout data message
         WatchMessageService.singleton.onMessage { [weak self] (message: NightscoutDataMessage) in
             self?.onNightscoutDataReceivedFromPhoneApp(message.nightscoutData)
+            
+            WidgetCenter.shared.reloadAllTimelines()
         }
         
         // user defaults sync message
@@ -114,10 +115,10 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
             let shouldRepaintCurrentBgData = hasChangedUri || hasChangedUnits
             let shouldRepaintCharts = true // do it always!
             if shouldRepaintCurrentBgData || shouldRepaintCharts {
-                if #available(watchOSApplicationExtension 6.0, *) {
-                    MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
-                }
+                MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
             }
+            
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     

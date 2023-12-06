@@ -48,34 +48,34 @@ struct NightguardTimelineProvider: TimelineProvider {
         
         NightscoutDataEntry(configuration: ConfigurationIntent())
     }
-
-    /*func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (NightscoutDataEntry) -> ()) {
-        
-        completion(getTimelineData(configuration: configuration))
-    }
-
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<NightscoutDataEntry>) -> ()) {
-        
-        var entries: [NightscoutDataEntry] = []
-
-        entries.append(getTimelineData())
-        
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
-    }*/
     
     private func getTimelineData(completion: @escaping (NightscoutDataEntry) -> Void) {
         
-        let data = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
+        let oldData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
+        var oldEntries = NightscoutDataRepository.singleton.loadTodaysBgData()
         
-        NightscoutService.singleton.readTodaysChartData(oldValues: []) { (bloodSugarValues: [BloodSugar]) in
+        NightscoutService.singleton.readTodaysChartData(oldValues: []) { (result: NightscoutRequestResult<[BloodSugar]>) in
             
-            let bgEntries = bloodSugarValues.map() {bgValue in
-                return BgEntry(
-                    value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
-                    valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                    delta: "0", timestamp: bgValue.timestamp)
+            var newData = oldData
+            var newEntries = oldEntries
+            var bgEntries : [BgEntry]
+            if case .data(let bloodSugarValues) = result {
+                bgEntries = bloodSugarValues.map() {bgValue in
+                    return BgEntry(
+                        value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
+                        valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
+                        delta: "0", timestamp: bgValue.timestamp)
+                }
+            } else {
+                // use old values if no new could be retrieved
+                bgEntries = oldEntries.map() {bgValue in
+                    return BgEntry(
+                        value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
+                        valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
+                        delta: "0", timestamp: bgValue.timestamp)
+                }
             }
+            
             var reducedEntries = bgEntries
             if bgEntries.count > 3 {
                 reducedEntries = []
@@ -84,8 +84,9 @@ struct NightguardTimelineProvider: TimelineProvider {
                 }
             }
             
+            // if no new values could be retrieved -> the old ones will be returned.
             let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries)
-            let updatedData = updateDataWith(reducedEntriesWithDelta, data)
+            let updatedData = updateDataWith(reducedEntriesWithDelta, newData)
             let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta)
             
             AlarmNotificationService.singleton.notifyIfAlarmActivated(updatedData)
@@ -123,7 +124,7 @@ struct NightguardTimelineProvider: TimelineProvider {
             iob: data.iob,
             cob: data.cob,
             snoozedUntilTimestamp: 
-                AlarmRule.snoozedUntilTimestamp.getUpdatedValueFromUserDefaults(),
+                AlarmRule.snoozedUntilTimestamp.value,
             lastBGValues: bgValues.reversed(),
             configuration: ConfigurationIntent())
     }

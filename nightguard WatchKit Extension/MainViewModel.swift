@@ -88,6 +88,7 @@ class MainViewModel: ObservableObject, Identifiable {
         
         alarmRuleMessage = determineInfoLabel()
         eventuallyPlayAlarmSound()
+        updateComplication()
     }
 
     fileprivate func loadTreatments() {
