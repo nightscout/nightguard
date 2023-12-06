@@ -321,13 +321,15 @@ class NightscoutService {
         
         let calendar = Calendar.current
         let today = TimeService.getToday()
-        
+    
         var beginOfDay = calendar.startOfDay(for: today)
+        // keep one hour, otherwise the complications and widgets would be empty and alarms for missing values could be triggered:
+        let beginOfDayMinusOneHour = calendar.date(byAdding: .hour, value: -1, to: beginOfDay) ?? beginOfDay
         let endOfDay = calendar.startOfDay(for: TimeService.getTomorrow())
         
         // use the current time so that we have to load the new values only
         let lastReceivedTime = determineTheLatestValueOf(oldValues: oldValues)
-        if lastReceivedTime > beginOfDay {
+        if lastReceivedTime > beginOfDayMinusOneHour {
             beginOfDay = lastReceivedTime
         }
         

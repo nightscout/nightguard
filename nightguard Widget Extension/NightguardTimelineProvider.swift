@@ -56,8 +56,6 @@ struct NightguardTimelineProvider: TimelineProvider {
         
         NightscoutService.singleton.readTodaysChartData(oldValues: []) { (result: NightscoutRequestResult<[BloodSugar]>) in
             
-            var newData = oldData
-            var newEntries = oldEntries
             var bgEntries : [BgEntry]
             if case .data(let bloodSugarValues) = result {
                 bgEntries = bloodSugarValues.map() {bgValue in
@@ -86,7 +84,7 @@ struct NightguardTimelineProvider: TimelineProvider {
             
             // if no new values could be retrieved -> the old ones will be returned.
             let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries)
-            let updatedData = updateDataWith(reducedEntriesWithDelta, newData)
+            let updatedData = updateDataWith(reducedEntriesWithDelta, oldData)
             let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta)
             
             AlarmNotificationService.singleton.notifyIfAlarmActivated(updatedData)
