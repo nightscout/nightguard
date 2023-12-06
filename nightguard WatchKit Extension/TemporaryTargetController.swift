@@ -10,7 +10,6 @@ import WatchKit
 import Foundation
 import SwiftUI
 
-@available(watchOSApplicationExtension 6.0, *)
 class TemporaryTargetController: WKHostingController<TemporaryTargetView> {
     override var body: TemporaryTargetView {
         return TemporaryTargetView()

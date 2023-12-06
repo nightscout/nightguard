@@ -18,7 +18,6 @@ import WatchKit
 /// If calling schedule() at xx:18, the next refresh will be scheduled at xx:30. NOTE that watchOS can delay (or
 /// even skip!) calling the WKApplicationDelegate.handle(_) method on scheduled time (the delay can be from seconds
 /// to some minutes).
-@available(watchOSApplicationExtension 3.0, *)
 class BackgroundRefreshScheduler {
     
     static let instance = BackgroundRefreshScheduler()

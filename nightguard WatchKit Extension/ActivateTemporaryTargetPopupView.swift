@@ -10,7 +10,6 @@ import SwiftUI
 import SpriteKit
 import Combine
 
-@available(watchOSApplicationExtension 6.0, *)
 struct ActivateTemporaryTargetPopupView: View {
     
     @Environment(\.presentationMode) var presentationMode

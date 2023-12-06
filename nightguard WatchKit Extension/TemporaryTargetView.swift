@@ -11,7 +11,6 @@ import SwiftUI
 import SpriteKit
 import Combine
 
-@available(watchOSApplicationExtension 6.0, *)
 struct TemporaryTargetView: View {
     
     @Environment(\.presentationMode) var presentation
@@ -115,7 +114,6 @@ struct TemporaryTargetView: View {
     }
 }
 
-@available(watchOSApplicationExtension 6.0, *)
 struct TemporaryTargetView_Previews: PreviewProvider {
     static var previews: some View {
         TemporaryTargetView()

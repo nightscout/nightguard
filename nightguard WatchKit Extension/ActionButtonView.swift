@@ -10,7 +10,6 @@ import SwiftUI
 import SpriteKit
 import Combine
 
-@available(watchOSApplicationExtension 6.0, *)
 struct ActionButtonView: View {
     
     @State var snoozeModalIsPresented = false
@@ -95,7 +94,6 @@ struct ActionButtonView: View {
     }
 }
 
-@available(watchOSApplicationExtension 6.0, *)
 struct ActionButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ActionButtonView(mainViewModel: MainViewModel())

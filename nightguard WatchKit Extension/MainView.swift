@@ -10,7 +10,6 @@ import SwiftUI
 import SpriteKit
 import Combine
 
-@available(watchOSApplicationExtension 6.0, *)
 struct MainView: View {
     
     @State var crownValue = 0.0
@@ -219,7 +218,6 @@ struct MainView: View {
     }
 }
 
-@available(watchOSApplicationExtension 6.0.0, *)
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView(mainViewModel: MainViewModel())

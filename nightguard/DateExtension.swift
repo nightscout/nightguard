@@ -128,8 +128,6 @@ extension Date {
         return UIColor.white
     }
     
-    @available(watchOSApplicationExtension 6.0, *)
-    @available(iOS 13.0, *)
     func determineColorDependingOn(hoursUntilWarning: Int, hoursUntilCritical: Int) -> Color {
         
         return Color(determineUIColorDependingOn(hoursUntilWarning: hoursUntilWarning, hoursUntilCritical: hoursUntilCritical))

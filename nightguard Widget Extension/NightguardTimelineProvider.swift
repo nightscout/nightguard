@@ -52,7 +52,7 @@ struct NightguardTimelineProvider: TimelineProvider {
     private func getTimelineData(completion: @escaping (NightscoutDataEntry) -> Void) {
         
         let oldData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
-        var oldEntries = NightscoutDataRepository.singleton.loadTodaysBgData()
+        let oldEntries = NightscoutDataRepository.singleton.loadTodaysBgData()
         
         NightscoutService.singleton.readTodaysChartData(oldValues: []) { (result: NightscoutRequestResult<[BloodSugar]>) in
             

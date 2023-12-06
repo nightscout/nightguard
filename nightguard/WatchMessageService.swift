@@ -124,22 +124,16 @@ extension WatchMessageService: WCSessionDelegate {
         received(message)
     }
     
-    @available(watchOSApplicationExtension 2.2, *)
-//    @available(iOS 9.3, *)
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-//        #if os(watchOS)
         received(session.receivedApplicationContext)
-//        #endif
     }
     
     /** Called on the delegate of the receiver. Will be called on startup if an applicationContext is available. */
-    @available(watchOS 2.0, *)
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
         received(applicationContext)
     }
     
     /** Called on the delegate of the receiver. Will be called on startup if the user info finished transferring when the receiver was not running. */
-    @available(watchOS 2.0, *)
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any]) {
         received(userInfo)
     }

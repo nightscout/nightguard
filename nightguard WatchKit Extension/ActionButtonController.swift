@@ -10,7 +10,6 @@ import WatchKit
 import Foundation
 import SwiftUI
 
-@available(watchOSApplicationExtension 6.0, *)
 class ActionButtonController: WKHostingController<ActionButtonView> {
     override var body: ActionButtonView {
         return ActionButtonView(mainViewModel: MainController.mainViewModel)

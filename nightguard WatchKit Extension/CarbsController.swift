@@ -10,7 +10,6 @@ import WatchKit
 import Foundation
 import SwiftUI
 
-@available(watchOSApplicationExtension 6.0, *)
 class CarbsController: WKHostingController<CarbsView> {
     override var body: CarbsView {
         return CarbsView()

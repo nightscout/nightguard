@@ -43,9 +43,7 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
         ExtensionDelegate.singleton = self
         
         BackgroundRefreshLogger.info("Application did finish launching")
-        if #available(watchOSApplicationExtension 3.0, *) {
-            scheduleBackgroundRefresh()
-        }
+        scheduleBackgroundRefresh()
         AppMessageService.singleton.keepAwakePhoneApp()
     }
 
@@ -134,13 +132,10 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
         AppState.isUIActive = false
         
         print("Application will resign active.")
-        if #available(watchOSApplicationExtension 3.0, *) {
-            scheduleBackgroundRefresh()
-        }
+        scheduleBackgroundRefresh()
         AppMessageService.singleton.keepAwakePhoneApp()
     }
     
-    @available(watchOSApplicationExtension 3.0, *)
     public func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
         
         for task in backgroundTasks {
@@ -168,14 +163,12 @@ extension ExtensionDelegate {
     
     // MARK:- Background update methods
     
-    @available(watchOSApplicationExtension 3.0, *)
     func handleWatchConnectivityBackgroundTask (_ watchConnectivityBackgroundTask: WKWatchConnectivityRefreshBackgroundTask) {
     
         BackgroundRefreshLogger.info("WKWatchConnectivityRefreshBackgroundTask received")
         watchConnectivityBackgroundTask.setTaskCompletedWithSnapshot(false)
     }
     
-    @available(watchOSApplicationExtension 3.0, *)
     func handleSnapshotTask(_ snapshotTask : WKSnapshotRefreshBackgroundTask) {
         
         BackgroundRefreshLogger.info("WKSnapshotRefreshBackgroundTask received")
@@ -189,7 +182,6 @@ extension ExtensionDelegate {
         snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
     }
     
-    @available(watchOSApplicationExtension 3.0, *)
     func handleRefreshTask(_ task : WKRefreshBackgroundTask) {
         
         BackgroundRefreshLogger.info("WKApplicationRefreshBackgroundTask received")
@@ -203,7 +195,6 @@ extension ExtensionDelegate {
         task.setTaskCompletedWithSnapshot(false)
     }
     
-    @available(watchOSApplicationExtension 3.0, *)
     func handleURLSessionTask(_ sessionTask: WKURLSessionRefreshBackgroundTask) {
         
         BackgroundRefreshLogger.info("WKURLSessionRefreshBackgroundTask received")
@@ -242,7 +233,6 @@ extension ExtensionDelegate {
     
     // MARK:- Internals
     
-    @available(watchOSApplicationExtension 3.0, *)
     fileprivate func scheduleBackgroundRefresh() {
         BackgroundRefreshScheduler.instance.schedule()
     }

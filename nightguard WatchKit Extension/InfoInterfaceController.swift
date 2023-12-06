@@ -9,7 +9,6 @@
 import Foundation
 import WatchKit
 
-@available(watchOSApplicationExtension 6.0, *)
 class InfoInterfaceController: WKInterfaceController {
     
     @IBOutlet var versionLabel: WKInterfaceLabel!

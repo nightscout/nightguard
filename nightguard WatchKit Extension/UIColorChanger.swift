@@ -125,8 +125,7 @@ class UIColorChanger {
         }
     }
     
-    @available(watchOSApplicationExtension 6.0, *)
-    @available(iOS 13.0, *)
+
     static func calculateCannulaAgeColor(cannulaAgeDate : Date) -> Color {
         return Color.white
     }

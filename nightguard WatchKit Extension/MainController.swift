@@ -10,7 +10,6 @@ import WatchKit
 import Foundation
 import SwiftUI
 
-@available(watchOSApplicationExtension 6.0, *)
 class MainController: WKHostingController<MainView> {
     
     static var mainViewModel = MainViewModel()

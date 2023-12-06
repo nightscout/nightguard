@@ -11,7 +11,6 @@ import SwiftUI
 import SpriteKit
 import Combine
 
-@available(watchOSApplicationExtension 6.0, *)
 struct CarbsView: View {
     
     @Environment(\.presentationMode) var presentation
@@ -66,7 +65,6 @@ struct CarbsView: View {
     }
 }
 
-@available(watchOSApplicationExtension 6.0, *)
 struct CarbsView_Previews: PreviewProvider {
     static var previews: some View {
         CarbsView()
