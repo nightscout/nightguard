@@ -920,18 +920,6 @@
 			name = app;
 			sourceTree = "<group>";
 		};
-		432E62E51D11288100DD7978 /* app */ = {
-			isa = PBXGroup;
-			children = (
-				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
-				D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */,
-				D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */,
-				D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */,
-				4330E3EE25D3239C0054A0A6 /* AppState.swift */,
-			);
-			name = app;
-			sourceTree = "<group>";
-		};
 		433AD0131CCE1CE2001A76CD /* external */ = {
 			isa = PBXGroup;
 			children = (
@@ -1028,6 +1016,15 @@
 		43647BF61BFF6435004389F9 /* nightguard WatchKit App */ = {
 			isa = PBXGroup;
 			children = (
+				439BDA892B225047004932EB /* helper */,
+				439BDA882B225035004932EB /* Supporting Files */,
+				439BDA872B225023004932EB /* external */,
+				439BDA862B224F69004932EB /* app */,
+				439BDA852B224F5B004932EB /* viewmodel */,
+				439BDA842B224F49004932EB /* views */,
+				439BDA832B224F2B004932EB /* controllers */,
+				43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */,
+				43794F411C2F435A00DB8B58 /* AppConstants.swift */,
 				127F207A227F018E00C90F07 /* nightguard.entitlements */,
 				439BADF71C24C315006BEADB /* Media.xcassets */,
 				43647BF71BFF6435004389F9 /* Interface.storyboard */,
@@ -1040,36 +1037,11 @@
 		43647C051BFF6435004389F9 /* nightguard WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				4398937A252BBF88007A252F /* controllers */,
-				4398937B252BBFB0007A252F /* views */,
-				4368A100252279D80013E425 /* viewmodel */,
-				432E62E51D11288100DD7978 /* app */,
-				438066FC1D21C1ED0021B618 /* external */,
-				43647C061BFF6435004389F9 /* Supporting Files */,
-				43A0476924D202030040D853 /* helper */,
-				43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */,
-				43794F411C2F435A00DB8B58 /* AppConstants.swift */,
 				43D213631C2214D60046C52D /* Assets.xcassets */,
 				438591D91C14DC4D00F9CEE2 /* scoutwatch WatchKit Extension.entitlements */,
 				43647C121BFF6435004389F9 /* Info.plist */,
 			);
 			path = "nightguard WatchKit Extension";
-			sourceTree = "<group>";
-		};
-		43647C061BFF6435004389F9 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				43647C071BFF6435004389F9 /* PushNotificationPayload.apns */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		4368A100252279D80013E425 /* viewmodel */ = {
-			isa = PBXGroup;
-			children = (
-				4368A0F9252279C90013E425 /* MainViewModel.swift */,
-			);
-			name = viewmodel;
 			sourceTree = "<group>";
 		};
 		437EEDC21FB7169C00694EAD /* repository */ = {
@@ -1081,14 +1053,6 @@
 				43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */,
 			);
 			name = repository;
-			sourceTree = "<group>";
-		};
-		438066FC1D21C1ED0021B618 /* external */ = {
-			isa = PBXGroup;
-			children = (
-				438066FD1D21C2350021B618 /* AppMessageService.swift */,
-			);
-			name = external;
 			sourceTree = "<group>";
 		};
 		4389A5172602A3D1001F10AD /* model */ = {
@@ -1116,7 +1080,7 @@
 			path = "nightguard Widget Extension";
 			sourceTree = "<group>";
 		};
-		4398937A252BBF88007A252F /* controllers */ = {
+		439BDA832B224F2B004932EB /* controllers */ = {
 			isa = PBXGroup;
 			children = (
 				43CE59AB250813D700D71B77 /* MainController.swift */,
@@ -1127,10 +1091,10 @@
 				43647C0C1BFF6435004389F9 /* NotificationController.swift */,
 				438C55A1253C807B0002E109 /* CarbsController.swift */,
 			);
-			name = controllers;
+			path = controllers;
 			sourceTree = "<group>";
 		};
-		4398937B252BBFB0007A252F /* views */ = {
+		439BDA842B224F49004932EB /* views */ = {
 			isa = PBXGroup;
 			children = (
 				43CE59A925080D6A00D71B77 /* MainView.swift */,
@@ -1142,15 +1106,51 @@
 				438C55A8253C81370002E109 /* CarbsView.swift */,
 				438C55AF253CB0090002E109 /* AddCarbsPopupView.swift */,
 			);
-			name = views;
+			path = views;
 			sourceTree = "<group>";
 		};
-		43A0476924D202030040D853 /* helper */ = {
+		439BDA852B224F5B004932EB /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				4368A0F9252279C90013E425 /* MainViewModel.swift */,
+			);
+			path = viewmodel;
+			sourceTree = "<group>";
+		};
+		439BDA862B224F69004932EB /* app */ = {
+			isa = PBXGroup;
+			children = (
+				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
+				D1BD14E4205BB9E200B93389 /* BackgroundRefreshScheduler.swift */,
+				D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */,
+				D10ACE3F2063C25600F41EE7 /* BackgroundRefreshSettings.swift */,
+				4330E3EE25D3239C0054A0A6 /* AppState.swift */,
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
+		439BDA872B225023004932EB /* external */ = {
+			isa = PBXGroup;
+			children = (
+				438066FD1D21C2350021B618 /* AppMessageService.swift */,
+			);
+			path = external;
+			sourceTree = "<group>";
+		};
+		439BDA882B225035004932EB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				43647C071BFF6435004389F9 /* PushNotificationPayload.apns */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		439BDA892B225047004932EB /* helper */ = {
 			isa = PBXGroup;
 			children = (
 				43A0476A24D2023C0040D853 /* WKInterfaceLabel.swift */,
 			);
-			name = helper;
+			path = helper;
 			sourceTree = "<group>";
 		};
 		43CC9E0224E868180008F397 /* extensions */ = {
