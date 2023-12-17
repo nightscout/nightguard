@@ -87,7 +87,6 @@ class MainViewModel: ObservableObject, Identifiable {
         
         alarmRuleMessage = determineInfoLabel()
         eventuallyPlayAlarmSound()
-        updateComplication()
     }
 
     fileprivate func loadTreatments() {
@@ -190,7 +189,6 @@ class MainViewModel: ObservableObject, Identifiable {
                     
                     self.nightscoutData = newNightscoutData
                     self.active = false
-                    updateComplication()
                     alarmRuleMessage = determineInfoLabel()
                     eventuallyNotify()
                 case .error(let error):
@@ -207,8 +205,6 @@ class MainViewModel: ObservableObject, Identifiable {
     }
     
     fileprivate func updateComplication() {
-        
-        WidgetCenter.shared.reloadAllTimelines()
         
         let complicationServer = CLKComplicationServer.sharedInstance()
         if complicationServer.activeComplications != nil {
@@ -300,7 +296,6 @@ class MainViewModel: ObservableObject, Identifiable {
                 dispatchOnMain { [unowned self] in
                     if case .data(let newTodaysData) = result {
                         self.cachedTodaysBgValues = newTodaysData
-                        updateComplication()
                         paintChartData(todaysData : cachedTodaysBgValues, yesterdaysData : cachedYesterdaysBgValues, moveToLatestValue : true)
                     }
                 }

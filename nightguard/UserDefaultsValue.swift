@@ -59,7 +59,6 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
             UserDefaultsValueGroups.valueChanged(self)
             
             UserDefaultsValue.defaults.synchronize()
-            WidgetCenter.shared.reloadAllTimelines()
         }
         get {
             

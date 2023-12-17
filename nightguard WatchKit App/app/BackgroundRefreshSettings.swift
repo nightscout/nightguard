@@ -19,7 +19,7 @@ class BackgroundRefreshSettings {
     
     // the background tasks scheduling rate (period between two schedules) (used in watch app)
     // NOTE that the current implementation (BackgroundRefreshScheduler class) will schedule background tasks at fixed moments taking as reference the current hour timeframe (for eg, if the refresh rate is 15 minutes, the scheduled times will be xx:00, xx:15, xx:30 and xx:45). Check BackgroundRefreshScheduler implementation for more info.
-    static let backgroundTaskScheduleRate: Int = 15 /* minutes */
+    static let backgroundTaskScheduleRate: Int = 5 /* minutes */
     
     // the max amount of time the URL session should finish its work; if exceeded, and another URL session is about to begin, we'll end the previous URL session and start a new one
     static let urlSessionTaskTimeout: Int = 10 /* minutes */

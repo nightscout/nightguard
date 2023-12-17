@@ -292,7 +292,6 @@ class PrefsViewController: CustomFormViewController {
             switch result {
             case .data(let units):
                 UserDefaultsRepository.units.value = units
-                WidgetCenter.shared.reloadAllTimelines()
                 completion(nil)
                 
             case .error(let error):

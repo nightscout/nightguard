@@ -33,6 +33,7 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
     var sessionError: Error?
     var sessionStartTime: Date?
     var userInfoAccess: NSSecureCoding?
+    let appProcessingTaskId = "de.my-wan.dhe.nightguard.background"
     
     func applicationDidFinishLaunching() {
         
@@ -64,15 +65,11 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
             AlarmRule.snoozeFromMessage(message)
             
             MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
-            
-            WidgetCenter.shared.reloadAllTimelines()
         }
         
         // nightscout data message
         WatchMessageService.singleton.onMessage { [weak self] (message: NightscoutDataMessage) in
             self?.onNightscoutDataReceivedFromPhoneApp(message.nightscoutData)
-            
-            WidgetCenter.shared.reloadAllTimelines()
         }
         
         // user defaults sync message
@@ -115,8 +112,6 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
             if shouldRepaintCurrentBgData || shouldRepaintCharts {
                 MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
             }
-            
-            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
@@ -175,9 +170,7 @@ extension ExtensionDelegate {
         
         // update user interface with current nightscout data (or error)
         let currentNightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
-        if #available(watchOSApplicationExtension 6.0, *) {
-            MainController.mainViewModel.pushBackgroundData(newNightscoutData: currentNightscoutData)
-        }
+        MainController.mainViewModel.pushBackgroundData(newNightscoutData: currentNightscoutData)
         
         snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
     }
@@ -191,6 +184,9 @@ extension ExtensionDelegate {
         
         // schedule the next background refresh
         BackgroundRefreshScheduler.instance.schedule()
+        
+        // Ask to refresh all complications
+        WidgetCenter.shared.reloadAllTimelines()
         
         task.setTaskCompletedWithSnapshot(false)
     }

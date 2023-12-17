@@ -9,6 +9,7 @@
 import Foundation
 import WidgetKit
 import UserNotifications
+import ClockKit
 
 struct NightguardTimelineProvider: TimelineProvider {
     
@@ -88,9 +89,24 @@ struct NightguardTimelineProvider: TimelineProvider {
             let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta)
             
             AlarmNotificationService.singleton.notifyIfAlarmActivated(updatedData)
+            updateComplicationOrWidgets()
             
             completion(entry)
         }
+    }
+    
+    fileprivate func updateComplicationOrWidgets() {
+        
+        #if os(watchOS)
+            let complicationServer = CLKComplicationServer.sharedInstance()
+            if complicationServer.activeComplications != nil {
+                for complication in complicationServer.activeComplications! {
+                    complicationServer.reloadTimeline(for: complication)
+                }
+            }
+        #else
+            WidgetCenter.shared.reloadAllTimelines()
+        #endif
     }
     
     private func updateDataWith(_ reducedEntries : [BgEntry], _ data: NightscoutData) -> NightscoutData{
