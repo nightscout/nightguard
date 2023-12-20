@@ -52,11 +52,13 @@ struct NightguardTimelineProvider: TimelineProvider {
     
     private func getTimelineData(completion: @escaping (NightscoutDataEntry) -> Void) {
         
+        BackgroundRefreshLogger.info("TimelineProvider is getting Timeline...")
         let oldData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         let oldEntries = NightscoutDataRepository.singleton.loadTodaysBgData()
         
         NightscoutService.singleton.readTodaysChartData(oldValues: []) { (result: NightscoutRequestResult<[BloodSugar]>) in
             
+            BackgroundRefreshLogger.info("TimelineProvider received new nightscout data...")
             var bgEntries : [BgEntry]
             if case .data(let bloodSugarValues) = result {
                 bgEntries = bloodSugarValues.map() {bgValue in
@@ -88,25 +90,12 @@ struct NightguardTimelineProvider: TimelineProvider {
             let updatedData = updateDataWith(reducedEntriesWithDelta, oldData)
             let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta)
             
+            WidgetCenter.shared.reloadAllTimelines()
+            BackgroundRefreshLogger.info("TimelineProvider refreshed widgets...")
             AlarmNotificationService.singleton.notifyIfAlarmActivated(updatedData)
-            updateComplicationOrWidgets()
             
             completion(entry)
         }
-    }
-    
-    fileprivate func updateComplicationOrWidgets() {
-        
-        #if os(watchOS)
-            let complicationServer = CLKComplicationServer.sharedInstance()
-            if complicationServer.activeComplications != nil {
-                for complication in complicationServer.activeComplications! {
-                    complicationServer.reloadTimeline(for: complication)
-                }
-            }
-        #else
-            WidgetCenter.shared.reloadAllTimelines()
-        #endif
     }
     
     private func updateDataWith(_ reducedEntries : [BgEntry], _ data: NightscoutData) -> NightscoutData{

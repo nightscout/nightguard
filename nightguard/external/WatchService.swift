@@ -13,12 +13,6 @@ class WatchService {
     
     static let singleton = WatchService()
     
-    // watch app update frequency (when have new nightscout data)
-    private let watchUpdateRate: Int = BackgroundRefreshSettings.watchUpdateRate
-    
-    // watch app complication update (when have new nightscout data)
-    private let watchComplicationUpdateRate: Int = BackgroundRefreshSettings.watchComplicationUpdateRate
-    
     private var lastSentNightscoutDataTime: NSNumber?
     private var lastWatchUpdateTime: Date?
     private var lastWatchComplicationUpdateTime: Date?
@@ -32,45 +26,23 @@ class WatchService {
         }
         
         // the session must be active in order to send data
-        if #available(iOS 9.3, *) {
-            guard WCSession.default.activationState == .activated else {
-                return
-            }
+        guard WCSession.default.activationState == .activated else {
+            return
         }
         
-        // update watch (if configured so)
-        if BackgroundRefreshSettings.enableWatchUpdate {
-            
-            if lastSentNightscoutDataTime != nightscoutData.time {
-                // Assuring we are sending ONLY once a nightscout data...
-                // ... and respecting the update rate!
-                if let lastWatchUpdateTime = self.lastWatchUpdateTime, (Calendar.current.date(byAdding: .minute, value: self.watchUpdateRate, to: lastWatchUpdateTime) ?? Date()) >= Date() {
-                    
-                    // do nothing, last watch update was more recent than update rate, will skip updating it now!
-                } else {
-                    
-                    // do update!
-                    NightscoutDataMessage().send()
-                    self.lastSentNightscoutDataTime = nightscoutData.time
-                    self.lastWatchUpdateTime = Date()
-                }
-            }
-        }
-        
-        // update watch complication (if configured so)
-        if BackgroundRefreshSettings.enableWatchComplicationUpdate && WCSession.default.isComplicationEnabled {
-
-            if let lastWatchComplicationUpdateTime = self.lastWatchComplicationUpdateTime, Calendar.current.date(byAdding: .minute, value: self.watchComplicationUpdateRate, to: lastWatchComplicationUpdateTime)! >= Date() {
-
-                // do nothing, last watch complication update was more recent than update rate, will skip updating it now!
+        // update watch
+        if lastSentNightscoutDataTime != nightscoutData.time {
+            // Assuring we are sending ONLY once a nightscout data...
+            // ... and respecting the update rate!
+            if let lastWatchUpdateTime = self.lastWatchUpdateTime, (Calendar.current.date(byAdding: .minute, value: 5, to: lastWatchUpdateTime) ?? Date()) >= Date() {
+                
+                // do nothing, last watch update was more recent than update rate, will skip updating it now!
             } else {
-
-                // update complications!
-                let message = NightscoutDataMessage()
-                WCSession.default.transferCurrentComplicationUserInfo(message.dictionary)
-
-                // and keep the update time
-                self.lastWatchComplicationUpdateTime = Date()
+                
+                // do update!
+                NightscoutDataMessage().send()
+                self.lastSentNightscoutDataTime = nightscoutData.time
+                self.lastWatchUpdateTime = Date()
             }
         }
     }

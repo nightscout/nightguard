@@ -49,7 +49,7 @@ class BackgroundRefreshLogger {
     
     private static var logStartTime: Date?
     private static var appStartTime: Date?
-    private static let showLogs = BackgroundRefreshSettings.showBackgroundTasksLogs
+    private static let showLogs = true
     
     static func info(_ text: String) {
         resetStatsDataIfNeeded()
@@ -60,39 +60,6 @@ class BackgroundRefreshLogger {
         if showLogs {
             logs.append(logEntry)
         }
-    }
-    
-    
-    static func nightscoutDataReceived(_ nightscoutData: NightscoutData, updateResult: ExtensionDelegate.UpdateResult, updateSource: ExtensionDelegate.UpdateSource) {
-        
-        var updateSourceString = ""
-        switch updateSource {
-        case .phoneApp :
-            updateSourceString = "📱"
-        default:
-            updateSourceString = "⌚"
-        }
-        
-        var updateResultString = ""
-        switch updateResult {
-        case .updated:
-            updateResultString = "NEW"
-        case .updateDataAlreadyExists:
-            updateResultString = "EXISTING"
-        case .updateDataIsOld:
-            updateResultString = "OLD"
-        }
-        
-        let nightscoutDataTime = Date(timeIntervalSince1970: nightscoutData.time.doubleValue / 1000)
-        let nightscoutDataTimeString = formattedTime(nightscoutDataTime, showSeconds: false)
-        
-        let logEntry = formattedTime(Date()) + " " + updateSourceString + updateResultString + " (\(nightscoutData.sgv)@\(nightscoutDataTimeString))"
-        NSLog(logEntry)
-        
-        if showLogs {
-            receivedData.append(logEntry)
-        }
-        
     }
     
     private static func resetStatsDataIfNeeded() {

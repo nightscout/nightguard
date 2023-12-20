@@ -206,12 +206,7 @@ class MainViewModel: ObservableObject, Identifiable {
     
     fileprivate func updateComplication() {
         
-        let complicationServer = CLKComplicationServer.sharedInstance()
-        if complicationServer.activeComplications != nil {
-            for complication in complicationServer.activeComplications! {
-                complicationServer.reloadTimeline(for: complication)
-            }
-        }
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     fileprivate func calculateColors(nightscoutData: NightscoutData) {
