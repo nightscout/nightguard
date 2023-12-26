@@ -203,7 +203,7 @@ class AlarmViewController: CustomFormViewController {
                     AlarmRule.isSmartSnoozeEnabled.value = value
             }
             
-            +++ Section(header: "", footer: NSLocalizedString("When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode.", comment: "Footer for Alert notifications")) { section in
+            +++ Section(header: "", footer: NSLocalizedString("AlarmNotificationDescription", comment: "Footer for Alert notifications")) { section in
                                 section.hidden = Condition.function(["disableAllAlertsRow"], { form in
                     return (form.rowBy(tag: "disableAllAlertsRow") as? SwitchRow)?.value ?? false
                 })

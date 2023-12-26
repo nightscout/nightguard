@@ -90,8 +90,9 @@ struct NightguardTimelineProvider: TimelineProvider {
             let updatedData = updateDataWith(reducedEntriesWithDelta, oldData)
             let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta)
             
-            WidgetCenter.shared.reloadAllTimelines()
+            updateComplicationOrWidgets()
             BackgroundRefreshLogger.info("TimelineProvider refreshed widgets...")
+            //WidgetCenter.shared.reloadAllTimelines()
             AlarmNotificationService.singleton.notifyIfAlarmActivated(updatedData)
             
             completion(entry)
@@ -151,5 +152,22 @@ struct NightguardTimelineProvider: TimelineProvider {
         }
         
         return newEntries
+    }
+    
+    fileprivate func updateComplicationOrWidgets() {
+
+        #if os(watchOS)
+            let complicationServer = CLKComplicationServer.sharedInstance()
+            if complicationServer.activeComplications != nil {
+                guard let activeComp = complicationServer.activeComplications else {
+                    return
+                }
+                for complication in activeComp {
+                    complicationServer.reloadTimeline(for: complication)
+                }
+            }
+        #else
+            WidgetCenter.shared.reloadAllTimelines()
+        #endif
     }
 }

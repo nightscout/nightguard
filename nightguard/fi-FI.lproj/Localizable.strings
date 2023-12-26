@@ -284,7 +284,7 @@
 "Vibrate" = "Värinä";
 
 /* Footer for Alert notifications */
-"When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  Just to be sure that you will not miss the notifications, turn the volume up and disable the Do Not Disturb/Silence mode." = "Kun sovellus on taustalla, voit ottaa ilmoitukset käyttöön huomataksesi tulevat hälytykset. Lisää äänenvoimakkuutta ja ota 'Älä häiritse' tila pois päältä ollaksesi varma että huomaat hälytykset.";
+"AlarmNotificationDescription" = "When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  For this to work, you will have to add Nightguard Widgets to your Lock-Screen. But nevertheless, these updates are budgeted by apple.";
 
 /* Stats button value for Yesterday */
 "Yesterday" = "Eilen";

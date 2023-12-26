@@ -35,7 +35,7 @@ struct AccessoryRectangularView : View {
                     Text("--- --- ---")
                 }
             }
-            Text("\(snoozedForMinutes(snoozeTimestamp: entry.snoozedUntilTimestamp))min Snoozed")
+            //Text("\(snoozedForMinutes(snoozeTimestamp: entry.snoozedUntilTimestamp))min Snoozed")
         }
         .widgetAccentable(true)
         .unredacted()
