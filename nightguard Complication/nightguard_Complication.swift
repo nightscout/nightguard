@@ -21,7 +21,7 @@ struct NightguardWidgetsBundle: WidgetBundle {
 struct NightguardDefaultWidgets: Widget {
     
     var provider = NightguardTimelineProvider(displayName:
-          NSLocalizedString("BG Text", comment: "Text Widget Display Name"))
+          NSLocalizedString("BG Text C", comment: "Text Widget Display Name"))
 
     var body: some WidgetConfiguration {
         StaticConfiguration(
@@ -31,7 +31,7 @@ struct NightguardDefaultWidgets: Widget {
             NightguardEntryView(entry: entry)
         }
         .configurationDisplayName(
-            NSLocalizedString("BG Values as Text", comment: "Widget Configuration Display Name"))
+            NSLocalizedString("BG Values as Text C", comment: "Widget Configuration Display Name"))
         .description(provider.displayName)
         .supportedFamilies([
             .accessoryInline,
@@ -45,7 +45,7 @@ struct NightguardDefaultWidgets: Widget {
 struct NightguardGaugeWidgets: Widget {
     
     var provider = NightguardTimelineProvider(displayName:
-            NSLocalizedString("BG Gauge", comment: "Gauge Widget Display Name"))
+            NSLocalizedString("BG Gauge C", comment: "Gauge Widget Display Name"))
     
     var body: some WidgetConfiguration {
         
@@ -56,7 +56,7 @@ struct NightguardGaugeWidgets: Widget {
             NightguardGaugeEntryView(entry: entry)
         }
         .configurationDisplayName(
-            NSLocalizedString("BG Values as Gauge", comment: "Gauge Widget Configuration Display Name"))
+            NSLocalizedString("BG Values as Gauge c", comment: "Gauge Widget Configuration Display Name"))
         .description(provider.displayName)
         .supportedFamilies([
             .accessoryCorner,
@@ -66,23 +66,24 @@ struct NightguardGaugeWidgets: Widget {
 }
 
 struct nightguard_Complication_Extension_Previews: PreviewProvider {
+    
     static var previews: some View {
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryInline))
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryCorner))
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
         
-        NightguardGaugeEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardGaugeEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryCorner))
         
-        NightguardGaugeEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardGaugeEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
     }
 }
@@ -130,16 +131,16 @@ struct NightguardGaugeEntryView : View {
 struct NightguardGaugePreviews: PreviewProvider {
     static var previews: some View {
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), sgv: "100", configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), sgv: "100", configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), sgv: "100", configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryCorner))
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), sgv: "100", configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryInline))
     }
 }

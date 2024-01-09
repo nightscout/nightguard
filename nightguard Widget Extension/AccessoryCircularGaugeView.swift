@@ -18,7 +18,7 @@ struct AccessoryCircularGaugeView : View {
         
         Gauge(value: Double(
             calculateAgeInMinutes(
-                fromDouble: entry.lastBGValues.first?.timestamp ?? Date().timeIntervalSinceNow - 3600)) ?? 60,
+                fromDouble: entry.lastBGValues.first?.timestamp ?? Date.now.timeIntervalSinceNow - 3600)) ?? 60,
               in: 0...60) {
             Text("\(entry.lastBGValues.first?.delta ?? "?")")
             .foregroundColor(

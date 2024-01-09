@@ -53,13 +53,36 @@ struct NightscoutDataEntry: TimelineEntry {
             return String(difference) + "min"
         }
     }
-    var time : NSNumber = 0
+    var time : NSNumber = Date().timeIntervalSince1970 as NSNumber
     var battery : String = "---"
     var iob : String = ""
     var cob : String = ""
     var snoozedUntilTimestamp : TimeInterval = 0
     var lastBGValues : [BgEntry] = []
+    var errorMessage: String = ""
     let configuration: ConfigurationIntent
+    var entryDate: Date = Date()
+    
+    static let previewValues = NightscoutDataEntry(
+        date: Date.now,
+        sgv: "100",
+        sgvColor: UIColor.nightguardGreen(),
+        bgdeltaString: "+2",
+        bgdeltaColor: UIColor.nightguardGreen(),
+        bgdeltaArrow: "-",
+        bgdelta: 2,
+        time: NSNumber(value: Date.now.timeIntervalSince1970 * 1000 - 120*1000),
+        battery: "100",
+        iob: "0.0",
+        cob: "0.0",
+        snoozedUntilTimestamp:
+            0,
+        lastBGValues: [
+            BgEntry(value: "100", valueColor: UIColor.nightguardGreen(), delta: "+2", timestamp: Date.now.timeIntervalSince1970 * 1000 - 120*1000),
+            BgEntry(value: "98", valueColor: UIColor.nightguardGreen(), delta: "-3", timestamp: (Date.now.timeIntervalSince1970 * 1000) - (60*5*1000)),
+            BgEntry(value: "101", valueColor: UIColor.nightguardGreen(), delta: "+2", timestamp: (Date.now.timeIntervalSince1970 * 1000) - (60*10*1000))
+        ],
+        configuration: ConfigurationIntent())
 }
 
 struct BgEntry : Identifiable, Hashable {

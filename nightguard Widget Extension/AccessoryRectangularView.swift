@@ -32,9 +32,16 @@ struct AccessoryRectangularView : View {
                     }
                 }
                 if entry.lastBGValues.isEmpty {
-                    Text("--- --- ---")
+                    VStack {
+                        Text("--- --- ---")
+                    }
                 }
             }
+            if !entry.errorMessage.isEmpty {
+                Text("\(entry.errorMessage)")
+                    .font(.system(size: 6))
+            }
+            Text(entry.entryDate, style: .time)
             //Text("\(snoozedForMinutes(snoozeTimestamp: entry.snoozedUntilTimestamp))min Snoozed")
         }
         .widgetAccentable(true)

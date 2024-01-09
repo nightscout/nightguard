@@ -15,7 +15,7 @@ struct AccessoryCircularView : View {
     var entry: NightscoutDataEntry
     
     var body: some View {
-        Text("\(calculateAgeInMinutes(fromDouble: entry.lastBGValues.first?.timestamp ?? Date().timeIntervalSinceNow-3600))m")
+        Text("\(calculateAgeInMinutes(fromDouble: entry.lastBGValues.first?.timestamp ?? Date.now.timeIntervalSinceNow-3600))m")
         Text("\(entry.lastBGValues.first?.value ?? "??")")
             .foregroundColor(
                 Color(UIColorChanger.getBgColor(entry.lastBGValues.first?.value ?? "999")))

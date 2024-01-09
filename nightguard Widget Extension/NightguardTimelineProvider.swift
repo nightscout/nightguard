@@ -15,20 +15,29 @@ struct NightguardTimelineProvider: TimelineProvider {
     
     func getSnapshot(in context: Context, completion: @escaping (NightscoutDataEntry) -> Void) {
         
-        getTimelineData { nightscoutDataEntry in
-            completion(nightscoutDataEntry)
+        if context.isPreview {
+            completion(NightscoutDataEntry.previewValues)
+            return
+        }
+        
+        Task {
+            getTimelineData { nightscoutDataEntry in
+                completion(nightscoutDataEntry)
+            }
         }
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<NightscoutDataEntry>) -> Void) {
         
-        getTimelineData { nightscoutDataEntry in
-            
-            var entries: [NightscoutDataEntry] = []
-            entries.append(nightscoutDataEntry)
-            // ask for a refresh after 5 Minutes:
-            completion(Timeline(entries: entries, policy:
-                    .after(Calendar.current.date(byAdding: .minute, value: 5, to: Date()) ?? Date())))
+        Task {
+            getTimelineData { nightscoutDataEntry in
+                
+                var entries: [NightscoutDataEntry] = []
+                entries.append(nightscoutDataEntry)
+                // ask for a refresh after 5 Minutes:
+                completion(Timeline(entries: entries, policy:
+                        .after(Calendar.current.date(byAdding: .minute, value: 10, to: Date()) ?? Date())))
+            }
         }
     }
     
@@ -60,13 +69,23 @@ struct NightguardTimelineProvider: TimelineProvider {
             
             BackgroundRefreshLogger.info("TimelineProvider received new nightscout data...")
             var bgEntries : [BgEntry]
+            var errorMessage = ""
             if case .data(let bloodSugarValues) = result {
+                NightscoutDataRepository.singleton.storeTodaysBgData(bloodSugarValues)
                 bgEntries = bloodSugarValues.map() {bgValue in
                     return BgEntry(
                         value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
                         valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
                         delta: "0", timestamp: bgValue.timestamp)
                 }
+            } else if case .error(let error) = result {
+                bgEntries = oldEntries.map() {bgValue in
+                    return BgEntry(
+                        value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
+                        valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
+                        delta: "0", timestamp: bgValue.timestamp)
+                }
+                errorMessage = error.localizedDescription
             } else {
                 // use old values if no new could be retrieved
                 bgEntries = oldEntries.map() {bgValue in
@@ -88,15 +107,34 @@ struct NightguardTimelineProvider: TimelineProvider {
             // if no new values could be retrieved -> the old ones will be returned.
             let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries)
             let updatedData = updateDataWith(reducedEntriesWithDelta, oldData)
-            let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta)
+            let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta, errorMessage)
             
-            updateComplicationOrWidgets()
             BackgroundRefreshLogger.info("TimelineProvider refreshed widgets...")
-            //WidgetCenter.shared.reloadAllTimelines()
+            // Notifications can be send from iOS only, so don't waste time for this in watchos:
+            #if os(iOS)
             AlarmNotificationService.singleton.notifyIfAlarmActivated(updatedData)
+            #endif
             
             completion(entry)
         }
+        
+        /*let entry = NightscoutDataEntry(
+            date: Date(),
+            sgv: "0",
+            sgvColor: UIColor.blue,
+            bgdeltaString: "0",
+            bgdeltaColor: UIColor.blue,
+            bgdeltaArrow: "-",
+            bgdelta: 0,
+            time: 0,
+            battery: "",
+            iob: "",
+            cob: "",
+            snoozedUntilTimestamp:
+                0,
+            lastBGValues: [],
+            configuration: ConfigurationIntent())
+        completion(entry)*/
     }
     
     private func updateDataWith(_ reducedEntries : [BgEntry], _ data: NightscoutData) -> NightscoutData{
@@ -106,14 +144,14 @@ struct NightguardTimelineProvider: TimelineProvider {
         }
         
         let updatedNightscoutData = NightscoutData()
-        updatedNightscoutData.sgv = reducedEntries.last?.value ?? "?"
-        updatedNightscoutData.bgdeltaString = reducedEntries.last?.delta ?? "?"
+        updatedNightscoutData.sgv = UnitsConverter.displayValueToMgdlString(reducedEntries.last?.value ?? "?")
+        updatedNightscoutData.bgdeltaString = UnitsConverter.displayValueToMgdlString(reducedEntries.last?.delta ?? "?")
         updatedNightscoutData.time = NSNumber(value: (reducedEntries.last?.timestamp ?? 0) * 1000)
         
         return updatedNightscoutData
     }
     
-    private func convertToTimelineEntry(_ data: NightscoutData, _ bgValues: [BgEntry]) -> NightscoutDataEntry {
+    private func convertToTimelineEntry(_ data: NightscoutData, _ bgValues: [BgEntry], _ errorMessage: String) -> NightscoutDataEntry {
         
         return NightscoutDataEntry(
             date: Date(timeIntervalSince1970: data.time.doubleValue / 1000),
@@ -130,6 +168,7 @@ struct NightguardTimelineProvider: TimelineProvider {
             snoozedUntilTimestamp: 
                 AlarmRule.snoozedUntilTimestamp.value,
             lastBGValues: bgValues.reversed(),
+            errorMessage: errorMessage,
             configuration: ConfigurationIntent())
     }
 

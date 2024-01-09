@@ -146,6 +146,15 @@ class UnitsConverter {
         return displayValueToMgdl(floatValue)
     }
     
+    // Converts the value in Display Units to Mg/dL.
+    static func displayValueToMgdlString(_ value : String) -> String {
+        
+        guard let floatValue = Float(value.trimmingCharacters(in: CharacterSet.whitespaces)) else {
+            return "?"
+        }
+        return String(describing: displayValueToMgdl(floatValue))
+    }
+    
     static func mmolToMgdl(_ mmolValue : Float) -> Float {
         
         return mmolValue * 18.02

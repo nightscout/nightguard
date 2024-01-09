@@ -104,19 +104,20 @@ struct NightguardGaugeEntryView : View {
 struct nightguard_Widget_Extension_Previews: PreviewProvider {
     static var previews: some View {
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+         
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryInline))
             .previewDisplayName("Inline")
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
             .previewDisplayName("Circular")
         
-        NightguardGaugeEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardGaugeEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
             .previewDisplayName("Circular")
         
-        NightguardEntryView(entry: NightscoutDataEntry(date: Date(), configuration: ConfigurationIntent()))
+        NightguardEntryView(entry: NightscoutDataEntry.previewValues)
             .previewContext(WidgetPreviewContext(family: .accessoryRectangular))
             .previewDisplayName("Rectangular")
     }
