@@ -15,14 +15,13 @@ struct AccessoryCornerView : View {
     @State var entry: NightscoutDataEntry
     
     var body: some View {
-        Text("\(entry.bgdeltaArrow)")
+        Text("\(calculateAgeInMinutes(from: entry.time))m")
             .font(.system(size: 20))
             .foregroundColor(
                 Color(entry.bgdeltaColor))
         .widgetLabel {
             Text("\(entry.sgv)" +
-                 "\(entry.bgdeltaString) " +
-                 "\(calculateAgeInMinutes(from: entry.time))m")
+                 "\(entry.bgdeltaString)")
                     .foregroundColor(
                         Color(entry.sgvColor))
         }

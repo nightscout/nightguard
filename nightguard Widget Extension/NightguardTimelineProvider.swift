@@ -117,24 +117,6 @@ struct NightguardTimelineProvider: TimelineProvider {
             
             completion(entry)
         }
-        
-        /*let entry = NightscoutDataEntry(
-            date: Date(),
-            sgv: "0",
-            sgvColor: UIColor.blue,
-            bgdeltaString: "0",
-            bgdeltaColor: UIColor.blue,
-            bgdeltaArrow: "-",
-            bgdelta: 0,
-            time: 0,
-            battery: "",
-            iob: "",
-            cob: "",
-            snoozedUntilTimestamp:
-                0,
-            lastBGValues: [],
-            configuration: ConfigurationIntent())
-        completion(entry)*/
     }
     
     private func updateDataWith(_ reducedEntries : [BgEntry], _ data: NightscoutData) -> NightscoutData{

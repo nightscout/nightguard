@@ -16,13 +16,16 @@ struct AccessoryCornerGaugeView : View {
     
     var body: some View {
         
-        Text("\(entry.sgv)")
+        Text("\(entry.lastBGValues.first?.value ?? "??")")
             .font(.system(size: 20))
             .foregroundColor(
-               Color(entry.sgvColor))
+                Color(UIColorChanger.getBgColor(entry.lastBGValues.first?.value ?? "999")))
             .widgetLabel {
-               ProgressView(value: (Double(calculateAgeInMinutes(from: entry.time)) ?? 100) / 60)
-                 .tint(Color(UIColorChanger.getTimeLabelColor(entry.time)))
+               ProgressView(value:
+                                (Double(calculateAgeInMinutes(fromDouble: entry.lastBGValues.first?.timestamp ?? Date.now.timeIntervalSinceNow - 3600)) ?? 60) / 60)
+               .tint(
+                Color(UIColorChanger.getTimeLabelColor(
+                    fromDouble: entry.lastBGValues.first?.timestamp ?? Date().timeIntervalSinceNow - 3600)))
            }
         .widgetAccentable(true)
         .unredacted()
