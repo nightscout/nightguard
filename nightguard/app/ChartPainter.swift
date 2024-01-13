@@ -67,7 +67,7 @@ class ChartPainter {
         adjustMinMaxXYCoordinates(days, maxYDisplayValue: maxBgValue, upperBoundNiceValue: upperBoundNiceValue, lowerBoundNiceValue: lowerBoundNiceValue)
         
         // An empty size can cause crashes, so return an empty Image in that case, too:
-        if size.debugDescription.isEmpty {
+        if size.debugDescription.isEmpty || size.width <= 0 || size.height <= 0 {
             return (UIImage.emptyImage(with: CGSize(width: 10, height: 10)), 0)
         }
         

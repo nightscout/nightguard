@@ -88,7 +88,7 @@ class UIColorChanger {
     static func getTimeLabelColor(_ lastUpdate : NSNumber) -> UIColor {
         
         let lastUpdateAsNSDate : Date = Date(timeIntervalSince1970: lastUpdate.doubleValue / 1000)
-        let timeInterval : Int = Int(Date().timeIntervalSince(lastUpdateAsNSDate))
+        let timeInterval = Date().timeIntervalSince(lastUpdateAsNSDate)
         if (timeInterval > 15*60) {
             return UIColor.nightguardRed()
         } else if (timeInterval > 7*60) {
