@@ -165,9 +165,9 @@ class NightscoutData : NSObject, Codable, NSSecureCoding {
     
     func isOlderThanXMinutes(_ minutes : Int) -> Bool {
         let lastUpdateAsNSDate : Date = Date(timeIntervalSince1970: time.doubleValue / 1000)
-        let timeInterval = Date().timeIntervalSince(lastUpdateAsNSDate)
-        
-        return timeInterval > Double(minutes * 60)
+        let timeInterval : Int = Int(Date().timeIntervalSince(lastUpdateAsNSDate))
+
+        return timeInterval > minutes * 60
     }
 }
 
