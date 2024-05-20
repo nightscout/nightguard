@@ -206,6 +206,14 @@ class PrefsViewController: CustomFormViewController {
             }
         
             <<< SwitchRow() { row in
+                row.title = NSLocalizedString("Check BG every minute", comment: "Label for Check BG every minute")
+                row.value = UserDefaultsRepository.checkBGEveryMinute.value
+                }.onChange { row in
+                    guard let value = row.value else { return }
+                    UserDefaultsRepository.checkBGEveryMinute.value = value
+            }
+        
+            <<< SwitchRow() { row in
                 row.title = NSLocalizedString("Show BG on App Badge", comment: "Label for Show BG on Badge")
                 row.value = SharedUserDefaultsRepository.showBGOnAppBadge.value
                 }.onChange { row in
