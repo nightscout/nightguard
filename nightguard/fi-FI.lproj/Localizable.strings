@@ -636,3 +636,6 @@
 
 /* Gauge Widget Not Supported Error Message */
 "No Gauge Support for this widget!" = "Ei kaavio tukea tälle widgetille!";
+
+/* Label for Check BG every minute */
+"Check BG every minute" = "Check BG every minute";
