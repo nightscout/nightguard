@@ -109,6 +109,10 @@ class UserDefaultsRepository {
     static let showYesterdaysBgs = UserDefaultsValue<Bool>(key: "showYesterdaysBgs", default: true)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
+    // check BG every minute
+    static let checkBGEveryMinute = UserDefaultsValue<Bool>(key: "checkBGEveryMinute", default: false)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
     /* Parses the URI entered in the UI and extracts the token if one is present. */
     fileprivate static func parseBaseUri() {
         url = nil

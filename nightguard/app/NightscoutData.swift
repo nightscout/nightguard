@@ -159,6 +159,18 @@ class NightscoutData : NSObject, Codable, NSSecureCoding {
         try container.encode(self.cob, forKey: .cob)
     }
     
+    func isOlderThanYMinutes() -> Bool {
+        if UserDefaultsRepository.checkBGEveryMinute.value == true {
+            isOlderThan1Minute()
+        } else {
+            isOlderThan5Minutes()
+        }
+    }
+
+    func isOlderThan1Minute() -> Bool {
+        return isOlderThanXMinutes(1)
+    }
+
     func isOlderThan5Minutes() -> Bool {
         return isOlderThanXMinutes(5)
     }
