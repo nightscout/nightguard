@@ -107,7 +107,7 @@ class StatsViewController: UIViewController {
             normalizedBgValues.insert(
                 BloodSugar.init(value: bgValue.value,
                                 timestamp: (normalizedTimeWithYear1971?.timeIntervalSince1970)! * 1000,
-                                isMeteredBloodGlucoseValue: bgValue.isMeteredBloodGlucoseValue), at: 0)
+                                isMeteredBloodGlucoseValue: bgValue.isMeteredBloodGlucoseValue, arrow: bgValue.arrow), at: 0)
         }
         
         return normalizedBgValues

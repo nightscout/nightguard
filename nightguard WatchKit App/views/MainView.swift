@@ -17,6 +17,7 @@ struct MainView: View {
     
     // update the ui every 15 seconds:
     let timer = Timer.publish(every: 15, on: .current, in: .common).autoconnect()
+    let refreshDataOnAppBecameActiveNotification = NotificationCenter.default.publisher(for: .refreshDataOnAppBecameActive)
     
     @ObservedObject var viewModel: MainViewModel
     
@@ -199,6 +200,9 @@ struct MainView: View {
                 UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(UserDefaultsRepository.units.value.rawValue, forKey: "units")
             }
             .onReceive(timer) { _ in
+                viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
+            }
+            .onReceive(refreshDataOnAppBecameActiveNotification) { _ in
                 viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
             }
         //}

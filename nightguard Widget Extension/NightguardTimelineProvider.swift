@@ -76,14 +76,14 @@ struct NightguardTimelineProvider: TimelineProvider {
                     return BgEntry(
                         value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
                         valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                        delta: "0", timestamp: bgValue.timestamp)
+                        delta: "0", timestamp: bgValue.timestamp, arrow: bgValue.arrow)
                 }
             } else if case .error(let error) = result {
                 bgEntries = oldEntries.map() {bgValue in
                     return BgEntry(
                         value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
                         valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                        delta: "0", timestamp: bgValue.timestamp)
+                        delta: "0", timestamp: bgValue.timestamp, arrow: bgValue.arrow)
                 }
                 errorMessage = error.localizedDescription
             } else {
@@ -92,7 +92,7 @@ struct NightguardTimelineProvider: TimelineProvider {
                     return BgEntry(
                         value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
                         valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                        delta: "0", timestamp: bgValue.timestamp)
+                        delta: "0", timestamp: bgValue.timestamp, arrow: bgValue.arrow)
                 }
             }
             
@@ -166,7 +166,7 @@ struct NightguardTimelineProvider: TimelineProvider {
                     value: bgEntry.value,
                     valueColor: UIColorChanger.getBgColor(bgEntry.value),
                     delta: Float(v1AsFloat - v2AsFloat).cleanSignedValue,
-                    timestamp: bgEntry.timestamp)
+                    timestamp: bgEntry.timestamp, arrow: bgEntry.arrow)
                 newEntries.append(newEntry)
             }
             preceedingEntry = bgEntry

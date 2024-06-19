@@ -15,6 +15,7 @@ struct AccessoryInlineView : View {
     var entry: NightscoutDataEntry
     
     var body: some View {
+        //AccessoryWidgetBackground() not supported in this Widget Family
         Text("| \(Date(timeIntervalSince1970:entry.lastBGValues.first?.timestamp ?? (Date.now.timeIntervalSinceNow - 3600) / 1000).toLocalTimeString()) " + "\(entry.lastBGValues.first?.value ?? "?")\(entry.lastBGValues.first?.delta ?? "?")")
             .widgetAccentable(true)
             .unredacted()

@@ -348,6 +348,8 @@
 		43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
 		43FCE625208B80840080DA0A /* SnoozeAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FCE624208B80840080DA0A /* SnoozeAlarmViewController.swift */; };
 		4BD05B7C2B1E33F700A74E9B /* DateExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */; };
+		7B4E31F42C2379C4005090CB /* NotificationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F32C2379C4005090CB /* NotificationExtension.swift */; };
+		7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F52C237F14005090CB /* SystemSmallView.swift */; };
 		7FCFB7190EB96C437CD9908C /* Pods_nightguard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F5A4E6048F7A6F26B9C31E /* Pods_nightguard.framework */; };
 		BD9486CCE1790AB9D245579D /* Pods_nightguard_Widget_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5AA741119F937A9FEA0FE16 /* Pods_nightguard_Widget_Extension.framework */; };
 		C21FEAA8173DC84337CC0E33 /* Pods_nightguard_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A960E5B86E46012C3B88556F /* Pods_nightguard_WatchKit_App.framework */; };
@@ -710,6 +712,8 @@
 		4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTest.swift; sourceTree = "<group>"; };
 		5560CB94CC76B8F0F7F5C440 /* Pods-nightguardTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardTests.release.xcconfig"; path = "Target Support Files/Pods-nightguardTests/Pods-nightguardTests.release.xcconfig"; sourceTree = "<group>"; };
 		77D200A6D5933D628408130C /* Pods_nightguardUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguardUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B4E31F32C2379C4005090CB /* NotificationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtension.swift; sourceTree = "<group>"; };
+		7B4E31F52C237F14005090CB /* SystemSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSmallView.swift; sourceTree = "<group>"; };
 		89358A3E8C5372AE643A47B4 /* Pods-nightguard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard.debug.xcconfig"; path = "Target Support Files/Pods-nightguard/Pods-nightguard.debug.xcconfig"; sourceTree = "<group>"; };
 		A4F222974AF5F9228A291DD7 /* Pods-nightguard ComplicationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard ComplicationExtension.debug.xcconfig"; path = "Target Support Files/Pods-nightguard ComplicationExtension/Pods-nightguard ComplicationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A960E5B86E46012C3B88556F /* Pods_nightguard_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguard_WatchKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -991,6 +995,7 @@
 				43647BF71BFF6435004389F9 /* Interface.storyboard */,
 				43647BFC1BFF6435004389F9 /* Info.plist */,
 				435DFF7029E1E858007A25EA /* ViewExtension.swift */,
+				7B4E31F32C2379C4005090CB /* NotificationExtension.swift */,
 			);
 			path = "nightguard WatchKit App";
 			sourceTree = "<group>";
@@ -1008,6 +1013,7 @@
 				439CBB2028EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition */,
 				438DAC8428D2356A00FBF520 /* Assets.xcassets */,
 				438DAC8628D2356A00FBF520 /* Info.plist */,
+				7B4E31F52C237F14005090CB /* SystemSmallView.swift */,
 			);
 			path = "nightguard Widget Extension";
 			sourceTree = "<group>";
@@ -2101,6 +2107,7 @@
 				43961F4A2533598400B1492B /* ActivateTemporaryTargetPopupView.swift in Sources */,
 				43794F421C2F435A00DB8B58 /* AppConstants.swift in Sources */,
 				439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */,
+				7B4E31F42C2379C4005090CB /* NotificationExtension.swift in Sources */,
 				D13A4C212221E49200C71F08 /* NightSafeMessage.swift in Sources */,
 				43BB4B0824CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */,
 			);
@@ -2136,6 +2143,7 @@
 				4332FF5B2B164FF000DBF917 /* AlarmNotificationService.swift in Sources */,
 				43A40F222B17B38B0026E584 /* AlarmRule.swift in Sources */,
 				43BE674528D78C0B00285798 /* UserDefaultsRepository.swift in Sources */,
+				7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */,
 				435DFF6429E0A90A007A25EA /* AccessoryCornerView.swift in Sources */,
 				438DAC9128D253BC00FBF520 /* NightscoutData.swift in Sources */,
 				4332FF6D2B16596E00DBF917 /* Matrix.swift in Sources */,

@@ -108,7 +108,7 @@ extension Array where Element: BloodSugar {
             
             if let sgvAsFloat = Float(nightscoutData.sgv) {
                 self.append(
-                    Element (value: sgvAsFloat, timestamp: nightscoutData.time.doubleValue, isMeteredBloodGlucoseValue: false)
+                    Element (value: sgvAsFloat, timestamp: nightscoutData.time.doubleValue, isMeteredBloodGlucoseValue: false, arrow: nightscoutData.bgdeltaArrow)
                 )
             }
         }

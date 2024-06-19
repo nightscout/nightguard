@@ -78,9 +78,9 @@ struct NightscoutDataEntry: TimelineEntry {
         snoozedUntilTimestamp:
             0,
         lastBGValues: [
-            BgEntry(value: "100", valueColor: UIColor.nightguardGreen(), delta: "+2", timestamp: Date.now.timeIntervalSince1970 * 1000 - 120*1000),
-            BgEntry(value: "98", valueColor: UIColor.nightguardGreen(), delta: "-3", timestamp: (Date.now.timeIntervalSince1970 * 1000) - (60*5*1000)),
-            BgEntry(value: "101", valueColor: UIColor.nightguardGreen(), delta: "+2", timestamp: (Date.now.timeIntervalSince1970 * 1000) - (60*10*1000))
+            BgEntry(value: "100", valueColor: UIColor.nightguardGreen(), delta: "+2", timestamp: Date.now.timeIntervalSince1970 * 1000 - 120*1000, arrow: "-"),
+            BgEntry(value: "98", valueColor: UIColor.nightguardGreen(), delta: "-3", timestamp: (Date.now.timeIntervalSince1970 * 1000) - (60*5*1000), arrow: "-"),
+            BgEntry(value: "101", valueColor: UIColor.nightguardGreen(), delta: "+2", timestamp: (Date.now.timeIntervalSince1970 * 1000) - (60*10*1000), arrow: "-")
         ],
         configuration: ConfigurationIntent())
 }
@@ -92,4 +92,5 @@ struct BgEntry : Identifiable, Hashable {
     let valueColor: UIColor
     let delta: String
     let timestamp: Double
+    let arrow: String
 }
