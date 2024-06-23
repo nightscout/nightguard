@@ -210,16 +210,38 @@ class NightscoutService {
                 }
                 
                 var bloodSugarArray = [BloodSugar]()
+                var bloodValueArrowChar : String
                 for singleBgValue in bgs {
                     
                     if let bgDict = singleBgValue as? Dictionary<String, Any> {
                         if let bloodValue = bgDict["sgv"] as? Double {
                             if let bloodValueTimestamp = bgDict["date"] as? Double {
-                                let bloodSugar = BloodSugar(
+                                if let bloodValueArrow = bgDict["direction"] as? String {
+                                    switch bloodValueArrow {
+                                    case "DoubleUp":
+                                        bloodValueArrowChar = "↑↑"
+                                    case "SingleUp":
+                                        bloodValueArrowChar = "↑"
+                                    case "FortyFiveUp":
+                                        bloodValueArrowChar = "↗"
+                                    case "Flat":
+                                        bloodValueArrowChar = "→"
+                                    case "FortyFiveDown":
+                                        bloodValueArrowChar = "↘"
+                                    case "SingleDown":
+                                        bloodValueArrowChar = "↓"
+                                    case "DoubleDown":
+                                        bloodValueArrowChar = "↓↓"
+                                    default:
+                                        bloodValueArrowChar = "-"
+                                    }
+                                    let bloodSugar = BloodSugar(
                                         value: Float(bloodValue),
                                         timestamp: bloodValueTimestamp,
-                                        isMeteredBloodGlucoseValue: false)
-                                bloodSugarArray.insert(bloodSugar, at: 0)
+                                        isMeteredBloodGlucoseValue: false,
+                                        arrow: bloodValueArrowChar)
+                                    bloodSugarArray.insert(bloodSugar, at: 0)
+                                }
                             }
                         }
                         if let bloodValue = bgDict["mbg"] as? Double {
@@ -227,7 +249,8 @@ class NightscoutService {
                                 let bloodSugar = BloodSugar(
                                         value: Float(bloodValue),
                                         timestamp: bloodValueTimestamp,
-                                        isMeteredBloodGlucoseValue: true)
+                                        isMeteredBloodGlucoseValue: true,
+                                        arrow: "-")
                                 bloodSugarArray.insert(bloodSugar, at: 0)
                             }
                         }

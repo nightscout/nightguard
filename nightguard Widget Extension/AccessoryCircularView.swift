@@ -15,15 +15,20 @@ struct AccessoryCircularView : View {
     var entry: NightscoutDataEntry
     
     var body: some View {
-        Text("\(calculateAgeInMinutes(fromDouble: entry.lastBGValues.first?.timestamp ?? Date.now.timeIntervalSinceNow-3600))m")
-        Text("\(entry.lastBGValues.first?.value ?? "??")")
-            .foregroundColor(
-                Color(UIColorChanger.getBgColor(entry.lastBGValues.first?.value ?? "999")))
-        Text("\(entry.lastBGValues.first?.delta ?? "?")")
-            .foregroundColor(
-                Color(UIColorChanger.getDeltaLabelColor(Float(entry.lastBGValues.first?.delta ?? "99") ?? 99.0)))
-        .widgetAccentable(true)
-        .unredacted()
+        ZStack {
+            AccessoryWidgetBackground()
+            VStack {
+                Text("\(calculateAgeInMinutes(fromDouble: entry.lastBGValues.first?.timestamp ?? Date.now.timeIntervalSinceNow-3600))m")
+                Text("\(entry.lastBGValues.first?.value ?? "??")")
+                    .foregroundColor(
+                        Color(UIColorChanger.getBgColor(entry.lastBGValues.first?.value ?? "999")))
+                Text("\(entry.lastBGValues.first?.delta ?? "?")")
+                    .foregroundColor(
+                        Color(UIColorChanger.getDeltaLabelColor(Float(entry.lastBGValues.first?.delta ?? "99") ?? 99.0)))
+                    .widgetAccentable(true)
+                    .unredacted()
+            }
+        }
     }
 }
 

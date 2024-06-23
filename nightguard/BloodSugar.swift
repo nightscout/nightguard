@@ -24,15 +24,17 @@ class BloodSugar : NSCoder, NSSecureCoding {
     let value : Float
     let timestamp : Double
     let isMeteredBloodGlucoseValue : Bool
+    let arrow : String
     
     var date: Date {
         return Date(timeIntervalSince1970: timestamp / 1000)
     }
     
-    required init(value : Float, timestamp : Double, isMeteredBloodGlucoseValue : Bool) {
+    required init(value : Float, timestamp : Double, isMeteredBloodGlucoseValue : Bool, arrow : String) {
         self.value = value
         self.timestamp = timestamp
         self.isMeteredBloodGlucoseValue = isMeteredBloodGlucoseValue
+        self.arrow = arrow
     }
     
     // when the noise is very strong, values are not computable... and we should exclude them from any logic & presentation
@@ -68,14 +70,16 @@ class BloodSugar : NSCoder, NSSecureCoding {
         let value = decoder.decodeFloat(forKey: "value")
         let timestamp = decoder.decodeDouble(forKey: "timestamp")
         let isMeteredBloodGlucoseValue = decoder.decodeBool(forKey: "isMeteredBloodGlucoseValue")
+        let arrow = decoder.decodeObject(forKey: "arrow") as? String ?? "-"
         
-        self.init(value : value, timestamp :  timestamp, isMeteredBloodGlucoseValue: isMeteredBloodGlucoseValue)
+        self.init(value : value, timestamp :  timestamp, isMeteredBloodGlucoseValue: isMeteredBloodGlucoseValue, arrow : arrow)
     }
 
     @objc func encode(with coder: NSCoder) {
         coder.encode(self.value, forKey: "value")
         coder.encode(self.timestamp, forKey: "timestamp")
         coder.encode(self.isMeteredBloodGlucoseValue, forKey: "isMeteredBloodGlucoseValue")
+        coder.encode(self.arrow, forKey: "arrow")
     }
     
     func isOlderThanXMinutes(_ minutes : Int) -> Bool {
