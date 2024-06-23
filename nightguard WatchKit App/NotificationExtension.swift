@@ -3,7 +3,6 @@
 //  nightguard WatchKit App
 //
 //  Created by Philipp Pöml on 29.05.24.
-//  Copyright © 2024 private. All rights reserved.
 //
 
 import Foundation

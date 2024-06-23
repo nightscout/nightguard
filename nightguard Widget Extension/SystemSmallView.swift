@@ -3,7 +3,6 @@
 //  nightguard Widget Extension
 //
 //  Created by Philipp Pöml on 26.05.24.
-//  Copyright © 2024 private. All rights reserved.
 //
 
 import Foundation
