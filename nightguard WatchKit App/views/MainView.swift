@@ -24,9 +24,6 @@ struct MainView: View {
     init(mainViewModel: MainViewModel) {
         
         self.viewModel = mainViewModel
-        
-        //UserDefaultsRepository.units.value = Units.mmol
-        updateUnits()
         viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
    }
 
@@ -52,7 +49,7 @@ struct MainView: View {
     }
     
     var body: some View {
-        // TimelineView(EveryMinuteTimelineSchedule()) { context in
+        
             VStack() {
                 HStack(spacing: 5, content: {
                     Text(UnitsConverter.mgdlToDisplayUnits(
@@ -205,20 +202,6 @@ struct MainView: View {
             .onReceive(refreshDataOnAppBecameActiveNotification) { _ in
                 viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
             }
-        //}
-    }
-    
-    fileprivate func updateUnits() {
-        
-        /*NightscoutService.singleton.readStatus { (result: NightscoutRequestResult<Units>) in
-            
-            switch result {
-            case .data(let units):
-                UserDefaultsRepository.units.value = units
-            case .error(_):
-                print("Unable to determine units on the watch. Using the synced values from the ios app.")
-            }
-        }*/
     }
 }
 

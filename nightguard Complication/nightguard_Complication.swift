@@ -112,7 +112,7 @@ struct NightguardEntryView : View {
     
     @Environment(\.widgetFamily) var widgetFamily
     var entry: NightscoutDataEntry
-
+    
     var body: some View {
         switch widgetFamily {
             case .accessoryCorner:

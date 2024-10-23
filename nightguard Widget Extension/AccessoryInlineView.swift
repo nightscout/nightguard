@@ -15,9 +15,21 @@ struct AccessoryInlineView : View {
     var entry: NightscoutDataEntry
     
     var body: some View {
+        
         //AccessoryWidgetBackground() not supported in this Widget Family
-        Text("| \(Date(timeIntervalSince1970:entry.lastBGValues.first?.timestamp ?? (Date.now.timeIntervalSinceNow - 3600) / 1000).toLocalTimeString()) " + "\(entry.lastBGValues.first?.value ?? "?")\(entry.lastBGValues.first?.delta ?? "?")")
-            .widgetAccentable(true)
-            .unredacted()
+        ZStack {
+            let bgValue = entry.lastBGValues.first
+            if let bgValue = bgValue {
+
+                Text("\(String(bgValue.value)) \(bgValue.delta) \(bgValue.arrow) \(Date.now.addingTimeInterval(-(Date.now.timeIntervalSince1970 - (bgValue.timestamp / 1000))), style: .timer)")
+#if os(watchOS)
+                .foregroundColor(Color(entry.sgvColor))
+#endif
+            } else {
+                Text("--:-- --- -")
+            }
+        }
+        .widgetAccentable(true)
+        .unredacted()
     }
 }

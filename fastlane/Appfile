@@ -3,11 +3,11 @@ apple_id("h3rmanns@gmail.com") # Your Apple email address
 
 # You can uncomment the lines below and add your own
 # team selection in case you're in multiple teams
-team_name "etrada GmbH"
-team_id "118795774"
+team_name "SPORTMEO LTD"
+team_id "127329692"
 
-itc_team_name "etrada GmbH"
-itc_team_id "118795774"
+itc_team_name "SPORTMEO LTD"
+itc_team_id "127329692"
 
 # For more information about the Appfile, see:
 #     https://docs.fastlane.tools/advanced/#appfile
