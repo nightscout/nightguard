@@ -27,6 +27,7 @@ extension View {
 struct NightguardWidgetsBundle: WidgetBundle {
     var body: some Widget {
         NightguardDefaultWidgets()
+        NightguardTimestampWidgets()
         NightguardGaugeWidgets()
     }
 }
@@ -51,6 +52,27 @@ struct NightguardDefaultWidgets: Widget {
             .accessoryInline,
             .accessoryCircular,
             .accessoryRectangular,
+        ])
+    }
+}
+
+struct NightguardTimestampWidgets: Widget {
+    
+    var provider = NightguardTimelineProvider(displayName:
+        NSLocalizedString("BG Text", comment: "Text Widget Timestamp Display"))
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(
+            kind: "org.duckdns.dhe.nightguard.NightguardTimestampWidgets",
+            provider: provider
+        ) { entry in
+            NightguardTimestampEntryView(entry: entry)
+        }
+        .configurationDisplayName(
+            NSLocalizedString("BG with absolute Time", comment: "Widget Configuration Display Name"))
+        .description(provider.displayName)
+        .supportedFamilies([
+            .accessoryRectangular
         ])
     }
 }
@@ -98,6 +120,27 @@ struct NightguardEntryView : View {
                 //mandatory as there are more widget families as in lockscreen widgets etc
                 Text(
                     NSLocalizedString("Not an implemented widget yet", comment: "Gauge Widget Not Implemented Error Message"))
+        }
+    }
+}
+
+struct NightguardTimestampEntryView : View {
+    
+    @Environment(\.widgetFamily) var widgetFamily
+    var entry: NightscoutDataEntry
+
+    var body: some View {
+        switch widgetFamily {
+        case .systemSmall:
+            SystemSmallView(entry: entry)
+            .widgetBackground(backgroundView: Color.black)
+            case .accessoryRectangular:
+                AccessoryRectangularTimestampView(entry: entry)
+                .widgetBackground(backgroundView: EmptyView())
+            default:
+                //mandatory as there are more widget families as in lockscreen widgets etc
+                Text(
+                    NSLocalizedString("Not an implemented widget yet", comment: "Timestamp Widget Not Implemented Error Message"))
         }
     }
 }

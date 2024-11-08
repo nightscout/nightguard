@@ -35,6 +35,7 @@ struct SnoozeModalView: View {
                 })
                 .background(Color.white)
                 .foregroundColor(Color.black)
+                .cornerRadius(25)
             }
             HStack {
                 Button(NSLocalizedString("5min", comment: "Snooze Menu Popup Button 5min"), action: {

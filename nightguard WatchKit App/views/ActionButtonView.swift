@@ -34,7 +34,7 @@ struct ActionButtonView: View {
                         VStack() {
                             Image(systemName: "rectangle.portrait.arrowtriangle.2.outward")
                                 .resizable()
-                                .frame(width: 30, height: 30)
+                                .frame(width: 30)
                             Text(NSLocalizedString("Crown Scrolls", comment: "Watch Action Button Menu"))
                                 .lineLimit(1)
                                 .font(.system(size: 8))
@@ -48,7 +48,7 @@ struct ActionButtonView: View {
                         VStack() {
                             Image(systemName: "plus.magnifyingglass")
                                 .resizable()
-                                .frame(width: 30, height: 30)
+                                .frame(width: 30)
                             Text(NSLocalizedString("Crown Zooms", comment: "Watch Action Button Menu"))
                                 .lineLimit(1)
                                 .font(.system(size: 8))
@@ -62,7 +62,7 @@ struct ActionButtonView: View {
                     VStack() {
                         Image(systemName: "arrow.clockwise")
                             .resizable()
-                            .frame(width: 30, height: 30)
+                            .frame(width: 30)
                         Text(NSLocalizedString("Refresh", comment: "Watch Action Button Menu"))
                             .lineLimit(1)
                             .font(.system(size: 8))
@@ -76,7 +76,7 @@ struct ActionButtonView: View {
                     VStack() {
                         Image(systemName: "moon.zzz")
                             .resizable()
-                            .frame(width: 30, height:30)
+                            .frame(width: 30)
                         Text(NSLocalizedString("Snooze", comment: "Watch Action Button Menu"))
                             .font(.system(size: 10))
                     }

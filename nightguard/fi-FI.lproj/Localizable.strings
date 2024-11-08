@@ -625,6 +625,9 @@
 /* Text Widget Display Name */
 "BG Text" = "VS teksti";
 
+/* Text Widget show BG Values with a fixed Timestamp */
+"BG with absolute Time" = "VS timestamp teksti";
+
 /* Gauge Widget Display Name */
 "BG Gauge" = "VS kaavio";
 
