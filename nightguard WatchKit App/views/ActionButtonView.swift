@@ -34,7 +34,7 @@ struct ActionButtonView: View {
                         VStack() {
                             Image(systemName: "rectangle.portrait.arrowtriangle.2.outward")
                                 .resizable()
-                                .frame(width: 30)
+                                .frame(width: getButtonSize(), height: getButtonSize())
                             Text(NSLocalizedString("Crown Scrolls", comment: "Watch Action Button Menu"))
                                 .lineLimit(1)
                                 .font(.system(size: 8))
@@ -48,7 +48,7 @@ struct ActionButtonView: View {
                         VStack() {
                             Image(systemName: "plus.magnifyingglass")
                                 .resizable()
-                                .frame(width: 30)
+                                .frame(width: getButtonSize(), height: getButtonSize())
                             Text(NSLocalizedString("Crown Zooms", comment: "Watch Action Button Menu"))
                                 .lineLimit(1)
                                 .font(.system(size: 8))
@@ -62,13 +62,13 @@ struct ActionButtonView: View {
                     VStack() {
                         Image(systemName: "arrow.clockwise")
                             .resizable()
-                            .frame(width: 30)
+                            .frame(width: getButtonSize(), height: getButtonSize())
                         Text(NSLocalizedString("Refresh", comment: "Watch Action Button Menu"))
                             .lineLimit(1)
                             .font(.system(size: 8))
                     }
                 }
-            })
+            }).frame(minHeight: 45)
             if #available(watchOSApplicationExtension 7.0, *) {
                 Button(action: {
                     self.snoozeModalIsPresented.toggle()
@@ -76,11 +76,12 @@ struct ActionButtonView: View {
                     VStack() {
                         Image(systemName: "moon.zzz")
                             .resizable()
-                            .frame(width: 30)
+                            .frame(width: getButtonSize(), height: getButtonSize())
                         Text(NSLocalizedString("Snooze", comment: "Watch Action Button Menu"))
                             .font(.system(size: 10))
                     }
                 }
+                .frame(minHeight: 45)
                 .fullScreenCover(isPresented: self.$snoozeModalIsPresented, content: {
                     SnoozeModalView(
                         mainViewModel: viewModel,
@@ -91,6 +92,16 @@ struct ActionButtonView: View {
         })
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
         .focusable(false)
+    }
+}
+    
+// Function to determine button size based on the device screen size
+func getButtonSize() -> CGFloat {
+    let screenSize = WKInterfaceDevice.current().screenBounds.size
+    if screenSize.width <= 136 { // 38mm or 40mm watch
+        return 20
+    } else { // 45mm or larger watch
+        return 30
     }
 }
 
