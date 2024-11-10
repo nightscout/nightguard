@@ -36,7 +36,7 @@ struct ActionButtonView: View {
                             .frame(width: getButtonSize(), height: getButtonSize())
                         Text(NSLocalizedString("Crown Scrolls", comment: "Watch Action Button Menu"))
                             .lineLimit(1)
-                            .font(.system(size: 10))
+                            .font(.system(size: 11))
                     }
                 }
             } else {
@@ -50,7 +50,7 @@ struct ActionButtonView: View {
                             .frame(width: getButtonSize(), height: getButtonSize())
                         Text(NSLocalizedString("Crown Zooms", comment: "Watch Action Button Menu"))
                             .lineLimit(1)
-                            .font(.system(size: 10))
+                            .font(.system(size: 11))
                     }
                 }
             }
@@ -63,7 +63,7 @@ struct ActionButtonView: View {
                             .resizable()
                             .frame(width: getButtonSize(), height: getButtonSize())
                         Text(NSLocalizedString("Snooze", comment: "Watch Action Button Menu"))
-                            .font(.system(size: 10))
+                            .font(.system(size: 11))
                     }
                 }
                 .fullScreenCover(isPresented: self.$snoozeModalIsPresented, content: {
@@ -72,9 +72,7 @@ struct ActionButtonView: View {
                         isPresented: self.$snoozeModalIsPresented)
                 })
             }
-            Spacer()
         })
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
         .focusable(false)
     }
 }
