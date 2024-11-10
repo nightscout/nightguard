@@ -24,51 +24,36 @@ struct ActionButtonView: View {
 
     var body: some View {
         VStack(content: {
-            HStack(spacing: 5, content: {
                 
-                if viewModel.crownScrolls {
-                    Button(action: {
-                        WKInterfaceDevice.current().play(.success)
-                        viewModel.toggleCrownScrolls()
-                    }) {
-                        VStack() {
-                            Image(systemName: "rectangle.portrait.arrowtriangle.2.outward")
-                                .resizable()
-                                .frame(width: getButtonSize(), height: getButtonSize())
-                            Text(NSLocalizedString("Crown Scrolls", comment: "Watch Action Button Menu"))
-                                .lineLimit(1)
-                                .font(.system(size: 8))
-                        }
-                    }
-                } else {
-                    Button(action: {
-                        WKInterfaceDevice.current().play(.success)
-                        viewModel.toggleCrownScrolls()
-                    }) {
-                        VStack() {
-                            Image(systemName: "plus.magnifyingglass")
-                                .resizable()
-                                .frame(width: getButtonSize(), height: getButtonSize())
-                            Text(NSLocalizedString("Crown Zooms", comment: "Watch Action Button Menu"))
-                                .lineLimit(1)
-                                .font(.system(size: 8))
-                        }
-                    }
-                }
+            if viewModel.crownScrolls {
                 Button(action: {
                     WKInterfaceDevice.current().play(.success)
-                    viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
+                    viewModel.toggleCrownScrolls()
                 }) {
                     VStack() {
-                        Image(systemName: "arrow.clockwise")
+                        Image(systemName: "rectangle.portrait.arrowtriangle.2.outward")
                             .resizable()
                             .frame(width: getButtonSize(), height: getButtonSize())
-                        Text(NSLocalizedString("Refresh", comment: "Watch Action Button Menu"))
+                        Text(NSLocalizedString("Crown Scrolls", comment: "Watch Action Button Menu"))
                             .lineLimit(1)
-                            .font(.system(size: 8))
+                            .font(.system(size: 10))
                     }
                 }
-            }).frame(minHeight: 45)
+            } else {
+                Button(action: {
+                    WKInterfaceDevice.current().play(.success)
+                    viewModel.toggleCrownScrolls()
+                }) {
+                    VStack() {
+                        Image(systemName: "plus.magnifyingglass")
+                            .resizable()
+                            .frame(width: getButtonSize(), height: getButtonSize())
+                        Text(NSLocalizedString("Crown Zooms", comment: "Watch Action Button Menu"))
+                            .lineLimit(1)
+                            .font(.system(size: 10))
+                    }
+                }
+            }
             if #available(watchOSApplicationExtension 7.0, *) {
                 Button(action: {
                     self.snoozeModalIsPresented.toggle()
@@ -81,7 +66,6 @@ struct ActionButtonView: View {
                             .font(.system(size: 10))
                     }
                 }
-                .frame(minHeight: 45)
                 .fullScreenCover(isPresented: self.$snoozeModalIsPresented, content: {
                     SnoozeModalView(
                         mainViewModel: viewModel,
