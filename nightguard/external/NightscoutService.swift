@@ -142,6 +142,28 @@ class NightscoutService {
     }
     
     /* Reads all data between two timestamps and limits the maximum return values to 1440. */
+    fileprivate func directionToArrow(_ bloodValueArrow: String) -> String {
+        
+        switch bloodValueArrow {
+        case "DoubleUp":
+            return "↑↑"
+        case "SingleUp":
+            return "↑"
+        case "FortyFiveUp":
+            return "↗"
+        case "Flat":
+            return "→"
+        case "FortyFiveDown":
+            return "↘"
+        case "SingleDown":
+            return "↓"
+        case "DoubleDown":
+            return "↓↓"
+        default:
+            return "-"
+        }
+    }
+    
     @discardableResult
     func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> URLSessionTask? {
         
@@ -217,29 +239,12 @@ class NightscoutService {
                         if let bloodValue = bgDict["sgv"] as? Double {
                             if let bloodValueTimestamp = bgDict["date"] as? Double {
                                 if let bloodValueArrow = bgDict["direction"] as? String {
-                                    switch bloodValueArrow {
-                                    case "DoubleUp":
-                                        bloodValueArrowChar = "↑↑"
-                                    case "SingleUp":
-                                        bloodValueArrowChar = "↑"
-                                    case "FortyFiveUp":
-                                        bloodValueArrowChar = "↗"
-                                    case "Flat":
-                                        bloodValueArrowChar = "→"
-                                    case "FortyFiveDown":
-                                        bloodValueArrowChar = "↘"
-                                    case "SingleDown":
-                                        bloodValueArrowChar = "↓"
-                                    case "DoubleDown":
-                                        bloodValueArrowChar = "↓↓"
-                                    default:
-                                        bloodValueArrowChar = "-"
-                                    }
+                                    
                                     let bloodSugar = BloodSugar(
                                         value: Float(bloodValue),
                                         timestamp: bloodValueTimestamp,
                                         isMeteredBloodGlucoseValue: false,
-                                        arrow: bloodValueArrowChar)
+                                        arrow: self.directionToArrow(bloodValueArrow))
                                     bloodSugarArray.insert(bloodSugar, at: 0)
                                 }
                             }
@@ -399,7 +404,7 @@ class NightscoutService {
         return readChartDataWithinPeriodOfTime(oldValues : [], twoHoursBefore, timestamp2: today, resultHandler: resultHandler)
     }
     
-    /* Reads the current blood glucose data that was planned to be displayed on a pebble watch. */
+    /* Reads the current blood glucose data used to display current value und delta */
     @discardableResult
     func readCurrentData(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>) -> Void) -> URLSessionTask? {
         
@@ -472,7 +477,7 @@ class NightscoutService {
                 return
             }
             
-            guard let currentBgs = jsonDict.object(forKey: "bgnow") as? NSDictionary else {
+            guard let bgnow = jsonDict.object(forKey: "bgnow") as? NSDictionary else {
                 let error = NSError(domain: "APIV2PropertiesDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration.", comment: "Invalid JSON from API V2 Properties, missing bgs, check NS conf")])
                 dispatchOnMain {
                     resultHandler(.error(error))
@@ -480,8 +485,8 @@ class NightscoutService {
                 return
             }
             
-            if currentBgs.object(forKey: "last") == nil {
-                if currentBgs.object(forKey: "errors") != nil {
+            if bgnow.object(forKey: "last") == nil {
+                if bgnow.object(forKey: "errors") != nil {
                     // Looks like we have values, but these are marked as erroneous
                     // Give a hint to the user by removing the old values and
                     // displaying empty data:
@@ -494,8 +499,8 @@ class NightscoutService {
                 // this is useful to see how old the last retrieved value is
                 return
             }
-            let sgv : NSNumber = currentBgs.object(forKey: "last") as? NSNumber ?? 0
-            let time = currentBgs.object(forKey: "mills") as? NSNumber ?? 0
+            let sgv : NSNumber = bgnow.object(forKey: "last") as? NSNumber ?? 0
+            let time = bgnow.object(forKey: "mills") as? NSNumber ?? 0
             
             let upbat = jsonDict.object(forKey: "upbat") as? NSDictionary ?? NSDictionary()
             let nightscoutData = NightscoutData()
@@ -516,8 +521,13 @@ class NightscoutService {
             nightscoutData.sgv = String(describing: sgv)
             nightscoutData.time = time
             
-            let directionDict = jsonDict.object(forKey: "direction") as? NSDictionary ?? NSDictionary()
-            nightscoutData.bgdeltaArrow = directionDict.object(forKey: "label") as? String ?? "-"
+            nightscoutData.bgdeltaArrow = "-"
+            if let sgvs = bgnow["sgvs"] as? [[String: Any]],
+               let firstSgv = sgvs.first,
+               let direction = firstSgv["direction"] as? String {
+                
+                nightscoutData.bgdeltaArrow = self.directionToArrow(direction)
+            }
             
             let deltaDict = jsonDict.object(forKey: "delta") as? NSDictionary ?? NSDictionary()
             nightscoutData.bgdeltaString = deltaDict.object(forKey: "display") as? String ?? "?"

@@ -77,9 +77,10 @@ struct TemporaryTargetView: View {
                 } else {
                     // Fallback on earlier versions
                 }
-            }).padding(.bottom, 5)
+            })
             
             if #available(watchOSApplicationExtension 7.0, *) {
+                
                 Button(action: {
                     
                     // Take care that all selected values are in sync with the userdefaultsrepository
@@ -95,22 +96,25 @@ struct TemporaryTargetView: View {
                     self.temporaryTargetModalIsPresented.toggle()
                 }) {
                     Text(NSLocalizedString("Set Target", comment: "Button to activate the Temporary Target"))
+                        .frame(maxWidth: .infinity)
                 }
                 .fullScreenCover(isPresented: self.$temporaryTargetModalIsPresented, content: {
                     ActivateTemporaryTargetPopupView(isPresented: self.$temporaryTargetModalIsPresented)
                 })
+                
                 Button(action: {
                     
                     self.cancelTemporaryTargetModalIsPresented.toggle()
                 }) {
                     Text(NSLocalizedString("Delete Target", comment: "Watch-Button to delete a current Temporary Target"))
+                        .frame(maxWidth: .infinity)
                 }.fullScreenCover(isPresented: self.$cancelTemporaryTargetModalIsPresented, content: {
                     CancelTemporaryTargetPopupView(isPresented: self.$cancelTemporaryTargetModalIsPresented)
-                })
+                }).frame(maxWidth: .infinity)
+                    .padding(.all, 0)
             }
         })
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .edgesIgnoringSafeArea(.all)
+        .frame(maxWidth: .infinity)
     }
 }
 
