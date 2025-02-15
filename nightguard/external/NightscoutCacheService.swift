@@ -172,7 +172,7 @@ class NightscoutCacheService: NSObject {
         serialQueue.sync {
             todaysBgData = removeYesterdaysEntries(bgValues: todaysBgData)
             
-            if todaysBgData.count == 0 || currentNightscoutData.isOlderThan5Minutes()
+            if todaysBgData.count == 0 || currentNightscoutData.isOlderThanYMinutes()
                 || currentNightscoutWasFetchedInBackground(todaysBgData: todaysBgData) {
                 
                 if let task = NightscoutService.singleton.readTodaysChartData(oldValues: todaysBgData, { [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
@@ -292,7 +292,7 @@ class NightscoutCacheService: NSObject {
     
     fileprivate func checkIfRefreshIsNeeded(_ resultHandler : @escaping (NightscoutRequestResult<NightscoutData>?) -> Void, forceRefresh: Bool = false) {
         
-        guard forceRefresh || currentNightscoutData.isOlderThan5Minutes() else {
+        guard forceRefresh || currentNightscoutData.isOlderThanYMinutes() else {
             resultHandler(nil)
             return
         }
