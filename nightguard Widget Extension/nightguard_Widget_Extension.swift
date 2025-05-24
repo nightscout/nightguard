@@ -105,9 +105,9 @@ struct NightguardEntryView : View {
 
     var body: some View {
         switch widgetFamily {
-        case .systemSmall:
-            SystemSmallView(entry: entry)
-            .widgetBackground(backgroundView: Color.black)
+            case .systemSmall:
+                SystemSmallView(entry: entry)
+                .widgetBackground(backgroundView: Color.black)
             case .accessoryCircular:
                 AccessoryCircularView(entry: entry)
                 .widgetBackground(backgroundView: background())

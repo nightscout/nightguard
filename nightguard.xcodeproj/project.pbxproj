@@ -1014,10 +1014,10 @@
 				43D005E429DC9CBF003BCE92 /* NightguardTimelineProvider.swift */,
 				43D005E529DC9CBF003BCE92 /* NightscoutDataEntry.swift */,
 				438DAC8128D2356800FBF520 /* nightguard_Widget_Extension.swift */,
+				7B4E31F52C237F14005090CB /* SystemSmallView.swift */,
 				439CBB2028EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition */,
 				438DAC8428D2356A00FBF520 /* Assets.xcassets */,
 				438DAC8628D2356A00FBF520 /* Info.plist */,
-				7B4E31F52C237F14005090CB /* SystemSmallView.swift */,
 			);
 			path = "nightguard Widget Extension";
 			sourceTree = "<group>";
@@ -1674,9 +1674,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1757,9 +1761,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2525,7 +2533,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 912;
+				CURRENT_PROJECT_VERSION = 913;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
@@ -2557,7 +2565,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 912;
+				CURRENT_PROJECT_VERSION = 913;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
@@ -2587,7 +2595,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 912;
+				CURRENT_PROJECT_VERSION = 913;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				ENABLE_BITCODE = NO;
@@ -2619,7 +2627,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 912;
+				CURRENT_PROJECT_VERSION = 913;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				ENABLE_BITCODE = NO;
@@ -2742,7 +2750,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 912;
+				CURRENT_PROJECT_VERSION = 913;
 				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2784,7 +2792,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 912;
+				CURRENT_PROJECT_VERSION = 913;
 				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2823,7 +2831,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 912;
+				CURRENT_PROJECT_VERSION = 913;
 				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2867,7 +2875,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 912;
+				CURRENT_PROJECT_VERSION = 913;
 				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
