@@ -321,24 +321,43 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     @objc func timerDidEnd(_ timer:Timer) {
         self.doPeriodicUpdate(forceRepaint: false)
         
-        askForAReviewOnceForEachVersion()
+        askForAReviewIfAppropriate()
     }
     
-    func askForAReviewOnceForEachVersion() {
-        // Try to ask for an app review once for each new nightguard version only
+    func askForAReviewIfAppropriate() {
+        let defaults = UserDefaults.standard
+        let firstLaunchKey = "firstLaunchDate"
         let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        
-        guard !UserDefaults.standard.bool(forKey: "askForReview\(versionNumber)") else {
-            return
-        }
+        let reviewAskedForVersionKey = "askForReview\(versionNumber)"
 
         // Don't ask if in UITest Mode
         if CommandLine.arguments.contains("--uitesting") {
             return
         }
+
+        // Get the first launch date
+        let firstLaunchDate: Date
+        if let date = defaults.object(forKey: firstLaunchKey) as? Date {
+            firstLaunchDate = date
+        } else {
+            // First launch, store the date and don't ask for a review yet
+            defaults.set(Date(), forKey: firstLaunchKey)
+            return
+        }
+
+        // Check if at least one month has passed since first launch
+        let calendar = Calendar.current
+        if let oneMonthAgo = calendar.date(byAdding: .month, value: -1, to: Date()), firstLaunchDate > oneMonthAgo {
+            return
+        }
         
-        // Maybe this is a good time to kindly ask for a app review
-        UserDefaults.standard.set(true, forKey: "askForReview\(versionNumber)")
+        // Check if we've already asked for a review for this version
+        guard !defaults.bool(forKey: reviewAskedForVersionKey) else {
+            return
+        }
+
+        // Ask for a review and record that we've asked for this version.
+        defaults.set(true, forKey: reviewAskedForVersionKey)
         SKStoreReviewController.requestReview()
     }
     
