@@ -25,7 +25,7 @@ extension Array where Iterator.Element == Double {
 class Matrix
 {
     /// The raw values of the Matrix in row-major order.
-    private (set) var values: [Double]
+    private(set) var values: [Double]
     
     /// The columns of the Matrix.
     let columns: UInt

@@ -47,8 +47,14 @@ extension UIApplication {
      * function will return reference to tabbarcontroller
      */
     func showMain() {
-        guard let vc = self.keyWindow?.rootViewController else { return }
-        if  let tabBarController = vc as? TabBarController {
+        // Use the modern approach for accessing the rootViewController in multi-scene environments
+        let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+        
+        guard let vc = keyWindow?.rootViewController else { return }
+        if let tabBarController = vc as? TabBarController {
             tabBarController.selectedIndex = 0
         }
     }

@@ -232,7 +232,6 @@ class NightscoutService {
                 }
                 
                 var bloodSugarArray = [BloodSugar]()
-                var bloodValueArrowChar : String
                 for singleBgValue in bgs {
                     
                     if let bgDict = singleBgValue as? Dictionary<String, Any> {

@@ -25,9 +25,9 @@ protocol Regression: CustomStringConvertible {
 
 class BaseRegression: Regression {
     
-    private (set) var x = Matrix(columns: 1, rows: 1)
-    private (set) var y = Matrix(columns: 1, rows: 1)
-    private (set) var beta = Matrix(columns: 1, rows: 1)
+    private(set) var x = Matrix(columns: 1, rows: 1)
+    private(set) var y = Matrix(columns: 1, rows: 1)
+    private(set) var beta = Matrix(columns: 1, rows: 1)
     
     // X normalization data
     typealias NormalizationData = (average: Double, standarDeviation: Double)
