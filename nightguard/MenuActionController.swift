@@ -59,6 +59,21 @@ class MenuActionController: ActionController<MenuActionCell, MenuActionData, UIC
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         blurView.frame = backgroundView.bounds
+
+        if let cancelView = self.cancelView {
+            findAndStyleButton(in: cancelView)
+        }
+    }
+
+    func findAndStyleButton(in view: UIView) {
+        if let button = view as? UIButton {
+            button.titleLabel?.font = .boldSystemFont(ofSize: 17)
+            return
+        }
+
+        for subview in view.subviews {
+            findAndStyleButton(in: subview)
+        }
     }
     
     override init(nibName nibNameOrNil: String? = nil, bundle nibBundleOrNil: Bundle? = nil) {
@@ -66,6 +81,7 @@ class MenuActionController: ActionController<MenuActionCell, MenuActionData, UIC
         settings.behavior.bounces = true
         settings.behavior.scrollEnabled = true
         settings.cancelView.showCancel = true
+        
         settings.animation.scale = nil
         settings.animation.present.springVelocity = 0.0
         settings.cancelView.hideCollectionViewBehindCancelView = false
