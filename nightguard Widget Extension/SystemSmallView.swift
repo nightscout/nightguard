@@ -10,8 +10,6 @@ struct SystemSmallView: View {
 
     var body: some View {
         ZStack {
-            Color.black
-
             VStack {
                 HStack {
                     Image("WidgetImageBlack") // Custom owl logo
