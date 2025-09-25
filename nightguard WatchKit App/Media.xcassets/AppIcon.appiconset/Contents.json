@@ -31,6 +31,7 @@
       "size" : "29x29"
     },
     {
+      "filename" : "Nightscout66.png",
       "idiom" : "watch",
       "role" : "notificationCenter",
       "scale" : "2x",
@@ -54,6 +55,7 @@
       "subtype" : "40mm"
     },
     {
+      "filename" : "Nightscout 3.png",
       "idiom" : "watch",
       "role" : "appLauncher",
       "scale" : "2x",
@@ -69,6 +71,7 @@
       "subtype" : "44mm"
     },
     {
+      "filename" : "Nightscout 2.png",
       "idiom" : "watch",
       "role" : "appLauncher",
       "scale" : "2x",
@@ -76,6 +79,7 @@
       "subtype" : "45mm"
     },
     {
+      "filename" : "Nightscout 1.png",
       "idiom" : "watch",
       "role" : "appLauncher",
       "scale" : "2x",
@@ -107,6 +111,7 @@
       "subtype" : "44mm"
     },
     {
+      "filename" : "Nightscout 5.png",
       "idiom" : "watch",
       "role" : "quickLook",
       "scale" : "2x",
@@ -114,6 +119,7 @@
       "subtype" : "45mm"
     },
     {
+      "filename" : "Nightscout 4.png",
       "idiom" : "watch",
       "role" : "quickLook",
       "scale" : "2x",
