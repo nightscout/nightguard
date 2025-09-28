@@ -358,7 +358,11 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
 
         // Ask for a review and record that we've asked for this version.
         defaults.set(true, forKey: reviewAskedForVersionKey)
-        SKStoreReviewController.requestReview()
+        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            DispatchQueue.main.async {
+                SKStoreReviewController.requestReview(in: scene)
+            }
+        }
     }
     
     func doPeriodicUpdate(forceRepaint: Bool) {

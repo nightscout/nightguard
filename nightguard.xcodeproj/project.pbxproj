@@ -1464,7 +1464,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 2600;
 				ORGANIZATIONNAME = private;
 				TargetAttributes = {
 					43647BC91BFF6435004389F9 = {
@@ -2446,6 +2446,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -2467,6 +2468,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -2503,6 +2505,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -2517,6 +2520,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -2533,9 +2537,8 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 919;
+				CURRENT_PROJECT_VERSION = 921;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
@@ -2565,9 +2568,8 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 919;
+				CURRENT_PROJECT_VERSION = 921;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
@@ -2590,14 +2592,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89358A3E8C5372AE643A47B4 /* Pods-nightguard.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 919;
+				CURRENT_PROJECT_VERSION = 921;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = nightguard/Info.plist;
@@ -2622,14 +2622,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C304D8152D0180EF0529BA73 /* Pods-nightguard.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 919;
+				CURRENT_PROJECT_VERSION = 921;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -2654,7 +2652,6 @@
 			baseConfigurationReference = 1DF7CCBF81749EB5433A6B02 /* Pods-nightguardTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2675,7 +2672,6 @@
 			baseConfigurationReference = 5560CB94CC76B8F0F7F5C440 /* Pods-nightguardTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				INFOPLIST_FILE = nightguardTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2695,7 +2691,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BE85AD88336D9980D39338FF /* Pods-nightguardUITests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2717,7 +2712,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 18060ADE499D1BF44318334D /* Pods-nightguardUITests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2750,8 +2744,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 919;
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
+				CURRENT_PROJECT_VERSION = 921;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2792,8 +2785,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 919;
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
+				CURRENT_PROJECT_VERSION = 921;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2831,8 +2823,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 919;
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
+				CURRENT_PROJECT_VERSION = 921;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2875,8 +2866,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 919;
-				DEVELOPMENT_TEAM = C8JJ9Q567Z;
+				CURRENT_PROJECT_VERSION = 921;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
