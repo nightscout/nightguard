@@ -267,6 +267,8 @@ extension SliderRow {
                 row.value = initialValue
             }.cellSetup { cell, row in
                 
+                cell.slider.isContinuous = false
+                
                 let snapIncrement = (UserDefaultsRepository.units.value == .mgdl) ? snapIncrementForMgDl : 0.1
                 
                 let steps = (maximumValue - minimumValue) / snapIncrement

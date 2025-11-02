@@ -64,7 +64,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(NightscoutData.self, forClassName: "NightscoutData")
-        guard let nightscoutData = (try? NSKeyedUnarchiver.unarchivedObject(ofClass: NightscoutData.self, from: data)) else {
+        guard let nightscoutData = (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [NightscoutData.self, NSString.self, NSNumber.self], from: data)) as? NightscoutData else {
             return NightscoutData()
         }
         return nightscoutData
@@ -174,7 +174,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(DeviceStatusData.self, forClassName: "DeviceStatusData")
-        guard let deviceStatusData = (try? NSKeyedUnarchiver.unarchivedObject(ofClass: DeviceStatusData.self, from: data)) else {
+        guard let deviceStatusData = (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [DeviceStatusData.self, NSString.self, NSNumber.self], from: data)) as? DeviceStatusData else {
             return DeviceStatusData()
         }
         return deviceStatusData
@@ -199,7 +199,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(TemporaryTargetData.self, forClassName: "TemporaryTargetData")
-        guard let temporaryTargetData = (try? NSKeyedUnarchiver.unarchivedObject(ofClass: TemporaryTargetData.self, from: data)) else {
+        guard let temporaryTargetData = (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [TemporaryTargetData.self, NSString.self, NSNumber.self], from: data)) as? TemporaryTargetData else {
             return TemporaryTargetData()
         }
         return temporaryTargetData
@@ -226,7 +226,7 @@ class NightscoutDataRepository {
             return []
         }
         
-        guard let bgData = try? NSKeyedUnarchiver.unarchivedArrayOfObjects(ofClass: BloodSugar.self, from: data) else {
+        guard let bgData = (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSArray.self, BloodSugar.self, NSString.self], from: data)) as? [BloodSugar] else {
             return []
         }
         return bgData

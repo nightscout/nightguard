@@ -37,7 +37,13 @@ class PersistentHighViewController: CustomFormViewController {
             initialValue: UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value),
                 minimumValue: UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value),
                 maximumValue: UnitsConverter.mgdlToDisplayUnits(300))
-        urgentHighSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
+            .onChange { row in
+                guard let value = row.value else { return }
+                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
+                
+                print("Changed (persistent) urgent high slider to \(value) \(UserDefaultsRepository.units.value.description). \(mgdlValue) in mg/dl.")
+                AlarmRule.persistentHighUpperBound.value = mgdlValue
+        }
         
         let urgentHighSection = Section(header: NSLocalizedString("Urgent High", comment: "Label for Urgent High"), footer: NSLocalizedString("Alerts anytime when the blood glucose raises above this value.", comment: "Footer for Urgent High"))
         urgentHighSection <<< urgentHighSliderRow
@@ -56,24 +62,5 @@ class PersistentHighViewController: CustomFormViewController {
             +++ selectableSection
             +++ urgentHighSection
     }
-    
-    @objc func onSliderValueChanged(slider: UISlider, event: UIEvent) {
-        guard let touchEvent = event.allTouches?.first else { return }
-        
-        // modify UserDefaultsValue ONLY when slider value change events ended
-        switch touchEvent.phase {
-        case .ended:
-            if slider === urgentHighSliderRow.cell.slider {
-                
-                guard let value = urgentHighSliderRow.value else { return }
-                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
-                
-                print("Changed (persistent) urgent high slider to \(value) \(UserDefaultsRepository.units.value.description). \(mgdlValue) in mg/dl.")
-                AlarmRule.persistentHighUpperBound.value = mgdlValue
-            }
-            
-        default:
-            break
-        }
-    }
+
 }

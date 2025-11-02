@@ -42,13 +42,37 @@ class AlarmViewController: CustomFormViewController {
                             initialValue: UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value),
                             minimumValue: UnitsConverter.mgdlToDisplayUnits(MIN_ALERT_ABOVE_VALUE),
                             maximumValue: UnitsConverter.mgdlToDisplayUnits(MAX_ALERT_ABOVE_VALUE))
-        aboveSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
+            .onChange { [weak self] row in
+                guard let self = self, let value = row.value else { return }
+                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
+
+                guard mgdlValue > UserDefaultsRepository.lowerBound.value else {
+                    self.alertInvalidChange(message: "High BG value should be above low BG value!")
+                    self.updateSliderRowsFromUserDefaultsValues()
+                    return
+                }
+
+                print("Changed above slider to \(mgdlValue) \(UserDefaultsRepository.units.value.description)")
+                UserDefaultsRepository.upperBound.value = mgdlValue
+        }
         
         belowSliderRow = SliderRow.glucoseLevelSlider(
                             initialValue: UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfBelowValue.value),
                             minimumValue: UnitsConverter.mgdlToDisplayUnits(MIN_ALERT_BELOW_VALUE),
                             maximumValue: UnitsConverter.mgdlToDisplayUnits(MAX_ALERT_BELOW_VALUE))
-        belowSliderRow.cell.slider.addTarget(self, action: #selector(onSliderValueChanged(slider:event:)), for: .valueChanged)
+            .onChange { [weak self] row in
+                guard let self = self, let value = row.value else { return }
+                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
+
+                guard mgdlValue < UserDefaultsRepository.upperBound.value else {
+                    self.alertInvalidChange(message: "Low BG value should be below high BG value!")
+                    self.updateSliderRowsFromUserDefaultsValues()
+                    return
+                }
+
+                print("Changed below slider to \(mgdlValue) \(UserDefaultsRepository.units.value.description)")
+                UserDefaultsRepository.lowerBound.value = mgdlValue
+        }
         
         form
             +++ Section(header: "", footer: NSLocalizedString("Deactivate all alerts. This is NOT recommended. You will get no alarms or notifications at all anymore!", comment: "Footer for disable all alerts switch."))
@@ -230,46 +254,8 @@ class AlarmViewController: CustomFormViewController {
                 }
         }
     }
-            
-    @objc func onSliderValueChanged(slider: UISlider, event: UIEvent) {
-        guard let touchEvent = event.allTouches?.first else { return }
-        
-        // modify UserDefaultsValue ONLY when slider value change events ended
-        switch touchEvent.phase {
-        case .ended:
-            if slider === aboveSliderRow.cell.slider {
-                
-                guard let value = aboveSliderRow.value else { return }
-                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
-                
-                guard mgdlValue > UserDefaultsRepository.lowerBound.value else {
-                    alertInvalidChange(message: "High BG value should be above low BG value!")
-                    updateSliderRowsFromUserDefaultsValues()
-                    return
-                }
-                
-                print("Changed above slider to \(mgdlValue) \(UserDefaultsRepository.units.value.description)")
-                UserDefaultsRepository.upperBound.value = mgdlValue
-                
-            } else if slider === belowSliderRow.cell.slider {
-                
-                guard let value = belowSliderRow.value else { return }
-                let mgdlValue = UnitsConverter.displayValueToMgdl(value)
-                
-                guard mgdlValue < UserDefaultsRepository.upperBound.value else {
-                    alertInvalidChange(message: "Low BG value should be below high BG value!")
-                    updateSliderRowsFromUserDefaultsValues()
-                    return
-                }
-                
-                print("Changed below slider to \(mgdlValue) \(UserDefaultsRepository.units.value.description)")
-                UserDefaultsRepository.lowerBound.value = mgdlValue
-            }
-            
-        default:
-            break
-        }
-    }
+
+    
     
     private func alertInvalidChange(message: String) {
         let alertController = UIAlertController(title: "Invalid change", message: message, preferredStyle: .alert)
