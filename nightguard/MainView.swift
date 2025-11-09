@@ -57,16 +57,16 @@ class MainViewModel: ObservableObject {
     init() {
         setupObservers()
         loadInitialData()
+
+        // Listen to alarm snoozing & play/stop alarm accordingly
+        AlarmRule.onSnoozeTimestampChanged = { [weak self] in
+            self?.evaluateAlarmActivationState()
+        }
     }
 
     // MARK: - Setup
     private func setupObservers() {
-        // Observe alarm snoozing changes
-        NotificationCenter.default.publisher(for: NSNotification.Name("AlarmSnoozeChanged"))
-            .sink { [weak self] _ in
-                self?.evaluateAlarmActivationState()
-            }
-            .store(in: &cancellables)
+        // Note: Alarm snoozing is handled via AlarmRule.onSnoozeTimestampChanged callback set in init()
 
         // Observe user defaults changes
         UserDefaultsRepository.showStats.observeChanges { [weak self] value in
@@ -88,6 +88,7 @@ class MainViewModel: ObservableObject {
         showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
         showActionsMenu = !AlarmRule.areAlertsGenerallyDisabled.value
         slideToSnoozeHeight = AlarmRule.areAlertsGenerallyDisabled.value ? 0 : 80
+        updateSnoozeButtonText()
     }
 
     // MARK: - Public Methods
@@ -108,6 +109,7 @@ class MainViewModel: ObservableObject {
         loadAndPaintChartData(forceRepaint: forceRepaint)
         loadAndPaintCareData()
         AppleHealthService.singleton.sync()
+        updateSnoozeButtonText()
     }
 
     func evaluateAlarmActivationState() {
