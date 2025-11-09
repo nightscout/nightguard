@@ -40,6 +40,9 @@ class MainViewModel: ObservableObject {
     @Published var slideToSnoozeHeight: CGFloat = 80
     @Published var snoozeButtonText: String = "snooze"
 
+    // Current nightscout data
+    @Published var currentNightscoutData: NightscoutData?
+
     // Chart scene
     var chartScene: ChartScene?
 
@@ -169,6 +172,9 @@ class MainViewModel: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
 
+            // Store the current data
+            self.currentNightscoutData = currentNightscoutData
+
             if currentNightscoutData.sgv == "---" {
                 self.bgValue = "---"
             } else {
@@ -193,6 +199,9 @@ class MainViewModel: ObservableObject {
             if !currentNightscoutData.cob.isEmpty {
                 self.cobValue = currentNightscoutData.cob
             }
+
+            // Notify that data has been updated
+            NotificationCenter.default.post(name: NSNotification.Name("NightscoutDataUpdated"), object: nil)
         }
     }
 
@@ -363,17 +372,109 @@ struct ChartView: UIViewRepresentable {
     }
 }
 
-// MARK: - BasicStatsPanelView Wrapper
+// MARK: - BasicStatsPanelView (SwiftUI)
 
-struct BasicStatsPanel: UIViewRepresentable {
-    func makeUIView(context: Context) -> BasicStatsPanelView {
-        let view = BasicStatsPanelView()
-        view.backgroundColor = .clear
+struct BasicStatsPanel: View {
+    @State private var model: BasicStats? = BasicStats(period: .last24h)
+    @State private var currentPeriod: BasicStats.Period = .last24h
+    @State private var updateTrigger: UUID = UUID()
+
+    var body: some View {
+        HStack(spacing: 8) {
+            A1cViewRepresentable(model: model)
+                .aspectRatio(1, contentMode: .fit)
+
+            GlucoseDistributionViewRepresentable(model: model)
+                .aspectRatio(1, contentMode: .fit)
+
+            ReadingsStatsViewRepresentable(model: model)
+                .aspectRatio(1, contentMode: .fit)
+
+            StatsPeriodSelectorViewRepresentable(
+                model: model,
+                onPeriodChange: { period in
+                    currentPeriod = period
+                    model = BasicStats(period: period)
+                }
+            )
+            .aspectRatio(1, contentMode: .fit)
+
+            Spacer()
+        }
+        .onAppear {
+            updateModel()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NightscoutDataUpdated"))) { _ in
+            updateModel()
+        }
+    }
+
+    func updateModel() {
+        if let currentModel = model, currentModel.isUpToDate {
+            // Model is already up to date
+        } else {
+            // Recreate the model
+            model = BasicStats(period: model?.period ?? .last24h)
+            updateTrigger = UUID()
+        }
+    }
+}
+
+// MARK: - UIViewRepresentable Wrappers for Stats Child Views
+
+struct A1cViewRepresentable: UIViewRepresentable {
+    let model: BasicStats?
+
+    func makeUIView(context: Context) -> A1cView {
+        let view = A1cView()
         return view
     }
 
-    func updateUIView(_ uiView: BasicStatsPanelView, context: Context) {
-        uiView.updateModel()
+    func updateUIView(_ uiView: A1cView, context: Context) {
+        uiView.model = model
+    }
+}
+
+struct GlucoseDistributionViewRepresentable: UIViewRepresentable {
+    let model: BasicStats?
+
+    func makeUIView(context: Context) -> GlucoseDistributionView {
+        let view = GlucoseDistributionView()
+        return view
+    }
+
+    func updateUIView(_ uiView: GlucoseDistributionView, context: Context) {
+        uiView.model = model
+    }
+}
+
+struct ReadingsStatsViewRepresentable: UIViewRepresentable {
+    let model: BasicStats?
+
+    func makeUIView(context: Context) -> ReadingsStatsView {
+        let view = ReadingsStatsView()
+        return view
+    }
+
+    func updateUIView(_ uiView: ReadingsStatsView, context: Context) {
+        uiView.model = model
+    }
+}
+
+struct StatsPeriodSelectorViewRepresentable: UIViewRepresentable {
+    let model: BasicStats?
+    let onPeriodChange: (BasicStats.Period) -> Void
+
+    func makeUIView(context: Context) -> StatsPeriodSelectorView {
+        let view = StatsPeriodSelectorView()
+        view.onPeriodChangeRequest = { period in
+            onPeriodChange(period)
+        }
+        return view
+    }
+
+    func updateUIView(_ uiView: StatsPeriodSelectorView, context: Context) {
+        uiView.model = model
     }
 }
 
@@ -426,6 +527,7 @@ struct MainView: View {
     @State private var showNightscout = false
     @State private var showFullscreenMonitor = false
     @State private var showSnoozePopup = false
+    @State private var showActionsMenuPopup = false
     @State private var chartScene: ChartScene?
 
     var body: some View {
@@ -564,7 +666,7 @@ struct MainView: View {
                             HStack {
                                 Spacer()
                                 Button(action: {
-                                    // Show actions menu
+                                    showActionsMenuPopup = true
                                 }) {
                                     Image("Action")
                                         .resizable()
@@ -572,7 +674,7 @@ struct MainView: View {
                                         .foregroundColor(.gray)
                                 }
                                 .frame(width: 48, height: 48)
-                                .background(Color.gray.opacity(0.3))
+                                .background(Color(UIColor.darkGray.withAlphaComponent(0.3)))
                                 .clipShape(Circle())
                                 .padding(.trailing, 8)
                                 .onLongPressGesture {
@@ -610,6 +712,18 @@ struct MainView: View {
         }
         .sheet(isPresented: $showSnoozePopup) {
             SnoozePopupView()
+        }
+        .confirmationDialog("Actions", isPresented: $showActionsMenuPopup, titleVisibility: .hidden) {
+            Button(NSLocalizedString("Open your Nightscout site", comment: "Link to NS site")) {
+                showNightscout = true
+            }
+            Button(NSLocalizedString("Fullscreen monitor", comment: "Fullscreen monitor")) {
+                showFullscreenMonitor = true
+            }
+            Button(NSLocalizedString("Cancel", comment: "Cancel"), role: .cancel) {}
+        }
+        .fullScreenCover(isPresented: $showFullscreenMonitor) {
+            BedsideViewRepresentable(currentNightscoutData: viewModel.currentNightscoutData)
         }
     }
 
@@ -662,6 +776,22 @@ struct NightscoutViewRepresentable: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         // No updates needed
+    }
+}
+
+struct BedsideViewRepresentable: UIViewControllerRepresentable {
+    let currentNightscoutData: NightscoutData?
+
+    func makeUIViewController(context: Context) -> BedsideViewController {
+        let bedsideViewController = BedsideViewController.instantiate()
+        bedsideViewController.modalPresentationStyle = .fullScreen
+        bedsideViewController.currentNightscoutData = currentNightscoutData
+        return bedsideViewController
+    }
+
+    func updateUIViewController(_ uiViewController: BedsideViewController, context: Context) {
+        uiViewController.currentNightscoutData = currentNightscoutData
+        uiViewController.updateAlarmInfo()
     }
 }
 
