@@ -45,6 +45,15 @@ struct RootTabView: View {
                 }
                 .tag(0)
 
+            // Alarms Tab
+            AlarmViewRepresentable()
+                .tabItem {
+                    Image("Alarm")
+                        .renderingMode(.template)
+                    Text("Alarms")
+                }
+                .tag(1)
+            
             // Care Tab
             CareViewRepresentable()
                 .tabItem {
@@ -52,8 +61,17 @@ struct RootTabView: View {
                         .renderingMode(.template)
                     Text("Care")
                 }
-                .tag(1)
+                .tag(2)
 
+            // Duration Tab
+            DurationViewRepresentable()
+                .tabItem {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .renderingMode(.template)
+                    Text("Duration")
+                }
+                .tag(3)
+            
             // Stats Tab
             StatsViewRepresentable()
                 .tabItem {
@@ -61,7 +79,7 @@ struct RootTabView: View {
                         .renderingMode(.template)
                     Text("Stats")
                 }
-                .tag(2)
+                .tag(4)
 
             // Preferences Tab
             PrefsViewRepresentable()
@@ -70,16 +88,7 @@ struct RootTabView: View {
                         .renderingMode(.template)
                     Text("Preferences")
                 }
-                .tag(3)
-
-            // Alarms Tab
-            AlarmViewRepresentable()
-                .tabItem {
-                    Image("Alarm")
-                        .renderingMode(.template)
-                    Text("Alarms")
-                }
-                .tag(4)
+                .tag(5)
         }
         .accentColor(.white)
     }
@@ -89,10 +98,8 @@ struct RootTabView: View {
 
 struct CareViewRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let tabBarController = storyboard.instantiateInitialViewController() as! UITabBarController
-        // Care tab is at index 1
-        return tabBarController.viewControllers?[1] ?? UIViewController()
+        let storyboard = UIStoryboard(name: "Care", bundle: Bundle.main)
+        return storyboard.instantiateInitialViewController() ?? UIViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
@@ -102,10 +109,8 @@ struct CareViewRepresentable: UIViewControllerRepresentable {
 
 struct StatsViewRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let tabBarController = storyboard.instantiateInitialViewController() as! UITabBarController
-        // Stats tab is at index 2
-        return tabBarController.viewControllers?[2] ?? UIViewController()
+        let storyboard = UIStoryboard(name: "Stats", bundle: Bundle.main)
+        return storyboard.instantiateInitialViewController() ?? UIViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
@@ -115,10 +120,8 @@ struct StatsViewRepresentable: UIViewControllerRepresentable {
 
 struct PrefsViewRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let tabBarController = storyboard.instantiateInitialViewController() as! UITabBarController
-        // Prefs tab is at index 3
-        return tabBarController.viewControllers?[3] ?? UIViewController()
+        let storyboard = UIStoryboard(name: "Preferences", bundle: Bundle.main)
+        return storyboard.instantiateInitialViewController() ?? UIViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
@@ -128,10 +131,19 @@ struct PrefsViewRepresentable: UIViewControllerRepresentable {
 
 struct AlarmViewRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let tabBarController = storyboard.instantiateInitialViewController() as! UITabBarController
-        // Alarm tab is at index 4
-        return tabBarController.viewControllers?[4] ?? UIViewController()
+        let storyboard = UIStoryboard(name: "Alarm", bundle: Bundle.main)
+        return storyboard.instantiateInitialViewController() ?? UIViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        // No updates needed
+    }
+}
+
+struct DurationViewRepresentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        let storyboard = UIStoryboard(name: "Duration", bundle: Bundle.main)
+        return storyboard.instantiateInitialViewController() ?? UIViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
