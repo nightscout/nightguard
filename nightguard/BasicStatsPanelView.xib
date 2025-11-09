@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,48 +22,49 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="IUU-3t-X7R">
-                    <rect key="frame" x="0.0" y="0.0" width="344" height="80"/>
+                    <rect key="frame" x="0.0" y="20" width="264" height="60"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kfa-xk-szB" customClass="A1cView" customModule="nightguard" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Kfa-xk-szB" secondAttribute="height" multiplier="1:1" id="GTb-x6-Lxf"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bPt-Vt-icG" customClass="GlucoseDistributionView" customModule="nightguard" customModuleProvider="target">
-                            <rect key="frame" x="88" y="0.0" width="80" height="80"/>
+                            <rect key="frame" x="68" y="0.0" width="60" height="60"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="bPt-Vt-icG" secondAttribute="height" multiplier="1:1" id="T3U-j7-0bQ"/>
+                                <constraint firstAttribute="width" secondItem="bPt-Vt-icG" secondAttribute="height" multiplier="1:1" id="pkf-yX-5If"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aaS-tJ-aP0" customClass="ReadingsStatsView" customModule="nightguard" customModuleProvider="target">
-                            <rect key="frame" x="176" y="0.0" width="80" height="80"/>
+                            <rect key="frame" x="136" y="0.0" width="60" height="60"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstAttribute="width" secondItem="aaS-tJ-aP0" secondAttribute="height" multiplier="1:1" id="Jby-I2-PyV"/>
+                                <constraint firstAttribute="width" secondItem="aaS-tJ-aP0" secondAttribute="height" multiplier="1:1" id="fWY-ac-Li2"/>
                                 <constraint firstAttribute="width" secondItem="aaS-tJ-aP0" secondAttribute="height" multiplier="1:1" id="mG5-tG-Mba"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oi5-Vn-iQD" customClass="StatsPeriodSelectorView" customModule="nightguard" customModuleProvider="target">
-                            <rect key="frame" x="264" y="0.0" width="80" height="80"/>
+                            <rect key="frame" x="204" y="0.0" width="60" height="60"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstAttribute="width" secondItem="oi5-Vn-iQD" secondAttribute="height" multiplier="1:1" id="3ha-tY-ww1"/>
+                                <constraint firstAttribute="width" secondItem="oi5-Vn-iQD" secondAttribute="height" multiplier="1:1" id="Pgu-LU-EIH"/>
+                                <constraint firstAttribute="width" secondItem="oi5-Vn-iQD" secondAttribute="height" multiplier="1:1" id="Umg-Qy-kO7"/>
                                 <constraint firstAttribute="width" secondItem="oi5-Vn-iQD" secondAttribute="height" multiplier="1:1" id="WVw-3f-p17"/>
                             </constraints>
                         </view>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="oi5-Vn-iQD" firstAttribute="width" secondItem="oi5-Vn-iQD" secondAttribute="height" multiplier="1:1" id="3ha-tY-ww1"/>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="86" id="9tb-fY-fSW"/>
-                        <constraint firstItem="aaS-tJ-aP0" firstAttribute="width" secondItem="aaS-tJ-aP0" secondAttribute="height" multiplier="1:1" id="Jby-I2-PyV"/>
-                        <constraint firstItem="oi5-Vn-iQD" firstAttribute="width" secondItem="oi5-Vn-iQD" secondAttribute="height" multiplier="1:1" id="Pgu-LU-EIH"/>
-                        <constraint firstItem="oi5-Vn-iQD" firstAttribute="width" secondItem="oi5-Vn-iQD" secondAttribute="height" multiplier="1:1" id="Umg-Qy-kO7"/>
-                        <constraint firstItem="aaS-tJ-aP0" firstAttribute="width" secondItem="aaS-tJ-aP0" secondAttribute="height" multiplier="1:1" id="fWY-ac-Li2"/>
-                        <constraint firstItem="bPt-Vt-icG" firstAttribute="width" secondItem="bPt-Vt-icG" secondAttribute="height" multiplier="1:1" id="pkf-yX-5If"/>
                     </constraints>
                 </stackView>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IUU-3t-X7R" secondAttribute="trailing" id="7Hm-KO-KuM"/>
@@ -74,7 +73,6 @@
                 <constraint firstItem="IUU-3t-X7R" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="txD-Gv-NnL"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="88.799999999999997" y="-152.02398800599701"/>
         </view>
     </objects>

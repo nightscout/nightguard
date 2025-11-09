@@ -16,6 +16,7 @@
 		28B03A2E23F9C412000939E6 /* Bedside.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3023F9C412000939E6 /* Bedside.storyboard */; };
 		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
+		43027A4C2EBFDBFD00BE71B9 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */; };
 		4302C65025D9C5480052777F /* TreatmentsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302C64F25D9C5480052777F /* TreatmentsStream.swift */; };
 		4302C65725D9C7080052777F /* Treatment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302C65625D9C7080052777F /* Treatment.swift */; };
 		4302C65E25D9C7A80052777F /* MealBolusTreatment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302C65D25D9C7A80052777F /* MealBolusTreatment.swift */; };
@@ -242,6 +243,7 @@
 		438DACAE28D25CDC00FBF520 /* VolumeChangeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDA221068F000192117 /* VolumeChangeDetector.swift */; };
 		438DACAF28D25D0A00FBF520 /* MPVolumeViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */; };
 		438DACB028D25D1400FBF520 /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
+		4391E5782EBF500300530260 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4391E5772EBF500300530260 /* MainView.swift */; };
 		43961F4A2533598400B1492B /* ActivateTemporaryTargetPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */; };
 		43961F6E25336F0600B1492B /* TemporaryTargetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F6D25336F0600B1492B /* TemporaryTargetController.swift */; };
 		43961F752533708D00B1492B /* TemporaryTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F742533708D00B1492B /* TemporaryTargetView.swift */; };
@@ -573,6 +575,7 @@
 		28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		2AE62FD2AA9BA0D5AF7737B2 /* Pods-nightguard Widget Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard Widget Extension.release.xcconfig"; path = "Target Support Files/Pods-nightguard Widget Extension/Pods-nightguard Widget Extension.release.xcconfig"; sourceTree = "<group>"; };
 		3CA65C6BB6832F5B54DF487A /* Pods-nightguard ComplicationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard ComplicationExtension.release.xcconfig"; path = "Target Support Files/Pods-nightguard ComplicationExtension/Pods-nightguard ComplicationExtension.release.xcconfig"; sourceTree = "<group>"; };
+		43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		4302C64F25D9C5480052777F /* TreatmentsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentsStream.swift; sourceTree = "<group>"; };
 		4302C65625D9C7080052777F /* Treatment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Treatment.swift; sourceTree = "<group>"; };
 		4302C65D25D9C7A80052777F /* MealBolusTreatment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealBolusTreatment.swift; sourceTree = "<group>"; };
@@ -650,6 +653,7 @@
 		438DAC8128D2356800FBF520 /* nightguard_Widget_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nightguard_Widget_Extension.swift; sourceTree = "<group>"; };
 		438DAC8428D2356A00FBF520 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		438DAC8628D2356A00FBF520 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4391E5772EBF500300530260 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivateTemporaryTargetPopupView.swift; sourceTree = "<group>"; };
 		43961F6D25336F0600B1492B /* TemporaryTargetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryTargetController.swift; sourceTree = "<group>"; };
 		43961F742533708D00B1492B /* TemporaryTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryTargetView.swift; sourceTree = "<group>"; };
@@ -1278,6 +1282,8 @@
 			isa = PBXGroup;
 			children = (
 				D1F94ECA223FFD5400BB0A4D /* stats */,
+				43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */,
+				4391E5772EBF500300530260 /* MainView.swift */,
 				D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */,
 				D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */,
 				D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */,
@@ -1824,8 +1830,10 @@
 				D133079821C85FAE00DC6879 /* Regression.swift in Sources */,
 				4302C6A525DC66A80052777F /* BolusWizardTreatment.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
+				4391E5782EBF500300530260 /* MainView.swift in Sources */,
 				4302C6BA25DD98170052777F /* CarbCorrectionTreatment.swift in Sources */,
 				D16C8ED92210687200192117 /* MPVolumeViewExtension.swift in Sources */,
+				43027A4C2EBFDBFD00BE71B9 /* RootTabView.swift in Sources */,
 				43E89E571E659102005B0A65 /* ChartScene.swift in Sources */,
 				43288A6A1D1C68D400EE3999 /* StatsViewController.swift in Sources */,
 				D1B777E62244C11B003FEDF0 /* Comparable+Extensions.swift in Sources */,

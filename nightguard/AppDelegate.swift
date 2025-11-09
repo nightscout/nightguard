@@ -10,6 +10,7 @@ import UIKit
 import MediaPlayer
 import WatchConnectivity
 import BackgroundTasks
+import SwiftUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -60,28 +61,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+
         // Initialize the stored UserDefaultsData
         TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
-        
-        let rootViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
+
+        // Use SwiftUI RootTabView
+        let rootTabView = RootTabView()
+        let hostingController = UIHostingController(rootView: rootTabView)
 
         self.window = UserInteractionDetectorWindow(frame: UIScreen.main.bounds)
         if #available(iOS 13.0, *) {
             // Always force a dark theme for nightguard. Otherwise e.g. the file picker would be white ^^
             self.window?.overrideUserInterfaceStyle = .dark
         }
-        self.window?.rootViewController = rootViewController
+        self.window?.rootViewController = hostingController
         self.window?.makeKeyAndVisible()
-        
+
         dimScreenOnIdle()
-        
+
         // Enable Background Updates
         BGTaskScheduler.shared.register(forTaskWithIdentifier: appProcessingTaskId, using: nil) { task in
 
             self.handelBackgroundProcessing(task as! BGProcessingTask)
         }
-        
+
         return true
     }
     
