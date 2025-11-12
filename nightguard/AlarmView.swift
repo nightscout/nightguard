@@ -310,7 +310,7 @@ struct MissedReadingsView: View {
                                 Spacer()
                                 if selectedMinutes == option {
                                     Image(systemName: "checkmark")
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(.white)
                                 }
                             }
                         }
@@ -436,7 +436,7 @@ struct PersistentHighView: View {
                                 Spacer()
                                 if selectedMinutes == option {
                                     Image(systemName: "checkmark")
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(.white)
                                 }
                             }
                         }
@@ -510,7 +510,7 @@ struct LowPredictionView: View {
                                 Spacer()
                                 if selectedMinutes == option {
                                     Image(systemName: "checkmark")
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(.white)
                                 }
                             }
                         }
@@ -716,7 +716,7 @@ struct AlarmSoundView: View {
                     }) {
                         Text("Pick Custom Alarm Sound")
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.white)
                     }
 
                     Button(action: {

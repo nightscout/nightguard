@@ -79,7 +79,7 @@ struct RootTabView: View {
                 .tag(2)
 
             // Duration Tab
-            DurationViewRepresentable()
+            DurationView(selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "clock.arrow.circlepath")
                         .renderingMode(.template)
@@ -133,18 +133,7 @@ struct PrefsViewRepresentable: UIViewControllerRepresentable {
     }
 }
 
-// AlarmViewRepresentable and CareViewRepresentable removed - using native SwiftUI views instead
-
-struct DurationViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Duration", bundle: Bundle.main)
-        return storyboard.instantiateInitialViewController() ?? UIViewController()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        // No updates needed
-    }
-}
+// AlarmViewRepresentable, CareViewRepresentable, and DurationViewRepresentable removed - using native SwiftUI views instead
 
 // MARK: - Preview
 

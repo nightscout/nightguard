@@ -67,7 +67,7 @@ struct CareView: View {
                     }) {
                         Text("Set Target")
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.white)
                     }
                 }
 
@@ -78,7 +78,7 @@ struct CareView: View {
                     }) {
                         Text("Delete Temporary Target")
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.white)
                     }
                 }
 
@@ -98,7 +98,7 @@ struct CareView: View {
                     }) {
                         Text("Add Carbs")
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.white)
                     }
                 }
             }
