@@ -21,6 +21,7 @@ extension EnvironmentValues {
 
 struct RootTabView: View {
     @State private var selectedTab = 0
+    @State private var orientation = UIDeviceOrientation.portrait
 
     init() {
         // Configure tab bar appearance
@@ -54,7 +55,7 @@ struct RootTabView: View {
                 .tabItem {
                     Image("Main")
                         .renderingMode(.template)
-                    Text("Main")
+                    Text(NSLocalizedString("Main", comment: "Main tab"))
                 }
                 .tag(0)
 
@@ -65,16 +66,16 @@ struct RootTabView: View {
             .tabItem {
                 Image("Alarm")
                     .renderingMode(.template)
-                Text("Alarms")
+                Text(NSLocalizedString("Alarms", comment: "Alarms tab"))
             }
             .tag(1)
-            
+
             // Care Tab
             CareView(selectedTab: $selectedTab)
                 .tabItem {
                     Image("Care")
                         .renderingMode(.template)
-                    Text("Care")
+                    Text(NSLocalizedString("Care", comment: "Care tab"))
                 }
                 .tag(2)
 
@@ -83,16 +84,16 @@ struct RootTabView: View {
                 .tabItem {
                     Image(systemName: "clock.arrow.circlepath")
                         .renderingMode(.template)
-                    Text("Duration")
+                    Text(NSLocalizedString("Duration", comment: "Duration tab"))
                 }
                 .tag(3)
-            
+
             // Stats Tab
-            StatsViewRepresentable()
+            StatsView()
                 .tabItem {
                     Image("Stats")
                         .renderingMode(.template)
-                    Text("Stats")
+                    Text(NSLocalizedString("Stats", comment: "Stats tab"))
                 }
                 .tag(4)
 
@@ -101,28 +102,25 @@ struct RootTabView: View {
                 .tabItem {
                     Image("Prefs")
                         .renderingMode(.template)
-                    Text("Preferences")
+                    Text(NSLocalizedString("Preferences", comment: "Preferences tab"))
                 }
                 .tag(5)
         }
         .accentColor(.white)
+        .onChange(of: selectedTab) { newTab in
+            if newTab == 4 {
+                // Stats tab - force landscape
+                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+            } else {
+                // Other tabs - force portrait
+                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+            }
+        }
     }
 }
 
 // MARK: - UIKit View Controllers wrapped in SwiftUI
-
-struct StatsViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Stats", bundle: Bundle.main)
-        return storyboard.instantiateInitialViewController() ?? UIViewController()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        // No updates needed
-    }
-}
-
-// AlarmViewRepresentable, CareViewRepresentable, DurationViewRepresentable, and PrefsViewRepresentable removed - using native SwiftUI views instead
+// All view controllers have been converted to native SwiftUI views
 
 // MARK: - Preview
 

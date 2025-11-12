@@ -642,3 +642,23 @@
 
 /* Label for Check BG every minute */
 "Check BG every minute" = "Check BG every minute";
+
+ / *   M a i n   t a b   * / 
+ " M a i n "   =   " M a i n " ; 
+ 
+ / *   A l a r m s   t a b   * / 
+ " A l a r m s "   =   " A l a r m s " ; 
+ 
+ / *   C a r e   t a b   * / 
+ " C a r e "   =   " C a r e " ; 
+ 
+ / *   D u r a t i o n   t a b   * / 
+ " D u r a t i o n "   =   " D u r a t i o n " ; 
+ 
+ / *   S t a t s   t a b   * / 
+ " S t a t s "   =   " S t a t s " ; 
+ 
+ / *   P r e f e r e n c e s   t a b   * / 
+ " P r e f e r e n c e s "   =   " P r e f e r e n c e s " ; 
+ 
+ 
