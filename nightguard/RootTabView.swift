@@ -97,7 +97,7 @@ struct RootTabView: View {
                 .tag(4)
 
             // Preferences Tab
-            PrefsViewRepresentable()
+            PrefsView()
                 .tabItem {
                     Image("Prefs")
                         .renderingMode(.template)
@@ -122,18 +122,7 @@ struct StatsViewRepresentable: UIViewControllerRepresentable {
     }
 }
 
-struct PrefsViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Preferences", bundle: Bundle.main)
-        return storyboard.instantiateInitialViewController() ?? UIViewController()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        // No updates needed
-    }
-}
-
-// AlarmViewRepresentable, CareViewRepresentable, and DurationViewRepresentable removed - using native SwiftUI views instead
+// AlarmViewRepresentable, CareViewRepresentable, DurationViewRepresentable, and PrefsViewRepresentable removed - using native SwiftUI views instead
 
 // MARK: - Preview
 
