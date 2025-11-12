@@ -531,6 +531,7 @@ struct MainView: View {
     @State private var showSnoozePopup = false
     @State private var showActionsMenuPopup = false
     @State private var chartScene: ChartScene?
+    @Environment(\.selectedTab) private var selectedTab
 
     var body: some View {
         GeometryReader { geometry in
@@ -708,6 +709,23 @@ struct MainView: View {
         .statusBar(hidden: true)
         .onDisappear {
             viewModel.stopTimer()
+        }
+        .onChange(of: selectedTab) { newTab in
+            if newTab == 0 {
+                // Switched back to Main tab - repaint chart with current bounds
+                let cachedTodaysData = NightscoutCacheService.singleton.getTodaysBgData()
+                let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
+                let todaysDataWithPrediction = cachedTodaysData + PredictionService.singleton.nextHourGapped
+
+                chartScene?.paintChart(
+                    [todaysDataWithPrediction, cachedYesterdaysData],
+                    newCanvasWidth: CGFloat(chartScene?.canvasWidth ?? 1024),
+                    maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
+                    moveToLatestValue: false,
+                    useContrastfulColors: false,
+                    showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value
+                )
+            }
         }
         .sheet(isPresented: $showNightscout) {
             NightscoutViewRepresentable()

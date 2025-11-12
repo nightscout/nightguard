@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+// Environment key to track selected tab
+private struct SelectedTabKey: EnvironmentKey {
+    static let defaultValue: Int = 0
+}
+
+extension EnvironmentValues {
+    var selectedTab: Int {
+        get { self[SelectedTabKey.self] }
+        set { self[SelectedTabKey.self] = newValue }
+    }
+}
+
 struct RootTabView: View {
     @State private var selectedTab = 0
 
@@ -38,6 +50,7 @@ struct RootTabView: View {
         TabView(selection: $selectedTab) {
             // Main Tab
             MainView()
+                .environment(\.selectedTab, selectedTab)
                 .tabItem {
                     Image("Main")
                         .renderingMode(.template)
@@ -46,13 +59,15 @@ struct RootTabView: View {
                 .tag(0)
 
             // Alarms Tab
-            AlarmViewRepresentable()
-                .tabItem {
-                    Image("Alarm")
-                        .renderingMode(.template)
-                    Text("Alarms")
-                }
-                .tag(1)
+            NavigationView {
+                AlarmView()
+            }
+            .tabItem {
+                Image("Alarm")
+                    .renderingMode(.template)
+                Text("Alarms")
+            }
+            .tag(1)
             
             // Care Tab
             CareViewRepresentable()
@@ -129,16 +144,7 @@ struct PrefsViewRepresentable: UIViewControllerRepresentable {
     }
 }
 
-struct AlarmViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Alarm", bundle: Bundle.main)
-        return storyboard.instantiateInitialViewController() ?? UIViewController()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        // No updates needed
-    }
-}
+// AlarmViewRepresentable removed - using native SwiftUI AlarmView instead
 
 struct DurationViewRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
