@@ -70,7 +70,7 @@ struct RootTabView: View {
             .tag(1)
             
             // Care Tab
-            CareViewRepresentable()
+            CareView(selectedTab: $selectedTab)
                 .tabItem {
                     Image("Care")
                         .renderingMode(.template)
@@ -111,17 +111,6 @@ struct RootTabView: View {
 
 // MARK: - UIKit View Controllers wrapped in SwiftUI
 
-struct CareViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Care", bundle: Bundle.main)
-        return storyboard.instantiateInitialViewController() ?? UIViewController()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        // No updates needed
-    }
-}
-
 struct StatsViewRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let storyboard = UIStoryboard(name: "Stats", bundle: Bundle.main)
@@ -144,7 +133,7 @@ struct PrefsViewRepresentable: UIViewControllerRepresentable {
     }
 }
 
-// AlarmViewRepresentable removed - using native SwiftUI AlarmView instead
+// AlarmViewRepresentable and CareViewRepresentable removed - using native SwiftUI views instead
 
 struct DurationViewRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
