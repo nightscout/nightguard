@@ -815,30 +815,6 @@ struct BedsideViewRepresentable: UIViewControllerRepresentable {
     }
 }
 
-struct SnoozePopupView: View {
-    @Environment(\.dismiss) var dismiss
-
-    var body: some View {
-        NavigationView {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let navController = storyboard.instantiateViewController(withIdentifier: "snoozeAlarmNavigationController") as? UINavigationController {
-                SnoozeAlarmRepresentable(navigationController: navController)
-            }
-        }
-    }
-}
-
-struct SnoozeAlarmRepresentable: UIViewControllerRepresentable {
-    let navigationController: UINavigationController
-
-    func makeUIViewController(context: Context) -> UINavigationController {
-        return navigationController
-    }
-
-    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
-        // No updates needed
-    }
-}
 
 // MARK: - Preview
 

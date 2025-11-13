@@ -18,6 +18,11 @@
 		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
 		43027A4C2EBFDBFD00BE71B9 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */; };
 		43027A4E2EC1256500BE71B9 /* AlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4D2EC1256500BE71B9 /* AlarmView.swift */; };
+		43027A502EC519C500BE71B9 /* CareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4F2EC519C500BE71B9 /* CareView.swift */; };
+		43027A522EC51C3500BE71B9 /* DurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A512EC51C3500BE71B9 /* DurationView.swift */; };
+		43027A542EC5244600BE71B9 /* PrefsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A532EC5244600BE71B9 /* PrefsView.swift */; };
+		43027A562EC5262A00BE71B9 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A552EC5262A00BE71B9 /* StatsView.swift */; };
+		43027A582EC52B3D00BE71B9 /* SnoozePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A572EC52B3D00BE71B9 /* SnoozePopupView.swift */; };
 		4302C65025D9C5480052777F /* TreatmentsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302C64F25D9C5480052777F /* TreatmentsStream.swift */; };
 		4302C65725D9C7080052777F /* Treatment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302C65625D9C7080052777F /* Treatment.swift */; };
 		4302C65E25D9C7A80052777F /* MealBolusTreatment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302C65D25D9C7A80052777F /* MealBolusTreatment.swift */; };
@@ -578,6 +583,11 @@
 		3CA65C6BB6832F5B54DF487A /* Pods-nightguard ComplicationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard ComplicationExtension.release.xcconfig"; path = "Target Support Files/Pods-nightguard ComplicationExtension/Pods-nightguard ComplicationExtension.release.xcconfig"; sourceTree = "<group>"; };
 		43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		43027A4D2EC1256500BE71B9 /* AlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmView.swift; sourceTree = "<group>"; };
+		43027A4F2EC519C500BE71B9 /* CareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareView.swift; sourceTree = "<group>"; };
+		43027A512EC51C3500BE71B9 /* DurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationView.swift; sourceTree = "<group>"; };
+		43027A532EC5244600BE71B9 /* PrefsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsView.swift; sourceTree = "<group>"; };
+		43027A552EC5262A00BE71B9 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		43027A572EC52B3D00BE71B9 /* SnoozePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozePopupView.swift; sourceTree = "<group>"; };
 		4302C64F25D9C5480052777F /* TreatmentsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatmentsStream.swift; sourceTree = "<group>"; };
 		4302C65625D9C7080052777F /* Treatment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Treatment.swift; sourceTree = "<group>"; };
 		4302C65D25D9C7A80052777F /* MealBolusTreatment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealBolusTreatment.swift; sourceTree = "<group>"; };
@@ -1286,7 +1296,12 @@
 				D1F94ECA223FFD5400BB0A4D /* stats */,
 				43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */,
 				4391E5772EBF500300530260 /* MainView.swift */,
+				43027A572EC52B3D00BE71B9 /* SnoozePopupView.swift */,
 				43027A4D2EC1256500BE71B9 /* AlarmView.swift */,
+				43027A4F2EC519C500BE71B9 /* CareView.swift */,
+				43027A512EC51C3500BE71B9 /* DurationView.swift */,
+				43027A552EC5262A00BE71B9 /* StatsView.swift */,
+				43027A532EC5244600BE71B9 /* PrefsView.swift */,
 				D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */,
 				D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */,
 				D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */,
@@ -1802,6 +1817,7 @@
 				D16C8EE22213022E00192117 /* UserInteractionDetectorWindow.swift in Sources */,
 				D16C8EDD22106C9300192117 /* QuickSnoozeOption.swift in Sources */,
 				437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */,
+				43027A562EC5262A00BE71B9 /* StatsView.swift in Sources */,
 				D160D08A220C608D002B4633 /* FastRiseDropViewController.swift in Sources */,
 				D1F94ED0223FFEFF00BB0A4D /* A1cView.swift in Sources */,
 				4389A5192602A3F6001F10AD /* TemporaryTarget.swift in Sources */,
@@ -1824,7 +1840,9 @@
 				D1ECDA262202C8F0002BE6F9 /* UIColorExtension.swift in Sources */,
 				D15055AC2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */,
 				D1F94ECE223FFE2A00BB0A4D /* GlucoseDistributionView.swift in Sources */,
+				43027A522EC51C3500BE71B9 /* DurationView.swift in Sources */,
 				D160D086220C534E002B4633 /* ButtonRowWithDynamicDetails.swift in Sources */,
+				43027A502EC519C500BE71B9 /* CareView.swift in Sources */,
 				D133079A21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
@@ -1848,6 +1866,7 @@
 				D1358AEC2237C44600D0FA87 /* XibLoadedView.swift in Sources */,
 				432E62EB1D15EFC600DD7978 /* FloatExtension.swift in Sources */,
 				43FCE625208B80840080DA0A /* SnoozeAlarmViewController.swift in Sources */,
+				43027A582EC52B3D00BE71B9 /* SnoozePopupView.swift in Sources */,
 				D133079E21C8D4CF00DC6879 /* PredictionService.swift in Sources */,
 				430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */,
 				43F1E1051D07698000C329A2 /* MainViewController.swift in Sources */,
@@ -1873,6 +1892,7 @@
 				439CBB1D28EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition in Sources */,
 				D133079221C85FAE00DC6879 /* RegressionHelper.swift in Sources */,
 				4302C65725D9C7080052777F /* Treatment.swift in Sources */,
+				43027A542EC5244600BE71B9 /* PrefsView.swift in Sources */,
 				D123EFE821FB643D00CE8718 /* EmptyWatchMessage.swift in Sources */,
 				437C8A9224C9E54A005CF5B3 /* UILabelExtension.swift in Sources */,
 				43288A6C1D1C893200EE3999 /* TabBarController.swift in Sources */,
