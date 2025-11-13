@@ -284,7 +284,7 @@
 "Vibrate" = "Värinä";
 
 /* Footer for Alert notifications */
-"AlarmNotificationDescription" = "When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated.  For this to work, you will have to add Nightguard Widgets to your Lock-Screen. But nevertheless, these updates are budgeted by apple.";
+"AlarmNotificationDescription" = "When the application is in background, you can enable alert notifications to draw your attention when an alarm was activated. \nFor this to work, you will have to add Nightguard Widgets to your Lock-Screen. But nevertheless, these updates are budgeted by apple.";
 
 /* Stats button value for Yesterday */
 "Yesterday" = "Eilen";
@@ -608,7 +608,7 @@
 "Modify Battery Change Date" = "Muokkaa akun vaihtopäivämäärää";
 
 /* Cancel Target Popup Text */
-"Do you want to modify the change date to " = "Haluatko muuttaa päivämääräksi ";
+"Do you want to modify the change date to %@" = "Haluatko muuttaa päivämääräksi %@";
 
 /* Invalid JSON received from API V2 Properties */
 "Invalid JSON received from API V2 Properties" = "Virheellinen JSON vastaanotettu API V2 Properties päätepisteestä";
@@ -644,22 +644,22 @@
 "Check BG every minute" = "Check BG every minute";
 
 /* Main tab */
-"Main" = "Main";
+"Main" = "Pääsivu";
 
 /* Alarms tab */
-"Alarms" = "Alarms";
+"Alarms" = "Hälytykset";
 
 /* Care tab */
-"Care" = "Care";
+"Care" = "Huolenpito";
 
 /* Duration tab */
-"Duration" = "Duration";
+"Duration" = "Kesto";
 
 /* Stats tab */
-"Stats" = "Stats";
+"Stats" = "Tilastot";
 
 /* Preferences tab */
-"Preferences" = "Preferences";
+"Preferences" = "Asetukset";
 
 /* Snooze popup title */
 "Snooze Alarms for" = "Torkuta hälytykset";

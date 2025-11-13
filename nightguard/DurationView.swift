@@ -25,12 +25,12 @@ struct DurationView: View {
             Form {
                 // Cannula section
                 Section(
-                    header: Text("Cannula"),
-                    footer: Text("Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date.")
+                    header: Text(NSLocalizedString("Cannula", comment: "Cannula Row Header")),
+                    footer: Text(NSLocalizedString("Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date.", comment: "Footer for Cannula Change Date"))
                         .font(.footnote)
                 ) {
                     HStack {
-                        Text("Cannula change date")
+                        Text(NSLocalizedString("Cannula change date", comment: "Label for Cannula Change Time"))
                         Spacer()
                         DatePicker(
                             "",
@@ -42,12 +42,12 @@ struct DurationView: View {
 
                     HStack {
                         Spacer()
-                        Button("Reset") {
+                        Button(NSLocalizedString("Reset", comment: "Button to reset the new Cannula Change Date")) {
                             cannulaChangeDate = Date()
                         }
                         .foregroundColor(.white)
                         Spacer()
-                        Button("Save") {
+                        Button(NSLocalizedString("Save", comment: "Button to activate the new Cannula Change Date")) {
                             showCannulaConfirmation = true
                         }
                         .foregroundColor(.white)
@@ -57,12 +57,12 @@ struct DurationView: View {
 
                 // Sensor section
                 Section(
-                    header: Text("Sensor"),
-                    footer: Text("Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date.")
+                    header: Text(NSLocalizedString("Sensor", comment: "Sensor Row Header")),
+                    footer: Text(NSLocalizedString("Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date.", comment: "Footer for Sensor"))
                         .font(.footnote)
                 ) {
                     HStack {
-                        Text("Sensor change date")
+                        Text(NSLocalizedString("Sensor change date", comment: "Label for Sensor Change Time"))
                         Spacer()
                         DatePicker(
                             "",
@@ -74,12 +74,12 @@ struct DurationView: View {
 
                     HStack {
                         Spacer()
-                        Button("Reset") {
+                        Button(NSLocalizedString("Reset", comment: "Button to reset the new Sensor Change Date")) {
                             sensorChangeDate = Date()
                         }
                         .foregroundColor(.white)
                         Spacer()
-                        Button("Save") {
+                        Button(NSLocalizedString("Save", comment: "Button to activate the new Sensor Change Date")) {
                             showSensorConfirmation = true
                         }
                         .foregroundColor(.white)
@@ -89,12 +89,12 @@ struct DurationView: View {
 
                 // Battery section
                 Section(
-                    header: Text("Battery"),
-                    footer: Text("Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date.")
+                    header: Text(NSLocalizedString("Battery", comment: "Battery Row Header")),
+                    footer: Text(NSLocalizedString("Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date.", comment: "Footer for Battery"))
                         .font(.footnote)
                 ) {
                     HStack {
-                        Text("Battery change date")
+                        Text(NSLocalizedString("Battery change date", comment: "Label for Battery Change Time"))
                         Spacer()
                         DatePicker(
                             "",
@@ -106,12 +106,12 @@ struct DurationView: View {
 
                     HStack {
                         Spacer()
-                        Button("Reset") {
+                        Button(NSLocalizedString("Reset", comment: "Button to reset the new Battery Change Date")) {
                             batteryChangeDate = Date()
                         }
                         .foregroundColor(.white)
                         Spacer()
-                        Button("Save") {
+                        Button(NSLocalizedString("Save", comment: "Button to activate the new Battery Change Date")) {
                             showBatteryConfirmation = true
                         }
                         .foregroundColor(.white)
@@ -119,39 +119,39 @@ struct DurationView: View {
                     }
                 }
             }
-            .navigationTitle("Duration")
+            .navigationTitle(NSLocalizedString("Duration", comment: "Duration tab"))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 cannulaChangeDate = NightscoutCacheService.singleton.getCannulaChangeTime()
                 sensorChangeDate = NightscoutCacheService.singleton.getSensorChangeTime()
                 batteryChangeDate = NightscoutCacheService.singleton.getPumpBatteryChangeTime()
             }
-            .alert("Modify Cannula Change Date", isPresented: $showCannulaConfirmation) {
-                Button("Accept", role: .none) {
+            .alert(NSLocalizedString("Modify Cannula Change Date", comment: "Modify Cannula Change Date Popup Title"), isPresented: $showCannulaConfirmation) {
+                Button(NSLocalizedString("Accept", comment: "Popup Accept-Button")) {
                     saveCannulaChangeDate()
                 }
-                Button("Decline", role: .cancel) {}
+                Button(NSLocalizedString("Decline", comment: "Popup Decline-Button"), role: .cancel) {}
             } message: {
-                Text("Do you want to modify the change date to \(cannulaChangeDate.toDateTimeString())?")
+                Text(String(format: NSLocalizedString("Do you want to modify the change date to %@", comment: "Cancel Target Popup Text"), cannulaChangeDate.toDateTimeString()))
             }
-            .alert("Modify Sensor Change Date", isPresented: $showSensorConfirmation) {
-                Button("Accept", role: .none) {
+            .alert(NSLocalizedString("Modify Sensor Change Date", comment: "Modify Sensor Change Date Popup Title"), isPresented: $showSensorConfirmation) {
+                Button(NSLocalizedString("Accept", comment: "Popup Accept-Button")) {
                     saveSensorChangeDate()
                 }
-                Button("Decline", role: .cancel) {}
+                Button(NSLocalizedString("Decline", comment: "Popup Decline-Button"), role: .cancel) {}
             } message: {
-                Text("Do you want to modify the change date to \(sensorChangeDate.toDateTimeString())?")
+                Text(String(format: NSLocalizedString("Do you want to modify the change date to %@", comment: "Cancel Target Popup Text"), sensorChangeDate.toDateTimeString()))
             }
-            .alert("Modify Battery Change Date", isPresented: $showBatteryConfirmation) {
-                Button("Accept", role: .none) {
+            .alert(NSLocalizedString("Modify Battery Change Date", comment: "Modify Battery Change Date Popup Title"), isPresented: $showBatteryConfirmation) {
+                Button(NSLocalizedString("Accept", comment: "Popup Accept-Button")) {
                     saveBatteryChangeDate()
                 }
-                Button("Decline", role: .cancel) {}
+                Button(NSLocalizedString("Decline", comment: "Popup Decline-Button"), role: .cancel) {}
             } message: {
-                Text("Do you want to modify the change date to \(batteryChangeDate.toDateTimeString())?")
+                Text(String(format: NSLocalizedString("Do you want to modify the change date to %@", comment: "Cancel Target Popup Text"), batteryChangeDate.toDateTimeString()))
             }
-            .alert("Error", isPresented: $showErrorAlert) {
-                Button("OK", role: .cancel) {}
+            .alert(NSLocalizedString("Error", comment: "Popup Error Message Title"), isPresented: $showErrorAlert) {
+                Button(NSLocalizedString("OK", comment: "Popup OK-Button"), role: .cancel) {}
             } message: {
                 Text(errorMessage)
             }
