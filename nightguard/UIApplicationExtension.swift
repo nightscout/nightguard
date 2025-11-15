@@ -42,16 +42,5 @@ extension UIApplication {
     func clearAppBadge() {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
-    
-    /*
-     * function will return reference to tabbarcontroller
-     */
-    func showMain() {
-        // Use the modern approach for accessing the rootViewController in multi-scene environments
-        let keyWindow = UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
-            .first { $0.isKeyWindow }
-    }
 }
 #endif

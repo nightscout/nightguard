@@ -397,8 +397,6 @@
 		D16C8EDD22106C9300192117 /* QuickSnoozeOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */; };
 		D16C8EDF2211047300192117 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */; };
 		D16C8EE22213022E00192117 /* UserInteractionDetectorWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */; };
-		D16FC358226AEACC00AB4DE3 /* MenuActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D16FC357226AEACC00AB4DE3 /* MenuActionCell.xib */; };
-		D16FC35B226E129400AB4DE3 /* MenuActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FC35A226E129400AB4DE3 /* MenuActionCell.swift */; };
 		D18C5D8A22293C220099D96E /* BasicStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18C5D8922293C220099D96E /* BasicStats.swift */; };
 		D18C5D8B22293C230099D96E /* BasicStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18C5D8922293C220099D96E /* BasicStats.swift */; };
 		D18C5D8C22293C230099D96E /* BasicStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18C5D8922293C220099D96E /* BasicStats.swift */; };
@@ -708,8 +706,6 @@
 		D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSnoozeOption.swift; sourceTree = "<group>"; };
 		D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractionDetectorWindow.swift; sourceTree = "<group>"; };
-		D16FC357226AEACC00AB4DE3 /* MenuActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuActionCell.xib; sourceTree = "<group>"; };
-		D16FC35A226E129400AB4DE3 /* MenuActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuActionCell.swift; sourceTree = "<group>"; };
 		D18C5D8922293C220099D96E /* BasicStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStats.swift; sourceTree = "<group>"; };
 		D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyConvertible.swift; sourceTree = "<group>"; };
 		D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchReportingView.swift; sourceTree = "<group>"; };
@@ -1212,8 +1208,6 @@
 				D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */,
 				D1358AEB2237C44600D0FA87 /* XibLoadedView.swift */,
 				D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */,
-				D16FC357226AEACC00AB4DE3 /* MenuActionCell.xib */,
-				D16FC35A226E129400AB4DE3 /* MenuActionCell.swift */,
 				43EF91B122688892000E79B5 /* SlideToSnoozeView.swift */,
 			);
 			name = views;
@@ -1257,7 +1251,6 @@
 				43647BC81BFF6435004389F9 /* Resources */,
 				43647C1C1BFF6435004389F9 /* Embed Watch Content */,
 				438DAC8C28D2356A00FBF520 /* Embed Foundation Extensions */,
-				DB339835A00EFA578E00B4CF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1297,7 +1290,6 @@
 				43647BE51BFF6435004389F9 /* Sources */,
 				43647BE61BFF6435004389F9 /* Frameworks */,
 				43647BE71BFF6435004389F9 /* Resources */,
-				43336DAE73CB179C5B429BFD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1450,7 +1442,6 @@
 				43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */,
 				43F1E1061D07698000C329A2 /* Media.xcassets in Resources */,
 				43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */,
-				D16FC358226AEACC00AB4DE3 /* MenuActionCell.xib in Resources */,
 				28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */,
 				D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */,
 			);
@@ -1567,27 +1558,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		43336DAE73CB179C5B429BFD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		716E66D79A2444C5EE3AD91E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1654,27 +1624,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DB339835A00EFA578E00B4CF /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-nightguard/Pods-nightguard-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1718,7 +1667,6 @@
 				D133079A21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
-				D16FC35B226E129400AB4DE3 /* MenuActionCell.swift in Sources */,
 				D1E6B897219C69D9007ED4FE /* Helpers.swift in Sources */,
 				D133079821C85FAE00DC6879 /* Regression.swift in Sources */,
 				4302C6A525DC66A80052777F /* BolusWizardTreatment.swift in Sources */,

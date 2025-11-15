@@ -1,22 +1,3 @@
-PODS:
-  - Eureka (5.3.3)
-  - XLActionController (5.1.0):
-    - XLActionController/Core (= 5.1.0)
-  - XLActionController/Core (5.1.0)
-
-DEPENDENCIES:
-  - Eureka
-  - XLActionController
-
-SPEC REPOS:
-  trunk:
-    - Eureka
-    - XLActionController
-
-SPEC CHECKSUMS:
-  Eureka: e6d720290c56bb23333ad1a0e020b2a98a0e9a43
-  XLActionController: 24140d835ab9e260270711afebc5efabebe9d392
-
-PODFILE CHECKSUM: dc0d10611d5c8069733cc7799527d08999ed32c2
+PODFILE CHECKSUM: 30a37f9126d936999221112cb75b4e49919a7dae
 
 COCOAPODS: 1.16.2
