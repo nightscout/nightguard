@@ -576,3 +576,6 @@
 
 /* Cancel Target Popup Text */
 "Do you want to modify the change date to %@" = "Möchten Sie das Änderungsdatum auf %@ ändern?";
+
+/* Close button */
+"Close" = "Schließen";

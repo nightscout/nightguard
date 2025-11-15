@@ -12,6 +12,7 @@ import WatchConnectivity
 import SpriteKit
 import XLActionController
 import StoreKit
+import SwiftUI
 
 class MainViewController: UIViewController, SlideToSnoozeDelegate {
 
@@ -398,9 +399,10 @@ class MainViewController: UIViewController, SlideToSnoozeDelegate {
     }
     
     func showNightscout() {
-        let nightscoutInitialViewController = UIStoryboard(name: "Nightscout", bundle: Bundle.main).instantiateInitialViewController()!
-        nightscoutInitialViewController.modalPresentationStyle = .fullScreen
-        self.present(nightscoutInitialViewController, animated: true, completion: nil)
+        let nightscoutView = NightscoutView()
+        let hostingController = UIHostingController(rootView: nightscoutView)
+        hostingController.modalPresentationStyle = .fullScreen
+        self.present(hostingController, animated: true, completion: nil)
     }
     
     func showFullscreenMonitor() {

@@ -728,7 +728,7 @@ struct MainView: View {
             }
         }
         .sheet(isPresented: $showNightscout) {
-            NightscoutViewRepresentable()
+            NightscoutView()
         }
         .sheet(isPresented: $showSnoozePopup) {
             SnoozePopupView()
@@ -786,18 +786,6 @@ struct MainView: View {
 }
 
 // MARK: - Supporting Views
-
-struct NightscoutViewRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        let nightscoutInitialViewController = UIStoryboard(name: "Nightscout", bundle: Bundle.main).instantiateInitialViewController()!
-        nightscoutInitialViewController.modalPresentationStyle = .fullScreen
-        return nightscoutInitialViewController
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        // No updates needed
-    }
-}
 
 struct BedsideViewRepresentable: UIViewControllerRepresentable {
     let currentNightscoutData: NightscoutData?

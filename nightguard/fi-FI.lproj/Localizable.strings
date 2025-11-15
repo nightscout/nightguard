@@ -666,3 +666,6 @@
 
 /* Stop Snoozing button */
 "Stop Snoozing" = "Lopeta torkku";
+
+/* Close button */
+"Close" = "Sulje";

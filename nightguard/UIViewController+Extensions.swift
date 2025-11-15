@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension UIViewController {
     
@@ -71,15 +72,16 @@ extension UIViewController {
 extension UIViewController {
     
     func showSnoozePopup() {
-        
+
         // stop the alarm immediatly here not to disturb others
         AlarmSound.muteVolume()
-        
-        // create the snooze popup view
-        let snoozeAlarmNavigationController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(
-            withIdentifier: "snoozeAlarmNavigationController")
-        self.present(snoozeAlarmNavigationController, animated: true, completion: nil)
-        
+
+        // create the snooze popup view using SwiftUI
+        let snoozePopupView = SnoozePopupView()
+        let hostingController = UIHostingController(rootView: snoozePopupView)
+        hostingController.modalPresentationStyle = .fullScreen
+        self.present(hostingController, animated: true, completion: nil)
+
         // For safety reasons: Unmute sound after 1 minute
         // This prevents an unlimited snooze if the snooze button was touched accidentally.
         DispatchQueue.main.asyncAfter(deadline: .now() + 30.0, execute: {
