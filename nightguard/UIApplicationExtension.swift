@@ -52,11 +52,6 @@ extension UIApplication {
             .compactMap { $0 as? UIWindowScene }
             .flatMap { $0.windows }
             .first { $0.isKeyWindow }
-        
-        guard let vc = keyWindow?.rootViewController else { return }
-        if let tabBarController = vc as? TabBarController {
-            tabBarController.selectedIndex = 0
-        }
     }
 }
 #endif
