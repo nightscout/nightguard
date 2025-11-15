@@ -743,7 +743,7 @@ struct MainView: View {
             Button(NSLocalizedString("Cancel", comment: "Cancel"), role: .cancel) {}
         }
         .fullScreenCover(isPresented: $showFullscreenMonitor) {
-            BedsideViewRepresentable(currentNightscoutData: viewModel.currentNightscoutData)
+            BedsideView(currentNightscoutData: viewModel.currentNightscoutData)
         }
     }
 
@@ -784,25 +784,6 @@ struct MainView: View {
         viewModel.chartScene = scene
     }
 }
-
-// MARK: - Supporting Views
-
-struct BedsideViewRepresentable: UIViewControllerRepresentable {
-    let currentNightscoutData: NightscoutData?
-
-    func makeUIViewController(context: Context) -> BedsideViewController {
-        let bedsideViewController = BedsideViewController.instantiate()
-        bedsideViewController.modalPresentationStyle = .fullScreen
-        bedsideViewController.currentNightscoutData = currentNightscoutData
-        return bedsideViewController
-    }
-
-    func updateUIViewController(_ uiViewController: BedsideViewController, context: Context) {
-        uiViewController.currentNightscoutData = currentNightscoutData
-        uiViewController.updateAlarmInfo()
-    }
-}
-
 
 // MARK: - Preview
 
