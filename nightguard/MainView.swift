@@ -81,6 +81,15 @@ class MainViewModel: ObservableObject {
             self?.showActionsMenu = !value
             self?.slideToSnoozeHeight = value ? 0 : 80
         }
+
+        // Observe alarm bound changes to repaint chart
+        UserDefaultsRepository.upperBound.observeChanges { [weak self] _ in
+            self?.repaintChartWithCurrentData()
+        }
+
+        UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
+            self?.repaintChartWithCurrentData()
+        }
     }
 
     private func loadInitialData() {
@@ -240,6 +249,12 @@ class MainViewModel: ObservableObject {
         )
     }
 
+    private func repaintChartWithCurrentData() {
+        let cachedTodaysData = NightscoutCacheService.singleton.getTodaysBgData()
+        let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
+        paintChartData(todaysData: cachedTodaysData, yesterdaysData: cachedYesterdaysData)
+    }
+
     private func loadAndPaintCareData() {
         // Update care labels
         DispatchQueue.main.async { [weak self] in
@@ -330,7 +345,11 @@ struct ChartView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: SKView, context: Context) {
-        // Update if needed
+        // Re-present the scene if it detached (happens after tab switches)
+        // Check both if scene is nil OR if scene's view doesn't match our uiView
+        if uiView.scene == nil || chartScene.view != uiView {
+            uiView.presentScene(chartScene)
+        }
     }
 
     func makeCoordinator() -> Coordinator {
