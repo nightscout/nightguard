@@ -45,6 +45,10 @@ class MainViewModel: ObservableObject {
 
     // Chart scene
     var chartScene: ChartScene?
+    @Published var chartSceneId = UUID() // Force ChartView to recreate when changed
+
+    // Track if view is currently visible
+    var isVisible: Bool = false
 
     // Timer
     private var timer: Timer?
@@ -82,14 +86,8 @@ class MainViewModel: ObservableObject {
             self?.slideToSnoozeHeight = value ? 0 : 80
         }
 
-        // Observe alarm bound changes to repaint chart
-        UserDefaultsRepository.upperBound.observeChanges { [weak self] _ in
-            self?.repaintChartWithCurrentData()
-        }
-
-        UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
-            self?.repaintChartWithCurrentData()
-        }
+        // Note: Alarm bound changes will be picked up when we do periodic updates
+        // or when the view becomes visible after a tab switch
     }
 
     private func loadInitialData() {
@@ -249,10 +247,47 @@ class MainViewModel: ObservableObject {
         )
     }
 
-    private func repaintChartWithCurrentData() {
+    func repaintChartWithCurrentData() {
         let cachedTodaysData = NightscoutCacheService.singleton.getTodaysBgData()
         let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
         paintChartData(todaysData: cachedTodaysData, yesterdaysData: cachedYesterdaysData)
+    }
+
+    func handleVisibilityChange(isVisible: Bool) {
+        let wasInvisible = !self.isVisible
+        self.isVisible = isVisible
+
+        if isVisible {
+            // Restart timer when becoming visible
+            if wasInvisible {
+                startTimer()
+                // Recreate the ChartScene object itself
+                recreateChartScene()
+                // Force recreate the ChartView by changing the ID
+                chartSceneId = UUID()
+                // Repaint after scene is recreated
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.doPeriodicUpdate(forceRepaint: true)
+                }
+            }
+        } else {
+            // Becoming invisible - stop timer to prevent painting while not visible
+            stopTimer()
+        }
+    }
+
+    private func recreateChartScene() {
+        guard let oldScene = chartScene else { return }
+
+        // Create a new scene with the same dimensions
+        let newScene = ChartScene(
+            size: oldScene.size,
+            newCanvasWidth: CGFloat(maximumDeviceTextureWidth()),
+            useContrastfulColors: false,
+            showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value
+        )
+
+        chartScene = newScene
     }
 
     private func loadAndPaintCareData() {
@@ -318,7 +353,7 @@ class MainViewModel: ObservableObject {
         return "\(prefix)\(hours)h"
     }
 
-    private func maximumDeviceTextureWidth() -> Int {
+    func maximumDeviceTextureWidth() -> Int {
         return 2048 // Default value, can be adjusted based on device
     }
 }
@@ -346,9 +381,15 @@ struct ChartView: UIViewRepresentable {
 
     func updateUIView(_ uiView: SKView, context: Context) {
         // Re-present the scene if it detached (happens after tab switches)
-        // Check both if scene is nil OR if scene's view doesn't match our uiView
         if uiView.scene == nil || chartScene.view != uiView {
             uiView.presentScene(chartScene)
+
+            // After presenting, trigger an immediate repaint if we're visible
+            DispatchQueue.main.async {
+                if self.viewModel.isVisible {
+                    self.viewModel.repaintChartWithCurrentData()
+                }
+            }
         }
     }
 
@@ -659,6 +700,7 @@ struct MainView: View {
                     ZStack {
                         if let scene = chartScene {
                             ChartView(viewModel: viewModel, chartScene: scene)
+                                .id(viewModel.chartSceneId) // Recreate when ID changes
                         }
 
                         // Error message overlay
@@ -721,30 +763,18 @@ struct MainView: View {
                 let chartHeight = max(400, geometry.size.height - usedHeight)
 
                 setupChart(height: chartHeight)
+                viewModel.isVisible = true
                 viewModel.startTimer()
                 viewModel.doPeriodicUpdate(forceRepaint: true)
             }
         }
         .statusBar(hidden: true)
         .onDisappear {
+            viewModel.isVisible = false
             viewModel.stopTimer()
         }
         .onChange(of: selectedTab) { newTab in
-            if newTab == 0 {
-                // Switched back to Main tab - repaint chart with current bounds
-                let cachedTodaysData = NightscoutCacheService.singleton.getTodaysBgData()
-                let cachedYesterdaysData = NightscoutCacheService.singleton.getYesterdaysBgData()
-                let todaysDataWithPrediction = cachedTodaysData + PredictionService.singleton.nextHourGapped
-
-                chartScene?.paintChart(
-                    [todaysDataWithPrediction, cachedYesterdaysData],
-                    newCanvasWidth: CGFloat(chartScene?.canvasWidth ?? 1024),
-                    maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
-                    moveToLatestValue: false,
-                    useContrastfulColors: false,
-                    showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value
-                )
-            }
+            viewModel.handleVisibilityChange(isVisible: newTab == 0)
         }
         .sheet(isPresented: $showNightscout) {
             NightscoutView()
@@ -784,7 +814,7 @@ struct MainView: View {
     private func setupChart(height: CGFloat) {
         let scene = ChartScene(
             size: CGSize(width: UIScreen.main.bounds.width, height: height),
-            newCanvasWidth: 1024,
+            newCanvasWidth: CGFloat(viewModel.maximumDeviceTextureWidth()),
             useContrastfulColors: false,
             showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value
         )
