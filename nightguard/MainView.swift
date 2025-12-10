@@ -608,7 +608,6 @@ struct MainView: View {
                                 .font(.system(size: 120))
                                 .foregroundColor(viewModel.bgColor)
                                 .minimumScaleFactor(0.5)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
 
                             // Delta and time info
                             VStack(alignment: .leading, spacing: 0) {
