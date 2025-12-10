@@ -1,0 +1,37 @@
+{
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/app/BackgroundRefreshLogger.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BackgroundRefreshLogger.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BackgroundRefreshLogger.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BackgroundRefreshLogger.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BackgroundRefreshLogger.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BackgroundRefreshLogger.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/app/UIColorChanger.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIColorChanger.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIColorChanger.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIColorChanger.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIColorChanger.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIColorChanger.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard Widget Extension/AccessoryInlineView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/AccessoryInlineView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/AccessoryInlineView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/AccessoryInlineView.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/AccessoryInlineView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/AccessoryInlineView.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/BloodSugar.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BloodSugar.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BloodSugar.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BloodSugar.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BloodSugar.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/BloodSugar.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/model/TemporaryTarget.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/TemporaryTarget.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/TemporaryTarget.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/TemporaryTarget.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/TemporaryTarget.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/TemporaryTarget.swiftdeps"
+  }
+}

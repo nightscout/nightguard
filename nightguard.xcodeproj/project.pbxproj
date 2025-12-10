@@ -55,6 +55,8 @@
 		43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */; };
 		43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C39171C0E002F00D89872 /* ChartPainter.swift */; };
 		43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43119B861C383CF500DD6D35 /* UIColorChanger.swift */; };
+		4313C8E02EEA1676004D8E1A /* NightguardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313C8DF2EEA1676004D8E1A /* NightguardApp.swift */; };
+		4313C8E22EEA1691004D8E1A /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313C8E12EEA1691004D8E1A /* InfoView.swift */; };
 		4317702F25CF273C00E8C991 /* RequestAlarmNotificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317702E25CF273C00E8C991 /* RequestAlarmNotificationMessage.swift */; };
 		4317703525CF273E00E8C991 /* RequestAlarmNotificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317702E25CF273C00E8C991 /* RequestAlarmNotificationMessage.swift */; };
 		4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
@@ -154,9 +156,7 @@
 		43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */; };
 		43647BEE1BFF6435004389F9 /* NightguardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BED1BFF6435004389F9 /* NightguardUITests.swift */; };
 		43647BF31BFF6435004389F9 /* nightguard.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 43647BF21BFF6435004389F9 /* nightguard.app */; };
-		43647BF91BFF6435004389F9 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43647BF71BFF6435004389F9 /* Interface.storyboard */; };
 		43647C0B1BFF6435004389F9 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */; };
-		43647C0D1BFF6435004389F9 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647C0C1BFF6435004389F9 /* NotificationController.swift */; };
 		4368A0FA252279CA0013E425 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368A0F9252279C90013E425 /* MainViewModel.swift */; };
 		436BE82D24A322AE00FDCBB5 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		436D73B427C826F100639B15 /* AppleHealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D73B327C826F100639B15 /* AppleHealthService.swift */; };
@@ -194,7 +194,6 @@
 		43794F481C30482500DB8B58 /* DataRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F471C30482500DB8B58 /* DataRepositoryTest.swift */; };
 		43794F491C30489C00DB8B58 /* NightscoutDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */; };
 		43794F4B1C3049B300DB8B58 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
-		43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */; };
 		437C8A9224C9E54A005CF5B3 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437C8A9124C9E54A005CF5B3 /* UILabelExtension.swift */; };
 		437EEDC11FB70FC200694EAD /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		437EEDC31FB716C400694EAD /* StatisticsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */; };
@@ -206,7 +205,6 @@
 		4389A51B2602A3F6001F10AD /* TemporaryTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4389A5182602A3F6001F10AD /* TemporaryTarget.swift */; };
 		4389A5282602AADE001F10AD /* TargetDataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4389A5262602AADE001F10AD /* TargetDataTest.swift */; };
 		4389A5502602B201001F10AD /* TemporaryTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4389A5182602A3F6001F10AD /* TemporaryTarget.swift */; };
-		438C55A2253C807B0002E109 /* CarbsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438C55A1253C807B0002E109 /* CarbsController.swift */; };
 		438C55A9253C81370002E109 /* CarbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438C55A8253C81370002E109 /* CarbsView.swift */; };
 		438C55B0253CB0090002E109 /* AddCarbsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438C55AF253CB0090002E109 /* AddCarbsPopupView.swift */; };
 		438DAC7D28D2356800FBF520 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 438DAC7C28D2356800FBF520 /* WidgetKit.framework */; };
@@ -239,10 +237,8 @@
 		4391E5782EBF500300530260 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4391E5772EBF500300530260 /* MainView.swift */; };
 		4391E5792EBF510000530260 /* BedsideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4391E57A2EBF520000530260 /* BedsideView.swift */; };
 		43961F4A2533598400B1492B /* ActivateTemporaryTargetPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */; };
-		43961F6E25336F0600B1492B /* TemporaryTargetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F6D25336F0600B1492B /* TemporaryTargetController.swift */; };
 		43961F752533708D00B1492B /* TemporaryTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F742533708D00B1492B /* TemporaryTargetView.swift */; };
 		43961F86253377B900B1492B /* CancelTemporaryTargetPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F85253377B900B1492B /* CancelTemporaryTargetPopupView.swift */; };
-		43989365252BB91C007A252F /* ActionButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43989364252BB91C007A252F /* ActionButtonController.swift */; };
 		4398937D252BBFE5007A252F /* ActionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4398937C252BBFE5007A252F /* ActionButtonView.swift */; };
 		43989389252CEB15007A252F /* SnoozeModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43989388252CEB15007A252F /* SnoozeModalView.swift */; };
 		439BADF81C24C315006BEADB /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 439BADF71C24C315006BEADB /* Media.xcassets */; };
@@ -281,7 +277,6 @@
 		43C825862B1A8F28004B2674 /* SnoozeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CC221FB0FA80035A60E /* SnoozeMessage.swift */; };
 		43C825872B1A8F2B004B2674 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB521FAF6890035A60E /* WatchMessage.swift */; };
 		43C825882B1A8F2C004B2674 /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB521FAF6890035A60E /* WatchMessage.swift */; };
-		43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */; };
 		43CE59AA25080D6B00D71B77 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE59A925080D6A00D71B77 /* MainView.swift */; };
 		43CE59AC250813D700D71B77 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE59AB250813D700D71B77 /* MainController.swift */; };
 		43D005D029DC9BFB003BCE92 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 438DAC7C28D2356800FBF520 /* WidgetKit.framework */; };
@@ -533,7 +528,6 @@
 		18060ADE499D1BF44318334D /* Pods-nightguardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardUITests.release.xcconfig"; path = "Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests.release.xcconfig"; sourceTree = "<group>"; };
 		1DF7CCBF81749EB5433A6B02 /* Pods-nightguardTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardTests.debug.xcconfig"; path = "Target Support Files/Pods-nightguardTests/Pods-nightguardTests.debug.xcconfig"; sourceTree = "<group>"; };
 		28A3509723F9B31400F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		28A3509823F9B31400F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Interface.strings"; sourceTree = "<group>"; };
 		28B03A3623F9CD8E000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		28B03A3923F9CE6C000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
@@ -557,6 +551,8 @@
 		430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepPressGestureRecognizer.swift; sourceTree = "<group>"; };
 		430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
+		4313C8DF2EEA1676004D8E1A /* NightguardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightguardApp.swift; sourceTree = "<group>"; };
+		4313C8E12EEA1691004D8E1A /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		4317702E25CF273C00E8C991 /* RequestAlarmNotificationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAlarmNotificationMessage.swift; sourceTree = "<group>"; };
 		4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NightscoutCacheService.swift; path = nightguard/external/NightscoutCacheService.swift; sourceTree = SOURCE_ROOT; };
 		4323C4982CCC0BC5006AD04B /* AccessoryRectangularTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryRectangularTimestampView.swift; sourceTree = "<group>"; };
@@ -589,24 +585,20 @@
 		43647BED1BFF6435004389F9 /* NightguardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightguardUITests.swift; sourceTree = "<group>"; };
 		43647BEF1BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43647BF21BFF6435004389F9 /* nightguard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nightguard.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		43647BF81BFF6435004389F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		43647BFC1BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43647C071BFF6435004389F9 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		43647C0C1BFF6435004389F9 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		4368A0F9252279C90013E425 /* MainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		436D73B327C826F100639B15 /* AppleHealthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleHealthService.swift; sourceTree = "<group>"; };
 		436D73B527C82A5E00639B15 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		43794F411C2F435A00DB8B58 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutDataRepository.swift; path = nightguard/repository/NightscoutDataRepository.swift; sourceTree = SOURCE_ROOT; };
 		43794F471C30482500DB8B58 /* DataRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRepositoryTest.swift; sourceTree = "<group>"; };
-		43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoInterfaceController.swift; sourceTree = "<group>"; };
 		43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDefaultsRepository.swift; path = nightguard/repository/UserDefaultsRepository.swift; sourceTree = SOURCE_ROOT; };
 		437C8A9124C9E54A005CF5B3 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		438066FD1D21C2350021B618 /* AppMessageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMessageService.swift; sourceTree = "<group>"; };
 		4389A5182602A3F6001F10AD /* TemporaryTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryTarget.swift; sourceTree = "<group>"; };
 		4389A5262602AADE001F10AD /* TargetDataTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetDataTest.swift; sourceTree = "<group>"; };
-		438C55A1253C807B0002E109 /* CarbsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarbsController.swift; sourceTree = "<group>"; };
 		438C55A8253C81370002E109 /* CarbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarbsView.swift; sourceTree = "<group>"; };
 		438C55AF253CB0090002E109 /* AddCarbsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCarbsPopupView.swift; sourceTree = "<group>"; };
 		438DAC7B28D2356800FBF520 /* nightguard Widget Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "nightguard Widget Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -618,10 +610,8 @@
 		4391E5772EBF500300530260 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4391E57A2EBF520000530260 /* BedsideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedsideView.swift; sourceTree = "<group>"; };
 		43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivateTemporaryTargetPopupView.swift; sourceTree = "<group>"; };
-		43961F6D25336F0600B1492B /* TemporaryTargetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryTargetController.swift; sourceTree = "<group>"; };
 		43961F742533708D00B1492B /* TemporaryTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryTargetView.swift; sourceTree = "<group>"; };
 		43961F85253377B900B1492B /* CancelTemporaryTargetPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelTemporaryTargetPopupView.swift; sourceTree = "<group>"; };
-		43989364252BB91C007A252F /* ActionButtonController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonController.swift; sourceTree = "<group>"; };
 		4398937C252BBFE5007A252F /* ActionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonView.swift; sourceTree = "<group>"; };
 		43989388252CEB15007A252F /* SnoozeModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeModalView.swift; sourceTree = "<group>"; };
 		439BADF71C24C315006BEADB /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -636,9 +626,7 @@
 		43BB4B0424CF5DBA00DE96BB /* TemporaryTargetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryTargetData.swift; sourceTree = "<group>"; };
 		43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUserDefaultsRepository.swift; sourceTree = "<group>"; };
 		43C5DEA124522F3F00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		43C5DEA224522F3F00BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Interface.strings; sourceTree = "<group>"; };
 		43C5DEA324522F4000BB41D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeInterfaceController.swift; sourceTree = "<group>"; };
 		43CB358D28D71F79002AF707 /* nightguard Widget ExtensionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "nightguard Widget ExtensionExtension.entitlements"; sourceTree = "<group>"; };
 		43CE59A925080D6A00D71B77 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		43CE59AB250813D700D71B77 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
@@ -934,7 +922,6 @@
 				43794F411C2F435A00DB8B58 /* AppConstants.swift */,
 				127F207A227F018E00C90F07 /* nightguard.entitlements */,
 				439BADF71C24C315006BEADB /* Media.xcassets */,
-				43647BF71BFF6435004389F9 /* Interface.storyboard */,
 				43647BFC1BFF6435004389F9 /* Info.plist */,
 				435DFF7029E1E858007A25EA /* ViewExtension.swift */,
 				7B4E31F32C2379C4005090CB /* NotificationExtension.swift */,
@@ -965,12 +952,6 @@
 			isa = PBXGroup;
 			children = (
 				43CE59AB250813D700D71B77 /* MainController.swift */,
-				43989364252BB91C007A252F /* ActionButtonController.swift */,
-				43961F6D25336F0600B1492B /* TemporaryTargetController.swift */,
-				43794F4C1C34248500DB8B58 /* InfoInterfaceController.swift */,
-				43C87AF7202F21F10000F5F6 /* SnoozeInterfaceController.swift */,
-				43647C0C1BFF6435004389F9 /* NotificationController.swift */,
-				438C55A1253C807B0002E109 /* CarbsController.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -979,6 +960,7 @@
 			isa = PBXGroup;
 			children = (
 				43CE59A925080D6A00D71B77 /* MainView.swift */,
+				4313C8E12EEA1691004D8E1A /* InfoView.swift */,
 				4398937C252BBFE5007A252F /* ActionButtonView.swift */,
 				43989388252CEB15007A252F /* SnoozeModalView.swift */,
 				43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */,
@@ -1001,6 +983,7 @@
 		439BDA862B224F69004932EB /* app */ = {
 			isa = PBXGroup;
 			children = (
+				4313C8DF2EEA1676004D8E1A /* NightguardApp.swift */,
 				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
 				D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */,
 				4330E3EE25D3239C0054A0A6 /* AppState.swift */,
@@ -1467,7 +1450,6 @@
 			files = (
 				43D561172468201E00B52B1C /* Localizable.strings in Resources */,
 				439BADF81C24C315006BEADB /* Media.xcassets in Resources */,
-				43647BF91BFF6435004389F9 /* Interface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1882,8 +1864,6 @@
 				D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */,
 				435DFF7229E1E858007A25EA /* ViewExtension.swift in Sources */,
 				4302C67825DB0E0D0052777F /* Treatment.swift in Sources */,
-				43961F6E25336F0600B1492B /* TemporaryTargetController.swift in Sources */,
-				438C55A2253C807B0002E109 /* CarbsController.swift in Sources */,
 				D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */,
 				D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */,
 				43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */,
@@ -1897,7 +1877,6 @@
 				D133079F21C8D4CF00DC6879 /* PredictionService.swift in Sources */,
 				437EEDC41FB7180000694EAD /* NightscoutDataRepository.swift in Sources */,
 				D1ECDA282202C8F0002BE6F9 /* UIColorExtension.swift in Sources */,
-				43647C0D1BFF6435004389F9 /* NotificationController.swift in Sources */,
 				43AE645A29E0173D000BEC95 /* NightscoutDataEntry.swift in Sources */,
 				432E62F01D188A2400DD7978 /* UnitsConverter.swift in Sources */,
 				4303406C24CA1DA60088AB9A /* DeviceStatusData.swift in Sources */,
@@ -1910,11 +1889,12 @@
 				D1D1623F221AB253006F990A /* WatchSyncRequestMessage.swift in Sources */,
 				D133079321C85FAE00DC6879 /* RegressionHelper.swift in Sources */,
 				43989389252CEB15007A252F /* SnoozeModalView.swift in Sources */,
-				43C87AF8202F21F10000F5F6 /* SnoozeInterfaceController.swift in Sources */,
 				43961F86253377B900B1492B /* CancelTemporaryTargetPopupView.swift in Sources */,
 				D133078B21C85DA800DC6879 /* ArrayExtension.swift in Sources */,
 				434300E42A35EFC100B5D33A /* nightguard_Complication.intentdefinition in Sources */,
 				4302C69425DC4F530052777F /* CorrectionBolusTreatment.swift in Sources */,
+				4313C8E02EEA1676004D8E1A /* NightguardApp.swift in Sources */,
+				4313C8E22EEA1691004D8E1A /* InfoView.swift in Sources */,
 				4398937D252BBFE5007A252F /* ActionButtonView.swift in Sources */,
 				4317703525CF273E00E8C991 /* RequestAlarmNotificationMessage.swift in Sources */,
 				434982422534E07400CF0014 /* DictionaryExtension.swift in Sources */,
@@ -1930,7 +1910,6 @@
 				43961F752533708D00B1492B /* TemporaryTargetView.swift in Sources */,
 				D133079B21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				D123EFE621FB31FF00CE8718 /* WatchMessageService.swift in Sources */,
-				43794F4D1C34248500DB8B58 /* InfoInterfaceController.swift in Sources */,
 				438C55B0253CB0090002E109 /* AddCarbsPopupView.swift in Sources */,
 				4359241924A2895500F2D1A7 /* BloodSugar.swift in Sources */,
 				D1CE8CC22204B07F0075FF8A /* Colors.swift in Sources */,
@@ -1940,7 +1919,6 @@
 				D18C5D8C22293C230099D96E /* BasicStats.swift in Sources */,
 				43288A681D1B359D00EE3999 /* StringExtension.swift in Sources */,
 				43BB4B0324CF42C400DE96BB /* DoubleExtension.swift in Sources */,
-				43989365252BB91C007A252F /* ActionButtonController.swift in Sources */,
 				438066FE1D21C2350021B618 /* AppMessageService.swift in Sources */,
 				4389A51B2602A3F6001F10AD /* TemporaryTarget.swift in Sources */,
 				437EEDC51FB7185500694EAD /* UserDefaultsRepository.swift in Sources */,
@@ -2144,16 +2122,6 @@
 				43C5DEA124522F3F00BB41D9 /* de */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		43647BF71BFF6435004389F9 /* Interface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				43647BF81BFF6435004389F9 /* Base */,
-				28A3509823F9B31400F2AE60 /* fi-FI */,
-				43C5DEA224522F3F00BB41D9 /* de */,
-			);
-			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 		439CBB2028EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition */ = {

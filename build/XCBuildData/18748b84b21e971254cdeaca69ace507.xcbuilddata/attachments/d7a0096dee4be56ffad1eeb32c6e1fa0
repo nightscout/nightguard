@@ -1,0 +1,849 @@
+{
+  "" : {
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/nightguard WatchKit App-primary.dia",
+    "emit-module-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/nightguard WatchKit App-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/nightguard WatchKit App-primary-emit-module.dia",
+    "pch" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/nightguard WatchKit App-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/nightguard WatchKit App-primary.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/DerivedSources/IntentDefinitionGenerated/nightguard_Complication/ConfigurationIntent.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ConfigurationIntent.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ConfigurationIntent.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ConfigurationIntent.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ConfigurationIntent.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ConfigurationIntent.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ConfigurationIntent.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ConfigurationIntent.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ConfigurationIntent~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/AppConstants.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppConstants.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppConstants.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppConstants.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppConstants.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppConstants.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppConstants.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppConstants.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppConstants~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/ExtensionDelegate.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ExtensionDelegate.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ExtensionDelegate.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ExtensionDelegate.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ExtensionDelegate.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ExtensionDelegate.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ExtensionDelegate.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ExtensionDelegate.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ExtensionDelegate~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/NotificationExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/ViewExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ViewExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ViewExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ViewExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ViewExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ViewExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ViewExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ViewExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ViewExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/app/AppState.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppState.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppState.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppState.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppState.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppState.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppState.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppState.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppState~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/app/BackgroundRefreshLogger.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BackgroundRefreshLogger.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BackgroundRefreshLogger.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BackgroundRefreshLogger.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BackgroundRefreshLogger.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BackgroundRefreshLogger.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BackgroundRefreshLogger.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BackgroundRefreshLogger.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BackgroundRefreshLogger~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/app/UIColorChanger.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorChanger.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorChanger.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorChanger.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorChanger.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorChanger.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorChanger.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorChanger.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorChanger~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/controllers/ActionButtonController.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonController.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonController.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonController.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonController.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonController.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonController.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonController.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonController~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/controllers/CarbsController.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsController.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsController.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsController.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsController.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsController.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsController.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsController.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsController~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/controllers/InfoInterfaceController.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/InfoInterfaceController.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/InfoInterfaceController.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/InfoInterfaceController.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/InfoInterfaceController.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/InfoInterfaceController.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/InfoInterfaceController.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/InfoInterfaceController.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/InfoInterfaceController~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/controllers/MainController.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainController.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainController.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainController.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainController.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainController.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainController.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainController.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainController~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/controllers/NotificationController.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationController.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationController.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationController.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationController.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationController.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationController.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationController.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NotificationController~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/controllers/SnoozeInterfaceController.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeInterfaceController.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeInterfaceController.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeInterfaceController.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeInterfaceController.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeInterfaceController.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeInterfaceController.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeInterfaceController.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeInterfaceController~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/controllers/TemporaryTargetController.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetController.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetController.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetController.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetController.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetController.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetController.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetController.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetController~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/external/AppMessageService.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppMessageService.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppMessageService.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppMessageService.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppMessageService.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppMessageService.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppMessageService.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppMessageService.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AppMessageService~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/helper/WKInterfaceLabel.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WKInterfaceLabel.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WKInterfaceLabel.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WKInterfaceLabel.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WKInterfaceLabel.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WKInterfaceLabel.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WKInterfaceLabel.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WKInterfaceLabel.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WKInterfaceLabel~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/viewmodel/MainViewModel.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainViewModel.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainViewModel.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainViewModel.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainViewModel.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainViewModel.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainViewModel.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainViewModel.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainViewModel~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/views/ActionButtonView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonView.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonView.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonView.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActionButtonView~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/views/ActivateTemporaryTargetPopupView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActivateTemporaryTargetPopupView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActivateTemporaryTargetPopupView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActivateTemporaryTargetPopupView.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActivateTemporaryTargetPopupView.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActivateTemporaryTargetPopupView.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActivateTemporaryTargetPopupView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActivateTemporaryTargetPopupView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ActivateTemporaryTargetPopupView~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/views/AddCarbsPopupView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AddCarbsPopupView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AddCarbsPopupView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AddCarbsPopupView.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AddCarbsPopupView.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AddCarbsPopupView.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AddCarbsPopupView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AddCarbsPopupView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AddCarbsPopupView~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/views/CancelTemporaryTargetPopupView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CancelTemporaryTargetPopupView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CancelTemporaryTargetPopupView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CancelTemporaryTargetPopupView.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CancelTemporaryTargetPopupView.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CancelTemporaryTargetPopupView.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CancelTemporaryTargetPopupView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CancelTemporaryTargetPopupView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CancelTemporaryTargetPopupView~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/views/CarbsView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsView.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsView.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsView.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbsView~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/views/MainView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainView.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainView.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainView.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MainView~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/views/SnoozeModalView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeModalView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeModalView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeModalView.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeModalView.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeModalView.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeModalView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeModalView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeModalView~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard WatchKit App/views/TemporaryTargetView.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetView.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetView.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetView.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetView.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetView.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetView.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetView.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetView~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard Widget Extension/NightscoutDataEntry.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataEntry.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataEntry.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataEntry.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataEntry.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataEntry.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataEntry.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataEntry.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataEntry~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/AlarmRule.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AlarmRule.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AlarmRule.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AlarmRule.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AlarmRule.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AlarmRule.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AlarmRule.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AlarmRule.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AlarmRule~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/AnyConvertible.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AnyConvertible.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AnyConvertible.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AnyConvertible.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AnyConvertible.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AnyConvertible.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AnyConvertible.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AnyConvertible.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/AnyConvertible~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/ArrayExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ArrayExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ArrayExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ArrayExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ArrayExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ArrayExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ArrayExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ArrayExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ArrayExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/BasicStats.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BasicStats.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BasicStats.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BasicStats.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BasicStats.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BasicStats.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BasicStats.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BasicStats.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BasicStats~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/BloodSugar.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugar.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugar.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugar.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugar.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugar.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugar.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugar.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugar~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/BloodSugarArrayExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugarArrayExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugarArrayExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugarArrayExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugarArrayExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugarArrayExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugarArrayExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugarArrayExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BloodSugarArrayExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/BolusWizardTreatment.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BolusWizardTreatment.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BolusWizardTreatment.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BolusWizardTreatment.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BolusWizardTreatment.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BolusWizardTreatment.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BolusWizardTreatment.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BolusWizardTreatment.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/BolusWizardTreatment~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/CarbCorrectionTreatment.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbCorrectionTreatment.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbCorrectionTreatment.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbCorrectionTreatment.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbCorrectionTreatment.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbCorrectionTreatment.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbCorrectionTreatment.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbCorrectionTreatment.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CarbCorrectionTreatment~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/Comparable+Extensions.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Comparable+Extensions.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Comparable+Extensions.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Comparable+Extensions.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Comparable+Extensions.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Comparable+Extensions.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Comparable+Extensions.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Comparable+Extensions.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Comparable+Extensions~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/CorrectionBolusTreatment.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CorrectionBolusTreatment.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CorrectionBolusTreatment.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CorrectionBolusTreatment.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CorrectionBolusTreatment.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CorrectionBolusTreatment.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CorrectionBolusTreatment.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CorrectionBolusTreatment.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/CorrectionBolusTreatment~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/DateExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DateExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DateExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DateExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DateExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DateExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DateExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DateExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DateExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/DictionaryExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DictionaryExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DictionaryExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DictionaryExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DictionaryExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DictionaryExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DictionaryExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DictionaryExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DictionaryExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/DoubleExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DoubleExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DoubleExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DoubleExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DoubleExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DoubleExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DoubleExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DoubleExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DoubleExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/EmptyWatchMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/EmptyWatchMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/EmptyWatchMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/EmptyWatchMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/EmptyWatchMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/EmptyWatchMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/EmptyWatchMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/EmptyWatchMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/EmptyWatchMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/FloatExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/FloatExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/FloatExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/FloatExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/FloatExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/FloatExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/FloatExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/FloatExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/FloatExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/GenericWatchMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GenericWatchMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GenericWatchMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GenericWatchMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GenericWatchMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GenericWatchMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GenericWatchMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GenericWatchMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/GenericWatchMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/Helpers.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Helpers.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Helpers.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Helpers.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Helpers.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Helpers.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Helpers.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Helpers.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Helpers~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/KeepAwakeMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/KeepAwakeMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/KeepAwakeMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/KeepAwakeMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/KeepAwakeMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/KeepAwakeMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/KeepAwakeMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/KeepAwakeMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/KeepAwakeMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/MealBolusTreatment.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MealBolusTreatment.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MealBolusTreatment.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MealBolusTreatment.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MealBolusTreatment.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MealBolusTreatment.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MealBolusTreatment.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MealBolusTreatment.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/MealBolusTreatment~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/NightSafeMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightSafeMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightSafeMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightSafeMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightSafeMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightSafeMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightSafeMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightSafeMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightSafeMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/NightscoutDataMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/ObservationToken.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ObservationToken.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ObservationToken.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ObservationToken.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ObservationToken.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ObservationToken.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ObservationToken.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ObservationToken.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ObservationToken~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/RequestAlarmNotificationMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RequestAlarmNotificationMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RequestAlarmNotificationMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RequestAlarmNotificationMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RequestAlarmNotificationMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RequestAlarmNotificationMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RequestAlarmNotificationMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RequestAlarmNotificationMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RequestAlarmNotificationMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/SnoozeMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/SnoozeMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/StringExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/StringExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/StringExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/StringExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/StringExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/StringExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/StringExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/StringExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/StringExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/TimerExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimerExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimerExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimerExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimerExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimerExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimerExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimerExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimerExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/Treatment.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Treatment.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Treatment.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Treatment.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Treatment.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Treatment.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Treatment.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Treatment.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Treatment~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/TreatmentsStream.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TreatmentsStream.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TreatmentsStream.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TreatmentsStream.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TreatmentsStream.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TreatmentsStream.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TreatmentsStream.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TreatmentsStream.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TreatmentsStream~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/UIColorExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIColorExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/UIImageExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIImageExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIImageExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIImageExtension.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIImageExtension.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIImageExtension.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIImageExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIImageExtension.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UIImageExtension~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/Units.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Units.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Units.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Units.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Units.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Units.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Units.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Units.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Units~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/UserDefaultsSyncMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsSyncMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsSyncMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsSyncMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsSyncMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsSyncMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsSyncMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsSyncMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsSyncMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/UserDefaultsValue.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValue.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValue.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValue.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValue.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValue.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValue.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValue.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValue~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/UserDefaultsValueGroups.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValueGroups.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValueGroups.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValueGroups.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValueGroups.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValueGroups.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValueGroups.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValueGroups.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsValueGroups~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/WatchMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/WatchMessageService.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessageService.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessageService.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessageService.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessageService.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessageService.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessageService.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessageService.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchMessageService~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/WatchSyncRequestMessage.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchSyncRequestMessage.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchSyncRequestMessage.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchSyncRequestMessage.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchSyncRequestMessage.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchSyncRequestMessage.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchSyncRequestMessage.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchSyncRequestMessage.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/WatchSyncRequestMessage~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/app/ChartPainter.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartPainter.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartPainter.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartPainter.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartPainter.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartPainter.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartPainter.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartPainter.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartPainter~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/app/ChartScene.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartScene.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartScene.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartScene.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartScene.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartScene.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartScene.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartScene.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/ChartScene~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/app/Colors.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Colors.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Colors.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Colors.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Colors.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Colors.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Colors.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Colors.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Colors~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/app/DeviceStatusData.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DeviceStatusData.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DeviceStatusData.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DeviceStatusData.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DeviceStatusData.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DeviceStatusData.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DeviceStatusData.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DeviceStatusData.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/DeviceStatusData~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/app/NightscoutData.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutData.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutData.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutData.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutData.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutData.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutData.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutData.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutData~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/app/TemporaryTargetData.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetData.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetData.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetData.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetData.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetData.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetData.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetData.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTargetData~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/app/TimeService.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimeService.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimeService.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimeService.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimeService.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimeService.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimeService.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimeService.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TimeService~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/app/UnitsConverter.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UnitsConverter.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UnitsConverter.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UnitsConverter.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UnitsConverter.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UnitsConverter.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UnitsConverter.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UnitsConverter.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UnitsConverter~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/NightscoutCacheService.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutCacheService.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutCacheService.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutCacheService.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutCacheService.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutCacheService.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutCacheService.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutCacheService.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutCacheService~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/NightscoutService.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutService.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutService.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutService.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutService.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutService.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutService.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutService.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutService~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/PredictionService.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/PredictionService.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/PredictionService.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/PredictionService.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/PredictionService.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/PredictionService.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/PredictionService.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/PredictionService.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/PredictionService~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/model/TemporaryTarget.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTarget.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTarget.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTarget.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTarget.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTarget.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTarget.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTarget.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/TemporaryTarget~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/regression/Matrix+Append.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Append.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Append.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Append.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Append.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Append.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Append.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Append.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Append~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/regression/Matrix+Description.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Description.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Description.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Description.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Description.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Description.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Description.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Description.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix+Description~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/regression/Matrix.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Matrix~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/regression/Regression.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Regression.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Regression.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Regression.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Regression.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Regression.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Regression.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Regression.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/Regression~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/regression/RegressionHelper.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RegressionHelper.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RegressionHelper.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RegressionHelper.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RegressionHelper.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RegressionHelper.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RegressionHelper.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RegressionHelper.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/RegressionHelper~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/repository/NightscoutDataRepository.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataRepository.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataRepository.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataRepository.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataRepository.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataRepository.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataRepository.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataRepository.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/NightscoutDataRepository~partial.swiftmodule"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/repository/UserDefaultsRepository.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsRepository.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsRepository.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsRepository.dia",
+    "index-unit-output-path" : "/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsRepository.o",
+    "llvm-bc" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsRepository.bc",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsRepository.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsRepository.swiftdeps",
+    "swiftmodule" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard WatchKit App.build/Objects-normal/arm64/UserDefaultsRepository~partial.swiftmodule"
+  }
+}
