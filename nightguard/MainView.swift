@@ -434,112 +434,6 @@ struct ChartView: UIViewRepresentable {
     }
 }
 
-// MARK: - BasicStatsPanelView (SwiftUI)
-
-struct BasicStatsPanel: View {
-    @State private var model: BasicStats? = BasicStats(period: .last24h)
-    @State private var currentPeriod: BasicStats.Period = .last24h
-    @State private var updateTrigger: UUID = UUID()
-
-    var body: some View {
-        HStack(spacing: 8) {
-            A1cViewRepresentable(model: model)
-                .aspectRatio(1, contentMode: .fit)
-
-            GlucoseDistributionViewRepresentable(model: model)
-                .aspectRatio(1, contentMode: .fit)
-
-            ReadingsStatsViewRepresentable(model: model)
-                .aspectRatio(1, contentMode: .fit)
-
-            StatsPeriodSelectorViewRepresentable(
-                model: model,
-                onPeriodChange: { period in
-                    currentPeriod = period
-                    model = BasicStats(period: period)
-                }
-            )
-            .aspectRatio(1, contentMode: .fit)
-
-            Spacer()
-        }
-        .onAppear {
-            updateModel()
-        }
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NightscoutDataUpdated"))) { _ in
-            updateModel()
-        }
-    }
-
-    func updateModel() {
-        if let currentModel = model, currentModel.isUpToDate {
-            // Model is already up to date
-        } else {
-            // Recreate the model
-            model = BasicStats(period: model?.period ?? .last24h)
-            updateTrigger = UUID()
-        }
-    }
-}
-
-// MARK: - UIViewRepresentable Wrappers for Stats Child Views
-
-struct A1cViewRepresentable: UIViewRepresentable {
-    let model: BasicStats?
-
-    func makeUIView(context: Context) -> A1cView {
-        let view = A1cView()
-        return view
-    }
-
-    func updateUIView(_ uiView: A1cView, context: Context) {
-        uiView.model = model
-    }
-}
-
-struct GlucoseDistributionViewRepresentable: UIViewRepresentable {
-    let model: BasicStats?
-
-    func makeUIView(context: Context) -> GlucoseDistributionView {
-        let view = GlucoseDistributionView()
-        return view
-    }
-
-    func updateUIView(_ uiView: GlucoseDistributionView, context: Context) {
-        uiView.model = model
-    }
-}
-
-struct ReadingsStatsViewRepresentable: UIViewRepresentable {
-    let model: BasicStats?
-
-    func makeUIView(context: Context) -> ReadingsStatsView {
-        let view = ReadingsStatsView()
-        return view
-    }
-
-    func updateUIView(_ uiView: ReadingsStatsView, context: Context) {
-        uiView.model = model
-    }
-}
-
-struct StatsPeriodSelectorViewRepresentable: UIViewRepresentable {
-    let model: BasicStats?
-    let onPeriodChange: (BasicStats.Period) -> Void
-
-    func makeUIView(context: Context) -> StatsPeriodSelectorView {
-        let view = StatsPeriodSelectorView()
-        view.onPeriodChangeRequest = { period in
-            onPeriodChange(period)
-        }
-        return view
-    }
-
-    func updateUIView(_ uiView: StatsPeriodSelectorView, context: Context) {
-        uiView.model = model
-    }
-}
-
 // MARK: - SlideToSnooze Wrapper
 
 struct SlideToSnooze: UIViewRepresentable {
@@ -689,7 +583,7 @@ struct MainView: View {
 
                         // Stats panel
                         if viewModel.showStatsPanelView {
-                            BasicStatsPanel()
+                            BasicStatsPanelViewSwiftUI()
                                 .frame(height: 80)
                         }
                     }

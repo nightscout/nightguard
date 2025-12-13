@@ -235,6 +235,7 @@
 		438DACAF28D25D0A00FBF520 /* MPVolumeViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */; };
 		438DACB028D25D1400FBF520 /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		4391E5782EBF500300530260 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4391E5772EBF500300530260 /* MainView.swift */; };
+		A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */; };
 		4391E5792EBF510000530260 /* BedsideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4391E57A2EBF520000530260 /* BedsideView.swift */; };
 		43961F4A2533598400B1492B /* ActivateTemporaryTargetPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */; };
 		43961F752533708D00B1492B /* TemporaryTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F742533708D00B1492B /* TemporaryTargetView.swift */; };
@@ -375,8 +376,6 @@
 		D133079E21C8D4CF00DC6879 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		D133079F21C8D4CF00DC6879 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		D1358AE42234F80A00D0FA87 /* SMDiagramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1358AE32234F80A00D0FA87 /* SMDiagramView.swift */; };
-		D1358AE62234FB2600D0FA87 /* BasicStatsPanelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D1358AE52234FB2600D0FA87 /* BasicStatsPanelView.xib */; };
-		D1358AE82234FB5000D0FA87 /* BasicStatsPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1358AE72234FB5000D0FA87 /* BasicStatsPanelView.swift */; };
 		D1358AEC2237C44600D0FA87 /* XibLoadedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1358AEB2237C44600D0FA87 /* XibLoadedView.swift */; };
 		D13A4C1C2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */; };
 		D13A4C1D2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */; };
@@ -608,6 +607,7 @@
 		438DAC8428D2356A00FBF520 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		438DAC8628D2356A00FBF520 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4391E5772EBF500300530260 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelViewSwiftUI.swift; sourceTree = "<group>"; };
 		4391E57A2EBF520000530260 /* BedsideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedsideView.swift; sourceTree = "<group>"; };
 		43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivateTemporaryTargetPopupView.swift; sourceTree = "<group>"; };
 		43961F742533708D00B1492B /* TemporaryTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryTargetView.swift; sourceTree = "<group>"; };
@@ -682,8 +682,6 @@
 		D133079121C85FAE00DC6879 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		D133079D21C8D4CF00DC6879 /* PredictionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionService.swift; sourceTree = "<group>"; };
 		D1358AE32234F80A00D0FA87 /* SMDiagramView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMDiagramView.swift; sourceTree = "<group>"; };
-		D1358AE52234FB2600D0FA87 /* BasicStatsPanelView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BasicStatsPanelView.xib; sourceTree = "<group>"; };
-		D1358AE72234FB5000D0FA87 /* BasicStatsPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelView.swift; sourceTree = "<group>"; };
 		D1358AEB2237C44600D0FA87 /* XibLoadedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibLoadedView.swift; sourceTree = "<group>"; };
 		D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericWatchMessage.swift; sourceTree = "<group>"; };
 		D13A4C1F2221E49200C71F08 /* NightSafeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightSafeMessage.swift; sourceTree = "<group>"; };
@@ -1215,8 +1213,7 @@
 				D1F94ECD223FFE2A00BB0A4D /* GlucoseDistributionView.swift */,
 				D1F94ED1223FFF3900BB0A4D /* ReadingsStatsView.swift */,
 				D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */,
-				D1358AE52234FB2600D0FA87 /* BasicStatsPanelView.xib */,
-				D1358AE72234FB5000D0FA87 /* BasicStatsPanelView.swift */,
+				DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */,
 			);
 			name = stats;
 			sourceTree = "<group>";
@@ -1421,7 +1418,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1358AE62234FB2600D0FA87 /* BasicStatsPanelView.xib in Resources */,
 				43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */,
 				43F1E1061D07698000C329A2 /* Media.xcassets in Resources */,
 				43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */,
@@ -1613,7 +1609,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1358AE82234FB5000D0FA87 /* BasicStatsPanelView.swift in Sources */,
 				D1D96CC321FB0FA80035A60E /* SnoozeMessage.swift in Sources */,
 				D1D1623C2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift in Sources */,
 				D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */,
@@ -1654,6 +1649,7 @@
 				4302C6A525DC66A80052777F /* BolusWizardTreatment.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
 				4391E5782EBF500300530260 /* MainView.swift in Sources */,
+				A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */,
 				4302C6BA25DD98170052777F /* CarbCorrectionTreatment.swift in Sources */,
 				D16C8ED92210687200192117 /* MPVolumeViewExtension.swift in Sources */,
 				43027A4C2EBFDBFD00BE71B9 /* RootTabView.swift in Sources */,
