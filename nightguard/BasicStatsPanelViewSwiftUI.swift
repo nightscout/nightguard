@@ -11,7 +11,7 @@ import SwiftUI
 /// SwiftUI version of the BasicStatsPanelView
 /// Displays 4 circular stats views: A1c, Glucose Distribution, Readings Stats, and Period Selector
 struct BasicStatsPanelViewSwiftUI: View {
-    @State private var model: BasicStats? = BasicStats(period: .last24h)
+    @State private var model: BasicStats?
     @State private var currentPeriod: BasicStats.Period = .last24h
     @State private var updateTrigger: UUID = UUID()
 
@@ -53,11 +53,12 @@ struct BasicStatsPanelViewSwiftUI: View {
     func updateModel() {
         if let currentModel = model, currentModel.isUpToDate {
             // Model is already up to date
-        } else {
-            // Recreate the model with fresh data
-            model = BasicStats(period: model?.period ?? .last24h)
-            updateTrigger = UUID()
+            return
         }
+
+        // Recreate the model with fresh data
+        model = BasicStats(period: model?.period ?? currentPeriod)
+        updateTrigger = UUID()
     }
 }
 
