@@ -526,7 +526,7 @@ struct MainView: View {
                                     .font(.system(size: 19))
                                     .foregroundColor(.white)
 
-                                HStack(spacing: 0) {
+                                HStack(spacing: 8) {
                                     Text(viewModel.cobValue)
                                         .font(.system(size: 15))
                                         .foregroundColor(.white)
@@ -544,7 +544,6 @@ struct MainView: View {
                                     .font(.system(size: 15))
                                     .foregroundColor(viewModel.batteryColor)
                             }
-                            .frame(minWidth: 100)
                         }
                         .padding(.horizontal, 8)
 
