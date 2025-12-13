@@ -17,6 +17,8 @@ struct BasicStatsPanelViewSwiftUI: View {
 
     var body: some View {
         HStack(spacing: 8) {
+            Spacer()
+
             // A1c View - displays A1c, IFCC A1c, average glucose, std deviation, coefficient of variation
             A1cViewRepresentable(model: model)
                 .aspectRatio(1, contentMode: .fit)
