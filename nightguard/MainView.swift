@@ -45,7 +45,6 @@ class MainViewModel: ObservableObject {
 
     // Chart scene
     var chartScene: ChartScene?
-    @Published var chartSceneId = UUID() // Force ChartView to recreate when changed
 
     // Track if view is currently visible
     var isVisible: Bool = false
@@ -86,8 +85,14 @@ class MainViewModel: ObservableObject {
             self?.slideToSnoozeHeight = value ? 0 : 80
         }
 
-        // Note: Alarm bound changes will be picked up when we do periodic updates
-        // or when the view becomes visible after a tab switch
+        // Observe alarm range changes to repaint chart
+        UserDefaultsRepository.upperBound.observeChanges { [weak self] _ in
+            self?.repaintChartWithCurrentData()
+        }
+
+        UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
+            self?.repaintChartWithCurrentData()
+        }
     }
 
     private func loadInitialData() {
@@ -257,38 +262,17 @@ class MainViewModel: ObservableObject {
         let wasInvisible = !self.isVisible
         self.isVisible = isVisible
 
-        if isVisible {
-            // Restart timer when becoming visible
-            if wasInvisible {
-                startTimer()
-                // Recreate the ChartScene object itself
-                recreateChartScene()
-                // Force recreate the ChartView by changing the ID
-                chartSceneId = UUID()
-                // Repaint after scene is recreated
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.doPeriodicUpdate(forceRepaint: true)
-                }
-            }
-        } else {
+        if isVisible && wasInvisible {
+            // Restart timer when becoming visible after being invisible
+            startTimer()
+            // Trigger a repaint with current data
+            doPeriodicUpdate(forceRepaint: true)
+        } else if !isVisible {
             // Becoming invisible - stop timer to prevent painting while not visible
             stopTimer()
         }
     }
 
-    private func recreateChartScene() {
-        guard let oldScene = chartScene else { return }
-
-        // Create a new scene with the same dimensions
-        let newScene = ChartScene(
-            size: oldScene.size,
-            newCanvasWidth: CGFloat(maximumDeviceTextureWidth()),
-            useContrastfulColors: false,
-            showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value
-        )
-
-        chartScene = newScene
-    }
 
     private func loadAndPaintCareData() {
         // Update care labels
@@ -361,15 +345,16 @@ class MainViewModel: ObservableObject {
 // MARK: - ChartView (SpriteKit Wrapper)
 
 struct ChartView: UIViewRepresentable {
-    @ObservedObject var viewModel: MainViewModel
+    let viewModel: MainViewModel
     let chartScene: ChartScene
 
     func makeUIView(context: Context) -> SKView {
         let skView = SKView()
         skView.backgroundColor = .black
+        skView.isUserInteractionEnabled = true
         skView.presentScene(chartScene)
 
-        // Add gesture recognizers
+        // Add gesture recognizers once
         let panGesture = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePan(_:)))
         let pinchGesture = UIPinchGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePinch(_:)))
 
@@ -592,7 +577,6 @@ struct MainView: View {
                     ZStack {
                         if let scene = chartScene {
                             ChartView(viewModel: viewModel, chartScene: scene)
-                                .id(viewModel.chartSceneId) // Recreate when ID changes
                         }
 
                         // Error message overlay
@@ -644,17 +628,22 @@ struct MainView: View {
                 }
             }
             .onAppear {
-                // Calculate chart height based on available geometry
-                let topSectionHeight: CGFloat = 200 // Estimated BG value section
-                let careDataHeight: CGFloat = viewModel.showCareAndLoopData ? 50 : 0
-                let statsPanelHeight: CGFloat = viewModel.showStatsPanelView ? 88 : 0
-                let snoozeHeight: CGFloat = viewModel.slideToSnoozeHeight
-                let spacing: CGFloat = 24
+                // Only setup chart if it hasn't been created yet
+                // This prevents recreating the chart on tab switches
+                if chartScene == nil {
+                    // Calculate chart height based on available geometry
+                    let topSectionHeight: CGFloat = 200 // Estimated BG value section
+                    let careDataHeight: CGFloat = viewModel.showCareAndLoopData ? 50 : 0
+                    let statsPanelHeight: CGFloat = viewModel.showStatsPanelView ? 88 : 0
+                    let snoozeHeight: CGFloat = viewModel.slideToSnoozeHeight
+                    let spacing: CGFloat = 24
 
-                let usedHeight = topSectionHeight + careDataHeight + statsPanelHeight + snoozeHeight + spacing
-                let chartHeight = max(400, geometry.size.height - usedHeight)
+                    let usedHeight = topSectionHeight + careDataHeight + statsPanelHeight + snoozeHeight + spacing
+                    let chartHeight = max(400, geometry.size.height - usedHeight)
 
-                setupChart(height: chartHeight)
+                    setupChart(height: chartHeight)
+                }
+
                 viewModel.isVisible = true
                 viewModel.startTimer()
                 viewModel.doPeriodicUpdate(forceRepaint: true)
