@@ -263,10 +263,16 @@ class MainViewModel: ObservableObject {
         self.isVisible = isVisible
 
         if isVisible && wasInvisible {
+            // Trigger update to ensure stats panel renders correctly
+            doPeriodicUpdate(forceRepaint: false)
+
+            // Post notification to ensure stats panel updates
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: NSNotification.Name("NightscoutDataUpdated"), object: nil)
+            }
+
             // Restart timer when becoming visible after being invisible
             startTimer()
-            // Trigger a repaint with current data
-            doPeriodicUpdate(forceRepaint: true)
         } else if !isVisible {
             // Becoming invisible - stop timer to prevent painting while not visible
             stopTimer()
@@ -645,8 +651,16 @@ struct MainView: View {
                 }
 
                 viewModel.isVisible = true
+
+                // Trigger initial update to ensure stats panel renders correctly
+                viewModel.doPeriodicUpdate(forceRepaint: false)
+
+                // Post notification to ensure stats panel updates on startup
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("NightscoutDataUpdated"), object: nil)
+                }
+
                 viewModel.startTimer()
-                viewModel.doPeriodicUpdate(forceRepaint: true)
             }
         }
         .statusBar(hidden: true)
