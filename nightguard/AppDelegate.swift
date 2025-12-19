@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let appProcessingTaskId = "de.my-wan.dhe.nightguard.background"
     
+    /// Global orientation lock - allow controlling allowed orientations from anywhere
+    static var orientationLock = UIInterfaceOrientationMask.portrait
+    
     // Delegate Requests from the Watch to the WatchMessageService
     var session: WCSession? {
         didSet {
@@ -243,6 +246,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
     }
 }
 

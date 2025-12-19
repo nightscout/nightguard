@@ -51,6 +51,7 @@ struct RootTabView: View {
         TabView(selection: $selectedTab) {
             // Main Tab
             MainView()
+                .onAppear { forcePortrait() }
                 .environment(\.selectedTab, selectedTab)
                 .tabItem {
                     Image("Main")
@@ -63,6 +64,7 @@ struct RootTabView: View {
             NavigationView {
                 AlarmView()
             }
+            .onAppear { forcePortrait() }
             .tabItem {
                 Image("Alarm")
                     .renderingMode(.template)
@@ -72,6 +74,7 @@ struct RootTabView: View {
 
             // Care Tab
             CareView(selectedTab: $selectedTab)
+                .onAppear { forcePortrait() }
                 .tabItem {
                     Image("Care")
                         .renderingMode(.template)
@@ -81,6 +84,7 @@ struct RootTabView: View {
 
             // Duration Tab
             DurationView(selectedTab: $selectedTab)
+                .onAppear { forcePortrait() }
                 .tabItem {
                     Image(systemName: "clock.arrow.circlepath")
                         .renderingMode(.template)
@@ -90,6 +94,7 @@ struct RootTabView: View {
 
             // Stats Tab
             StatsView()
+                .onAppear { forceLandscape() }
                 .tabItem {
                     Image("Stats")
                         .renderingMode(.template)
@@ -99,6 +104,7 @@ struct RootTabView: View {
 
             // Preferences Tab
             PrefsView()
+                .onAppear { forcePortrait() }
                 .tabItem {
                     Image("Prefs")
                         .renderingMode(.template)
@@ -107,15 +113,18 @@ struct RootTabView: View {
                 .tag(5)
         }
         .accentColor(.white)
-        .onChange(of: selectedTab) { newTab in
-            if newTab == 4 {
-                // Stats tab - force landscape
-                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-            } else {
-                // Other tabs - force portrait
-                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-            }
-        }
+    }
+    
+    private func forcePortrait() {
+        AppDelegate.orientationLock = .portrait
+        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        UINavigationController.attemptRotationToDeviceOrientation()
+    }
+
+    private func forceLandscape() {
+        AppDelegate.orientationLock = .landscape
+        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+        UINavigationController.attemptRotationToDeviceOrientation()
     }
 }
 

@@ -126,6 +126,9 @@ struct StatsPeriodSelectorViewRepresentable: UIViewRepresentable {
 
     func updateUIView(_ uiView: StatsPeriodSelectorView, context: Context) {
         uiView.model = model
+        uiView.onPeriodChangeRequest = { period in
+            onPeriodChange(period)
+        }
     }
 }
 

@@ -149,6 +149,9 @@ struct SpriteKitChartView: UIViewRepresentable {
     }
 
     func updateUIView(_ skView: SKView, context: Context) {
+        if skView.scene !== scene {
+            skView.presentScene(scene)
+        }
         scene.size = size
     }
 }
