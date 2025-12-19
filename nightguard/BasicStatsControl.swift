@@ -72,6 +72,7 @@ class BasicStatsControl: TouchReportingView {
     }
     
     fileprivate var alternateValueTimer: Timer?
+    private var lastBoundsSize: CGSize = .zero
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -166,6 +167,12 @@ class BasicStatsControl: TouchReportingView {
         super.layoutSubviews()
         
         self.layer.cornerRadius =  self.bounds.size.height / 2
+        
+        if self.bounds.size != lastBoundsSize && self.bounds.size.width > 0 && self.bounds.size.height > 0 {
+            lastBoundsSize = self.bounds.size
+            diagramView.reloadData()
+            pageChanged()
+        }
     }
     
     func updateTitleView(name: String?, value: String?, detail: String? = nil) {

@@ -19,7 +19,7 @@ struct StatsView: View {
                 // Day selection toggles
                 HStack(spacing: 20) {
                     ForEach(0..<5) { index in
-                        Toggle("Day \(index + 1)", isOn: Binding(
+                        Toggle("D\(index + 1)", isOn: Binding(
                             get: { daysToDisplay[index] },
                             set: { newValue in
                                 daysToDisplay[index] = newValue

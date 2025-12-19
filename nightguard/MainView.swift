@@ -105,6 +105,10 @@ class MainViewModel: ObservableObject {
 
     // MARK: - Public Methods
     func startTimer() {
+        // Fire immediately to ensure stats panel initializes correctly on startup
+        doPeriodicUpdate(forceRepaint: false)
+
+        // Then schedule periodic updates
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] _ in
             self?.doPeriodicUpdate(forceRepaint: false)
         }
@@ -263,15 +267,8 @@ class MainViewModel: ObservableObject {
         self.isVisible = isVisible
 
         if isVisible && wasInvisible {
-            // Trigger update to ensure stats panel renders correctly
-            doPeriodicUpdate(forceRepaint: false)
-
-            // Post notification to ensure stats panel updates
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: NSNotification.Name("NightscoutDataUpdated"), object: nil)
-            }
-
             // Restart timer when becoming visible after being invisible
+            // Timer will fire immediately and handle the update
             startTimer()
         } else if !isVisible {
             // Becoming invisible - stop timer to prevent painting while not visible
@@ -652,14 +649,7 @@ struct MainView: View {
 
                 viewModel.isVisible = true
 
-                // Trigger initial update to ensure stats panel renders correctly
-                viewModel.doPeriodicUpdate(forceRepaint: false)
-
-                // Post notification to ensure stats panel updates on startup
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("NightscoutDataUpdated"), object: nil)
-                }
-
+                // Start timer - it will fire immediately and handle all initialization
                 viewModel.startTimer()
             }
         }
