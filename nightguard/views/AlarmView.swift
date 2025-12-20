@@ -10,8 +10,8 @@ import UniformTypeIdentifiers
 
 struct AlarmView: View {
     @State private var disableAllAlerts = AlarmRule.areAlertsGenerallyDisabled.value
-    @State private var highBGValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value)) ?? 180
-    @State private var lowBGValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfBelowValue.value)) ?? 80
+    @State private var highBGValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value))
+    @State private var lowBGValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfBelowValue.value))
     @State private var smartSnoozeEnabled = AlarmRule.isSmartSnoozeEnabled.value
     @State private var alertNotifications = AlarmNotificationService.singleton.enabled
     @State private var showDisableAlertsConfirmation = false
@@ -70,7 +70,7 @@ struct AlarmView: View {
                             guard mgdlValue > UserDefaultsRepository.lowerBound.value else {
                                 invalidChangeMessage = "High BG value should be above low BG value!"
                                 showInvalidChangeAlert = true
-                                highBGValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value)) ?? 180
+                                highBGValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value))
                                 return
                             }
                             UserDefaultsRepository.upperBound.value = mgdlValue
@@ -101,7 +101,7 @@ struct AlarmView: View {
                             guard mgdlValue < UserDefaultsRepository.upperBound.value else {
                                 invalidChangeMessage = "Low BG value should be below low BG value!"
                                 showInvalidChangeAlert = true
-                                lowBGValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfBelowValue.value)) ?? 80
+                                lowBGValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfBelowValue.value))
                                 return
                             }
                             UserDefaultsRepository.lowerBound.value = mgdlValue
@@ -407,7 +407,7 @@ struct FastRiseDropView: View {
 struct PersistentHighView: View {
     @State private var persistentHighEnabled = AlarmRule.isPersistentHighEnabled.value
     @State private var selectedMinutes = AlarmRule.persistentHighMinutes.value
-    @State private var urgentHighValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value)) ?? 250
+    @State private var urgentHighValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value))
 
     private let alarmOptions = [15, 20, 30, 45, 60, 90, 120]
 
@@ -473,7 +473,7 @@ struct PersistentHighView: View {
         .onAppear {
             persistentHighEnabled = AlarmRule.isPersistentHighEnabled.value
             selectedMinutes = AlarmRule.persistentHighMinutes.value
-            urgentHighValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value)) ?? 250
+            urgentHighValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value))
         }
     }
 }

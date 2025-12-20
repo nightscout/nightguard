@@ -18,23 +18,19 @@ struct BasicStatsPanelViewSwiftUI: View {
     var body: some View {
         HStack(spacing: 8) {
 
+            Spacer()
+            
             // A1c View - displays A1c, IFCC A1c, average glucose, std deviation, coefficient of variation
             A1cViewRepresentable(model: model)
                 .aspectRatio(1, contentMode: .fit)
-
-            Spacer()
             
             // Glucose Distribution View - displays in range, low, high percentages with pie chart
             GlucoseDistributionViewRepresentable(model: model)
                 .aspectRatio(1, contentMode: .fit)
-
-            Spacer()
             
             // Readings Stats View - displays readings count and percentage
             ReadingsStatsViewRepresentable(model: model)
                 .aspectRatio(1, contentMode: .fit)
-
-            Spacer()
             
             // Period Selector View - allows switching between time periods
             StatsPeriodSelectorViewRepresentable(
@@ -45,6 +41,8 @@ struct BasicStatsPanelViewSwiftUI: View {
                 }
             )
             .aspectRatio(1, contentMode: .fit)
+            
+            Spacer()
         }
         .onAppear {
             updateModel()

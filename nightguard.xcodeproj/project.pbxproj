@@ -235,7 +235,6 @@
 		438DACAF28D25D0A00FBF520 /* MPVolumeViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */; };
 		438DACB028D25D1400FBF520 /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		4391E5782EBF500300530260 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4391E5772EBF500300530260 /* MainView.swift */; };
-		A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */; };
 		4391E5792EBF510000530260 /* BedsideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4391E57A2EBF520000530260 /* BedsideView.swift */; };
 		43961F4A2533598400B1492B /* ActivateTemporaryTargetPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */; };
 		43961F752533708D00B1492B /* TemporaryTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43961F742533708D00B1492B /* TemporaryTargetView.swift */; };
@@ -340,6 +339,7 @@
 		7B4E31F42C2379C4005090CB /* NotificationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F32C2379C4005090CB /* NotificationExtension.swift */; };
 		7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F52C237F14005090CB /* SystemSmallView.swift */; };
 		7FCFB7190EB96C437CD9908C /* Pods_nightguard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F5A4E6048F7A6F26B9C31E /* Pods_nightguard.framework */; };
+		A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */; };
 		BD9486CCE1790AB9D245579D /* Pods_nightguard_Widget_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5AA741119F937A9FEA0FE16 /* Pods_nightguard_Widget_Extension.framework */; };
 		C21FEAA8173DC84337CC0E33 /* Pods_nightguard_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A960E5B86E46012C3B88556F /* Pods_nightguard_WatchKit_App.framework */; };
 		D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
@@ -607,7 +607,6 @@
 		438DAC8428D2356A00FBF520 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		438DAC8628D2356A00FBF520 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4391E5772EBF500300530260 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelViewSwiftUI.swift; sourceTree = "<group>"; };
 		4391E57A2EBF520000530260 /* BedsideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedsideView.swift; sourceTree = "<group>"; };
 		43961F492533598400B1492B /* ActivateTemporaryTargetPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivateTemporaryTargetPopupView.swift; sourceTree = "<group>"; };
 		43961F742533708D00B1492B /* TemporaryTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryTargetView.swift; sourceTree = "<group>"; };
@@ -643,13 +642,13 @@
 		43EE375A24478D78008C9134 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
 		43EF91B122688892000E79B5 /* SlideToSnoozeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideToSnoozeView.swift; sourceTree = "<group>"; };
 		43F1E0E91D0768EF00C329A2 /* WatchService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WatchService.swift; path = nightguard/external/WatchService.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0EB1D07693300C329A2 /* AlarmRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmRule.swift; path = AlarmRule.swift; sourceTree = "<group>"; };
-		43F1E0EC1D07693300C329A2 /* BloodSugar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BloodSugar.swift; path = BloodSugar.swift; sourceTree = "<group>"; };
-		43F1E0F11D07698000C329A2 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alarm.mp3; path = alarm.mp3; sourceTree = "<group>"; };
+		43F1E0EB1D07693300C329A2 /* AlarmRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmRule.swift; sourceTree = "<group>"; };
+		43F1E0EC1D07693300C329A2 /* BloodSugar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodSugar.swift; sourceTree = "<group>"; };
+		43F1E0F11D07698000C329A2 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm.mp3; sourceTree = "<group>"; };
 		43F1E0F21D07698000C329A2 /* AlarmSound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmSound.swift; path = nightguard/app/AlarmSound.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F41D07698000C329A2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = nightguard/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F71D07698000C329A2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = nightguard/Info.plist; sourceTree = SOURCE_ROOT; };
-		43F1E0F91D07698000C329A2 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Media.xcassets; sourceTree = "<group>"; };
+		43F1E0F91D07698000C329A2 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		43F1E0FA1D07698000C329A2 /* NightscoutData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutData.swift; path = nightguard/app/NightscoutData.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = scoutwatch.entitlements; path = nightguard/scoutwatch.entitlements; sourceTree = SOURCE_ROOT; };
 		43F1E1101D076C1C00C329A2 /* NightscoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutService.swift; path = nightguard/external/NightscoutService.swift; sourceTree = SOURCE_ROOT; };
@@ -719,6 +718,7 @@
 		D1F94ECF223FFEFF00BB0A4D /* A1cView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A1cView.swift; sourceTree = "<group>"; };
 		D1F94ED1223FFF3900BB0A4D /* ReadingsStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingsStatsView.swift; sourceTree = "<group>"; };
 		D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodSelectorView.swift; sourceTree = "<group>"; };
+		DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelViewSwiftUI.swift; sourceTree = "<group>"; };
 		F5AA741119F937A9FEA0FE16 /* Pods_nightguard_Widget_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguard_Widget_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBDCC8817953349FB87EC133 /* Pods_nightguard_ComplicationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguard_ComplicationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -819,7 +819,6 @@
 		};
 		4302C6AE25DC66C70052777F /* treatment */ = {
 			isa = PBXGroup;
-			path = treatment;
 			children = (
 				4302C64F25D9C5480052777F /* TreatmentsStream.swift */,
 				4302C65625D9C7080052777F /* Treatment.swift */,
@@ -828,7 +827,7 @@
 				4302C6A425DC66A80052777F /* BolusWizardTreatment.swift */,
 				4302C6B925DD98170052777F /* CarbCorrectionTreatment.swift */,
 			);
-			name = treatment;
+			path = treatment;
 			sourceTree = "<group>";
 		};
 		43647BC11BFF6435004389F9 = {
@@ -1079,7 +1078,6 @@
 		};
 		43CC9E0224E868180008F397 /* extensions */ = {
 			isa = PBXGroup;
-			path = extensions;
 			children = (
 				4334D97F24C32B6D00652D87 /* DateExtension.swift */,
 				434982342534DE4F00CF0014 /* DictionaryExtension.swift */,
@@ -1098,7 +1096,7 @@
 				D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */,
 				D16C8ED82210687200192117 /* MPVolumeViewExtension.swift */,
 			);
-			name = extensions;
+			path = extensions;
 			sourceTree = "<group>";
 		};
 		43D005D229DC9BFB003BCE92 /* nightguard Complication */ = {
@@ -1116,7 +1114,6 @@
 		};
 		43F1E1181D076D2800C329A2 /* domain */ = {
 			isa = PBXGroup;
-			path = domain;
 			children = (
 				4302C6AE25DC66C70052777F /* treatment */,
 				43F1E0EB1D07693300C329A2 /* AlarmRule.swift */,
@@ -1126,12 +1123,11 @@
 				D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */,
 				D18C5D8922293C220099D96E /* BasicStats.swift */,
 			);
-			name = domain;
+			path = domain;
 			sourceTree = "<group>";
 		};
 		D112DD3221E9E28500ECFB5E /* helpers */ = {
 			isa = PBXGroup;
-			path = helpers;
 			children = (
 				D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */,
 				D15055AF2200D31300F31C1F /* DeviceSize.swift */,
@@ -1143,12 +1139,11 @@
 				43EE375A24478D78008C9134 /* XCUIElement.swift */,
 				430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */,
 			);
-			name = helpers;
+			path = helpers;
 			sourceTree = "<group>";
 		};
 		D144FFB120D7AEF60036E021 /* resources */ = {
 			isa = PBXGroup;
-			path = resources;
 			children = (
 				43F1E0F91D07698000C329A2 /* Media.xcassets */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
@@ -1156,12 +1151,11 @@
 				D1DA7C1A21B97EC800B39675 /* alarm-notification.m4a */,
 				28B03A3523F9CD8E000939E6 /* Localizable.strings */,
 			);
-			name = resources;
+			path = resources;
 			sourceTree = "<group>";
 		};
 		D15055A021FF6E8E00F31C1F /* messages */ = {
 			isa = PBXGroup;
-			path = messages;
 			children = (
 				D123EFE721FB643D00CE8718 /* EmptyWatchMessage.swift */,
 				D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */,
@@ -1173,12 +1167,11 @@
 				D13A4C1F2221E49200C71F08 /* NightSafeMessage.swift */,
 				4317702E25CF273C00E8C991 /* RequestAlarmNotificationMessage.swift */,
 			);
-			name = messages;
+			path = messages;
 			sourceTree = "<group>";
 		};
 		D1BA903620D303E700A0EBD1 /* views */ = {
 			isa = PBXGroup;
-			path = views;
 			children = (
 				D1F94ECA223FFD5400BB0A4D /* stats */,
 				43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */,
@@ -1198,23 +1191,21 @@
 				D1B777E32243E27B003FEDF0 /* TouchReportingView.swift */,
 				43EF91B122688892000E79B5 /* SlideToSnoozeView.swift */,
 			);
-			name = views;
+			path = views;
 			sourceTree = "<group>";
 		};
 		D1D96CB821FB0DC50035A60E /* watch */ = {
 			isa = PBXGroup;
-			path = watch;
 			children = (
 				D15055A021FF6E8E00F31C1F /* messages */,
 				D1D96CB521FAF6890035A60E /* WatchMessage.swift */,
 				D1D96CB921FB0E910035A60E /* WatchMessageService.swift */,
 			);
-			name = watch;
+			path = watch;
 			sourceTree = "<group>";
 		};
 		D1F94ECA223FFD5400BB0A4D /* stats */ = {
 			isa = PBXGroup;
-			path = stats;
 			children = (
 				D1358AE32234F80A00D0FA87 /* SMDiagramView.swift */,
 				D1F94ECB223FFDF100BB0A4D /* BasicStatsControl.swift */,
@@ -1224,7 +1215,7 @@
 				D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */,
 				DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */,
 			);
-			name = stats;
+			path = stats;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1354,7 +1345,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2610;
 				ORGANIZATIONNAME = private;
 				TargetAttributes = {
 					43647BC91BFF6435004389F9 = {
@@ -2146,6 +2137,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -2205,6 +2197,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
