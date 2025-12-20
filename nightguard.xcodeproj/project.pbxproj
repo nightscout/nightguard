@@ -643,13 +643,13 @@
 		43EE375A24478D78008C9134 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
 		43EF91B122688892000E79B5 /* SlideToSnoozeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideToSnoozeView.swift; sourceTree = "<group>"; };
 		43F1E0E91D0768EF00C329A2 /* WatchService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WatchService.swift; path = nightguard/external/WatchService.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0EB1D07693300C329A2 /* AlarmRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmRule.swift; path = nightguard/AlarmRule.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0EC1D07693300C329A2 /* BloodSugar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BloodSugar.swift; path = nightguard/BloodSugar.swift; sourceTree = SOURCE_ROOT; };
-		43F1E0F11D07698000C329A2 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alarm.mp3; path = nightguard/alarm.mp3; sourceTree = SOURCE_ROOT; };
+		43F1E0EB1D07693300C329A2 /* AlarmRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmRule.swift; path = AlarmRule.swift; sourceTree = "<group>"; };
+		43F1E0EC1D07693300C329A2 /* BloodSugar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BloodSugar.swift; path = BloodSugar.swift; sourceTree = "<group>"; };
+		43F1E0F11D07698000C329A2 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = alarm.mp3; path = alarm.mp3; sourceTree = "<group>"; };
 		43F1E0F21D07698000C329A2 /* AlarmSound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlarmSound.swift; path = nightguard/app/AlarmSound.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F41D07698000C329A2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = nightguard/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0F71D07698000C329A2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = nightguard/Info.plist; sourceTree = SOURCE_ROOT; };
-		43F1E0F91D07698000C329A2 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = nightguard/Media.xcassets; sourceTree = SOURCE_ROOT; };
+		43F1E0F91D07698000C329A2 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Media.xcassets; sourceTree = "<group>"; };
 		43F1E0FA1D07698000C329A2 /* NightscoutData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutData.swift; path = nightguard/app/NightscoutData.swift; sourceTree = SOURCE_ROOT; };
 		43F1E0FC1D07698000C329A2 /* scoutwatch.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = scoutwatch.entitlements; path = nightguard/scoutwatch.entitlements; sourceTree = SOURCE_ROOT; };
 		43F1E1101D076C1C00C329A2 /* NightscoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutService.swift; path = nightguard/external/NightscoutService.swift; sourceTree = SOURCE_ROOT; };
@@ -819,6 +819,7 @@
 		};
 		4302C6AE25DC66C70052777F /* treatment */ = {
 			isa = PBXGroup;
+			path = treatment;
 			children = (
 				4302C64F25D9C5480052777F /* TreatmentsStream.swift */,
 				4302C65625D9C7080052777F /* Treatment.swift */,
@@ -1078,6 +1079,7 @@
 		};
 		43CC9E0224E868180008F397 /* extensions */ = {
 			isa = PBXGroup;
+			path = extensions;
 			children = (
 				4334D97F24C32B6D00652D87 /* DateExtension.swift */,
 				434982342534DE4F00CF0014 /* DictionaryExtension.swift */,
@@ -1114,6 +1116,7 @@
 		};
 		43F1E1181D076D2800C329A2 /* domain */ = {
 			isa = PBXGroup;
+			path = domain;
 			children = (
 				4302C6AE25DC66C70052777F /* treatment */,
 				43F1E0EB1D07693300C329A2 /* AlarmRule.swift */,
@@ -1128,6 +1131,7 @@
 		};
 		D112DD3221E9E28500ECFB5E /* helpers */ = {
 			isa = PBXGroup;
+			path = helpers;
 			children = (
 				D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */,
 				D15055AF2200D31300F31C1F /* DeviceSize.swift */,
@@ -1144,6 +1148,7 @@
 		};
 		D144FFB120D7AEF60036E021 /* resources */ = {
 			isa = PBXGroup;
+			path = resources;
 			children = (
 				43F1E0F91D07698000C329A2 /* Media.xcassets */,
 				43647BD61BFF6435004389F9 /* LaunchScreen.storyboard */,
@@ -1156,6 +1161,7 @@
 		};
 		D15055A021FF6E8E00F31C1F /* messages */ = {
 			isa = PBXGroup;
+			path = messages;
 			children = (
 				D123EFE721FB643D00CE8718 /* EmptyWatchMessage.swift */,
 				D13A4C1B2221E43A00C71F08 /* GenericWatchMessage.swift */,
@@ -1172,6 +1178,7 @@
 		};
 		D1BA903620D303E700A0EBD1 /* views */ = {
 			isa = PBXGroup;
+			path = views;
 			children = (
 				D1F94ECA223FFD5400BB0A4D /* stats */,
 				43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */,
@@ -1196,6 +1203,7 @@
 		};
 		D1D96CB821FB0DC50035A60E /* watch */ = {
 			isa = PBXGroup;
+			path = watch;
 			children = (
 				D15055A021FF6E8E00F31C1F /* messages */,
 				D1D96CB521FAF6890035A60E /* WatchMessage.swift */,
@@ -1206,6 +1214,7 @@
 		};
 		D1F94ECA223FFD5400BB0A4D /* stats */ = {
 			isa = PBXGroup;
+			path = stats;
 			children = (
 				D1358AE32234F80A00D0FA87 /* SMDiagramView.swift */,
 				D1F94ECB223FFDF100BB0A4D /* BasicStatsControl.swift */,
