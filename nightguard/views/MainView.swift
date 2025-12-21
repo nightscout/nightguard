@@ -55,6 +55,7 @@ class MainViewModel: ObservableObject {
 
     // Cancellables
     private var cancellables = Set<AnyCancellable>()
+    private var observationTokens = [ObservationToken]()
 
     // MARK: - Initialization
     init() {
@@ -80,19 +81,19 @@ class MainViewModel: ObservableObject {
             self?.showCareAndLoopData = value
         }
 
-        AlarmRule.areAlertsGenerallyDisabled.observeChanges { [weak self] value in
+        observationTokens.append(AlarmRule.areAlertsGenerallyDisabled.observeChanges { [weak self] value in
             self?.showActionsMenu = !value
             self?.slideToSnoozeHeight = value ? 0 : 80
-        }
+        })
 
         // Observe alarm range changes to repaint chart
-        UserDefaultsRepository.upperBound.observeChanges { [weak self] _ in
+        observationTokens.append(UserDefaultsRepository.upperBound.observeChanges { [weak self] _ in
             self?.repaintChartWithCurrentData()
-        }
+        })
 
-        UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
+        observationTokens.append(UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
             self?.repaintChartWithCurrentData()
-        }
+        })
     }
 
     private func loadInitialData() {
@@ -104,9 +105,9 @@ class MainViewModel: ObservableObject {
     }
 
     // MARK: - Public Methods
-    func startTimer() {
+    func startTimer(forceRepaint: Bool = false) {
         // Fire immediately to ensure stats panel initializes correctly on startup
-        doPeriodicUpdate(forceRepaint: false)
+        doPeriodicUpdate(forceRepaint: forceRepaint)
 
         // Then schedule periodic updates
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] _ in
@@ -224,6 +225,10 @@ class MainViewModel: ObservableObject {
     }
 
     private func loadAndPaintChartData(forceRepaint: Bool) {
+        if forceRepaint {
+            repaintChartWithCurrentData()
+        }
+
         let _ = NightscoutCacheService.singleton.loadTodaysData { [weak self] result in
             guard let result = result, let self = self else { return }
 
@@ -269,7 +274,7 @@ class MainViewModel: ObservableObject {
         if isVisible && wasInvisible {
             // Restart timer when becoming visible after being invisible
             // Timer will fire immediately and handle the update
-            startTimer()
+            startTimer(forceRepaint: true)
         } else if !isVisible {
             // Becoming invisible - stop timer to prevent painting while not visible
             stopTimer()
@@ -650,7 +655,7 @@ struct MainView: View {
                 viewModel.isVisible = true
 
                 // Start timer - it will fire immediately and handle all initialization
-                viewModel.startTimer()
+                viewModel.startTimer(forceRepaint: true)
             }
         }
         .statusBar(hidden: true)
