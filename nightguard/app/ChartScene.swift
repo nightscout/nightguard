@@ -73,11 +73,13 @@ class ChartScene : SKScene {
             || ((chartImage?.size.height ?? 0) <= CGFloat(0)) {
             return
         }
-        
-        let chartTexture = SKTexture(image: chartImage ?? UIImage())
-        let changeTextureAction = SKAction.setTexture(chartTexture)
-        self.chartNode.run(changeTextureAction)
-        self.chartNode.size = chartImage?.size ?? CGSize(width: 0, height: 0)
+
+        // Clear any existing actions before applying new texture
+        self.chartNode.removeAllActions()
+
+        let chartTexture = SKTexture(image: chartImage!)
+        self.chartNode.texture = chartTexture  // Set directly instead of using action
+        self.chartNode.size = chartImage!.size
         self.chartNode.zPosition = 1
         
         // only show the move animation, if we have data at all.
@@ -100,13 +102,20 @@ class ChartScene : SKScene {
     }
     
     fileprivate func initialPlacingOfChart() {
-        
+
         self.chartNode.anchorPoint = CGPoint(x: 0, y: 0)
         self.chartNode.position = CGPoint(x: 0, y: 0)
-        
+
         self.removeAllChildren()
         self.insertChild(self.chartNode, at: 0)
         self.chartNode.zPosition = -1
+    }
+
+    func reinitializeChart() {
+        // Recreate the chartNode to fix any texture corruption
+        self.chartNode.removeFromParent()
+        self.chartNode = SKSpriteNode()
+        initialPlacingOfChart()
     }
     
     fileprivate func boundLayerPos(_ aNewPosition: CGPoint) -> CGPoint {

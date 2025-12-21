@@ -1,0 +1,37 @@
+{
+  "/Users/dirk/workspace/nightguard/nightguard/DoubleExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/DoubleExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/DoubleExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/DoubleExtension.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/DoubleExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/DoubleExtension.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/FloatExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/FloatExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/FloatExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/FloatExtension.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/FloatExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/FloatExtension.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/UIApplicationExtension.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIApplicationExtension.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIApplicationExtension.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIApplicationExtension.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIApplicationExtension.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UIApplicationExtension.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/external/PredictionService.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/PredictionService.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/PredictionService.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/PredictionService.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/PredictionService.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/PredictionService.swiftdeps"
+  },
+  "/Users/dirk/workspace/nightguard/nightguard/repository/UserDefaultsRepository.swift" : {
+    "const-values" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UserDefaultsRepository.swiftconstvalues",
+    "dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UserDefaultsRepository.d",
+    "diagnostics" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UserDefaultsRepository.dia",
+    "object" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UserDefaultsRepository.o",
+    "swift-dependencies" : "/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard ComplicationExtension.build/Objects-normal/x86_64/UserDefaultsRepository.swiftdeps"
+  }
+}

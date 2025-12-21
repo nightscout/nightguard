@@ -1,0 +1,54 @@
+/Users/dirk/workspace/nightguard/nightguard/UIColorExtension.swift
+/Users/dirk/workspace/nightguard/nightguard/StringExtension.swift
+/Users/dirk/workspace/nightguard/nightguard\ Widget\ Extension/AccessoryRectangularTimestampView.swift
+/Users/dirk/workspace/nightguard/nightguard\ Widget\ Extension/AccessoryRectangularView.swift
+/Users/dirk/workspace/nightguard/nightguard/BloodSugarArrayExtension.swift
+/Users/dirk/workspace/nightguard/nightguard/DateExtension.swift
+/Users/dirk/workspace/nightguard/nightguard/SnoozeMessage.swift
+/Users/dirk/workspace/nightguard/nightguard/external/regression/Matrix+Append.swift
+/Users/dirk/workspace/nightguard/nightguard/repository/NightscoutDataRepository.swift
+/Users/dirk/workspace/nightguard/nightguard/WatchMessageService.swift
+/Users/dirk/workspace/nightguard/nightguard/Helpers.swift
+/Users/dirk/workspace/nightguard/nightguard\ WatchKit\ App/ViewExtension.swift
+/Users/dirk/workspace/nightguard/nightguard/Units.swift
+/Users/dirk/workspace/nightguard/nightguard/UserDefaultsValue.swift
+/Users/dirk/workspace/nightguard/nightguard/app/NightscoutData.swift
+/Users/dirk/workspace/nightguard/nightguard\ Complication/AccessoryCornerGaugeView.swift
+/Users/dirk/workspace/nightguard/nightguard/TimerExtension.swift
+/Users/dirk/workspace/nightguard/nightguard/app/UnitsConverter.swift
+/Users/dirk/workspace/nightguard/nightguard/UserDefaultsValueGroups.swift
+/Users/dirk/workspace/nightguard/nightguard\ Widget\ Extension/AccessoryCircularGaugeView.swift
+/Users/dirk/workspace/nightguard/nightguard\ Complication/nightguard_Complication.swift
+/Users/dirk/workspace/nightguard/nightguard/external/AlarmNotificationService.swift
+/Users/dirk/workspace/nightguard/nightguard/external/regression/Matrix.swift
+/Users/dirk/workspace/nightguard/nightguard\ Complication/AccessoryCornerView.swift
+/Users/dirk/workspace/nightguard/nightguard\ Widget\ Extension/AccessoryInlineView.swift
+/Users/dirk/workspace/nightguard/nightguard\ WatchKit\ App/app/UIColorChanger.swift
+/Users/dirk/workspace/nightguard/nightguard/BloodSugar.swift
+/Users/dirk/workspace/nightguard/nightguard/external/model/TemporaryTarget.swift
+/Users/dirk/workspace/nightguard/nightguard\ WatchKit\ App/app/BackgroundRefreshLogger.swift
+/Users/dirk/workspace/nightguard/nightguard/external/PredictionService.swift
+/Users/dirk/workspace/nightguard/nightguard/UIApplicationExtension.swift
+/Users/dirk/workspace/nightguard/nightguard/DoubleExtension.swift
+/Users/dirk/workspace/nightguard/nightguard/repository/UserDefaultsRepository.swift
+/Users/dirk/workspace/nightguard/nightguard/FloatExtension.swift
+/Users/dirk/workspace/nightguard/nightguard\ Widget\ Extension/NightguardTimelineProvider.swift
+/Users/dirk/workspace/nightguard/nightguard/AlarmRule.swift
+/Users/dirk/workspace/nightguard/nightguard\ Widget\ Extension/AccessoryCircularView.swift
+/Users/dirk/workspace/nightguard/nightguard\ Widget\ Extension/NightscoutDataEntry.swift
+/Users/dirk/workspace/nightguard/nightguard/app/TemporaryTargetData.swift
+/Users/dirk/workspace/nightguard/nightguard/external/NightscoutService.swift
+/Users/dirk/workspace/nightguard/nightguard\ WatchKit\ App/AppConstants.swift
+/Users/dirk/workspace/nightguard/nightguard/app/TimeService.swift
+/Users/dirk/workspace/nightguard/nightguard/repository/SharedUserDefaultsRepository.swift
+/Users/dirk/workspace/nightguard/nightguard/external/regression/Regression.swift
+/Users/dirk/workspace/nightguard/nightguard/WatchMessage.swift
+/Users/dirk/workspace/nightguard/nightguard/ObservationToken.swift
+/Users/dirk/workspace/nightguard/nightguard/app/DeviceStatusData.swift
+/Users/dirk/workspace/nightguard/nightguard/Treatment.swift
+/Users/dirk/workspace/nightguard/nightguard/external/regression/Matrix+Description.swift
+/Users/dirk/workspace/nightguard/nightguard/AnyConvertible.swift
+/Users/dirk/workspace/nightguard/nightguard/external/regression/RegressionHelper.swift
+/Users/dirk/workspace/nightguard/nightguard/external/NightscoutCacheService.swift
+/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard\ ComplicationExtension.build/DerivedSources/IntentDefinitionGenerated/nightguard_Complication/ConfigurationIntent.swift
+/Users/dirk/workspace/nightguard/build/nightguard.build/Debug-watchsimulator/nightguard\ ComplicationExtension.build/DerivedSources/GeneratedAssetSymbols.swift

@@ -84,7 +84,7 @@ struct MainView: View {
                                     .frame(width: 5, height: 5)
                             } else {
                                 VStack(alignment: .trailing, spacing: nil, content: {
-                                    HStack(){
+                                    HStack(spacing: 5){
                                         Text(viewModel.nightscoutData?.cob ?? "")
                                             .font(.system(size: 12))
                                             .minimumScaleFactor(0.5)

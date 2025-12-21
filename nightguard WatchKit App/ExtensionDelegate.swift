@@ -11,7 +11,6 @@ import WatchConnectivity
 import ClockKit
 import WidgetKit
 
-@main
 class ExtensionDelegate: NSObject, WKApplicationDelegate {
     
     // trick: keep the extension delegate ALIVE (because it seems it hangs when the watch app moves in the backround and will stop processing background tasks)

@@ -1,0 +1,16 @@
+{
+  "source": "/Users/dirk/workspace/nightguard/nightguard Complication/AccessoryCornerView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@m",
+        "location": {
+          "startingColumn": 14,
+          "startingLine": 18
+        }
+      }
+    ]
+  },
+  "version": 1
+}

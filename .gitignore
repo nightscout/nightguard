@@ -12,3 +12,4 @@ fastlane/screenshots/en-US/*.png
 fastlane/screenshots/de-DE/*.png
 fastlane/screenshots/fi/*.png
 fastlane/screenshots/screenshots.html
+.claude

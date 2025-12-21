@@ -8,8 +8,6 @@ target 'nightguard' do
   use_frameworks!
 
   # Pods for nightguard
-  pod 'Eureka'
-  pod 'XLActionController'
 
   target 'nightguardTests' do
     inherit! :search_paths
@@ -19,8 +17,6 @@ target 'nightguard' do
   target 'nightguardUITests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'Eureka'
-    pod 'XLActionController'
   end
 
 end
