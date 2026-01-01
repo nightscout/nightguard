@@ -244,7 +244,11 @@ class UserDefaultsRepository {
 
     static let sensorAgeHoursUntilWarning = UserDefaultsValue<Int>(
         key: "sensorAgeHoursUntilWarning",
-        default: 216)  // 9 days
+        default: 216,  // 9 days
+        validation: { value in
+            // Round to full 24-hour blocks (full days)
+            return (value + 12) / 24 * 24
+        })
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
 
     static let cannulaAgeHoursUntilWarning = UserDefaultsValue<Int>(
@@ -254,12 +258,20 @@ class UserDefaultsRepository {
 
     static let batteryAgeHoursUntilWarning = UserDefaultsValue<Int>(
         key: "batteryAgeHoursUntilWarning",
-        default: 24 * 6)  // 6 days
+        default: 24 * 6,  // 6 days
+        validation: { value in
+            // Round to full 24-hour blocks (full days)
+            return (value + 12) / 24 * 24
+        })
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
 
     static let sensorAgeHoursUntilCritical = UserDefaultsValue<Int>(
         key: "sensorAgeHoursUntilCritical",
-        default: 24 * 13)  // 13 days
+        default: 24 * 13,  // 13 days
+        validation: { value in
+            // Round to full 24-hour blocks (full days)
+            return (value + 12) / 24 * 24
+        })
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
 
     static let cannulaAgeHoursUntilCritical = UserDefaultsValue<Int>(
@@ -269,7 +281,11 @@ class UserDefaultsRepository {
 
     static let batteryAgeHoursUntilCritical = UserDefaultsValue<Int>(
         key: "batteryAgeHoursUntilCritical",
-        default: 24 * 30)
+        default: 24 * 30,  // 30 days
+        validation: { value in
+            // Round to full 24-hour blocks (full days)
+            return (value + 12) / 24 * 24
+        })
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     static let treatments = UserDefaultsValue<[Treatment]>(key: "treatments", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "treatments") as? [Treatment]) ?? [])

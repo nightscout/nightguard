@@ -536,7 +536,7 @@
 "Cannula" = "Katheder";
 
 /* Footer for Cannula Change Date */
-"Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date." = "Geben Sie die Zeit an, zu der Sie Ihre Kanüle gewechselt haben. Dies wird auf dem Hauptbildschirm als CAGE angezeigt. Beachten Sie, dass Sie dieses Datum nur vorverlegen können.";
+"Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date." = "Geben Sie die Zeit an, zu der Sie Ihre Katheder gewechselt haben. Dies wird auf dem Hauptbildschirm als CAGE angezeigt. Beachten Sie, dass Sie dieses Datum nur vorverlegen können.";
 
 /* Label for Cannula Change Time */
 "Cannula change date" = "Katheder Wechseldatum";
@@ -566,7 +566,7 @@
 "Battery change date" = "Batterie Wechseldatum";
 
 /* Modify Cannula Change Date Popup Title */
-"Modify Cannula Change Date" = "Datum des Kanülenwechsels ändern";
+"Modify Cannula Change Date" = "Datum des Kathederwechsels ändern";
 
 /* Modify Sensor Change Date Popup Title */
 "Modify Sensor Change Date" = "Sensor Wechseldatum ändern";
@@ -587,7 +587,7 @@
 "Sensor Age" = "Sensor Alter";
 
 /* Cannula Age section header */
-"Cannula Age" = "Kanülen Alter";
+"Cannula Age" = "Katheder Alter";
 
 /* Battery Age section header */
 "Battery Age" = "Batterie Alter";
@@ -608,7 +608,7 @@
 "Set thresholds for pump battery age alerts. Warning turns the label yellow, Critical turns it red." = "Schwellenwerte für Pumpenbatterie-Altersalarme festlegen. Warnung färbt die Anzeige gelb, Kritisch färbt sie rot.";
 
 /* Age alerts summary in AlarmView */
-"Sensor: %dd, Cannula: %@, Battery: %dd" = "Sensor: %1$dd, Kanüle: %2$@, Batterie: %3$dd";
+"Sensor: %dd, Cannula: %@, Battery: %dd" = "Sensor: %1$dd, Katheder: %2$@, Batterie: %3$dd";
 
 /* Days and hours format */
 "%dd %dh" = "%1$dT %2$dh";

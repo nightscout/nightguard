@@ -908,7 +908,7 @@ struct AgeAlertsView: View {
                             "\(sensorWarningDays.cleanValue) \(NSLocalizedString("days", comment: "Unit: days"))",
                             value: $sensorWarningDays,
                             in: 1...30,
-                            step: 0.5
+                            step: 1
                         )
                         .onChange(of: sensorWarningDays) { newValue in
                             let hours = Int(newValue * 24)
@@ -931,7 +931,7 @@ struct AgeAlertsView: View {
                             "\(sensorCriticalDays.cleanValue) \(NSLocalizedString("days", comment: "Unit: days"))",
                             value: $sensorCriticalDays,
                             in: 1...30,
-                            step: 0.5
+                            step: 1
                         )
                         .onChange(of: sensorCriticalDays) { newValue in
                             let hours = Int(newValue * 24)
@@ -961,7 +961,7 @@ struct AgeAlertsView: View {
                             "\(batteryWarningDays.cleanValue) \(NSLocalizedString("days", comment: "Unit: days"))",
                             value: $batteryWarningDays,
                             in: 1...30,
-                            step: 0.5
+                            step: 1
                         )
                         .onChange(of: batteryWarningDays) { newValue in
                             let hours = Int(newValue * 24)
@@ -983,7 +983,7 @@ struct AgeAlertsView: View {
                             "\(batteryCriticalDays.cleanValue) \(NSLocalizedString("days", comment: "Unit: days"))",
                             value: $batteryCriticalDays,
                             in: 1...30,
-                            step: 0.5
+                            step: 1
                         )
                         .onChange(of: batteryCriticalDays) { newValue in
                             let hours = Int(newValue * 24)
