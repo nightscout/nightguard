@@ -579,3 +579,51 @@
 
 /* Close button */
 "Close" = "Schließen";
+
+/* Disposables Age Warnings menu item */
+"Disposables Age Warnings" = "Verbrauchsmaterial Alterswarnungen";
+
+/* Sensor Age section header */
+"Sensor Age" = "Sensor Alter";
+
+/* Cannula Age section header */
+"Cannula Age" = "Kanülen Alter";
+
+/* Battery Age section header */
+"Battery Age" = "Batterie Alter";
+
+/* Warning threshold label */
+"Warning" = "Warnung";
+
+/* Critical threshold label */
+"Critical" = "Kritisch";
+
+/* Footer for sensor age alerts */
+"Set thresholds for sensor age alerts. Warning turns the label yellow, Critical turns it red." = "Schwellenwerte für Sensor-Altersalarme festlegen. Warnung färbt die Anzeige gelb, Kritisch färbt sie rot.";
+
+/* Footer for cannula age alerts */
+"Set thresholds for cannula age alerts. Warning turns the label yellow, Critical turns it red." = "Schwellenwerte für Kanülen-Altersalarme festlegen. Warnung färbt die Anzeige gelb, Kritisch färbt sie rot.";
+
+/* Footer for battery age alerts */
+"Set thresholds for pump battery age alerts. Warning turns the label yellow, Critical turns it red." = "Schwellenwerte für Pumpenbatterie-Altersalarme festlegen. Warnung färbt die Anzeige gelb, Kritisch färbt sie rot.";
+
+/* Age alerts summary in AlarmView */
+"Sensor: %dd, Cannula: %@, Battery: %dd" = "Sensor: %1$dd, Kanüle: %2$@, Batterie: %3$dd";
+
+/* Days and hours format */
+"%dd %dh" = "%1$dT %2$dh";
+
+/* Hours only format */
+"%dh" = "%dh";
+
+/* Unit: days */
+"days" = "Tage";
+
+/* Unit: hours */
+"hours" = "Stunden";
+
+/* Days label */
+"Days" = "d";
+
+/* Hours label */
+"Hours" = "h";

@@ -422,20 +422,20 @@ class MainViewModel: ObservableObject, Identifiable {
     fileprivate func loadCareData() {
         let sensorAge: Date = NightscoutCacheService.singleton.getSensorChangeTime()
         self.sensorAgeColor = sensorAge.determineColorDependingOn(
-            hoursUntilWarning: UserDefaultsRepository.sensorAgeHoursUntilWarning,
-            hoursUntilCritical: UserDefaultsRepository.sensorAgeHoursUntilCritical)
+            hoursUntilWarning: UserDefaultsRepository.sensorAgeHoursUntilWarning.value,
+            hoursUntilCritical: UserDefaultsRepository.sensorAgeHoursUntilCritical.value)
         self.sensorAgeString = sensorAge.convertToAge(prefix: "S ")
 
         let cannulaAge: Date = NightscoutCacheService.singleton.getCannulaChangeTime()
         self.cannulaAgeColor = cannulaAge.determineColorDependingOn(
-            hoursUntilWarning: UserDefaultsRepository.cannulaAgeHoursUntilWarning,
-            hoursUntilCritical: UserDefaultsRepository.cannulaAgeHoursUntilCritical)
+            hoursUntilWarning: UserDefaultsRepository.cannulaAgeHoursUntilWarning.value,
+            hoursUntilCritical: UserDefaultsRepository.cannulaAgeHoursUntilCritical.value)
         self.cannulaAgeString = cannulaAge.convertToAge(prefix: "C ")
 
         let batteryAge: Date = NightscoutCacheService.singleton.getPumpBatteryChangeTime()
         self.batteryAgeColor = batteryAge.determineColorDependingOn(
-            hoursUntilWarning: UserDefaultsRepository.batteryAgeHoursUntilWarning,
-            hoursUntilCritical: UserDefaultsRepository.batteryAgeHoursUntilCritical)
+            hoursUntilWarning: UserDefaultsRepository.batteryAgeHoursUntilWarning.value,
+            hoursUntilCritical: UserDefaultsRepository.batteryAgeHoursUntilCritical.value)
         self.batteryAgeString = batteryAge.convertToAge(prefix: "B ")
     }
 

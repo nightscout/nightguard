@@ -241,18 +241,36 @@ class UserDefaultsRepository {
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     // Definition of the Age Colors
-    
-    static let sensorAgeHoursUntilWarning = 24 * 9
-    
-    static let cannulaAgeHoursUntilWarning = 24 * 2 - 4
-    
-    static let batteryAgeHoursUntilWarning = 24 * 6
-    
-    static let sensorAgeHoursUntilCritical = 24 * 13
-    
-    static let cannulaAgeHoursUntilCritical = 24 * 3 - 4
-    
-    static let batteryAgeHoursUntilCritical = 24 * 11
+
+    static let sensorAgeHoursUntilWarning = UserDefaultsValue<Int>(
+        key: "sensorAgeHoursUntilWarning",
+        default: 216)  // 9 days
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
+    static let cannulaAgeHoursUntilWarning = UserDefaultsValue<Int>(
+        key: "cannulaAgeHoursUntilWarning",
+        default: 44)  // ~1.8 days
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
+    static let batteryAgeHoursUntilWarning = UserDefaultsValue<Int>(
+        key: "batteryAgeHoursUntilWarning",
+        default: 24 * 6)  // 6 days
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
+    static let sensorAgeHoursUntilCritical = UserDefaultsValue<Int>(
+        key: "sensorAgeHoursUntilCritical",
+        default: 24 * 13)  // 13 days
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
+    static let cannulaAgeHoursUntilCritical = UserDefaultsValue<Int>(
+        key: "cannulaAgeHoursUntilCritical",
+        default: 68)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
+    static let batteryAgeHoursUntilCritical = UserDefaultsValue<Int>(
+        key: "batteryAgeHoursUntilCritical",
+        default: 24 * 30)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     static let treatments = UserDefaultsValue<[Treatment]>(key: "treatments", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "treatments") as? [Treatment]) ?? [])
         .group(UserDefaultsValueGroups.GroupNames.watchSync)

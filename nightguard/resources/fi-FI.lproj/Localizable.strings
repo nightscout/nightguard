@@ -669,3 +669,51 @@
 
 /* Close button */
 "Close" = "Sulje";
+
+/* Disposables Age Warnings menu item */
+"Disposables Age Warnings" = "Kulutustarvikkeiden ikävaroitukset";
+
+/* Sensor Age section header */
+"Sensor Age" = "Sensorin ikä";
+
+/* Cannula Age section header */
+"Cannula Age" = "Kanyylin ikä";
+
+/* Battery Age section header */
+"Battery Age" = "Akun ikä";
+
+/* Warning threshold label */
+"Warning" = "Varoitus";
+
+/* Critical threshold label */
+"Critical" = "Kriittinen";
+
+/* Footer for sensor age alerts */
+"Set thresholds for sensor age alerts. Warning turns the label yellow, Critical turns it red." = "Aseta kynnysarvot sensorin ikähälytyksille. Varoitus muuttaa tekstin keltaiseksi, Kriittinen muuttaa sen punaiseksi.";
+
+/* Footer for cannula age alerts */
+"Set thresholds for cannula age alerts. Warning turns the label yellow, Critical turns it red." = "Aseta kynnysarvot kanyylin ikähälytyksille. Varoitus muuttaa tekstin keltaiseksi, Kriittinen muuttaa sen punaiseksi.";
+
+/* Footer for battery age alerts */
+"Set thresholds for pump battery age alerts. Warning turns the label yellow, Critical turns it red." = "Aseta kynnysarvot pumpun akun ikähälytyksille. Varoitus muuttaa tekstin keltaiseksi, Kriittinen muuttaa sen punaiseksi.";
+
+/* Age alerts summary in AlarmView */
+"Sensor: %dd, Cannula: %@, Battery: %dd" = "Sensori: %1$d pv, Kanyyli: %2$@, Akku: %3$d pv";
+
+/* Days and hours format */
+"%dd %dh" = "%1$d pv %2$d h";
+
+/* Hours only format */
+"%dh" = "%d h";
+
+/* Unit: days */
+"days" = "päivää";
+
+/* Unit: hours */
+"hours" = "tuntia";
+
+/* Days label */
+"Days" = "d";
+
+/* Hours label */
+"Hours" = "h";
