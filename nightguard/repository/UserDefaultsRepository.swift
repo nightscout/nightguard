@@ -246,14 +246,13 @@ class UserDefaultsRepository {
     
     static let cannulaAgeHoursUntilWarning = 24 * 2 - 4
     
-    static let batteryAgeHoursUntilWarning = 24 * 27
-    
+    static let batteryAgeHoursUntilWarning = 24 * 6
     
     static let sensorAgeHoursUntilCritical = 24 * 13
     
     static let cannulaAgeHoursUntilCritical = 24 * 3 - 4
     
-    static let batteryAgeHoursUntilCritical = 24 * 30
+    static let batteryAgeHoursUntilCritical = 24 * 11
     
     static let treatments = UserDefaultsValue<[Treatment]>(key: "treatments", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "treatments") as? [Treatment]) ?? [])
         .group(UserDefaultsValueGroups.GroupNames.watchSync)

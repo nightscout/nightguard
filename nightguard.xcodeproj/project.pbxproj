@@ -157,7 +157,6 @@
 		43647BEE1BFF6435004389F9 /* NightguardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647BED1BFF6435004389F9 /* NightguardUITests.swift */; };
 		43647BF31BFF6435004389F9 /* nightguard.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 43647BF21BFF6435004389F9 /* nightguard.app */; };
 		43647C0B1BFF6435004389F9 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */; };
-		4368A0FA252279CA0013E425 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4368A0F9252279C90013E425 /* MainViewModel.swift */; };
 		436BE82D24A322AE00FDCBB5 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		436D73B427C826F100639B15 /* AppleHealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D73B327C826F100639B15 /* AppleHealthService.swift */; };
 		436D73B627C82A5E00639B15 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436D73B527C82A5E00639B15 /* HealthKit.framework */; };
@@ -315,6 +314,8 @@
 		43D0061529DE0881003BCE92 /* nightguard ComplicationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 43D005CF29DC9BFA003BCE92 /* nightguard ComplicationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		43D28A0620321AAF003859DE /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		43D561172468201E00B52B1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
+		43D826AE2F0598F5003563A2 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D826AC2F0598F5003563A2 /* MainViewModel.swift */; };
+		43D826AF2F0598F5003563A2 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D826AC2F0598F5003563A2 /* MainViewModel.swift */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E9F70227386C9900C6AEB3 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9F70127386C9900C6AEB3 /* UIImageExtension.swift */; };
@@ -587,7 +588,6 @@
 		43647BFC1BFF6435004389F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43647C071BFF6435004389F9 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		4368A0F9252279C90013E425 /* MainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		436D73B327C826F100639B15 /* AppleHealthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleHealthService.swift; sourceTree = "<group>"; };
 		436D73B527C82A5E00639B15 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		43794F411C2F435A00DB8B58 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
@@ -637,6 +637,7 @@
 		43D005E329DC9CBF003BCE92 /* AccessoryInlineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryInlineView.swift; sourceTree = "<group>"; };
 		43D005E429DC9CBF003BCE92 /* NightguardTimelineProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightguardTimelineProvider.swift; sourceTree = "<group>"; };
 		43D005E529DC9CBF003BCE92 /* NightscoutDataEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutDataEntry.swift; sourceTree = "<group>"; };
+		43D826AC2F0598F5003563A2 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
 		43E9F70127386C9900C6AEB3 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		43EE375A24478D78008C9134 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
@@ -871,6 +872,7 @@
 				43F1E1181D076D2800C329A2 /* domain */,
 				D1D96CB821FB0DC50035A60E /* watch */,
 				D1BA903620D303E700A0EBD1 /* views */,
+				43D826AD2F0598F5003563A2 /* viewmodel */,
 				D112DD3221E9E28500ECFB5E /* helpers */,
 				43F1E0F41D07698000C329A2 /* AppDelegate.swift */,
 				43F1E0F71D07698000C329A2 /* Info.plist */,
@@ -913,7 +915,6 @@
 				439BDA882B225035004932EB /* Supporting Files */,
 				439BDA872B225023004932EB /* external */,
 				439BDA862B224F69004932EB /* app */,
-				439BDA852B224F5B004932EB /* viewmodel */,
 				439BDA842B224F49004932EB /* views */,
 				439BDA832B224F2B004932EB /* controllers */,
 				43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */,
@@ -968,14 +969,6 @@
 				438C55AF253CB0090002E109 /* AddCarbsPopupView.swift */,
 			);
 			path = views;
-			sourceTree = "<group>";
-		};
-		439BDA852B224F5B004932EB /* viewmodel */ = {
-			isa = PBXGroup;
-			children = (
-				4368A0F9252279C90013E425 /* MainViewModel.swift */,
-			);
-			path = viewmodel;
 			sourceTree = "<group>";
 		};
 		439BDA862B224F69004932EB /* app */ = {
@@ -1110,6 +1103,14 @@
 				43D005D829DC9BFC003BCE92 /* Info.plist */,
 			);
 			path = "nightguard Complication";
+			sourceTree = "<group>";
+		};
+		43D826AD2F0598F5003563A2 /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				43D826AC2F0598F5003563A2 /* MainViewModel.swift */,
+			);
+			path = viewmodel;
 			sourceTree = "<group>";
 		};
 		43F1E1181D076D2800C329A2 /* domain */ = {
@@ -1699,6 +1700,7 @@
 				43BE674728D78C8C00285798 /* SharedUserDefaultsRepository.swift in Sources */,
 				D133078421C424A800DC6879 /* ArrayExtension.swift in Sources */,
 				D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */,
+				43D826AF2F0598F5003563A2 /* MainViewModel.swift in Sources */,
 				4302C65E25D9C7A80052777F /* MealBolusTreatment.swift in Sources */,
 				D1D96CB121F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
 				D1B777E42243E27B003FEDF0 /* TouchReportingView.swift in Sources */,
@@ -1898,7 +1900,6 @@
 				4302C67025DB0E020052777F /* TreatmentsStream.swift in Sources */,
 				D133079721C85FAE00DC6879 /* Matrix+Description.swift in Sources */,
 				D15055AD2200CD6500F31C1F /* UserDefaultsValueGroups.swift in Sources */,
-				4368A0FA252279CA0013E425 /* MainViewModel.swift in Sources */,
 				43CE59AA25080D6B00D71B77 /* MainView.swift in Sources */,
 				4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */,
 				43E9F70527386ED800C6AEB3 /* UIImageExtension.swift in Sources */,
@@ -1921,6 +1922,7 @@
 				D1D96CC121FB0F2E0035A60E /* UserDefaultsSyncMessage.swift in Sources */,
 				D133078A21C85D5400DC6879 /* BloodSugarArrayExtension.swift in Sources */,
 				D13A4C1E2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
+				43D826AE2F0598F5003563A2 /* MainViewModel.swift in Sources */,
 				4302C68525DB0E110052777F /* MealBolusTreatment.swift in Sources */,
 				4330E3EF25D3239C0054A0A6 /* AppState.swift in Sources */,
 				438C55A9253C81370002E109 /* CarbsView.swift in Sources */,
