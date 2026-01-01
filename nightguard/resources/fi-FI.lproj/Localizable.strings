@@ -700,12 +700,6 @@
 /* Age alerts summary in AlarmView */
 "Sensor: %dd, Cannula: %@, Battery: %dd" = "Sensori: %1$d pv, Kanyyli: %2$@, Akku: %3$d pv";
 
-/* Days and hours format */
-"%dd %dh" = "%1$d pv %2$d h";
-
-/* Hours only format */
-"%dh" = "%d h";
-
 /* Unit: days */
 "days" = "päivää";
 

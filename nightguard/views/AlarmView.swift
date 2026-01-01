@@ -158,15 +158,6 @@ struct AlarmView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
-
-                    NavigationLink(destination: AgeAlertsView()) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(NSLocalizedString("Disposables Age Warnings", comment: "Disposables Age Warnings menu item"))
-                            Text(ageAlertsDetail)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
                 }
 
                 // Smart Snooze section
@@ -199,6 +190,14 @@ struct AlarmView: View {
 
                     NavigationLink(destination: SnoozeActionsView()) {
                         Text("Snoozing Actions")
+                    }
+                }
+
+                // Age Alerts section
+                Section(header: Text(NSLocalizedString("Disposables Age Warnings", comment: "Age Alerts section header"))) {
+                    NavigationLink(destination: AgeAlertsView()) {
+                        Text(ageAlertsDetail)
+                            .font(.body)
                     }
                 }
             }
@@ -289,8 +288,8 @@ struct AlarmView: View {
         let batteryWarning = UserDefaultsRepository.batteryAgeHoursUntilWarning.value / 24
 
         let cannulaText = cannulaDays > 0
-            ? String(format: NSLocalizedString("%dd %dh", comment: "Days and hours format"), cannulaDays, cannulaHours)
-            : String(format: NSLocalizedString("%dh", comment: "Hours only format"), cannulaHours)
+            ? String(format: "%dd %dh", cannulaDays, cannulaHours)
+            : String(format: "%dh", cannulaHours)
 
         return String(format: NSLocalizedString("Sensor: %dd, Cannula: %@, Battery: %dd", comment: ""),
                       sensorWarning, cannulaText, batteryWarning)

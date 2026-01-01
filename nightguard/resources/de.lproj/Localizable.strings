@@ -610,12 +610,6 @@
 /* Age alerts summary in AlarmView */
 "Sensor: %dd, Cannula: %@, Battery: %dd" = "Sensor: %1$dd, Katheder: %2$@, Batterie: %3$dd";
 
-/* Days and hours format */
-"%dd %dh" = "%1$dT %2$dh";
-
-/* Hours only format */
-"%dh" = "%dh";
-
 /* Unit: days */
 "days" = "Tage";
 
