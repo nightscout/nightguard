@@ -90,6 +90,7 @@ struct BedsideView: View {
                             .clipShape(Circle())
                     }
                     .padding()
+                    .accessibilityIdentifier("fullscreenCloseButton")
                 }
                 Spacer()
             }

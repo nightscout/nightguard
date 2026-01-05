@@ -284,6 +284,7 @@ struct MainView: View {
                                 .background(Color(UIColor.darkGray.withAlphaComponent(0.3)))
                                 .clipShape(Circle())
                                 .padding(.trailing, 8)
+                                .accessibilityIdentifier("actionsMenuButton")
                                 .onLongPressGesture {
                                     showNightscout = true
                                 }

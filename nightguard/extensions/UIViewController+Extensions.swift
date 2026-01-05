@@ -68,9 +68,10 @@ extension UIViewController {
     }
 }
 
+#if MAIN_APP
 // snoozing capability from any controller
 extension UIViewController {
-    
+
     func showSnoozePopup() {
 
         // stop the alarm immediatly here not to disturb others
@@ -88,7 +89,7 @@ extension UIViewController {
             AlarmSound.unmuteVolume()
         })
     }
-    
+
     func handleQuickSnooze(option: QuickSnoozeOption) {
         switch option {
         case .doNothing:
@@ -104,3 +105,4 @@ extension UIViewController {
         }
     }
 }
+#endif

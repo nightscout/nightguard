@@ -57,6 +57,7 @@ struct RootTabView: View {
                     Image("Main")
                         .renderingMode(.template)
                     Text(NSLocalizedString("Main", comment: "Main tab"))
+                        .accessibilityIdentifier("tab_main")
                 }
                 .tag(0)
 
@@ -69,6 +70,7 @@ struct RootTabView: View {
                 Image("Alarm")
                     .renderingMode(.template)
                 Text(NSLocalizedString("Alarms", comment: "Alarms tab"))
+                    .accessibilityIdentifier("tab_alarms")
             }
             .tag(1)
 
@@ -78,9 +80,10 @@ struct RootTabView: View {
                 .tabItem {
                     Image("Care")
                         .renderingMode(.template)
-                    Text(NSLocalizedString("Care", comment: "Care tab"))
-                }
-                .tag(2)
+                Text(NSLocalizedString("Care", comment: "Care tab"))
+                    .accessibilityIdentifier("tab_care")
+            }
+            .tag(2)
 
             // Duration Tab
             DurationView(selectedTab: $selectedTab)
@@ -89,6 +92,7 @@ struct RootTabView: View {
                     Image(systemName: "clock.arrow.circlepath")
                         .renderingMode(.template)
                     Text(NSLocalizedString("Duration", comment: "Duration tab"))
+                        .accessibilityIdentifier("tab_duration")
                 }
                 .tag(3)
 
@@ -99,6 +103,7 @@ struct RootTabView: View {
                     Image("Stats")
                         .renderingMode(.template)
                     Text(NSLocalizedString("Stats", comment: "Stats tab"))
+                        .accessibilityIdentifier("tab_stats")
                 }
                 .tag(4)
 
@@ -110,6 +115,7 @@ struct RootTabView: View {
                         .renderingMode(.template)
                     Text(NSLocalizedString("Preferences", comment: "Preferences tab"))
                 }
+                .accessibilityIdentifier("tab_prefs")
                 .tag(5)
         }
         .accentColor(.white)

@@ -12,14 +12,14 @@ extension Array where Element: BloodSugar {
     
     // Creates blood sugar array from an array of values, with a timespan of 5 minutes between them, starting from current time back (last reading offset specifies the distance in seconds of the last reading)
     init(values: [Float], lastReadingOffset: TimeInterval = 120) {
-        
+
         let now = Date()
         let readings: [Element] = (0..<values.count).map { index in
             let readingTimeOffset = -lastReadingOffset - TimeInterval((values.count - index - 1) * 60 * 5)
             let readingTime = now.addingTimeInterval(readingTimeOffset)
-            return Element(value: values[index], timestamp: Double(readingTime.timeIntervalSince1970 * 1000), isMeteredBloodGlucoseValue: false)
+            return Element(value: values[index], timestamp: Double(readingTime.timeIntervalSince1970 * 1000), isMeteredBloodGlucoseValue: false, arrow: "-")
         }
-        
+
         self = readings
     }
 }

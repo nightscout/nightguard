@@ -49,6 +49,7 @@ struct NightscoutView: View {
                                 .foregroundColor(.white)
                                 .bold()
                         }
+                        .accessibilityIdentifier("closeButton")
                     }
                 }
             }

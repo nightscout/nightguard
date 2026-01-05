@@ -24,18 +24,21 @@ class UserDefaultsRepositoryTest : XCTestCase {
         XCTAssertEqual(UserDefaultsRepository.units.value, Units.mmol)
     }
     
+    // Commented out - screenlockSwitchState property was removed from UserDefaultsRepository
+    /*
     func testScreenLockStateIsSaved() {
-        
+
         // Given
         let initialPosition : Bool = false
-        
+
         // When
         UserDefaultsRepository.screenlockSwitchState.value = initialPosition
         let retrievedPosition = UserDefaultsRepository.screenlockSwitchState.value
-        
+
         // Then
         XCTAssertEqual(retrievedPosition, initialPosition)
     }
+    */
     
     func testSaveTreatments() {
         
