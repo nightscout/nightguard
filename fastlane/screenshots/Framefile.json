@@ -3,10 +3,12 @@
     "keyword": {
       "fonts": [
         {
-          "font": "./fonts/Bosk.ttf",
+          "font": "./fonts/DIN-Alternate-Bold.ttf",
           "supported": ["de-DE", "en-US", "es-ES", "fr-FR", "it-IT", "nl-NL", "sv-SE", "pt-BR"]
         }
-      ]
+      ],
+      "stroke_color": "#333333",
+      "stroke_width": 10
     },
     "title": {
       "fonts": [
@@ -28,49 +30,49 @@
     {
       "filter": "main",
       "keyword": {
-        "color": "#d21559"
+        "color": "#91C93B"
       }
     },
     {
       "filter": "nightscout",
       "keyword": {
-        "color": "#d21559"
+        "color": "#91C93B"
       }
     },
     {
       "filter": "fullscreen",
       "keyword": {
-        "color": "#d21559"
+        "color": "#91C93B"
       }
     },
     {
       "filter": "care",
       "keyword": {
-        "color": "#d21559"
+        "color": "#91C93B"
       }
     },
     {
       "filter": "duration",
       "keyword": {
-        "color": "#d21559"
+        "color": "#91C93B"
       }
     },
     {
       "filter": "alarms",
       "keyword": {
-        "color": "#d21559"
+        "color": "#91C93B"
       }
     },
     {
       "filter": "stats",
       "keyword": {
-        "color": "#d21559"
+        "color": "#91C93B"
       }
     },
     {
       "filter": "preferences",
       "keyword": {
-        "color": "#d21559"
+        "color": "#91C93B"
       }
     }
   ]

@@ -12,7 +12,7 @@ import XCTest
 
 class NightscoutServiceTest: XCTestCase {
     
-    fileprivate let BASE_URI = "http://night.fritz.box"
+    fileprivate let BASE_URI = "https://night.hermanns.app"
     
     func testReadYesterdaysChartDataShouldReturnData() {
         

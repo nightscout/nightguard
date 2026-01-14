@@ -5,9 +5,6 @@
       location = "group:nightguard.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:nightguard.xctestplan">
    </FileRef>
 </Workspace>

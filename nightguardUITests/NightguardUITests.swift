@@ -30,11 +30,8 @@ class NightguardUITests: XCTestCase {
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         app = XCUIApplication()
         setupSnapshot(app)
+
         app.launchArguments.append("--uitesting")
-        app.launchArguments.append("--AppleLanguages")
-        app.launchArguments.append("(en-US)")
-        app.launchArguments.append("--AppleLocale")
-        app.launchArguments.append("\"en-US\"")
         app.launchEnvironment["TEST"] = "1"
         app.launch()
 
@@ -242,7 +239,7 @@ class NightguardUITests: XCTestCase {
 
         // On iPad floating tab bar, we may need to page through tabs to find the target
         // Try up to 3 times to page through and find the tab
-        for attempt in 0..<3 {
+        for _ in 0..<3 {
             let target = getBestTarget()
             let (nextPageButton, prevPageButton) = findPaginationButtons()
 
@@ -363,7 +360,7 @@ class NightguardUITests: XCTestCase {
 
             // Try scrolling first if in a scroll view
             if attempt > 0 && attempt < 3 {
-                scrollToRevealTab(in: bar)
+                _ = scrollToRevealTab(in: bar)
             }
 
             if target.exists {

@@ -1,2 +1,2 @@
 #!/bin/bash
-bundle exec fastlane ios screenshots
+fastlane ios screenshots

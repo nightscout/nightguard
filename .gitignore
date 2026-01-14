@@ -1,3 +1,5 @@
+.DS_Store/
+build/
 nightguard.app.dSYM.zip
 nightguard.ipa
 nightguard.xcodeproj/xcshareddata/
@@ -12,4 +14,6 @@ fastlane/screenshots/en-US/*.png
 fastlane/screenshots/de-DE/*.png
 fastlane/screenshots/fi/*.png
 fastlane/screenshots/screenshots.html
+fastlane/.DS_Store
+fastlane_log.txt
 .claude

@@ -6,10 +6,7 @@
 	objectVersion = 54;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		016DB61A390604313FBFDD35 /* Pods_nightguardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040FFB9BE6FDBEA87C71122C /* Pods_nightguardTests.framework */; };
-		04C7B133B46E0A51AB0ABEDD /* Pods_nightguard_ComplicationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBDCC8817953349FB87EC133 /* Pods_nightguard_ComplicationExtension.framework */; };
-		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
+/* Begin PBXBuildFile section */		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
 		43027A4C2EBFDBFD00BE71B9 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */; };
 		43027A4E2EC1256500BE71B9 /* AlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4D2EC1256500BE71B9 /* AlarmView.swift */; };
@@ -338,12 +335,7 @@
 		43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
 		4BD05B7C2B1E33F700A74E9B /* DateExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */; };
 		7B4E31F42C2379C4005090CB /* NotificationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F32C2379C4005090CB /* NotificationExtension.swift */; };
-		7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F52C237F14005090CB /* SystemSmallView.swift */; };
-		7FCFB7190EB96C437CD9908C /* Pods_nightguard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F5A4E6048F7A6F26B9C31E /* Pods_nightguard.framework */; };
-		A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */; };
-		BD9486CCE1790AB9D245579D /* Pods_nightguard_Widget_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5AA741119F937A9FEA0FE16 /* Pods_nightguard_Widget_Extension.framework */; };
-		C21FEAA8173DC84337CC0E33 /* Pods_nightguard_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A960E5B86E46012C3B88556F /* Pods_nightguard_WatchKit_App.framework */; };
-		D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
+		7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F52C237F14005090CB /* SystemSmallView.swift */; };		A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */; };		D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3721EA600200ECFB5E /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
@@ -520,18 +512,11 @@
 		};
 /* End PBXCopyFilesBuildPhase section */
 
-/* Begin PBXFileReference section */
-		040FFB9BE6FDBEA87C71122C /* Pods_nightguardTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguardTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0FB1B12F7327387311F57CAA /* Pods-nightguard WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard WatchKit App.debug.xcconfig"; path = "Target Support Files/Pods-nightguard WatchKit App/Pods-nightguard WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
 		127F207A227F018E00C90F07 /* nightguard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nightguard.entitlements; sourceTree = "<group>"; };
-		18060ADE499D1BF44318334D /* Pods-nightguardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardUITests.release.xcconfig"; path = "Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests.release.xcconfig"; sourceTree = "<group>"; };
-		1DF7CCBF81749EB5433A6B02 /* Pods-nightguardTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardTests.debug.xcconfig"; path = "Target Support Files/Pods-nightguardTests/Pods-nightguardTests.debug.xcconfig"; sourceTree = "<group>"; };
 		28A3509723F9B31400F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		28B03A3623F9CD8E000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		28B03A3923F9CE6C000939E6 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
-		2AE62FD2AA9BA0D5AF7737B2 /* Pods-nightguard Widget Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard Widget Extension.release.xcconfig"; path = "Target Support Files/Pods-nightguard Widget Extension/Pods-nightguard Widget Extension.release.xcconfig"; sourceTree = "<group>"; };
-		3CA65C6BB6832F5B54DF487A /* Pods-nightguard ComplicationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard ComplicationExtension.release.xcconfig"; path = "Target Support Files/Pods-nightguard ComplicationExtension/Pods-nightguard ComplicationExtension.release.xcconfig"; sourceTree = "<group>"; };
 		43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		43027A4D2EC1256500BE71B9 /* AlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmView.swift; sourceTree = "<group>"; };
 		43027A4F2EC519C500BE71B9 /* CareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareView.swift; sourceTree = "<group>"; };
@@ -567,8 +552,6 @@
 		434300E62A35EFC100B5D33A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; name = Base; path = Base.lproj/nightguard_Complication.intentdefinition; sourceTree = "<group>"; };
 		434300E92A35EFC700B5D33A /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/nightguard_Complication.strings"; sourceTree = "<group>"; };
 		434300EB2A35EFC800B5D33A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/nightguard_Complication.strings; sourceTree = "<group>"; };
-		4344E7E825D4728600F54DC2 /* Pods */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pods; sourceTree = "<group>"; };
-		4344E7EE25D472A600F54DC2 /* Eureka */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Eureka; path = Pods/Eureka; sourceTree = "<group>"; };
 		434982342534DE4F00CF0014 /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsRepository.swift; sourceTree = "<group>"; };
 		4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeServiceTest.swift; sourceTree = "<group>"; };
@@ -654,17 +637,8 @@
 		43F1E1101D076C1C00C329A2 /* NightscoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutService.swift; path = nightguard/external/NightscoutService.swift; sourceTree = SOURCE_ROOT; };
 		43F1E11A1D076D9700C329A2 /* TimeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeService.swift; path = nightguard/app/TimeService.swift; sourceTree = SOURCE_ROOT; };
 		4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTest.swift; sourceTree = "<group>"; };
-		5560CB94CC76B8F0F7F5C440 /* Pods-nightguardTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardTests.release.xcconfig"; path = "Target Support Files/Pods-nightguardTests/Pods-nightguardTests.release.xcconfig"; sourceTree = "<group>"; };
 		7B4E31F32C2379C4005090CB /* NotificationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtension.swift; sourceTree = "<group>"; };
 		7B4E31F52C237F14005090CB /* SystemSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSmallView.swift; sourceTree = "<group>"; };
-		89358A3E8C5372AE643A47B4 /* Pods-nightguard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard.debug.xcconfig"; path = "Target Support Files/Pods-nightguard/Pods-nightguard.debug.xcconfig"; sourceTree = "<group>"; };
-		A4F222974AF5F9228A291DD7 /* Pods-nightguard ComplicationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard ComplicationExtension.debug.xcconfig"; path = "Target Support Files/Pods-nightguard ComplicationExtension/Pods-nightguard ComplicationExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		A960E5B86E46012C3B88556F /* Pods_nightguard_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguard_WatchKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAB9CB66F08543B434F9F39C /* Pods-nightguard WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard WatchKit App.release.xcconfig"; path = "Target Support Files/Pods-nightguard WatchKit App/Pods-nightguard WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
-		B5F5A4E6048F7A6F26B9C31E /* Pods_nightguard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE85AD88336D9980D39338FF /* Pods-nightguardUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguardUITests.debug.xcconfig"; path = "Target Support Files/Pods-nightguardUITests/Pods-nightguardUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		C304D8152D0180EF0529BA73 /* Pods-nightguard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard.release.xcconfig"; path = "Target Support Files/Pods-nightguard/Pods-nightguard.release.xcconfig"; sourceTree = "<group>"; };
-		C874A04E7D42DBD80D7803D4 /* Pods-nightguard Widget Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nightguard Widget Extension.debug.xcconfig"; path = "Target Support Files/Pods-nightguard Widget Extension/Pods-nightguard Widget Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerExtension.swift; sourceTree = "<group>"; };
 		D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodSugarArrayTest.swift; sourceTree = "<group>"; };
 		D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionServiceTest.swift; sourceTree = "<group>"; };
@@ -717,10 +691,7 @@
 		D1F94ECF223FFEFF00BB0A4D /* A1cView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A1cView.swift; sourceTree = "<group>"; };
 		D1F94ED1223FFF3900BB0A4D /* ReadingsStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingsStatsView.swift; sourceTree = "<group>"; };
 		D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodSelectorView.swift; sourceTree = "<group>"; };
-		DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelViewSwiftUI.swift; sourceTree = "<group>"; };
-		F5AA741119F937A9FEA0FE16 /* Pods_nightguard_Widget_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguard_Widget_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FBDCC8817953349FB87EC133 /* Pods_nightguard_ComplicationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nightguard_ComplicationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-/* End PBXFileReference section */
+		DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelViewSwiftUI.swift; sourceTree = "<group>"; };/* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		43647BC71BFF6435004389F9 /* Frameworks */ = {
@@ -728,7 +699,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				436D73B627C82A5E00639B15 /* HealthKit.framework in Frameworks */,
-				7FCFB7190EB96C437CD9908C /* Pods_nightguard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,7 +706,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				016DB61A390604313FBFDD35 /* Pods_nightguardTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,7 +722,6 @@
 			files = (
 				438DAC7F28D2356800FBF520 /* SwiftUI.framework in Frameworks */,
 				438DAC7D28D2356800FBF520 /* WidgetKit.framework in Frameworks */,
-				BD9486CCE1790AB9D245579D /* Pods_nightguard_Widget_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -763,7 +731,6 @@
 			files = (
 				43D005D129DC9BFB003BCE92 /* SwiftUI.framework in Frameworks */,
 				43D005D029DC9BFB003BCE92 /* WidgetKit.framework in Frameworks */,
-				04C7B133B46E0A51AB0ABEDD /* Pods_nightguard_ComplicationExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,45 +738,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C21FEAA8173DC84337CC0E33 /* Pods_nightguard_WatchKit_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0CC6802B2D6E9F7675874CD7 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				89358A3E8C5372AE643A47B4 /* Pods-nightguard.debug.xcconfig */,
-				C304D8152D0180EF0529BA73 /* Pods-nightguard.release.xcconfig */,
-				A4F222974AF5F9228A291DD7 /* Pods-nightguard ComplicationExtension.debug.xcconfig */,
-				3CA65C6BB6832F5B54DF487A /* Pods-nightguard ComplicationExtension.release.xcconfig */,
-				0FB1B12F7327387311F57CAA /* Pods-nightguard WatchKit App.debug.xcconfig */,
-				AAB9CB66F08543B434F9F39C /* Pods-nightguard WatchKit App.release.xcconfig */,
-				C874A04E7D42DBD80D7803D4 /* Pods-nightguard Widget Extension.debug.xcconfig */,
-				2AE62FD2AA9BA0D5AF7737B2 /* Pods-nightguard Widget Extension.release.xcconfig */,
-				1DF7CCBF81749EB5433A6B02 /* Pods-nightguardTests.debug.xcconfig */,
-				5560CB94CC76B8F0F7F5C440 /* Pods-nightguardTests.release.xcconfig */,
-				BE85AD88336D9980D39338FF /* Pods-nightguardUITests.debug.xcconfig */,
-				18060ADE499D1BF44318334D /* Pods-nightguardUITests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		23C80CA818186A7AFE1C1929 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				436D73B527C82A5E00639B15 /* HealthKit.framework */,
-				4344E7EE25D472A600F54DC2 /* Eureka */,
-				4344E7E825D4728600F54DC2 /* Pods */,
 				438DAC7C28D2356800FBF520 /* WidgetKit.framework */,
 				438DAC7E28D2356800FBF520 /* SwiftUI.framework */,
-				B5F5A4E6048F7A6F26B9C31E /* Pods_nightguard.framework */,
-				FBDCC8817953349FB87EC133 /* Pods_nightguard_ComplicationExtension.framework */,
-				A960E5B86E46012C3B88556F /* Pods_nightguard_WatchKit_App.framework */,
-				F5AA741119F937A9FEA0FE16 /* Pods_nightguard_Widget_Extension.framework */,
-				040FFB9BE6FDBEA87C71122C /* Pods_nightguardTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -839,7 +779,6 @@
 				438DAC8028D2356800FBF520 /* nightguard Widget Extension */,
 				43D005D229DC9BFB003BCE92 /* nightguard Complication */,
 				43647BCB1BFF6435004389F9 /* Products */,
-				0CC6802B2D6E9F7675874CD7 /* Pods */,
 				23C80CA818186A7AFE1C1929 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -1221,9 +1160,7 @@
 		43647BC91BFF6435004389F9 /* nightguard */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C1D1BFF6435004389F9 /* Build configuration list for PBXNativeTarget "nightguard" */;
-			buildPhases = (
-				10A74B26D3FFEC917DC6E9E0 /* [CP] Check Pods Manifest.lock */,
-				43647BC61BFF6435004389F9 /* Sources */,
+			buildPhases = (				43647BC61BFF6435004389F9 /* Sources */,
 				43647BC71BFF6435004389F9 /* Frameworks */,
 				43647BC81BFF6435004389F9 /* Resources */,
 				43647C1C1BFF6435004389F9 /* Embed Watch Content */,
@@ -1243,9 +1180,7 @@
 		43647BDD1BFF6435004389F9 /* nightguardTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C201BFF6435004389F9 /* Build configuration list for PBXNativeTarget "nightguardTests" */;
-			buildPhases = (
-				716E66D79A2444C5EE3AD91E /* [CP] Check Pods Manifest.lock */,
-				43647BDA1BFF6435004389F9 /* Sources */,
+			buildPhases = (				43647BDA1BFF6435004389F9 /* Sources */,
 				43647BDB1BFF6435004389F9 /* Frameworks */,
 				43647BDC1BFF6435004389F9 /* Resources */,
 			);
@@ -1262,9 +1197,7 @@
 		43647BE81BFF6435004389F9 /* nightguardUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C231BFF6435004389F9 /* Build configuration list for PBXNativeTarget "nightguardUITests" */;
-			buildPhases = (
-				232C5B67A8A4664AED977D3A /* [CP] Check Pods Manifest.lock */,
-				43647BE51BFF6435004389F9 /* Sources */,
+			buildPhases = (				43647BE51BFF6435004389F9 /* Sources */,
 				43647BE61BFF6435004389F9 /* Frameworks */,
 				43647BE71BFF6435004389F9 /* Resources */,
 			);
@@ -1281,9 +1214,7 @@
 		43647BF11BFF6435004389F9 /* nightguard WatchKit App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C191BFF6435004389F9 /* Build configuration list for PBXNativeTarget "nightguard WatchKit App" */;
-			buildPhases = (
-				ACB978011BCBC7C03A23D062 /* [CP] Check Pods Manifest.lock */,
-				43647BF01BFF6435004389F9 /* Resources */,
+			buildPhases = (				43647BF01BFF6435004389F9 /* Resources */,
 				81615C31F20A3DB028BE7BC8 /* Frameworks */,
 				43D0061029DE0389003BCE92 /* Embed Foundation Extensions */,
 				43647BFD1BFF6435004389F9 /* Sources */,
@@ -1301,9 +1232,7 @@
 		438DAC7A28D2356800FBF520 /* nightguard Widget Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 438DAC8F28D2356A00FBF520 /* Build configuration list for PBXNativeTarget "nightguard Widget Extension" */;
-			buildPhases = (
-				28C8DAFACD5D8FAB27A957C1 /* [CP] Check Pods Manifest.lock */,
-				438DAC7728D2356800FBF520 /* Sources */,
+			buildPhases = (				438DAC7728D2356800FBF520 /* Sources */,
 				438DAC7828D2356800FBF520 /* Frameworks */,
 				438DAC7928D2356800FBF520 /* Resources */,
 			);
@@ -1319,9 +1248,7 @@
 		43D005CE29DC9BFA003BCE92 /* nightguard ComplicationExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43D005E129DC9BFC003BCE92 /* Build configuration list for PBXNativeTarget "nightguard ComplicationExtension" */;
-			buildPhases = (
-				8C83B94E841A03FEA9C49F1D /* [CP] Check Pods Manifest.lock */,
-				43D005CB29DC9BFA003BCE92 /* Sources */,
+			buildPhases = (				43D005CB29DC9BFA003BCE92 /* Sources */,
 				43D005CC29DC9BFA003BCE92 /* Frameworks */,
 				43D005CD29DC9BFA003BCE92 /* Resources */,
 			);
@@ -1466,140 +1393,7 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		10A74B26D3FFEC917DC6E9E0 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-nightguard-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		232C5B67A8A4664AED977D3A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-nightguardUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		28C8DAFACD5D8FAB27A957C1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-nightguard Widget Extension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		716E66D79A2444C5EE3AD91E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-nightguardTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8C83B94E841A03FEA9C49F1D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-nightguard ComplicationExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ACB978011BCBC7C03A23D062 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-nightguard WatchKit App-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
+/* Begin PBXShellScriptBuildPhase section *//* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		43647BC61BFF6435004389F9 /* Sources */ = {
@@ -2248,7 +2042,6 @@
 		};
 		43647C1A1BFF6435004389F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0FB1B12F7327387311F57CAA /* Pods-nightguard WatchKit App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
@@ -2256,7 +2049,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 940;
+				CURRENT_PROJECT_VERSION = 941;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2279,7 +2072,6 @@
 		};
 		43647C1B1BFF6435004389F9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AAB9CB66F08543B434F9F39C /* Pods-nightguard WatchKit App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
@@ -2287,7 +2079,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 940;
+				CURRENT_PROJECT_VERSION = 941;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2309,13 +2101,12 @@
 		};
 		43647C1E1BFF6435004389F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89358A3E8C5372AE643A47B4 /* Pods-nightguard.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 940;
+				CURRENT_PROJECT_VERSION = 941;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -2339,13 +2130,12 @@
 		};
 		43647C1F1BFF6435004389F9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C304D8152D0180EF0529BA73 /* Pods-nightguard.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 940;
+				CURRENT_PROJECT_VERSION = 941;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
@@ -2368,7 +2158,6 @@
 		};
 		43647C211BFF6435004389F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1DF7CCBF81749EB5433A6B02 /* Pods-nightguardTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
@@ -2388,7 +2177,6 @@
 		};
 		43647C221BFF6435004389F9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5560CB94CC76B8F0F7F5C440 /* Pods-nightguardTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = nightguardTests/Info.plist;
@@ -2408,7 +2196,6 @@
 		};
 		43647C241BFF6435004389F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE85AD88336D9980D39338FF /* Pods-nightguardUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -2429,7 +2216,6 @@
 		};
 		43647C251BFF6435004389F9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18060ADE499D1BF44318334D /* Pods-nightguardUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = nightguardUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -2449,7 +2235,6 @@
 		};
 		438DAC8D28D2356A00FBF520 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C874A04E7D42DBD80D7803D4 /* Pods-nightguard Widget Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -2463,7 +2248,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 940;
+				CURRENT_PROJECT_VERSION = 941;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2490,7 +2275,6 @@
 		};
 		438DAC8E28D2356A00FBF520 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2AE62FD2AA9BA0D5AF7737B2 /* Pods-nightguard Widget Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -2504,7 +2288,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 940;
+				CURRENT_PROJECT_VERSION = 941;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2529,7 +2313,6 @@
 		};
 		43D005DF29DC9BFC003BCE92 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A4F222974AF5F9228A291DD7 /* Pods-nightguard ComplicationExtension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -2542,7 +2325,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 940;
+				CURRENT_PROJECT_VERSION = 941;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2572,7 +2355,6 @@
 		};
 		43D005E029DC9BFC003BCE92 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3CA65C6BB6832F5B54DF487A /* Pods-nightguard ComplicationExtension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -2585,7 +2367,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 940;
+				CURRENT_PROJECT_VERSION = 941;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";

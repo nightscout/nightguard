@@ -1,4 +1,0 @@
-Target dependency graph (2 targets)
-Target 'nightguard WatchKit App' in project 'nightguard'
-➜ Explicit dependency on target 'nightguard ComplicationExtension' in project 'nightguard'
-Target 'nightguard ComplicationExtension' in project 'nightguard' (no dependencies)

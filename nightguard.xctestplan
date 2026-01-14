@@ -23,6 +23,13 @@
         "identifier" : "43647BDD1BFF6435004389F9",
         "name" : "nightguardTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:nightguard.xcodeproj",
+        "identifier" : "43647BE81BFF6435004389F9",
+        "name" : "nightguardUITests"
+      }
     }
   ],
   "version" : 1

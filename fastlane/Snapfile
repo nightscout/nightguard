@@ -3,7 +3,6 @@
 # A list of devices you want to take the screenshots from
  devices([
    "iPhone 17 Pro Max",
-   "iPhone 17",
    "iPad Pro 13-inch (M5)"
  ])
 
@@ -14,13 +13,16 @@
  ])
 
 # The name of the scheme which contains the UI Tests
-# scheme("SchemeName")
+scheme("nightguard")
 
 # Where should the resulting screenshots be stored?
 # output_directory("./screenshots")
 
 # remove the '#' to clear all previously generated screenshots before creating new ones
 clear_previous_screenshots(true)
+
+# Ensure simulator GUI is visible (not headless)
+headless(false)
 
 # Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
 # launch_arguments(["-favColor red"])

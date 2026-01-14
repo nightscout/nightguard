@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Generate new localized screenshots
 
+### ios frame
+
+```sh
+[bundle exec] fastlane ios frame
+```
+
+Frame screenshots only
+
 ### ios release
 
 ```sh

@@ -18,9 +18,39 @@ default_platform(:ios)
 platform :ios do
   desc "Generate new localized screenshots"
   lane :screenshots do
+    require_relative './frameit_patch'
     capture_screenshots(
         workspace: "nightguard.xcworkspace",
         scheme: "nightguard")
+
+    # Workaround: Resize iPhone 17 Pro Max screenshots to iPhone 15 Pro Max size (1290x2796) for frameit support
+    puts "Current working directory: #{Dir.pwd}"
+    # Check both potential paths depending on execution context
+    screenshot_paths = (Dir.glob("fastlane/screenshots/**/*.png") + Dir.glob("screenshots/**/*.png")).uniq
+    puts "Found #{screenshot_paths.count} screenshots."
+
+    screenshot_paths.each do |path|
+      if path.include?("iPhone 17")
+        puts "Resizing #{path} to 1290x2796..."
+        `sips --resampleHeightWidth 2796 1290 "#{path}"`
+      end
+      if path.include?("iPad Pro 13-inch")
+        puts "Resizing #{path} to 2048x2732..."
+        `sips --resampleHeightWidth 2732 2048 "#{path}"`
+        new_path = path.gsub("iPad Pro 13-inch (M5)", "iPad Pro (12.9-inch) (4th generation)")
+        if path != new_path
+          File.rename(path, new_path)
+          puts "Renamed #{path} to #{new_path}"
+        end
+      end
+    end
+
+    frame_screenshots
+  end
+
+  desc "Frame screenshots only"
+  lane :frame do
+    require_relative './frameit_patch'
     frame_screenshots
   end
 
@@ -32,6 +62,6 @@ platform :ios do
         force: true,
         overwrite_screenshots: false,
 	automatic_release: true,
-        skip_screenshots: true)
+        skip_screenshots: false)
   end
 end
