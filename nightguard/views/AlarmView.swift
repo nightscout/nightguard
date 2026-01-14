@@ -1115,4 +1115,5 @@ struct AgeAlertsView: View {
     NavigationView {
         AlarmView()
     }
+    .navigationViewStyle(StackNavigationViewStyle())
 }

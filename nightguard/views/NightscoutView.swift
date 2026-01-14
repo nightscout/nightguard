@@ -54,6 +54,7 @@ struct NightscoutView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .preferredColorScheme(.dark)
     }
 }

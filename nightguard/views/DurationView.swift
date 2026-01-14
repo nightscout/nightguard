@@ -156,6 +156,7 @@ struct DurationView: View {
                 Text(errorMessage)
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     // MARK: - Helper Methods

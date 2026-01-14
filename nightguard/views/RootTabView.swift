@@ -65,6 +65,7 @@ struct RootTabView: View {
             NavigationView {
                 AlarmView()
             }
+            .navigationViewStyle(StackNavigationViewStyle())
             .onAppear { forcePortrait() }
             .tabItem {
                 Image("Alarm")

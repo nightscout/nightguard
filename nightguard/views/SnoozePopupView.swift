@@ -97,6 +97,7 @@ struct SnoozePopupView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     // MARK: - Device-specific sizes

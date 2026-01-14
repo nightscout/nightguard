@@ -194,6 +194,7 @@ struct PrefsView: View {
                 Text(urlErrorMessage)
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     // MARK: - Helper Methods
