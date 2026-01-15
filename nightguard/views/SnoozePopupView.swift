@@ -12,12 +12,12 @@ struct SnoozePopupView: View {
     @Environment(\.dismiss) var dismiss
 
     private let snoozeOptions: [(label: String, minutes: Int)] = [
-        ("5", 5),
-        ("10", 10),
-        ("15", 15),
-        ("20", 20),
-        ("30", 30),
-        ("45", 45),
+        ("5m", 5),
+        ("10m", 10),
+        ("15m", 15),
+        ("20m", 20),
+        ("30m", 30),
+        ("45m", 45),
         ("1h", 60),
         ("2h", 120),
         ("3h", 180),
@@ -45,7 +45,6 @@ struct SnoozePopupView: View {
 
                     // Snooze buttons grid
                     LazyVGrid(columns: [
-                        GridItem(.flexible(), spacing: 16),
                         GridItem(.flexible(), spacing: 16),
                         GridItem(.flexible(), spacing: 16)
                     ], spacing: 16) {

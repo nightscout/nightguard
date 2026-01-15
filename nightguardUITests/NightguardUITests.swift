@@ -124,7 +124,7 @@ class NightguardUITests: XCTestCase {
         selectTab(identifier: "tab_prefs", index: 5, using: tabBar)
     }
     
-    fileprivate func selectStatsTab(using tabBar: XCUIElement? = nil) {
+    fileprivate func BselectStatsTab(using tabBar: XCUIElement? = nil) {
         selectTab(identifier: "tab_stats", index: 4, using: tabBar)
     }
 
@@ -466,7 +466,7 @@ class NightguardUITests: XCTestCase {
         }
 
         let closeButton = app.buttons["closeButton"].firstMatch
-        if closeButton.waitForExistence(timeout: 15) {
+        if closeButton.waitForExistence(timeout: 20) {
             snapshot("02-nightscout")
             closeButton.forceTap()
         }

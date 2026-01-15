@@ -3,12 +3,13 @@
     "keyword": {
       "fonts": [
         {
-          "font": "./fonts/DIN-Alternate-Bold.ttf",
+          "font": "./fonts/BebasNeue-Bold.ttf",
           "supported": ["de-DE", "en-US", "es-ES", "fr-FR", "it-IT", "nl-NL", "sv-SE", "pt-BR"]
         }
       ],
       "stroke_color": "#333333",
-      "stroke_width": 10
+      "stroke_width": 10,
+      "font_scale_multiplier": 1.5
     },
     "title": {
       "fonts": [
@@ -17,11 +18,12 @@
           "supported": ["de-DE", "en-US", "es-ES", "fr-FR", "it-IT", "nl-NL", "sv-SE", "pt-BR"]
         }
       ],
-      "color": "#545454"
+      "color": "#545454",
+      "font_scale_multiplier": 1.2
     },
     "background": "./background.jpg",
-    "font_scale_factor": 0.10,
-    "title_min_height": "20%",
+    "font_scale_factor": 0.1,
+    "title_min_height": "10%",
     "padding": 30
   },
 

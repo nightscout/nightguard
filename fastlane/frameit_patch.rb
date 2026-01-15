@@ -58,7 +58,13 @@ module FrameitTextOutlinePatch
         i.font(current_font) if current_font
         i.weight(@config[key.to_s]['font_weight']) if @config[key.to_s]['font_weight']
         i.gravity("Center")
-        i.pointsize(actual_font_size(key))
+        
+        # Calculate point size with optional multiplier
+        point_size = actual_font_size(key)
+        multiplier = @config[key.to_s]['font_scale_multiplier']
+        point_size *= multiplier if multiplier
+        
+        i.pointsize(point_size)
         i.interline_spacing(interline_spacing) if interline_spacing
         
         # 1. Draw Stroke (Background)
