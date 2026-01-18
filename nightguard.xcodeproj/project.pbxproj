@@ -46,10 +46,18 @@
 		4303406B24CA1DA40088AB9A /* DeviceStatusData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303406824C9FF330088AB9A /* DeviceStatusData.swift */; };
 		4303406C24CA1DA60088AB9A /* DeviceStatusData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303406824C9FF330088AB9A /* DeviceStatusData.swift */; };
 		430A5F4F2495689300213F92 /* DeepPressGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */; };
-		430EB4EB2F1D0D8200CAF155 /* SharedUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */; };
 		430EB4F02F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
 		430EB4F12F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
 		430EB4F22F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
+		430EB4F32F1D4BB900CAF155 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
+		430EB4F42F1D4BED00CAF155 /* SharedUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */; };
+		430EB4F52F1D4C1700CAF155 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		430EB4F62F1D6F0600CAF155 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
+		430EB4F72F1D6F3800CAF155 /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
+		430EB4F82F1D6FD200CAF155 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
+		430EB4F92F1D709200CAF155 /* BloodSugarArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */; };
+		430EB4FA2F1D70B300CAF155 /* SharedUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */; };
+		430EB4FB2F1D70DF00CAF155 /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */; };
 		43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
 		43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
@@ -85,10 +93,8 @@
 		4330662A23AFADE200690C4A /* WatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB521FAF6890035A60E /* WatchMessage.swift */; };
 		4330662B23AFB05800690C4A /* WatchMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB921FB0E910035A60E /* WatchMessageService.swift */; };
 		4330662C23AFB05900690C4A /* WatchMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB921FB0E910035A60E /* WatchMessageService.swift */; };
-		4330662E23AFB22B00690C4A /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		4330662F23AFB26700690C4A /* NightscoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0FA1D07698000C329A2 /* NightscoutData.swift */; };
 		4330663023AFB27900690C4A /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
-		4330663223AFB36D00690C4A /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		4330663323AFB39A00690C4A /* UserDefaultsValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */; };
 		4330663423AFB3C600690C4A /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
 		4330663523AFB3D900690C4A /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
@@ -163,14 +169,10 @@
 		436D73B427C826F100639B15 /* AppleHealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D73B327C826F100639B15 /* AppleHealthService.swift */; };
 		436D73B627C82A5E00639B15 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436D73B527C82A5E00639B15 /* HealthKit.framework */; };
 		4378767424FAAB96009E163E /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
-		4378767724FAABF3009E163E /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
-		4378767824FAABF4009E163E /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		4378767924FAAC12009E163E /* SnoozeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CC221FB0FA80035A60E /* SnoozeMessage.swift */; };
 		4378767A24FAAC12009E163E /* SnoozeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CC221FB0FA80035A60E /* SnoozeMessage.swift */; };
-		4378767B24FAAC36009E163E /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		4378767C24FAAC6C009E163E /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */; };
 		4378767D24FAAC6D009E163E /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16C8EDE2211047300192117 /* UIViewController+Extensions.swift */; };
-		4378767E24FAAC7B009E163E /* BloodSugarArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */; };
 		4378767F24FAAC8B009E163E /* Regression.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079021C85FAD00DC6879 /* Regression.swift */; };
 		4378768024FAACA4009E163E /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F21D07698000C329A2 /* AlarmSound.swift */; };
 		4378768124FAACA5009E163E /* AlarmSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0F21D07698000C329A2 /* AlarmSound.swift */; };
@@ -354,7 +356,6 @@
 		D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3721EA600200ECFB5E /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
-		D112DD3821EA61A700ECFB5E /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		D112DD3A21EB502300ECFB5E /* BloodSugarArrayTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */; };
 		D112DD3C21EB507E00ECFB5E /* PredictionServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */; };
 		D123EFE621FB31FF00CE8718 /* WatchMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CB921FB0E910035A60E /* WatchMessageService.swift */; };
@@ -367,7 +368,6 @@
 		D12DE22C220777E400228875 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
 		D133078421C424A800DC6879 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078321C424A800DC6879 /* ArrayExtension.swift */; };
 		D133078821C85D4400DC6879 /* BloodSugarArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */; };
-		D133078921C85D5200DC6879 /* BloodSugarArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */; };
 		D133078A21C85D5400DC6879 /* BloodSugarArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078721C85D4300DC6879 /* BloodSugarArrayExtension.swift */; };
 		D133078B21C85DA800DC6879 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078321C424A800DC6879 /* ArrayExtension.swift */; };
 		D133078C21C85DAA00DC6879 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078321C424A800DC6879 /* ArrayExtension.swift */; };
@@ -440,7 +440,6 @@
 		D1ECDA262202C8F0002BE6F9 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */; };
 		D1ECDA272202C8F0002BE6F9 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */; };
 		D1ECDA282202C8F0002BE6F9 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */; };
-		D1F2F57921EF12DC00CEB874 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		D1F2F57A21EF131500CEB874 /* Regression.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079021C85FAD00DC6879 /* Regression.swift */; };
 		D1F2F57B21EF133000CEB874 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079121C85FAE00DC6879 /* Matrix.swift */; };
 		D1F2F57C21EF133600CEB874 /* Matrix+Append.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133078E21C85FAC00DC6879 /* Matrix+Append.swift */; };
@@ -1567,12 +1566,12 @@
 				D1F2F57A21EF131500CEB874 /* Regression.swift in Sources */,
 				433AD0171CCE3E89001A76CD /* NightscoutServiceTest.swift in Sources */,
 				D13A4C1D2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
-				D133078921C85D5200DC6879 /* BloodSugarArrayExtension.swift in Sources */,
+				430EB4FB2F1D70DF00CAF155 /* AlarmRule.swift in Sources */,
 				4378769024FAAD42009E163E /* VolumeChangeDetector.swift in Sources */,
-				4378767724FAABF3009E163E /* AlarmRule.swift in Sources */,
 				432E62ED1D15EFF100DD7978 /* FloatExtension.swift in Sources */,
 				4302C69225DC4F530052777F /* CorrectionBolusTreatment.swift in Sources */,
 				D1F2F57C21EF133600CEB874 /* Matrix+Append.swift in Sources */,
+				430EB4F62F1D6F0600CAF155 /* PredictionService.swift in Sources */,
 				D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */,
 				D1ECDA202201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				4378768824FAACF9009E163E /* UIViewControllerExtension.swift in Sources */,
@@ -1593,13 +1592,14 @@
 				D133078C21C85DAA00DC6879 /* ArrayExtension.swift in Sources */,
 				432E62DA1D0CC3DE00DD7978 /* TimeService.swift in Sources */,
 				4349823B2534E07200CF0014 /* DictionaryExtension.swift in Sources */,
+				430EB4F72F1D6F3800CAF155 /* NightscoutCacheService.swift in Sources */,
 				4302C6BB25DD98170052777F /* CarbCorrectionTreatment.swift in Sources */,
 				4330662923AFADE200690C4A /* WatchMessage.swift in Sources */,
 				4378768424FAACCB009E163E /* MPVolumeViewExtension.swift in Sources */,
 				D1F2F57E21EF134400CEB874 /* RegressionHelper.swift in Sources */,
 				43BB4B0624CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */,
 				D112DD3721EA600200ECFB5E /* Helpers.swift in Sources */,
-				D1F2F57921EF12DC00CEB874 /* PredictionService.swift in Sources */,
+				430EB4FA2F1D70B300CAF155 /* SharedUserDefaultsRepository.swift in Sources */,
 				4378767C24FAAC6C009E163E /* UIViewController+Extensions.swift in Sources */,
 				D12DE22C220777E400228875 /* UIApplicationExtension.swift in Sources */,
 				4302C66425DB0DFF0052777F /* TreatmentsStream.swift in Sources */,
@@ -1608,9 +1608,11 @@
 				D1AEFEDA21FE011C00821DF6 /* AnyConvertible.swift in Sources */,
 				D112DD3A21EB502300ECFB5E /* BloodSugarArrayTest.swift in Sources */,
 				4378768D24FAAD0A009E163E /* UIScreen+AnimatedBrightness.swift in Sources */,
+				430EB4F82F1D6FD200CAF155 /* AlarmNotificationService.swift in Sources */,
 				4303406A24CA1DA30088AB9A /* DeviceStatusData.swift in Sources */,
 				4330662B23AFB05800690C4A /* WatchMessageService.swift in Sources */,
 				D15055AE2200CF1F00F31C1F /* UserDefaultsValueGroups.swift in Sources */,
+				430EB4F92F1D709200CAF155 /* BloodSugarArrayExtension.swift in Sources */,
 				433AD0181CCE3FCB001A76CD /* UserDefaultsRepository.swift in Sources */,
 				4389A5282602AADE001F10AD /* TargetDataTest.swift in Sources */,
 				432E62F11D188A2A00DD7978 /* UnitsConverter.swift in Sources */,
@@ -1625,7 +1627,6 @@
 				4378767924FAAC12009E163E /* SnoozeMessage.swift in Sources */,
 				D1D96CB221F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
 				432E62D71D0CC35100DD7978 /* NightscoutService.swift in Sources */,
-				D112DD3821EA61A700ECFB5E /* NightscoutCacheService.swift in Sources */,
 				4BD05B7C2B1E33F700A74E9B /* DateExtensionTest.swift in Sources */,
 				432E62D81D0CC38C00DD7978 /* NightscoutData.swift in Sources */,
 			);
@@ -1645,7 +1646,6 @@
 				43BB4B0724CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */,
 				4330662C23AFB05900690C4A /* WatchMessageService.swift in Sources */,
 				4330663023AFB27900690C4A /* Helpers.swift in Sources */,
-				4378767824FAABF4009E163E /* AlarmRule.swift in Sources */,
 				4302C69325DC4F530052777F /* CorrectionBolusTreatment.swift in Sources */,
 				4330663923AFB58500690C4A /* AnyConvertible.swift in Sources */,
 				28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */,
@@ -1662,16 +1662,12 @@
 				4378767A24FAAC12009E163E /* SnoozeMessage.swift in Sources */,
 				4303406B24CA1DA40088AB9A /* DeviceStatusData.swift in Sources */,
 				4334D98224C32D7500652D87 /* DateExtension.swift in Sources */,
-				4378767E24FAAC7B009E163E /* BloodSugarArrayExtension.swift in Sources */,
 				4330664023AFB6D200690C4A /* NightscoutDataRepository.swift in Sources */,
 				4330663C23AFB5F900690C4A /* ObservationToken.swift in Sources */,
 				436BE82D24A322AE00FDCBB5 /* BloodSugar.swift in Sources */,
 				4378768F24FAAD2A009E163E /* Matrix+Append.swift in Sources */,
 				43E9F70427386ED700C6AEB3 /* UIImageExtension.swift in Sources */,
-				4378767B24FAAC36009E163E /* PredictionService.swift in Sources */,
-				4330663223AFB36D00690C4A /* NightscoutService.swift in Sources */,
 				4330663A23AFB5B100690C4A /* UserDefaultsValueGroups.swift in Sources */,
-				430EB4EB2F1D0D8200CAF155 /* SharedUserDefaultsRepository.swift in Sources */,
 				4302C67725DB0E0C0052777F /* Treatment.swift in Sources */,
 				4330663523AFB3D900690C4A /* UserDefaultsRepository.swift in Sources */,
 				4378768124FAACA5009E163E /* AlarmSound.swift in Sources */,
@@ -1687,7 +1683,6 @@
 				4378768524FAACD8009E163E /* TimerExtension.swift in Sources */,
 				4378767D24FAAC6D009E163E /* UIViewController+Extensions.swift in Sources */,
 				4378768224FAACAD009E163E /* Matrix.swift in Sources */,
-				4330662E23AFB22B00690C4A /* NightscoutCacheService.swift in Sources */,
 				4378768A24FAACFF009E163E /* ArrayExtension.swift in Sources */,
 				4378767424FAAB96009E163E /* UIApplicationExtension.swift in Sources */,
 				4330663D23AFB62200690C4A /* AppConstants.swift in Sources */,
@@ -1712,6 +1707,7 @@
 				43CE59AC250813D700D71B77 /* MainController.swift in Sources */,
 				D1AEFED921FE011B00821DF6 /* AnyConvertible.swift in Sources */,
 				D1ECDA212201075B002BE6F9 /* ObservationToken.swift in Sources */,
+				430EB4F32F1D4BB900CAF155 /* AlarmNotificationService.swift in Sources */,
 				43A0476B24D2023C0040D853 /* WKInterfaceLabel.swift in Sources */,
 				D133079521C85FAE00DC6879 /* Matrix+Append.swift in Sources */,
 				432E62EC1D15EFEC00DD7978 /* FloatExtension.swift in Sources */,
@@ -1747,6 +1743,7 @@
 				4317D2F21FB0E875004F964B /* NightscoutCacheService.swift in Sources */,
 				43E9F70527386ED800C6AEB3 /* UIImageExtension.swift in Sources */,
 				D133079921C85FAE00DC6879 /* Regression.swift in Sources */,
+				430EB4F52F1D4C1700CAF155 /* PurchaseManager.swift in Sources */,
 				43961F752533708D00B1492B /* TemporaryTargetView.swift in Sources */,
 				D133079B21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				D123EFE621FB31FF00CE8718 /* WatchMessageService.swift in Sources */,
@@ -1766,6 +1763,7 @@
 				D133078A21C85D5400DC6879 /* BloodSugarArrayExtension.swift in Sources */,
 				D13A4C1E2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
 				43D826AE2F0598F5003563A2 /* MainViewModel.swift in Sources */,
+				430EB4F42F1D4BED00CAF155 /* SharedUserDefaultsRepository.swift in Sources */,
 				4302C68525DB0E110052777F /* MealBolusTreatment.swift in Sources */,
 				4330E3EF25D3239C0054A0A6 /* AppState.swift in Sources */,
 				438C55A9253C81370002E109 /* CarbsView.swift in Sources */,
@@ -2104,7 +2102,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 944;
+				CURRENT_PROJECT_VERSION = 945;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2134,7 +2132,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 944;
+				CURRENT_PROJECT_VERSION = 945;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2161,7 +2159,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 944;
+				CURRENT_PROJECT_VERSION = 945;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -2190,7 +2188,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 944;
+				CURRENT_PROJECT_VERSION = 945;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
@@ -2303,7 +2301,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 944;
+				CURRENT_PROJECT_VERSION = 945;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2343,7 +2341,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 944;
+				CURRENT_PROJECT_VERSION = 945;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2380,7 +2378,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 944;
+				CURRENT_PROJECT_VERSION = 945;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2422,7 +2420,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 944;
+				CURRENT_PROJECT_VERSION = 945;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";

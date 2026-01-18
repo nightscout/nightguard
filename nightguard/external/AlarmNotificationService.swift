@@ -158,43 +158,56 @@ class AlarmNotificationService {
 
     private func scheduleAgeNotification(identifier: String, changeDate: Date, criticalHours: Int, title: String, body: String) {
         // Remove pending notification for this identifier first
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+        // We remove the base identifier and the possible indexed identifiers
+        var identifiersToRemove = [identifier]
+        for i in 0...24 {
+            identifiersToRemove.append("\(identifier)-\(i)")
+        }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
 
-        guard PurchaseManager.shared.isProAccessAvailable else {
+        /*guard PurchaseManager.shared.isProAccessAvailable else {
             print("Pro version not unlocked. Skipping \(identifier) notification.")
             return
-        }
+        }*/
 
         guard enabled else { return }
 
         let calendar = Calendar.current
         guard let criticalDate = calendar.date(byAdding: .hour, value: criticalHours, to: changeDate) else { return }
         
-        let timeInterval = criticalDate.timeIntervalSinceNow
+        // Determine start time for notifications
+        let now = Date()
+        let startTime = (criticalDate > now) ? criticalDate : now
         
-        // If the date is in the past, show immediately (or skip if way too old, but sticking to "show immediately" for now)
-        // If in future, schedule it.
-        
-        let trigger: UNNotificationTrigger
-        if timeInterval <= 0 {
-             trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        } else {
-             trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
-        }
+        // Schedule multiple notifications (every hour for the next 24 hours)
+        for i in 0..<24 {
+            guard let notificationDate = calendar.date(byAdding: .hour, value: i, to: startTime) else { continue }
+            
+            let timeInterval = notificationDate.timeIntervalSinceNow
+            
+            // Should be positive, but safe guard (min 1 second if it's "now")
+            let validTimeInterval = max(timeInterval, 1)
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: validTimeInterval, repeats: false)
 
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.body = body
-        content.sound = .default
-
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Error scheduling \(identifier) notification: \(error)")
-            } else {
-                print("Scheduled \(identifier) notification for \(criticalDate)")
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = body
+            content.sound = .default
+            
+            // Use indexed identifier
+            let requestId = "\(identifier)-\(i)"
+            let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Error scheduling \(requestId) notification: \(error)")
+                } else {
+                    print("Scheduled \(requestId) notification for \(notificationDate)")
+                }
             }
         }
+        print("Scheduled hourly \(identifier) notifications starting at \(startTime)")
     }
     
     private init() {

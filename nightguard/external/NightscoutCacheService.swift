@@ -78,23 +78,35 @@ class NightscoutCacheService: NSObject {
     func getCannulaChangeTime() -> Date {
         
         NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .cannulaChange, daysToGoBackInTime: 5, resultHandler: { (cannulaChangeTime: Date) in
+            let oldDate = NightscoutDataRepository.singleton.loadCannulaChangeTime()
+            if abs(cannulaChangeTime.timeIntervalSince(oldDate)) > 1 {
                 NightscoutDataRepository.singleton.storeCannulaChangeTime(cannulaChangeTime: cannulaChangeTime)
-            })
+                AlarmNotificationService.singleton.scheduleCannulaNotification(changeDate: cannulaChangeTime)
+            }
+        })
         
         return NightscoutDataRepository.singleton.loadCannulaChangeTime()
     }
     
     func getSensorChangeTime() -> Date {
         NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .sensorStart, daysToGoBackInTime: 14, resultHandler: { (sensorChangeTime: Date) in
+            let oldDate = NightscoutDataRepository.singleton.loadSensorChangeTime()
+            if abs(sensorChangeTime.timeIntervalSince(oldDate)) > 1 {
                 NightscoutDataRepository.singleton.storeSensorChangeTime(sensorChangeTime: sensorChangeTime)
-            })
+                AlarmNotificationService.singleton.scheduleSensorNotification(changeDate: sensorChangeTime)
+            }
+        })
         return NightscoutDataRepository.singleton.loadSensorChangeTime()
     }
     
     func getPumpBatteryChangeTime() ->  Date {
         NightscoutService.singleton.readLastTreatementEventTimestamp(eventType: .pumpBatteryChange, daysToGoBackInTime: 40, resultHandler: { (batteryChangeTime: Date) in
+            let oldDate = NightscoutDataRepository.singleton.loadBatteryChangeTime()
+            if abs(batteryChangeTime.timeIntervalSince(oldDate)) > 1 {
                 NightscoutDataRepository.singleton.storeBatteryChangeTime(batteryChangeTime: batteryChangeTime)
-            })
+                AlarmNotificationService.singleton.scheduleBatteryNotification(changeDate: batteryChangeTime)
+            }
+        })
         
         return NightscoutDataRepository.singleton.loadBatteryChangeTime()
     }
