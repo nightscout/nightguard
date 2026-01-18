@@ -110,15 +110,20 @@ class NightscoutDataRepository {
             return Date()
         }
         
-        guard let cannulaChangeTime = defaults.object(forKey: Constants.cannulaChangeTime) as? Date else {
-            return Date();
+        if let cannulaChangeTime = defaults.object(forKey: Constants.cannulaChangeTime) as? Date {
+            return cannulaChangeTime
         }
-        return cannulaChangeTime
+        
+        if let cannulaChangeTime = defaults.object(forKey: Constants.cannulaChangeTime) as? Double {
+            return Date(timeIntervalSince1970: cannulaChangeTime)
+        }
+        
+        return Date()
     }
     
     func storeCannulaChangeTime(cannulaChangeTime : Date) {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults?.set(cannulaChangeTime, forKey: Constants.cannulaChangeTime)
+        defaults?.set(cannulaChangeTime.timeIntervalSince1970, forKey: Constants.cannulaChangeTime)
     }
     
     func loadSensorChangeTime() -> Date {
@@ -127,15 +132,20 @@ class NightscoutDataRepository {
             return Date()
         }
         
-        guard let sensorChangeTime = defaults.object(forKey: Constants.sensorChangeTime) as? Date else {
-            return Date();
+        if let sensorChangeTime = defaults.object(forKey: Constants.sensorChangeTime) as? Date {
+            return sensorChangeTime
         }
-        return sensorChangeTime
+        
+        if let sensorChangeTime = defaults.object(forKey: Constants.sensorChangeTime) as? Double {
+            return Date(timeIntervalSince1970: sensorChangeTime)
+        }
+        
+        return Date()
     }
     
     func storeSensorChangeTime(sensorChangeTime : Date) {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults?.set(sensorChangeTime, forKey: Constants.sensorChangeTime)
+        defaults?.set(sensorChangeTime.timeIntervalSince1970, forKey: Constants.sensorChangeTime)
     }
     
     func loadBatteryChangeTime() -> Date {
@@ -144,15 +154,20 @@ class NightscoutDataRepository {
             return Date()
         }
         
-        guard let batteryChangeTime = defaults.object(forKey: Constants.batteryChangeTime) as? Date else {
-            return Date();
+        if let batteryChangeTime = defaults.object(forKey: Constants.batteryChangeTime) as? Date {
+            return batteryChangeTime
         }
-        return batteryChangeTime
+        
+        if let batteryChangeTime = defaults.object(forKey: Constants.batteryChangeTime) as? Double {
+            return Date(timeIntervalSince1970: batteryChangeTime)
+        }
+        
+        return Date()
     }
     
     func storeBatteryChangeTime(batteryChangeTime : Date) {
         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults?.set(batteryChangeTime, forKey: Constants.batteryChangeTime)
+        defaults?.set(batteryChangeTime.timeIntervalSince1970, forKey: Constants.batteryChangeTime)
     }
     
     func storeDeviceStatusData(deviceStatusData : DeviceStatusData) {
