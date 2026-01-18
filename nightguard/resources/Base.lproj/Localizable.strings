@@ -573,3 +573,21 @@
 
 /* Restore Purchases Button */
 "Restore Purchases" = "Restore Purchases";
+
+/* Cannula Age Notification Title */
+"Cannula Age Critical" = "Cannula Age Critical";
+
+/* Cannula Age Notification Body */
+"Your cannula has reached its critical age." = "Your cannula has reached its critical age.";
+
+/* Sensor Age Notification Title */
+"Sensor Age Critical" = "Sensor Age Critical";
+
+/* Sensor Age Notification Body */
+"Your sensor has reached its critical age." = "Your sensor has reached its critical age.";
+
+/* Battery Age Notification Title */
+"Battery Age Critical" = "Battery Age Critical";
+
+/* Battery Age Notification Body */
+"Your pump battery has reached its critical age." = "Your pump battery has reached its critical age.";
