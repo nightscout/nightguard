@@ -12,7 +12,34 @@ import XCTest
 
 class NightscoutServiceTest: XCTestCase {
     
-    fileprivate let BASE_URI = "https://night.hermanns.app"
+    fileprivate var BASE_URI: String {
+        
+        let FALLBACKURL = "https://yournightscoutbackend.local"
+        let bundle = Bundle(for: type(of: self))
+        guard let filePath = bundle.path(forResource: ".env", ofType: nil) ?? Bundle.main.path(forResource: ".env", ofType: nil) else {
+            print("Error: .env file not found in bundle")
+            return FALLBACKURL // Fallback or empty? keeping original as default if missing to avoid breaking legacy setups without .env immediately
+        }
+        
+        do {
+            let contents = try String(contentsOfFile: filePath)
+            let lines = contents.components(separatedBy: .newlines)
+            for line in lines {
+                let parts = line.split(separator: "=", maxSplits: 1).map { String($0) }
+                if parts.count == 2 {
+                    let key = parts[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                    let value = parts[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                    if key == "BASE_URI" {
+                        return value
+                    }
+                }
+            }
+        } catch {
+            print("Error reading .env file: \(error)")
+        }
+        
+        return FALLBACKURL
+    }
     
     func testReadYesterdaysChartDataShouldReturnData() {
         

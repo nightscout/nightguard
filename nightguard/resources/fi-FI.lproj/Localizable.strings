@@ -711,3 +711,15 @@
 
 /* Hours label */
 "Hours" = "h";
+
+/* Pro Features Section Header */
+"Pro Features" = "Pro-ominaisuudet";
+
+/* Pro Version Unlocked Text */
+"Pro Version Unlocked" = "Pro-tilaus aktiivinen";
+
+/* Unlock Pro Version Button */
+"Unlock Pro Version" = "Tilaa Pro";
+
+/* Restore Purchases Button */
+"Restore Purchases" = "Palauta ostot";

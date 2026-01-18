@@ -278,7 +278,8 @@
 "Vibrate" = "Vibrieren";
 
 /* Footer for Alert notifications */
-"AlarmNotificationDescription" = "Wenn die Anwendung im Hintergrund läuft, dann können Benachrichtigungen genutzt werden, um auf Alarme hinzuweisen.  Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platziert werden. Dennoch wird die Häufigkeit von Apple begrenzt.";
+"AlarmNotificationDescription" = "Wenn die Anwendung im Hintergrund läuft, dann können Benachrichtigungen genutzt werden, um auf Alarme hinzuweisen. 
+Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platziert werden. Dennoch wird die Häufigkeit von Apple begrenzt.";
 
 /* Stats button value for Yesterday */
 "Yesterday" = "Gestern";
@@ -621,3 +622,15 @@
 
 /* Hours label */
 "Hours" = "h";
+
+/* Pro Features Section Header */
+"Pro Features" = "Pro Funktionen";
+
+/* Pro Version Unlocked Text */
+"Pro Version Unlocked" = "Pro Abo aktiv";
+
+/* Unlock Pro Version Button */
+"Unlock Pro Version" = "Pro Abo abschließen";
+
+/* Restore Purchases Button */
+"Restore Purchases" = "Käufe wiederherstellen";

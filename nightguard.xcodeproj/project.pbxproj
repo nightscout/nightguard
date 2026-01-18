@@ -6,7 +6,8 @@
 	objectVersion = 54;
 	objects = {
 
-/* Begin PBXBuildFile section */		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
+/* Begin PBXBuildFile section */
+		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
 		43027A4C2EBFDBFD00BE71B9 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */; };
 		43027A4E2EC1256500BE71B9 /* AlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4D2EC1256500BE71B9 /* AlarmView.swift */; };
@@ -45,6 +46,10 @@
 		4303406B24CA1DA40088AB9A /* DeviceStatusData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303406824C9FF330088AB9A /* DeviceStatusData.swift */; };
 		4303406C24CA1DA60088AB9A /* DeviceStatusData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4303406824C9FF330088AB9A /* DeviceStatusData.swift */; };
 		430A5F4F2495689300213F92 /* DeepPressGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */; };
+		430EB4EB2F1D0D8200CAF155 /* SharedUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */; };
+		430EB4F02F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
+		430EB4F12F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
+		430EB4F22F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
 		430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */; };
 		43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
 		43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
@@ -313,6 +318,14 @@
 		43D561172468201E00B52B1C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		43D826AE2F0598F5003563A2 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D826AC2F0598F5003563A2 /* MainViewModel.swift */; };
 		43D826AF2F0598F5003563A2 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D826AC2F0598F5003563A2 /* MainViewModel.swift */; };
+		43E777E92F19874700BC8524 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		43E777EB2F1987BF00BC8524 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		43E777EC2F1987D100BC8524 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		43E777F52F198E3C00BC8524 /* ScreenSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F22F198E3C00BC8524 /* ScreenSectionView.swift */; };
+		43E777F62F198E3C00BC8524 /* NightscoutSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F02F198E3C00BC8524 /* NightscoutSectionView.swift */; };
+		43E777F72F198E3C00BC8524 /* DisplayOptionsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777EF2F198E3C00BC8524 /* DisplayOptionsSectionView.swift */; };
+		43E777F82F198E3C00BC8524 /* ProFeaturesSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */; };
+		43E777F92F198E3C00BC8524 /* UnitsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F32F198E3C00BC8524 /* UnitsSectionView.swift */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E9F70227386C9900C6AEB3 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9F70127386C9900C6AEB3 /* UIImageExtension.swift */; };
@@ -335,7 +348,9 @@
 		43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
 		4BD05B7C2B1E33F700A74E9B /* DateExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */; };
 		7B4E31F42C2379C4005090CB /* NotificationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F32C2379C4005090CB /* NotificationExtension.swift */; };
-		7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F52C237F14005090CB /* SystemSmallView.swift */; };		A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */; };		D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
+		7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F52C237F14005090CB /* SystemSmallView.swift */; };
+		A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */; };
+		D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3721EA600200ECFB5E /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
@@ -512,6 +527,7 @@
 		};
 /* End PBXCopyFilesBuildPhase section */
 
+/* Begin PBXFileReference section */
 		127F207A227F018E00C90F07 /* nightguard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nightguard.entitlements; sourceTree = "<group>"; };
 		28A3509723F9B31400F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		28B03A3623F9CD8E000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -533,6 +549,7 @@
 		4302C6B925DD98170052777F /* CarbCorrectionTreatment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarbCorrectionTreatment.swift; sourceTree = "<group>"; };
 		4303406824C9FF330088AB9A /* DeviceStatusData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStatusData.swift; sourceTree = "<group>"; };
 		430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepPressGestureRecognizer.swift; sourceTree = "<group>"; };
+		430EB4EF2F1D131C00CAF155 /* .env */ = {isa = PBXFileReference; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
 		430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
 		4313C8DF2EEA1676004D8E1A /* NightguardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightguardApp.swift; sourceTree = "<group>"; };
@@ -620,6 +637,12 @@
 		43D005E429DC9CBF003BCE92 /* NightguardTimelineProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightguardTimelineProvider.swift; sourceTree = "<group>"; };
 		43D005E529DC9CBF003BCE92 /* NightscoutDataEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutDataEntry.swift; sourceTree = "<group>"; };
 		43D826AC2F0598F5003563A2 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		43E777E72F19874700BC8524 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
+		43E777EF2F198E3C00BC8524 /* DisplayOptionsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOptionsSectionView.swift; sourceTree = "<group>"; };
+		43E777F02F198E3C00BC8524 /* NightscoutSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutSectionView.swift; sourceTree = "<group>"; };
+		43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeaturesSectionView.swift; sourceTree = "<group>"; };
+		43E777F22F198E3C00BC8524 /* ScreenSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSectionView.swift; sourceTree = "<group>"; };
+		43E777F32F198E3C00BC8524 /* UnitsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsSectionView.swift; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
 		43E9F70127386C9900C6AEB3 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		43EE375A24478D78008C9134 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
@@ -691,7 +714,8 @@
 		D1F94ECF223FFEFF00BB0A4D /* A1cView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A1cView.swift; sourceTree = "<group>"; };
 		D1F94ED1223FFF3900BB0A4D /* ReadingsStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingsStatsView.swift; sourceTree = "<group>"; };
 		D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPeriodSelectorView.swift; sourceTree = "<group>"; };
-		DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelViewSwiftUI.swift; sourceTree = "<group>"; };/* End PBXFileReference section */
+		DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsPanelViewSwiftUI.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		43647BC71BFF6435004389F9 /* Frameworks */ = {
@@ -799,6 +823,7 @@
 		43647BCC1BFF6435004389F9 /* nightguard */ = {
 			isa = PBXGroup;
 			children = (
+				430EB4EF2F1D131C00CAF155 /* .env */,
 				439BDA8E2B22520E004932EB /* external */,
 				439BDA8C2B2251D7004932EB /* repository */,
 				439BDA8B2B225176004932EB /* app */,
@@ -944,6 +969,7 @@
 		439BDA8B2B225176004932EB /* app */ = {
 			isa = PBXGroup;
 			children = (
+				43E777E72F19874700BC8524 /* PurchaseManager.swift */,
 				D1CE8CBF2204B07F0075FF8A /* Colors.swift */,
 				43E89E561E659102005B0A65 /* ChartScene.swift */,
 				43F1E0F21D07698000C329A2 /* AlarmSound.swift */,
@@ -1048,6 +1074,18 @@
 			path = viewmodel;
 			sourceTree = "<group>";
 		};
+		43E777F42F198E3C00BC8524 /* prefs */ = {
+			isa = PBXGroup;
+			children = (
+				43E777EF2F198E3C00BC8524 /* DisplayOptionsSectionView.swift */,
+				43E777F02F198E3C00BC8524 /* NightscoutSectionView.swift */,
+				43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */,
+				43E777F22F198E3C00BC8524 /* ScreenSectionView.swift */,
+				43E777F32F198E3C00BC8524 /* UnitsSectionView.swift */,
+			);
+			path = prefs;
+			sourceTree = "<group>";
+		};
 		43F1E1181D076D2800C329A2 /* domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -1109,6 +1147,7 @@
 		D1BA903620D303E700A0EBD1 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				43E777F42F198E3C00BC8524 /* prefs */,
 				D1F94ECA223FFD5400BB0A4D /* stats */,
 				43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */,
 				4391E5772EBF500300530260 /* MainView.swift */,
@@ -1160,7 +1199,8 @@
 		43647BC91BFF6435004389F9 /* nightguard */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C1D1BFF6435004389F9 /* Build configuration list for PBXNativeTarget "nightguard" */;
-			buildPhases = (				43647BC61BFF6435004389F9 /* Sources */,
+			buildPhases = (
+				43647BC61BFF6435004389F9 /* Sources */,
 				43647BC71BFF6435004389F9 /* Frameworks */,
 				43647BC81BFF6435004389F9 /* Resources */,
 				43647C1C1BFF6435004389F9 /* Embed Watch Content */,
@@ -1180,7 +1220,8 @@
 		43647BDD1BFF6435004389F9 /* nightguardTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C201BFF6435004389F9 /* Build configuration list for PBXNativeTarget "nightguardTests" */;
-			buildPhases = (				43647BDA1BFF6435004389F9 /* Sources */,
+			buildPhases = (
+				43647BDA1BFF6435004389F9 /* Sources */,
 				43647BDB1BFF6435004389F9 /* Frameworks */,
 				43647BDC1BFF6435004389F9 /* Resources */,
 			);
@@ -1197,7 +1238,8 @@
 		43647BE81BFF6435004389F9 /* nightguardUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C231BFF6435004389F9 /* Build configuration list for PBXNativeTarget "nightguardUITests" */;
-			buildPhases = (				43647BE51BFF6435004389F9 /* Sources */,
+			buildPhases = (
+				43647BE51BFF6435004389F9 /* Sources */,
 				43647BE61BFF6435004389F9 /* Frameworks */,
 				43647BE71BFF6435004389F9 /* Resources */,
 			);
@@ -1214,7 +1256,8 @@
 		43647BF11BFF6435004389F9 /* nightguard WatchKit App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43647C191BFF6435004389F9 /* Build configuration list for PBXNativeTarget "nightguard WatchKit App" */;
-			buildPhases = (				43647BF01BFF6435004389F9 /* Resources */,
+			buildPhases = (
+				43647BF01BFF6435004389F9 /* Resources */,
 				81615C31F20A3DB028BE7BC8 /* Frameworks */,
 				43D0061029DE0389003BCE92 /* Embed Foundation Extensions */,
 				43647BFD1BFF6435004389F9 /* Sources */,
@@ -1232,7 +1275,8 @@
 		438DAC7A28D2356800FBF520 /* nightguard Widget Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 438DAC8F28D2356A00FBF520 /* Build configuration list for PBXNativeTarget "nightguard Widget Extension" */;
-			buildPhases = (				438DAC7728D2356800FBF520 /* Sources */,
+			buildPhases = (
+				438DAC7728D2356800FBF520 /* Sources */,
 				438DAC7828D2356800FBF520 /* Frameworks */,
 				438DAC7928D2356800FBF520 /* Resources */,
 			);
@@ -1248,7 +1292,8 @@
 		43D005CE29DC9BFA003BCE92 /* nightguard ComplicationExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43D005E129DC9BFC003BCE92 /* Build configuration list for PBXNativeTarget "nightguard ComplicationExtension" */;
-			buildPhases = (				43D005CB29DC9BFA003BCE92 /* Sources */,
+			buildPhases = (
+				43D005CB29DC9BFA003BCE92 /* Sources */,
 				43D005CC29DC9BFA003BCE92 /* Frameworks */,
 				43D005CD29DC9BFA003BCE92 /* Resources */,
 			);
@@ -1345,6 +1390,7 @@
 				43647BD81BFF6435004389F9 /* LaunchScreen.storyboard in Resources */,
 				43F1E1061D07698000C329A2 /* Media.xcassets in Resources */,
 				43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */,
+				430EB4F22F1D131C00CAF155 /* .env in Resources */,
 				28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */,
 				D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */,
 			);
@@ -1354,6 +1400,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430EB4F02F1D131C00CAF155 /* .env in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1361,6 +1408,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430EB4F12F1D131C00CAF155 /* .env in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1392,8 +1440,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section *//* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		43647BC61BFF6435004389F9 /* Sources */ = {
@@ -1458,6 +1504,7 @@
 				D1F94ED2223FFF3900BB0A4D /* ReadingsStatsView.swift in Sources */,
 				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
 				D13A4C1C2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
+				43E777E92F19874700BC8524 /* PurchaseManager.swift in Sources */,
 				D13A4C202221E49200C71F08 /* NightSafeMessage.swift in Sources */,
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
 				D123EFEE21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */,
@@ -1473,6 +1520,11 @@
 				D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */,
 				439CBB1D28EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition in Sources */,
 				43027A682EC8863E00BE71B9 /* NightscoutView.swift in Sources */,
+				43E777F52F198E3C00BC8524 /* ScreenSectionView.swift in Sources */,
+				43E777F62F198E3C00BC8524 /* NightscoutSectionView.swift in Sources */,
+				43E777F72F198E3C00BC8524 /* DisplayOptionsSectionView.swift in Sources */,
+				43E777F82F198E3C00BC8524 /* ProFeaturesSectionView.swift in Sources */,
+				43E777F92F198E3C00BC8524 /* UnitsSectionView.swift in Sources */,
 				D133079221C85FAE00DC6879 /* RegressionHelper.swift in Sources */,
 				4302C65725D9C7080052777F /* Treatment.swift in Sources */,
 				43027A542EC5244600BE71B9 /* PrefsView.swift in Sources */,
@@ -1619,6 +1671,7 @@
 				4378767B24FAAC36009E163E /* PredictionService.swift in Sources */,
 				4330663223AFB36D00690C4A /* NightscoutService.swift in Sources */,
 				4330663A23AFB5B100690C4A /* UserDefaultsValueGroups.swift in Sources */,
+				430EB4EB2F1D0D8200CAF155 /* SharedUserDefaultsRepository.swift in Sources */,
 				4302C67725DB0E0C0052777F /* Treatment.swift in Sources */,
 				4330663523AFB3D900690C4A /* UserDefaultsRepository.swift in Sources */,
 				4378768124FAACA5009E163E /* AlarmSound.swift in Sources */,
@@ -1763,6 +1816,7 @@
 				438DAC9128D253BC00FBF520 /* NightscoutData.swift in Sources */,
 				4332FF6D2B16596E00DBF917 /* Matrix.swift in Sources */,
 				438DACA528D25BA700FBF520 /* UIColorExtension.swift in Sources */,
+				43E777EC2F1987D100BC8524 /* PurchaseManager.swift in Sources */,
 				438DACB028D25D1400FBF520 /* TimerExtension.swift in Sources */,
 				438DACAE28D25CDC00FBF520 /* VolumeChangeDetector.swift in Sources */,
 				43B303E029E54D5000AB260B /* TemporaryTarget.swift in Sources */,
@@ -1805,6 +1859,7 @@
 				4332FF702B1659F500DBF917 /* Matrix+Append.swift in Sources */,
 				43D005FC29DC9F80003BCE92 /* NightscoutDataRepository.swift in Sources */,
 				43C825842B1A8EF8004B2674 /* WatchMessageService.swift in Sources */,
+				43E777EB2F1987BF00BC8524 /* PurchaseManager.swift in Sources */,
 				43D005FE29DC9FA0003BCE92 /* Helpers.swift in Sources */,
 				435DFF7329E1E858007A25EA /* ViewExtension.swift in Sources */,
 				43D005F329DC9DCA003BCE92 /* Units.swift in Sources */,
@@ -2049,7 +2104,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 943;
+				CURRENT_PROJECT_VERSION = 944;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2079,7 +2134,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 943;
+				CURRENT_PROJECT_VERSION = 944;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2106,7 +2161,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 943;
+				CURRENT_PROJECT_VERSION = 944;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -2135,7 +2190,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 943;
+				CURRENT_PROJECT_VERSION = 944;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
@@ -2248,7 +2303,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 943;
+				CURRENT_PROJECT_VERSION = 944;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2288,7 +2343,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 943;
+				CURRENT_PROJECT_VERSION = 944;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2325,7 +2380,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 943;
+				CURRENT_PROJECT_VERSION = 944;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2367,7 +2422,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 943;
+				CURRENT_PROJECT_VERSION = 944;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";

@@ -168,6 +168,7 @@ struct DurationView: View {
                 showErrorAlert = true
             } else {
                 NightscoutDataRepository.singleton.storeCannulaChangeTime(cannulaChangeTime: cannulaChangeDate)
+                AlarmNotificationService.singleton.scheduleCannulaNotification(changeDate: cannulaChangeDate)
                 playSuccessFeedback()
                 selectedTab = 0
             }
@@ -181,6 +182,7 @@ struct DurationView: View {
                 showErrorAlert = true
             } else {
                 NightscoutDataRepository.singleton.storeSensorChangeTime(sensorChangeTime: sensorChangeDate)
+                AlarmNotificationService.singleton.scheduleSensorNotification(changeDate: sensorChangeDate)
                 playSuccessFeedback()
                 selectedTab = 0
             }
@@ -194,6 +196,7 @@ struct DurationView: View {
                 showErrorAlert = true
             } else {
                 NightscoutDataRepository.singleton.storeBatteryChangeTime(batteryChangeTime: batteryChangeDate)
+                AlarmNotificationService.singleton.scheduleBatteryNotification(changeDate: batteryChangeDate)
                 playSuccessFeedback()
                 selectedTab = 0
             }

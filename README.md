@@ -64,6 +64,29 @@ public final class SliderRow: Row<SliderCell>, RowType {
 
 Now you should be able to launch the app in the simulator. Happy Coding!
 
+## Environment Configuration
+
+The app uses a `.env` file to manage secrets (like the App Store Shared Secret) without committing them to the repository.
+
+1.  **Create your `.env` file:**
+    Copy the example file to create your local configuration:
+    ```bash
+    cp .env.example .env
+    ```
+
+2.  **Edit `.env`:**
+    Open `.env` and replace the placeholder values with your actual secrets.
+    ```
+    SHARED_SECRET=your_actual_secret_from_app_store_connect
+    BASE_URI=https://your-nightscout-url.herokuapp.com
+    ```
+
+3.  **Add to Xcode Project:**
+    **Crucial:** You must manually add the `.env` file to the Xcode project for it to be accessible at runtime.
+    *   Open the project in Xcode.
+    *   Drag and drop the `.env` file into the Project Navigator (e.g., inside the `nightguard` folder).
+    *   In the dialog that appears, ensure **"Add to targets"** is checked for **both** the **nightguard** app target AND the **nightguardTests** target.
+
 ## Uploading the app
 
 If you would like to run a local compiled version, you might wan't to disable the critical notification entitlement.

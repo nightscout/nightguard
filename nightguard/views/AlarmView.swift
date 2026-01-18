@@ -876,6 +876,7 @@ struct AgeAlertsView: View {
             return
         }
         UserDefaultsRepository.cannulaAgeHoursUntilCritical.value = totalHours
+        AlarmNotificationService.singleton.scheduleCannulaNotification(changeDate: NightscoutCacheService.singleton.getCannulaChangeTime())
     }
 
     private func loadCannulaWarning() {
@@ -940,6 +941,7 @@ struct AgeAlertsView: View {
                                 return
                             }
                             UserDefaultsRepository.sensorAgeHoursUntilCritical.value = hours
+                            AlarmNotificationService.singleton.scheduleSensorNotification(changeDate: NightscoutCacheService.singleton.getSensorChangeTime())
                         }
                     }
                 }
@@ -991,6 +993,7 @@ struct AgeAlertsView: View {
                                 return
                             }
                             UserDefaultsRepository.batteryAgeHoursUntilCritical.value = hours
+                            AlarmNotificationService.singleton.scheduleBatteryNotification(changeDate: NightscoutCacheService.singleton.getPumpBatteryChangeTime())
                         }
                     }
                 }

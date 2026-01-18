@@ -124,7 +124,7 @@ class NightguardUITests: XCTestCase {
         selectTab(identifier: "tab_prefs", index: 5, using: tabBar)
     }
     
-    fileprivate func BselectStatsTab(using tabBar: XCUIElement? = nil) {
+    fileprivate func selectStatsTab(using tabBar: XCUIElement? = nil) {
         selectTab(identifier: "tab_stats", index: 4, using: tabBar)
     }
 
