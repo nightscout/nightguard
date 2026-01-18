@@ -1,3 +1,282 @@
+/* Single line footer for Fast rise/drop */
+"%@ %@ in %d consecutive readings" = "%1$@ %2$@ in %3$d aufeinanderfolgenden Werten";
+
+/* Single line footer for predicted low */
+"%d minutes" = "%d Minuten";
+
+/* Option in low predicion alert settings */
+"%d Minutes" = "%d Minuten";
+
+/* Single line footer for Persistent high */
+"%d minutes < %d)." = "%1$d Minuten < %2$d).";
+
+/* Single line footer for missed readings alert */
+"%d minutes." = "%d Minuten.";
+
+/* Option */
+"1 Minute" = "1 Minute";
+
+/* Button value for A1c */
+"A1c" = "HbA1c";
+
+/* Label for Alert Notifications */
+"Alert Notifications" = "Benachrichtigungen";
+
+/* Label for Alert volume */
+"Alert Volume" = "Alarm Lautstärke";
+
+/* Label for duration options */
+"Alert when high BG for more than" = "Alarm wenn hohe Werte länger als";
+
+/* Label for Alert when no data */
+"Alert when no data for more than" = "Alarm wenn keine Werte länger als";
+
+/* Footer for Urgent High */
+"Alerts anytime when the blood glucose raises above this value." = "Alarmierung wenn die Werte über diesem Wert liegen.";
+
+/* Footer for Alerts */
+"Alerts when a fast BG rise or drop is detected in the last consecutive readings." = "Alarmierung wenn eine starke Veränderung während der letzten Werte erkannt wird.";
+
+/* Footer for predicted low */
+"Alerts when a low BG value is predicted in less than %d minutes." = "Alarmiert wenn niedrige Werte in weniger als %d Minuten zu erwarten sind.";
+
+/* Footer in low predicion alert settings */
+"Alerts when a low BG value is predicted in the near future (if the current trend is continued)." = "Alarmiert wenn niedrige Werte in der nächsten Zeit zu erwarten sind (bei gleichbleibendem Trend).";
+
+/* footer for Persistent high */
+"Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %@." = "Alarmierung wenn länger als %1$d Minuten hohe Werte existieren oder kritisch hohe Werte über %2$@ erreicht wurden.";
+
+/* Footer for Fast rise/drop */
+"Alerts when BG values are rising or dropping with %@ %@, considering the last %d consecutive readings." = "Alarmierung wenn Werte schnell um %1$@ %2$@ steiger oder fallen. Betrachtet werden die letzten %3$d aufeinander folgenden Werte.";
+
+/* Footer for missed readings alert */
+"Alerts when no data for more than %d minutes." = "Alarmierung wenn keine Werte für länger als %d Minuten ermittelt werden konnten.";
+
+/* Footer for Alerts when no data is received */
+"Alerts when no data is received for a longer period. We suggest leaving this check ALWAYS ON." = "Alarmierung wenn für eine längere Zeit keine Werte empfangen wurden. Wir empfehlen dies stets EINGESCHALTET zu lassen.";
+
+/* Footer for Persistent High */
+"Alerts when the BG remains high for a longer period. When on, this alert will delay the high BG alert until the period elapsed or until reaching a maximum BG level (urgent high)." = "Alarmierung wenn der Blutzucker längere Zeit hoch ist. Bei Aktivierung gibt es erst einen Alarm wenn diese Zeit verstrichen ist oder ein kritisch hoher Wert erreicht wurde.";
+
+/* Footer for Low alert */
+"Alerts when the blood glucose drops below this value." = "Alarmierung wenn der Blutzucker unter diese Schwelle fällt.";
+
+/* Footer for High alert */
+"Alerts when the blood glucose raises above this value." = "Alarmierung wenn der Blutzucker über diese Schwelle steigt.";
+
+/* Title for confirmation */
+"ARE YOU SURE?" = "SIND SIE SICHER?";
+
+/* Button value for Average */
+"Average" = "Durchschnitt";
+
+/* Button value for Coefficient of Variation */
+"Coefficient of Variation" = "Standardabweichung";
+
+/* Label for Consecutive Readings */
+"Consecutive Readings" = "Werte in Folge";
+
+/* Label for delta */
+"Delta" = "Delta";
+
+/* Label for Dim screen when idle */
+"Dim Screen When Idle" = "Inaktiv abdunkeln";
+
+/* Footer for URL */
+"Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'. For the 'Care' actions to work you generally need to provide the security token here!" = "Hier die Adresse auf Ihren Nightscout Server angeben. Beispielsweise 'https://nightscout?token=mytoken'. Damit die Funktionen unter 'Aktion' ausführbar sind muss hier i.d.R. ein Security Token angegeben werden!";
+
+/* Label for Fast rise/drop */
+"Fast Rise/Drop" = "Schnelles Steigen/Fallen";
+
+/* Body of confirmation */
+"For your safety, keep this switch ON for receiving alarms when no readings!" = "Bitte lassen Sie diesen Schalter aktiviert um jederzeit Alarme bei fehlenden Werten zu erhalten!";
+
+/* Fullscreen monitor */
+"Fullscreen monitor" = "Vollbildmonitor";
+
+/* Button value for High */
+"High" = "Hoch";
+
+/* Alarm settings title: High alert */
+"High BG Alert" = "Alarm bei hohen Werten über";
+
+/* Footer for consecutive readings */
+"How many consecutive readings to consider." = "Anzahl aufeinander folgender Werte.";
+
+/* Footer for Alert volume */
+"If overriding the system output volume, your custom volume level will be used rather than phone's current volume level." = "Wenn die Systemlautstärke überschrieben wird, dann wird die hier definierte anstelle der Telefonlautstärke für Alarme verwendet.";
+
+/* Footer for Progressive volume switch */
+"If selected, the alert will start quietly and increase the volume gradualy, reaching the maximum volume in selected time interval." = "Alarme starten leise und werden langsam lauter bis zur definierten maximalen Lautstärke.";
+
+/* Button value for IFCC A1c */
+"IFCC A1c" = "IFCC HbA1c";
+
+/* Title for confirmation */
+"IMPORTANT" = "WICHTIG";
+
+/* Button value for In range */
+"In Range" = "Im Ziel";
+
+/* Invalid data from NS entries API */
+"Invalid data with HTML received from Nightscout entries API" = "Ungültige HTML Daten von Ihrem Nightscout Server erhalten";
+
+/* Invalid readings */
+"Invalid readings" = "Ungültige Werte";
+
+/* Label for Keep the Screen Active */
+"Keep the Screen Active" = "Bildschirm aktiv lassen";
+
+/* Message for confirmation */
+"Keep this switch ON to disable the screenlock and prevent the app to get stopped!" = "Einschalten um die Bildschirmsperre zu deaktivieren und ein abschalten der App zu verhindern!";
+
+/* Footer for Dim Screen */
+"Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON." = "Den Bildschirm aktiv zu halten ist enorm wichtig um die App zur Nachtüberwachung zu nutzen. Wir empfehlen diese Einstellung immer AN zu lassen.";
+
+/* Stats button value for Last 24h */
+"Last 24h" = "Letzte 24h";
+
+/* Stats button value for Last 8h */
+"Last 8h" = "Letzte 8h";
+
+/* Button value for Low */
+"Low" = "Niedrig";
+
+/* Alarm settings title: Low alert */
+"Low BG Alert" = "Alarm bei niedrigen Werten unter";
+
+/* Show low prediction warning */
+"Low Predicted in %dmin" = "Niedrig vorhergesagt in %dMin";
+
+/* Alarm settings title: Low prediction */
+"Low Prediction" = "Niedrig Vorhersage";
+
+/* Title in low predicion alert settings */
+"Low Prediction2" = "Niedrig Vorhersage";
+
+/* plurar unit */
+"minutes" = "Minuten";
+
+/* Option */
+"Minutes" = "Minuten";
+
+/* Alarm settings title: Missed readings */
+"Missed Readings" = "Fehlende Werte";
+
+/* Option */
+"Never" = "Niemals";
+
+/* No data from NS entries API */
+"No data received from Nightscout entries API" = "Keine Werte von der Nightscout entries API";
+
+/* No data from NS status API */
+"No data received from Nightscout status API" = "Keine Werte von der Nightscout status API";
+
+/* No data from Pebble API */
+"No data received from Pebble Watch API" = "Keine Werte von der Pebble Watch API";
+
+/* Alert off */
+"Off" = "Aus";
+
+/* Link to NS site */
+"Open your Nightscout site" = "Nightscout öffnen";
+
+/* Alarm settings title: Other alerts */
+"Other Alerts" = "Sonstige Alarme";
+
+/* Label for Override System Volume switch */
+"Override System Volume" = "Systemlautstärke überschreiben";
+
+/* Alarm settings title: Persistent High */
+"Persistent High" = "Dauerhaft Hoch";
+
+/* Label for prediction interval options */
+"Prediction interval" = "Vohersageinterval";
+
+/* Label for Progressive Volume */
+"Progressive Volume" = "Ansteigende Lautstärke";
+
+/* Text of Readings stats button */
+"Readings" = "Werte";
+
+/* Text of Reading% stats button */
+"Readings %" = "Werte %";
+
+/* Footer for Reduce screen brightness */
+"Reduce screen brightness after detecting user inactivity for more than selected time period." = "Bei längerer Inaktivität als selektiert die Helligkeit reduzieren.";
+
+/* Label for Apple Health access revocation */
+"Revoke access in Apple Health" = "Wiederrufe den Zugriff in Apple Health";
+
+/* plurar unit */
+"seconds" = "Sekunden";
+
+/* Label for Show BG on Badge */
+"Show BG on App Badge" = "Werte auf dem App Icon anzeigen";
+
+/* Label for Show statistics */
+"Show Statistics" = "Statistiken zeigen";
+
+/* Label for Smart snooze switch */
+"Smart Snooze" = "Smartes Schlummern";
+
+/* Text of snooze button */
+"snooze" = "schlummern";
+
+/* Footer for smart snooze switch */
+"Snooze (do not alert) when values are high or low but the trend is going in the right direction." = "Schlummere (KEIN Alarm) bei hohen oder niedrigen Werten aber Trend in die richtige Richtung.";
+
+/* Snoozed duration in main page */
+"Snoozed for %dmin" = "Schlummere %dMin";
+
+/* Snoozed duration on watch */
+"Snoozed %dmin" = "Schlummere %dMin";
+
+/* Label for Snoozing actions */
+"Snoozing Actions" = "Schlummern";
+
+/* Title of Stats period */
+"Stats Period" = "Bereich";
+
+/* Button value for Std Deviation */
+"Std Deviation" = "Standardabweichung";
+
+/* Stop alert button */
+"Stop Alert" = "Alarm stoppen";
+
+/* Label for Apple Health synchronization */
+"Synchronize with Apple Health" = "Synchronisiere mit Apple Healthkit";
+
+/* Test alert button */
+"Test Alert" = "Alarm testen";
+
+/* Empty or invalid Uri error */
+"The base URI is empty or invalid!" = "Die URI ist leer oder ungültig!";
+
+/* Footer for delta */
+"The difference (delta) between two individual readings." = "Der Unterschied (Delta) zwischen zwei Werten.";
+
+/* Stats button value for Today */
+"Today" = "Heute";
+
+/* Stats button value for Today & Yesterday */
+"Today & Yesterday" = "Heute & Gestern";
+
+/* Unkown error while extracting Pebble API data */
+"Unknown error while extracting data from Pebble Watch API" = "Unbekannter Fehler beim extrahieren von Daten der Pebble Watch API";
+
+/* Label for Urgent High */
+"Urgent High" = "Kritisch Hoch";
+
+/* Title for URL */
+"URL" = "URL";
+
+/* Label for Version */
+"Version" = "Version";
+
+/* Label for Vibrate switch */
+"Vibrate" = "Vibrieren";
+
 /* Footer for Alert notifications */
 "AlarmNotificationDescription" = "Wenn die Anwendung im Hintergrund läuft, dann können Benachrichtigungen genutzt werden, um auf Alarme hinzuweisen. 
 Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platziert werden. Dennoch wird die Häufigkeit von Apple begrenzt.";
@@ -355,7 +634,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Restore Purchases Button */
 "Restore Purchases" = "Käufe wiederherstellen";
-
 /* Cannula Age Notification Title */
 "Cannula Age Critical" = "Katheder Alter kritisch";
 
