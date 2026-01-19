@@ -1,4 +1,7 @@
-.DS_Store/
+.DS_Store
+nightguard Complication/.DS_Store
+nightguard WatchKit App/.DS_Store
+nightguard Widget Extension/.DS_Store
 build/
 nightguard.app.dSYM.zip
 nightguard.ipa
