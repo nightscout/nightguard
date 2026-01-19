@@ -8,11 +8,14 @@
 
 import UIKit
 import UserNotifications
+import Combine
 
 // Alarm notification authorization, triggering & handling logic.
-class AlarmNotificationService {
+class AlarmNotificationService: ObservableObject {
     
     static let singleton = AlarmNotificationService()
+    
+    @Published var publishedEnabled: Bool = UserDefaultsRepository.alarmNotificationState.value
     
     // service state
     var enabled: Bool {
@@ -160,15 +163,15 @@ class AlarmNotificationService {
         // Remove pending notification for this identifier first
         // We remove the base identifier and the possible indexed identifiers
         var identifiersToRemove = [identifier]
-        for i in 0...24 {
+        for i in 0...15 {
             identifiersToRemove.append("\(identifier)-\(i)")
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
 
-        /*guard PurchaseManager.shared.isProAccessAvailable else {
+        guard PurchaseManager.shared.isProAccessAvailable else {
             print("Pro version not unlocked. Skipping \(identifier) notification.")
             return
-        }*/
+        }
 
         guard enabled else { return }
 
@@ -179,9 +182,9 @@ class AlarmNotificationService {
         let now = Date()
         let startTime = (criticalDate > now) ? criticalDate : now
         
-        // Schedule multiple notifications (every hour for the next 24 hours)
-        for i in 0..<24 {
-            guard let notificationDate = calendar.date(byAdding: .hour, value: i, to: startTime) else { continue }
+        // Schedule 3 notifications per day for the next 5 days
+        for i in 0..<15 {
+            guard let notificationDate = calendar.date(byAdding: .hour, value: i * 8, to: startTime) else { continue }
             
             let timeInterval = notificationDate.timeIntervalSinceNow
             
@@ -192,7 +195,11 @@ class AlarmNotificationService {
 
             let content = UNMutableNotificationContent()
             content.title = title
-            content.body = body
+            let components = calendar.dateComponents([.day, .hour], from: changeDate, to: notificationDate)
+            let days = components.day ?? 0
+            let hours = components.hour ?? 0
+            let ageString = "\(days)d \(hours)h"
+            content.body = String(format: body, ageString)
             content.sound = .default
             
             // Use indexed identifier
@@ -211,6 +218,11 @@ class AlarmNotificationService {
     }
     
     private init() {
+        UserDefaultsRepository.alarmNotificationState.observeChanges { [weak self] newValue in
+            DispatchQueue.main.async {
+                self?.publishedEnabled = newValue
+            }
+        }
     }
 }
 

@@ -638,16 +638,16 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Cannula Age Critical" = "Katheder Alter kritisch";
 
 /* Cannula Age Notification Body */
-"Your cannula has reached its critical age." = "Dein Katheder hat das kritische Alter erreicht.";
+"Your cannula has reached its critical age." = "Dein Katheder hat das kritische Alter erreicht (%@).";
 
 /* Sensor Age Notification Title */
 "Sensor Age Critical" = "Sensor Alter kritisch";
 
 /* Sensor Age Notification Body */
-"Your sensor has reached its critical age." = "Dein Sensor hat das kritische Alter erreicht.";
+"Your sensor has reached its critical age." = "Dein Sensor hat das kritische Alter erreicht (%@).";
 
 /* Battery Age Notification Title */
 "Battery Age Critical" = "Pumpenbatterie Alter kritisch";
 
 /* Battery Age Notification Body */
-"Your pump battery has reached its critical age." = "Deine Pumpenbatterie hat das kritische Alter erreicht.";
+"Your pump battery has reached its critical age." = "Deine Pumpenbatterie hat das kritische Alter erreicht (%@).";

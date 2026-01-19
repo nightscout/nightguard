@@ -728,16 +728,16 @@
 "Cannula Age Critical" = "Kanyylin ikä kriittinen";
 
 /* Cannula Age Notification Body */
-"Your cannula has reached its critical age." = "Kanyyli on saavuttanut kriittisen iän.";
+"Your cannula has reached its critical age." = "Kanyyli on saavuttanut kriittisen iän (%@).";
 
 /* Sensor Age Notification Title */
 "Sensor Age Critical" = "Sensorin ikä kriittinen";
 
 /* Sensor Age Notification Body */
-"Your sensor has reached its critical age." = "Sensori on saavuttanut kriittisen iän.";
+"Your sensor has reached its critical age." = "Sensori on saavuttanut kriittisen iän (%@).";
 
 /* Battery Age Notification Title */
 "Battery Age Critical" = "Akun ikä kriittinen";
 
 /* Battery Age Notification Body */
-"Your pump battery has reached its critical age." = "Pumpun akku on saavuttanut kriittisen iän.";
+"Your pump battery has reached its critical age." = "Pumpun akku on saavuttanut kriittisen iän (%@).";

@@ -189,7 +189,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(DeviceStatusData.self, forClassName: "DeviceStatusData")
-        guard let deviceStatusData = (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [DeviceStatusData.self, NSString.self, NSNumber.self], from: data)) as? DeviceStatusData else {
+        guard let deviceStatusData = (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [DeviceStatusData.self, NSString.self, NSNumber.self, NSDate.self], from: data)) as? DeviceStatusData else {
             return DeviceStatusData()
         }
         return deviceStatusData
@@ -214,7 +214,7 @@ class NightscoutDataRepository {
         }
         
         NSKeyedUnarchiver.setClass(TemporaryTargetData.self, forClassName: "TemporaryTargetData")
-        guard let temporaryTargetData = (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [TemporaryTargetData.self, NSString.self, NSNumber.self], from: data)) as? TemporaryTargetData else {
+        guard let temporaryTargetData = (try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [TemporaryTargetData.self, NSString.self, NSNumber.self, NSDate.self], from: data)) as? TemporaryTargetData else {
             return TemporaryTargetData()
         }
         return temporaryTargetData
