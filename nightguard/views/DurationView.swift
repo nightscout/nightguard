@@ -14,6 +14,7 @@ struct DurationView: View {
     @State private var sensorChangeDate = NightscoutCacheService.singleton.getSensorChangeTime()
     @State private var batteryChangeDate = NightscoutCacheService.singleton.getPumpBatteryChangeTime()
     @ObservedObject private var alarmService = AlarmNotificationService.singleton
+    @ObservedObject var purchaseManager = PurchaseManager.shared
 
     @State private var showCannulaConfirmation = false
     @State private var showSensorConfirmation = false
@@ -125,10 +126,41 @@ struct DurationView: View {
                     footer: Text(NSLocalizedString("DurationNotificationDescription", comment: "Footer for Duration notifications"))
                         .font(.footnote)
                 ) {
-                    Toggle(NSLocalizedString("Duration Notifications", comment: "Label for Duration Notifications toggle"), isOn: Binding(
-                        get: { alarmService.publishedEnabled },
-                        set: { alarmService.enabled = $0 }
-                    ))
+                    HStack {
+                        Toggle(NSLocalizedString("Duration Notifications", comment: "Label for Duration Notifications toggle"), isOn: Binding(
+                            get: { alarmService.publishedEnabled },
+                            set: { alarmService.enabled = $0 }
+                        ))
+                        .disabled(!purchaseManager.isProAccessAvailable)
+                        
+                        if purchaseManager.isProAccessAvailable {
+                            Text("PRO")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.blue)
+                                .cornerRadius(4)
+                        } else {
+                            Text("PRO")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.gray)
+                                .cornerRadius(4)
+                        }
+                    }
+                    
+                    if !purchaseManager.isProAccessAvailable {
+                        Button(action: {
+                            purchaseManager.buyProVersion()
+                        }) {
+                            Text(NSLocalizedString("Unlock Pro Version", comment: "Unlock Pro Version Button"))
+                        }
+                    }
                 }
 
                 AgeAlertsView()
