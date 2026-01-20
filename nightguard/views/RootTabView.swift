@@ -22,6 +22,9 @@ extension EnvironmentValues {
 struct RootTabView: View {
     @State private var selectedTab = 0
     @State private var orientation = UIDeviceOrientation.portrait
+    @State private var showAppTour = false
+
+    @State private var startTourOnConfiguration = false
 
     init() {
         // Configure tab bar appearance
@@ -120,6 +123,25 @@ struct RootTabView: View {
                 .tag(5)
         }
         .accentColor(.white)
+        .onAppear {
+            let appTourSeen = UserDefaultsRepository.appTourSeen.value
+            let baseUri = UserDefaultsRepository.baseUri.value
+            
+            if !appTourSeen {
+                startTourOnConfiguration = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    showAppTour = true
+                }
+            } else if baseUri.isEmpty {
+                startTourOnConfiguration = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    showAppTour = true
+                }
+            }
+        }
+        .sheet(isPresented: $showAppTour) {
+            AppTourView(isPresented: $showAppTour, startOnConfiguration: startTourOnConfiguration)
+        }
     }
     
     private func forcePortrait() {

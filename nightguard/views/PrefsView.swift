@@ -26,6 +26,7 @@ struct PrefsView: View {
     @State private var showURLErrorAlert = false
     @State private var urlErrorMessage = ""
     @State private var isValidatingURL = false
+    @State private var showAppTour = false
 
     @ObservedObject var purchaseManager = PurchaseManager.shared
     
@@ -65,6 +66,17 @@ struct PrefsView: View {
                 
                 Section {
                     HStack {
+                        Spacer()
+                        Button("Start App Tour") {
+                            showAppTour = true
+                        }
+                        .foregroundColor(.white)
+                        Spacer()
+                    }
+                }
+                
+                Section {
+                    HStack {
                         Text("Version")
                         Spacer()
                         Text(versionString())
@@ -96,6 +108,9 @@ struct PrefsView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(urlErrorMessage)
+            }
+            .sheet(isPresented: $showAppTour) {
+                AppTourView(isPresented: $showAppTour)
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
