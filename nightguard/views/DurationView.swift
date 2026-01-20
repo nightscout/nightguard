@@ -122,10 +122,10 @@ struct DurationView: View {
 
                 // Alert Notifications section
                 Section(
-                    footer: Text(NSLocalizedString("AlarmNotificationDescription", comment: "Footer for Alert notifications"))
+                    footer: Text(NSLocalizedString("DurationNotificationDescription", comment: "Footer for Duration notifications"))
                         .font(.footnote)
                 ) {
-                    Toggle("Alert Notifications", isOn: Binding(
+                    Toggle(NSLocalizedString("Duration Notifications", comment: "Label for Duration Notifications toggle"), isOn: Binding(
                         get: { alarmService.publishedEnabled },
                         set: { alarmService.enabled = $0 }
                     ))

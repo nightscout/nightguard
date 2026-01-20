@@ -38,6 +38,12 @@
 /* Label for Alert Notifications */
 "Alert Notifications" = "Alert Notifications";
 
+/* Label for Duration Notifications toggle */
+"Duration Notifications" = "Duration Notifications";
+
+/* Footer for Alert notifications */
+"DurationNotificationDescription" = "Enable Push Notifications to receive Alarm Notifications when the duration gets critical.";
+
 /* Label for Alert volume */
 "Alert Volume" = "Alert Volume";
 

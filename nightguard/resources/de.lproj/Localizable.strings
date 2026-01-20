@@ -22,6 +22,12 @@
 /* Label for Alert Notifications */
 "Alert Notifications" = "Benachrichtigungen";
 
+/* Label for Duration Notifications toggle */
+"Duration Notifications" = "Alter-Benachrichtigungen";
+
+/* Footer for Duration notifications */
+"DurationNotificationDescription" = "Aktiviere Push-Benachrichtigungen, um Benachrichtigungen zu erhalten, wenn das Alter der Verbrauchsmaterialien kritisch wird.";
+
 /* Label for Alert volume */
 "Alert Volume" = "Alarm Lautstärke";
 

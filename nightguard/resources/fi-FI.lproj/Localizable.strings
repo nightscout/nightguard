@@ -22,6 +22,12 @@
 /* Label for Alert Notifications */
 "Alert Notifications" = "Hälytysilmoitukset";
 
+/* Label for Duration Notifications toggle */
+"Duration Notifications" = "Intervalli-ilmoitukset";
+
+/* Footer for Duration notifications */
+"DurationNotificationDescription" = "Ota push-ilmoitukset käyttöön saadaksesi ilmoituksia, kun käyttöikä muuttuu kriittiseksi.";
+
 /* Label for Alert volume */
 "Alert Volume" = "Hälytyksen voimakkuus";
 
