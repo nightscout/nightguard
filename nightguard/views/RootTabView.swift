@@ -149,7 +149,7 @@ struct RootTabView: View {
     
     private func checkAndShowDisclaimerAndThen(completion: @escaping () -> Void) {
         let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let showOnceKey = "showedWarningIn\(versionNumber)"
+        let showOnceKey = "showedWarningIn3\(versionNumber)"
         
         if UserDefaultsRepository.disclaimerSeen.value || UserDefaults.standard.bool(forKey: showOnceKey) {
             completion()
@@ -161,11 +161,8 @@ struct RootTabView: View {
             if let window = UIApplication.shared.windows.first,
                let rootViewController = window.rootViewController {
                    
-                rootViewController.showAcceptDeclineAlert(title: "Disclaimer!", message:
-                "Don't use this App for medical decisions! " +
-                "It comes with absolutely NO WARRANTY. " +
-                "It is maintained by volunteers only. " +
-                "Use it at your own risk!",
+                rootViewController.showAcceptDeclineAlert(title: NSLocalizedString("Disclaimer!", comment: "Disclaimer Popup Title"), message:
+                NSLocalizedString("Don't use this App for medical decisions! It comes with absolutely NO WARRANTY. It is maintained by volunteers only. Use it at your own risk!", comment: "Disclaimer Popup Message"),
                       showOnceKey: showOnceKey,
                       onAccept: completion)
             } else {
