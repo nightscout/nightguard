@@ -15,19 +15,19 @@ struct AppTourView: View {
     var body: some View {
         NavigationView {
             TabView(selection: $selectedPage) {
-                TourPage(imageName: "Main", title: "Welcome to Nightguard", description: "See your current glucose level, trend, and device status at a glance.")
+                TourPage(imageName: "TourScreenshot_Main", title: "Welcome to Nightguard", description: "See your current glucose level, trend, and device status at a glance.")
                     .tag(0)
                 
-                TourPage(imageName: "Alarm", title: "Smart Alarms", description: "Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range.")
+                TourPage(imageName: "TourScreenshot_Alarm", title: "Smart Alarms", description: "Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range.")
                     .tag(1)
                 
-                TourPage(imageName: "Care", title: "Care Portal", description: "Log treatments, carb entries, and temporary targets directly from the app.")
+                TourPage(imageName: "TourScreenshot_Care", title: "Care Portal", description: "Log treatments, carb entries, and temporary targets directly from the app.")
                     .tag(2)
                 
-                TourPage(imageName: "clock.arrow.circlepath", title: "Duration", description: "Visualize the duration of your insulin on board (IOB) and carbs on board (COB).")
+                TourPage(imageName: "TourScreenshot_Duration", title: "Duration", description: "Visualize the duration of your insulin on board (IOB) and carbs on board (COB).")
                     .tag(3)
                 
-                TourPage(imageName: "Stats", title: "Statistics", description: "View detailed statistics and reports of your glucose history to analyze trends.")
+                TourPage(imageName: "TourScreenshot_Stats", title: "Statistics", description: "View detailed statistics and reports of your glucose history to analyze trends.")
                     .tag(4)
                 
                 ConfigurationTourPage(isPresented: $isPresented)
@@ -66,42 +66,18 @@ struct TourPage: View {
     let description: String
     
     var body: some View {
-        VStack(spacing: 30) {
-            Spacer()
-            
-            if imageName.contains(".") {
-                // System Image
-                Image(systemName: imageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 80)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(
-                        Circle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 160, height: 160)
-                    )
-            } else {
-                // Asset Image
-                Image(imageName)
-                    .renderingMode(.template)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 120)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(
-                        Circle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 200, height: 200)
-                    )
-            }
-            
+        VStack(spacing: 15) {
             Text(title)
                 .font(.title)
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
+
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .cornerRadius(12)
+                .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
+                .padding(.horizontal)
             
             Text(description)
                 .font(.body)
@@ -109,10 +85,9 @@ struct TourPage: View {
                 .padding(.horizontal, 30)
                 .foregroundColor(.gray)
             
-            Spacer()
-            Spacer()
+            Spacer(minLength: 50)
         }
-        .padding()
+        .padding(.horizontal)
     }
 }
 
