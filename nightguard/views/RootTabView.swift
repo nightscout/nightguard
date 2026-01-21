@@ -149,7 +149,7 @@ struct RootTabView: View {
     
     private func checkAndShowDisclaimerAndThen(completion: @escaping () -> Void) {
         let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let showOnceKey = "showedWarningIn3\(versionNumber)"
+        let showOnceKey = "showedWarningIn\(versionNumber)"
         
         if UserDefaultsRepository.disclaimerSeen.value || UserDefaults.standard.bool(forKey: showOnceKey) {
             completion()
