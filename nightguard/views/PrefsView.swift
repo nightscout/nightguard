@@ -109,7 +109,9 @@ struct PrefsView: View {
             } message: {
                 Text(urlErrorMessage)
             }
-            .sheet(isPresented: $showAppTour) {
+            .sheet(isPresented: $showAppTour, onDismiss: {
+                loadCurrentValues()
+            }) {
                 AppTourView(isPresented: $showAppTour)
             }
         }

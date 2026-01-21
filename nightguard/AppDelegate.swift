@@ -62,6 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIView.setAnimationsEnabled(false)
         // Ensure alarms are enabled so the actions menu button is visible for UI tests
         AlarmRule.areAlertsGenerallyDisabled.value = false
+        // Suppress App Tour
+        UserDefaultsRepository.appTourSeen.value = true
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

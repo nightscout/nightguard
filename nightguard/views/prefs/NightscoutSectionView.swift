@@ -28,6 +28,16 @@ struct NightscoutSectionView: View {
                     .onSubmit {
                         validateAndSaveURL()
                     }
+                if !nightscoutURL.isEmpty {
+                    Button(action: {
+                        nightscoutURL = ""
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .accessibilityIdentifier("clear_url_button")
+                }
 
                 if isValidatingURL {
                     ProgressView()

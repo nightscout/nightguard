@@ -76,8 +76,7 @@ class NightguardUITests: XCTestCase {
         }
         
         if urlTextField.waitForExistence(timeout: 10) {
-            urlTextField.clearText(andReplaceWith: "https://night.hermanns.app")
-            urlTextField.typeText("\n")
+            setNightscoutUrl(urlTextField, url: readBaseUri())
             sleep(2)
         }
         
@@ -114,8 +113,7 @@ class NightguardUITests: XCTestCase {
         
         let prefUrlField = app.textFields.firstMatch
         if prefUrlField.waitForExistence(timeout: 5) {
-            prefUrlField.clearText(andReplaceWith: "https://your.nightscout.here")
-            prefUrlField.typeText("\n")
+            setNightscoutUrl(prefUrlField, url: "https://your.nightscout.here")
         }
         snapshot("08-preferences")
     }
@@ -501,5 +499,57 @@ class NightguardUITests: XCTestCase {
              app.windows.firstMatch.forceTap()
         }
         sleep(1)
+    }
+
+    fileprivate func setNightscoutUrl(_ textField: XCUIElement, url: String) {
+        textField.tap()
+        
+        // Use the clear button if available
+        let clearButton = app.buttons["clear_url_button"]
+        if clearButton.waitForExistence(timeout: 2) {
+            clearButton.tap()
+        } else {
+            // Fallback to standard clearing if button not found (e.g. field already empty)
+             if let val = textField.value as? String, !val.isEmpty {
+                 textField.clearText()
+             }
+        }
+        
+        textField.typeText(url)
+        textField.typeText("\n")
+    }
+
+    fileprivate func readBaseUri() -> String {
+        let envKey = "BASE_URI"
+        if let envValue = ProcessInfo.processInfo.environment[envKey], !envValue.isEmpty {
+            return envValue
+        }
+        
+        // Attempt to find .env in project root
+        let currentFileURL = URL(fileURLWithPath: #filePath)
+        let projectRoot = currentFileURL.deletingLastPathComponent().deletingLastPathComponent()
+        let envFile = projectRoot.appendingPathComponent(".env")
+        
+        if let content = try? String(contentsOf: envFile, encoding: .utf8) {
+            let lines = content.components(separatedBy: .newlines)
+            for line in lines {
+                let parts = line.split(separator: "=", maxSplits: 1).map(String.init)
+                if parts.count >= 2 {
+                    let key = parts[0].trimmingCharacters(in: .whitespaces)
+                    if key == envKey {
+                        var value = parts[1].trimmingCharacters(in: .whitespaces)
+                        // Remove quotes if present
+                        if (value.hasPrefix("\"") && value.hasSuffix("\"")) || (value.hasPrefix("'") && value.hasSuffix("'")) {
+                            value = String(value.dropFirst().dropLast())
+                        }
+                        if !value.isEmpty {
+                            return value
+                        }
+                    }
+                }
+            }
+        }
+        
+        return "https://your.nightscout.app"
     }
 }

@@ -152,37 +152,50 @@ struct ConfigurationTourPage: View {
             .listRowBackground(Color.clear)
             
             Section(header: Text("NIGHTSCOUT URL")) {
-                ZStack(alignment: .leading) {
-                    if nightscoutURL.isEmpty {
-                        Text("https://your-site.herokuapp.com")
-                            .foregroundColor(Color(UIColor.placeholderText))
-                    }
-                    TextField("", text: $nightscoutURL)
-                        .textContentType(.URL)
-                        .keyboardType(.URL)
+                HStack {
+                    TextField("your-site.herokuapp.com", text: $nightscoutURL)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
+                    
+                    if !nightscoutURL.isEmpty {
+                        Button(action: {
+                            nightscoutURL = ""
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.gray)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                 }
             }
             
-            Section(header: HStack {
-                Text("API TOKEN")
-                Spacer()
-                Link(destination: URL(string: "https://nightscout.github.io/nightscout/security/#roles")!) {
-                    HStack(spacing: 2) {
-                        Text("Help")
-                        Image(systemName: "questionmark.circle")
+            Section(
+                header: HStack {
+                    Text("API TOKEN")
+                    Spacer()
+                    Link(destination: URL(string: "https://nightscout.github.io/nightscout/security/#roles")!) {
+                        HStack(spacing: 2) {
+                            Text("Help")
+                            Image(systemName: "questionmark.circle")
+                        }
                     }
-                }
-            }, footer: Text("The Token needs to have the \"careportal\" role.") + (nightscoutURL.isEmpty ? Text("") : Text("\nRESULTING URL: \(previewURL)").font(.caption).foregroundColor(.secondary))) {
-                ZStack(alignment: .leading) {
-                    if apiToken.isEmpty {
-                        Text("e.g. update-b4d85ed628a3e34f")
-                            .foregroundColor(Color(UIColor.placeholderText))
-                    }
-                    TextField("", text: $apiToken)
+                },
+                footer: Text("The Token needs to have the \"careportal\" role.") + (nightscoutURL.isEmpty ? Text("") : Text("\nRESULTING URL: \(previewURL)").font(.caption).foregroundColor(.secondary))
+            ) {
+                HStack {
+                    TextField("e.g. update-b4d85ed628a3e34f", text: $apiToken)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
+                    
+                    if !apiToken.isEmpty {
+                        Button(action: {
+                            apiToken = ""
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.gray)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                 }
             }
             
@@ -220,6 +233,40 @@ struct ConfigurationTourPage: View {
                 .buttonStyle(PlainButtonStyle())
                 .listRowInsets(EdgeInsets())
             }
+        }
+        .onAppear {
+            loadExistingSettings()
+        }
+    }
+    
+    private func loadExistingSettings() {
+        let currentFullURL = UserDefaultsRepository.baseUri.value.trimmingCharacters(in: .whitespaces)
+        guard !currentFullURL.isEmpty else { return }
+        
+        if let components = URLComponents(string: currentFullURL) {
+            // Extract token
+            if let queryItems = components.queryItems, let tokenItem = queryItems.first(where: { $0.name == "token" }) {
+                apiToken = tokenItem.value ?? ""
+            }
+            
+            // Construct base URL (remove token)
+            var newComponents = components
+            if let queryItems = components.queryItems {
+                let otherItems = queryItems.filter { $0.name != "token" }
+                if !otherItems.isEmpty {
+                    newComponents.queryItems = otherItems
+                } else {
+                    newComponents.query = nil
+                }
+            }
+            
+            if let baseURL = newComponents.url?.absoluteString {
+                 nightscoutURL = baseURL
+            } else {
+                 nightscoutURL = currentFullURL
+            }
+        } else {
+            nightscoutURL = currentFullURL
         }
     }
     

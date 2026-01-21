@@ -59,6 +59,7 @@
 		430EB4FA2F1D70B300CAF155 /* SharedUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */; };
 		430EB4FB2F1D70DF00CAF155 /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		430EB4FD2F1FFD4600CAF155 /* AppTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB4FC2F1FFD4600CAF155 /* AppTourView.swift */; };
+		430EB4FE2F215F9C00CAF155 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
 		430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */; };
 		43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
 		43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
@@ -1577,6 +1578,7 @@
 				D1F2F57C21EF133600CEB874 /* Matrix+Append.swift in Sources */,
 				430EB4F62F1D6F0600CAF155 /* PredictionService.swift in Sources */,
 				D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */,
+				430EB4FE2F215F9C00CAF155 /* PurchaseManager.swift in Sources */,
 				D1ECDA202201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				4378768824FAACF9009E163E /* UIViewControllerExtension.swift in Sources */,
 				432E62E71D11F61500DD7978 /* UserDefaultsRepositoryTest.swift in Sources */,
