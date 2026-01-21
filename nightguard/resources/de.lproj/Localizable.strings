@@ -657,3 +657,9 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Battery Age Notification Body */
 "Your pump battery has reached its critical age." = "Deine Pumpenbatterie hat das kritische Alter erreicht (%@).";
+
+/* Disclaimer Popup Title */
+"Disclaimer!" = "Haftungsausschluss!";
+
+/* Disclaimer Popup Message */
+"Don't use this App for medical decisions! It comes with absolutely NO WARRANTY. It is maintained by volunteers only. Use it at your own risk!" = "Verwenden Sie diese App nicht für medizinische Entscheidungen! Es wird keinerlei Garantie übernommen. Sie wird nur von Freiwilligen gepflegt. Die Nutzung erfolgt auf eigene Gefahr!";

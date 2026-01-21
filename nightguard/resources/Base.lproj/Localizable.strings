@@ -597,3 +597,9 @@
 
 /* Battery Age Notification Body */
 "Your pump battery has reached its critical age." = "Your pump battery has reached its critical age (%@).";
+
+/* Disclaimer Popup Title */
+"Disclaimer!" = "Disclaimer!";
+
+/* Disclaimer Popup Message */
+"Don't use this App for medical decisions! It comes with absolutely NO WARRANTY. It is maintained by volunteers only. Use it at your own risk!" = "Don't use this App for medical decisions! It comes with absolutely NO WARRANTY. It is maintained by volunteers only. Use it at your own risk!";
