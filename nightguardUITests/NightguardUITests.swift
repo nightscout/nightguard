@@ -16,13 +16,6 @@ class NightguardUITests: XCTestCase {
         super.setUp()
         
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        addUIInterruptionMonitor(withDescription: "Accept disclaimer") { alert -> Bool in
-            if alert.alerts["Disclaimer!"].exists {
-                alert.alerts["Disclaimer!"].scrollViews.otherElements.buttons["Accept"].tap()
-                return true
-            }
-            return false
-        }
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
@@ -46,13 +39,6 @@ class NightguardUITests: XCTestCase {
     
     func testTabsBars() {
         
-        // Manual disclaimer check just in case monitor fails
-        let disclaimerButton = app.buttons["Accept"].firstMatch
-        if disclaimerButton.waitForExistence(timeout: 5) {
-            disclaimerButton.tap()
-            sleep(1)
-        }
-
         // Wait for app to be ready
         if !app.buttons["actionsMenuButton"].waitForExistence(timeout: 30) {
              app.tap()

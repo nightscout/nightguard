@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 // Environment key to track selected tab
 private struct SelectedTabKey: EnvironmentKey {
@@ -124,23 +125,52 @@ struct RootTabView: View {
         }
         .accentColor(.white)
         .onAppear {
-            let appTourSeen = UserDefaultsRepository.appTourSeen.value
-            let baseUri = UserDefaultsRepository.baseUri.value
-            
-            if !appTourSeen {
-                startTourOnConfiguration = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    showAppTour = true
-                }
-            } else if baseUri.isEmpty {
-                startTourOnConfiguration = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    showAppTour = true
+            checkAndShowDisclaimerAndThen {
+                let appTourSeen = UserDefaultsRepository.appTourSeen.value
+                let baseUri = UserDefaultsRepository.baseUri.value
+                
+                if !appTourSeen {
+                    startTourOnConfiguration = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        showAppTour = true
+                    }
+                } else if baseUri.isEmpty {
+                    startTourOnConfiguration = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        showAppTour = true
+                    }
                 }
             }
         }
         .sheet(isPresented: $showAppTour) {
             AppTourView(isPresented: $showAppTour, startOnConfiguration: startTourOnConfiguration)
+        }
+    }
+    
+    private func checkAndShowDisclaimerAndThen(completion: @escaping () -> Void) {
+        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let showOnceKey = "showedWarningIn\(versionNumber)"
+        
+        if UserDefaultsRepository.disclaimerSeen.value || UserDefaults.standard.bool(forKey: showOnceKey) {
+            completion()
+            return
+        }
+        
+        // Show Alert
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if let window = UIApplication.shared.windows.first,
+               let rootViewController = window.rootViewController {
+                   
+                rootViewController.showAcceptDeclineAlert(title: "Disclaimer!", message:
+                "Don't use this App for medical decisions! " +
+                "It comes with absolutely NO WARRANTY. " +
+                "It is maintained by volunteers only. " +
+                "Use it at your own risk!",
+                      showOnceKey: showOnceKey,
+                      onAccept: completion)
+            } else {
+                 completion()
+            }
         }
     }
     

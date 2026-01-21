@@ -64,6 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AlarmRule.areAlertsGenerallyDisabled.value = false
         // Suppress App Tour
         UserDefaultsRepository.appTourSeen.value = true
+        // Suppress Disclaimer
+        UserDefaultsRepository.disclaimerSeen.value = true
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -245,6 +247,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         if !AlarmRule.isSnoozed() {
             AlarmRule.snoozeSeconds(10)

@@ -49,10 +49,11 @@ extension UIViewController {
         }
     }
 
-    func showAcceptDeclineAlert(title: String, message: String, showOnceKey: String? = nil) {
+    func showAcceptDeclineAlert(title: String, message: String, showOnceKey: String? = nil, onAccept: (() -> Void)? = nil) {
         
         if let showOnceKey = showOnceKey {
             guard !UserDefaults.standard.bool(forKey: showOnceKey) else {
+                onAccept?()
                 return
             }
         }
@@ -62,6 +63,7 @@ extension UIViewController {
             if let showOnceKey = showOnceKey {
                 UserDefaults.standard.set(true, forKey: showOnceKey)
             }
+            onAccept?()
         })
         alertController.addAction(actionAccept)
         present(alertController, animated: true, completion: nil)

@@ -294,5 +294,8 @@ class UserDefaultsRepository {
     // Has the user seen the App Tour?
     static let appTourSeen = UserDefaultsValue<Bool>(key: "appTourSeen", default: false)
     
+    // Has the user seen the disclaimer? (Mainly used for UI testing)
+    static let disclaimerSeen = UserDefaultsValue<Bool>(key: "disclaimerSeen", default: false)
+    
     static let appleHealthLastSyncDate = UserDefaultsValue<Date>(key: "appleHealthLastSyncDate", default: .distantPast)
 }
