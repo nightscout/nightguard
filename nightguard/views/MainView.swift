@@ -258,7 +258,7 @@ struct MainView: View {
                                 .frame(maxHeight: .infinity, alignment: .top)
                         }
                     }
-                    .frame(minHeight: 300, maxHeight: .infinity)
+                    .frame(minHeight: 150, maxHeight: .infinity)
                     .padding(.bottom, 8)
 
                     // Slide to snooze
@@ -300,14 +300,7 @@ struct MainView: View {
                 // This prevents recreating the chart on tab switches
                 if chartScene == nil {
                     // Calculate chart height based on available geometry
-                    let topSectionHeight: CGFloat = 200 // Estimated BG value section
-                    let careDataHeight: CGFloat = viewModel.showCareAndLoopData ? 50 : 0
-                    let statsPanelHeight: CGFloat = viewModel.showStatsPanelView ? 88 : 0
-                    let snoozeHeight: CGFloat = viewModel.slideToSnoozeHeight
-                    let spacing: CGFloat = 24
-
-                    let usedHeight = topSectionHeight + careDataHeight + statsPanelHeight + snoozeHeight + spacing
-                    let chartHeight = max(400, geometry.size.height - usedHeight)
+                    let chartHeight = calculateChartHeight(totalHeight: geometry.size.height)
 
                     setupChart(height: chartHeight)
                 }
@@ -348,15 +341,14 @@ struct MainView: View {
 
     private func calculateChartHeight(totalHeight: CGFloat) -> CGFloat {
         // Calculate heights of other UI components
-        let topPadding: CGFloat = 8
-        let bgValueSection: CGFloat = 130 // BG value row
-        let careDataSection: CGFloat = viewModel.showCareAndLoopData ? 50 : 0
-        let statsPanelSection: CGFloat = viewModel.showStatsPanelView ? 88 : 0 // 80 + spacing
-        let snoozeSection: CGFloat = viewModel.slideToSnoozeHeight
-        let spacing: CGFloat = 8 * 3 // VStack spacing between major sections
+        let topSectionHeight: CGFloat = 200 // Estimated BG value section
+        let careDataHeight: CGFloat = viewModel.showCareAndLoopData ? 50 : 0
+        let statsPanelHeight: CGFloat = viewModel.showStatsPanelView ? 88 : 0
+        let snoozeHeight: CGFloat = viewModel.slideToSnoozeHeight
+        let spacing: CGFloat = 24
 
-        let usedHeight = topPadding + bgValueSection + careDataSection + statsPanelSection + snoozeSection + spacing
-        let chartHeight = max(200, totalHeight - usedHeight)
+        let usedHeight = topSectionHeight + careDataHeight + statsPanelHeight + snoozeHeight + spacing
+        let chartHeight = max(150, totalHeight - usedHeight)
 
         return chartHeight
     }
