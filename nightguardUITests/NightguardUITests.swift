@@ -63,10 +63,23 @@ class NightguardUITests: XCTestCase {
         
         if urlTextField.waitForExistence(timeout: 10) {
             setNightscoutUrl(urlTextField, url: readBaseUri())
+            
+            // Try to tap the back button if we are in a sub-view (often labelled "<" or "Back")
+            let backButton = app.navigationBars.buttons.element(boundBy: 0)
+            if backButton.exists && backButton.isHittable {
+                // Check if it looks like a back button (arrow or "Back")
+                if backButton.label.contains("<") || backButton.label == "Back" || backButton.identifier == "Back" {
+                    backButton.tap()
+                } else if backButton.frame.minX < 50 {
+                     // Fallback: any button on the far left of the nav bar is likely a back button
+                     backButton.tap()
+                }
+            }
             sleep(2)
         }
         
         testMainScreen(tabBar)
+        
         testNightscoutView()
         testFullscreenView()
 
@@ -87,8 +100,9 @@ class NightguardUITests: XCTestCase {
         if UIDevice.current.userInterfaceIdiom == .phone {
             XCUIDevice.shared.orientation = .landscapeLeft
         }
-        sleep(6)
+        sleep(3)
         snapshot("07-stats")
+        sleep(2)
         
         // Test the Preferences Tab:
         selectPreferencesTab(using: tabBar)

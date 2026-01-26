@@ -83,154 +83,102 @@ struct RootTabView: View {
 
 
     var body: some View {
-
         TabView(selection: $selectedTab) {
-
             // Main Tab
-
             MainView()
-
-                .onAppear { forcePortrait() }
-
-                .environment(\.selectedTab, selectedTab)
-
-                .tabItem {
-
-                    Image("Main")
-
-                        .renderingMode(.template)
-
-                    Text(NSLocalizedString("Main", comment: "Main tab"))
-
-                        .accessibilityIdentifier("tab_main")
-
+                .onAppear {
+                    if selectedTab == 0 { forcePortrait() }
                 }
-
+                .environment(\.selectedTab, selectedTab)
+                .tabItem {
+                    Image("Main")
+                        .renderingMode(.template)
+                    Text(NSLocalizedString("Main", comment: "Main tab"))
+                        .accessibilityIdentifier("tab_main")
+                }
                 .tag(0)
 
-
-
             // Alarms Tab
-
             NavigationView {
-
                 AlarmView()
-
             }
-
             .navigationViewStyle(StackNavigationViewStyle())
-
-            .onAppear { forcePortrait() }
-
-            .tabItem {
-
-                Image("Alarm")
-
-                    .renderingMode(.template)
-
-                Text(NSLocalizedString("Alarms", comment: "Alarms tab"))
-
-                    .accessibilityIdentifier("tab_alarms")
-
+            .onAppear {
+                if selectedTab == 1 { forcePortrait() }
             }
-
+            .tabItem {
+                Image("Alarm")
+                    .renderingMode(.template)
+                Text(NSLocalizedString("Alarms", comment: "Alarms tab"))
+                    .accessibilityIdentifier("tab_alarms")
+            }
             .tag(1)
 
-
-
             // Care Tab
-
             CareView(selectedTab: $selectedTab)
-
-                .onAppear { forcePortrait() }
-
+                .onAppear {
+                    if selectedTab == 2 { forcePortrait() }
+                }
                 .tabItem {
-
                     Image("Care")
-
                         .renderingMode(.template)
-
                 Text(NSLocalizedString("Care", comment: "Care tab"))
-
                     .accessibilityIdentifier("tab_care")
-
             }
-
             .tag(2)
 
-
-
             // Duration Tab
-
             DurationView(selectedTab: $selectedTab)
-
-                .onAppear { forcePortrait() }
-
-                .tabItem {
-
-                    Image(systemName: "clock.arrow.circlepath")
-
-                        .renderingMode(.template)
-
-                    Text(NSLocalizedString("Duration", comment: "Duration tab"))
-
-                        .accessibilityIdentifier("tab_duration")
-
+                .onAppear {
+                    if selectedTab == 3 { forcePortrait() }
                 }
-
+                .tabItem {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .renderingMode(.template)
+                    Text(NSLocalizedString("Duration", comment: "Duration tab"))
+                        .accessibilityIdentifier("tab_duration")
+                }
                 .tag(3)
 
-
-
             // Stats Tab
-
             StatsView()
-
-                .onAppear { forceLandscape() }
-
-                .tabItem {
-
-                    Image("Stats")
-
-                        .renderingMode(.template)
-
-                    Text(NSLocalizedString("Stats", comment: "Stats tab"))
-
-                        .accessibilityIdentifier("tab_stats")
-
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        forceLandscape()
+                    }
                 }
-
+                .onDisappear {
+                    forcePortrait()
+                }
+                .tabItem {
+                    Image("Stats")
+                        .renderingMode(.template)
+                    Text(NSLocalizedString("Stats", comment: "Stats tab"))
+                        .accessibilityIdentifier("tab_stats")
+                }
                 .tag(4)
 
-
-
             // Preferences Tab
-
             PrefsView()
-
-                .onAppear { forcePortrait() }
-
-                .tabItem {
-
-                    Image("Prefs")
-
-                        .renderingMode(.template)
-
-                    Text(NSLocalizedString("Preferences", comment: "Preferences tab"))
-
+                .onAppear {
+                    if selectedTab == 5 { forcePortrait() }
                 }
-
+                .tabItem {
+                    Image("Prefs")
+                        .renderingMode(.template)
+                    Text(NSLocalizedString("Preferences", comment: "Preferences tab"))
+                }
                 .accessibilityIdentifier("tab_prefs")
-
                 .tag(5)
-
         }
-
         .accentColor(.white)
-
         .onAppear {
-
-
+            if selectedTab == 4 {
+                forceLandscape()
+            } else {
+                forcePortrait()
+            }
+            
             checkAndShowDisclaimerAndThen {
                 let appTourSeen = UserDefaultsRepository.appTourSeen.value
                 let baseUri = UserDefaultsRepository.baseUri.value
