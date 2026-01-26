@@ -87,7 +87,7 @@ struct RootTabView: View {
             // Main Tab
             MainView()
                 .onAppear {
-                    if selectedTab == 0 { forcePortrait() }
+                    forcePortrait()
                 }
                 .environment(\.selectedTab, selectedTab)
                 .tabItem {
@@ -104,7 +104,7 @@ struct RootTabView: View {
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .onAppear {
-                if selectedTab == 1 { forcePortrait() }
+                forcePortrait()
             }
             .tabItem {
                 Image("Alarm")
@@ -117,7 +117,7 @@ struct RootTabView: View {
             // Care Tab
             CareView(selectedTab: $selectedTab)
                 .onAppear {
-                    if selectedTab == 2 { forcePortrait() }
+                    forcePortrait()
                 }
                 .tabItem {
                     Image("Care")
@@ -130,7 +130,7 @@ struct RootTabView: View {
             // Duration Tab
             DurationView(selectedTab: $selectedTab)
                 .onAppear {
-                    if selectedTab == 3 { forcePortrait() }
+                    forcePortrait()
                 }
                 .tabItem {
                     Image(systemName: "clock.arrow.circlepath")
@@ -147,9 +147,6 @@ struct RootTabView: View {
                         forceLandscape()
                     }
                 }
-                .onDisappear {
-                    forcePortrait()
-                }
                 .tabItem {
                     Image("Stats")
                         .renderingMode(.template)
@@ -161,7 +158,7 @@ struct RootTabView: View {
             // Preferences Tab
             PrefsView()
                 .onAppear {
-                    if selectedTab == 5 { forcePortrait() }
+                    forcePortrait()
                 }
                 .tabItem {
                     Image("Prefs")
@@ -173,12 +170,6 @@ struct RootTabView: View {
         }
         .accentColor(.white)
         .onAppear {
-            if selectedTab == 4 {
-                forceLandscape()
-            } else {
-                forcePortrait()
-            }
-            
             checkAndShowDisclaimerAndThen {
                 let appTourSeen = UserDefaultsRepository.appTourSeen.value
                 let baseUri = UserDefaultsRepository.baseUri.value
