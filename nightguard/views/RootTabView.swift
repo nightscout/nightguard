@@ -22,7 +22,7 @@ extension EnvironmentValues {
 
 struct RootTabView: View {
 
-    @State private var selectedTab = 0
+    @State private var selectedTab: Int
 
     @State private var orientation = UIDeviceOrientation.portrait
 
@@ -32,9 +32,10 @@ struct RootTabView: View {
 
     @State private var startTourOnConfiguration = false
 
-
+    @State private var isRotating = false
 
     init() {
+        _selectedTab = State(initialValue: UserDefaultsRepository.currentTab.value)
 
         // Configure tab bar appearance
 
@@ -83,7 +84,18 @@ struct RootTabView: View {
 
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        let selectionBinding = Binding<Int>(
+            get: { self.selectedTab },
+            set: { newValue in
+                if self.isRotating && newValue == 0 && self.selectedTab != 0 {
+                    return
+                }
+                self.selectedTab = newValue
+                UserDefaultsRepository.currentTab.value = newValue
+            }
+        )
+        
+        return TabView(selection: selectionBinding) {
             // Main Tab
             MainView()
                 .onAppear {
@@ -115,7 +127,7 @@ struct RootTabView: View {
             .tag(1)
 
             // Care Tab
-            CareView(selectedTab: $selectedTab)
+            CareView(selectedTab: selectionBinding)
                 .onAppear {
                     forcePortrait()
                 }
@@ -128,7 +140,7 @@ struct RootTabView: View {
             .tag(2)
 
             // Duration Tab
-            DurationView(selectedTab: $selectedTab)
+            DurationView(selectedTab: selectionBinding)
                 .onAppear {
                     forcePortrait()
                 }
@@ -143,9 +155,7 @@ struct RootTabView: View {
             // Stats Tab
             StatsView()
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        forceLandscape()
-                    }
+                    forceLandscape()
                 }
                 .tabItem {
                     Image("Stats")
@@ -217,15 +227,27 @@ struct RootTabView: View {
     }
     
     private func forcePortrait() {
-        AppDelegate.orientationLock = .portrait
-        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-        UINavigationController.attemptRotationToDeviceOrientation()
+        self.isRotating = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            AppDelegate.orientationLock = .portrait
+            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+            UINavigationController.attemptRotationToDeviceOrientation()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.isRotating = false
+            }
+        }
     }
 
     private func forceLandscape() {
-        AppDelegate.orientationLock = .landscape
-        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-        UINavigationController.attemptRotationToDeviceOrientation()
+        self.isRotating = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            AppDelegate.orientationLock = .landscape
+            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+            UINavigationController.attemptRotationToDeviceOrientation()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.isRotating = false
+            }
+        }
     }
 }
 

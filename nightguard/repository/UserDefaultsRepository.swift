@@ -297,5 +297,7 @@ class UserDefaultsRepository {
     // Has the user seen the disclaimer? (Mainly used for UI testing)
     static let disclaimerSeen = UserDefaultsValue<Bool>(key: "disclaimerSeen", default: false)
     
+    static let currentTab = UserDefaultsValue<Int>(key: "rootTabView.currentTab", default: 0)
+
     static let appleHealthLastSyncDate = UserDefaultsValue<Date>(key: "appleHealthLastSyncDate", default: .distantPast)
 }
