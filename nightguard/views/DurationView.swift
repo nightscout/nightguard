@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DurationView: View {
-    @Binding var selectedTab: Int
+    @Binding var selectedTab: TabIdentifier
 
     @State private var cannulaChangeDate = NightscoutCacheService.singleton.getCannulaChangeTime()
     @State private var sensorChangeDate = NightscoutCacheService.singleton.getSensorChangeTime()
@@ -216,7 +216,7 @@ struct DurationView: View {
                 NightscoutDataRepository.singleton.storeCannulaChangeTime(cannulaChangeTime: cannulaChangeDate)
                 AlarmNotificationService.singleton.scheduleCannulaNotification(changeDate: cannulaChangeDate)
                 playSuccessFeedback()
-                selectedTab = 0
+                selectedTab = .main
             }
         }
     }
@@ -230,7 +230,7 @@ struct DurationView: View {
                 NightscoutDataRepository.singleton.storeSensorChangeTime(sensorChangeTime: sensorChangeDate)
                 AlarmNotificationService.singleton.scheduleSensorNotification(changeDate: sensorChangeDate)
                 playSuccessFeedback()
-                selectedTab = 0
+                selectedTab = .main
             }
         }
     }
@@ -244,7 +244,7 @@ struct DurationView: View {
                 NightscoutDataRepository.singleton.storeBatteryChangeTime(batteryChangeTime: batteryChangeDate)
                 AlarmNotificationService.singleton.scheduleBatteryNotification(changeDate: batteryChangeDate)
                 playSuccessFeedback()
-                selectedTab = 0
+                selectedTab = .main
             }
         }
     }
@@ -256,7 +256,7 @@ struct DurationView: View {
 }
 
 #Preview {
-    DurationView(selectedTab: .constant(3))
+    DurationView(selectedTab: .constant(.duration))
 }
 
 // MARK: - Age Alerts View

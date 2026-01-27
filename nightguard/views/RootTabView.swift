@@ -10,11 +10,11 @@ import UIKit
 
 // Environment key to track selected tab
 private struct SelectedTabKey: EnvironmentKey {
-    static let defaultValue: Int = 0
+    static let defaultValue: TabIdentifier = .main
 }
 
 extension EnvironmentValues {
-    var selectedTab: Int {
+    var selectedTab: TabIdentifier {
         get { self[SelectedTabKey.self] }
         set { self[SelectedTabKey.self] = newValue }
     }
@@ -22,7 +22,7 @@ extension EnvironmentValues {
 
 struct RootTabView: View {
 
-    @State private var selectedTab: Int
+    @State private var selectedTab: TabIdentifier
 
     @State private var orientation = UIDeviceOrientation.portrait
 
@@ -84,10 +84,11 @@ struct RootTabView: View {
 
 
     var body: some View {
-        let selectionBinding = Binding<Int>(
+        let selectionBinding = Binding<TabIdentifier>(
             get: { self.selectedTab },
             set: { newValue in
-                if self.isRotating && newValue == 0 && self.selectedTab != 0 {
+                // Prevent tab switching during rotation to avoid glitches
+                if self.isRotating {
                     return
                 }
                 self.selectedTab = newValue
@@ -108,23 +109,23 @@ struct RootTabView: View {
                     Text(NSLocalizedString("Main", comment: "Main tab"))
                         .accessibilityIdentifier("tab_main")
                 }
-                .tag(0)
+                .tag(TabIdentifier.main)
 
             // Alarms Tab
             NavigationView {
-                AlarmView()
-            }
-            .navigationViewStyle(StackNavigationViewStyle())
-            .onAppear {
-                forcePortrait()
-            }
-            .tabItem {
-                Image("Alarm")
-                    .renderingMode(.template)
-                Text(NSLocalizedString("Alarms", comment: "Alarms tab"))
-                    .accessibilityIdentifier("tab_alarms")
-            }
-            .tag(1)
+                    AlarmView()
+                }
+                .navigationViewStyle(StackNavigationViewStyle())
+                .onAppear {
+                    forcePortrait()
+                }
+                .tabItem {
+                    Image("Alarm")
+                        .renderingMode(.template)
+                    Text(NSLocalizedString("Alarms", comment: "Alarms tab"))
+                        .accessibilityIdentifier("tab_alarms")
+                }
+                .tag(TabIdentifier.alarms)
 
             // Care Tab
             CareView(selectedTab: selectionBinding)
@@ -134,10 +135,10 @@ struct RootTabView: View {
                 .tabItem {
                     Image("Care")
                         .renderingMode(.template)
-                Text(NSLocalizedString("Care", comment: "Care tab"))
-                    .accessibilityIdentifier("tab_care")
-            }
-            .tag(2)
+                    Text(NSLocalizedString("Care", comment: "Care tab"))
+                        .accessibilityIdentifier("tab_care")
+                }
+                .tag(TabIdentifier.care)
 
             // Duration Tab
             DurationView(selectedTab: selectionBinding)
@@ -150,7 +151,7 @@ struct RootTabView: View {
                     Text(NSLocalizedString("Duration", comment: "Duration tab"))
                         .accessibilityIdentifier("tab_duration")
                 }
-                .tag(3)
+                .tag(TabIdentifier.duration)
 
             // Stats Tab
             StatsView()
@@ -163,7 +164,7 @@ struct RootTabView: View {
                     Text(NSLocalizedString("Stats", comment: "Stats tab"))
                         .accessibilityIdentifier("tab_stats")
                 }
-                .tag(4)
+                .tag(TabIdentifier.stats)
 
             // Preferences Tab
             PrefsView()
@@ -176,7 +177,7 @@ struct RootTabView: View {
                     Text(NSLocalizedString("Preferences", comment: "Preferences tab"))
                 }
                 .accessibilityIdentifier("tab_prefs")
-                .tag(5)
+                .tag(TabIdentifier.prefs)
         }
         .accentColor(.white)
         .onAppear {
@@ -228,10 +229,19 @@ struct RootTabView: View {
     
     private func forcePortrait() {
         self.isRotating = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             AppDelegate.orientationLock = .portrait
-            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-            UINavigationController.attemptRotationToDeviceOrientation()
+            
+            if #available(iOS 16.0, *) {
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+                windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait)) { error in
+                    print("Error requesting portrait orientation: \(error.localizedDescription)")
+                }
+            } else {
+                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                UINavigationController.attemptRotationToDeviceOrientation()
+            }
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.isRotating = false
             }
@@ -240,10 +250,19 @@ struct RootTabView: View {
 
     private func forceLandscape() {
         self.isRotating = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             AppDelegate.orientationLock = .landscape
-            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-            UINavigationController.attemptRotationToDeviceOrientation()
+            
+            if #available(iOS 16.0, *) {
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+                windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .landscapeRight)) { error in
+                    print("Error requesting landscape orientation: \(error.localizedDescription)")
+                }
+            } else {
+                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+                UINavigationController.attemptRotationToDeviceOrientation()
+            }
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.isRotating = false
             }

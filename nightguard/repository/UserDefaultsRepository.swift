@@ -297,7 +297,48 @@ class UserDefaultsRepository {
     // Has the user seen the disclaimer? (Mainly used for UI testing)
     static let disclaimerSeen = UserDefaultsValue<Bool>(key: "disclaimerSeen", default: false)
     
-    static let currentTab = UserDefaultsValue<Int>(key: "rootTabView.currentTab", default: 0)
+    static let currentTab = UserDefaultsValue<TabIdentifier>(key: "rootTabView.currentTab", default: .main)
 
     static let appleHealthLastSyncDate = UserDefaultsValue<Date>(key: "appleHealthLastSyncDate", default: .distantPast)
+}
+
+enum TabIdentifier: String, CaseIterable, AnyConvertible, Equatable, Identifiable {
+    case main = "main"
+    case alarms = "alarms"
+    case care = "care"
+    case duration = "duration"
+    case stats = "stats"
+    case prefs = "prefs"
+    
+    var id: String { rawValue }
+
+    // Default value
+    static let defaultValue: TabIdentifier = .main
+    
+    // MARK: - AnyConvertible
+    
+    func toAny() -> Any {
+        return self.rawValue
+    }
+    
+    static func fromAny(_ anyValue: Any) -> TabIdentifier? {
+        if let rawValue = anyValue as? String {
+            return TabIdentifier(rawValue: rawValue)
+        }
+        
+        // Migration support for old Int values
+        if let intValue = anyValue as? Int {
+            switch intValue {
+            case 0: return .main
+            case 1: return .alarms
+            case 2: return .care
+            case 3: return .duration
+            case 4: return .stats
+            case 5: return .prefs
+            default: return .main
+            }
+        }
+        
+        return nil
+    }
 }

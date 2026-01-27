@@ -84,4 +84,39 @@ class UserDefaultsRepositoryTest : XCTestCase {
         XCTAssertEqual(retrievedTreatments[1].id, "id1")
         XCTAssertEqual(retrievedTreatments[1].timestamp, 1)
     }
+    
+    func testTabIdentifierEnumValues() {
+        XCTAssertEqual(TabIdentifier.main.rawValue, "main")
+        XCTAssertEqual(TabIdentifier.alarms.rawValue, "alarms")
+        XCTAssertEqual(TabIdentifier.care.rawValue, "care")
+        XCTAssertEqual(TabIdentifier.duration.rawValue, "duration")
+        XCTAssertEqual(TabIdentifier.stats.rawValue, "stats")
+        XCTAssertEqual(TabIdentifier.prefs.rawValue, "prefs")
+    }
+    
+    func testTabIdentifierMigrationFromInt() {
+        // Test migration from old Int values
+        XCTAssertEqual(TabIdentifier.fromAny(0), .main)
+        XCTAssertEqual(TabIdentifier.fromAny(1), .alarms)
+        XCTAssertEqual(TabIdentifier.fromAny(2), .care)
+        XCTAssertEqual(TabIdentifier.fromAny(3), .duration)
+        XCTAssertEqual(TabIdentifier.fromAny(4), .stats)
+        XCTAssertEqual(TabIdentifier.fromAny(5), .prefs)
+        
+        // Test default for unknown int
+        XCTAssertEqual(TabIdentifier.fromAny(99), .main)
+    }
+    
+    func testTabIdentifierStringSerialization() {
+        // Test string roundtrip
+        XCTAssertEqual(TabIdentifier.fromAny("care"), .care)
+        XCTAssertEqual(TabIdentifier.fromAny("stats"), .stats)
+        
+        // Test unknown string
+        XCTAssertNil(TabIdentifier.fromAny("unknown_tab"))
+    }
+    
+    func testTabIdentifierToAny() {
+        XCTAssertEqual(TabIdentifier.care.toAny() as? String, "care")
+    }
 }

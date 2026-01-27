@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CareView: View {
-    @Binding var selectedTab: Int
+    @Binding var selectedTab: TabIdentifier
 
     @State private var selectedReason = UserDefaultsRepository.temporaryTargetReason.value
     @State private var selectedDuration = UserDefaultsRepository.temporaryTargetDuration.value
@@ -221,7 +221,7 @@ struct CareView: View {
                 showErrorAlert = true
             } else {
                 // Switch to main tab
-                selectedTab = 0
+                selectedTab = .main
             }
         }
     }
@@ -234,7 +234,7 @@ struct CareView: View {
                 showErrorAlert = true
             } else {
                 // Switch to main tab
-                selectedTab = 0
+                selectedTab = .main
             }
         }
     }
@@ -247,7 +247,7 @@ struct CareView: View {
                 showErrorAlert = true
             } else {
                 // Switch to main tab
-                selectedTab = 0
+                selectedTab = .main
             }
         }
     }
@@ -259,5 +259,5 @@ struct CareView: View {
 }
 
 #Preview {
-    CareView(selectedTab: .constant(2))
+    CareView(selectedTab: .constant(.care))
 }

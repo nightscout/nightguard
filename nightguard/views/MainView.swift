@@ -317,7 +317,7 @@ struct MainView: View {
             viewModel.stopTimer()
         }
         .onChange(of: selectedTab) { newTab in
-            viewModel.handleVisibilityChange(isVisible: newTab == 0)
+            viewModel.handleVisibilityChange(isVisible: newTab == .main)
         }
         .sheet(isPresented: $showNightscout) {
             NightscoutView()
