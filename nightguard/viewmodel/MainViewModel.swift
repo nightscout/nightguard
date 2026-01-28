@@ -401,6 +401,18 @@ class MainViewModel: ObservableObject, Identifiable {
             if !currentNightscoutData.cob.isEmpty {
                 self.cobValue = currentNightscoutData.cob
             }
+            
+            // Update Live Activity
+            if #available(iOS 16.1, *) {
+                 LiveActivityManager.shared.startOrUpdateActivity(
+                    sgv: self.bgValue,
+                    delta: UnitsConverter.mgdlToDisplayUnitsWithSign("\(currentNightscoutData.bgdelta)"),
+                    trendArrow: currentNightscoutData.bgdeltaArrow,
+                    date: Date(timeIntervalSince1970: Double(currentNightscoutData.time.int64Value / 1000)),
+                    bgDelta: Double(currentNightscoutData.bgdelta),
+                    sgvColor: UIColorChanger.getBgColor(self.bgValue)
+                )
+            }
 
             // Notify that data has been updated
             NotificationCenter.default.post(name: NSNotification.Name("NightscoutDataUpdated"), object: nil)

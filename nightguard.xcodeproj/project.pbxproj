@@ -350,10 +350,14 @@
 		43F1E1111D076C1C00C329A2 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		43F1E1121D076C4500C329A2 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		43F1E11B1D076D9700C329A2 /* TimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E11A1D076D9700C329A2 /* TimeService.swift */; };
+		4898D4E494D3ADCC1D371BFC /* NightguardLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6F4BDF1BE5024D679D63A5 /* NightguardLiveActivity.swift */; };
 		4BD05B7C2B1E33F700A74E9B /* DateExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */; };
+		5177F661016A850E645FCAD2 /* LiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE0D2349E86D60E1E59494 /* LiveActivityAttributes.swift */; };
 		7B4E31F42C2379C4005090CB /* NotificationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F32C2379C4005090CB /* NotificationExtension.swift */; };
 		7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4E31F52C237F14005090CB /* SystemSmallView.swift */; };
 		A053543DE5EC4E60AEEFA55D /* BasicStatsPanelViewSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA01DB91EB2B48AE99E1C238 /* BasicStatsPanelViewSwiftUI.swift */; };
+		A6D112AB02A31088FCA84B99 /* LiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE0D2349E86D60E1E59494 /* LiveActivityAttributes.swift */; };
+		B6D90230DCDA3649074F6A5C /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B429E994A0A3E27C5DBF08EB /* LiveActivityManager.swift */; };
 		D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
@@ -662,8 +666,11 @@
 		43F1E1101D076C1C00C329A2 /* NightscoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutService.swift; path = nightguard/external/NightscoutService.swift; sourceTree = SOURCE_ROOT; };
 		43F1E11A1D076D9700C329A2 /* TimeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeService.swift; path = nightguard/app/TimeService.swift; sourceTree = SOURCE_ROOT; };
 		4BD05B7B2B1E33F700A74E9B /* DateExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTest.swift; sourceTree = "<group>"; };
+		4F6F4BDF1BE5024D679D63A5 /* NightguardLiveActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NightguardLiveActivity.swift; sourceTree = "<group>"; };
 		7B4E31F32C2379C4005090CB /* NotificationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtension.swift; sourceTree = "<group>"; };
 		7B4E31F52C237F14005090CB /* SystemSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSmallView.swift; sourceTree = "<group>"; };
+		B429E994A0A3E27C5DBF08EB /* LiveActivityManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
+		BEFE0D2349E86D60E1E59494 /* LiveActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LiveActivityAttributes.swift; sourceTree = "<group>"; };
 		D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerExtension.swift; sourceTree = "<group>"; };
 		D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodSugarArrayTest.swift; sourceTree = "<group>"; };
 		D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionServiceTest.swift; sourceTree = "<group>"; };
@@ -905,6 +912,7 @@
 				439CBB2028EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition */,
 				438DAC8428D2356A00FBF520 /* Assets.xcassets */,
 				438DAC8628D2356A00FBF520 /* Info.plist */,
+				4F6F4BDF1BE5024D679D63A5 /* NightguardLiveActivity.swift */,
 			);
 			path = "nightguard Widget Extension";
 			sourceTree = "<group>";
@@ -982,6 +990,7 @@
 				D16C8EE12213022E00192117 /* UserInteractionDetectorWindow.swift */,
 				4303406824C9FF330088AB9A /* DeviceStatusData.swift */,
 				43BB4B0424CF5DBA00DE96BB /* TemporaryTargetData.swift */,
+				B429E994A0A3E27C5DBF08EB /* LiveActivityManager.swift */,
 			);
 			path = app;
 			sourceTree = "<group>";
@@ -1098,6 +1107,7 @@
 				432E62DE1D10ACD200DD7978 /* Units.swift */,
 				D16C8EDC22106C9300192117 /* QuickSnoozeOption.swift */,
 				D18C5D8922293C220099D96E /* BasicStats.swift */,
+				BEFE0D2349E86D60E1E59494 /* LiveActivityAttributes.swift */,
 			);
 			path = domain;
 			sourceTree = "<group>";
@@ -1557,6 +1567,8 @@
 				436D73B427C826F100639B15 /* AppleHealthService.swift in Sources */,
 				43F1E1011D07698000C329A2 /* AppDelegate.swift in Sources */,
 				D16C8EDB221068F000192117 /* VolumeChangeDetector.swift in Sources */,
+				A6D112AB02A31088FCA84B99 /* LiveActivityAttributes.swift in Sources */,
+				B6D90230DCDA3649074F6A5C /* LiveActivityManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1846,6 +1858,8 @@
 				4332FF672B1658CA00DBF917 /* BloodSugarArrayExtension.swift in Sources */,
 				438DACA028D25B3E00FBF520 /* AnyConvertible.swift in Sources */,
 				43BE674428D78B9B00285798 /* UnitsConverter.swift in Sources */,
+				5177F661016A850E645FCAD2 /* LiveActivityAttributes.swift in Sources */,
+				4898D4E494D3ADCC1D371BFC /* NightguardLiveActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

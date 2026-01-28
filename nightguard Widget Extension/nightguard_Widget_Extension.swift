@@ -29,6 +29,11 @@ struct NightguardWidgetsBundle: WidgetBundle {
         NightguardDefaultWidgets()
         NightguardTimestampWidgets()
         NightguardGaugeWidgets()
+        #if canImport(ActivityKit)
+        if #available(iOS 16.1, *) {
+            NightguardLiveActivity()
+        }
+        #endif
     }
 }
 
