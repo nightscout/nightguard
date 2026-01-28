@@ -237,7 +237,12 @@ struct RootTabView: View {
         
         // Show Alert
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if let window = UIApplication.shared.windows.first,
+            let window = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .flatMap { $0.windows }
+                .first { $0.isKeyWindow }
+
+            if let window = window,
                let rootViewController = window.rootViewController {
                    
                 rootViewController.showAcceptDeclineAlert(title: NSLocalizedString("Disclaimer!", comment: "Disclaimer Popup Title"), message:
