@@ -32,8 +32,6 @@ struct RootTabView: View {
 
     @State private var startTourOnConfiguration = false
 
-    @State private var isRotating = false
-
     init() {
         _selectedTab = State(initialValue: UserDefaultsRepository.currentTab.value)
 
@@ -87,10 +85,7 @@ struct RootTabView: View {
         let selectionBinding = Binding<TabIdentifier>(
             get: { self.selectedTab },
             set: { newValue in
-                // Prevent tab switching during rotation to avoid glitches
-                if self.isRotating {
-                    return
-                }
+                print("DEBUG: Selection changing to \(newValue), current: \(self.selectedTab)")
                 self.selectedTab = newValue
                 UserDefaultsRepository.currentTab.value = newValue
             }
@@ -100,7 +95,10 @@ struct RootTabView: View {
             // Main Tab
             MainView()
                 .onAppear {
-                    forcePortrait()
+                    print("DEBUG: MainView onAppear. selectedTab: \(self.selectedTab)")
+                    if self.selectedTab == .main {
+                        forcePortrait()
+                    }
                 }
                 .environment(\.selectedTab, selectedTab)
                 .tabItem {
@@ -117,7 +115,9 @@ struct RootTabView: View {
                 }
                 .navigationViewStyle(StackNavigationViewStyle())
                 .onAppear {
-                    forcePortrait()
+                    if self.selectedTab == .alarms {
+                        forcePortrait()
+                    }
                 }
                 .tabItem {
                     Image("Alarm")
@@ -130,7 +130,9 @@ struct RootTabView: View {
             // Care Tab
             CareView(selectedTab: selectionBinding)
                 .onAppear {
-                    forcePortrait()
+                    if self.selectedTab == .care {
+                        forcePortrait()
+                    }
                 }
                 .tabItem {
                     Image("Care")
@@ -143,7 +145,10 @@ struct RootTabView: View {
             // Duration Tab
             DurationView(selectedTab: selectionBinding)
                 .onAppear {
-                    forcePortrait()
+                    print("DEBUG: DurationView onAppear. selectedTab: \(self.selectedTab)")
+                    if self.selectedTab == .duration {
+                        forcePortrait()
+                    }
                 }
                 .tabItem {
                     Image(systemName: "clock.arrow.circlepath")
@@ -156,7 +161,16 @@ struct RootTabView: View {
             // Stats Tab
             StatsView()
                 .onAppear {
-                    forceLandscape()
+                    print("DEBUG: StatsView onAppear. selectedTab: \(self.selectedTab)")
+                    if self.selectedTab == .stats {
+                        forceLandscape()
+                    } else {
+                        print("DEBUG: StatsView appeared with mismatch. Fixing selection.")
+                        DispatchQueue.main.async {
+                            self.selectedTab = .stats
+                            forceLandscape()
+                        }
+                    }
                 }
                 .tabItem {
                     Image("Stats")
@@ -169,7 +183,16 @@ struct RootTabView: View {
             // Preferences Tab
             PrefsView()
                 .onAppear {
-                    forcePortrait()
+                    print("DEBUG: PrefsView onAppear. selectedTab: \(self.selectedTab)")
+                    if self.selectedTab == .prefs {
+                        forcePortrait()
+                    } else {
+                        print("DEBUG: PrefsView appeared with mismatch. Fixing selection.")
+                        DispatchQueue.main.async {
+                            self.selectedTab = .prefs
+                            forcePortrait()
+                        }
+                    }
                 }
                 .tabItem {
                     Image("Prefs")
@@ -228,44 +251,30 @@ struct RootTabView: View {
     }
     
     private func forcePortrait() {
-        self.isRotating = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            AppDelegate.orientationLock = .portrait
-            
-            if #available(iOS 16.0, *) {
-                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-                windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait)) { error in
-                    print("Error requesting portrait orientation: \(error.localizedDescription)")
-                }
-            } else {
-                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                UINavigationController.attemptRotationToDeviceOrientation()
+        AppDelegate.orientationLock = .portrait
+        
+        if #available(iOS 16.0, *) {
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait)) { error in
+                print("Error requesting portrait orientation: \(error.localizedDescription)")
             }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.isRotating = false
-            }
+        } else {
+            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+            UINavigationController.attemptRotationToDeviceOrientation()
         }
     }
 
     private func forceLandscape() {
-        self.isRotating = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            AppDelegate.orientationLock = .landscape
-            
-            if #available(iOS 16.0, *) {
-                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-                windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .landscapeRight)) { error in
-                    print("Error requesting landscape orientation: \(error.localizedDescription)")
-                }
-            } else {
-                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-                UINavigationController.attemptRotationToDeviceOrientation()
+        AppDelegate.orientationLock = .landscape
+        
+        if #available(iOS 16.0, *) {
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .landscapeRight)) { error in
+                print("Error requesting landscape orientation: \(error.localizedDescription)")
             }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.isRotating = false
-            }
+        } else {
+            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+            UINavigationController.attemptRotationToDeviceOrientation()
         }
     }
 }
