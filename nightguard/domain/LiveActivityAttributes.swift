@@ -21,6 +21,8 @@ struct NightguardActivityAttributes: ActivityAttributes {
         var sgvColorRed: Double
         var sgvColorGreen: Double
         var sgvColorBlue: Double
+        var iob: String
+        var cob: String
     }
 
     // Fixed non-changing properties about your activity go here!

@@ -63,12 +63,34 @@ struct NightguardLiveActivity: Widget {
                     .padding(.trailing)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    HStack {
-                        Spacer()
-                        Text(context.state.date, style: .time)
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
-                        Spacer()
+                    VStack(spacing: 0) {
+                        HStack {
+                            if !context.state.iob.isEmpty {
+                                Text("IOB: \(context.state.iob)")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            if !context.state.cob.isEmpty {
+                                if !context.state.iob.isEmpty {
+                                    Text("•")
+                                        .foregroundColor(.secondary)
+                                }
+                                Text("COB: \(context.state.cob)")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        HStack {
+                            Spacer()
+                            Text(context.state.date, style: .relative)
+                                .font(.caption2)
+                                .monospacedDigit()
+                                .foregroundColor(.secondary)
+                            Text(" ago")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                            Spacer()
+                        }
                     }
                 }
             } compactLeading: {
@@ -81,6 +103,7 @@ struct NightguardLiveActivity: Widget {
                     Text(context.state.delta)
                 }
                 .font(.caption)
+                .foregroundColor(Color(red: context.state.sgvColorRed, green: context.state.sgvColorGreen, blue: context.state.sgvColorBlue))
             } minimal: {
                 Text(context.state.sgv)
                     .fontWeight(.bold)

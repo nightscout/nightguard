@@ -114,6 +114,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // The new data has already been stored locally. Use it to determine wheter alerts have to be send:
                 AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
+                
+                if #available(iOS 16.1, *) {
+                    LiveActivityManager.shared.update(with: nightscoutData)
+                }
+                
                 task.setTaskCompleted(success: true)
             }
         }

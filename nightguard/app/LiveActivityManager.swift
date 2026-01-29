@@ -16,7 +16,7 @@ class LiveActivityManager {
     
     private init() {}
     
-    func startOrUpdateActivity(sgv: String, delta: String, trendArrow: String, date: Date, bgDelta: Double, sgvColor: UIColor) {
+    func startOrUpdateActivity(sgv: String, delta: String, trendArrow: String, date: Date, bgDelta: Double, sgvColor: UIColor, iob: String, cob: String) {
         #if canImport(ActivityKit)
         // Live Activities are only available on iOS 16.1+
         guard #available(iOS 16.1, *) else { return }
@@ -47,14 +47,19 @@ class LiveActivityManager {
             bgDelta: bgDelta,
             sgvColorRed: Double(red),
             sgvColorGreen: Double(green),
-            sgvColorBlue: Double(blue)
+            sgvColorBlue: Double(blue),
+            iob: iob,
+            cob: cob
         )
         
         // Check if we already have an activity running
-        if let currentActivity = Activity<NightguardActivityAttributes>.activities.first {
-            // Update
-            Task {
-                await currentActivity.update(using: contentState)
+        let activities = Activity<NightguardActivityAttributes>.activities
+        if !activities.isEmpty {
+            // Update all active activities
+            for activity in activities {
+                Task {
+                    await activity.update(using: contentState)
+                }
             }
         } else {
             // Start
@@ -69,6 +74,30 @@ class LiveActivityManager {
                 print("Error starting live activity: \(error.localizedDescription)")
             }
         }
+        #endif
+    }
+
+    func update(with nightscoutData: NightscoutData) {
+        #if os(iOS)
+        let sgv = UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)
+        let delta = UnitsConverter.mgdlToDisplayUnitsWithSign("\(nightscoutData.bgdelta)")
+        let trendArrow = nightscoutData.bgdeltaArrow
+        let date = Date(timeIntervalSince1970: Double(nightscoutData.time.int64Value / 1000))
+        let bgDelta = Double(nightscoutData.bgdelta)
+        let sgvColor = UIColorChanger.getBgColor(sgv)
+        let iob = nightscoutData.iob
+        let cob = nightscoutData.cob
+
+        startOrUpdateActivity(
+            sgv: sgv,
+            delta: delta,
+            trendArrow: trendArrow,
+            date: date,
+            bgDelta: bgDelta,
+            sgvColor: sgvColor,
+            iob: iob,
+            cob: cob
+        )
         #endif
     }
     
