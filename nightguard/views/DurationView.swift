@@ -269,9 +269,9 @@ struct DurationView: View {
             return
         }
         
-        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        /*let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
         
-        /*/ If user said "Not now" for this version, don't show.
+        // If user said "Not now" for this version, don't show.
         if UserDefaultsRepository.proPromotionNotNowVersion.value == versionNumber {
             return
         }*/
