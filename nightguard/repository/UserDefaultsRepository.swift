@@ -300,6 +300,10 @@ class UserDefaultsRepository {
     static let currentTab = UserDefaultsValue<TabIdentifier>(key: "rootTabView.currentTab", default: .main)
 
     static let appleHealthLastSyncDate = UserDefaultsValue<Date>(key: "appleHealthLastSyncDate", default: .distantPast)
+
+    // Pro Promotion
+    static let proPromotionNotNowVersion = UserDefaultsValue<String>(key: "proPromotionNotNowVersion", default: "")
+    static let proPromotionLastSeen = UserDefaultsValue<Date>(key: "proPromotionLastSeen", default: .distantPast)
 }
 
 enum TabIdentifier: String, CaseIterable, AnyConvertible, Equatable, Identifiable {

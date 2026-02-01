@@ -21,6 +21,7 @@ struct DurationView: View {
     @State private var showBatteryConfirmation = false
     @State private var showErrorAlert = false
     @State private var errorMessage = ""
+    @State private var showProPromotion = false
 
     var body: some View {
         NavigationView {
@@ -171,6 +172,15 @@ struct DurationView: View {
                 cannulaChangeDate = NightscoutCacheService.singleton.getCannulaChangeTime()
                 sensorChangeDate = NightscoutCacheService.singleton.getSensorChangeTime()
                 batteryChangeDate = NightscoutCacheService.singleton.getPumpBatteryChangeTime()
+                
+                checkAndShowProPromotion()
+            }
+            .sheet(isPresented: $showProPromotion) {
+                ProPromotionView(
+                    onRemindLater: {
+                        UserDefaultsRepository.proPromotionLastSeen.value = Date()
+                    }
+                )
             }
             .alert(NSLocalizedString("Modify Cannula Change Date", comment: "Modify Cannula Change Date Popup Title"), isPresented: $showCannulaConfirmation) {
                 Button(NSLocalizedString("Accept", comment: "Popup Accept-Button")) {
@@ -252,6 +262,33 @@ struct DurationView: View {
     private func playSuccessFeedback() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
+    }
+
+    private func checkAndShowProPromotion() {
+        if purchaseManager.isProAccessAvailable {
+            return
+        }
+        
+        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        
+        /*/ If user said "Not now" for this version, don't show.
+        if UserDefaultsRepository.proPromotionNotNowVersion.value == versionNumber {
+            return
+        }*/
+        
+        // If user said "Remind me later", check if 7 days have passed.
+        let lastSeen = UserDefaultsRepository.proPromotionLastSeen.value
+        let sevenDaysAgo = Calendar.current.date(byAdding: .minute, value: -7, to: Date()) ?? Date()
+        
+        if lastSeen > sevenDaysAgo && lastSeen != .distantPast {
+            return
+        }
+        
+        // Show after a short delay to ensure view is fully loaded
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            showProPromotion = true
+            UserDefaultsRepository.proPromotionLastSeen.value = Date()
+        }
     }
 }
 

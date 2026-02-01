@@ -27,6 +27,7 @@ struct PrefsView: View {
     @State private var urlErrorMessage = ""
     @State private var isValidatingURL = false
     @State private var showAppTour = false
+    @State private var showProPromotion = false
 
     @ObservedObject var purchaseManager = PurchaseManager.shared
     
@@ -62,7 +63,7 @@ struct PrefsView: View {
                     showAppleHealthAlert: $showAppleHealthAlert
                 )
                 
-                ProFeaturesSectionView(purchaseManager: purchaseManager)
+                ProFeaturesSectionView(purchaseManager: purchaseManager, showProPromotion: $showProPromotion)
                 
                 Section {
                     HStack {
@@ -113,6 +114,13 @@ struct PrefsView: View {
                 loadCurrentValues()
             }) {
                 AppTourView(isPresented: $showAppTour)
+            }
+            .sheet(isPresented: $showProPromotion) {
+                ProPromotionView(
+                    onRemindLater: {
+                        UserDefaultsRepository.proPromotionLastSeen.value = Date()
+                    }
+                )
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())

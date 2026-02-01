@@ -8,10 +8,24 @@
 import SwiftUI
 
 struct ProFeaturesSectionView: View {
+
     @ObservedObject var purchaseManager: PurchaseManager
-    
+    @Binding var showProPromotion: Bool
+
     var body: some View {
-        Section(header: Text(NSLocalizedString("Pro Features", comment: "Pro Features Section Header"))) {
+        Section(header: 
+            HStack {
+                Text(NSLocalizedString("Pro Features", comment: "Pro Features Section Header"))
+                Spacer()
+                Button(action: {
+                    showProPromotion = true
+                    UserDefaultsRepository.proPromotionLastSeen.value = Date()
+                }) {
+                    Image(systemName: "questionmark.circle")
+                        .foregroundColor(.blue)
+                }
+            }
+        ) {
             if purchaseManager.isProAccessAvailable {
                 HStack {
                     Image(systemName: "checkmark.seal.fill")
@@ -32,4 +46,8 @@ struct ProFeaturesSectionView: View {
             }
         }
     }
+}
+
+#Preview {
+    ProFeaturesSectionView(purchaseManager: PurchaseManager.shared, showProPromotion: .constant(false))
 }

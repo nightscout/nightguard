@@ -330,6 +330,7 @@
 		43E777F72F198E3C00BC8524 /* DisplayOptionsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777EF2F198E3C00BC8524 /* DisplayOptionsSectionView.swift */; };
 		43E777F82F198E3C00BC8524 /* ProFeaturesSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */; };
 		43E777F92F198E3C00BC8524 /* UnitsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F32F198E3C00BC8524 /* UnitsSectionView.swift */; };
+		43E899512F2BF06D00A357B9 /* ProPromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E899502F2BF06D00A357B9 /* ProPromotionView.swift */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E9F70227386C9900C6AEB3 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9F70127386C9900C6AEB3 /* UIImageExtension.swift */; };
@@ -649,6 +650,7 @@
 		43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeaturesSectionView.swift; sourceTree = "<group>"; };
 		43E777F22F198E3C00BC8524 /* ScreenSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSectionView.swift; sourceTree = "<group>"; };
 		43E777F32F198E3C00BC8524 /* UnitsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsSectionView.swift; sourceTree = "<group>"; };
+		43E899502F2BF06D00A357B9 /* ProPromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPromotionView.swift; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
 		43E9F70127386C9900C6AEB3 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		43EE375A24478D78008C9134 /* XCUIElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElement.swift; sourceTree = "<group>"; };
@@ -1161,6 +1163,7 @@
 			children = (
 				43E777F42F198E3C00BC8524 /* prefs */,
 				D1F94ECA223FFD5400BB0A4D /* stats */,
+				43E899502F2BF06D00A357B9 /* ProPromotionView.swift */,
 				430EB4FC2F1FFD4600CAF155 /* AppTourView.swift */,
 				43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */,
 				4391E5772EBF500300530260 /* MainView.swift */,
@@ -1476,6 +1479,7 @@
 				43119B891C38404200DD6D35 /* NightscoutDataRepository.swift in Sources */,
 				D133079621C85FAE00DC6879 /* Matrix+Description.swift in Sources */,
 				D1CE8CC02204B07F0075FF8A /* Colors.swift in Sources */,
+				43E899512F2BF06D00A357B9 /* ProPromotionView.swift in Sources */,
 				43BB4B0524CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */,
 				D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */,
 				43F1E0FF1D07698000C329A2 /* AlarmSound.swift in Sources */,
@@ -2122,7 +2126,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 956;
+				CURRENT_PROJECT_VERSION = 958;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2152,7 +2156,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 956;
+				CURRENT_PROJECT_VERSION = 958;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2179,7 +2183,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 956;
+				CURRENT_PROJECT_VERSION = 958;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -2208,7 +2212,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 956;
+				CURRENT_PROJECT_VERSION = 958;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
@@ -2321,7 +2325,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 956;
+				CURRENT_PROJECT_VERSION = 958;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2361,7 +2365,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 956;
+				CURRENT_PROJECT_VERSION = 958;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2398,7 +2402,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 956;
+				CURRENT_PROJECT_VERSION = 958;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2440,7 +2444,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 956;
+				CURRENT_PROJECT_VERSION = 958;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";

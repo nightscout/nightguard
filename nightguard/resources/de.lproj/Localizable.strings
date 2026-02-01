@@ -663,3 +663,16 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Disclaimer Popup Message */
 "Don't use this App for medical decisions! It comes with absolutely NO WARRANTY. It is maintained by volunteers only. Use it at your own risk!" = "Verwenden Sie diese App nicht für medizinische Entscheidungen! Es wird keinerlei Garantie übernommen. Sie wird nur von Freiwilligen gepflegt. Die Nutzung erfolgt auf eigene Gefahr!";
+
+/* Pro Promotion */
+"Support Nightguard" = "Unterstütze Nightguard";
+"The app will always stay free and open source." = "Die App wird immer kostenlos und Open Source bleiben.";
+"You can support the app by subscribing and get some extra features as a goodie!" = "Du kannst die App durch ein Abonnement unterstützen und erhältst einige zusätzliche Funktionen als Goodie!";
+"Pro Notifications" = "Pro Benachrichtigungen";
+"Push Notifications for Cannula Age, Battery Age, Sensor Age and Reservoir capacity." = "Push-Benachrichtigungen für Kanülenalter, Batteriealter, Sensoralter und Reservoirkapazität.";
+"Live Activities" = "Live Aktivitäten";
+"Support for the dynamic island and live activities to see your BG at a glance." = "Unterstützung für die Dynamic Island und Live Aktivitäten, um deinen BZ auf einen Blick zu sehen.";
+"Support & Subscribe" = "Unterstützen & Abonnieren";
+"Remind me later" = "Später erinnern";
+"Not now" = "Nicht jetzt";
+"Pro Version Unlocked" = "Pro Version freigeschaltet";
