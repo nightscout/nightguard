@@ -190,7 +190,7 @@ struct MainView: View {
 
                                 Text(viewModel.reservoirValue)
                                     .font(.system(size: 15))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(viewModel.reservoirColor)
 
                                 Text(viewModel.batteryValue)
                                     .font(.system(size: 15))

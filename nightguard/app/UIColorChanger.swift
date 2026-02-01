@@ -125,6 +125,15 @@ class UIColorChanger {
         }
     }
     
+    static func getReservoirColor(_ units: Int) -> Color {
+        if units <= UserDefaultsRepository.reservoirUnitsCritical.value {
+            return Color(UIColor.nightguardRed())
+        }
+        if units <= UserDefaultsRepository.reservoirUnitsWarning.value {
+            return Color(UIColor.nightguardYellow())
+        }
+        return .white
+    }
 
     static func calculateCannulaAgeColor(cannulaAgeDate : Date) -> Color {
         return Color.white

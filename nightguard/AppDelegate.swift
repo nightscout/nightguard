@@ -118,6 +118,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if #available(iOS 16.1, *) {
                     LiveActivityManager.shared.update(with: nightscoutData)
                 }
+
+                // Also check device status for reservoir
+                let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
+                    AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
+                }
                 
                 task.setTaskCompleted(success: true)
             }

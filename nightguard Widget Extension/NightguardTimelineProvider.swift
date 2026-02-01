@@ -9,7 +9,6 @@
 import Foundation
 import WidgetKit
 import UserNotifications
-import ClockKit
 
 struct NightguardTimelineProvider: TimelineProvider {
     
@@ -173,22 +172,5 @@ struct NightguardTimelineProvider: TimelineProvider {
         }
         
         return newEntries
-    }
-    
-    fileprivate func updateComplicationOrWidgets() {
-
-        #if os(watchOS)
-            let complicationServer = CLKComplicationServer.sharedInstance()
-            if complicationServer.activeComplications != nil {
-                guard let activeComp = complicationServer.activeComplications else {
-                    return
-                }
-                for complication in activeComp {
-                    complicationServer.reloadTimeline(for: complication)
-                }
-            }
-        #else
-            WidgetCenter.shared.reloadAllTimelines()
-        #endif
     }
 }

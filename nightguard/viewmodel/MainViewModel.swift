@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 import SpriteKit
 #if os(watchOS)
-import ClockKit
 import WatchConnectivity
 import WidgetKit
 #endif
@@ -40,6 +39,7 @@ class MainViewModel: ObservableObject, Identifiable {
 
     // MARK: - Published Properties - Device Status
     @Published var reservoir: String = "?U"
+    @Published var reservoirColor: Color = Color.white
     @Published var activeProfile: String = "---"
     @Published var temporaryBasal: String = "---"
     @Published var temporaryTarget: String = "---"
@@ -464,6 +464,7 @@ class MainViewModel: ObservableObject, Identifiable {
         let profilePostfixCount = 7
         #endif
 
+        self.reservoirColor = UIColorChanger.getReservoirColor(deviceStatusData.reservoirUnits)
         self.activeProfile = deviceStatusData.activePumpProfile.trimInfix(keepPrefixCharacterCount: profilePrefixCount, keepPostfixCharacterCount: profilePostfixCount)
 
         if deviceStatusData.temporaryBasalRate != "" &&
@@ -486,6 +487,8 @@ class MainViewModel: ObservableObject, Identifiable {
             }
         }
     }
+
+
 
     func loadChartData(forceRepaint: Bool, moveToLatestValue: Bool) {
         // show a message if the today & yesterday data is missing, we're gonna load them now (will show on first install and when URI changes)

@@ -623,6 +623,15 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 /* Unit: hours */
 "hours" = "Stunden";
 
+/* Reservoir section header */
+"Reservoir" = "Reservoir";
+
+/* Footer for reservoir alerts */
+"Set thresholds for reservoir alerts. Warning turns the label yellow, Critical turns it red." = "Schwellenwerte für Reservoir-Alarme festlegen. Warnung färbt die Anzeige gelb, Kritisch färbt sie rot.";
+
+/* Reservoir units */
+"%d units" = "%d IE";
+
 /* Days label */
 "Days" = "d";
 
@@ -657,6 +666,12 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Battery Age Notification Body */
 "Your pump battery has reached its critical age." = "Deine Pumpenbatterie hat das kritische Alter erreicht (%@).";
+
+/* Reservoir Critical Notification Title */
+"Reservoir Critical" = "Reservoir kritisch";
+
+/* Reservoir Critical Notification Body */
+"Your reservoir is low." = "Dein Reservoir ist fast leer (%d Einheiten).";
 
 /* Disclaimer Popup Title */
 "Disclaimer!" = "Haftungsausschluss!";

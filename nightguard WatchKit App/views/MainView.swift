@@ -96,6 +96,7 @@ struct MainView: View {
                                     }
                                     Text(viewModel.reservoir)
                                         .font(.system(size: 12))
+                                        .foregroundColor(viewModel.reservoirColor)
                                         .minimumScaleFactor(0.5)
                                         .lineLimit(1)
                                     HStack(){

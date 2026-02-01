@@ -124,6 +124,29 @@ class AlarmNotificationService: ObservableObject {
         UNUserNotificationCenter.current().add(request)
     }
 
+    /*
+     * Trigger a local notification if reservoir is critical.
+     */
+    func notifyIfReservoirCritical(_ reservoirUnits: Int) {
+        guard enabled else { return }
+        guard PurchaseManager.shared.isProAccessAvailable else { return }
+        guard reservoirUnits > 0 else { return }
+        guard reservoirUnits <= UserDefaultsRepository.reservoirUnitsCritical.value else {
+            // Remove pending/delivered notification if not critical anymore
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["ReservoirCritical"])
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["ReservoirCritical"])
+            return
+        }
+
+        let content = UNMutableNotificationContent()
+        content.title = NSLocalizedString("Reservoir Critical", comment: "Reservoir Critical Notification Title")
+        content.body = String(format: NSLocalizedString("Your reservoir is low.", comment: "Reservoir Critical Notification Body"), reservoirUnits)
+        content.sound = .defaultCritical
+        
+        let request = UNNotificationRequest(identifier: "ReservoirCritical", content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request)
+    }
+
     // MARK: - Age Notifications
 
     func scheduleCannulaNotification(changeDate: Date) {

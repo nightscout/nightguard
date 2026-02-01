@@ -312,6 +312,10 @@ struct AgeAlertsView: View {
     @State private var batteryWarningDays: Float = 0
     @State private var batteryCriticalDays: Float = 0
 
+    // Reservoir values
+    @State private var reservoirWarning: Float = 0
+    @State private var reservoirCritical: Float = 0
+
     // Helper functions for cannula
     private func saveCannulaWarning() {
         let totalHours = Int(cannulaWarningDays * 24 + cannulaWarningHours)
@@ -554,6 +558,57 @@ struct AgeAlertsView: View {
                 }
                 .padding(.vertical, 4)
             }
+            
+            // Reservoir Section
+            Section(
+                header: Text(NSLocalizedString("Reservoir", comment: "Reservoir section header")),
+                footer: Text(NSLocalizedString("Set thresholds for reservoir alerts. Warning turns the label yellow, Critical turns it red.", comment: "Footer for reservoir alerts"))
+                    .font(.footnote)
+            ) {
+                // Warning
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text(NSLocalizedString("Warning", comment: "Warning threshold label"))
+                        Spacer()
+                        Stepper(
+                            String(format: NSLocalizedString("%d units", comment: "Reservoir units"), Int(reservoirWarning)),
+                            value: $reservoirWarning,
+                            in: 0...300,
+                            step: 5
+                        )
+                        .onChange(of: reservoirWarning) { newValue in
+                            let value = Int(newValue)
+                            guard value > UserDefaultsRepository.reservoirUnitsCritical.value else {
+                                reservoirWarning = Float(UserDefaultsRepository.reservoirUnitsWarning.value)
+                                return
+                            }
+                            UserDefaultsRepository.reservoirUnitsWarning.value = value
+                        }
+                    }
+                }
+
+                // Critical
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text(NSLocalizedString("Critical", comment: "Critical threshold label"))
+                        Spacer()
+                        Stepper(
+                            String(format: NSLocalizedString("%d units", comment: "Reservoir units"), Int(reservoirCritical)),
+                            value: $reservoirCritical,
+                            in: 0...300,
+                            step: 5
+                        )
+                        .onChange(of: reservoirCritical) { newValue in
+                            let value = Int(newValue)
+                            guard value < UserDefaultsRepository.reservoirUnitsWarning.value else {
+                                reservoirCritical = Float(UserDefaultsRepository.reservoirUnitsCritical.value)
+                                return
+                            }
+                            UserDefaultsRepository.reservoirUnitsCritical.value = value
+                        }
+                    }
+                }
+            }
         }
         .onAppear {
             // Load current values - convert sensor and battery to days, split cannula into days and hours
@@ -563,6 +618,8 @@ struct AgeAlertsView: View {
             loadCannulaCritical()
             batteryWarningDays = Float(UserDefaultsRepository.batteryAgeHoursUntilWarning.value) / 24.0
             batteryCriticalDays = Float(UserDefaultsRepository.batteryAgeHoursUntilCritical.value) / 24.0
+            reservoirWarning = Float(UserDefaultsRepository.reservoirUnitsWarning.value)
+            reservoirCritical = Float(UserDefaultsRepository.reservoirUnitsCritical.value)
         }
     }
 }

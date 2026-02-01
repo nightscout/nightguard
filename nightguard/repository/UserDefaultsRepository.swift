@@ -287,6 +287,16 @@ class UserDefaultsRepository {
             return (value + 12) / 24 * 24
         })
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
+    static let reservoirUnitsWarning = UserDefaultsValue<Int>(
+        key: "reservoirUnitsWarning",
+        default: 70)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
+    static let reservoirUnitsCritical = UserDefaultsValue<Int>(
+        key: "reservoirUnitsCritical",
+        default: 50)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     static let treatments = UserDefaultsValue<[Treatment]>(key: "treatments", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "treatments") as? [Treatment]) ?? [])
         .group(UserDefaultsValueGroups.GroupNames.watchSync)

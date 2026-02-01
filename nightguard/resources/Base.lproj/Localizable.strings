@@ -562,6 +562,15 @@
 /* Unit: hours */
 "hours" = "hours";
 
+/* Reservoir section header */
+"Reservoir" = "Reservoir";
+
+/* Footer for reservoir alerts */
+"Set thresholds for reservoir alerts. Warning turns the label yellow, Critical turns it red." = "Set thresholds for reservoir alerts. Warning turns the label yellow, Critical turns it red.";
+
+/* Reservoir units */
+"%d units" = "%d U";
+
 /* Days label */
 "Days" = "d";
 
@@ -597,6 +606,12 @@
 
 /* Battery Age Notification Body */
 "Your pump battery has reached its critical age." = "Your pump battery has reached its critical age (%@).";
+
+/* Reservoir Critical Notification Title */
+"Reservoir Critical" = "Reservoir Critical";
+
+/* Reservoir Critical Notification Body */
+"Your reservoir is low." = "Your reservoir is low (%d units).";
 
 /* Disclaimer Popup Title */
 "Disclaimer!" = "Disclaimer!";

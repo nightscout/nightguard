@@ -52,6 +52,7 @@ class NightscoutData : NSObject, Codable, NSSecureCoding {
     var battery : String = "---"
     var iob : String = ""
     var cob : String = ""
+    var reservoirUnits : Int = 0
     
     override init () {
         super.init()
@@ -70,6 +71,7 @@ class NightscoutData : NSObject, Codable, NSSecureCoding {
         case battery
         case iob
         case cob
+        case reservoirUnits
         case rawbg
         case noise
     }
@@ -101,6 +103,8 @@ class NightscoutData : NSObject, Codable, NSSecureCoding {
         self.iob = decoder.decodeObject(forKey: "iob") as? String ?? "?"
         
         self.cob = decoder.decodeObject(forKey: "cob") as? String ?? "?"
+        
+        self.reservoirUnits = decoder.decodeInteger(forKey: "reservoirUnits")
     }
     
     /*
@@ -115,6 +119,7 @@ class NightscoutData : NSObject, Codable, NSSecureCoding {
         aCoder.encode(self.battery, forKey: "battery")
         aCoder.encode(self.iob, forKey: "iob")
         aCoder.encode(self.cob, forKey: "cob")
+        aCoder.encode(self.reservoirUnits, forKey: "reservoirUnits")
     }
     
     
@@ -136,6 +141,7 @@ class NightscoutData : NSObject, Codable, NSSecureCoding {
         self.battery = try container.decode(String.self, forKey: .battery)
         self.iob = try container.decode(String.self, forKey: .iob)
         self.cob = try container.decode(String.self, forKey: .cob)
+        self.reservoirUnits = try container.decodeIfPresent(Int.self, forKey: .reservoirUnits) ?? 0
     }
     
     /// Encodes this value into the given encoder.
@@ -157,6 +163,7 @@ class NightscoutData : NSObject, Codable, NSSecureCoding {
         try container.encode(self.battery, forKey: .battery)
         try container.encode(self.iob, forKey: .iob)
         try container.encode(self.cob, forKey: .cob)
+        try container.encode(self.reservoirUnits, forKey: .reservoirUnits)
     }
     
     func isOlderThanYMinutes() -> Bool {
