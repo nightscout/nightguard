@@ -369,4 +369,20 @@ class AlarmRule {
     static func getSnoozedUntilTimestamp() -> TimeInterval {
         return snoozedUntilTimestamp.value
     }
+
+    static func initializeSyncValues() {
+        _ = snoozedUntilTimestamp
+        _ = areAlertsGenerallyDisabled
+        _ = numberOfConsecutiveValues
+        _ = deltaAmount
+        _ = isEdgeDetectionAlarmEnabled
+        _ = noDataAlarmEnabled
+        _ = minutesWithoutValues
+        _ = minutesToPredictLow
+        _ = isLowPredictionEnabled
+        _ = isSmartSnoozeEnabled
+        _ = isPersistentHighEnabled
+        _ = persistentHighMinutes
+        _ = persistentHighUpperBound
+    }
 }

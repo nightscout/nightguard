@@ -314,6 +314,37 @@ class UserDefaultsRepository {
     // Pro Promotion
     static let proPromotionNotNowVersion = UserDefaultsValue<String>(key: "proPromotionNotNowVersion", default: "")
     static let proPromotionLastSeen = UserDefaultsValue<Date>(key: "proPromotionLastSeen", default: .distantPast)
+
+    static func initializeSyncValues() {
+        _ = baseUri
+        _ = units
+        _ = upperBound
+        _ = lowerBound
+        _ = showCareAndLoopData
+        _ = showYesterdaysBgs
+        _ = checkBGEveryMinute
+        _ = temporaryTargetReason
+        _ = temporaryTargetDuration
+        _ = temporaryTargetAmount
+        _ = temporaryTargetActivityDefaultAmount
+        _ = temporaryTargetTooLowDefaultAmount
+        _ = temporaryTargetTooHighDefaultAmount
+        _ = temporaryTargetMealSoonDefaultAmount
+        _ = temporaryTargetActivityDefaultDuration
+        _ = temporaryTargetTooLowDefaultDuration
+        _ = temporaryTargetTooHighDefaultDuration
+        _ = temporaryTargetMealSoonDefaultDuration
+        _ = carbs
+        _ = sensorAgeHoursUntilWarning
+        _ = cannulaAgeHoursUntilWarning
+        _ = batteryAgeHoursUntilWarning
+        _ = sensorAgeHoursUntilCritical
+        _ = cannulaAgeHoursUntilCritical
+        _ = batteryAgeHoursUntilCritical
+        _ = reservoirUnitsWarning
+        _ = reservoirUnitsCritical
+        _ = treatments
+    }
 }
 
 enum TabIdentifier: String, CaseIterable, AnyConvertible, Equatable, Identifiable {

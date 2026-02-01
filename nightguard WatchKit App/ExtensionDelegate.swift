@@ -35,6 +35,9 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
     
     func applicationDidFinishLaunching() {
         
+        UserDefaultsRepository.initializeSyncValues()
+        AlarmRule.initializeSyncValues()
+
         // Perform any final initialization of your application.
         activateWatchConnectivity()
         
@@ -91,6 +94,8 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
             // we should repaint current value if some used defaults values were changed
             let hasChangedUri = updatedKeys.contains(UserDefaultsRepository.baseUri.key)
             let hasChangedUnits = updatedKeys.contains(UserDefaultsRepository.units.key)
+            let hasChangedReservoirSettings = updatedKeys.contains(UserDefaultsRepository.reservoirUnitsWarning.key) ||
+                                              updatedKeys.contains(UserDefaultsRepository.reservoirUnitsCritical.key)
             
             if hasChangedUri {
                 
@@ -99,7 +104,7 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
                 NightscoutCacheService.singleton.resetCache()
             }
             
-            let shouldRepaintCurrentBgData = hasChangedUri || hasChangedUnits
+            let shouldRepaintCurrentBgData = hasChangedUri || hasChangedUnits || hasChangedReservoirSettings
             let shouldRepaintCharts = true // do it always!
             if shouldRepaintCurrentBgData || shouldRepaintCharts {
                 MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
