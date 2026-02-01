@@ -583,6 +583,9 @@
 /* Pro Version Unlocked Text */
 "Pro Version Unlocked" = "Pro Subscription Active";
 
+/* Button to start the app tour */
+"Start App Tour" = "Start App Tour";
+
 /* Unlock Pro Version Button */
 "Unlock Pro Version" = "Subscribe to Pro";
 

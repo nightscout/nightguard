@@ -724,6 +724,9 @@
 /* Pro Version Unlocked Text */
 "Pro Version Unlocked" = "Pro-tilaus aktiivinen";
 
+/* Button to start the app tour */
+"Start App Tour" = "Aloita sovellusesittely";
+
 /* Unlock Pro Version Button */
 "Unlock Pro Version" = "Tilaa Pro";
 

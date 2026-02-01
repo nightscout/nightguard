@@ -644,6 +644,9 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 /* Pro Version Unlocked Text */
 "Pro Version Unlocked" = "Pro Abo aktiv";
 
+/* Button to start the app tour */
+"Start App Tour" = "App-Tour starten";
+
 /* Unlock Pro Version Button */
 "Unlock Pro Version" = "Pro Abo abschließen";
 
