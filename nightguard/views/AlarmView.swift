@@ -195,6 +195,7 @@ struct AlarmView: View {
 
             }
         }
+        .accentColor(Color.nightguardAccent)
         .navigationTitle("Alarms")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -336,6 +337,7 @@ struct MissedReadingsView: View {
                 }
             }
         }
+        .accentColor(Color.nightguardAccent)
         .navigationTitle("Missed Readings")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -411,6 +413,7 @@ struct FastRiseDropView: View {
                 }
             }
         }
+        .accentColor(Color.nightguardAccent)
         .navigationTitle("Fast Rise/Drop")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -486,6 +489,7 @@ struct PersistentHighView: View {
                 }
             }
         }
+        .accentColor(Color.nightguardAccent)
         .navigationTitle("Persistent High")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -536,6 +540,7 @@ struct LowPredictionView: View {
                 }
             }
         }
+        .accentColor(Color.nightguardAccent)
         .navigationTitle("Low Prediction")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -617,10 +622,11 @@ struct AlertVolumeView: View {
                 }) {
                     Text(isTestingAlarm ? "Stop Alert" : "Test Alert")
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(isTestingAlarm ? .red : .blue)
+                        .foregroundColor(isTestingAlarm ? .red : Color.nightguardAccent)
                 }
             }
         }
+        .accentColor(Color.nightguardAccent)
         .navigationTitle("Alert Volume")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -692,6 +698,7 @@ struct SnoozeActionsView: View {
                 }
             }
         }
+        .accentColor(Color.nightguardAccent)
         .navigationTitle("Snoozing Actions")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -749,11 +756,12 @@ struct AlarmSoundView: View {
                     }) {
                         Text(isTestingAlarm ? "Stop Alert" : "Test Alert")
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(isTestingAlarm ? .red : .blue)
+                            .foregroundColor(isTestingAlarm ? .red : Color.nightguardAccent)
                     }
                 }
             }
         }
+        .accentColor(Color.nightguardAccent)
         .navigationTitle("Alarm Sound")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {

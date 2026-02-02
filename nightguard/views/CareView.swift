@@ -102,6 +102,7 @@ struct CareView: View {
                     }
                 }
             }
+            .accentColor(Color.nightguardAccent)
             .navigationTitle("Care")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {

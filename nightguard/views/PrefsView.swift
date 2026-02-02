@@ -84,6 +84,7 @@ struct PrefsView: View {
                     }
                 }
             }
+            .accentColor(Color.nightguardAccent)
             .navigationTitle("Preferences")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {

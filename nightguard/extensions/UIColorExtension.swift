@@ -26,6 +26,10 @@ extension UIColor {
         return UIColor(red: 0.57, green: 0.79, blue: 0.23, alpha: 1.00)
     }
 
+    static func nightguardAccent() -> UIColor {
+        return nightguardGreen()
+    }
+
     static func nightguardContrastfulD1() -> UIColor {
         return hexStringToUIColor(hex: "#F5793A")
     }

@@ -56,7 +56,7 @@ struct AppTourView: View {
                 }
             }
         }
-        .accentColor(.white)
+        .accentColor(Color.nightguardAccent)
     }
 }
 

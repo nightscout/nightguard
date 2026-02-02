@@ -94,6 +94,7 @@ struct RootTabView: View {
         return TabView(selection: selectionBinding) {
             // Main Tab
             MainView()
+                .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: MainView onAppear. selectedTab: \(self.selectedTab)")
                     if self.selectedTab == .main {
@@ -113,6 +114,7 @@ struct RootTabView: View {
             NavigationView {
                     AlarmView()
                 }
+                .accentColor(Color.nightguardAccent)
                 .navigationViewStyle(StackNavigationViewStyle())
                 .onAppear {
                     if self.selectedTab == .alarms {
@@ -129,6 +131,7 @@ struct RootTabView: View {
 
             // Care Tab
             CareView(selectedTab: selectionBinding)
+                .accentColor(Color.nightguardAccent)
                 .onAppear {
                     if self.selectedTab == .care {
                         forcePortrait()
@@ -144,6 +147,7 @@ struct RootTabView: View {
 
             // Duration Tab
             DurationView(selectedTab: selectionBinding)
+                .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: DurationView onAppear. selectedTab: \(self.selectedTab)")
                     if self.selectedTab == .duration {
@@ -160,6 +164,7 @@ struct RootTabView: View {
 
             // Stats Tab
             StatsView()
+                .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: StatsView onAppear. selectedTab: \(self.selectedTab)")
                     if self.selectedTab == .stats {
@@ -182,6 +187,7 @@ struct RootTabView: View {
 
             // Preferences Tab
             PrefsView()
+                .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: PrefsView onAppear. selectedTab: \(self.selectedTab)")
                     if self.selectedTab == .prefs {

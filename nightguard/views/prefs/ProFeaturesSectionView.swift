@@ -33,7 +33,7 @@ struct ProFeaturesSectionView: View {
                 }
             } else {
                 Button(action: {
-                    purchaseManager.buyProVersion()
+                    showProPromotion = true
                 }) {
                     Text(NSLocalizedString("Unlock Pro Version", comment: "Unlock Pro Version Button"))
                 }

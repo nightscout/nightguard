@@ -141,7 +141,7 @@ struct DurationView: View {
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
-                                .background(Color.blue)
+                                .background(Color.nightguardAccent)
                                 .cornerRadius(4)
                         } else {
                             Text("PRO")
@@ -157,7 +157,7 @@ struct DurationView: View {
                     
                     if !purchaseManager.isProAccessAvailable {
                         Button(action: {
-                            purchaseManager.buyProVersion()
+                            showProPromotion = true
                         }) {
                             Text(NSLocalizedString("Unlock Pro Version", comment: "Unlock Pro Version Button"))
                         }
@@ -168,6 +168,7 @@ struct DurationView: View {
                     Text(NSLocalizedString("Disposables Age Warnings", comment: "Disposables Age Warnings menu item"))
                 }
             }
+            .accentColor(Color.nightguardAccent)
             .navigationTitle(NSLocalizedString("Duration", comment: "Duration tab"))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {

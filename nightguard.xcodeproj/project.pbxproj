@@ -171,6 +171,12 @@
 		436D73B427C826F100639B15 /* AppleHealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D73B327C826F100639B15 /* AppleHealthService.swift */; };
 		436D73B627C82A5E00639B15 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436D73B527C82A5E00639B15 /* HealthKit.framework */; };
 		43730E3D2F2FEF6E0065BDB0 /* AgeAlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E899532F2BF06D00A357BA /* AgeAlertsView.swift */; };
+		43730E3F2F314A680065BDB0 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43730E3E2F314A680065BDB0 /* ColorExtension.swift */; };
+		43730E402F314A680065BDB0 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43730E3E2F314A680065BDB0 /* ColorExtension.swift */; };
+		43730E412F314A680065BDB0 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43730E3E2F314A680065BDB0 /* ColorExtension.swift */; };
+		43730E422F314A680065BDB0 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43730E3E2F314A680065BDB0 /* ColorExtension.swift */; };
+		43730E432F314A680065BDB0 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43730E3E2F314A680065BDB0 /* ColorExtension.swift */; };
+		43730E442F314A680065BDB0 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43730E3E2F314A680065BDB0 /* ColorExtension.swift */; };
 		4378767424FAAB96009E163E /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
 		4378767924FAAC12009E163E /* SnoozeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CC221FB0FA80035A60E /* SnoozeMessage.swift */; };
 		4378767A24FAAC12009E163E /* SnoozeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D96CC221FB0FA80035A60E /* SnoozeMessage.swift */; };
@@ -597,6 +603,7 @@
 		43647C0A1BFF6435004389F9 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		436D73B327C826F100639B15 /* AppleHealthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleHealthService.swift; sourceTree = "<group>"; };
 		436D73B527C82A5E00639B15 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		43730E3E2F314A680065BDB0 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		43794F411C2F435A00DB8B58 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		43794F451C303E4200DB8B58 /* NightscoutDataRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NightscoutDataRepository.swift; path = nightguard/repository/NightscoutDataRepository.swift; sourceTree = SOURCE_ROOT; };
 		43794F471C30482500DB8B58 /* DataRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataRepositoryTest.swift; sourceTree = "<group>"; };
@@ -1048,6 +1055,7 @@
 		43CC9E0224E868180008F397 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				43730E3E2F314A680065BDB0 /* ColorExtension.swift */,
 				4334D97F24C32B6D00652D87 /* DateExtension.swift */,
 				434982342534DE4F00CF0014 /* DictionaryExtension.swift */,
 				432E62EA1D15EFC600DD7978 /* FloatExtension.swift */,
@@ -1546,6 +1554,7 @@
 				4317702F25CF273C00E8C991 /* RequestAlarmNotificationMessage.swift in Sources */,
 				43119B941C3AAE6600DD6D35 /* UIColorChanger.swift in Sources */,
 				D1D96CC021FB0F2E0035A60E /* UserDefaultsSyncMessage.swift in Sources */,
+				43730E3F2F314A680065BDB0 /* ColorExtension.swift in Sources */,
 				D1AEFED821FE00A200821DF6 /* AnyConvertible.swift in Sources */,
 				439CBB1D28EED0880036A0E8 /* nightguard_Widget_Extension.intentdefinition in Sources */,
 				43027A682EC8863E00BE71B9 /* NightscoutView.swift in Sources */,
@@ -1595,6 +1604,7 @@
 				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
 				D1CE8CC12204B07F0075FF8A /* Colors.swift in Sources */,
 				43E9F70327386ED600C6AEB3 /* UIImageExtension.swift in Sources */,
+				43730E432F314A680065BDB0 /* ColorExtension.swift in Sources */,
 				4351E6B21D2EFDFE001E4AE4 /* TimeServiceTest.swift in Sources */,
 				D1F2F57A21EF131500CEB874 /* Regression.swift in Sources */,
 				433AD0171CCE3E89001A76CD /* NightscoutServiceTest.swift in Sources */,
@@ -1676,6 +1686,7 @@
 				4330663B23AFB5BE00690C4A /* FloatExtension.swift in Sources */,
 				43BB4B0224CF42C300DE96BB /* DoubleExtension.swift in Sources */,
 				4378768924FAACFA009E163E /* UIViewControllerExtension.swift in Sources */,
+				43730E422F314A680065BDB0 /* ColorExtension.swift in Sources */,
 				434982412534E07300CF0014 /* DictionaryExtension.swift in Sources */,
 				43BB4B0724CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */,
 				4330662C23AFB05900690C4A /* WatchMessageService.swift in Sources */,
@@ -1806,6 +1817,7 @@
 				43961F4A2533598400B1492B /* ActivateTemporaryTargetPopupView.swift in Sources */,
 				43794F421C2F435A00DB8B58 /* AppConstants.swift in Sources */,
 				439C39181C0E002F00D89872 /* ChartPainter.swift in Sources */,
+				43730E442F314A680065BDB0 /* ColorExtension.swift in Sources */,
 				7B4E31F42C2379C4005090CB /* NotificationExtension.swift in Sources */,
 				D13A4C212221E49200C71F08 /* NightSafeMessage.swift in Sources */,
 				43BB4B0824CF5DBA00DE96BB /* TemporaryTargetData.swift in Sources */,
@@ -1846,6 +1858,7 @@
 				7B4E31F62C237F14005090CB /* SystemSmallView.swift in Sources */,
 				435DFF6429E0A90A007A25EA /* AccessoryCornerView.swift in Sources */,
 				438DAC9128D253BC00FBF520 /* NightscoutData.swift in Sources */,
+				43730E412F314A680065BDB0 /* ColorExtension.swift in Sources */,
 				4332FF6D2B16596E00DBF917 /* Matrix.swift in Sources */,
 				438DACA528D25BA700FBF520 /* UIColorExtension.swift in Sources */,
 				43E777EC2F1987D100BC8524 /* PurchaseManager.swift in Sources */,
@@ -1892,6 +1905,7 @@
 				43C825862B1A8F28004B2674 /* SnoozeMessage.swift in Sources */,
 				4332FF702B1659F500DBF917 /* Matrix+Append.swift in Sources */,
 				43D005FC29DC9F80003BCE92 /* NightscoutDataRepository.swift in Sources */,
+				43730E402F314A680065BDB0 /* ColorExtension.swift in Sources */,
 				43C825842B1A8EF8004B2674 /* WatchMessageService.swift in Sources */,
 				43E777EB2F1987BF00BC8524 /* PurchaseManager.swift in Sources */,
 				43D005FE29DC9FA0003BCE92 /* Helpers.swift in Sources */,

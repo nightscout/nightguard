@@ -19,7 +19,7 @@ struct ProPromotionView: View {
                     Image(systemName: "star.circle.fill")
                         .resizable()
                         .frame(width: 80, height: 80)
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color.nightguardAccent)
                         .padding(.top, 20)
                     
                     Text(NSLocalizedString("Support Nightguard", comment: "Pro Promotion Title"))
@@ -72,7 +72,7 @@ struct ProPromotionView: View {
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(Color.blue)
+                                .background(Color.nightguardAccent)
                                 .cornerRadius(12)
                         }
                     } else {
@@ -90,12 +90,14 @@ struct ProPromotionView: View {
                         presentationMode.wrappedValue.dismiss()
                     }) {
                         Text(NSLocalizedString("Remind me later", comment: "Pro Promotion Remind Button"))
+                            .foregroundColor(.white)
                     }
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 20)
             }
         }
+        .accentColor(.nightguardAccent)
     }
 }
 
@@ -108,7 +110,7 @@ struct FeatureRow: View {
         HStack(alignment: .top, spacing: 15) {
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundColor(.blue)
+                .foregroundColor(Color.nightguardAccent)
                 .frame(width: 30)
             
             VStack(alignment: .leading, spacing: 4) {

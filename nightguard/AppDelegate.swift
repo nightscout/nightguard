@@ -88,6 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         self.window?.rootViewController = hostingController
         self.window?.makeKeyAndVisible()
+        self.window?.tintColor = UIColor.nightguardAccent()
 
         dimScreenOnIdle()
 

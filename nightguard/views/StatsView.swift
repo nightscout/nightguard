@@ -28,7 +28,7 @@ struct StatsView: View {
                             }
                         ))
                         .toggleStyle(.button)
-                        .tint(daysToDisplay[index] ? .blue : .gray)
+                        .tint(daysToDisplay[index] ? Color.nightguardAccent : .gray)
                     }
                 }
                 .padding(.horizontal)
