@@ -27,7 +27,7 @@ struct AppTourView: View {
                 TourPage(imageName: "TourScreenshot_Duration", title: NSLocalizedString("Duration", comment: ""), description: NSLocalizedString("Visualize the duration of your insulin on board (IOB) and carbs on board (COB).", comment: ""))
                     .tag(3)
                 
-                TourPage(imageName: "TourScreenshot_Stats", title: NSLocalizedString("Statistics", comment: ""), description: NSLocalizedString("View detailed statistics and reports of your glucose history to analyze trends.", comment: ""))
+                TourPage(imageName: "iPhone 17-07-stats", title: NSLocalizedString("Statistics", comment: ""), description: NSLocalizedString("View detailed statistics and reports of your glucose history to analyze trends.", comment: ""), isLandscape: true)
                     .tag(4)
                 
                 ConfigurationTourPage(isPresented: $isPresented)
@@ -64,6 +64,7 @@ struct TourPage: View {
     let imageName: String
     let title: String
     let description: String
+    var isLandscape: Bool = false
     
     var body: some View {
         VStack(spacing: 15) {
@@ -77,7 +78,7 @@ struct TourPage: View {
                 .aspectRatio(contentMode: .fit)
                 .cornerRadius(12)
                 .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
-                .padding(.horizontal)
+                .padding(.horizontal, isLandscape ? -40 : 20)
             
             Text(description)
                 .font(.body)

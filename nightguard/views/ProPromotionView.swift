@@ -90,7 +90,6 @@ struct ProPromotionView: View {
                         presentationMode.wrappedValue.dismiss()
                     }) {
                         Text(NSLocalizedString("Remind me later", comment: "Pro Promotion Remind Button"))
-                            .foregroundColor(.blue)
                     }
                 }
                 .padding(.horizontal)

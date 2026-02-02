@@ -71,7 +71,6 @@ struct PrefsView: View {
                         Button(NSLocalizedString("Start App Tour", comment: "Button to start the app tour")) {
                             showAppTour = true
                         }
-                        .foregroundColor(.blue)
                         Spacer()
                     }
                 }

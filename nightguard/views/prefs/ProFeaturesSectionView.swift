@@ -22,7 +22,6 @@ struct ProFeaturesSectionView: View {
                     UserDefaultsRepository.proPromotionLastSeen.value = Date()
                 }) {
                     Image(systemName: "questionmark.circle")
-                        .foregroundColor(.blue)
                 }
             }
         ) {
