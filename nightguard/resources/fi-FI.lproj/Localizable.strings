@@ -756,3 +756,24 @@
 
 /* Disclaimer Popup Message */
 "Don't use this App for medical decisions! It comes with absolutely NO WARRANTY. It is maintained by volunteers only. Use it at your own risk!" = "Älä käytä tätä sovellusta lääketieteellisiin päätöksiin! Se toimitetaan ilman MITÄÄN TAKUUTA. Sitä ylläpitävät vain vapaaehtoiset. Käytä sitä omalla vastuullasi!";
+
+/* App Tour */
+"Welcome to Nightguard" = "Tervetuloa Nightguardiin";
+"See your current glucose level, trend, and device status at a glance." = "Näe verensokeritasosi, suuntauksesi ja laitteesi tila yhdellä silmäyksellä.";
+"Smart Alarms" = "Älykkäät hälytykset";
+"Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range." = "Hallitse verensokerihälytyksiäsi ja torkkuvaihtoehtojasi. Vastaanota muokattavia hälytyksiä, kun arvot ovat alueen ulkopuolella.";
+"Care Portal" = "Huolenpito-portaali";
+"Log treatments, carb entries, and temporary targets directly from the app." = "Kirjaa hoidot, hiilihydraatit ja väliaikaiset tavoitteet suoraan sovelluksesta.";
+"Visualize the duration of your insulin on board (IOB) and carbs on board (COB)." = "Visualisoi insuliinin (IOB) ja hiilihydraattien (COB) vaikutusaika.";
+"Statistics" = "Tilastot";
+"View detailed statistics and reports of your glucose history to analyze trends." = "Tarkastele yksityiskohtaisia tilastoja ja raportteja verensokerihistoriastasi analysoidaksesi suuntauksia.";
+"Setup Nightscout" = "Nightscout asennus";
+"Enter your Nightscout URL and API Token to get started." = "Syötä Nightscout-osoitteesi ja API-tunnuksesi aloittaaksesi.";
+"NIGHTSCOUT URL" = "NIGHTSCOUT URL";
+"API TOKEN" = "API TOKEN";
+"Help" = "Ohje";
+"The Token needs to have the \"careportal\" role." = "Tunnuksella (Token) on oltava \"careportal\"-rooli.";
+"RESULTING URL: %@" = "LOPULLINEN OSOITE: %@";
+"Save & Start" = "Tallenna ja aloita";
+"Enter later" = "Syötä myöhemmin";
+"Skip" = "Ohita";

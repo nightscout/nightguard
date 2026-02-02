@@ -15,19 +15,19 @@ struct AppTourView: View {
     var body: some View {
         NavigationView {
             TabView(selection: $selectedPage) {
-                TourPage(imageName: "TourScreenshot_Main", title: "Welcome to Nightguard", description: "See your current glucose level, trend, and device status at a glance.")
+                TourPage(imageName: "TourScreenshot_Main", title: NSLocalizedString("Welcome to Nightguard", comment: ""), description: NSLocalizedString("See your current glucose level, trend, and device status at a glance.", comment: ""))
                     .tag(0)
                 
-                TourPage(imageName: "TourScreenshot_Alarm", title: "Smart Alarms", description: "Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range.")
+                TourPage(imageName: "TourScreenshot_Alarm", title: NSLocalizedString("Smart Alarms", comment: ""), description: NSLocalizedString("Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range.", comment: ""))
                     .tag(1)
                 
-                TourPage(imageName: "TourScreenshot_Care", title: "Care Portal", description: "Log treatments, carb entries, and temporary targets directly from the app.")
+                TourPage(imageName: "TourScreenshot_Care", title: NSLocalizedString("Care Portal", comment: ""), description: NSLocalizedString("Log treatments, carb entries, and temporary targets directly from the app.", comment: ""))
                     .tag(2)
                 
-                TourPage(imageName: "TourScreenshot_Duration", title: "Duration", description: "Visualize the duration of your insulin on board (IOB) and carbs on board (COB).")
+                TourPage(imageName: "TourScreenshot_Duration", title: NSLocalizedString("Duration", comment: ""), description: NSLocalizedString("Visualize the duration of your insulin on board (IOB) and carbs on board (COB).", comment: ""))
                     .tag(3)
                 
-                TourPage(imageName: "TourScreenshot_Stats", title: "Statistics", description: "View detailed statistics and reports of your glucose history to analyze trends.")
+                TourPage(imageName: "TourScreenshot_Stats", title: NSLocalizedString("Statistics", comment: ""), description: NSLocalizedString("View detailed statistics and reports of your glucose history to analyze trends.", comment: ""))
                     .tag(4)
                 
                 ConfigurationTourPage(isPresented: $isPresented)
@@ -37,7 +37,7 @@ struct AppTourView: View {
             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(selectedPage == 5 ? "Close" : "Skip") {
+                    Button(selectedPage == 5 ? NSLocalizedString("Close", comment: "") : NSLocalizedString("Skip", comment: "")) {
                         if selectedPage < 5 {
                             withAnimation {
                                 selectedPage = 5
@@ -113,10 +113,10 @@ struct ConfigurationTourPage: View {
                                 .frame(width: 100, height: 100)
                         )
                     
-                    Text("Setup Nightscout")
+                    Text(NSLocalizedString("Setup Nightscout", comment: ""))
                         .font(.headline)
                     
-                    Text("Enter your Nightscout URL and API Token to get started.")
+                    Text(NSLocalizedString("Enter your Nightscout URL and API Token to get started.", comment: ""))
                         .font(.footnote)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.gray)
@@ -126,7 +126,7 @@ struct ConfigurationTourPage: View {
             }
             .listRowBackground(Color.clear)
             
-            Section(header: Text("NIGHTSCOUT URL")) {
+            Section(header: Text(NSLocalizedString("NIGHTSCOUT URL", comment: ""))) {
                 HStack {
                     TextField("your-site.herokuapp.com", text: $nightscoutURL)
                         .textInputAutocapitalization(.never)
@@ -146,16 +146,16 @@ struct ConfigurationTourPage: View {
             
             Section(
                 header: HStack {
-                    Text("API TOKEN")
+                    Text(NSLocalizedString("API TOKEN", comment: ""))
                     Spacer()
                     Link(destination: URL(string: "https://nightscout.github.io/nightscout/security/#roles")!) {
                         HStack(spacing: 2) {
-                            Text("Help")
+                            Text(NSLocalizedString("Help", comment: ""))
                             Image(systemName: "questionmark.circle")
                         }
                     }
                 },
-                footer: Text("The Token needs to have the \"careportal\" role.") + (nightscoutURL.isEmpty ? Text("") : Text("\nRESULTING URL: \(previewURL)").font(.caption).foregroundColor(.secondary))
+                footer: Text(NSLocalizedString("The Token needs to have the \"careportal\" role.", comment: "")) + (nightscoutURL.isEmpty ? Text("") : (Text("\n") + Text(String(format: NSLocalizedString("RESULTING URL: %@", comment: ""), previewURL)).font(.caption).foregroundColor(.secondary)))
             ) {
                 HStack {
                     TextField("e.g. update-b4d85ed628a3e34f", text: $apiToken)
@@ -179,7 +179,7 @@ struct ConfigurationTourPage: View {
                     Button(action: saveAndFinish) {
                         HStack {
                             Spacer()
-                            Text("Save & Start")
+                            Text(NSLocalizedString("Save & Start", comment: ""))
                                 .font(.headline)
                             Spacer()
                         }
@@ -197,7 +197,7 @@ struct ConfigurationTourPage: View {
                     }) {
                         HStack {
                             Spacer()
-                            Text("Enter later")
+                            Text(NSLocalizedString("Enter later", comment: ""))
                             Spacer()
                         }
                         .padding()

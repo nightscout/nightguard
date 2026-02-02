@@ -694,3 +694,24 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Remind me later" = "Später erinnern";
 "Not now" = "Nicht jetzt";
 "Pro Version Unlocked" = "Pro Version freigeschaltet";
+
+/* App Tour */
+"Welcome to Nightguard" = "Willkommen bei Nightguard";
+"See your current glucose level, trend, and device status at a glance." = "Sehen Sie Ihren aktuellen Glukosewert, Trend und Gerätestatus auf einen Blick.";
+"Smart Alarms" = "Intelligente Alarme";
+"Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range." = "Verwalten Sie Ihre Glukosealarme und Schlummeroptionen. Erhalten Sie anpassbare Warnungen, wenn Werte außerhalb des Bereichs liegen.";
+"Care Portal" = "Care Portal";
+"Log treatments, carb entries, and temporary targets directly from the app." = "Erfassen Sie Behandlungen, Kohlenhydrate und temporäre Ziele direkt in der App.";
+"Visualize the duration of your insulin on board (IOB) and carbs on board (COB)." = "Visualisieren Sie die Wirkdauer Ihres Insulins (IOB) und der Kohlenhydrate (COB).";
+"Statistics" = "Statistiken";
+"View detailed statistics and reports of your glucose history to analyze trends." = "Sehen Sie detaillierte Statistiken und Berichte Ihres Glukoseverlaufs zur Trendanalyse.";
+"Setup Nightscout" = "Nightscout Einrichtung";
+"Enter your Nightscout URL and API Token to get started." = "Geben Sie Ihre Nightscout-URL und das API-Token ein, um zu beginnen.";
+"NIGHTSCOUT URL" = "NIGHTSCOUT URL";
+"API TOKEN" = "API TOKEN";
+"Help" = "Hilfe";
+"The Token needs to have the \"careportal\" role." = "Das Token benötigt die \"careportal\" Berechtigung.";
+"RESULTING URL: %@" = "RESULTIERENDE URL: %@";
+"Save & Start" = "Speichern & Starten";
+"Enter later" = "Später eingeben";
+"Skip" = "Überspringen";

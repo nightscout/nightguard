@@ -634,3 +634,24 @@
 "Remind me later" = "Remind me later";
 "Not now" = "Not now";
 "Pro Version Unlocked" = "Pro Version Unlocked";
+
+/* App Tour */
+"Welcome to Nightguard" = "Welcome to Nightguard";
+"See your current glucose level, trend, and device status at a glance." = "See your current glucose level, trend, and device status at a glance.";
+"Smart Alarms" = "Smart Alarms";
+"Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range." = "Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range.";
+"Care Portal" = "Care Portal";
+"Log treatments, carb entries, and temporary targets directly from the app." = "Log treatments, carb entries, and temporary targets directly from the app.";
+"Visualize the duration of your insulin on board (IOB) and carbs on board (COB)." = "Visualize the duration of your insulin on board (IOB) and carbs on board (COB).";
+"Statistics" = "Statistics";
+"View detailed statistics and reports of your glucose history to analyze trends." = "View detailed statistics and reports of your glucose history to analyze trends.";
+"Setup Nightscout" = "Setup Nightscout";
+"Enter your Nightscout URL and API Token to get started." = "Enter your Nightscout URL and API Token to get started.";
+"NIGHTSCOUT URL" = "NIGHTSCOUT URL";
+"API TOKEN" = "API TOKEN";
+"Help" = "Help";
+"The Token needs to have the \"careportal\" role." = "The Token needs to have the \"careportal\" role.";
+"RESULTING URL: %@" = "RESULTING URL: %@";
+"Save & Start" = "Save & Start";
+"Enter later" = "Enter later";
+"Skip" = "Skip";
