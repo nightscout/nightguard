@@ -138,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func scheduleBackgroundProcessing() {
          let request = BGProcessingTaskRequest(identifier: appProcessingTaskId)
          request.requiresNetworkConnectivity = true
-         request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
+         request.earliestBeginDate = Date(timeIntervalSinceNow: 10 * 60)
 
          do {
              BGTaskScheduler.shared.cancelAllTaskRequests()

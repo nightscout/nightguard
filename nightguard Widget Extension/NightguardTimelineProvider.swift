@@ -33,7 +33,7 @@ struct NightguardTimelineProvider: TimelineProvider {
                 
                 var entries: [NightscoutDataEntry] = []
                 entries.append(nightscoutDataEntry)
-                // ask for a refresh after 5 Minutes:
+                // ask for a refresh after 10 Minutes:
                 completion(Timeline(entries: entries, policy:
                         .after(Calendar.current.date(byAdding: .minute, value: 10, to: Date()) ?? Date())))
             }

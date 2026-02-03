@@ -43,6 +43,11 @@ class PurchaseManager: NSObject, ObservableObject {
     @Published var isProAccessAvailable: Bool = false
     @Published var products: [SKProduct] = []
     
+    @Published var restoreAlertMessage: String?
+    @Published var showingRestoreAlert = false
+    
+    private var isRestoring = false
+    
     private override init() {
         super.init()
         SKPaymentQueue.default().add(self)
@@ -71,6 +76,7 @@ class PurchaseManager: NSObject, ObservableObject {
     }
     
     func restorePurchases() {
+        isRestoring = true
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
     
@@ -85,6 +91,17 @@ class PurchaseManager: NSObject, ObservableObject {
                 } else {
                     // Optionally cancel notifications if subscription expired
                     // AlarmNotificationService.singleton.cancelAgeNotifications()
+                }
+            }
+            
+            if self.isRestoring {
+                self.isRestoring = false
+                if !active {
+                     self.restoreAlertMessage = NSLocalizedString("No active subscription found to restore.", comment: "Restore error message")
+                     self.showingRestoreAlert = true
+                } else {
+                     self.restoreAlertMessage = NSLocalizedString("Purchases restored successfully.", comment: "Restore success message")
+                     self.showingRestoreAlert = true
                 }
             }
         }
@@ -233,5 +250,12 @@ extension PurchaseManager: SKPaymentTransactionObserver {
     
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
         print("Restore failed: \(error.localizedDescription)")
+        if isRestoring {
+            isRestoring = false
+            DispatchQueue.main.async {
+                self.restoreAlertMessage = String(format: NSLocalizedString("Restore failed: %@", comment: "Restore failed error"), error.localizedDescription)
+                self.showingRestoreAlert = true
+            }
+        }
     }
 }

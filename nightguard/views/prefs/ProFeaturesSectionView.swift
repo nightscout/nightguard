@@ -31,6 +31,7 @@ struct ProFeaturesSectionView: View {
                         .foregroundColor(.green)
                     Text(NSLocalizedString("Pro Version Unlocked", comment: "Pro Version Unlocked Text"))
                 }
+                Link(NSLocalizedString("Manage Subscription", comment: "Link to manage subscription"), destination: URL(string: "https://apps.apple.com/account/subscriptions")!)
             } else {
                 Button(action: {
                     showProPromotion = true
@@ -43,6 +44,11 @@ struct ProFeaturesSectionView: View {
                     Text(NSLocalizedString("Restore Purchases", comment: "Restore Purchases Button"))
                 }
             }
+        }
+        .alert(NSLocalizedString("Restore Purchases", comment: "Restore Purchases Alert Title"), isPresented: $purchaseManager.showingRestoreAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(purchaseManager.restoreAlertMessage ?? "")
         }
     }
 }

@@ -655,3 +655,9 @@
 "Save & Start" = "Save & Start";
 "Enter later" = "Enter later";
 "Skip" = "Skip";
+
+/* New strings */
+"Manage Subscription" = "Manage Subscription";
+"No active subscription found to restore." = "No active subscription found to restore.";
+"Purchases restored successfully." = "Purchases restored successfully.";
+"Restore failed: %@" = "Restore failed: %@";

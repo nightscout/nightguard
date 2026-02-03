@@ -715,3 +715,9 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Save & Start" = "Speichern & Starten";
 "Enter later" = "Später eingeben";
 "Skip" = "Überspringen";
+
+/* New strings */
+"Manage Subscription" = "Abo verwalten";
+"No active subscription found to restore." = "Kein aktives Abonnement zum Wiederherstellen gefunden.";
+"Purchases restored successfully." = "Käufe erfolgreich wiederhergestellt.";
+"Restore failed: %@" = "Wiederherstellung fehlgeschlagen: %@";
