@@ -74,6 +74,11 @@ struct PrefsView: View {
                         Spacer()
                     }
                 }
+
+                Section(header: Text(NSLocalizedString("Legal", comment: "Legal section header"))) {
+                    Link(NSLocalizedString("Terms of Use (EULA)", comment: "Link to Terms of Use"), destination: URL(string: "https://sportmeo.com/de/bedingungen")!)
+                    Link(NSLocalizedString("Privacy Policy", comment: "Link to Privacy Policy"), destination: URL(string: "https://sportmeo.com/de/bedingungen#nutzungsbedingungen")!)
+                }
                 
                 Section {
                     HStack {

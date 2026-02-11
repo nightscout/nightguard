@@ -721,3 +721,12 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "No active subscription found to restore." = "Kein aktives Abonnement zum Wiederherstellen gefunden.";
 "Purchases restored successfully." = "Käufe erfolgreich wiederhergestellt.";
 "Restore failed: %@" = "Wiederherstellung fehlgeschlagen: %@";
+
+/* Legal section header */
+"Legal" = "Rechtliches";
+
+/* Link to Terms of Use */
+"Terms of Use (EULA)" = "Nutzungsbedingungen (EULA)";
+
+/* Link to Privacy Policy */
+"Privacy Policy" = "Datenschutzerklärung";

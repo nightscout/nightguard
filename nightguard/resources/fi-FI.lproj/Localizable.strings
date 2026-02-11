@@ -783,3 +783,12 @@
 "No active subscription found to restore." = "Aktiivista tilausta ei löytynyt palautettavaksi.";
 "Purchases restored successfully." = "Ostot palautettu onnistuneesti.";
 "Restore failed: %@" = "Palautus epäonnistui: %@";
+
+/* Legal section header */
+"Legal" = "Legal";
+
+/* Link to Terms of Use */
+"Terms of Use (EULA)" = "Terms of Use (EULA)";
+
+/* Link to Privacy Policy */
+"Privacy Policy" = "Privacy Policy";
