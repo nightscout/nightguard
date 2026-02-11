@@ -785,10 +785,13 @@
 "Restore failed: %@" = "Palautus epäonnistui: %@";
 
 /* Legal section header */
-"Legal" = "Legal";
+"Legal" = "Lakitiedot";
 
 /* Link to Terms of Use */
-"Terms of Use (EULA)" = "Terms of Use (EULA)";
+"Terms of Use (EULA)" = "Käyttöehdot (EULA)";
 
 /* Link to Privacy Policy */
-"Privacy Policy" = "Privacy Policy";
+"Privacy Policy" = "Tietosuojaseloste";
+
+/* Description for Apple Health synchronization */
+"AppleHealthSyncDescription" = "Verensokeriarvot synkronoidaan Terveys-sovellukseen. Sieltä muut sovellukset voivat hyödyntää niitä. Nightguard itse ei analysoi Apple Terveyden tietoja.";

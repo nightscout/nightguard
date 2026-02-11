@@ -43,15 +43,21 @@ struct DisplayOptionsSectionView: View {
                     SharedUserDefaultsRepository.showBGOnAppBadge.value = newValue
                 }
 
-            Toggle("Synchronize with Apple Health", isOn: $appleHealthSync)
-                .onChange(of: appleHealthSync) { newValue in
-                    if AppleHealthService.singleton.isAuthorized() {
-                        showAppleHealthAlert = true
-                        appleHealthSync = true
-                    } else {
-                        AppleHealthService.singleton.requestAuthorization()
+            VStack(alignment: .leading, spacing: 4) {
+                Toggle("Synchronize with Apple Health", isOn: $appleHealthSync)
+                    .onChange(of: appleHealthSync) { newValue in
+                        if AppleHealthService.singleton.isAuthorized() {
+                            showAppleHealthAlert = true
+                            appleHealthSync = true
+                        } else {
+                            AppleHealthService.singleton.requestAuthorization()
+                        }
                     }
-                }
+                
+                Text(NSLocalizedString("AppleHealthSyncDescription", comment: "Description for Apple Health synchronization"))
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
         }
     }
 }
