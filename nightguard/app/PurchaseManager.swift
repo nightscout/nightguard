@@ -43,6 +43,17 @@ class PurchaseManager: NSObject, ObservableObject {
     @Published var isProAccessAvailable: Bool = false
     @Published var products: [SKProduct] = []
     
+    var formattedProPrice: String? {
+        guard let product = products.first(where: { $0.productIdentifier == proProductIdentifier }) else {
+            return nil
+        }
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = product.priceLocale
+        return formatter.string(from: product.price)
+    }
+    
     @Published var restoreAlertMessage: String?
     @Published var showingRestoreAlert = false
     

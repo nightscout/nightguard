@@ -67,13 +67,19 @@ struct ProPromotionView: View {
                             purchaseManager.buyProVersion()
                             presentationMode.wrappedValue.dismiss()
                         }) {
-                            Text(NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"))
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.nightguardAccent)
-                                .cornerRadius(12)
+                            VStack(spacing: 4) {
+                                Text(NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"))
+                                    .fontWeight(.bold)
+                                if let price = purchaseManager.formattedProPrice {
+                                    Text(String(format: NSLocalizedString("%@ / month", comment: "Price per month"), price))
+                                        .font(.caption)
+                                }
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.nightguardAccent)
+                            .cornerRadius(12)
                         }
                     } else {
                         HStack {

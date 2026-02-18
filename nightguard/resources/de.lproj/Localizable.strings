@@ -733,3 +733,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Description for Apple Health synchronization */
 "AppleHealthSyncDescription" = "Die Blutzuckerwerte werden in die Health App synchronisiert. Dort können diese von anderen Apps ausgewertet werden. Nightguard selber wertet keine Daten von Apple Health aus.";
+
+/* Price per month */
+"%@ / month" = "%@ / Monat";

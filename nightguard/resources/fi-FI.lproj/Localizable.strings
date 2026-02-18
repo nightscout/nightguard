@@ -795,3 +795,6 @@
 
 /* Description for Apple Health synchronization */
 "AppleHealthSyncDescription" = "Verensokeriarvot synkronoidaan Terveys-sovellukseen. Sieltä muut sovellukset voivat hyödyntää niitä. Nightguard itse ei analysoi Apple Terveyden tietoja.";
+
+/* Price per month */
+"%@ / month" = "%@ / kuukausi";

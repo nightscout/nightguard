@@ -673,3 +673,6 @@
 
 /* Description for Apple Health synchronization */
 "AppleHealthSyncDescription" = "Blood glucose values are synchronized to the Health app. There they can be evaluated by other apps. Nightguard itself does not evaluate data from Apple Health.";
+
+/* Price per month */
+"%@ / month" = "%@ / month";
