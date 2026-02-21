@@ -62,6 +62,6 @@ platform :ios do
         force: true,
         overwrite_screenshots: false,
 	automatic_release: true,
-        skip_screenshots: false)
+        skip_screenshots: true)
   end
 end
