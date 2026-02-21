@@ -10,16 +10,9 @@ import SwiftUI
 struct DurationView: View {
     @Binding var selectedTab: TabIdentifier
 
-    @State private var cannulaChangeDate: Date = Date()
-    @State private var sensorChangeDate: Date = Date()
-    @State private var batteryChangeDate: Date = Date()
-    
-    @State private var hasModifiedCannulaDate = false
-    @State private var hasModifiedSensorDate = false
-    @State private var hasModifiedBatteryDate = false
-    
-    @State private var hasLoadedInitialValues = false
-
+    @State private var cannulaChangeDate = NightscoutCacheService.singleton.getCannulaChangeTime()
+    @State private var sensorChangeDate = NightscoutCacheService.singleton.getSensorChangeTime()
+    @State private var batteryChangeDate = NightscoutCacheService.singleton.getPumpBatteryChangeTime()
     @ObservedObject private var alarmService = AlarmNotificationService.singleton
     @ObservedObject var purchaseManager = PurchaseManager.shared
 
@@ -44,13 +37,7 @@ struct DurationView: View {
                         Spacer()
                         DatePicker(
                             "",
-                            selection: Binding(
-                                get: { cannulaChangeDate },
-                                set: { newValue in
-                                    cannulaChangeDate = newValue
-                                    hasModifiedCannulaDate = true
-                                }
-                            ),
+                            selection: $cannulaChangeDate,
                             displayedComponents: [.date, .hourAndMinute]
                         )
                         .labelsHidden()
@@ -60,7 +47,6 @@ struct DurationView: View {
                         Spacer()
                         Button(NSLocalizedString("Reset", comment: "Button to reset the new Cannula Change Date")) {
                             cannulaChangeDate = Date()
-                            hasModifiedCannulaDate = true
                         }
                         .foregroundColor(.white)
                         .buttonStyle(BorderlessButtonStyle())
@@ -85,13 +71,7 @@ struct DurationView: View {
                         Spacer()
                         DatePicker(
                             "",
-                            selection: Binding(
-                                get: { sensorChangeDate },
-                                set: { newValue in
-                                    sensorChangeDate = newValue
-                                    hasModifiedSensorDate = true
-                                }
-                            ),
+                            selection: $sensorChangeDate,
                             displayedComponents: [.date, .hourAndMinute]
                         )
                         .labelsHidden()
@@ -101,7 +81,6 @@ struct DurationView: View {
                         Spacer()
                         Button(NSLocalizedString("Reset", comment: "Button to reset the new Sensor Change Date")) {
                             sensorChangeDate = Date()
-                            hasModifiedSensorDate = true
                         }
                         .foregroundColor(.white)
                         .buttonStyle(BorderlessButtonStyle())
@@ -126,13 +105,7 @@ struct DurationView: View {
                         Spacer()
                         DatePicker(
                             "",
-                            selection: Binding(
-                                get: { batteryChangeDate },
-                                set: { newValue in
-                                    batteryChangeDate = newValue
-                                    hasModifiedBatteryDate = true
-                                }
-                            ),
+                            selection: $batteryChangeDate,
                             displayedComponents: [.date, .hourAndMinute]
                         )
                         .labelsHidden()
@@ -142,7 +115,6 @@ struct DurationView: View {
                         Spacer()
                         Button(NSLocalizedString("Reset", comment: "Button to reset the new Battery Change Date")) {
                             batteryChangeDate = Date()
-                            hasModifiedBatteryDate = true
                         }
                         .foregroundColor(.white)
                         .buttonStyle(BorderlessButtonStyle())
@@ -206,12 +178,9 @@ struct DurationView: View {
             .navigationTitle(NSLocalizedString("Duration", comment: "Duration tab"))
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                if !hasLoadedInitialValues {
-                    cannulaChangeDate = NightscoutCacheService.singleton.getCannulaChangeTime()
-                    sensorChangeDate = NightscoutCacheService.singleton.getSensorChangeTime()
-                    batteryChangeDate = NightscoutCacheService.singleton.getPumpBatteryChangeTime()
-                    hasLoadedInitialValues = true
-                }
+                cannulaChangeDate = NightscoutCacheService.singleton.getCannulaChangeTime()
+                sensorChangeDate = NightscoutCacheService.singleton.getSensorChangeTime()
+                batteryChangeDate = NightscoutCacheService.singleton.getPumpBatteryChangeTime()
                 
                 checkAndShowProPromotion()
             }
