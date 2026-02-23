@@ -288,6 +288,15 @@ struct MainView: View {
                                 .onLongPressGesture {
                                     showNightscout = true
                                 }
+                                .confirmationDialog("Actions", isPresented: $showActionsMenuPopup, titleVisibility: .hidden) {
+                                    Button(NSLocalizedString("Open your Nightscout site", comment: "Link to NS site")) {
+                                        showNightscout = true
+                                    }
+                                    Button(NSLocalizedString("Fullscreen monitor", comment: "Fullscreen monitor")) {
+                                        showFullscreenMonitor = true
+                                    }
+                                    Button(NSLocalizedString("Cancel", comment: "Cancel"), role: .cancel) {}
+                                }
                             }
                         }
                     }
@@ -324,15 +333,6 @@ struct MainView: View {
         }
         .sheet(isPresented: $showSnoozePopup) {
             SnoozePopupView()
-        }
-        .confirmationDialog("Actions", isPresented: $showActionsMenuPopup, titleVisibility: .hidden) {
-            Button(NSLocalizedString("Open your Nightscout site", comment: "Link to NS site")) {
-                showNightscout = true
-            }
-            Button(NSLocalizedString("Fullscreen monitor", comment: "Fullscreen monitor")) {
-                showFullscreenMonitor = true
-            }
-            Button(NSLocalizedString("Cancel", comment: "Cancel"), role: .cancel) {}
         }
         .fullScreenCover(isPresented: $showFullscreenMonitor) {
             BedsideView(currentNightscoutData: viewModel.nightscoutData)
