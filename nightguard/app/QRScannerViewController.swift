@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 import AVFoundation
+#if canImport(AudioToolbox)
 import AudioToolbox
+#endif
 
 protocol QRScannerDelegate: AnyObject {
     func didScanQRCode(_ code: String)
@@ -26,6 +28,12 @@ final class QRScannerViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         checkCameraPermission()
+        addCloseButton()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        previewLayer?.frame = view.bounds
     }
 
     private func checkCameraPermission() {
@@ -41,6 +49,26 @@ final class QRScannerViewController: UIViewController {
         default:
             dismiss(animated: true)
         }
+    }
+    
+    private func addCloseButton() {
+        var config = UIButton.Configuration.filled()
+        config.title = "Close"
+        config.baseBackgroundColor = UIColor.black.withAlphaComponent(0.6)
+        config.baseForegroundColor = .white
+        config.cornerStyle = .capsule
+        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+
+        let closeButton = UIButton(configuration: config)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.addTarget(self, action: #selector(dismissScanner), for: .touchUpInside)
+
+        view.addSubview(closeButton)
+
+        NSLayoutConstraint.activate([
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+        ])
     }
 
     private func setupScanner() {
@@ -71,11 +99,18 @@ final class QRScannerViewController: UIViewController {
             }
 
             captureSession = session
-            session.startRunning()
-
+            DispatchQueue.global(qos: .utility).async {
+                session.startRunning()
+            }
+           
         } catch {
             delegate?.didFailScanning(error: error)
         }
+    }
+    
+    @objc private func dismissScanner() {
+        captureSession?.stopRunning()
+        dismiss(animated: true)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
