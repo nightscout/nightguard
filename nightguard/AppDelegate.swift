@@ -14,7 +14,7 @@ import SwiftUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
     let appProcessingTaskId = "de.my-wan.dhe.nightguard.background"
     
@@ -36,10 +36,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if CommandLine.arguments.contains("--uitesting") {
             configureAppForTesting()
         }
-
+        
         // Override point for customization after application launch.
         UITabBar.appearance().tintColor = UIColor.white
-
+        
         UITextField.appearance().keyboardAppearance = .dark
         
         // set "prevent screen lock" to ON when the app is started for the first time
@@ -55,8 +55,91 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         activateWatchConnectivity()
+        
+        UNUserNotificationCenter.current().delegate = self
+        requestPushPermission(application: application)
+        
         return true
     }
+    
+    func application(
+            _ application: UIApplication,
+            didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+        ) {
+
+            let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+            Logger.log("Push registration success: \(token)")
+            
+            let environment = DeviceRegistrationService.shared.apnsEnvironment()
+            DeviceRegistrationService.shared.updateDeviceToken(token, environment: environment)
+        }
+    
+    func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
+        Logger.log("Push registration failed: \(error)")
+    }
+
+    // push handler
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+
+        Logger.log("Silent push received")
+
+        var hasCompleted = false
+        let lock = NSLock()
+        
+        var timeoutWorkItem: DispatchWorkItem?
+
+        func finish(_ result: UIBackgroundFetchResult) {
+            lock.lock()
+            defer { lock.unlock() }
+
+            guard !hasCompleted else { return }
+            hasCompleted = true
+            timeoutWorkItem!.cancel()
+            completionHandler(result)
+        }
+        
+        timeoutWorkItem = DispatchWorkItem {
+            Logger.log("Background task timeout fallback")
+            finish(.noData)
+        }
+
+        // Timeout safety
+        DispatchQueue.global().asyncAfter(
+            deadline: .now() + 25,
+            execute: timeoutWorkItem!
+        )
+
+        performNightscoutSync { success in
+            Logger.log("Sync result: \(success)")
+            finish(success ? .newData : .noData)
+        }
+    }
+ 
+    
+    private func requestPushPermission(application: UIApplication) {
+
+            UNUserNotificationCenter.current()
+                .requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+                    if let error = error {
+                        Logger.log("requestPushPermission Authorization error: \(error.localizedDescription)")
+                               return
+                           }
+
+                    Logger.log("requestPushPermission Permission granted: \(granted)")
+                    if granted {
+                        DispatchQueue.main.async {
+                            application.registerForRemoteNotifications()
+                        }
+                    }
+                }
+        }
 
     func configureAppForTesting() -> Void {
         UIView.setAnimationsEnabled(false)
@@ -101,37 +184,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func handelBackgroundProcessing(_ task: BGProcessingTask) {
+    func performNightscoutSync(
+        completion: @escaping (Bool) -> Void
+    ) {
+        
+        Logger.log("performNightscoutSync started")
         
         let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
             
             guard let result = result else {
-                task.setTaskCompleted(success: false)
+                Logger.log("Failed with empty result")
+                completion(false)
                 return
             }
             
             switch result {
             case .error(let error):
-                NSLog("handelBackgroundProcessing - unable to load current Nightscout Data: \(error)")
-                task.setTaskCompleted(success: false)
+                Logger.log("Unable to load current Nightscout Data:: \(error)")
+                completion(false)
             case .data(let nightscoutData):
-                // The new data has already been stored locally. Use it to determine wheter alerts have to be send:
+                
+                // The new data has already been stored locally. Use it to determine wheter alerts have to be sent:
                 AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
                 
                 if #available(iOS 16.1, *) {
                     LiveActivityManager.shared.update(with: nightscoutData)
                 }
-
+                
                 // Also check device status for reservoir
                 let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
-                    AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
-                }
+                        AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
+                    }
                 
-                task.setTaskCompleted(success: true)
+                completion(true)
             }
         }
+    }
+    
+    
+    func handelBackgroundProcessing(_ task: BGProcessingTask) {
+        Logger.log("handleBackgroundProcessing called")
         
+        task.expirationHandler = {
+                Logger.log("Background task expired")
+            }
+            
+        performNightscoutSync { success in
+            Logger.log("background sync success: \(success)")
+                task.setTaskCompleted(success: true)
+            }
+           
         scheduleBackgroundProcessing()
     }
     
@@ -275,6 +378,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return AppDelegate.orientationLock
+    }
+}
+
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler:
+        @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        completionHandler([.banner, .sound])
     }
 }
 
