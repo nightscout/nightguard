@@ -145,6 +145,11 @@ struct ConfigurationTourPage: View {
                 }
             }
             
+            QrScanSectionView(
+                nightscoutURL: $nightscoutURL,
+                onURLScanned: saveAndFinish
+            )
+            
             Section(
                 header: HStack {
                     Text(NSLocalizedString("API TOKEN", comment: ""))
@@ -296,6 +301,8 @@ struct ConfigurationTourPage: View {
         // Mark tour as seen
         UserDefaultsRepository.appTourSeen.value = true
         isPresented = false
+        
+        DeviceRegistrationService.shared.configurationDidUpdate()
     }
 }
 

@@ -41,6 +41,11 @@ struct PrefsView: View {
                     validateAndSaveURL: validateAndSaveURL
                 )
                 
+                QrScanSectionView(
+                    nightscoutURL: $nightscoutURL,
+                    onURLScanned: validateAndSaveURL
+                )
+                
                 UnitsSectionView(
                     manuallySetUnits: $manuallySetUnits,
                     selectedUnits: $selectedUnits,
@@ -177,6 +182,8 @@ struct PrefsView: View {
         NightscoutDataRepository.singleton.storeYesterdaysBgData([])
         NightscoutDataRepository.singleton.storeCurrentNightscoutData(NightscoutData())
 
+        DeviceRegistrationService.shared.configurationDidUpdate()
+        
         retrieveAndStoreNightscoutUnits { error in
             isValidatingURL = false
 
