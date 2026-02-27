@@ -41,10 +41,7 @@ struct PrefsView: View {
                     validateAndSaveURL: validateAndSaveURL
                 )
                 
-                QrScanSectionView(
-                    nightscoutURL: $nightscoutURL,
-                    onURLScanned: validateAndSaveURL
-                )
+             
                 
                 UnitsSectionView(
                     manuallySetUnits: $manuallySetUnits,

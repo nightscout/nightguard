@@ -69,9 +69,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
             Logger.log("Push registration success: \(token)")
+            DispatchQueue.global(qos: .background).async {
+                let environment = DeviceRegistrationService.shared.apnsEnvironment()
+                DeviceRegistrationService.shared.updateDeviceToken(token, environment: environment)
+            }
             
-            let environment = DeviceRegistrationService.shared.apnsEnvironment()
-            DeviceRegistrationService.shared.updateDeviceToken(token, environment: environment)
         }
     
     func application(

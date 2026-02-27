@@ -142,13 +142,13 @@ struct ConfigurationTourPage: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
+                    QrScanSectionView(
+                        nightscoutURL: $nightscoutURL,
+                        onURLScanned: saveAndFinish
+                    )
                 }
             }
             
-            QrScanSectionView(
-                nightscoutURL: $nightscoutURL,
-                onURLScanned: saveAndFinish
-            )
             
             Section(
                 header: HStack {

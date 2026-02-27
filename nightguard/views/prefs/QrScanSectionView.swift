@@ -17,22 +17,23 @@ struct QrScanSectionView: View {
     @State private var showQRScanner = false
 
     var body: some View {
-        Section {
-            Button {
-                showQRScanner = true
-            } label: {
-                Label(NSLocalizedString("Scan QR code", comment: "QR code scan button title"), systemImage: "qrcode.viewfinder")
-            }
+        Button {
+            showQRScanner = true
+        } label: {
+            Image(systemName: "qrcode.viewfinder")
+                .font(.system(size: 18))
+                .foregroundColor(.accentColor)
+                .padding(3)
+                .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
         .sheet(isPresented: $showQRScanner) {
             QRScannerViewRepresentable { scannedCode in
                 showQRScanner = false
 
                 let endpoint = extractEndpoint(from: scannedCode)
 
-                guard !endpoint.isEmpty else {
-                    return
-                }
+                guard !endpoint.isEmpty else { return }
 
                 nightscoutURL = endpoint
                 onURLScanned()
