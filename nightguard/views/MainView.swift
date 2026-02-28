@@ -8,6 +8,7 @@
 import SwiftUI
 import SpriteKit
 import Combine
+import UIKit
 
 // MARK: - ChartView (SpriteKit Wrapper)
 
@@ -90,6 +91,7 @@ struct ChartView: UIViewRepresentable {
 
 struct SlideToSnooze: UIViewRepresentable {
     @Binding var snoozeText: String
+    @Binding var lowPredictionText: String
     var onSnooze: () -> Void
 
     func makeUIView(context: Context) -> SlideToSnoozeView {
@@ -104,10 +106,22 @@ struct SlideToSnooze: UIViewRepresentable {
 
         let titleAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 27),
-            .paragraphStyle: style
+            .paragraphStyle: style,
+            .foregroundColor: UIColor.App.Preferences.text
         ]
 
         let title = NSMutableAttributedString(string: snoozeText, attributes: titleAttributes)
+        
+        if !lowPredictionText.isEmpty {
+            let predictionAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 15),
+                .paragraphStyle: style,
+                .foregroundColor: UIColor.nightguardYellow()
+            ]
+            let predictionString = NSAttributedString(string: "\n\(lowPredictionText)", attributes: predictionAttributes)
+            title.append(predictionString)
+        }
+        
         uiView.setAttributedTitle(title: title)
     }
 
@@ -264,7 +278,7 @@ struct MainView: View {
                     // Slide to snooze
                     ZStack {
                         if viewModel.showActionsMenu {
-                            SlideToSnooze(snoozeText: $viewModel.snoozeButtonText) {
+                            SlideToSnooze(snoozeText: $viewModel.snoozeButtonText, lowPredictionText: $viewModel.lowPredictionText) {
                                 showSnoozePopup = true
                             }
                             .frame(height: viewModel.slideToSnoozeHeight)
