@@ -83,6 +83,7 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var showActionsMenu: Bool = true
     @Published var slideToSnoozeHeight: CGFloat = 80
     @Published var snoozeButtonText: String = "snooze"
+    @Published var lowPredictionText: String = ""
 
     // Track if view is currently visible
     var isVisible: Bool = false
@@ -205,6 +206,9 @@ class MainViewModel: ObservableObject, Identifiable {
         } else {
             snoozeButtonText = NSLocalizedString("snooze", comment: "")
         }
+        
+        // Use AlarmRule.getAlarmActivationReason to get the text to show on the snooze button
+        lowPredictionText = AlarmRule.getAlarmActivationReason(ignoreSnooze: true) ?? ""
     }
 
     func evaluateAlarmActivationState() {

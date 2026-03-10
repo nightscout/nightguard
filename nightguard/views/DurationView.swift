@@ -49,11 +49,13 @@ struct DurationView: View {
                             cannulaChangeDate = Date()
                         }
                         .foregroundColor(.white)
+                        .buttonStyle(BorderlessButtonStyle())
                         Spacer()
                         Button(NSLocalizedString("Save", comment: "Button to activate the new Cannula Change Date")) {
                             showCannulaConfirmation = true
                         }
                         .foregroundColor(.white)
+                        .buttonStyle(BorderlessButtonStyle())
                         Spacer()
                     }
                 }
@@ -81,11 +83,13 @@ struct DurationView: View {
                             sensorChangeDate = Date()
                         }
                         .foregroundColor(.white)
+                        .buttonStyle(BorderlessButtonStyle())
                         Spacer()
                         Button(NSLocalizedString("Save", comment: "Button to activate the new Sensor Change Date")) {
                             showSensorConfirmation = true
                         }
                         .foregroundColor(.white)
+                        .buttonStyle(BorderlessButtonStyle())
                         Spacer()
                     }
                 }
@@ -113,11 +117,13 @@ struct DurationView: View {
                             batteryChangeDate = Date()
                         }
                         .foregroundColor(.white)
+                        .buttonStyle(BorderlessButtonStyle())
                         Spacer()
                         Button(NSLocalizedString("Save", comment: "Button to activate the new Battery Change Date")) {
                             showBatteryConfirmation = true
                         }
                         .foregroundColor(.white)
+                        .buttonStyle(BorderlessButtonStyle())
                         Spacer()
                     }
                 }
