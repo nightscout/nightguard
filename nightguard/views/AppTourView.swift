@@ -142,8 +142,13 @@ struct ConfigurationTourPage: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
+                    QrScanSectionView(
+                        nightscoutURL: $nightscoutURL,
+                        onURLScanned: saveAndFinish
+                    )
                 }
             }
+            
             
             Section(
                 header: HStack {
@@ -296,6 +301,8 @@ struct ConfigurationTourPage: View {
         // Mark tour as seen
         UserDefaultsRepository.appTourSeen.value = true
         isPresented = false
+        
+        DeviceRegistrationService.shared.configurationDidUpdate()
     }
 }
 

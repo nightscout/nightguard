@@ -43,6 +43,10 @@ struct NightscoutSectionView: View {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
                 }
+                QrScanSectionView(
+                    nightscoutURL: $nightscoutURL,
+                    onURLScanned: validateAndSaveURL
+                )
             }
 
             if !urlErrorMessage.isEmpty {
