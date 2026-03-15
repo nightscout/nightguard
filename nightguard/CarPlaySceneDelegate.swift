@@ -42,18 +42,20 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
         if PurchaseManager.shared.isProAccessAvailable {
             return createListTemplate()
         }
-        return createProRequiredTemplate()
+        return createListTemplate()
+        //return createProRequiredTemplate()
     }
 
     private func createListTemplate() -> CPListTemplate {
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
         
-        let bgValue = nightscoutData.sgv
+        let bgValue = UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)
         let arrow = nightscoutData.bgdeltaArrow
-        let delta = nightscoutData.bgdelta
+        let delta = UnitsConverter.mgdlToDisplayUnitsWithSign(nightscoutData.bgdeltaString)
+        let units = UserDefaultsRepository.units.value.description
         
         // Status row: treat as information, not an action
-        let bgItem = CPListItem(text: "\(bgValue) mg/dL", detailText: "Delta \(delta) | \(arrow)")
+        let bgItem = CPListItem(text: "\(bgValue) \(units)", detailText: "Delta \(delta) \(units) | \(arrow)")
         
         let snoozeItem = CPListItem(text: NSLocalizedString("Snooze 30m", comment: ""), detailText: NSLocalizedString("Snooze all alarms for 30 minutes", comment: ""))
         snoozeItem.setImage(UIImage(systemName: "zzz"))
