@@ -223,6 +223,12 @@
 /* Label for Show Care/Loop Data */
 "Show Care/Loop Data" = "Näytä Care/Loop tiedot";
 
+/* CarPlay status section header */
+"Glucose" = "Glukoosi";
+
+/* CarPlay actions section header */
+"Actions" = "Toiminnot";
+
 /* Label for Show Yesterdays BG values in chart */
 "Show Yesterdays BGs" = "Näytä eiliset lukemat";
 

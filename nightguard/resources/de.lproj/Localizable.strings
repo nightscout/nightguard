@@ -736,3 +736,9 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Price per month */
 "%@ / month" = "%@ / Monat";
+
+/* CarPlay status section header */
+"Glucose" = "Glukose";
+
+/* CarPlay actions section header */
+"Actions" = "Aktionen";

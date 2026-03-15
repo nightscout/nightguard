@@ -676,3 +676,9 @@
 
 /* Price per month */
 "%@ / month" = "%@ / month";
+
+/* CarPlay status section header */
+"Glucose" = "Glucose";
+
+/* CarPlay actions section header */
+"Actions" = "Actions";
