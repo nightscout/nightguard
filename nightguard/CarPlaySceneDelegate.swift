@@ -42,8 +42,7 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
         if PurchaseManager.shared.isProAccessAvailable {
             return createListTemplate()
         }
-        return createListTemplate()
-        //return createProRequiredTemplate()
+        return createProRequiredTemplate()
     }
 
     private func createListTemplate() -> CPListTemplate {
