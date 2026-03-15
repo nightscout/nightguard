@@ -47,6 +47,8 @@
 				<dict>
 					<key>UISceneConfigurationName</key>
 					<string>NightguardCarPlay</string>
+					<key>UISceneClassName</key>
+					<string>CPTemplateApplicationScene</string>
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).CarPlaySceneDelegate</string>
 				</dict>
