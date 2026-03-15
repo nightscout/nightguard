@@ -682,3 +682,15 @@
 
 /* CarPlay actions section header */
 "Actions" = "Actions";
+
+/* CarPlay Pro required title */
+"Pro required" = "Pro required";
+
+/* CarPlay Pro required detail */
+"CarPlay is available with a Pro subscription." = "CarPlay is available with a Pro subscription.";
+
+/* Pro Feature 3 Title */
+"CarPlay" = "CarPlay";
+
+/* Pro Feature 3 Description */
+"Glucose and alarms on your CarPlay screen while driving." = "Glucose and alarms on your CarPlay screen while driving.";

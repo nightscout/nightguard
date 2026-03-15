@@ -96,6 +96,7 @@ class PurchaseManager: NSObject, ObservableObject {
             if self.isProAccessAvailable != active {
                 self.isProAccessAvailable = active
                 UserDefaults.standard.set(active, forKey: self.proProductIdentifier)
+                NotificationCenter.default.post(name: NSNotification.Name("ProAccessStatusChanged"), object: nil)
                 
                 if active {
                     self.rescheduleAllAgeNotifications()

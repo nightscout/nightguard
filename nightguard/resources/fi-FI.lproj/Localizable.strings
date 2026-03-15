@@ -229,6 +229,18 @@
 /* CarPlay actions section header */
 "Actions" = "Toiminnot";
 
+/* CarPlay Pro required title */
+"Pro required" = "Pro vaaditaan";
+
+/* CarPlay Pro required detail */
+"CarPlay is available with a Pro subscription." = "CarPlay on kaytettavissa Pro-tilauksella.";
+
+/* Pro Feature 3 Title */
+"CarPlay" = "CarPlay";
+
+/* Pro Feature 3 Description */
+"Glucose and alarms on your CarPlay screen while driving." = "Glukoosi ja halytykset CarPlay-naytolla ajon aikana.";
+
 /* Label for Show Yesterdays BG values in chart */
 "Show Yesterdays BGs" = "Näytä eiliset lukemat";
 

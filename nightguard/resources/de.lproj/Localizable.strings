@@ -742,3 +742,15 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* CarPlay actions section header */
 "Actions" = "Aktionen";
+
+/* CarPlay Pro required title */
+"Pro required" = "Pro erforderlich";
+
+/* CarPlay Pro required detail */
+"CarPlay is available with a Pro subscription." = "CarPlay ist mit einem Pro-Abonnement verfügbar.";
+
+/* Pro Feature 3 Title */
+"CarPlay" = "CarPlay";
+
+/* Pro Feature 3 Description */
+"Glucose and alarms on your CarPlay screen while driving." = "Glukosewerte und Alarme auf deinem CarPlay-Display während der Fahrt.";

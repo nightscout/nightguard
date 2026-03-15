@@ -54,6 +54,12 @@ struct ProPromotionView: View {
                         title: NSLocalizedString("Live Activities", comment: "Pro Feature 2 Title"),
                         description: NSLocalizedString("Support for the dynamic island and live activities to see your BG at a glance.", comment: "Pro Feature 2 Description")
                     )
+
+                    FeatureRow(
+                        icon: "car.fill",
+                        title: NSLocalizedString("CarPlay", comment: "Pro Feature 3 Title"),
+                        description: NSLocalizedString("Glucose and alarms on your CarPlay screen while driving.", comment: "Pro Feature 3 Description")
+                    )
                 }
                 .padding()
                 .background(Color(UIColor.secondarySystemBackground))

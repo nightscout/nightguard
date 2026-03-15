@@ -32,12 +32,19 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
             print("CarPlay: interfaceController is nil in updateCarPlayUI")
             return 
         }
-        let template = createListTemplate()
+        let template = createRootTemplate()
         interfaceController.setRootTemplate(template, animated: false) { success, error in
             print("CarPlay: update setRootTemplate success=\(success), error=\(String(describing: error))")
         }
     }
-    
+
+    private func createRootTemplate() -> CPTemplate {
+        if PurchaseManager.shared.isProAccessAvailable {
+            return createListTemplate()
+        }
+        return createProRequiredTemplate()
+    }
+
     private func createListTemplate() -> CPListTemplate {
         let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
         
@@ -46,7 +53,7 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
         let delta = nightscoutData.bgdelta
         
         // Status row: treat as information, not an action
-        let bgItem = CPListItem(text: "\(bgValue) mg/dL", detailText: "Δ \(delta) • \(arrow)")
+        let bgItem = CPListItem(text: "\(bgValue) mg/dL", detailText: "Delta \(delta) | \(arrow)")
         
         let snoozeItem = CPListItem(text: NSLocalizedString("Snooze 30m", comment: ""), detailText: NSLocalizedString("Snooze all alarms for 30 minutes", comment: ""))
         snoozeItem.setImage(UIImage(systemName: "zzz"))
@@ -71,16 +78,26 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
         return template
     }
 
+    private func createProRequiredTemplate() -> CPListTemplate {
+        let title = NSLocalizedString("Pro required", comment: "CarPlay Pro required title")
+        let detail = NSLocalizedString("CarPlay is available with a Pro subscription.", comment: "CarPlay Pro required detail")
+        let item = CPListItem(text: title, detailText: detail)
+        let section = CPListSection(items: [item])
+        let template = CPListTemplate(title: "Nightguard", sections: [section])
+        return template
+    }
+
     private func handleConnect(interfaceController: CPInterfaceController) {
         print("CarPlay: didConnect")
         self.interfaceController = interfaceController
 
-        let template = createListTemplate()
+        let template = createRootTemplate()
         interfaceController.setRootTemplate(template, animated: true) { success, error in
             print("CarPlay: setRootTemplate success=\(success), error=\(String(describing: error))")
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(updateCarPlayUI), name: NSNotification.Name("NightscoutDataUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateCarPlayUI), name: NSNotification.Name("ProAccessStatusChanged"), object: nil)
     }
 
     private func handleDisconnect() {
