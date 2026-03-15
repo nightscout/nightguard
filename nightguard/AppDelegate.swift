@@ -77,21 +77,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize the stored UserDefaultsData
         TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
 
-        // Use SwiftUI RootTabView
-        let rootTabView = RootTabView()
-        let hostingController = UIHostingController(rootView: rootTabView)
-
-        self.window = UserInteractionDetectorWindow(frame: UIScreen.main.bounds)
-        if #available(iOS 13.0, *) {
-            // Always force a dark theme for nightguard. Otherwise e.g. the file picker would be white ^^
-            self.window?.overrideUserInterfaceStyle = .dark
-        }
-        self.window?.rootViewController = hostingController
-        self.window?.makeKeyAndVisible()
-        self.window?.tintColor = UIColor.nightguardAccent()
-
-        dimScreenOnIdle()
-
         // Enable Background Updates
         BGTaskScheduler.shared.register(forTaskWithIdentifier: appProcessingTaskId, using: nil) { task in
 

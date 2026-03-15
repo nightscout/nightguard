@@ -41,9 +41,18 @@ class UserInteractionDetectorWindow: UIWindow {
     private var dimView: UIView?
     private var originalBrightness: CGFloat?
     
+    @available(iOS 13.0, *)
+    override init(windowScene: UIWindowScene) {
+        super.init(windowScene: windowScene)
+        commonInit()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        commonInit()
+    }
+    
+    private func commonInit() {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
