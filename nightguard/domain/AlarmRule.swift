@@ -148,7 +148,7 @@ class AlarmRule {
         }
         
         // get the most recent readings
-        let bloodValues = [BloodSugar].latestFromRepositories()
+        let bloodValues = [BloodSugar].latestForAlarms(graceMinutes: minutesWithoutValues.value)
         guard let currentReading = bloodValues.last else {
             
             // no values? we'll wait a little more...

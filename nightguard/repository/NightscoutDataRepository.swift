@@ -20,6 +20,7 @@ class NightscoutDataRepository {
         static let currentBgData = "currentBgData"
         static let todaysBgData = "todaysBgData"
         static let yesterdaysBgData = "yesterdaysBgData"
+        static let yesterdaysBgDataRaw = "yesterdaysBgDataRaw"
         static let yesterdaysDayOfTheYear = "yesterdaysDayOfTheYear"
         static let cannulaChangeTime = "cannulaChangeTime"
         static let sensorChangeTime = "sensorChangeTime"
@@ -37,6 +38,7 @@ class NightscoutDataRepository {
         defaults?.removeObject(forKey: Constants.currentBgData)
         defaults?.removeObject(forKey: Constants.todaysBgData)
         defaults?.removeObject(forKey: Constants.yesterdaysBgData)
+        defaults?.removeObject(forKey: Constants.yesterdaysBgDataRaw)
         defaults?.removeObject(forKey: Constants.yesterdaysDayOfTheYear)
         // this shouldn't be necessary anymore - remove it later
         defaults?.synchronize()
@@ -88,6 +90,16 @@ class NightscoutDataRepository {
     func loadYesterdaysBgData() -> [BloodSugar] {
         
         return loadBgData(keyName: Constants.yesterdaysBgData)
+    }
+
+    func storeYesterdaysBgDataRaw(_ yesterdaysBgDataRaw : [BloodSugar]) {
+        
+        storeBgData(keyName: Constants.yesterdaysBgDataRaw, yesterdaysBgDataRaw)
+    }
+    
+    func loadYesterdaysBgDataRaw() -> [BloodSugar] {
+        
+        return loadBgData(keyName: Constants.yesterdaysBgDataRaw)
     }
     
     func loadYesterdaysDayOfTheYear() -> Int {
@@ -247,4 +259,3 @@ class NightscoutDataRepository {
         return bgData
     }
 }
-

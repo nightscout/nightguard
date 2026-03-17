@@ -36,6 +36,28 @@ extension Array where Element: BloodSugar {
         
         return result
     }
+    
+    /// return readings suitable for alarm logic, including recent readings from yesterday
+    static func latestForAlarms(graceMinutes: Int) -> [BloodSugar] {
+        
+        var result = NightscoutCacheService.singleton.getTodaysBgData()
+        
+        if graceMinutes > 0 {
+            let cutoffDate = Date().addingTimeInterval(-Double(graceMinutes) * 60)
+            let recentYesterdays = NightscoutCacheService.singleton
+                .getYesterdaysBgDataRaw()
+                .filter { $0.date >= cutoffDate }
+            
+            if !recentYesterdays.isEmpty {
+                result = (recentYesterdays + result).sorted(by: { $0.timestamp < $1.timestamp })
+            }
+        }
+        
+        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        result.assureCurrentReadingExists(nightscoutData)
+        
+        return result
+    }
 }
 
 extension Array where Element: BloodSugar {

@@ -22,6 +22,7 @@ class NightscoutCacheService: NSObject {
     
     fileprivate var todaysBgData : [BloodSugar] = []
     fileprivate var yesterdaysBgData : [BloodSugar] = []
+    fileprivate var yesterdaysBgDataRaw : [BloodSugar] = []
     fileprivate var yesterdaysDayOfTheYear : Int? = nil
     fileprivate var currentNightscoutData : NightscoutData = NightscoutData.init()
     
@@ -151,6 +152,10 @@ class NightscoutCacheService: NSObject {
         return yesterdaysBgData
     }
     
+    func getYesterdaysBgDataRaw() -> [BloodSugar] {
+        return yesterdaysBgDataRaw
+    }
+    
     // Returns true, if the size of one array changed
     func valuesChanged() -> Bool {
         
@@ -245,12 +250,19 @@ class NightscoutCacheService: NSObject {
             yesterdaysDayOfTheYear = NightscoutDataRepository.singleton.loadYesterdaysDayOfTheYear()
         }
         
+        if yesterdaysBgDataRaw.count == 0 {
+            yesterdaysBgDataRaw = NightscoutDataRepository.singleton.loadYesterdaysBgDataRaw()
+        }
+        
         if yesterdaysBgData.count == 0 || yesterdaysValuesAreOutdated() {
             
             if let task = NightscoutService.singleton.readYesterdaysChartData({ [unowned self] (result: NightscoutRequestResult<[BloodSugar]>) in
                 
                 if case .data(let yesterdaysValues) = result {
                     self.newDataReceived = true
+                    
+                    self.yesterdaysBgDataRaw = yesterdaysValues
+                    NightscoutDataRepository.singleton.storeYesterdaysBgDataRaw(self.yesterdaysBgDataRaw)
                     
                     // transform the yesterdays values to the current day, so that they can be easily displayed in
                     // one diagram
