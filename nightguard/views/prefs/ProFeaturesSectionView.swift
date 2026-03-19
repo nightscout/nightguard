@@ -19,7 +19,7 @@ struct ProFeaturesSectionView: View {
                 Spacer()
                 Button(action: {
                     showProPromotion = true
-                    UserDefaultsRepository.proPromotionLastSeen.value = Date()
+                    UserDefaultsRepository.markProPromotionSeen()
                 }) {
                     Image(systemName: "questionmark.circle")
                 }

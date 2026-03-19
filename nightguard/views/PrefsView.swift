@@ -123,7 +123,7 @@ struct PrefsView: View {
             .sheet(isPresented: $showProPromotion) {
                 ProPromotionView(
                     onRemindLater: {
-                        UserDefaultsRepository.proPromotionLastSeen.value = Date()
+                        UserDefaultsRepository.markProPromotionSeen()
                     }
                 )
             }

@@ -315,6 +315,20 @@ class UserDefaultsRepository {
     static let proPromotionNotNowVersion = UserDefaultsValue<String>(key: "proPromotionNotNowVersion", default: "")
     static let proPromotionLastSeen = UserDefaultsValue<Date>(key: "proPromotionLastSeen", default: .distantPast)
 
+    static func shouldShowProPromotion(now: Date = Date(), calendar: Calendar = .current) -> Bool {
+        let lastSeen = proPromotionLastSeen.value
+
+        guard lastSeen != .distantPast else {
+            return true
+        }
+
+        return !calendar.isDate(lastSeen, equalTo: now, toGranularity: .month)
+    }
+
+    static func markProPromotionSeen(at date: Date = Date()) {
+        proPromotionLastSeen.value = date
+    }
+
     static func initializeSyncValues() {
         _ = baseUri
         _ = units
