@@ -20,6 +20,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     /// Global orientation lock - allow controlling allowed orientations from anywhere
     static var orientationLock = UIInterfaceOrientationMask.portrait
+
+    static func updateOrientationLock(_ lock: UIInterfaceOrientationMask, rotateTo orientation: UIInterfaceOrientation? = nil) {
+        orientationLock = lock
+
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            if let orientation = orientation {
+                UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
+            }
+            UINavigationController.attemptRotationToDeviceOrientation()
+            return
+        }
+
+        if #available(iOS 16.0, *) {
+            windowScene.windows.first(where: \.isKeyWindow)?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
+
+            let geometryPreferences: UIWindowScene.GeometryPreferences.iOS
+            if let orientation {
+                geometryPreferences = .init(interfaceOrientations: UIInterfaceOrientationMask(orientation))
+            } else {
+                geometryPreferences = .init(interfaceOrientations: lock)
+            }
+
+            windowScene.requestGeometryUpdate(geometryPreferences) { error in
+                print("Error requesting orientation update: \(error.localizedDescription)")
+            }
+        } else {
+            if let orientation {
+                UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
+            }
+            UINavigationController.attemptRotationToDeviceOrientation()
+        }
+    }
     
     // Delegate Requests from the Watch to the WatchMessageService
     var session: WCSession? {
@@ -263,3 +295,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+private extension UIInterfaceOrientationMask {
+    init(_ orientation: UIInterfaceOrientation) {
+        switch orientation {
+        case .portrait:
+            self = .portrait
+        case .portraitUpsideDown:
+            self = .portraitUpsideDown
+        case .landscapeLeft:
+            self = .landscapeLeft
+        case .landscapeRight:
+            self = .landscapeRight
+        default:
+            self = .all
+        }
+    }
+}

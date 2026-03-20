@@ -262,31 +262,11 @@ struct RootTabView: View {
     }
     
     private func forcePortrait() {
-        AppDelegate.orientationLock = .portrait
-        
-        if #available(iOS 16.0, *) {
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait)) { error in
-                print("Error requesting portrait orientation: \(error.localizedDescription)")
-            }
-        } else {
-            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-            UINavigationController.attemptRotationToDeviceOrientation()
-        }
+        AppDelegate.updateOrientationLock(.portrait, rotateTo: .portrait)
     }
 
     private func forceLandscape() {
-        AppDelegate.orientationLock = .landscape
-        
-        if #available(iOS 16.0, *) {
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: .landscapeRight)) { error in
-                print("Error requesting landscape orientation: \(error.localizedDescription)")
-            }
-        } else {
-            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-            UINavigationController.attemptRotationToDeviceOrientation()
-        }
+        AppDelegate.updateOrientationLock(.landscape, rotateTo: .landscapeRight)
     }
 }
 

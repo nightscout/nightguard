@@ -97,8 +97,12 @@ struct BedsideView: View {
         }
         .statusBar(hidden: true)
         .onAppear {
+            AppDelegate.updateOrientationLock(.all)
             updateCurrentTime()
             updateAlarmInfo()
+        }
+        .onDisappear {
+            AppDelegate.updateOrientationLock(.portrait, rotateTo: .portrait)
         }
         .onReceive(timer) { _ in
             updateCurrentTime()
