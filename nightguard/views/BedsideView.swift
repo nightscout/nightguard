@@ -72,8 +72,10 @@ struct BedsideView: View {
 
             if let snoozeInfo = snoozeInfo {
                 Text(snoozeInfo)
-                    .font(.system(size: 44))
+                    .font(.system(size: 28))
                     .foregroundColor(.white)
+                    .minimumScaleFactor(0.7)
+                    .lineLimit(1)
                     .padding(.bottom, 10)
             }
 
@@ -180,8 +182,10 @@ struct BedsideView: View {
 
                 if let snoozeInfo = snoozeInfo {
                     Text(snoozeInfo)
-                        .font(.system(size: 38))
+                        .font(.system(size: 24))
                         .foregroundColor(.white)
+                        .minimumScaleFactor(0.7)
+                        .lineLimit(1)
                 }
 
                 if let alertReason = alertReason {
