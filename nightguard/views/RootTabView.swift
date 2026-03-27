@@ -33,7 +33,8 @@ struct RootTabView: View {
     @State private var startTourOnConfiguration = false
 
     init() {
-        _selectedTab = State(initialValue: UserDefaultsRepository.currentTab.value)
+        // Always start from the main tab on a fresh app launch.
+        _selectedTab = State(initialValue: .main)
 
         // Configure tab bar appearance
 

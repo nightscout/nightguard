@@ -270,6 +270,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Store the In-Memory Treatments
         UserDefaultsRepository.treatments.value = TreatmentsStream.singleton.treatments
         
+        // Persist Main as the next startup tab, because applicationWillTerminate
+        // is not reliably called when the app is later killed from the app switcher.
+        UserDefaultsRepository.currentTab.value = .main
+        
         // Schedule Background Updates:
         self.scheduleBackgroundProcessing()
     }
