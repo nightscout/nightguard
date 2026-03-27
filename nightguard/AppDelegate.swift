@@ -105,6 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         UserDefaultsRepository.initializeSyncValues()
         AlarmRule.initializeSyncValues()
+        applyStartupAlarmSnoozeIfNeeded()
 
         // Initialize the stored UserDefaultsData
         TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
@@ -278,11 +279,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        if !AlarmRule.isSnoozed() {
-            AlarmRule.snoozeSeconds(10)
-        }
+        // Restart any tasks that were paused (or not yet started) while the application was inactive.
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -292,6 +289,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return AppDelegate.orientationLock
+    }
+
+    private func applyStartupAlarmSnoozeIfNeeded() {
+        guard !AlarmRule.isSnoozed() else {
+            return
+        }
+
+        AlarmRule.snoozeSeconds(10)
     }
 }
 
