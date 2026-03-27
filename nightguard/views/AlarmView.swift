@@ -8,11 +8,20 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+private func sliderStep(for units: Units) -> Float {
+    units == .mmol ? 0.1 : 1
+}
+
+private func displayValueString(_ value: Float, units: Units) -> String {
+    String(format: units == .mmol ? "%.1f" : "%.0f", value)
+}
+
 struct AlarmView: View {
     @State private var disableAllAlerts = AlarmRule.areAlertsGenerallyDisabled.value
     @State private var highBGValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value))
     @State private var lowBGValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfBelowValue.value))
     @State private var smartSnoozeEnabled = AlarmRule.isSmartSnoozeEnabled.value
+    @State private var lastKnownUnits = UserDefaultsRepository.units.value
     @ObservedObject private var alarmService = AlarmNotificationService.singleton
     @State private var showDisableAlertsConfirmation = false
     @State private var showInvalidChangeAlert = false
@@ -29,6 +38,14 @@ struct AlarmView: View {
     private let minAlertAbove: Float = 80
     private let maxAlertBelow: Float = 200
     private let minAlertBelow: Float = 50
+    
+    private var currentUnits: Units {
+        UserDefaultsRepository.units.value
+    }
+    
+    private var sliderIncrement: Float {
+        sliderStep(for: currentUnits)
+    }
 
     var body: some View {
         Form {
@@ -58,13 +75,13 @@ struct AlarmView: View {
                         HStack {
                             Text("High Alert")
                             Spacer()
-                            Text("\(Int(highBGValue)) \(UserDefaultsRepository.units.value.description)")
+                            Text("\(displayValueString(highBGValue, units: currentUnits)) \(currentUnits.description)")
                                 .foregroundColor(.secondary)
                         }
                         Slider(
                             value: $highBGValue,
                             in: Float(UnitsConverter.mgdlToDisplayUnits(minAlertAbove))...Float(UnitsConverter.mgdlToDisplayUnits(maxAlertAbove)),
-                            step: 1
+                            step: sliderIncrement
                         )
                         .onChange(of: highBGValue) { newValue in
                             let mgdlValue = UnitsConverter.displayValueToMgdl(newValue)
@@ -89,13 +106,13 @@ struct AlarmView: View {
                         HStack {
                             Text("Low Alert")
                             Spacer()
-                            Text("\(Int(lowBGValue)) \(UserDefaultsRepository.units.value.description)")
+                            Text("\(displayValueString(lowBGValue, units: currentUnits)) \(currentUnits.description)")
                                 .foregroundColor(.secondary)
                         }
                         Slider(
                             value: $lowBGValue,
                             in: Float(UnitsConverter.mgdlToDisplayUnits(minAlertBelow))...Float(UnitsConverter.mgdlToDisplayUnits(maxAlertBelow)),
-                            step: 1
+                            step: sliderIncrement
                         )
                         .onChange(of: lowBGValue) { newValue in
                             let mgdlValue = UnitsConverter.displayValueToMgdl(newValue)
@@ -199,6 +216,16 @@ struct AlarmView: View {
         .navigationTitle("Alarms")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
+            lastKnownUnits = currentUnits
+            syncDisplayValuesFromStoredBounds()
+            updateDetailText()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            guard currentUnits != lastKnownUnits else {
+                return
+            }
+            lastKnownUnits = currentUnits
+            syncDisplayValuesFromStoredBounds()
             updateDetailText()
         }
         .alert("ARE YOU SURE?", isPresented: $showDisableAlertsConfirmation) {
@@ -219,6 +246,11 @@ struct AlarmView: View {
     }
 
     // MARK: - Helper Methods
+    
+    private func syncDisplayValuesFromStoredBounds() {
+        highBGValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value))
+        lowBGValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfBelowValue.value))
+    }
 
     private func updateDetailText() {
         missedReadingsDetail = getMissedReadingsDetail()
@@ -429,8 +461,17 @@ struct PersistentHighView: View {
     @State private var persistentHighEnabled = AlarmRule.isPersistentHighEnabled.value
     @State private var selectedMinutes = AlarmRule.persistentHighMinutes.value
     @State private var urgentHighValue: Float = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value))
+    @State private var lastKnownUnits = UserDefaultsRepository.units.value
 
     private let alarmOptions = [15, 20, 30, 45, 60, 90, 120]
+    
+    private var currentUnits: Units {
+        UserDefaultsRepository.units.value
+    }
+    
+    private var sliderIncrement: Float {
+        sliderStep(for: currentUnits)
+    }
 
     var body: some View {
         Form {
@@ -473,13 +514,13 @@ struct PersistentHighView: View {
                         HStack {
                             Text("Urgent High")
                             Spacer()
-                            Text("\(Int(urgentHighValue)) \(UserDefaultsRepository.units.value.description)")
+                            Text("\(displayValueString(urgentHighValue, units: currentUnits)) \(currentUnits.description)")
                                 .foregroundColor(.secondary)
                         }
                         Slider(
                             value: $urgentHighValue,
                             in: Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value))...Float(UnitsConverter.mgdlToDisplayUnits(300)),
-                            step: 1
+                            step: sliderIncrement
                         )
                         .onChange(of: urgentHighValue) { newValue in
                             let mgdlValue = UnitsConverter.displayValueToMgdl(newValue)
@@ -495,8 +536,20 @@ struct PersistentHighView: View {
         .onAppear {
             persistentHighEnabled = AlarmRule.isPersistentHighEnabled.value
             selectedMinutes = AlarmRule.persistentHighMinutes.value
-            urgentHighValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value))
+            lastKnownUnits = currentUnits
+            syncDisplayValuesFromStoredBounds()
         }
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            guard currentUnits != lastKnownUnits else {
+                return
+            }
+            lastKnownUnits = currentUnits
+            syncDisplayValuesFromStoredBounds()
+        }
+    }
+    
+    private func syncDisplayValuesFromStoredBounds() {
+        urgentHighValue = Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.persistentHighUpperBound.value))
     }
 }
 
