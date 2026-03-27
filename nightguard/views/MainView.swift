@@ -9,6 +9,7 @@ import SwiftUI
 import SpriteKit
 import Combine
 import UIKit
+import StoreKit
 
 // MARK: - ChartView (SpriteKit Wrapper)
 
@@ -150,6 +151,7 @@ struct MainView: View {
     @State private var showFullscreenMonitor = false
     @State private var showSnoozePopup = false
     @State private var showActionsMenuPopup = false
+    @State private var showReviewPrompt = false
     @State private var chartScene: ChartScene?
     @Environment(\.selectedTab) private var selectedTab
 
@@ -332,12 +334,16 @@ struct MainView: View {
 
                 // Start timer - it will fire immediately and handle all initialization
                 viewModel.startTimer(forceRepaint: true)
+                maybePresentReviewPrompt()
             }
         }
         .statusBar(hidden: true)
         .onDisappear {
             viewModel.isVisible = false
             viewModel.stopTimer()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NightscoutDataUpdated"))) { _ in
+            maybePresentReviewPrompt()
         }
         .onChange(of: selectedTab) { newTab in
             viewModel.handleVisibilityChange(isVisible: newTab == .main)
@@ -350,6 +356,16 @@ struct MainView: View {
         }
         .fullScreenCover(isPresented: $showFullscreenMonitor) {
             BedsideView(currentNightscoutData: viewModel.nightscoutData)
+        }
+        .alert(NSLocalizedString("Gefällt dir die App?", comment: "Review prompt title"), isPresented: $showReviewPrompt) {
+            Button(NSLocalizedString("Nein", comment: "Review prompt no button"), role: .destructive) {
+                UserDefaultsRepository.markReviewDeclinedForever()
+            }
+            Button(NSLocalizedString("Ja", comment: "Review prompt yes button")) {
+                requestAppStoreReview()
+            }
+        } message: {
+            Text(NSLocalizedString("Wenn dir Nightguard gefällt, würden wir uns über eine Bewertung im App Store freuen.", comment: "Review prompt message"))
         }
     }
 
@@ -387,6 +403,43 @@ struct MainView: View {
         )
         chartScene = scene
         viewModel.skScene = scene
+    }
+    
+    private func maybePresentReviewPrompt() {
+        guard viewModel.isVisible,
+              selectedTab == .main,
+              !showReviewPrompt,
+              !showNightscout,
+              !showSnoozePopup,
+              !showFullscreenMonitor,
+              !showActionsMenuPopup,
+              !CommandLine.arguments.contains("--uitesting"),
+              UserDefaultsRepository.shouldShowReviewPrompt() else {
+            return
+        }
+        
+        let rootViewController = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }?
+            .rootViewController
+        
+        guard rootViewController?.presentedViewController == nil else {
+            return
+        }
+        
+        UserDefaultsRepository.markReviewPromptShown()
+        showReviewPrompt = true
+    }
+    
+    private func requestAppStoreReview() {
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first(where: { $0.activationState == .foregroundActive }) else {
+            return
+        }
+        
+        SKStoreReviewController.requestReview(in: windowScene)
     }
 }
 

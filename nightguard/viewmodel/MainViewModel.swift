@@ -336,6 +336,10 @@ class MainViewModel: ObservableObject, Identifiable {
 
                 switch result {
                 case .data(let newNightscoutData):
+                    if !UserDefaultsRepository.baseUri.value.isEmpty && newNightscoutData.sgv != "---" {
+                        UserDefaultsRepository.markReviewFirstSuccessfulUseIfNeeded()
+                    }
+                    
                     calculateColors(nightscoutData: newNightscoutData)
 
                     self.nightscoutData = newNightscoutData

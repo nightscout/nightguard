@@ -314,6 +314,11 @@ class UserDefaultsRepository {
     // Pro Promotion
     static let proPromotionNotNowVersion = UserDefaultsValue<String>(key: "proPromotionNotNowVersion", default: "")
     static let proPromotionLastSeen = UserDefaultsValue<Date>(key: "proPromotionLastSeen", default: .distantPast)
+    
+    // App Review
+    static let reviewFirstSuccessfulUseDate = UserDefaultsValue<Date>(key: "reviewFirstSuccessfulUseDate", default: .distantPast)
+    static let reviewLastPromptDate = UserDefaultsValue<Date>(key: "reviewLastPromptDate", default: .distantPast)
+    static let reviewDeclinedForever = UserDefaultsValue<Bool>(key: "reviewDeclinedForever", default: false)
 
     static func shouldShowProPromotion(now: Date = Date(), calendar: Calendar = .current) -> Bool {
         let lastSeen = proPromotionLastSeen.value
@@ -327,6 +332,45 @@ class UserDefaultsRepository {
 
     static func markProPromotionSeen(at date: Date = Date()) {
         proPromotionLastSeen.value = date
+    }
+    
+    static func markReviewFirstSuccessfulUseIfNeeded(at date: Date = Date()) {
+        guard reviewFirstSuccessfulUseDate.value == .distantPast else {
+            return
+        }
+        
+        reviewFirstSuccessfulUseDate.value = date
+    }
+    
+    static func markReviewPromptShown(at date: Date = Date()) {
+        reviewLastPromptDate.value = date
+    }
+    
+    static func markReviewDeclinedForever() {
+        reviewDeclinedForever.value = true
+    }
+    
+    static func shouldShowReviewPrompt(now: Date = Date(), calendar: Calendar = .current) -> Bool {
+        guard !reviewDeclinedForever.value else {
+            return false
+        }
+        
+        let firstSuccessfulUseDate = reviewFirstSuccessfulUseDate.value
+        guard firstSuccessfulUseDate != .distantPast else {
+            return false
+        }
+        
+        guard let earliestPromptDate = calendar.date(byAdding: .day, value: 14, to: firstSuccessfulUseDate),
+              now > earliestPromptDate else {
+            return false
+        }
+        
+        let lastPromptDate = reviewLastPromptDate.value
+        guard lastPromptDate == .distantPast || !calendar.isDate(lastPromptDate, equalTo: now, toGranularity: .month) else {
+            return false
+        }
+        
+        return true
     }
 
     static func initializeSyncValues() {
@@ -358,6 +402,9 @@ class UserDefaultsRepository {
         _ = reservoirUnitsWarning
         _ = reservoirUnitsCritical
         _ = treatments
+        _ = reviewFirstSuccessfulUseDate
+        _ = reviewLastPromptDate
+        _ = reviewDeclinedForever
     }
 }
 
