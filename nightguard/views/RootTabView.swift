@@ -27,6 +27,7 @@ struct RootTabView: View {
     @State private var orientation = UIDeviceOrientation.portrait
 
     @State private var showAppTour = false
+    @State private var showGlobalProPromotion = false
 
 
 
@@ -228,8 +229,22 @@ struct RootTabView: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .showProPromotionRequest)) { _ in
+            guard !PurchaseManager.shared.isProAccessAvailable else {
+                return
+            }
+
+            showGlobalProPromotion = true
+        }
         .sheet(isPresented: $showAppTour) {
             AppTourView(isPresented: $showAppTour, startOnConfiguration: startTourOnConfiguration)
+        }
+        .sheet(isPresented: $showGlobalProPromotion) {
+            ProPromotionView(
+                onRemindLater: {
+                    UserDefaultsRepository.markProPromotionSeen()
+                }
+            )
         }
     }
     

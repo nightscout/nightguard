@@ -12,6 +12,10 @@ import WatchConnectivity
 import BackgroundTasks
 import SwiftUI
 
+extension Notification.Name {
+    static let showProPromotionRequest = Notification.Name("ShowProPromotionRequest")
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -244,6 +248,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("Handling WatchSyncRequestMessage: Snooze timestamp on watch didn't match phone snooze timestamp")
                 }
             }
+        }
+
+        WatchMessageService.singleton.onMessage { (_: ShowProPromotionMessage) in
+            guard !PurchaseManager.shared.isProAccessAvailable else {
+                return
+            }
+
+            NotificationCenter.default.post(name: .showProPromotionRequest, object: nil)
         }
 
         

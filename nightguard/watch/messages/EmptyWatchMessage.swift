@@ -20,3 +20,5 @@ class EmptyWatchMessage: WatchMessage {
     required init?(dictionary: [String : Any]) {
     }
 }
+
+class ShowProPromotionMessage: EmptyWatchMessage {}

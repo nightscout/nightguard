@@ -93,6 +93,8 @@ class PurchaseManager: NSObject, ObservableObject {
     
     private func updateProStatus(active: Bool) {
         DispatchQueue.main.async {
+            UserDefaultsRepository.watchProAccessAvailable.value = active
+
             if self.isProAccessAvailable != active {
                 self.isProAccessAvailable = active
                 UserDefaults.standard.set(active, forKey: self.proProductIdentifier)

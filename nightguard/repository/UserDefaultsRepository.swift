@@ -74,6 +74,9 @@ class UserDefaultsRepository {
     
     // The last watch sync update id
     static let lastWatchSyncUpdateId = UserDefaultsValue<String>(key: "lastWatchSyncUpdateId", default: "")
+
+    static let watchProAccessAvailable = UserDefaultsValue<Bool>(key: "watchProAccessAvailable", default: false)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     // the array defining what days should be displayed in the statistics view
     // E.g. [true, true, true, true, true] if all 5 days should be displayed
@@ -405,6 +408,7 @@ class UserDefaultsRepository {
         _ = reviewFirstSuccessfulUseDate
         _ = reviewLastPromptDate
         _ = reviewDeclinedForever
+        _ = watchProAccessAvailable
     }
 }
 

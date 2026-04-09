@@ -775,6 +775,22 @@
 /* Disclaimer Popup Message */
 "Don't use this App for medical decisions! It comes with absolutely NO WARRANTY. It is maintained by volunteers only. Use it at your own risk!" = "Älä käytä tätä sovellusta lääketieteellisiin päätöksiin! Se toimitetaan ilman MITÄÄN TAKUUTA. Sitä ylläpitävät vain vapaaehtoiset. Käytä sitä omalla vastuullasi!";
 
+/* Pro Promotion */
+"Support Nightguard" = "Tue Nightguardia";
+"The app will always stay free and open source." = "Sovellus pysyy aina ilmaisena ja avoimen lähdekoodin sovelluksena.";
+"You can support the app by subscribing and get some extra features as a goodie!" = "Voit tukea sovellusta tilaamalla ja saat samalla muutamia lisäominaisuuksia.";
+"Pro Notifications" = "Pro-ilmoitukset";
+"Push Notifications for Cannula Age, Battery Age, Sensor Age and Reservoir capacity." = "Push-ilmoitukset kanyylin iästä, akun iästä, sensorin iästä ja säiliön kapasiteetista.";
+"Live Activities" = "Live-aktiviteetit";
+"Support for the dynamic island and live activities to see your BG at a glance." = "Tuki Dynamic Islandille ja Live-aktiviteeteille, jotta näet glukoosiarvosi yhdellä silmäyksellä.";
+"Watch Statistics" = "Kellon tilastot";
+"See the four main glucose stats directly on your Apple Watch in a compact 2x2 view." = "Näe neljä tärkeintä glukoositilastoa suoraan Apple Watchissa kompaktissa 2x2-näkymässä.";
+"Unlock Pro to see the four main stats on your Apple Watch." = "Avaa Pro nähdäksesi neljä tärkeintä tilastoa Apple Watchissasi.";
+"Tap to change" = "Vaihda napauttamalla";
+"Support & Subscribe" = "Tue ja tilaa";
+"Remind me later" = "Muistuta myöhemmin";
+"Not now" = "Ei nyt";
+
 /* App Tour */
 "Welcome to Nightguard" = "Tervetuloa Nightguardiin";
 "See your current glucose level, trend, and device status at a glance." = "Näe verensokeritasosi, suuntauksesi ja laitteesi tila yhdellä silmäyksellä.";

@@ -18,6 +18,7 @@ struct NightguardApp: App {
                 ActionButtonView(mainViewModel: MainController.mainViewModel)
                 TemporaryTargetView()
                 CarbsView()
+                WatchStatsView()
                 InfoView()
             }
             .tabViewStyle(PageTabViewStyle())

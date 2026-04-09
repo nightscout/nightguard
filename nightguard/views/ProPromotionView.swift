@@ -60,6 +60,12 @@ struct ProPromotionView: View {
                         title: NSLocalizedString("CarPlay", comment: "Pro Feature 3 Title"),
                         description: NSLocalizedString("Glucose and alarms on your CarPlay screen while driving.", comment: "Pro Feature 3 Description")
                     )
+
+                    FeatureRow(
+                        icon: "chart.pie.fill",
+                        title: NSLocalizedString("Watch Statistics", comment: "Pro Feature 4 Title"),
+                        description: NSLocalizedString("See the four main glucose stats directly on your Apple Watch in a compact 2x2 view.", comment: "Pro Feature 4 Description")
+                    )
                 }
                 .padding()
                 .background(Color(UIColor.secondarySystemBackground))
