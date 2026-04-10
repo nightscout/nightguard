@@ -77,8 +77,8 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var batteryValue: String = "100%"
     @Published var batteryColor: Color = .white
     @Published var reservoirValue: String = "---"
-    @Published var errorMessage: String = ""
-    @Published var showError: Bool = false
+    @Published var errorToastMessage: String = ""
+    @Published var showErrorToast: Bool = false
     @Published var showStatsPanelView: Bool = true
     @Published var showActionsMenu: Bool = true
     @Published var slideToSnoozeHeight: CGFloat = 80
@@ -97,6 +97,7 @@ class MainViewModel: ObservableObject, Identifiable {
     private var observationTokens = [ObservationToken]()
     private var shouldSuppressMissedReadingsAlarmUntilRefreshCompletes = false
     private var hasEnteredBackground = false
+    private var dismissedErrorToastToken: String?
     #endif
 
     // MARK: - Initialization
@@ -221,6 +222,36 @@ class MainViewModel: ObservableObject, Identifiable {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         timeValue = formatter.string(from: Date())
+    }
+
+    func dismissErrorToast() {
+        dismissedErrorToastToken = errorToastMessage
+        withAnimation(.easeInOut(duration: 0.2)) {
+            showErrorToast = false
+        }
+    }
+
+    private func presentErrorToast(message: String) {
+        errorToastMessage = message
+
+        guard dismissedErrorToastToken != message else {
+            showErrorToast = false
+            return
+        }
+
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
+            showErrorToast = true
+        }
+    }
+
+    private func clearErrorToast() {
+        dismissedErrorToastToken = nil
+
+        withAnimation(.easeInOut(duration: 0.2)) {
+            showErrorToast = false
+        }
+
+        errorToastMessage = ""
     }
 
     func updateSnoozeButtonText() {
@@ -411,6 +442,7 @@ class MainViewModel: ObservableObject, Identifiable {
                     #if os(watchOS)
                     eventuallyNotify()
                     #else
+                    self.clearErrorToast()
                     paintCurrentBgDataiOS(currentNightscoutData: newNightscoutData)
 
                     if SharedUserDefaultsRepository.showBGOnAppBadge.value {
@@ -425,8 +457,7 @@ class MainViewModel: ObservableObject, Identifiable {
                     self.active = false
 
                     #if os(iOS)
-                    self.errorMessage = "❌ \(error.localizedDescription)"
-                    self.showError = true
+                    self.presentErrorToast(message: error.localizedDescription)
                     self.completeForegroundRefreshCycleIfNeeded()
                     #endif
                 }

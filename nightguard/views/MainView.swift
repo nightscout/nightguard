@@ -143,6 +143,46 @@ struct SlideToSnooze: UIViewRepresentable {
     }
 }
 
+struct ErrorToastView: View {
+    let message: String
+    let onClose: () -> Void
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundColor(.red)
+
+            Text(message)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(.white)
+                .multilineTextAlignment(.leading)
+                .lineLimit(2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button(action: onClose) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundColor(.white.opacity(0.85))
+                    .frame(width: 28, height: 28)
+                    .contentShape(Rectangle())
+            }
+            .accessibilityIdentifier("errorToastCloseButton")
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.black.opacity(0.9))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.red.opacity(0.6), lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(0.35), radius: 18, x: 0, y: 8)
+    }
+}
+
 // MARK: - MainView
 
 struct MainView: View {
@@ -261,18 +301,6 @@ struct MainView: View {
                         if let scene = chartScene {
                             ChartView(viewModel: viewModel, chartScene: scene)
                         }
-
-                        // Error message overlay
-                        if viewModel.showError {
-                            Text(viewModel.errorMessage)
-                                .font(.system(size: 13))
-                                .foregroundColor(.red)
-                                .padding(8)
-                                .background(Color.white.opacity(0.75))
-                                .cornerRadius(4)
-                                .padding(.top, 8)
-                                .frame(maxHeight: .infinity, alignment: .top)
-                        }
                     }
                     .frame(minHeight: 150, maxHeight: .infinity)
                     .padding(.bottom, 8)
@@ -318,6 +346,16 @@ struct MainView: View {
                     }
                     .padding(.bottom, 8)
 
+                }
+
+                if viewModel.showErrorToast {
+                    ErrorToastView(message: viewModel.errorToastMessage) {
+                        viewModel.dismissErrorToast()
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.top, max(geometry.safeAreaInsets.top, 12))
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .zIndex(1)
                 }
             }
             .onAppear {
