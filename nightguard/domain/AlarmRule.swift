@@ -7,9 +7,6 @@
 //
 
 import Foundation
-#if MAIN_APP
-import UIKit
-#endif
 
 /**
  * This class implements the Rules for which an alarm should be played.
@@ -23,20 +20,6 @@ import UIKit
  * and how long the snooze should last.
  */
 class AlarmRule {
-    enum AlarmActivationKind: Equatable {
-        case missedReadings
-        case high
-        case low
-        case persistentHigh
-        case fastRise
-        case fastDrop
-        case lowPrediction
-    }
-
-    struct AlarmActivation: Equatable {
-        let kind: AlarmActivationKind
-        let message: String
-    }
     
     private(set) static var snoozedUntilTimestamp = UserDefaultsValue<TimeInterval>(
         key: "snoozedUntilTimestamp",
@@ -101,13 +84,6 @@ class AlarmRule {
     static var persistentHighUpperBound = UserDefaultsValue<Float>(key: "persistentHighUpperBound", default: 250)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
         .group(UserDefaultsValueGroups.GroupNames.alarm)
-
-    private static var lastKnownNoDataAlarmEnabled = noDataAlarmEnabled.defaultValue
-    private static var hasLastKnownNoDataAlarmEnabled = false
-    private static var lastKnownMinutesWithoutValues = minutesWithoutValues.defaultValue
-    private static var hasLastKnownMinutesWithoutValues = false
-
-    static var protectedDataAvailabilityOverride: Bool?
     
     /*
      * Returns true if the alarm should be played.
@@ -125,10 +101,7 @@ class AlarmRule {
      background budget.
      */
     static func determineAlarmActivationReasonBy(_ nightscoutData: NightscoutData) -> String? {
-        determineAlarmActivationBy(nightscoutData)?.message
-    }
-
-    static func determineAlarmActivationBy(_ nightscoutData: NightscoutData) -> AlarmActivation? {
+        
         if areAlertsGenerallyDisabled.value {
             return nil
         }
@@ -136,18 +109,25 @@ class AlarmRule {
         if isSnoozed() {
             return nil
         }
-
-        if let activation = noDataActivation(for: nightscoutData) {
-            return activation
+        
+        print(minutesWithoutValues.value)
+        if nightscoutData.isOlderThanXMinutes(minutesWithoutValues.value) {
+            if noDataAlarmEnabled.value {
+                return NSLocalizedString("Missed Readings", comment: "noDataAlarmEnabled.value in AlarmRule Class")
+            } else {
+                
+                // no alarm at all... because old readings cannot be used for further alert evaluations
+                return nil
+            }
         }
         
         let isTooHigh = AlarmRule.isTooHigh(Float(nightscoutData.sgv) ?? 0.0)
         let isTooLow = AlarmRule.isTooLow(Float(nightscoutData.sgv) ?? 0.0)
 
         if isTooHigh {
-            return AlarmActivation(kind: .high, message: NSLocalizedString("High BG", comment: "High BG in AlarmRule Class"))
+            return NSLocalizedString("High BG", comment: "High BG in AlarmRule Class")
         } else if isTooLow {
-            return AlarmActivation(kind: .low, message: NSLocalizedString("Low BG", comment: "Low BG in AlarmRule Class"))
+            return NSLocalizedString("Low BG", comment: "Low BG in AlarmRule Class")
         }
         
         return nil
@@ -158,10 +138,6 @@ class AlarmRule {
      * Returns nil if the alarm is snoozed or not active.
      */
     static func getAlarmActivationReason(ignoreSnooze: Bool = false) -> String? {
-        return getAlarmActivation(ignoreSnooze: ignoreSnooze)?.message
-    }
-
-    static func getAlarmActivation(ignoreSnooze: Bool = false) -> AlarmActivation? {
         
         if areAlertsGenerallyDisabled.value {
             return nil
@@ -179,8 +155,14 @@ class AlarmRule {
             return nil
         }
         
-        if let activation = noDataActivation(for: currentReading) {
-            return activation
+        if currentReading.isOlderThanXMinutes(minutesWithoutValues.value) {
+            if noDataAlarmEnabled.value {
+                return NSLocalizedString("Missed Readings", comment: "noDataAlarmEnabled.value in AlarmRule Class")
+            } else {
+                
+                // no alarm at all... because old readings cannot be used for further alert evaluations
+                return nil
+            }
         }
         
         let isTooHigh = AlarmRule.isTooHigh(currentReading.value)
@@ -221,9 +203,9 @@ class AlarmRule {
                     let lastReadings = bloodValues.lastXMinutes(persistentHighMinutes.value)
                     
                     // we should have at least a reading in 10 minutes for considering a persistent high
-                        if !lastReadings.isEmpty && (lastReadings.count >= (persistentHighMinutes.value / 10)) {
+                    if !lastReadings.isEmpty && (lastReadings.count >= (persistentHighMinutes.value / 10)) {
                         if lastReadings.allSatisfy({ AlarmRule.isTooHigh($0.value) }) {
-                            return AlarmActivation(kind: .persistentHigh, message: NSLocalizedString("Persistent High BG", comment: "Persistent High BG in AlarmRule Class"))
+                            return NSLocalizedString("Persistent High BG", comment: "Persistent High BG in AlarmRule Class")
                         } else {
                             return nil
                         }
@@ -231,26 +213,26 @@ class AlarmRule {
                 }
             }
             
-            return AlarmActivation(kind: .high, message: NSLocalizedString("High BG", comment: "High BG in AlarmRule Class"))
+            return NSLocalizedString("High BG", comment: "High BG in AlarmRule Class")
         } else if isTooLow {
-            return AlarmActivation(kind: .low, message: NSLocalizedString("Low BG", comment: "Low BG in AlarmRule Class"))
+            return NSLocalizedString("Low BG", comment: "Low BG in AlarmRule Class")
         }
 
         if isEdgeDetectionAlarmEnabled.value  {
             if bloodValuesAreIncreasingTooFast(bloodValues) {
-                return AlarmActivation(kind: .fastRise, message: NSLocalizedString("Fast Rise", comment: "Fast Rise in AlarmRule Class"))
+                return NSLocalizedString("Fast Rise", comment: "Fast Rise in AlarmRule Class")
             } else if bloodValuesAreDecreasingTooFast(bloodValues) {
-                return AlarmActivation(kind: .fastDrop, message: NSLocalizedString("Fast Drop", comment: "Fast Drop in AlarmRule Class"))
+                return NSLocalizedString("Fast Drop", comment: "Fast Drop in AlarmRule Class")
             }
         }
         
         if isLowPredictionEnabled.value {
             if let minutesToLow = PredictionService.singleton.minutesTo(low: alertIfBelowValue.value), minutesToLow <= minutesToPredictLow.value {
                 #if os(iOS)
-                return AlarmActivation(kind: .lowPrediction, message: String(format: NSLocalizedString("Low Predicted in %dmin", comment: "Low Predicted in %dmin in AlarmRule Class"), minutesToLow))
+                return String(format: NSLocalizedString("Low Predicted in %dmin", comment: "Low Predicted in %dmin in AlarmRule Class"), minutesToLow)
                 #else
                 // shorter text on watch
-                return AlarmActivation(kind: .lowPrediction, message: String(format: NSLocalizedString("Low in %dmin", comment: "Low in %dmin in AlarmRule Class"), minutesToLow))
+                return String(format: NSLocalizedString("Low in %dmin", comment: "Low in %dmin in AlarmRule Class"), minutesToLow)
                 #endif
             }
         }
@@ -402,118 +384,5 @@ class AlarmRule {
         _ = isPersistentHighEnabled
         _ = persistentHighMinutes
         _ = persistentHighUpperBound
-        refreshProtectedDataSafeAlarmCaches()
-    }
-
-    private static func noDataActivation(for nightscoutData: NightscoutData) -> AlarmActivation? {
-        let thresholdMinutes = resolvedMinutesWithoutValues()
-        logNoDataEvaluationSource(ageMinutes: Int(Date().timeIntervalSince(Date(timeIntervalSince1970: nightscoutData.time.doubleValue / 1000)) / 60), thresholdMinutes: thresholdMinutes)
-
-        guard nightscoutData.isOlderThanXMinutes(thresholdMinutes) else {
-            return nil
-        }
-
-        guard resolvedNoDataAlarmEnabled() else {
-            return nil
-        }
-
-        return AlarmActivation(kind: .missedReadings, message: NSLocalizedString("Missed Readings", comment: "noDataAlarmEnabled.value in AlarmRule Class"))
-    }
-
-    private static func noDataActivation(for reading: BloodSugar) -> AlarmActivation? {
-        let thresholdMinutes = resolvedMinutesWithoutValues()
-        logNoDataEvaluationSource(ageMinutes: Int(Date().timeIntervalSince(reading.date) / 60), thresholdMinutes: thresholdMinutes)
-
-        guard reading.isOlderThanXMinutes(thresholdMinutes) else {
-            return nil
-        }
-
-        guard resolvedNoDataAlarmEnabled() else {
-            return nil
-        }
-
-        return AlarmActivation(kind: .missedReadings, message: NSLocalizedString("Missed Readings", comment: "noDataAlarmEnabled.value in AlarmRule Class"))
-    }
-
-    private static func refreshProtectedDataSafeAlarmCaches() {
-        if let storedValue = rawAlarmSetting(forKey: noDataAlarmEnabled.key, as: Bool.self) {
-            lastKnownNoDataAlarmEnabled = storedValue
-            hasLastKnownNoDataAlarmEnabled = true
-        }
-
-        if let storedValue = rawAlarmSetting(forKey: minutesWithoutValues.key, as: Int.self) {
-            lastKnownMinutesWithoutValues = storedValue
-            hasLastKnownMinutesWithoutValues = true
-        }
-    }
-
-    private static func resolvedNoDataAlarmEnabled() -> Bool {
-        if let storedValue = rawAlarmSetting(forKey: noDataAlarmEnabled.key, as: Bool.self) {
-            lastKnownNoDataAlarmEnabled = storedValue
-            hasLastKnownNoDataAlarmEnabled = true
-            return storedValue
-        }
-
-        if !isProtectedDataCurrentlyAvailable(), hasLastKnownNoDataAlarmEnabled {
-            return lastKnownNoDataAlarmEnabled
-        }
-
-        return noDataAlarmEnabled.defaultValue
-    }
-
-    private static func resolvedMinutesWithoutValues() -> Int {
-        if let storedValue = rawAlarmSetting(forKey: minutesWithoutValues.key, as: Int.self) {
-            lastKnownMinutesWithoutValues = storedValue
-            hasLastKnownMinutesWithoutValues = true
-            return storedValue
-        }
-
-        if !isProtectedDataCurrentlyAvailable(), hasLastKnownMinutesWithoutValues {
-            return lastKnownMinutesWithoutValues
-        }
-
-        return minutesWithoutValues.defaultValue
-    }
-
-    private static func rawAlarmSetting<T: AnyConvertible>(forKey key: String, as type: T.Type) -> T? {
-        guard let rawValue = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: key) else {
-            return nil
-        }
-
-        return T.fromAny(rawValue) as T?
-    }
-
-    private static func isProtectedDataCurrentlyAvailable() -> Bool {
-        if let override = protectedDataAvailabilityOverride {
-            return override
-        }
-
-        #if MAIN_APP
-        return UIApplication.shared.isProtectedDataAvailable
-        #else
-        return true
-        #endif
-    }
-
-    private static func logNoDataEvaluationSource(ageMinutes: Int, thresholdMinutes: Int) {
-        let source: String
-
-        if rawAlarmSetting(forKey: minutesWithoutValues.key, as: Int.self) != nil {
-            source = "userdefaults"
-        } else if !isProtectedDataCurrentlyAvailable(), hasLastKnownMinutesWithoutValues {
-            source = "last-known-good"
-        } else {
-            source = "default"
-        }
-
-        NSLog("AlarmRule - noData age=%dmin threshold=%dmin source=%@", ageMinutes, thresholdMinutes, source)
-    }
-
-    static func resetProtectedDataFallbackStateForTesting() {
-        lastKnownNoDataAlarmEnabled = noDataAlarmEnabled.defaultValue
-        hasLastKnownNoDataAlarmEnabled = false
-        lastKnownMinutesWithoutValues = minutesWithoutValues.defaultValue
-        hasLastKnownMinutesWithoutValues = false
-        protectedDataAvailabilityOverride = nil
     }
 }

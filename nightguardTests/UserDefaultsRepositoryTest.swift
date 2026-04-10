@@ -14,22 +14,11 @@ class UserDefaultsRepositoryTest : XCTestCase {
         super.setUp()
         // Clear treatments before each test to ensure isolation
         UserDefaultsRepository.treatments.value = []
-        AlarmRule.resetProtectedDataFallbackStateForTesting()
-
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults?.removeObject(forKey: AlarmRule.minutesWithoutValues.key)
-        defaults?.removeObject(forKey: AlarmRule.noDataAlarmEnabled.key)
-
-        AlarmRule.areAlertsGenerallyDisabled.value = false
-        AlarmRule.snoozedUntilTimestamp.value = 0
-        AlarmRule.noDataAlarmEnabled.value = true
-        AlarmRule.minutesWithoutValues.value = 15
     }
 
     override func tearDown() {
         // Clean up after each test
         UserDefaultsRepository.treatments.value = []
-        AlarmRule.resetProtectedDataFallbackStateForTesting()
         super.tearDown()
     }
 
@@ -129,42 +118,5 @@ class UserDefaultsRepositoryTest : XCTestCase {
     
     func testTabIdentifierToAny() {
         XCTAssertEqual(TabIdentifier.care.toAny() as? String, "care")
-    }
-
-    func testMissedReadingAlarmRespectsConfiguredThreshold() {
-        AlarmRule.minutesWithoutValues.value = 30
-
-        let activation = AlarmRule.determineAlarmActivationBy(makeNightscoutData(minutesOld: 20))
-
-        XCTAssertNil(activation)
-    }
-
-    func testMissedReadingAlarmTriggersAfterConfiguredThreshold() {
-        AlarmRule.minutesWithoutValues.value = 30
-
-        let activation = AlarmRule.determineAlarmActivationBy(makeNightscoutData(minutesOld: 31))
-
-        XCTAssertEqual(activation?.kind, .missedReadings)
-    }
-
-    func testMissedReadingThresholdUsesLastKnownGoodValueWhenProtectedDataIsUnavailable() {
-        AlarmRule.minutesWithoutValues.value = 30
-
-        XCTAssertNil(AlarmRule.determineAlarmActivationBy(makeNightscoutData(minutesOld: 20)))
-
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
-        defaults?.removeObject(forKey: AlarmRule.minutesWithoutValues.key)
-        AlarmRule.protectedDataAvailabilityOverride = false
-
-        let activation = AlarmRule.determineAlarmActivationBy(makeNightscoutData(minutesOld: 20))
-
-        XCTAssertNil(activation)
-    }
-
-    private func makeNightscoutData(minutesOld: Double) -> NightscoutData {
-        let data = NightscoutData()
-        data.sgv = "120"
-        data.time = NSNumber(value: Date().addingTimeInterval(-(minutesOld * 60)).timeIntervalSince1970 * 1000)
-        return data
     }
 }

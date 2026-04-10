@@ -154,28 +154,6 @@ class MainViewModel: ObservableObject, Identifiable {
         observationTokens.append(UserDefaultsRepository.lowerBound.observeChanges { [weak self] _ in
             self?.repaintChartWithCurrentData()
         })
-
-        NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
-            .sink { [weak self] _ in
-                self?.hasEnteredBackground = true
-            }
-            .store(in: &cancellables)
-
-        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { [weak self] _ in
-                self?.beginForegroundRefreshCycleIfNeeded()
-            }
-            .store(in: &cancellables)
-
-        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
-            .sink { [weak self] _ in
-                guard let self = self, self.shouldSuppressMissedReadingsAlarmUntilRefreshCompletes, self.isVisible else {
-                    return
-                }
-
-                self.doPeriodicUpdate(forceRepaint: true)
-            }
-            .store(in: &cancellables)
     }
 
     private func loadiOSInitialData() {
@@ -262,11 +240,12 @@ class MainViewModel: ObservableObject, Identifiable {
             snoozeButtonText = NSLocalizedString("snooze", comment: "")
         }
         
-        lowPredictionText = displayedAlarmActivation(ignoreSnooze: true)?.message ?? ""
+        // Use AlarmRule.getAlarmActivationReason to get the text to show on the snooze button
+        lowPredictionText = AlarmRule.getAlarmActivationReason(ignoreSnooze: true) ?? ""
     }
 
     func evaluateAlarmActivationState() {
-        if displayedAlarmActivation() != nil {
+        if AlarmRule.isAlarmActivated() {
             AlarmSound.play()
         } else {
             if !AlarmSound.isTesting {
@@ -274,38 +253,6 @@ class MainViewModel: ObservableObject, Identifiable {
             }
         }
         updateSnoozeButtonText()
-    }
-
-    private func beginForegroundRefreshCycleIfNeeded() {
-        guard hasEnteredBackground, isVisible else {
-            return
-        }
-
-        hasEnteredBackground = false
-        shouldSuppressMissedReadingsAlarmUntilRefreshCompletes = true
-        alarmRuleMessage = determineInfoLabel()
-        evaluateAlarmActivationState()
-    }
-
-    private func completeForegroundRefreshCycleIfNeeded() {
-        guard shouldSuppressMissedReadingsAlarmUntilRefreshCompletes else {
-            return
-        }
-
-        shouldSuppressMissedReadingsAlarmUntilRefreshCompletes = false
-        alarmRuleMessage = determineInfoLabel()
-        evaluateAlarmActivationState()
-    }
-
-    private func displayedAlarmActivation(ignoreSnooze: Bool = false) -> AlarmRule.AlarmActivation? {
-        let activation = AlarmRule.getAlarmActivation(ignoreSnooze: ignoreSnooze)
-
-        guard shouldSuppressMissedReadingsAlarmUntilRefreshCompletes,
-              activation?.kind == .missedReadings else {
-            return activation
-        }
-
-        return nil
     }
     #endif
 
@@ -396,18 +343,11 @@ class MainViewModel: ObservableObject, Identifiable {
 
     func determineInfoLabel() -> String {
         if !AlarmRule.isSnoozed() {
-            #if os(iOS)
-            if let alarmActivation = displayedAlarmActivation() {
-                return alarmActivation.message
-            }
-            return ""
-            #else
             if let alarmReason = AlarmRule.getAlarmActivationReason() {
                 return alarmReason
             } else {
                 return ""
             }
-            #endif
         }
 
         return String(format: NSLocalizedString("Snoozed %dmin", comment: "Snoozed duration on watch"), AlarmRule.getRemainingSnoozeMinutes())
@@ -449,7 +389,6 @@ class MainViewModel: ObservableObject, Identifiable {
                         UIApplication.shared.setCurrentBGValueOnAppBadge()
                     }
                     WatchService.singleton.sendToWatchCurrentNightwatchData()
-                    self.completeForegroundRefreshCycleIfNeeded()
                     #endif
 
                 case .error(let error):
