@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         UserDefaultsRepository.initializeSyncValues()
         AlarmRule.initializeSyncValues()
-        applyStartupAlarmSnoozeIfNeeded()
+        applyStartupAlarmSnoozeIfNeeded(application: application, launchOptions: launchOptions)
 
         // Initialize the stored UserDefaultsData
         TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
@@ -307,12 +307,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return AppDelegate.orientationLock
     }
 
-    private func applyStartupAlarmSnoozeIfNeeded() {
+    private func applyStartupAlarmSnoozeIfNeeded(application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        guard shouldApplyStartupAlarmSnooze(application: application, launchOptions: launchOptions) else {
+            return
+        }
+
         guard !AlarmRule.isSnoozed() else {
             return
         }
 
-        AlarmRule.snoozeSeconds(10)
+        AlarmRule.snoozeForStartup(seconds: 10)
+    }
+
+    static func shouldApplyStartupAlarmSnooze(
+        applicationState: UIApplication.State,
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        if applicationState == .background {
+            return false
+        }
+        return true
+    }
+
+    private func shouldApplyStartupAlarmSnooze(
+        application: UIApplication,
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        Self.shouldApplyStartupAlarmSnooze(
+            applicationState: application.applicationState,
+            launchOptions: launchOptions
+        )
     }
 }
 

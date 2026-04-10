@@ -150,6 +150,7 @@
 		43505F812B4F375D00896705 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */; };
 		4351E6B21D2EFDFE001E4AE4 /* TimeServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */; };
+		4351E6B41D2EFDFF001E4AE4 /* AlarmRuleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6B31D2EFDFF001E4AE4 /* AlarmRuleTest.swift */; };
 		4359241824A2895200F2D1A7 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		4359241924A2895500F2D1A7 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		435CBD902B323B920091A2FA /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
@@ -591,6 +592,7 @@
 		434982342534DE4F00CF0014 /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		4351E6AF1D2EFA8C001E4AE4 /* StatisticsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsRepository.swift; sourceTree = "<group>"; };
 		4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeServiceTest.swift; sourceTree = "<group>"; };
+		4351E6B31D2EFDFF001E4AE4 /* AlarmRuleTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmRuleTest.swift; sourceTree = "<group>"; };
 		435DFF5E29E08808007A25EA /* nightguard ComplicationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "nightguard ComplicationExtension.entitlements"; sourceTree = "<group>"; };
 		435DFF5F29E0A68C007A25EA /* AccessoryCircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryCircularView.swift; sourceTree = "<group>"; };
 		435DFF6329E0A90A007A25EA /* AccessoryCornerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryCornerView.swift; sourceTree = "<group>"; };
@@ -873,6 +875,7 @@
 			isa = PBXGroup;
 			children = (
 				43647BE41BFF6435004389F9 /* Info.plist */,
+				4351E6B31D2EFDFF001E4AE4 /* AlarmRuleTest.swift */,
 				439C391A1C0E295C00D89872 /* ChartPainterTest.swift */,
 				43794F471C30482500DB8B58 /* DataRepositoryTest.swift */,
 				433AD0161CCE3E89001A76CD /* NightscoutServiceTest.swift */,
@@ -1612,6 +1615,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4351E6B41D2EFDFF001E4AE4 /* AlarmRuleTest.swift in Sources */,
 				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
 				D1CE8CC12204B07F0075FF8A /* Colors.swift in Sources */,
 				43E9F70327386ED600C6AEB3 /* UIImageExtension.swift in Sources */,

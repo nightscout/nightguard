@@ -128,6 +128,11 @@ class MainViewModel: ObservableObject, Identifiable {
         AlarmRule.onSnoozeTimestampChanged = { [weak self] in
             self?.evaluateAlarmActivationState()
         }
+
+        // Re-evaluate after the startup delay (10s) just in case a refresh fails or takes longer
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.5) { [weak self] in
+            self?.evaluateAlarmActivationState()
+        }
         #endif
     }
 
@@ -389,6 +394,11 @@ class MainViewModel: ObservableObject, Identifiable {
                         UIApplication.shared.setCurrentBGValueOnAppBadge()
                     }
                     WatchService.singleton.sendToWatchCurrentNightwatchData()
+                    
+                    // As soon as we have new data, we can disable the startup snooze
+                    // and evaluate the alarm state
+                    AlarmRule.disableStartupSnooze()
+                    evaluateAlarmActivationState()
                     #endif
 
                 case .error(let error):
@@ -397,7 +407,7 @@ class MainViewModel: ObservableObject, Identifiable {
 
                     #if os(iOS)
                     self.presentErrorToast(message: error.localizedDescription)
-                    self.completeForegroundRefreshCycleIfNeeded()
+                    evaluateAlarmActivationState()
                     #endif
                 }
             }
@@ -549,6 +559,9 @@ class MainViewModel: ObservableObject, Identifiable {
                     if case .data(let newTodaysData) = result {
                         self.cachedTodaysBgValues = newTodaysData
                         paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: true)
+                        #if os(iOS)
+                        evaluateAlarmActivationState()
+                        #endif
                     }
                 }
             }
@@ -566,6 +579,9 @@ class MainViewModel: ObservableObject, Identifiable {
                     if case .data(let newYesterdaysData) = result {
                         self.cachedYesterdaysBgValues = newYesterdaysData
                         paintChartData(todaysData: cachedTodaysBgValues, yesterdaysData: cachedYesterdaysBgValues, moveToLatestValue: true)
+                        #if os(iOS)
+                        evaluateAlarmActivationState()
+                        #endif
                     }
                 }
             }
