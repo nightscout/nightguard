@@ -17,10 +17,6 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
     func templateApplicationScene(_ templateApplicationScene: CPTemplateApplicationScene, didConnect interfaceController: CPInterfaceController, to window: CPWindow) {
         handleConnect(interfaceController: interfaceController)
     }
-    
-    func templateApplicationScene(_ templateApplicationScene: CPTemplateApplicationScene, didDisconnect interfaceController: CPInterfaceController) {
-        handleDisconnect()
-    }
 
     func templateApplicationScene(_ templateApplicationScene: CPTemplateApplicationScene, didDisconnect interfaceController: CPInterfaceController, from window: CPWindow) {
         handleDisconnect()
@@ -106,3 +102,4 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
         NotificationCenter.default.removeObserver(self)
     }
 }
+
