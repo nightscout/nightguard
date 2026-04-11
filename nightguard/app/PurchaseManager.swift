@@ -60,7 +60,12 @@ class PurchaseManager: NSObject, ObservableObject {
     private var isRestoring = false
     
     private override init() {
+        self.isProAccessAvailable = UserDefaults.standard.bool(forKey: proProductIdentifier)
         super.init()
+        
+        // Ensure initial watch status is in sync with last known state
+        UserDefaultsRepository.watchProAccessAvailable.value = self.isProAccessAvailable
+        
         SKPaymentQueue.default().add(self)
         fetchProducts()
         validateReceipt() // Check subscription status on launch
@@ -93,10 +98,9 @@ class PurchaseManager: NSObject, ObservableObject {
     
     private func updateProStatus(active: Bool) {
         DispatchQueue.main.async {
-            UserDefaultsRepository.watchProAccessAvailable.value = active
-
             if self.isProAccessAvailable != active {
                 self.isProAccessAvailable = active
+                UserDefaultsRepository.watchProAccessAvailable.value = active
                 UserDefaults.standard.set(active, forKey: self.proProductIdentifier)
                 NotificationCenter.default.post(name: NSNotification.Name("ProAccessStatusChanged"), object: nil)
                 
@@ -106,6 +110,9 @@ class PurchaseManager: NSObject, ObservableObject {
                     // Optionally cancel notifications if subscription expired
                     // AlarmNotificationService.singleton.cancelAgeNotifications()
                 }
+            } else {
+                // Even if isProAccessAvailable didn't change, ensure watch value is in sync
+                UserDefaultsRepository.watchProAccessAvailable.value = active
             }
             
             if self.isRestoring {
