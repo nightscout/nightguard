@@ -125,10 +125,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func handelBackgroundProcessing(_ task: BGProcessingTask) {
         
-        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData { result in
+        task.expirationHandler = {
+            task.setTaskCompleted(success: false)
+        }
+
+        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: true) { result in
             
             guard let result = result else {
-                task.setTaskCompleted(success: false)
+                task.setTaskCompleted(success: true)
                 return
             }
             
@@ -148,9 +152,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // Also check device status for reservoir
                 let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
                     AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
+                    // Finally call task completed:
+                    task.setTaskCompleted(success: true)
                 }
-                
-                task.setTaskCompleted(success: true)
             }
         }
         

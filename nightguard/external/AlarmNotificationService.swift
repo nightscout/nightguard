@@ -94,9 +94,9 @@ class AlarmNotificationService: ObservableObject {
         
         // PRECONDITIONS:
         // 1. service should be enabled
-        /*guard enabled else {
+        guard enabled else {
             return
-        }*/
+        }
         
         // s. alarm should be active
         guard let alarmActivationReason = AlarmRule.determineAlarmActivationReasonBy(nightscoutData) else {
@@ -118,7 +118,11 @@ class AlarmNotificationService: ObservableObject {
                 content.badge = NSNumber(value: sgv)
             }
         }
+        #if os(iOS)
+        content.sound = UNNotificationSound.criticalSoundNamed(convertToUNNotificationSoundName("alarm-notification.m4a"), withAudioVolume: 0.6)
+        #else
         content.sound = .defaultCritical
+        #endif
         
         let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
