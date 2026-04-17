@@ -39,9 +39,11 @@ class VolumeChangeDetector: NSObject {
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
+
         if keyPath == "outputVolume" {
-            print("Volume changed!")
+            #if MAIN_APP
+            AppLogger.singleton.debug("Volume changed!")
+            #endif
             onVolumeChange?()
         }
     }

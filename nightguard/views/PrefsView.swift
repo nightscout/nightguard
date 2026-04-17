@@ -64,7 +64,7 @@ struct PrefsView: View {
                 )
                 
                 ProFeaturesSectionView(purchaseManager: purchaseManager, showProPromotion: $showProPromotion)
-                
+
                 Section {
                     HStack {
                         Spacer()
@@ -78,6 +78,18 @@ struct PrefsView: View {
                 Section(header: Text(NSLocalizedString("Legal", comment: "Legal section header"))) {
                     Link(NSLocalizedString("Terms of Use (EULA)", comment: "Link to Terms of Use"), destination: URL(string: "https://sportmeo.com/de/bedingungen")!)
                     Link(NSLocalizedString("Privacy Policy", comment: "Link to Privacy Policy"), destination: URL(string: "https://sportmeo.com/de/bedingungen#nutzungsbedingungen")!)
+                }
+                
+                Section(header: Text("Debug")) {
+                    NavigationLink(destination: LogsView()) {
+                        HStack {
+                            Image(systemName: "doc.text")
+                            Text("View Logs")
+                            Spacer()
+                            Text("\(AppLogger.singleton.logs.count)")
+                                .foregroundColor(.secondary)
+                        }
+                    }
                 }
                 
                 Section {

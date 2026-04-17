@@ -72,7 +72,9 @@ class AppleHealthService: NSObject {
 
             healthKitStore.save(hkQuantitySamples) { (success, error) in
                 if let error = error {
-                    print("Error saving glucose sample: ", error)
+                    #if MAIN_APP
+                    AppLogger.singleton.error("AppleHealthService: Error saving glucose sample: \(error)")
+                    #endif
                 }
             }
         }

@@ -84,9 +84,14 @@ class AlarmNotificationService: ObservableObject {
         #endif
         
         let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
-        UNUserNotificationCenter.current().add(request)
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Alarm notification error: \(error.localizedDescription)")
+                self.logToAppLogger("Alarm notification error: \(error.localizedDescription)")
+            }
+        }
     }
-    
+
     /*
      * Trigger a local notification if alarm is activated (and the app is in background).
      */
@@ -125,7 +130,12 @@ class AlarmNotificationService: ObservableObject {
         #endif
         
         let request = UNNotificationRequest(identifier: "ALARM", content: content, trigger: nil)
-        UNUserNotificationCenter.current().add(request)
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Alarm notification error: \(error.localizedDescription)")
+                self.logToAppLogger("Alarm notification error: \(error.localizedDescription)")
+            }
+        }
     }
 
     /*
@@ -196,7 +206,9 @@ class AlarmNotificationService: ObservableObject {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
 
         guard PurchaseManager.shared.isProAccessAvailable else {
-            print("Pro version not unlocked. Skipping \(identifier) notification.")
+            #if MAIN_APP
+            AppLogger.singleton.warning("Pro version not unlocked. Skipping \(identifier) notification.")
+            #endif
             return
         }
 
@@ -234,14 +246,18 @@ class AlarmNotificationService: ObservableObject {
             let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
             
             UNUserNotificationCenter.current().add(request) { error in
+                #if MAIN_APP
                 if let error = error {
-                    print("Error scheduling \(requestId) notification: \(error)")
+                    AppLogger.singleton.error("Error scheduling \(requestId) notification: \(error)")
                 } else {
-                    print("Scheduled \(requestId) notification for \(notificationDate)")
+                    AppLogger.singleton.debug("Scheduled \(requestId) notification for \(notificationDate)")
                 }
+                #endif
             }
         }
-        print("Scheduled hourly \(identifier) notifications starting at \(startTime)")
+        #if MAIN_APP
+        AppLogger.singleton.debug("Scheduled hourly \(identifier) notifications starting at \(startTime)")
+        #endif
     }
     
     private init() {
@@ -251,6 +267,17 @@ class AlarmNotificationService: ObservableObject {
             }
         }
     }
+
+    // Log to AppLogger on iOS only (avoids compilation issues in watch targets)
+    #if MAIN_APP
+    private func logToAppLogger(_ message: String) {
+        AppLogger.singleton.error(message)
+    }
+    #else
+    private func logToAppLogger(_ message: String) {
+        // No-op on non-MAIN_APP targets
+    }
+    #endif
 }
 
 // Helper function inserted by Swift 4.2 migrator.

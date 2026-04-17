@@ -340,6 +340,7 @@
 		43E777F72F198E3C00BC8524 /* DisplayOptionsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777EF2F198E3C00BC8524 /* DisplayOptionsSectionView.swift */; };
 		43E777F82F198E3C00BC8524 /* ProFeaturesSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */; };
 		43E777F92F198E3C00BC8524 /* UnitsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F32F198E3C00BC8524 /* UnitsSectionView.swift */; };
+		A1B2C3D01E5F6A7B8C9D0E3 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D01E5F6A7B8C9D0E1 /* LogsView.swift */; };
 		43E899512F2BF06D00A357B9 /* ProPromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E899502F2BF06D00A357B9 /* ProPromotionView.swift */; };
 		43E89E571E659102005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
 		43E89E5C1E6A1D72005B0A65 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
@@ -451,6 +452,7 @@
 		D1DA7C6C21BE810900B39675 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */; };
 		D1DA7C6E21BE83D600B39675 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
 		D1E6B897219C69D9007ED4FE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
+		A1B2C3D01E5F6A7B8C9D0E4 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D01E5F6A7B8C9D0E2 /* AppLogger.swift */; };
 		D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6B896219C69D9007ED4FE /* Helpers.swift */; };
 		D1ECDA1F2201075B002BE6F9 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */; };
 		D1ECDA202201075B002BE6F9 /* ObservationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */; };
@@ -665,6 +667,7 @@
 		43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeaturesSectionView.swift; sourceTree = "<group>"; };
 		43E777F22F198E3C00BC8524 /* ScreenSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSectionView.swift; sourceTree = "<group>"; };
 		43E777F32F198E3C00BC8524 /* UnitsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitsSectionView.swift; sourceTree = "<group>"; };
+		A1B2C3D01E5F6A7B8C9D0E1 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 		43E899502F2BF06D00A357B9 /* ProPromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPromotionView.swift; sourceTree = "<group>"; };
 		43E899532F2BF06D00A357BA /* AgeAlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeAlertsView.swift; sourceTree = "<group>"; };
 		43E89E561E659102005B0A65 /* ChartScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartScene.swift; sourceTree = "<group>"; };
@@ -735,6 +738,7 @@
 		D1DA7C6B21BE810900B39675 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmNotificationService.swift; sourceTree = "<group>"; };
 		D1E6B896219C69D9007ED4FE /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		A1B2C3D01E5F6A7B8C9D0E2 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationToken.swift; sourceTree = "<group>"; };
 		D1ECDA252202C8F0002BE6F9 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		D1F94ECB223FFDF100BB0A4D /* BasicStatsControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicStatsControl.swift; sourceTree = "<group>"; };
@@ -1117,6 +1121,7 @@
 				43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */,
 				43E777F22F198E3C00BC8524 /* ScreenSectionView.swift */,
 				43E777F32F198E3C00BC8524 /* UnitsSectionView.swift */,
+				A1B2C3D01E5F6A7B8C9D0E1 /* LogsView.swift */,
 			);
 			path = prefs;
 			sourceTree = "<group>";
@@ -1150,6 +1155,7 @@
 				D1AEFED721FE00A200821DF6 /* AnyConvertible.swift */,
 				D15055AF2200D31300F31C1F /* DeviceSize.swift */,
 				D1E6B896219C69D9007ED4FE /* Helpers.swift */,
+				A1B2C3D01E5F6A7B8C9D0E2 /* AppLogger.swift */,
 				D1ECDA1E2201075B002BE6F9 /* ObservationToken.swift */,
 				D1D96CB021F85BC70035A60E /* UserDefaultsValue.swift */,
 				D15055AB2200CD6500F31C1F /* UserDefaultsValueGroups.swift */,
@@ -1530,6 +1536,7 @@
 				4351E6B01D2EFA8C001E4AE4 /* StatisticsRepository.swift in Sources */,
 				43119B8D1C3885A700DD6D35 /* ChartPainter.swift in Sources */,
 				D1E6B897219C69D9007ED4FE /* Helpers.swift in Sources */,
+				A1B2C3D01E5F6A7B8C9D0E4 /* AppLogger.swift in Sources */,
 				D133079821C85FAE00DC6879 /* Regression.swift in Sources */,
 				4302C6A525DC66A80052777F /* BolusWizardTreatment.swift in Sources */,
 				43F1E0EA1D0768EF00C329A2 /* WatchService.swift in Sources */,
@@ -1575,6 +1582,7 @@
 				43E777F72F198E3C00BC8524 /* DisplayOptionsSectionView.swift in Sources */,
 				43E777F82F198E3C00BC8524 /* ProFeaturesSectionView.swift in Sources */,
 				43E777F92F198E3C00BC8524 /* UnitsSectionView.swift in Sources */,
+				A1B2C3D01E5F6A7B8C9D0E3 /* LogsView.swift in Sources */,
 				D133079221C85FAE00DC6879 /* RegressionHelper.swift in Sources */,
 				4302C65725D9C7080052777F /* Treatment.swift in Sources */,
 				43027A542EC5244600BE71B9 /* PrefsView.swift in Sources */,
@@ -2168,7 +2176,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 988;
+				CURRENT_PROJECT_VERSION = 991;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2198,7 +2206,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 988;
+				CURRENT_PROJECT_VERSION = 991;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2225,7 +2233,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 988;
+				CURRENT_PROJECT_VERSION = 991;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -2254,7 +2262,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 988;
+				CURRENT_PROJECT_VERSION = 991;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
@@ -2367,7 +2375,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 988;
+				CURRENT_PROJECT_VERSION = 991;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2407,7 +2415,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 988;
+				CURRENT_PROJECT_VERSION = 991;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2444,7 +2452,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 988;
+				CURRENT_PROJECT_VERSION = 991;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2486,7 +2494,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 988;
+				CURRENT_PROJECT_VERSION = 991;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";

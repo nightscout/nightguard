@@ -123,7 +123,9 @@ class NightscoutService {
                         }
                     }
                 } catch let error as NSError {
-                    print(error.localizedDescription)
+                    #if MAIN_APP
+                    AppLogger.singleton.error("NightscoutService: \(error.localizedDescription)")
+                    #endif
                     resultHandler(.error(error))
                 }
             }
@@ -195,7 +197,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(.error(error!))
                 }
@@ -215,7 +219,9 @@ class NightscoutService {
             
             do {
                 guard data != nil else {
-                    print("The received data was nil...")
+                    #if MAIN_APP
+                    AppLogger.singleton.warning("NightscoutService: The received data was nil...")
+                    #endif
                     dispatchOnMain { [unowned self] in
                         resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from Nightscout entries API", comment: "No data from NS entries API"))))
                     }
@@ -266,7 +272,9 @@ class NightscoutService {
                     resultHandler(.data(bloodSugarArray))
                 }
             } catch {
-                print("Catched unknown exception.")
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService: Catched unknown exception.")
+                #endif
                 let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Unknown error while extracting data from Pebble Watch API", comment: "Unkown error while extracting Pebble API data")])
                 
                 dispatchOnMain {
@@ -430,8 +438,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print("Error receiving api/v2/properties Data.")
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService: Error receiving api/v2/properties Data: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(.error(error!))
                 }
@@ -450,7 +459,9 @@ class NightscoutService {
             }
             
             guard data != nil else {
-                print("API V2 Properties Data was nil.")
+                #if MAIN_APP
+                AppLogger.singleton.warning("NightscoutService: API V2 Properties Data was nil.")
+                #endif
                 dispatchOnMain { [unowned self] in
                     resultHandler(.error(self.createNoDataError(description: NSLocalizedString("No data received from API V2 Properties", comment: "No data received from API V2 Properties"))))
                 }
@@ -537,7 +548,9 @@ class NightscoutService {
             }
             
         } catch {
-            print("Catched unknown exception.")
+            #if MAIN_APP
+            AppLogger.singleton.error("NightscoutService: Catched unknown exception at status parse.")
+            #endif
             let error = NSError(domain: "PebbleWatchDataError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Unknown error while extracting data from Pebble Watch API", comment: "Unkown error while extracting Pebble API data")])
             
             dispatchOnMain {
@@ -623,7 +636,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(Date())
                 }
@@ -631,7 +646,9 @@ class NightscoutService {
             }
             
             guard data != nil else {
-                print("The received data was nil...")
+                #if MAIN_APP
+                AppLogger.singleton.warning("NightscoutService: The received data was nil...")
+                #endif
                 dispatchOnMain { [] in
                     resultHandler(Date())
                 }
@@ -640,7 +657,9 @@ class NightscoutService {
             
             do {
                 guard let treatmentsArray = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any] else {
-                    print("Unexpected treatments received...")
+                    #if MAIN_APP
+                    AppLogger.singleton.warning("NightscoutService: Unexpected treatments received...")
+                    #endif
                     dispatchOnMain { [] in
                         resultHandler(Date())
                     }
@@ -667,7 +686,9 @@ class NightscoutService {
                     }
                     resultHandler(Date.fromIsoString(isoTime: String(describing: siteChangeUnwrapped)))}
             } catch {
-                print("Exception catched during treatements parsing. Ignoring the result...")
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService: Exception catched during treatements parsing. Ignoring the result...")
+                #endif
                 return
             }
         })
@@ -709,7 +730,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(nil)
                 }
@@ -717,7 +740,9 @@ class NightscoutService {
             }
             
             guard data != nil else {
-                print("The received data was nil...")
+                #if MAIN_APP
+                AppLogger.singleton.warning("NightscoutService: The received data was nil...")
+                #endif
                 dispatchOnMain {
                     resultHandler(nil)
                 }
@@ -754,7 +779,9 @@ class NightscoutService {
                     resultHandler(temporaryTargetData)
                 }
             } catch {
-                print("Exception during reading of the temporary target. Ignoring the result...")
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService: Exception during reading of the temporary target. Ignoring the result...")
+                #endif
             }
         })
         
@@ -799,7 +826,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(error?.localizedDescription)
                 }
@@ -860,7 +889,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(error?.localizedDescription)
                 }
@@ -930,7 +961,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(error?.localizedDescription)
                 }
@@ -993,7 +1026,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(error?.localizedDescription)
                 }
@@ -1056,7 +1091,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(error?.localizedDescription)
                 }
@@ -1119,7 +1156,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(error?.localizedDescription)
                 }
@@ -1172,7 +1211,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler(DeviceStatusData())
                 }
@@ -1180,7 +1221,9 @@ class NightscoutService {
             }
             
             guard data != nil else {
-                print("The received data was nil...")
+                #if MAIN_APP
+                AppLogger.singleton.warning("NightscoutService: The received data was nil...")
+                #endif
                 dispatchOnMain {
                     resultHandler(DeviceStatusData())
                 }
@@ -1253,7 +1296,9 @@ class NightscoutService {
                     }
                 }
             } catch {
-                print("Exception reading device status. Ignoring the result.")
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService: Exception reading device status. Ignoring the result.")
+                #endif
                 return
             }
             
@@ -1294,7 +1339,9 @@ class NightscoutService {
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
-                print(error!)
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService error: \(error!)")
+                #endif
                 dispatchOnMain {
                     resultHandler([])
                 }
@@ -1302,7 +1349,9 @@ class NightscoutService {
             }
             
             guard data != nil else {
-                print("The received data was nil...")
+                #if MAIN_APP
+                AppLogger.singleton.warning("NightscoutService: The received data was nil...")
+                #endif
                 dispatchOnMain { [] in
                     resultHandler([])
                 }
@@ -1311,7 +1360,9 @@ class NightscoutService {
             
             do {
                 guard let treatmentsArray = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [Any] else {
-                    print("Unexpected treatments received...")
+                    #if MAIN_APP
+                    AppLogger.singleton.warning("NightscoutService: Unexpected treatments received...")
+                    #endif
                     dispatchOnMain { [] in
                         resultHandler([])
                     }
@@ -1328,7 +1379,9 @@ class NightscoutService {
                 dispatchOnMain { [] in
                     resultHandler(treatments)}
             } catch {
-                print("Exception catched during treatements parsing. Ignoring the result...")
+                #if MAIN_APP
+                AppLogger.singleton.error("NightscoutService: Exception catched during treatements parsing. Ignoring the result...")
+                #endif
                 return
             }
         })

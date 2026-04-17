@@ -47,7 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
 
             windowScene.requestGeometryUpdate(geometryPreferences) { error in
-                print("Error requesting orientation update: \(error.localizedDescription)")
+                #if MAIN_APP
+                AppLogger.singleton.error("Error requesting orientation update: \(error.localizedDescription)")
+                #endif
             }
         } else {
             if let orientation {
@@ -170,7 +172,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              BGTaskScheduler.shared.cancelAllTaskRequests()
              try BGTaskScheduler.shared.submit(request)
          } catch {
-             print("Could not schedule background fetch: \(error)")
+             #if MAIN_APP
+             AppLogger.singleton.error("Could not schedule background fetch: \(error)")
+             #endif
          }
      }
     
@@ -233,11 +237,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let anyWatchUpdateId = message.dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] {
                 let watchUpdateId = type(of: UserDefaultsRepository.lastWatchSyncUpdateId).ValueType.fromAny(anyWatchUpdateId)
                 if UserDefaultsRepository.lastWatchSyncUpdateId.value != watchUpdateId {
-                    
+
                     // perform sync!
                     UserDefaultSyncMessage().send()
-                
-                    print("Handling WatchSyncRequestMessage: UUID on watch didn't match phone UUID")
+
+                    #if MAIN_APP
+                    AppLogger.singleton.debug("Handling WatchSyncRequestMessage: UUID on watch didn't match phone UUID")
+                    #endif
                 }
             }
             
@@ -245,11 +251,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let anyWatchSnoozeTimestamp = message.dictionary["snoozedUntilTimestamp"] {
                 let watchSnoozeTimestamp = anyWatchSnoozeTimestamp as? TimeInterval
                 if AlarmRule.snoozedUntilTimestamp.value != watchSnoozeTimestamp {
-                    
+
                     // send snooze data to watch!
                     SnoozeMessage(timestamp: AlarmRule.snoozedUntilTimestamp.value).send()
-                    
-                    print("Handling WatchSyncRequestMessage: Snooze timestamp on watch didn't match phone snooze timestamp")
+
+                    #if MAIN_APP
+                    AppLogger.singleton.debug("Handling WatchSyncRequestMessage: Snooze timestamp on watch didn't match phone snooze timestamp")
+                    #endif
                 }
             }
         }

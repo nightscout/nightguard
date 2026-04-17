@@ -267,7 +267,9 @@ class AlarmRule {
     }
 
     fileprivate static func isTooLow(_ bloodGlucose : Float) -> Bool {
-        print(alertIfBelowValue.value)
+        #if MAIN_APP
+        AppLogger.singleton.debug("AlarmRule.isTooLow: alertIfBelowValue = \(alertIfBelowValue.value)")
+        #endif
         return bloodGlucose < alertIfBelowValue.value
     }
     
@@ -331,8 +333,9 @@ class AlarmRule {
      */
     static func snooze(_ minutes : Int) {
         snoozedUntilTimestamp.value = Date().timeIntervalSince1970 + Double(60 * minutes)
-        print("Current time \(Date().timeIntervalSince1970)")
-        print("Snoozed till \(snoozedUntilTimestamp.value)")
+        #if MAIN_APP
+        AppLogger.singleton.info("AlarmRule: Snooze - Current time \(Date().timeIntervalSince1970), Snoozed till \(snoozedUntilTimestamp.value)")
+        #endif
         SnoozeMessage(timestamp: snoozedUntilTimestamp.value).send()
     }
     

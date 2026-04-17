@@ -23,14 +23,20 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
     }
     
     @objc private func updateCarPlayUI() {
-        print("CarPlay: updateCarPlayUI")
-        guard let interfaceController = interfaceController else { 
-            print("CarPlay: interfaceController is nil in updateCarPlayUI")
-            return 
+        #if MAIN_APP
+        AppLogger.singleton.debug("CarPlay: updateCarPlayUI")
+        #endif
+        guard let interfaceController = interfaceController else {
+            #if MAIN_APP
+            AppLogger.singleton.warning("CarPlay: interfaceController is nil in updateCarPlayUI")
+            #endif
+            return
         }
         let template = createRootTemplate()
         interfaceController.setRootTemplate(template, animated: false) { success, error in
-            print("CarPlay: update setRootTemplate success=\(success), error=\(String(describing: error))")
+            #if MAIN_APP
+            AppLogger.singleton.debug("CarPlay: update setRootTemplate success=\(success), error=\(String(describing: error))")
+            #endif
         }
     }
 
@@ -85,12 +91,16 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
     }
 
     private func handleConnect(interfaceController: CPInterfaceController) {
-        print("CarPlay: didConnect")
+        #if MAIN_APP
+        AppLogger.singleton.debug("CarPlay: didConnect")
+        #endif
         self.interfaceController = interfaceController
 
         let template = createRootTemplate()
         interfaceController.setRootTemplate(template, animated: true) { success, error in
-            print("CarPlay: setRootTemplate success=\(success), error=\(String(describing: error))")
+            #if MAIN_APP
+            AppLogger.singleton.debug("CarPlay: setRootTemplate success=\(success), error=\(String(describing: error))")
+            #endif
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(updateCarPlayUI), name: NSNotification.Name("NightscoutDataUpdated"), object: nil)
