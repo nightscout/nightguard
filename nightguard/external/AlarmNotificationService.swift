@@ -87,7 +87,7 @@ class AlarmNotificationService: ObservableObject {
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Alarm notification error: \(error.localizedDescription)")
-                self.logToAppLogger("Alarm notification error: \(error.localizedDescription)")
+                self.logToAppLogger("Alarm notification error: \(error.localizedDescription)", category: "Background Updates")
             }
         }
     }
@@ -133,7 +133,7 @@ class AlarmNotificationService: ObservableObject {
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Alarm notification error: \(error.localizedDescription)")
-                self.logToAppLogger("Alarm notification error: \(error.localizedDescription)")
+                self.logToAppLogger("Alarm notification error: \(error.localizedDescription)", category: "Background Updates")
             }
         }
     }
@@ -270,11 +270,12 @@ class AlarmNotificationService: ObservableObject {
 
     // Log to AppLogger on iOS only (avoids compilation issues in watch targets)
     #if MAIN_APP
-    private func logToAppLogger(_ message: String) {
-        AppLogger.singleton.error(message)
+    private func logToAppLogger(_ message: String, category: String = "All") {
+        let logCategory: AppLogger.LogEntry.LogCategory = category == "Background Updates" ? .backgroundUpdates : .all
+        AppLogger.singleton.error(message, category: logCategory)
     }
     #else
-    private func logToAppLogger(_ message: String) {
+    private func logToAppLogger(_ message: String, category: String = "All") {
         // No-op on non-MAIN_APP targets
     }
     #endif

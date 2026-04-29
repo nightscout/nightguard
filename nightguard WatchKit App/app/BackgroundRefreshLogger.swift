@@ -10,10 +10,10 @@ import Foundation
 
 // A debugging tool that keeps info about the nightscout data updates obtained through background tasks (URL sessions) or updates received from the phone app (that also relies on background fetch for refreshing its data).
 class BackgroundRefreshLogger {
-    
+
     static var logs: [String] = []
     static var receivedData: [String] = []
-    
+
     // keep some background refrehs related stats data...
     static var backgroundRefreshes: Int = 0
     static var backgroundURLSessions: Int = 0
@@ -24,69 +24,96 @@ class BackgroundRefreshLogger {
     static var phoneUpdatesWithNewData: Int = 0
     static var phoneUpdatesWithSameData: Int = 0
     static var phoneUpdatesWithOldData: Int = 0
-    
+
     static var backgroundRefreshesPerHour: Double {
         guard let appStartTime = BackgroundRefreshLogger.appStartTime else {
             return 0
         }
-        
+
         let minutes: Double = Date().timeIntervalSince(appStartTime) / 60
         let refreshesPerMinute = Double(backgroundRefreshes) / minutes
         return refreshesPerMinute * 60
     }
-    
+
     static var formattedBackgroundRefreshesPerHour: String {
         return String(format: "%.2f", backgroundRefreshesPerHour)
     }
-    
+
     static var backgroundRefreshesStartingURLSessions: Double {
         return backgroundRefreshes != 0 ? Double(backgroundURLSessions) / Double(backgroundRefreshes) : 0
     }
-    
+
     static var formattedBackgroundRefreshesStartingURLSessions: String {
         return "\(Int(backgroundRefreshesStartingURLSessions * 100))%"
     }
-    
+
     private static var logStartTime: Date?
     private static var appStartTime: Date?
     private static let showLogs = true
-    
+
+    // App Group shared logs for iOS app visibility
+    private static let sharedLogsKey = "BackgroundRefreshLogger.sharedLogs"
+    private static let sharedLogsMaxCount = 100
+    private static let appGroupId = "group.de.my-wan.dhe.nightguard"
+
     static func info(_ text: String) {
         resetStatsDataIfNeeded()
-        
+
         let logEntry = formattedTime(Date()) + " " + text
         NSLog(logEntry)
-        
+
         if showLogs {
             logs.append(logEntry)
         }
+
+        // Mirror to shared UserDefaults for iOS app's LogsView
+        appendToSharedLogs(logEntry)
     }
-    
+
+    private static func appendToSharedLogs(_ entry: String) {
+        guard let sharedDefaults = UserDefaults(suiteName: appGroupId) else { return }
+
+        var sharedLogs = sharedDefaults.stringArray(forKey: sharedLogsKey) ?? []
+        sharedLogs.append(entry)
+
+        // Keep only the most recent entries
+        if sharedLogs.count > sharedLogsMaxCount {
+            sharedLogs = Array(sharedLogs.suffix(sharedLogsMaxCount))
+        }
+
+        sharedDefaults.set(sharedLogs, forKey: sharedLogsKey)
+    }
+
+    static func clearSharedLogs() {
+        guard let sharedDefaults = UserDefaults(suiteName: appGroupId) else { return }
+        sharedDefaults.removeObject(forKey: sharedLogsKey)
+    }
+
     private static func resetStatsDataIfNeeded() {
-        
+
         let now = Date()
-        
+
         guard let appStartTime = BackgroundRefreshLogger.appStartTime, let logStartTime = BackgroundRefreshLogger.logStartTime else {
             BackgroundRefreshLogger.appStartTime = now
             BackgroundRefreshLogger.logStartTime = now
             info("App started!")
             return
         }
-        
+
         let unitFlags:Set<Calendar.Component> = [.day]
         let nowDateComponents = Calendar.current.dateComponents(unitFlags, from: logStartTime)
         let logStartDateComponents = Calendar.current.dateComponents(unitFlags, from: now)
 
         // keep log data only for one day (from 00:00 until 23:59)
         if logStartDateComponents.day != nowDateComponents.day {
-            
+
             BackgroundRefreshLogger.logStartTime = now
-            
+
             // reset log data
             logs.removeAll()
             info("Reseting logs (new day), but continuing stats from app start (\(formattedTime(appStartTime)))")
             receivedData.removeAll()
-            
+
 //            backgroundRefreshes = 0
 //            backgroundURLSessions = 0
 //            backgroundURLSessionUpdatesWithNewData = 0
@@ -98,7 +125,7 @@ class BackgroundRefreshLogger {
 //            phoneUpdatesWithOldData = 0
         }
     }
-    
+
     private static func formattedTime(_ time: Date, showSeconds: Bool = true) -> String {
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = showSeconds ? "HH:mm:ss" : "HH:mm"

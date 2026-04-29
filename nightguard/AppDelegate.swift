@@ -126,27 +126,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func handelBackgroundProcessing(_ task: BGProcessingTask) {
-        
+
         task.expirationHandler = {
+            AppLogger.singleton.warning("BG task expired", category: .backgroundUpdates)
             task.setTaskCompleted(success: false)
         }
 
+        AppLogger.singleton.debug("BG task started", category: .backgroundUpdates)
+
         let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: true) { result in
-            
+
             guard let result = result else {
+                AppLogger.singleton.warning("BG task: no result from Nightscout", category: .backgroundUpdates)
                 task.setTaskCompleted(success: true)
                 return
             }
-            
+
             switch result {
             case .error(let error):
-                NSLog("handelBackgroundProcessing - unable to load current Nightscout Data: \(error)")
+                AppLogger.singleton.error("BG task failed: \(error)", category: .backgroundUpdates)
                 task.setTaskCompleted(success: false)
             case .data(let nightscoutData):
+                AppLogger.singleton.debug("BG task succeeded, SGV: \(nightscoutData.sgv)", category: .backgroundUpdates)
                 // The new data has already been stored locally. Use it to determine wheter alerts have to be send:
                 AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
-                
+
                 if #available(iOS 16.1, *) {
                     LiveActivityManager.shared.update(with: nightscoutData)
                 }
@@ -159,7 +164,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
-        
+
         scheduleBackgroundProcessing()
     }
     
@@ -169,11 +174,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          request.earliestBeginDate = Date(timeIntervalSinceNow: 10 * 60)
 
          do {
-             BGTaskScheduler.shared.cancelAllTaskRequests()
+             BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: appProcessingTaskId)
              try BGTaskScheduler.shared.submit(request)
+             AppLogger.singleton.debug("BG task scheduled for \(request.earliestBeginDate?.description ?? "unknown")", category: .backgroundUpdates)
          } catch {
              #if MAIN_APP
-             AppLogger.singleton.error("Could not schedule background fetch: \(error)")
+             AppLogger.singleton.error("Could not schedule background fetch: \(error)", category: .backgroundUpdates)
              #endif
          }
      }

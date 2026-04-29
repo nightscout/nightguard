@@ -11,11 +11,25 @@ import UIKit
 struct LogsView: View {
     @ObservedObject private var logger = AppLogger.singleton
     @State private var selectedLevel: AppLogger.LogEntry.LogLevel? = nil
+    @State private var selectedCategory: AppLogger.LogEntry.LogCategory = .all
     @State private var searchText = ""
 
     var body: some View {
         VStack(spacing: 0) {
-            // Filter bar
+            // Category filter bar
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(AppLogger.LogEntry.LogCategory.allCases, id: \.self) { category in
+                        FilterChip(title: category.rawValue, isSelected: selectedCategory == category) {
+                            selectedCategory = category
+                        }
+                    }
+                }
+                .padding(.horizontal)
+            }
+            .padding(.vertical, 8)
+
+            // Level filter bar
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     FilterChip(title: "All", isSelected: selectedLevel == nil) {
@@ -66,9 +80,10 @@ struct LogsView: View {
 
     private var filteredLogs: [AppLogger.LogEntry] {
         logger.logs.filter { entry in
+            let matchesCategory = selectedCategory == .all || entry.category == selectedCategory
             let matchesLevel = selectedLevel == nil || entry.level == selectedLevel
             let matchesSearch = searchText.isEmpty || entry.message.localizedCaseInsensitiveContains(searchText)
-            return matchesLevel && matchesSearch
+            return matchesCategory && matchesLevel && matchesSearch
         }.reversed()
     }
 }
@@ -83,6 +98,16 @@ struct LogEntryRow: View {
                 Text(formattedTime(entry.timestamp))
                     .font(.caption)
                     .foregroundColor(.secondary)
+                if entry.category == .backgroundUpdates {
+                    Text("BG")
+                        .font(.caption2)
+                        .fontWeight(.bold)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 2)
+                        .background(Color.purple.opacity(0.2))
+                        .foregroundColor(.purple)
+                        .cornerRadius(4)
+                }
                 Spacer()
                 Text(entry.level.rawValue)
                     .font(.caption2)
