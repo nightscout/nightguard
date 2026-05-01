@@ -159,13 +159,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // Also check device status for reservoir
                 let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
                     AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
-                    // Finally call task completed:
+                    // Finally schedule the next background task and call task completed:
+                    self.scheduleBackgroundProcessing()
                     task.setTaskCompleted(success: true)
                 }
             }
         }
-
-        scheduleBackgroundProcessing()
     }
     
     func scheduleBackgroundProcessing() {
