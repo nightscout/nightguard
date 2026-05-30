@@ -107,7 +107,7 @@ class AlarmRule {
     private static var lastKnownMinutesWithoutValues = minutesWithoutValues.defaultValue
     private static var hasLastKnownMinutesWithoutValues = false
 
-    static var startupSnoozedUntil: TimeInterval = 0
+    static var transientLocalAudioSuppressedUntil: TimeInterval = 0
     static var protectedDataAvailabilityOverride: Bool?
     
     /*
@@ -134,7 +134,7 @@ class AlarmRule {
             return nil
         }
         
-        if isSnoozed(ignoreStartupSnooze: true) {
+        if isSnoozed(ignoreTransientLocalAudioSuppression: true) {
             return nil
         }
 
@@ -158,16 +158,25 @@ class AlarmRule {
      * Returns a reason (string) if the alarm is activated.
      * Returns nil if the alarm is snoozed or not active.
      */
-    static func getAlarmActivationReason(ignoreSnooze: Bool = false) -> String? {
-        getAlarmActivation(ignoreSnooze: ignoreSnooze)?.message
+    static func getAlarmActivationReason(
+        ignoreSnooze: Bool = false,
+        ignoreTransientLocalAudioSuppression: Bool = false
+    ) -> String? {
+        getAlarmActivation(
+            ignoreSnooze: ignoreSnooze,
+            ignoreTransientLocalAudioSuppression: ignoreTransientLocalAudioSuppression
+        )?.message
     }
 
-    static func getAlarmActivation(ignoreSnooze: Bool = false) -> AlarmActivation? {
+    static func getAlarmActivation(
+        ignoreSnooze: Bool = false,
+        ignoreTransientLocalAudioSuppression: Bool = false
+    ) -> AlarmActivation? {
         if areAlertsGenerallyDisabled.value {
             return nil
         }
         
-        if isSnoozed() && !ignoreSnooze {
+        if isSnoozed(ignoreTransientLocalAudioSuppression: ignoreTransientLocalAudioSuppression) && !ignoreSnooze {
             return nil
         }
         
@@ -340,15 +349,15 @@ class AlarmRule {
     }
     
     /*
-     * This is used to snooze just a few seconds on startup in order to retrieve
-     * new values. Otherwise the alarm would play at once which makes no sense on startup.
+     * Temporarily suppresses local in-app audio while the visible app settles.
+     * Background notifications intentionally ignore this state.
      */
-    static func snoozeForStartup(seconds : Int) {
-        startupSnoozedUntil = Date().timeIntervalSince1970 + Double(seconds)
+    static func suppressTransientLocalAudio(seconds : Int) {
+        transientLocalAudioSuppressedUntil = Date().timeIntervalSince1970 + Double(seconds)
     }
 
-    static func disableStartupSnooze() {
-        startupSnoozedUntil = 0
+    static func disableTransientLocalAudioSuppression() {
+        transientLocalAudioSuppressedUntil = 0
     }
     
     /*
@@ -370,16 +379,16 @@ class AlarmRule {
     /*
      * Returns true if the alarms are currently snoozed.
      */
-    static func isSnoozed(ignoreStartupSnooze: Bool = false) -> Bool {
+    static func isSnoozed(ignoreTransientLocalAudioSuppression: Bool = false) -> Bool {
         let currentTimestamp = Date().timeIntervalSince1970
         let isUserSnoozed = currentTimestamp < snoozedUntilTimestamp.value
         
-        if ignoreStartupSnooze {
+        if ignoreTransientLocalAudioSuppression {
             return isUserSnoozed
         }
         
-        let isStartupSnoozed = currentTimestamp < startupSnoozedUntil
-        return isUserSnoozed || isStartupSnoozed
+        let isTransientLocalAudioSuppressed = currentTimestamp < transientLocalAudioSuppressedUntil
+        return isUserSnoozed || isTransientLocalAudioSuppressed
     }
     
     /*

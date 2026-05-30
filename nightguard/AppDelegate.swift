@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     let appProcessingTaskId = "de.my-wan.dhe.nightguard.background"
+    private var hasEnteredBackground = false
     
     /// Global orientation lock - allow controlling allowed orientations from anywhere
     static var orientationLock = UIInterfaceOrientationMask.portrait
@@ -111,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         UserDefaultsRepository.initializeSyncValues()
         AlarmRule.initializeSyncValues()
-        applyStartupAlarmSnoozeIfNeeded(application: application, launchOptions: launchOptions)
+        applyInitialLocalAudioSuppressionIfNeeded(application: application, launchOptions: launchOptions)
 
         // Initialize the stored UserDefaultsData
         TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
@@ -305,10 +306,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Schedule Background Updates:
         self.scheduleBackgroundProcessing()
+        hasEnteredBackground = true
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        guard hasEnteredBackground else {
+            return
+        }
+
+        hasEnteredBackground = false
+        applyTransientLocalAudioSuppressionIfNeeded()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -324,19 +332,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return AppDelegate.orientationLock
     }
 
-    private func applyStartupAlarmSnoozeIfNeeded(application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        guard shouldApplyStartupAlarmSnooze(application: application, launchOptions: launchOptions) else {
+    private func applyInitialLocalAudioSuppressionIfNeeded(application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        guard shouldApplyInitialLocalAudioSuppression(application: application, launchOptions: launchOptions) else {
             return
         }
 
-        guard !AlarmRule.isSnoozed() else {
-            return
-        }
-
-        AlarmRule.snoozeForStartup(seconds: 10)
+        applyTransientLocalAudioSuppressionIfNeeded()
     }
 
-    static func shouldApplyStartupAlarmSnooze(
+    private func applyTransientLocalAudioSuppressionIfNeeded() {
+        guard !AlarmRule.isSnoozed(ignoreTransientLocalAudioSuppression: true) else {
+            return
+        }
+
+        AlarmRule.suppressTransientLocalAudio(seconds: 10)
+        AlarmSound.stop()
+    }
+
+    static func shouldApplyInitialLocalAudioSuppression(
         applicationState: UIApplication.State,
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
@@ -346,11 +359,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    private func shouldApplyStartupAlarmSnooze(
+    private func shouldApplyInitialLocalAudioSuppression(
         application: UIApplication,
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        Self.shouldApplyStartupAlarmSnooze(
+        Self.shouldApplyInitialLocalAudioSuppression(
             applicationState: application.applicationState,
             launchOptions: launchOptions
         )

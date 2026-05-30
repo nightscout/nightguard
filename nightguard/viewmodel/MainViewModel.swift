@@ -395,9 +395,9 @@ class MainViewModel: ObservableObject, Identifiable {
                     }
                     WatchService.singleton.sendToWatchCurrentNightwatchData()
                     
-                    // As soon as we have new data, we can disable the startup snooze
+                    // As soon as we have new data, we can disable the transient local audio suppression
                     // and evaluate the alarm state
-                    AlarmRule.disableStartupSnooze()
+                    AlarmRule.disableTransientLocalAudioSuppression()
                     evaluateAlarmActivationState()
                     #endif
 

@@ -13,11 +13,13 @@ class AlarmRuleTest: XCTestCase {
     override func setUp() {
         super.setUp()
         clearAlarmSettings()
+        AlarmRule.disableTransientLocalAudioSuppression()
         AlarmRule.resetProtectedDataFallbackStateForTesting()
     }
 
     override func tearDown() {
         clearAlarmSettings()
+        AlarmRule.disableTransientLocalAudioSuppression()
         AlarmRule.resetProtectedDataFallbackStateForTesting()
         super.tearDown()
     }
@@ -56,6 +58,21 @@ class AlarmRuleTest: XCTestCase {
         let activation = AlarmRule.determineAlarmActivationBy(makeNightscoutData(minutesAgo: 35))
 
         XCTAssertEqual(activation?.kind, .missedReadings)
+    }
+
+    func testDetermineAlarmActivationByIgnoresTransientLocalAudioSuppression() {
+        AlarmRule.suppressTransientLocalAudio(seconds: 10)
+
+        let activation = AlarmRule.determineAlarmActivationBy(makeNightscoutData(minutesAgo: 35))
+
+        XCTAssertEqual(activation?.kind, .missedReadings)
+    }
+
+    func testTransientLocalAudioSuppressionCountsAsLocalSnoozeOnly() {
+        AlarmRule.suppressTransientLocalAudio(seconds: 10)
+
+        XCTAssertTrue(AlarmRule.isSnoozed())
+        XCTAssertFalse(AlarmRule.isSnoozed(ignoreTransientLocalAudioSuppression: true))
     }
 
     private func makeNightscoutData(minutesAgo: Int) -> NightscoutData {

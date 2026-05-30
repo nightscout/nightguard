@@ -59,7 +59,9 @@ class AlarmNotificationService: ObservableObject {
         }
         
         // 2. alarm should be active
-        guard let alarmActivationReason = AlarmRule.getAlarmActivationReason() else {
+        guard let alarmActivationReason = AlarmRule.getAlarmActivationReason(
+            ignoreTransientLocalAudioSuppression: true
+        ) else {
             return
         }
 
