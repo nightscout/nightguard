@@ -13,6 +13,16 @@ import ActivityKit
 
 class LiveActivityManager {
     static let shared = LiveActivityManager()
+
+    struct UpdateResult {
+        let activityCount: Int
+        let updatedActivityCount: Int
+        let message: String
+
+        var didUpdateAnyActivity: Bool {
+            updatedActivityCount > 0
+        }
+    }
     
     private init() {}
     
@@ -33,21 +43,13 @@ class LiveActivityManager {
             return
         }
         
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-        sgvColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
-        let contentState = NightguardActivityAttributes.ContentState(
+        let contentState = makeContentState(
             sgv: sgv,
             delta: delta,
             trendArrow: trendArrow,
             date: date,
             bgDelta: bgDelta,
-            sgvColorRed: Double(red),
-            sgvColorGreen: Double(green),
-            sgvColorBlue: Double(blue),
+            sgvColor: sgvColor,
             iob: iob,
             cob: cob
         )
@@ -58,7 +60,12 @@ class LiveActivityManager {
             // Update all active activities
             for activity in activities {
                 Task {
-                    await activity.update(using: contentState)
+                    if #available(iOS 16.2, *) {
+                        let content = ActivityContent(state: contentState, staleDate: nil)
+                        await activity.update(content)
+                    } else {
+                        await activity.update(using: contentState)
+                    }
                 }
             }
         } else {
@@ -77,26 +84,73 @@ class LiveActivityManager {
         #endif
     }
 
+    @available(iOS 16.1, *)
+    func updateExistingActivities(with nightscoutData: NightscoutData) async -> UpdateResult {
+        #if canImport(ActivityKit)
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+            return UpdateResult(
+                activityCount: 0,
+                updatedActivityCount: 0,
+                message: "Live Activities are disabled in system settings"
+            )
+        }
+
+        guard PurchaseManager.shared.isProAccessAvailable else {
+            return UpdateResult(
+                activityCount: Activity<NightguardActivityAttributes>.activities.count,
+                updatedActivityCount: 0,
+                message: "Pro access unavailable; skipped background Live Activity update"
+            )
+        }
+
+        let activities = Activity<NightguardActivityAttributes>.activities
+        guard !activities.isEmpty else {
+            return UpdateResult(
+                activityCount: 0,
+                updatedActivityCount: 0,
+                message: "No existing Live Activities found"
+            )
+        }
+
+        let contentState = makeContentState(from: nightscoutData)
+        var updatedActivityCount = 0
+        for activity in activities {
+            if #available(iOS 16.2, *) {
+                let content = ActivityContent(state: contentState, staleDate: nil)
+                await activity.update(content)
+            } else {
+                await activity.update(using: contentState)
+            }
+            updatedActivityCount += 1
+        }
+
+        return UpdateResult(
+            activityCount: activities.count,
+            updatedActivityCount: updatedActivityCount,
+            message: "Updated \(updatedActivityCount) of \(activities.count) Live Activities"
+        )
+        #else
+        return UpdateResult(
+            activityCount: 0,
+            updatedActivityCount: 0,
+            message: "ActivityKit unavailable"
+        )
+        #endif
+    }
+
     func update(with nightscoutData: NightscoutData) {
         #if os(iOS)
-        let sgv = UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)
-        let delta = UnitsConverter.mgdlToDisplayUnitsWithSign("\(nightscoutData.bgdelta)")
-        let trendArrow = nightscoutData.bgdeltaArrow
-        let date = Date(timeIntervalSince1970: Double(nightscoutData.time.int64Value / 1000))
-        let bgDelta = Double(nightscoutData.bgdelta)
-        let sgvColor = UIColorChanger.getBgColor(sgv)
-        let iob = nightscoutData.iob
-        let cob = nightscoutData.cob
+        let displayValues = makeDisplayValues(from: nightscoutData)
 
         startOrUpdateActivity(
-            sgv: sgv,
-            delta: delta,
-            trendArrow: trendArrow,
-            date: date,
-            bgDelta: bgDelta,
-            sgvColor: sgvColor,
-            iob: iob,
-            cob: cob
+            sgv: displayValues.sgv,
+            delta: displayValues.delta,
+            trendArrow: displayValues.trendArrow,
+            date: displayValues.date,
+            bgDelta: displayValues.bgDelta,
+            sgvColor: displayValues.sgvColor,
+            iob: displayValues.iob,
+            cob: displayValues.cob
         )
         #endif
     }
@@ -111,5 +165,76 @@ class LiveActivityManager {
             }
         }
         #endif
+    }
+
+    #if canImport(ActivityKit)
+    @available(iOS 16.1, *)
+    private func makeContentState(from nightscoutData: NightscoutData) -> NightguardActivityAttributes.ContentState {
+        let displayValues = makeDisplayValues(from: nightscoutData)
+        return makeContentState(
+            sgv: displayValues.sgv,
+            delta: displayValues.delta,
+            trendArrow: displayValues.trendArrow,
+            date: displayValues.date,
+            bgDelta: displayValues.bgDelta,
+            sgvColor: displayValues.sgvColor,
+            iob: displayValues.iob,
+            cob: displayValues.cob
+        )
+    }
+
+    @available(iOS 16.1, *)
+    private func makeContentState(
+        sgv: String,
+        delta: String,
+        trendArrow: String,
+        date: Date,
+        bgDelta: Double,
+        sgvColor: UIColor,
+        iob: String,
+        cob: String
+    ) -> NightguardActivityAttributes.ContentState {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        sgvColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        return NightguardActivityAttributes.ContentState(
+            sgv: sgv,
+            delta: delta,
+            trendArrow: trendArrow,
+            date: date,
+            bgDelta: bgDelta,
+            sgvColorRed: Double(red),
+            sgvColorGreen: Double(green),
+            sgvColorBlue: Double(blue),
+            iob: iob,
+            cob: cob
+        )
+    }
+    #endif
+
+    private func makeDisplayValues(from nightscoutData: NightscoutData) -> (
+        sgv: String,
+        delta: String,
+        trendArrow: String,
+        date: Date,
+        bgDelta: Double,
+        sgvColor: UIColor,
+        iob: String,
+        cob: String
+    ) {
+        let sgv = UnitsConverter.mgdlToDisplayUnits(nightscoutData.sgv)
+        return (
+            sgv: sgv,
+            delta: UnitsConverter.mgdlToDisplayUnitsWithSign("\(nightscoutData.bgdelta)"),
+            trendArrow: nightscoutData.bgdeltaArrow,
+            date: Date(timeIntervalSince1970: Double(nightscoutData.time.int64Value / 1000)),
+            bgDelta: Double(nightscoutData.bgdelta),
+            sgvColor: UIColorChanger.getBgColor(sgv),
+            iob: nightscoutData.iob,
+            cob: nightscoutData.cob
+        )
     }
 }

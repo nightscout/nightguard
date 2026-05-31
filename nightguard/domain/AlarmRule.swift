@@ -276,9 +276,6 @@ class AlarmRule {
     }
 
     fileprivate static func isTooLow(_ bloodGlucose : Float) -> Bool {
-        #if MAIN_APP
-        AppLogger.singleton.debug("AlarmRule.isTooLow: alertIfBelowValue = \(alertIfBelowValue.value)")
-        #endif
         return bloodGlucose < alertIfBelowValue.value
     }
     

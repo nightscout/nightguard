@@ -11,21 +11,35 @@ import Combine
 class AppLogger: ObservableObject {
     static let singleton = AppLogger()
 
-    struct LogEntry: Identifiable {
-        let id = UUID()
+    struct LogEntry: Identifiable, Codable {
+        let id: UUID
         let timestamp: Date
         let message: String
         let level: LogLevel
         let category: LogCategory
 
-        enum LogLevel: String, CaseIterable {
+        init(
+            id: UUID = UUID(),
+            timestamp: Date,
+            message: String,
+            level: LogLevel,
+            category: LogCategory
+        ) {
+            self.id = id
+            self.timestamp = timestamp
+            self.message = message
+            self.level = level
+            self.category = category
+        }
+
+        enum LogLevel: String, CaseIterable, Codable {
             case debug = "DEBUG"
             case info = "INFO"
             case warning = "WARNING"
             case error = "ERROR"
         }
 
-        enum LogCategory: String, CaseIterable {
+        enum LogCategory: String, CaseIterable, Codable {
             case all = "All"
             case backgroundUpdates = "Background Updates"
         }
@@ -35,8 +49,12 @@ class AppLogger: ObservableObject {
 
     private let maxLogs = 500
     private let queue = DispatchQueue(label: "com.nightguard.logger", qos: .utility)
+    private let appGroupId = "group.de.my-wan.dhe.nightguard"
+    private let persistedLogsKey = "AppLogger.persistedLogs"
 
-    private init() {}
+    private init() {
+        logs = loadPersistedLogs()
+    }
 
     func debug(_ message: String, category: LogEntry.LogCategory = .all) {
         log(message, level: .debug, category: category)
@@ -63,6 +81,7 @@ class AppLogger: ObservableObject {
                 if self.logs.count > self.maxLogs {
                     self.logs.removeFirst(self.logs.count - self.maxLogs)
                 }
+                self.persistLogs(self.logs)
             }
         }
 
@@ -75,6 +94,29 @@ class AppLogger: ObservableObject {
     func clearLogs() {
         DispatchQueue.main.async {
             self.logs.removeAll()
+            self.sharedDefaults?.removeObject(forKey: self.persistedLogsKey)
         }
+    }
+
+    private var sharedDefaults: UserDefaults? {
+        UserDefaults(suiteName: appGroupId)
+    }
+
+    private func loadPersistedLogs() -> [LogEntry] {
+        guard let data = sharedDefaults?.data(forKey: persistedLogsKey),
+              let logs = try? JSONDecoder().decode([LogEntry].self, from: data) else {
+            return []
+        }
+
+        return Array(logs.suffix(maxLogs))
+    }
+
+    private func persistLogs(_ logs: [LogEntry]) {
+        let logsToPersist = Array(logs.suffix(maxLogs))
+        guard let data = try? JSONEncoder().encode(logsToPersist) else {
+            return
+        }
+
+        sharedDefaults?.set(data, forKey: persistedLogsKey)
     }
 }

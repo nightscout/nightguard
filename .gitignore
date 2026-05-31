@@ -22,3 +22,4 @@ fastlane/.DS_Store
 fastlane_log.txt
 .env
 .claude
+.antigravitycli/
