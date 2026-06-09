@@ -66,6 +66,11 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
             
             MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)
         }
+
+        WatchMessageService.singleton.onMessage { (message: NightscoutDataMessage) in
+            NightscoutDataRepository.singleton.storeCurrentNightscoutData(message.nightscoutData)
+            MainController.mainViewModel.pushBackgroundData(newNightscoutData: message.nightscoutData)
+        }
         
         // user defaults sync message
         WatchMessageService.singleton.onMessage { (message: UserDefaultSyncMessage) in

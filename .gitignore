@@ -1,25 +1,53 @@
+# macOS / editor noise
 .DS_Store
-nightguard/.DS_Store
-nightguard Complication/.DS_Store
-nightguard WatchKit App/.DS_Store
-nightguard Widget Extension/.DS_Store
+*.swp
+*.swo
+
+# Local secrets and machine-specific config
+.env
+.env.*
+!.env.example
+
+# Local assistant/tool state
+.claude/
+.antigravitycli/
+
+# Xcode user state and build products
 build/
-nightguard.app.dSYM.zip
-nightguard.ipa
-nightguard.xcodeproj/xcshareddata/
-Pods/
-nightguard.xcodeproj/project.xcworkspace/xcshareddata/
-nightguard.xcodeproj/project.xcworkspace/xcuserdata/
+DerivedData/
+*.xcuserstate
+*.xcscmblueprint
+*.moved-aside
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.xcarchive
+*.xcresult
 nightguard.xcodeproj/xcuserdata/
+nightguard.xcodeproj/project.xcworkspace/xcuserdata/
 nightguard.xcworkspace/xcuserdata/
+nightguard.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
+# CocoaPods dependencies are restored by pod install
+Pods/
+
+# Fastlane generated reports and screenshots
 fastlane/Preview.html
 fastlane/report.xml
-fastlane/screenshots/en-US/*.png
-fastlane/screenshots/de-DE/*.png
-fastlane/screenshots/fi/*.png
+fastlane/screenshots/**/*.png
 fastlane/screenshots/screenshots.html
-fastlane/.DS_Store
 fastlane_log.txt
-.env
-.claude
-.antigravitycli/
+
+# Next.js / Firebase backend local artifacts
+backend/.env.local
+backend/.env.*.local
+backend/node_modules/
+backend/.next/
+backend/out/
+backend/.firebase/
+backend/.firebaserc.local
+backend/tsconfig.tsbuildinfo
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+backend/pnpm-debug.log*

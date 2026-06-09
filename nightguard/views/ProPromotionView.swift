@@ -66,6 +66,12 @@ struct ProPromotionView: View {
                         title: NSLocalizedString("Watch Statistics", comment: "Pro Feature 4 Title"),
                         description: NSLocalizedString("See the four main glucose stats directly on your Apple Watch in a compact 2x2 view.", comment: "Pro Feature 4 Description")
                     )
+
+                    FeatureRow(
+                        icon: "bolt.badge.clock.fill",
+                        title: NSLocalizedString("Max Background Updates", comment: "Max Feature Title"),
+                        description: NSLocalizedString("Silent push wakeups improve background refreshes for the app, widgets, Live Activities and complications.", comment: "Max Feature Description")
+                    )
                 }
                 .padding()
                 .background(Color(UIColor.secondarySystemBackground))
@@ -93,11 +99,30 @@ struct ProPromotionView: View {
                             .background(Color.nightguardAccent)
                             .cornerRadius(12)
                         }
+                    } else if !purchaseManager.isMaxAccessAvailable {
+                        Button(action: {
+                            purchaseManager.buyMaxVersion()
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            VStack(spacing: 4) {
+                                Text(NSLocalizedString("Upgrade to Max", comment: "Max Promotion Subscribe Button"))
+                                    .fontWeight(.bold)
+                                if let price = purchaseManager.formattedMaxPrice {
+                                    Text(String(format: NSLocalizedString("%@ / month", comment: "Price per month"), price))
+                                        .font(.caption)
+                                }
+                            }
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.nightguardAccent)
+                            .cornerRadius(12)
+                        }
                     } else {
                         HStack {
                             Image(systemName: "checkmark.seal.fill")
                                 .foregroundColor(.green)
-                            Text(NSLocalizedString("Pro Version Unlocked", comment: "Pro Version Unlocked Text"))
+                            Text(NSLocalizedString("Max Subscription Active", comment: "Max subscription active text"))
                                 .fontWeight(.bold)
                         }
                         .padding()

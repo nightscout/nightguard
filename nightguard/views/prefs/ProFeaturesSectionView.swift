@@ -31,6 +31,19 @@ struct ProFeaturesSectionView: View {
                         .foregroundColor(.green)
                     Text(NSLocalizedString("Pro Version Unlocked", comment: "Pro Version Unlocked Text"))
                 }
+                if purchaseManager.isMaxAccessAvailable {
+                    HStack {
+                        Image(systemName: "bolt.badge.checkmark.fill")
+                            .foregroundColor(.green)
+                        Text(NSLocalizedString("Max Subscription Active", comment: "Max subscription active text"))
+                    }
+                } else {
+                    Button(action: {
+                        purchaseManager.buyMaxVersion()
+                    }) {
+                        Text(NSLocalizedString("Upgrade to Max", comment: "Upgrade to Max Button"))
+                    }
+                }
                 Link(NSLocalizedString("Manage Subscription", comment: "Link to manage subscription"), destination: URL(string: "https://apps.apple.com/account/subscriptions")!)
             } else {
                 Button(action: {

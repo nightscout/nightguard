@@ -79,6 +79,8 @@ The app uses a `.env` file to manage secrets (like the App Store Shared Secret) 
     ```
     SHARED_SECRET=your_actual_secret_from_app_store_connect
     BASE_URI=https://your-nightscout-url.herokuapp.com
+    MAX_BACKEND_BASE_URL=https://your-nightguard-backend.example.com
+    MAX_BACKEND_APP_CHECK_TOKEN=development_only_replace_with_firebase_app_check_token
     ```
 
 3.  **Add to Xcode Project:**

@@ -63,6 +63,20 @@ struct NightguardTimelineProvider: TimelineProvider {
         BackgroundRefreshLogger.info("TimelineProvider is getting Timeline...")
         let oldData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         let oldEntries = NightscoutDataRepository.singleton.loadTodaysBgData()
+
+        if !oldData.isOlderThanXMinutes(15), !oldEntries.isEmpty {
+            BackgroundRefreshLogger.info("TimelineProvider is using recently fetched app-group data...")
+            let bgEntries = oldEntries.map() { bgValue in
+                return BgEntry(
+                    value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
+                    valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
+                    delta: "0",
+                    timestamp: bgValue.timestamp,
+                    arrow: bgValue.arrow)
+            }
+            completion(convertToTimelineEntry(oldData, calculateDeltaValues(Array(bgEntries.suffix(4))), ""))
+            return
+        }
         
         NightscoutService.singleton.readTodaysChartData(oldValues: []) { (result: NightscoutRequestResult<[BloodSugar]>) in
             

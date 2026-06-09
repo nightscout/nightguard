@@ -126,6 +126,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.handelBackgroundProcessing(task as! BGProcessingTask)
         }
 
+        MaxBackgroundPushRegistrationService.shared.configureForCurrentEntitlement()
+
         return true
     }
     
@@ -154,99 +156,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         AppLogger.singleton.debug("BG task started", category: .backgroundUpdates)
 
-        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: true) { result in
-
-            guard let result = result else {
-                AppLogger.singleton.warning("BG task: no result from Nightscout", category: .backgroundUpdates)
-                self.scheduleBackgroundProcessing()
-                completeTask(success: true, reason: "no Nightscout result")
-                return
-            }
-
-            switch result {
-            case .error(let error):
-                AppLogger.singleton.error("BG task failed: \(error)", category: .backgroundUpdates)
-                self.scheduleBackgroundProcessing()
-                completeTask(success: false, reason: "Nightscout error")
-            case .data(let nightscoutData):
-                AppLogger.singleton.debug(
-                    "BG task fetched Nightscout data: SGV=\(nightscoutData.sgv), timestamp=\(nightscoutData.time)",
-                    category: .backgroundUpdates
-                )
-                // The new data has already been stored locally. Use it to determine wheter alerts have to be send:
-                AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
-                WatchService.singleton.sendToWatchCurrentNightwatchData()
-
-                // IMPORTANT: All async work (especially Live Activity updates) must complete
-                // BEFORE completeTask() is called. Previously, the Task{} block was
-                // fire-and-forget, so iOS could terminate the process before
-                // activity.update() had a chance to run. Now completeTask() is called
-                // inside the Task block, after all awaited work is done.
-                Task {
-                    // 1. Update Live Activities – await ensures this completes before proceeding
-                    if #available(iOS 16.1, *) {
-                        AppLogger.singleton.debug("BG task updating existing Live Activities", category: .backgroundUpdates)
-                        let updateResult = await LiveActivityManager.shared.updateExistingActivities(with: nightscoutData)
-                        let logMessage = "BG task Live Activity update result: activities=\(updateResult.activityCount), updated=\(updateResult.updatedActivityCount), message=\(updateResult.message)"
-                        if updateResult.didUpdateAnyActivity {
-                            AppLogger.singleton.info(logMessage, category: .backgroundUpdates)
-                        } else {
-                            AppLogger.singleton.warning(logMessage, category: .backgroundUpdates)
-                        }
-                    } else {
-                        AppLogger.singleton.warning("BG task skipped Live Activity update because iOS 16.1 is unavailable", category: .backgroundUpdates)
-                    }
-
-                    // 2. Reload widget timelines
-                    self.reloadWidgetTimelinesFromBackgroundTask()
-
-                    // 3. Fetch device status – wrap callback in continuation so we can await it
-                    let deviceStatusData: DeviceStatusData = await withCheckedContinuation { continuation in
-                        let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
-                            continuation.resume(returning: deviceStatusData)
-                        }
-                    }
-
-                    AppLogger.singleton.debug(
-                        "BG task received device status: reservoir=\(deviceStatusData.reservoirUnits)",
-                        category: .backgroundUpdates
-                    )
-                    AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
-
-                    // 4. Schedule next task and mark complete – only AFTER all work above is done
-                    self.scheduleBackgroundProcessing()
-                    
-                    // IMPORTANT: Give the system daemon (liveactivitiesd) a brief moment to process
-                    // the IPC message from `activity.update()` before we tell iOS we are done.
-                    // If we call completeTask() immediately, iOS may suspend our process so aggressively
-                    // that the Live Activity update is dropped by the system.
-                    try? await Task.sleep(nanoseconds: 4_000_000_000)
-                    
-                    completeTask(success: true, reason: "Nightscout data processed")
-                }
-            }
+        BackgroundUpdateCoordinator.shared.run(trigger: .bgTask) { result in
+            self.scheduleBackgroundProcessing()
+            completeTask(success: result.success, reason: result.message)
         }
-    }
-
-    private func reloadWidgetTimelinesFromBackgroundTask() {
-        #if canImport(WidgetKit)
-        if #available(iOS 14.0, *) {
-            let widgetKinds = [
-                "org.duckdns.dhe.nightguard.NightguardDefaultWidgets",
-                "org.duckdns.dhe.nightguard.NightguardTimestampWidgets",
-                "org.duckdns.dhe.nightguard.NightguardGaugeWidgets"
-            ]
-
-            for widgetKind in widgetKinds {
-                WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
-                AppLogger.singleton.debug("BG task requested widget timeline reload: \(widgetKind)", category: .backgroundUpdates)
-            }
-        } else {
-            AppLogger.singleton.warning("BG task skipped widget timeline reload because iOS 14 is unavailable", category: .backgroundUpdates)
-        }
-        #else
-        AppLogger.singleton.warning("BG task skipped widget timeline reload because WidgetKit is unavailable", category: .backgroundUpdates)
-        #endif
     }
     
     func scheduleBackgroundProcessing() {
@@ -388,6 +301,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Schedule Background Updates:
         self.scheduleBackgroundProcessing()
         hasEnteredBackground = true
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        MaxBackgroundPushRegistrationService.shared.didRegisterForRemoteNotifications(deviceToken: deviceToken)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        MaxBackgroundPushRegistrationService.shared.didFailToRegisterForRemoteNotifications(error: error)
+    }
+
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        AppLogger.singleton.debug("Received silent APNs background update", category: .backgroundUpdates)
+
+        BackgroundUpdateCoordinator.shared.run(trigger: .silentPush) { result in
+            self.scheduleBackgroundProcessing()
+            if result.success {
+                completionHandler(result.hasNewData ? .newData : .noData)
+            } else {
+                completionHandler(.failed)
+            }
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

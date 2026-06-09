@@ -13,6 +13,7 @@ class PurchaseManager: NSObject, ObservableObject {
     static let shared = PurchaseManager()
     
     let proProductIdentifier = "app.hermanns.nightguard.pro"
+    let maxProductIdentifier = "app.hermanns.nightguard.max"
     
     private var sharedSecret: String {
         guard let filePath = Bundle.main.path(forResource: ".env", ofType: nil) else {
@@ -41,13 +42,22 @@ class PurchaseManager: NSObject, ObservableObject {
     }
     
     @Published var isProAccessAvailable: Bool = false
+    @Published var isMaxAccessAvailable: Bool = false
     @Published var products: [SKProduct] = []
     
     var formattedProPrice: String? {
-        guard let product = products.first(where: { $0.productIdentifier == proProductIdentifier }) else {
+        return formattedPrice(for: proProductIdentifier)
+    }
+
+    var formattedMaxPrice: String? {
+        return formattedPrice(for: maxProductIdentifier)
+    }
+
+    private func formattedPrice(for productIdentifier: String) -> String? {
+        guard let product = products.first(where: { $0.productIdentifier == productIdentifier }) else {
             return nil
         }
-        
+
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = product.priceLocale
@@ -61,6 +71,7 @@ class PurchaseManager: NSObject, ObservableObject {
     
     private override init() {
         self.isProAccessAvailable = UserDefaults.standard.bool(forKey: proProductIdentifier)
+        self.isMaxAccessAvailable = UserDefaults.standard.bool(forKey: maxProductIdentifier)
         super.init()
         
         // Ensure initial watch status is in sync with last known state
@@ -76,17 +87,25 @@ class PurchaseManager: NSObject, ObservableObject {
     }
     
     func fetchProducts() {
-        let request = SKProductsRequest(productIdentifiers: [proProductIdentifier])
+        let request = SKProductsRequest(productIdentifiers: [proProductIdentifier, maxProductIdentifier])
         request.delegate = self
         request.start()
     }
     
     func buyProVersion() {
-        guard let product = products.first(where: { $0.productIdentifier == proProductIdentifier }) else {
+        buy(productIdentifier: proProductIdentifier)
+    }
+
+    func buyMaxVersion() {
+        buy(productIdentifier: maxProductIdentifier)
+    }
+
+    private func buy(productIdentifier: String) {
+        guard let product = products.first(where: { $0.productIdentifier == productIdentifier }) else {
             print("Product not found")
             return
         }
-        
+
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
     }
@@ -127,6 +146,20 @@ class PurchaseManager: NSObject, ObservableObject {
             }
         }
     }
+
+    private func updateMaxStatus(active: Bool) {
+        DispatchQueue.main.async {
+            if self.isMaxAccessAvailable != active {
+                self.isMaxAccessAvailable = active
+                UserDefaults.standard.set(active, forKey: self.maxProductIdentifier)
+                NotificationCenter.default.post(name: NSNotification.Name("MaxAccessStatusChanged"), object: nil)
+            }
+
+            #if os(iOS) && MAIN_APP
+            MaxBackgroundPushRegistrationService.shared.configureForCurrentEntitlement()
+            #endif
+        }
+    }
     
     private func rescheduleAllAgeNotifications() {
         let cannulaDate = NightscoutCacheService.singleton.getCannulaChangeTime()
@@ -145,6 +178,7 @@ class PurchaseManager: NSObject, ObservableObject {
               FileManager.default.fileExists(atPath: appStoreReceiptURL.path) else {
             print("No receipt found")
             updateProStatus(active: false)
+            updateMaxStatus(active: false)
             return
         }
         
@@ -157,6 +191,7 @@ class PurchaseManager: NSObject, ObservableObject {
         } catch {
             print("Couldn't read receipt data with error: " + error.localizedDescription)
             updateProStatus(active: false)
+            updateMaxStatus(active: false)
         }
     }
     
@@ -165,7 +200,7 @@ class PurchaseManager: NSObject, ObservableObject {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let requestDictionary = ["receipt-data": receiptString, "password": sharedSecret]
+            let requestDictionary = ["receipt-data": receiptString, "password": sharedSecret]
         
         guard let requestData = try? JSONSerialization.data(withJSONObject: requestDictionary) else { return }
         request.httpBody = requestData
@@ -194,6 +229,7 @@ class PurchaseManager: NSObject, ObservableObject {
                 } else {
                     print("Receipt verification failed with status: \(status)")
                     self.updateProStatus(active: false)
+                    self.updateMaxStatus(active: false)
                 }
             }
         }
@@ -204,35 +240,66 @@ class PurchaseManager: NSObject, ObservableObject {
         guard let latestReceiptInfo = json["latest_receipt_info"] as? [[String: Any]] else {
             // No subscription info found
             updateProStatus(active: false)
+            updateMaxStatus(active: false)
             return
         }
         
-        // Find the subscription for our product ID
+        updateProStatus(active: isSubscriptionActive(productIdentifier: proProductIdentifier, latestReceiptInfo: latestReceiptInfo))
+        updateMaxStatus(active: isSubscriptionActive(productIdentifier: maxProductIdentifier, latestReceiptInfo: latestReceiptInfo))
+    }
+
+    private func isSubscriptionActive(productIdentifier: String, latestReceiptInfo: [[String: Any]]) -> Bool {
         let subscriptionInfo = latestReceiptInfo.filter {
-            ($0["product_id"] as? String) == proProductIdentifier
+            ($0["product_id"] as? String) == productIdentifier
         }.sorted {
             // Sort by expiry date (newest first)
             guard let d1 = $0["expires_date_ms"] as? String, let t1 = Double(d1),
                   let d2 = $1["expires_date_ms"] as? String, let t2 = Double(d2) else { return false }
             return t1 > t2
         }.first
-        
+
         if let currentSubscription = subscriptionInfo,
            let expiresDateMs = currentSubscription["expires_date_ms"] as? String,
            let expiresDateDouble = Double(expiresDateMs) {
-            
+
             let expiresDate = Date(timeIntervalSince1970: expiresDateDouble / 1000.0)
-            
-            // Check if active
-            if expiresDate > Date() {
-                print("Subscription active. Expires: \(expiresDate)")
-                updateProStatus(active: true)
-            } else {
-                print("Subscription expired on: \(expiresDate)")
-                updateProStatus(active: false)
+            print("Subscription \(productIdentifier) expires: \(expiresDate)")
+            return expiresDate > Date()
+        }
+
+        return false
+    }
+
+    func currentMaxTransactionJWS() async throws -> String {
+        #if os(iOS) && MAIN_APP
+        if #available(iOS 15.0, *) {
+            for await verificationResult in Transaction.currentEntitlements {
+                guard case .verified(let transaction) = verificationResult,
+                      transaction.productID == maxProductIdentifier,
+                      transaction.revocationDate == nil else {
+                    continue
+                }
+
+                if let expirationDate = transaction.expirationDate, expirationDate <= Date() {
+                    continue
+                }
+
+                guard let jws = String(data: transaction.jsonRepresentation, encoding: .utf8) else {
+                    continue
+                }
+                return jws
             }
-        } else {
-            updateProStatus(active: false)
+        }
+        #endif
+
+        throw MaxTransactionError.unavailable
+    }
+
+    enum MaxTransactionError: LocalizedError {
+        case unavailable
+
+        var errorDescription: String? {
+            return "No active Max StoreKit transaction is available"
         }
     }
 }
