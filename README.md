@@ -66,7 +66,7 @@ Now you should be able to launch the app in the simulator. Happy Coding!
 
 ## Environment Configuration
 
-The app uses a `.env` file to manage secrets (like the App Store Shared Secret) without committing them to the repository.
+The app uses a `.env` file to manage local build configuration without committing it to the repository. The App Store Shared Secret is still used for legacy receipt validation.
 
 1.  **Create your `.env` file:**
     Copy the example file to create your local configuration:
@@ -79,9 +79,11 @@ The app uses a `.env` file to manage secrets (like the App Store Shared Secret) 
     ```
     SHARED_SECRET=your_actual_secret_from_app_store_connect
     BASE_URI=https://your-nightscout-url.herokuapp.com
-    MAX_BACKEND_BASE_URL=https://your-nightguard-backend.example.com
+    MAX_BACKEND_BASE_URL=https://nightguard-backend--nightguard-app.europe-west4.hosted.app
     MAX_BACKEND_APP_CHECK_TOKEN=development_only_replace_with_firebase_app_check_token
     ```
+
+    Production Max device registration uses Firebase App Check. Add the Firebase iOS SDK packages `FirebaseCore` and `FirebaseAppCheck`, and include the app's `GoogleService-Info.plist` in the `nightguard` app target.
 
 3.  **Add to Xcode Project:**
     **Crucial:** You must manually add the `.env` file to the Xcode project for it to be accessible at runtime.

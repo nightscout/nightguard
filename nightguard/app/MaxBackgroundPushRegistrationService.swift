@@ -81,6 +81,7 @@ final class MaxBackgroundPushRegistrationService {
 
     private func sendRegistration(deviceToken: String, transactionJWS: String, backendBaseURL: String) async throws {
         var request = try makeRequest(path: "/api/devices/register", backendBaseURL: backendBaseURL)
+        await applyAppCheckHeader(to: &request)
         let environment = Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? "sandbox" : "production"
         request.httpBody = try JSONEncoder().encode(DeviceRegistrationRequest(
             deviceToken: deviceToken,
@@ -94,6 +95,7 @@ final class MaxBackgroundPushRegistrationService {
 
     private func sendUnregistration(deviceToken: String, backendBaseURL: String) async throws {
         var request = try makeRequest(path: "/api/devices/unregister", backendBaseURL: backendBaseURL)
+        await applyAppCheckHeader(to: &request)
         request.httpBody = try JSONEncoder().encode(DeviceUnregistrationRequest(deviceToken: deviceToken))
         let response = try await perform(request: request)
         try validate(response: response)
@@ -108,11 +110,18 @@ final class MaxBackgroundPushRegistrationService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
+        return request
+    }
+
+    private func applyAppCheckHeader(to request: inout URLRequest) async {
+        if let token = await MaxBackendAppCheckService.shared.token(), !token.isEmpty {
+            request.setValue(token, forHTTPHeaderField: "X-Firebase-AppCheck")
+            return
+        }
+
         if let appCheckToken = NightguardEnvironment.value(for: appCheckTokenKey), !appCheckToken.isEmpty {
             request.setValue(appCheckToken, forHTTPHeaderField: "X-Firebase-AppCheck")
         }
-
-        return request
     }
 
     private func validate(response: URLResponse) throws {

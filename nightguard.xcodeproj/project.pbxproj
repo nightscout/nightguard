@@ -49,6 +49,7 @@
 		430EB4F02F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
 		430EB4F12F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
 		430EB4F22F1D131C00CAF155 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4EF2F1D131C00CAF155 /* .env */; };
+		430EB4F32F1D4BB800CAF155 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 430EB4F42F1D4BB800CAF155 /* GoogleService-Info.plist */; };
 		430EB4F32F1D4BB900CAF155 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
 		430EB4F42F1D4BED00CAF155 /* SharedUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */; };
 		430EB4F52F1D4C1700CAF155 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
@@ -64,6 +65,7 @@
 		430EB5022F215F9D00CAF155 /* CarPlaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5012F215F9D00CAF155 /* CarPlaySceneDelegate.swift */; };
 		430EB5042F5A000100CAF155 /* BackgroundUpdateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5032F5A000100CAF155 /* BackgroundUpdateCoordinator.swift */; };
 		430EB5062F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5052F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift */; };
+		430EB5082F5A000300CAF155 /* MaxBackendAppCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5072F5A000300CAF155 /* MaxBackendAppCheckService.swift */; };
 		430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */; };
 		43119B811C382A0E00DD6D35 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F411C2F435A00DB8B58 /* AppConstants.swift */; };
 		43119B831C382BBB00DD6D35 /* UserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43794F4E1C343B9800DB8B58 /* UserDefaultsRepository.swift */; };
@@ -380,6 +382,7 @@
 		A1B2C3D01E5F6A7B8C9D0E4 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D01E5F6A7B8C9D0E2 /* AppLogger.swift */; };
 		A6D112AB02A31088FCA84B99 /* LiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE0D2349E86D60E1E59494 /* LiveActivityAttributes.swift */; };
 		B6D90230DCDA3649074F6A5C /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B429E994A0A3E27C5DBF08EB /* LiveActivityManager.swift */; };
+		BDE83C1A40D5ED56B77C7800 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A89FEED7C7CD16357E39AC06 /* FirebaseCore */; };
 		D112DD3421E9E2E000ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3521E9E2E700ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
 		D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D112DD3321E9E2DF00ECFB5E /* TimerExtension.swift */; };
@@ -478,6 +481,7 @@
 		D1F94ED0223FFEFF00BB0A4D /* A1cView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F94ECF223FFEFF00BB0A4D /* A1cView.swift */; };
 		D1F94ED2223FFF3900BB0A4D /* ReadingsStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F94ED1223FFF3900BB0A4D /* ReadingsStatsView.swift */; };
 		D1F94ED4223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F94ED3223FFF6C00BB0A4D /* StatsPeriodSelectorView.swift */; };
+		E2CB91B28FC389897FA7CDA6 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 3561B4453934131042BA26B0 /* FirebaseAppCheck */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -577,11 +581,13 @@
 		4303406824C9FF330088AB9A /* DeviceStatusData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStatusData.swift; sourceTree = "<group>"; };
 		430A5F4E2495689300213F92 /* DeepPressGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepPressGestureRecognizer.swift; sourceTree = "<group>"; };
 		430EB4EF2F1D131C00CAF155 /* .env */ = {isa = PBXFileReference; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
+		430EB4F42F1D4BB800CAF155 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		430EB4FC2F1FFD4600CAF155 /* AppTourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTourView.swift; sourceTree = "<group>"; };
 		430EB4FF2F215F9D00CAF155 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = nightguard/SceneDelegate.swift; sourceTree = SOURCE_ROOT; };
 		430EB5012F215F9D00CAF155 /* CarPlaySceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarPlaySceneDelegate.swift; path = nightguard/CarPlaySceneDelegate.swift; sourceTree = SOURCE_ROOT; };
 		430EB5032F5A000100CAF155 /* BackgroundUpdateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundUpdateCoordinator.swift; sourceTree = "<group>"; };
 		430EB5052F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxBackgroundPushRegistrationService.swift; sourceTree = "<group>"; };
+		430EB5072F5A000300CAF155 /* MaxBackendAppCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxBackendAppCheckService.swift; sourceTree = "<group>"; };
 		430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
 		4313C8DF2EEA1676004D8E1A /* NightguardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightguardApp.swift; sourceTree = "<group>"; };
@@ -765,6 +771,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				436D73B627C82A5E00639B15 /* HealthKit.framework in Frameworks */,
+				BDE83C1A40D5ED56B77C7800 /* FirebaseCore in Frameworks */,
+				E2CB91B28FC389897FA7CDA6 /* FirebaseAppCheck in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -866,6 +874,7 @@
 			isa = PBXGroup;
 			children = (
 				430EB4EF2F1D131C00CAF155 /* .env */,
+				430EB4F42F1D4BB800CAF155 /* GoogleService-Info.plist */,
 				439BDA8E2B22520E004932EB /* external */,
 				439BDA8C2B2251D7004932EB /* repository */,
 				439BDA8B2B225176004932EB /* app */,
@@ -1030,6 +1039,7 @@
 				B429E994A0A3E27C5DBF08EB /* LiveActivityManager.swift */,
 				430EB5032F5A000100CAF155 /* BackgroundUpdateCoordinator.swift */,
 				430EB5052F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift */,
+				430EB5072F5A000300CAF155 /* MaxBackendAppCheckService.swift */,
 			);
 			path = app;
 			sourceTree = "<group>";
@@ -1278,6 +1288,10 @@
 				438DAC8A28D2356A00FBF520 /* PBXTargetDependency */,
 			);
 			name = nightguard;
+			packageProductDependencies = (
+				A89FEED7C7CD16357E39AC06 /* FirebaseCore */,
+				3561B4453934131042BA26B0 /* FirebaseAppCheck */,
+			);
 			productName = scoutwatch;
 			productReference = 43647BCA1BFF6435004389F9 /* nightguard.app */;
 			productType = "com.apple.product-type.application";
@@ -1385,12 +1399,16 @@
 					43647BC91BFF6435004389F9 = {
 						CreatedOnToolsVersion = 7.1.1;
 						LastSwiftMigration = 1130;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
 							com.apple.BackgroundModes = {
 								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
 							};
 						};
 					};
@@ -1433,6 +1451,9 @@
 				de,
 			);
 			mainGroup = 43647BC11BFF6435004389F9;
+			packageReferences = (
+				94F4A6F17166DA3F072FD159 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 43647BCB1BFF6435004389F9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1456,6 +1477,7 @@
 				43F1E1061D07698000C329A2 /* Media.xcassets in Resources */,
 				43F1E0FE1D07698000C329A2 /* alarm.mp3 in Resources */,
 				430EB4F22F1D131C00CAF155 /* .env in Resources */,
+				430EB4F32F1D4BB800CAF155 /* GoogleService-Info.plist in Resources */,
 				28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */,
 				D1DA7C1B21B97EC800B39675 /* alarm-notification.m4a in Resources */,
 			);
@@ -1627,6 +1649,7 @@
 				430EB5022F215F9D00CAF155 /* CarPlaySceneDelegate.swift in Sources */,
 				430EB5042F5A000100CAF155 /* BackgroundUpdateCoordinator.swift in Sources */,
 				430EB5062F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift in Sources */,
+				430EB5082F5A000300CAF155 /* MaxBackendAppCheckService.swift in Sources */,
 				D16C8EDB221068F000192117 /* VolumeChangeDetector.swift in Sources */,
 				A6D112AB02A31088FCA84B99 /* LiveActivityAttributes.swift in Sources */,
 				B6D90230DCDA3649074F6A5C /* LiveActivityManager.swift in Sources */,
@@ -2196,14 +2219,14 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 994;
+				CURRENT_PROJECT_VERSION = 998;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2226,14 +2249,14 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 994;
+				CURRENT_PROJECT_VERSION = 998;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2253,7 +2276,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 994;
+				CURRENT_PROJECT_VERSION = 998;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -2263,7 +2286,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2282,7 +2305,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 994;
+				CURRENT_PROJECT_VERSION = 998;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
@@ -2291,7 +2314,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2395,7 +2418,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 994;
+				CURRENT_PROJECT_VERSION = 998;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2407,7 +2430,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.widgetextension";
@@ -2435,7 +2458,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 994;
+				CURRENT_PROJECT_VERSION = 998;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2447,7 +2470,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.widgetextension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2472,7 +2495,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 994;
+				CURRENT_PROJECT_VERSION = 998;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2484,7 +2507,7 @@
 					"@executable_path/../../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.complication2";
@@ -2514,7 +2537,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 994;
+				CURRENT_PROJECT_VERSION = 998;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2526,7 +2549,7 @@
 					"@executable_path/../../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 4.1.0;
+				MARKETING_VERSION = 4.2.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.complication2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2607,6 +2630,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		94F4A6F17166DA3F072FD159 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3561B4453934131042BA26B0 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94F4A6F17166DA3F072FD159 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		A89FEED7C7CD16357E39AC06 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94F4A6F17166DA3F072FD159 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 43647BC21BFF6435004389F9 /* Project object */;
 }

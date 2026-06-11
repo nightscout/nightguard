@@ -14,6 +14,10 @@ import SwiftUI
 #if canImport(WidgetKit)
 import WidgetKit
 #endif
+#if canImport(FirebaseCore) && canImport(FirebaseAppCheck)
+import FirebaseCore
+import FirebaseAppCheck
+#endif
 
 extension Notification.Name {
     static let showProPromotionRequest = Notification.Name("ShowProPromotionRequest")
@@ -79,6 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             configureAppForTesting()
         }
 
+        configureFirebaseIfAvailable()
+
         // Override point for customization after application launch.
         UITabBar.appearance().tintColor = UIColor.white
 
@@ -98,6 +104,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         activateWatchConnectivity()
         return true
+    }
+
+    private func configureFirebaseIfAvailable() {
+        #if canImport(FirebaseCore) && canImport(FirebaseAppCheck)
+        guard FirebaseApp.app() == nil else { return }
+        guard Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil else {
+            AppLogger.singleton.warning("GoogleService-Info.plist missing; Firebase App Check is disabled", category: .backgroundUpdates)
+            return
+        }
+
+        AppCheck.setAppCheckProviderFactory(NightguardAppCheckProviderFactory())
+        FirebaseApp.configure()
+        #endif
     }
 
     func configureAppForTesting() -> Void {
@@ -388,6 +407,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         )
     }
 }
+
+#if canImport(FirebaseCore) && canImport(FirebaseAppCheck)
+private final class NightguardAppCheckProviderFactory: NSObject, AppCheckProviderFactory {
+    func createProvider(with app: FirebaseApp) -> AppCheckProvider? {
+        if #available(iOS 14.0, *) {
+            return AppAttestProvider(app: app) ?? DeviceCheckProviderFactory().createProvider(with: app)
+        }
+
+        return DeviceCheckProviderFactory().createProvider(with: app)
+    }
+}
+#endif
 
 private extension UIInterfaceOrientationMask {
     init(_ orientation: UIInterfaceOrientation) {
