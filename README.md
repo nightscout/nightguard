@@ -79,9 +79,10 @@ The app uses a `.env` file to manage local build configuration without committin
     ```
     SHARED_SECRET=your_actual_secret_from_app_store_connect
     BASE_URI=https://your-nightscout-url.herokuapp.com
-    MAX_BACKEND_BASE_URL=https://nightguard-backend--nightguard-app.europe-west4.hosted.app
     MAX_BACKEND_APP_CHECK_TOKEN=development_only_replace_with_firebase_app_check_token
     ```
+
+    `MAX_BACKEND_BASE_URL` is configured in `nightguard/Info.plist`.
 
     Production Max device registration uses Firebase App Check. Add the Firebase iOS SDK packages `FirebaseCore` and `FirebaseAppCheck`, and include the app's `GoogleService-Info.plist` in the `nightguard` app target.
 
