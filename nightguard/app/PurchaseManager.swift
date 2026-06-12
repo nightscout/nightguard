@@ -284,10 +284,7 @@ class PurchaseManager: NSObject, ObservableObject {
                     continue
                 }
 
-                guard let jws = String(data: transaction.jsonRepresentation, encoding: .utf8) else {
-                    continue
-                }
-                return jws
+                return verificationResult.jwsRepresentation
             }
         }
         #endif

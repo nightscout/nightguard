@@ -13,6 +13,7 @@ final class MaxBackgroundPushRegistrationService {
     private let tokenKey = "maxBackgroundPushDeviceToken"
     private let registrationTokenKey = "maxBackgroundPushRegisteredToken"
     private let backendURLKey = "MAX_BACKEND_BASE_URL"
+    private let defaultBackendBaseURL = "https://nightguard-backend--nightguard-app.europe-west4.hosted.app"
     private let appCheckTokenKey = "MAX_BACKEND_APP_CHECK_TOKEN"
 
     private init() {}
@@ -20,9 +21,11 @@ final class MaxBackgroundPushRegistrationService {
     func configureForCurrentEntitlement() {
         DispatchQueue.main.async {
             if PurchaseManager.shared.isMaxAccessAvailable {
+                AppLogger.singleton.debug("Max entitlement active; starting silent APNs device registration flow", category: .backgroundUpdates)
                 UIApplication.shared.registerForRemoteNotifications()
                 self.registerStoredTokenIfPossible()
             } else {
+                AppLogger.singleton.debug("Max entitlement inactive; starting silent APNs device unregistration flow", category: .backgroundUpdates)
                 self.unregisterStoredTokenIfNeeded()
             }
         }
@@ -31,6 +34,7 @@ final class MaxBackgroundPushRegistrationService {
     func didRegisterForRemoteNotifications(deviceToken: Data) {
         let token = deviceToken.map { String(format: "%02x", $0) }.joined()
         UserDefaults.standard.set(token, forKey: tokenKey)
+        AppLogger.singleton.info("APNs returned device token for Max registration: token=\(maskedToken(token))", category: .backgroundUpdates)
         registerStoredTokenIfPossible()
     }
 
@@ -39,66 +43,77 @@ final class MaxBackgroundPushRegistrationService {
     }
 
     private func registerStoredTokenIfPossible() {
-        guard PurchaseManager.shared.isMaxAccessAvailable else { return }
-        guard let deviceToken = UserDefaults.standard.string(forKey: tokenKey), !deviceToken.isEmpty else { return }
-        guard let backendBaseURL = NightguardEnvironment.value(for: backendURLKey), !backendBaseURL.isEmpty else {
-            AppLogger.singleton.warning("MAX_BACKEND_BASE_URL missing; skipping Max device registration", category: .backgroundUpdates)
+        guard PurchaseManager.shared.isMaxAccessAvailable else {
+            AppLogger.singleton.debug("Skipping Max device registration: Max access is unavailable", category: .backgroundUpdates)
             return
         }
 
+        guard let deviceToken = UserDefaults.standard.string(forKey: tokenKey), !deviceToken.isEmpty else {
+            AppLogger.singleton.warning("Skipping Max device registration: no APNs device token stored yet", category: .backgroundUpdates)
+            return
+        }
+
+        let backendBaseURL = resolvedBackendBaseURL()
+
         if UserDefaults.standard.string(forKey: registrationTokenKey) == deviceToken {
+            AppLogger.singleton.info("Skipping Max device registration: APNs token already registered locally token=\(maskedToken(deviceToken))", category: .backgroundUpdates)
             return
         }
 
         Task {
             do {
+                AppLogger.singleton.debug("Preparing Max device registration: backend=\(backendDescription(backendBaseURL)), bundleId=\(bundleId), environment=\(storeKitEnvironment), token=\(maskedToken(deviceToken))", category: .backgroundUpdates)
                 let transactionJWS = try await PurchaseManager.shared.currentMaxTransactionJWS()
+                AppLogger.singleton.debug("Max StoreKit transaction available; sending device registration", category: .backgroundUpdates)
                 try await sendRegistration(deviceToken: deviceToken, transactionJWS: transactionJWS, backendBaseURL: backendBaseURL)
                 UserDefaults.standard.set(deviceToken, forKey: registrationTokenKey)
-                AppLogger.singleton.info("Registered Max device for silent APNs", category: .backgroundUpdates)
+                AppLogger.singleton.info("Registered Max device for silent APNs: token=\(maskedToken(deviceToken))", category: .backgroundUpdates)
             } catch {
-                AppLogger.singleton.error("Max device registration failed: \(error.localizedDescription)", category: .backgroundUpdates)
+                AppLogger.singleton.error("Max device registration failed for token=\(maskedToken(deviceToken)): \(error.localizedDescription)", category: .backgroundUpdates)
             }
         }
     }
 
     private func unregisterStoredTokenIfNeeded() {
-        guard let registeredToken = UserDefaults.standard.string(forKey: registrationTokenKey), !registeredToken.isEmpty else { return }
-        guard let backendBaseURL = NightguardEnvironment.value(for: backendURLKey), !backendBaseURL.isEmpty else {
-            UserDefaults.standard.removeObject(forKey: registrationTokenKey)
+        guard let registeredToken = UserDefaults.standard.string(forKey: registrationTokenKey), !registeredToken.isEmpty else {
+            AppLogger.singleton.debug("Skipping Max device unregistration: no locally registered APNs token exists", category: .backgroundUpdates)
             return
         }
 
+        let backendBaseURL = resolvedBackendBaseURL()
+
         Task {
             do {
+                AppLogger.singleton.debug("Sending Max device unregistration: backend=\(backendDescription(backendBaseURL)), token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
                 try await sendUnregistration(deviceToken: registeredToken, backendBaseURL: backendBaseURL)
+                AppLogger.singleton.info("Unregistered Max device for silent APNs: token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
             } catch {
-                AppLogger.singleton.warning("Max device unregistration failed: \(error.localizedDescription)", category: .backgroundUpdates)
+                AppLogger.singleton.warning("Max device unregistration failed for token=\(maskedToken(registeredToken)): \(error.localizedDescription)", category: .backgroundUpdates)
             }
             UserDefaults.standard.removeObject(forKey: registrationTokenKey)
+            AppLogger.singleton.debug("Removed local Max registration marker for token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
         }
     }
 
     private func sendRegistration(deviceToken: String, transactionJWS: String, backendBaseURL: String) async throws {
         var request = try makeRequest(path: "/api/devices/register", backendBaseURL: backendBaseURL)
         await applyAppCheckHeader(to: &request)
-        let environment = Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? "sandbox" : "production"
         request.httpBody = try JSONEncoder().encode(DeviceRegistrationRequest(
             deviceToken: deviceToken,
             transactionJWS: transactionJWS,
-            bundleId: Bundle.main.bundleIdentifier ?? "de.my-wan.dhe.nightguard",
-            environment: environment
+            bundleId: bundleId,
+            environment: storeKitEnvironment
         ))
-        let response = try await perform(request: request)
-        try validate(response: response)
+        let (data, response) = try await perform(request: request)
+        try validate(response: response, data: data)
     }
 
     private func sendUnregistration(deviceToken: String, backendBaseURL: String) async throws {
         var request = try makeRequest(path: "/api/devices/unregister", backendBaseURL: backendBaseURL)
         await applyAppCheckHeader(to: &request)
         request.httpBody = try JSONEncoder().encode(DeviceUnregistrationRequest(deviceToken: deviceToken))
-        let response = try await perform(request: request)
-        try validate(response: response)
+        let (data, response) = try await perform(request: request)
+        try validate(response: response, data: data)
     }
 
     private func makeRequest(path: String, backendBaseURL: String) throws -> URLRequest {
@@ -116,27 +131,31 @@ final class MaxBackgroundPushRegistrationService {
     private func applyAppCheckHeader(to request: inout URLRequest) async {
         if let token = await MaxBackendAppCheckService.shared.token(), !token.isEmpty {
             request.setValue(token, forHTTPHeaderField: "X-Firebase-AppCheck")
+            AppLogger.singleton.debug("Using Firebase App Check token for Max backend request", category: .backgroundUpdates)
             return
         }
 
         if let appCheckToken = NightguardEnvironment.value(for: appCheckTokenKey), !appCheckToken.isEmpty {
             request.setValue(appCheckToken, forHTTPHeaderField: "X-Firebase-AppCheck")
+            AppLogger.singleton.warning("Using fallback MAX_BACKEND_APP_CHECK_TOKEN for Max backend request", category: .backgroundUpdates)
+        } else {
+            AppLogger.singleton.warning("No Firebase App Check token or fallback token available for Max backend request", category: .backgroundUpdates)
         }
     }
 
-    private func validate(response: URLResponse) throws {
+    private func validate(response: URLResponse, data: Data) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw RegistrationError.invalidResponse
         }
 
         guard (200..<300).contains(httpResponse.statusCode) else {
-            throw RegistrationError.serverStatus(httpResponse.statusCode)
+            throw RegistrationError.serverStatus(httpResponse.statusCode, responseBodyDescription(data))
         }
     }
 
-    private func perform(request: URLRequest) async throws -> URLResponse {
+    private func perform(request: URLRequest) async throws -> (Data, URLResponse) {
         try await withCheckedThrowingContinuation { continuation in
-            let task = URLSession.shared.dataTask(with: request) { _, response, error in
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                     return
@@ -147,7 +166,7 @@ final class MaxBackgroundPushRegistrationService {
                     return
                 }
 
-                continuation.resume(returning: response)
+                continuation.resume(returning: (data ?? Data(), response))
             }
             task.resume()
         }
@@ -164,10 +183,54 @@ final class MaxBackgroundPushRegistrationService {
         let deviceToken: String
     }
 
+    private var bundleId: String {
+        Bundle.main.bundleIdentifier ?? "de.my-wan.dhe.nightguard"
+    }
+
+    private var storeKitEnvironment: String {
+        Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? "sandbox" : "production"
+    }
+
+    private func resolvedBackendBaseURL() -> String {
+        if let configuredBackendBaseURL = NightguardEnvironment.value(for: backendURLKey), !configuredBackendBaseURL.isEmpty {
+            return configuredBackendBaseURL
+        }
+
+        AppLogger.singleton.warning("MAX_BACKEND_BASE_URL missing; using default Max backend", category: .backgroundUpdates)
+        return defaultBackendBaseURL
+    }
+
+    private func maskedToken(_ token: String) -> String {
+        guard !token.isEmpty else { return "<empty>" }
+        let suffixLength = min(8, token.count)
+        return "...\(token.suffix(suffixLength))"
+    }
+
+    private func backendDescription(_ backendBaseURL: String) -> String {
+        guard let url = URL(string: backendBaseURL.trimmingCharacters(in: CharacterSet(charactersIn: "/"))) else {
+            return "<invalid url>"
+        }
+
+        let host = url.host ?? "<missing host>"
+        let path = url.path.isEmpty ? "" : url.path
+        return "\(host)\(path)"
+    }
+
+    private func responseBodyDescription(_ data: Data) -> String {
+        guard !data.isEmpty else { return "empty response body" }
+
+        let responseBody = String(decoding: data, as: UTF8.self)
+            .replacingOccurrences(of: "\n", with: " ")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !responseBody.isEmpty else { return "non-text response body" }
+
+        return String(responseBody.prefix(300))
+    }
+
     private enum RegistrationError: LocalizedError {
         case invalidBackendURL
         case invalidResponse
-        case serverStatus(Int)
+        case serverStatus(Int, String)
 
         var errorDescription: String? {
             switch self {
@@ -175,8 +238,8 @@ final class MaxBackgroundPushRegistrationService {
                 return "Invalid Max backend URL"
             case .invalidResponse:
                 return "Invalid Max backend response"
-            case .serverStatus(let status):
-                return "Max backend returned HTTP \(status)"
+            case .serverStatus(let status, let body):
+                return "Max backend returned HTTP \(status): \(body)"
             }
         }
     }
