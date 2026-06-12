@@ -699,6 +699,15 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Remind me later" = "Später erinnern";
 "Not now" = "Nicht jetzt";
 "Pro Version Unlocked" = "Pro Version freigeschaltet";
+"Max" = "Max";
+"Pro" = "Pro";
+"Pro unlocks the core premium features. For push-based background updates, choose Max." = "Pro schaltet die wichtigsten Premium-Funktionen frei. Für Push-basierte Hintergrundupdates wähle Max.";
+"Max includes Pro and adds the background update features below." = "Max enthält Pro und ergänzt die folgenden Hintergrundupdate-Funktionen.";
+"Dynamic Island and Live Activity Updates" = "Dynamic Island und Live Activity Updates";
+"Updating Dynamic Island and Live Activities in the background is only possible through push notifications in Max. This is an Apple limitation." = "Updates der Dynamic Island und Live Aktivitäten im Hintergrund sind nur über Push Notifications im Max-Abo möglich. Das ist eine Limitierung von Apple.";
+"Why Max costs more" = "Warum Max mehr kostet";
+"Every Max user receives thousands of push notifications per month. This requires a hosted server backend, which is why the higher price is unfortunately necessary." = "Jeder Max-Benutzer erhält tausende Push Notifications pro Monat. Dafür muss ein Server-Backend gehostet werden, weshalb der höhere Preis leider notwendig ist.";
+"When upgrading from Pro to Max, Apple automatically accounts for your remaining Pro subscription time in the purchase dialog." = "Beim Upgrade von Pro auf Max verrechnet Apple die verbleibende Pro-Laufzeit automatisch im Kaufdialog.";
 
 /* App Tour */
 "Welcome to Nightguard" = "Willkommen bei Nightguard";

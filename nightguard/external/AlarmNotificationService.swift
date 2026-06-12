@@ -145,7 +145,7 @@ class AlarmNotificationService: ObservableObject {
      */
     func notifyIfReservoirCritical(_ reservoirUnits: Int) {
         guard enabled else { return }
-        guard PurchaseManager.shared.isProAccessAvailable else { return }
+        guard PurchaseManager.shared.hasProFeatureAccess else { return }
         guard reservoirUnits > 0 else { return }
         guard reservoirUnits <= UserDefaultsRepository.reservoirUnitsCritical.value else {
             // Remove pending/delivered notification if not critical anymore
@@ -207,7 +207,7 @@ class AlarmNotificationService: ObservableObject {
         }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiersToRemove)
 
-        guard PurchaseManager.shared.isProAccessAvailable else {
+        guard PurchaseManager.shared.hasProFeatureAccess else {
             #if MAIN_APP
             AppLogger.singleton.warning("Pro version not unlocked. Skipping \(identifier) notification.")
             #endif

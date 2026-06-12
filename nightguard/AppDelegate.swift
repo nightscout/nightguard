@@ -282,7 +282,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         WatchMessageService.singleton.onMessage { (_: ShowProPromotionMessage) in
-            guard !PurchaseManager.shared.isProAccessAvailable else {
+            guard !PurchaseManager.shared.hasProFeatureAccess else {
                 return
             }
 

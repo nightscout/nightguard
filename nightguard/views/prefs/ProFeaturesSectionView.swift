@@ -25,11 +25,13 @@ struct ProFeaturesSectionView: View {
                 }
             }
         ) {
-            if purchaseManager.isProAccessAvailable {
+            if purchaseManager.hasProFeatureAccess {
                 HStack {
                     Image(systemName: "checkmark.seal.fill")
                         .foregroundColor(.green)
-                    Text(NSLocalizedString("Pro Version Unlocked", comment: "Pro Version Unlocked Text"))
+                    Text(purchaseManager.isMaxAccessAvailable
+                         ? NSLocalizedString("Pro Features Included", comment: "Pro features included with Max text")
+                         : NSLocalizedString("Pro Version Unlocked", comment: "Pro Version Unlocked Text"))
                 }
                 if purchaseManager.isMaxAccessAvailable {
                     HStack {

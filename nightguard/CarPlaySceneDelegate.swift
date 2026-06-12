@@ -41,7 +41,7 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
     }
 
     private func createRootTemplate() -> CPTemplate {
-        if PurchaseManager.shared.isProAccessAvailable {
+        if PurchaseManager.shared.hasProFeatureAccess {
             return createListTemplate()
         }
         return createProRequiredTemplate()
@@ -112,4 +112,3 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
         NotificationCenter.default.removeObserver(self)
     }
 }
-

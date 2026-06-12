@@ -32,7 +32,7 @@ class LiveActivityManager {
         guard #available(iOS 16.1, *) else { return }
         
         // Check for Pro Subscription
-        if !PurchaseManager.shared.isProAccessAvailable {
+        if !PurchaseManager.shared.hasProFeatureAccess {
             // End activity if it exists (e.g. subscription expired)
             endActivity()
             return
@@ -95,7 +95,7 @@ class LiveActivityManager {
             )
         }
 
-        guard PurchaseManager.shared.isProAccessAvailable else {
+        guard PurchaseManager.shared.hasProFeatureAccess else {
             return UpdateResult(
                 activityCount: Activity<NightguardActivityAttributes>.activities.count,
                 updatedActivityCount: 0,

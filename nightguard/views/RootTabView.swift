@@ -230,7 +230,7 @@ struct RootTabView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .showProPromotionRequest)) { _ in
-            guard !PurchaseManager.shared.isProAccessAvailable else {
+            guard !PurchaseManager.shared.hasProFeatureAccess else {
                 return
             }
 

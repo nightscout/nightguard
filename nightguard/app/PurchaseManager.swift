@@ -44,6 +44,10 @@ class PurchaseManager: NSObject, ObservableObject {
     @Published var isProAccessAvailable: Bool = false
     @Published var isMaxAccessAvailable: Bool = false
     @Published var products: [SKProduct] = []
+
+    var hasProFeatureAccess: Bool {
+        isProAccessAvailable || isMaxAccessAvailable
+    }
     
     var formattedProPrice: String? {
         return formattedPrice(for: proProductIdentifier)
@@ -75,7 +79,7 @@ class PurchaseManager: NSObject, ObservableObject {
         super.init()
         
         // Ensure initial watch status is in sync with last known state
-        UserDefaultsRepository.watchProAccessAvailable.value = self.isProAccessAvailable
+        UserDefaultsRepository.watchProAccessAvailable.value = self.hasProFeatureAccess
         
         SKPaymentQueue.default().add(self)
         fetchProducts()
@@ -115,44 +119,40 @@ class PurchaseManager: NSObject, ObservableObject {
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
     
-    private func updateProStatus(active: Bool) {
+    private func updateSubscriptionStatus(proActive: Bool, maxActive: Bool) {
         DispatchQueue.main.async {
-            if self.isProAccessAvailable != active {
-                self.isProAccessAvailable = active
-                UserDefaultsRepository.watchProAccessAvailable.value = active
-                UserDefaults.standard.set(active, forKey: self.proProductIdentifier)
+            let hadProFeatureAccess = self.hasProFeatureAccess
+            let maxChanged = self.isMaxAccessAvailable != maxActive
+
+            self.isProAccessAvailable = proActive
+            self.isMaxAccessAvailable = maxActive
+            UserDefaults.standard.set(proActive, forKey: self.proProductIdentifier)
+            UserDefaults.standard.set(maxActive, forKey: self.maxProductIdentifier)
+
+            let hasProFeatureAccess = self.hasProFeatureAccess
+            UserDefaultsRepository.watchProAccessAvailable.value = hasProFeatureAccess
+
+            if hadProFeatureAccess != hasProFeatureAccess {
                 NotificationCenter.default.post(name: NSNotification.Name("ProAccessStatusChanged"), object: nil)
-                
-                if active {
+
+                if hasProFeatureAccess {
                     self.rescheduleAllAgeNotifications()
                 } else {
                     // Optionally cancel notifications if subscription expired
                     // AlarmNotificationService.singleton.cancelAgeNotifications()
                 }
-            } else {
-                // Even if isProAccessAvailable didn't change, ensure watch value is in sync
-                UserDefaultsRepository.watchProAccessAvailable.value = active
             }
-            
+
+            if maxChanged {
+                NotificationCenter.default.post(name: NSNotification.Name("MaxAccessStatusChanged"), object: nil)
+            }
+
             if self.isRestoring {
                 self.isRestoring = false
-                if !active {
-                     self.restoreAlertMessage = NSLocalizedString("No active subscription found to restore.", comment: "Restore error message")
-                     self.showingRestoreAlert = true
-                } else {
-                     self.restoreAlertMessage = NSLocalizedString("Purchases restored successfully.", comment: "Restore success message")
-                     self.showingRestoreAlert = true
-                }
-            }
-        }
-    }
-
-    private func updateMaxStatus(active: Bool) {
-        DispatchQueue.main.async {
-            if self.isMaxAccessAvailable != active {
-                self.isMaxAccessAvailable = active
-                UserDefaults.standard.set(active, forKey: self.maxProductIdentifier)
-                NotificationCenter.default.post(name: NSNotification.Name("MaxAccessStatusChanged"), object: nil)
+                self.restoreAlertMessage = hasProFeatureAccess
+                    ? NSLocalizedString("Purchases restored successfully.", comment: "Restore success message")
+                    : NSLocalizedString("No active subscription found to restore.", comment: "Restore error message")
+                self.showingRestoreAlert = true
             }
 
             #if os(iOS) && MAIN_APP
@@ -177,8 +177,7 @@ class PurchaseManager: NSObject, ObservableObject {
         guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
               FileManager.default.fileExists(atPath: appStoreReceiptURL.path) else {
             print("No receipt found")
-            updateProStatus(active: false)
-            updateMaxStatus(active: false)
+            updateSubscriptionStatus(proActive: false, maxActive: false)
             return
         }
         
@@ -190,8 +189,7 @@ class PurchaseManager: NSObject, ObservableObject {
             verifyReceipt(receiptString: receiptString, url: URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!)
         } catch {
             print("Couldn't read receipt data with error: " + error.localizedDescription)
-            updateProStatus(active: false)
-            updateMaxStatus(active: false)
+            updateSubscriptionStatus(proActive: false, maxActive: false)
         }
     }
     
@@ -228,8 +226,7 @@ class PurchaseManager: NSObject, ObservableObject {
                     self.verifyReceipt(receiptString: receiptString, url: URL(string: "https://buy.itunes.apple.com/verifyReceipt")!)
                 } else {
                     print("Receipt verification failed with status: \(status)")
-                    self.updateProStatus(active: false)
-                    self.updateMaxStatus(active: false)
+                    self.updateSubscriptionStatus(proActive: false, maxActive: false)
                 }
             }
         }
@@ -239,13 +236,14 @@ class PurchaseManager: NSObject, ObservableObject {
     private func parseReceiptResponse(_ json: [String: Any]) {
         guard let latestReceiptInfo = json["latest_receipt_info"] as? [[String: Any]] else {
             // No subscription info found
-            updateProStatus(active: false)
-            updateMaxStatus(active: false)
+            updateSubscriptionStatus(proActive: false, maxActive: false)
             return
         }
-        
-        updateProStatus(active: isSubscriptionActive(productIdentifier: proProductIdentifier, latestReceiptInfo: latestReceiptInfo))
-        updateMaxStatus(active: isSubscriptionActive(productIdentifier: maxProductIdentifier, latestReceiptInfo: latestReceiptInfo))
+
+        updateSubscriptionStatus(
+            proActive: isSubscriptionActive(productIdentifier: proProductIdentifier, latestReceiptInfo: latestReceiptInfo),
+            maxActive: isSubscriptionActive(productIdentifier: maxProductIdentifier, latestReceiptInfo: latestReceiptInfo)
+        )
     }
 
     private func isSubscriptionActive(productIdentifier: String, latestReceiptInfo: [[String: Any]]) -> Bool {

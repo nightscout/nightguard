@@ -138,9 +138,9 @@ struct DurationView: View {
                             get: { alarmService.publishedEnabled },
                             set: { alarmService.enabled = $0 }
                         ))
-                        .disabled(!purchaseManager.isProAccessAvailable)
+                        .disabled(!purchaseManager.hasProFeatureAccess)
                         
-                        if purchaseManager.isProAccessAvailable {
+                        if purchaseManager.hasProFeatureAccess {
                             Text("PRO")
                                 .font(.caption)
                                 .fontWeight(.bold)
@@ -161,7 +161,7 @@ struct DurationView: View {
                         }
                     }
                     
-                    if !purchaseManager.isProAccessAvailable {
+                    if !purchaseManager.hasProFeatureAccess {
                         Button(action: {
                             showProPromotion = true
                         }) {
@@ -274,7 +274,7 @@ struct DurationView: View {
     }
 
     private func checkAndShowProPromotion() {
-        if purchaseManager.isProAccessAvailable {
+        if purchaseManager.hasProFeatureAccess {
             return
         }
 
