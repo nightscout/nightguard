@@ -18,6 +18,9 @@ import WidgetKit
 import FirebaseCore
 import FirebaseAppCheck
 #endif
+#if canImport(FirebaseMessaging)
+import FirebaseMessaging
+#endif
 
 extension Notification.Name {
     static let showProPromotionRequest = Notification.Name("ShowProPromotionRequest")
@@ -108,14 +111,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func configureFirebaseIfAvailable() {
         #if canImport(FirebaseCore) && canImport(FirebaseAppCheck)
-        guard FirebaseApp.app() == nil else { return }
-        guard Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil else {
-            AppLogger.singleton.warning("GoogleService-Info.plist missing; Firebase App Check is disabled", category: .backgroundUpdates)
-            return
-        }
+        if FirebaseApp.app() == nil {
+            guard Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil else {
+                AppLogger.singleton.warning("GoogleService-Info.plist missing; Firebase App Check is disabled", category: .backgroundUpdates)
+                return
+            }
 
-        AppCheck.setAppCheckProviderFactory(NightguardAppCheckProviderFactory())
-        FirebaseApp.configure()
+            AppCheck.setAppCheckProviderFactory(NightguardAppCheckProviderFactory())
+            FirebaseApp.configure()
+        }
+        #endif
+        #if canImport(FirebaseMessaging)
+        Messaging.messaging().delegate = self
         #endif
     }
 
@@ -323,6 +330,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        #if canImport(FirebaseMessaging)
+        #if DEBUG
+        Messaging.messaging().setAPNSToken(deviceToken, type: .sandbox)
+        #else
+        Messaging.messaging().setAPNSToken(deviceToken, type: .prod)
+        #endif
+        #endif
         MaxBackgroundPushRegistrationService.shared.didRegisterForRemoteNotifications(deviceToken: deviceToken)
     }
 
@@ -416,6 +430,15 @@ private final class NightguardAppCheckProviderFactory: NSObject, AppCheckProvide
         }
 
         return DeviceCheckProviderFactory().createProvider(with: app)
+    }
+}
+#endif
+
+#if canImport(FirebaseMessaging)
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken, !fcmToken.isEmpty else { return }
+        MaxBackgroundPushRegistrationService.shared.didReceiveFCMToken(fcmToken)
     }
 }
 #endif

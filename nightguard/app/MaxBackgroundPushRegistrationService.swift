@@ -6,35 +6,44 @@
 import Foundation
 import UIKit
 import StoreKit
+#if canImport(FirebaseMessaging)
+import FirebaseMessaging
+#endif
 
 final class MaxBackgroundPushRegistrationService {
     static let shared = MaxBackgroundPushRegistrationService()
 
-    private let tokenKey = "maxBackgroundPushDeviceToken"
+    private let tokenKey = "maxBackgroundPushFCMToken"
     private let registrationTokenKey = "maxBackgroundPushRegisteredToken"
     private let backendURLKey = "MAX_BACKEND_BASE_URL"
     private let defaultBackendBaseURL = "https://nightguard-backend--nightguard-app.europe-west4.hosted.app"
     private let appCheckTokenKey = "MAX_BACKEND_APP_CHECK_TOKEN"
+    private var hasAPNsToken = false
 
     private init() {}
 
     func configureForCurrentEntitlement() {
         DispatchQueue.main.async {
             if PurchaseManager.shared.isMaxAccessAvailable {
-                AppLogger.singleton.debug("Max entitlement active; starting silent APNs device registration flow", category: .backgroundUpdates)
+                AppLogger.singleton.debug("Max entitlement active; starting silent push registration flow", category: .backgroundUpdates)
                 UIApplication.shared.registerForRemoteNotifications()
                 self.registerStoredTokenIfPossible()
             } else {
-                AppLogger.singleton.debug("Max entitlement inactive; starting silent APNs device unregistration flow", category: .backgroundUpdates)
+                AppLogger.singleton.debug("Max entitlement inactive; starting silent push unregistration flow", category: .backgroundUpdates)
                 self.unregisterStoredTokenIfNeeded()
             }
         }
     }
 
     func didRegisterForRemoteNotifications(deviceToken: Data) {
-        let token = deviceToken.map { String(format: "%02x", $0) }.joined()
+        hasAPNsToken = true
+        AppLogger.singleton.info("APNs returned device token for Max FCM registration", category: .backgroundUpdates)
+        fetchFCMTokenIfPossible()
+    }
+
+    func didReceiveFCMToken(_ token: String) {
         UserDefaults.standard.set(token, forKey: tokenKey)
-        AppLogger.singleton.info("APNs returned device token for Max registration: token=\(maskedToken(token))", category: .backgroundUpdates)
+        AppLogger.singleton.info("FCM returned token for Max registration: token=\(maskedToken(token))", category: .backgroundUpdates)
         registerStoredTokenIfPossible()
     }
 
@@ -48,45 +57,48 @@ final class MaxBackgroundPushRegistrationService {
             return
         }
 
-        guard let deviceToken = UserDefaults.standard.string(forKey: tokenKey), !deviceToken.isEmpty else {
-            AppLogger.singleton.warning("Skipping Max device registration: no APNs device token stored yet", category: .backgroundUpdates)
+        guard let fcmToken = UserDefaults.standard.string(forKey: tokenKey), !fcmToken.isEmpty else {
+            AppLogger.singleton.warning("Skipping Max device registration: no FCM token stored yet", category: .backgroundUpdates)
+            fetchFCMTokenIfPossible()
             return
         }
 
         let backendBaseURL = resolvedBackendBaseURL()
+        let registrationMarker = fcmToken
 
-        if UserDefaults.standard.string(forKey: registrationTokenKey) == deviceToken {
-            AppLogger.singleton.info("Skipping Max device registration: APNs token already registered locally token=\(maskedToken(deviceToken))", category: .backgroundUpdates)
+        if UserDefaults.standard.string(forKey: registrationTokenKey) == registrationMarker {
+            AppLogger.singleton.info("Skipping Max device registration: FCM token already registered locally token=\(maskedToken(fcmToken))", category: .backgroundUpdates)
             return
         }
 
         Task {
             do {
-                AppLogger.singleton.debug("Preparing Max device registration: backend=\(backendDescription(backendBaseURL)), bundleId=\(bundleId), environment=\(storeKitEnvironment), token=\(maskedToken(deviceToken))", category: .backgroundUpdates)
+                AppLogger.singleton.debug("Preparing Max device registration: backend=\(backendDescription(backendBaseURL)), bundleId=\(bundleId), fcmToken=\(maskedToken(fcmToken))", category: .backgroundUpdates)
                 let transactionJWS = try await PurchaseManager.shared.currentMaxTransactionJWS()
                 AppLogger.singleton.debug("Max StoreKit transaction available; sending device registration", category: .backgroundUpdates)
-                try await sendRegistration(deviceToken: deviceToken, transactionJWS: transactionJWS, backendBaseURL: backendBaseURL)
-                UserDefaults.standard.set(deviceToken, forKey: registrationTokenKey)
-                AppLogger.singleton.info("Registered Max device for silent APNs: token=\(maskedToken(deviceToken))", category: .backgroundUpdates)
+                try await sendRegistration(fcmToken: fcmToken, transactionJWS: transactionJWS, backendBaseURL: backendBaseURL)
+                UserDefaults.standard.set(registrationMarker, forKey: registrationTokenKey)
+                AppLogger.singleton.info("Registered Max device for silent FCM push: token=\(maskedToken(fcmToken))", category: .backgroundUpdates)
             } catch {
-                AppLogger.singleton.error("Max device registration failed for token=\(maskedToken(deviceToken)): \(error.localizedDescription)", category: .backgroundUpdates)
+                AppLogger.singleton.error("Max device registration failed for token=\(maskedToken(fcmToken)): \(error.localizedDescription)", category: .backgroundUpdates)
             }
         }
     }
 
     private func unregisterStoredTokenIfNeeded() {
-        guard let registeredToken = UserDefaults.standard.string(forKey: registrationTokenKey), !registeredToken.isEmpty else {
-            AppLogger.singleton.debug("Skipping Max device unregistration: no locally registered APNs token exists", category: .backgroundUpdates)
+        guard let registeredMarker = UserDefaults.standard.string(forKey: registrationTokenKey), !registeredMarker.isEmpty else {
+            AppLogger.singleton.debug("Skipping Max device unregistration: no locally registered FCM token exists", category: .backgroundUpdates)
             return
         }
+        let registeredToken = registeredMarker
 
         let backendBaseURL = resolvedBackendBaseURL()
 
         Task {
             do {
                 AppLogger.singleton.debug("Sending Max device unregistration: backend=\(backendDescription(backendBaseURL)), token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
-                try await sendUnregistration(deviceToken: registeredToken, backendBaseURL: backendBaseURL)
-                AppLogger.singleton.info("Unregistered Max device for silent APNs: token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
+                try await sendUnregistration(fcmToken: registeredToken, backendBaseURL: backendBaseURL)
+                AppLogger.singleton.info("Unregistered Max device for silent FCM push: token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
             } catch {
                 AppLogger.singleton.warning("Max device unregistration failed for token=\(maskedToken(registeredToken)): \(error.localizedDescription)", category: .backgroundUpdates)
             }
@@ -95,23 +107,45 @@ final class MaxBackgroundPushRegistrationService {
         }
     }
 
-    private func sendRegistration(deviceToken: String, transactionJWS: String, backendBaseURL: String) async throws {
+    private func fetchFCMTokenIfPossible() {
+        guard PurchaseManager.shared.isMaxAccessAvailable else {
+            return
+        }
+        guard hasAPNsToken else {
+            AppLogger.singleton.debug("Skipping FCM token fetch: waiting for APNs token", category: .backgroundUpdates)
+            return
+        }
+
+        #if canImport(FirebaseMessaging)
+        Task {
+            do {
+                let token = try await Messaging.messaging().token()
+                didReceiveFCMToken(token)
+            } catch {
+                AppLogger.singleton.error("FCM token fetch failed: \(error.localizedDescription)", category: .backgroundUpdates)
+            }
+        }
+        #else
+        AppLogger.singleton.error("FirebaseMessaging is unavailable; Max silent push registration cannot continue", category: .backgroundUpdates)
+        #endif
+    }
+
+    private func sendRegistration(fcmToken: String, transactionJWS: String, backendBaseURL: String) async throws {
         var request = try makeRequest(path: "/api/devices/register", backendBaseURL: backendBaseURL)
         await applyAppCheckHeader(to: &request)
         request.httpBody = try JSONEncoder().encode(DeviceRegistrationRequest(
-            deviceToken: deviceToken,
+            fcmToken: fcmToken,
             transactionJWS: transactionJWS,
-            bundleId: bundleId,
-            environment: storeKitEnvironment
+            bundleId: bundleId
         ))
         let (data, response) = try await perform(request: request)
         try validate(response: response, data: data)
     }
 
-    private func sendUnregistration(deviceToken: String, backendBaseURL: String) async throws {
+    private func sendUnregistration(fcmToken: String, backendBaseURL: String) async throws {
         var request = try makeRequest(path: "/api/devices/unregister", backendBaseURL: backendBaseURL)
         await applyAppCheckHeader(to: &request)
-        request.httpBody = try JSONEncoder().encode(DeviceUnregistrationRequest(deviceToken: deviceToken))
+        request.httpBody = try JSONEncoder().encode(DeviceUnregistrationRequest(fcmToken: fcmToken))
         let (data, response) = try await perform(request: request)
         try validate(response: response, data: data)
     }
@@ -173,22 +207,17 @@ final class MaxBackgroundPushRegistrationService {
     }
 
     private struct DeviceRegistrationRequest: Encodable {
-        let deviceToken: String
+        let fcmToken: String
         let transactionJWS: String
         let bundleId: String
-        let environment: String
     }
 
     private struct DeviceUnregistrationRequest: Encodable {
-        let deviceToken: String
+        let fcmToken: String
     }
 
     private var bundleId: String {
         Bundle.main.bundleIdentifier ?? "de.my-wan.dhe.nightguard"
-    }
-
-    private var storeKitEnvironment: String {
-        Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" ? "sandbox" : "production"
     }
 
     private func resolvedBackendBaseURL() -> String {
