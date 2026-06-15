@@ -15,6 +15,7 @@ final class MaxBackgroundPushRegistrationService {
 
     private let tokenKey = "maxBackgroundPushFCMToken"
     private let registrationTokenKey = "maxBackgroundPushRegisteredToken"
+    private let registrationMarkerKey = "maxBackgroundPushRegistrationMarker"
     private let backendURLKey = "MAX_BACKEND_BASE_URL"
     private let defaultBackendBaseURL = "https://nightguard-backend--nightguard-app.europe-west4.hosted.app"
     private let appCheckTokenKey = "MAX_BACKEND_APP_CHECK_TOKEN"
@@ -64,20 +65,22 @@ final class MaxBackgroundPushRegistrationService {
         }
 
         let backendBaseURL = resolvedBackendBaseURL()
-        let registrationMarker = fcmToken
-
-        if UserDefaults.standard.string(forKey: registrationTokenKey) == registrationMarker {
-            AppLogger.singleton.info("Skipping Max device registration: FCM token already registered locally token=\(maskedToken(fcmToken))", category: .backgroundUpdates)
-            return
-        }
 
         Task {
             do {
                 AppLogger.singleton.debug("Preparing Max device registration: backend=\(backendDescription(backendBaseURL)), bundleId=\(bundleId), fcmToken=\(maskedToken(fcmToken))", category: .backgroundUpdates)
                 let transactionJWS = try await PurchaseManager.shared.currentMaxTransactionJWS()
-                AppLogger.singleton.debug("Max StoreKit transaction available; sending device registration", category: .backgroundUpdates)
+                let registrationMarker = makeRegistrationMarker(fcmToken: fcmToken, transactionJWS: transactionJWS)
+
+                if UserDefaults.standard.string(forKey: registrationMarkerKey) == registrationMarker {
+                    AppLogger.singleton.info("Skipping Max device registration: FCM token and StoreKit transaction already registered locally token=\(maskedToken(fcmToken))", category: .backgroundUpdates)
+                    return
+                }
+
+                AppLogger.singleton.debug("Max StoreKit transaction available; sending device registration with \(transactionSummary(transactionJWS))", category: .backgroundUpdates)
                 try await sendRegistration(fcmToken: fcmToken, transactionJWS: transactionJWS, backendBaseURL: backendBaseURL)
-                UserDefaults.standard.set(registrationMarker, forKey: registrationTokenKey)
+                UserDefaults.standard.set(fcmToken, forKey: registrationTokenKey)
+                UserDefaults.standard.set(registrationMarker, forKey: registrationMarkerKey)
                 AppLogger.singleton.info("Registered Max device for silent FCM push: token=\(maskedToken(fcmToken))", category: .backgroundUpdates)
             } catch {
                 AppLogger.singleton.error("Max device registration failed for token=\(maskedToken(fcmToken)): \(error.localizedDescription)", category: .backgroundUpdates)
@@ -103,6 +106,7 @@ final class MaxBackgroundPushRegistrationService {
                 AppLogger.singleton.warning("Max device unregistration failed for token=\(maskedToken(registeredToken)): \(error.localizedDescription)", category: .backgroundUpdates)
             }
             UserDefaults.standard.removeObject(forKey: registrationTokenKey)
+            UserDefaults.standard.removeObject(forKey: registrationMarkerKey)
             AppLogger.singleton.debug("Removed local Max registration marker for token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
         }
     }
@@ -131,23 +135,22 @@ final class MaxBackgroundPushRegistrationService {
     }
 
     private func sendRegistration(fcmToken: String, transactionJWS: String, backendBaseURL: String) async throws {
+        let requestContext = transactionSummary(transactionJWS)
         var request = try makeRequest(path: "/api/devices/register", backendBaseURL: backendBaseURL)
-        await applyAppCheckHeader(to: &request)
         request.httpBody = try JSONEncoder().encode(DeviceRegistrationRequest(
             fcmToken: fcmToken,
             transactionJWS: transactionJWS,
             bundleId: bundleId
         ))
-        let (data, response) = try await perform(request: request)
-        try validate(response: response, data: data)
+        let result = try await performWithAppCheckRetry(request: request)
+        try validate(response: result.response, data: result.data, appCheckSource: result.appCheckSource, requestContext: requestContext)
     }
 
     private func sendUnregistration(fcmToken: String, backendBaseURL: String) async throws {
         var request = try makeRequest(path: "/api/devices/unregister", backendBaseURL: backendBaseURL)
-        await applyAppCheckHeader(to: &request)
         request.httpBody = try JSONEncoder().encode(DeviceUnregistrationRequest(fcmToken: fcmToken))
-        let (data, response) = try await perform(request: request)
-        try validate(response: response, data: data)
+        let result = try await performWithAppCheckRetry(request: request)
+        try validate(response: result.response, data: result.data, appCheckSource: result.appCheckSource, requestContext: nil)
     }
 
     private func makeRequest(path: String, backendBaseURL: String) throws -> URLRequest {
@@ -162,28 +165,42 @@ final class MaxBackgroundPushRegistrationService {
         return request
     }
 
-    private func applyAppCheckHeader(to request: inout URLRequest) async {
-        if let token = await MaxBackendAppCheckService.shared.token(), !token.isEmpty {
+    private func applyAppCheckHeader(to request: inout URLRequest, forcingRefresh: Bool = false) async -> AppCheckCredentialSource {
+        if let token = await MaxBackendAppCheckService.shared.token(forcingRefresh: forcingRefresh), !token.isEmpty {
             request.setValue(token, forHTTPHeaderField: "X-Firebase-AppCheck")
-            AppLogger.singleton.debug("Using Firebase App Check token for Max backend request", category: .backgroundUpdates)
-            return
+            let refreshDescription = forcingRefresh ? "refreshed " : ""
+            let tokenSummary = appCheckTokenSummary(token)
+            AppLogger.singleton.debug("Using \(refreshDescription)Firebase App Check token for Max backend request: \(tokenSummary)", category: .backgroundUpdates)
+            return forcingRefresh ? .firebaseRefreshed(tokenSummary) : .firebaseCached(tokenSummary)
         }
 
         if let appCheckToken = NightguardEnvironment.value(for: appCheckTokenKey), !appCheckToken.isEmpty {
             request.setValue(appCheckToken, forHTTPHeaderField: "X-Firebase-AppCheck")
             AppLogger.singleton.warning("Using fallback MAX_BACKEND_APP_CHECK_TOKEN for Max backend request", category: .backgroundUpdates)
+            return .fallbackToken
         } else {
             AppLogger.singleton.warning("No Firebase App Check token or fallback token available for Max backend request", category: .backgroundUpdates)
+            return .missing
         }
     }
 
-    private func validate(response: URLResponse, data: Data) throws {
+    private func validate(
+        response: URLResponse,
+        data: Data,
+        appCheckSource: AppCheckCredentialSource,
+        requestContext: String?
+    ) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw RegistrationError.invalidResponse
         }
 
         guard (200..<300).contains(httpResponse.statusCode) else {
-            throw RegistrationError.serverStatus(httpResponse.statusCode, responseBodyDescription(data))
+            throw RegistrationError.serverStatus(
+                httpResponse.statusCode,
+                responseBodyDescription(data),
+                appCheckSource.description,
+                requestContext
+            )
         }
     }
 
@@ -206,6 +223,32 @@ final class MaxBackgroundPushRegistrationService {
         }
     }
 
+    private func performWithAppCheckRetry(request: URLRequest) async throws -> MaxBackendResponse {
+        var firstRequest = request
+        let firstAppCheckSource = await applyAppCheckHeader(to: &firstRequest)
+        let firstResult = try await perform(request: firstRequest)
+
+        guard firstAppCheckSource.usesFirebaseAppCheck,
+              isUnauthorized(firstResult.1) else {
+            return MaxBackendResponse(data: firstResult.0, response: firstResult.1, appCheckSource: firstAppCheckSource)
+        }
+
+        AppLogger.singleton.warning("Max backend rejected App Check token with HTTP 401; retrying once with a refreshed token", category: .backgroundUpdates)
+
+        var retryRequest = request
+        let retryAppCheckSource = await applyAppCheckHeader(to: &retryRequest, forcingRefresh: true)
+        guard retryAppCheckSource.usesFirebaseAppCheck else {
+            return MaxBackendResponse(data: firstResult.0, response: firstResult.1, appCheckSource: firstAppCheckSource)
+        }
+
+        let retryResult = try await perform(request: retryRequest)
+        return MaxBackendResponse(data: retryResult.0, response: retryResult.1, appCheckSource: retryAppCheckSource)
+    }
+
+    private func isUnauthorized(_ response: URLResponse) -> Bool {
+        (response as? HTTPURLResponse)?.statusCode == 401
+    }
+
     private struct DeviceRegistrationRequest: Encodable {
         let fcmToken: String
         let transactionJWS: String
@@ -214,6 +257,41 @@ final class MaxBackgroundPushRegistrationService {
 
     private struct DeviceUnregistrationRequest: Encodable {
         let fcmToken: String
+    }
+
+    private struct MaxBackendResponse {
+        let data: Data
+        let response: URLResponse
+        let appCheckSource: AppCheckCredentialSource
+    }
+
+    private enum AppCheckCredentialSource {
+        case firebaseCached(String)
+        case firebaseRefreshed(String)
+        case fallbackToken
+        case missing
+
+        var usesFirebaseAppCheck: Bool {
+            switch self {
+            case .firebaseCached, .firebaseRefreshed:
+                return true
+            case .fallbackToken, .missing:
+                return false
+            }
+        }
+
+        var description: String {
+            switch self {
+            case .firebaseCached(let tokenSummary):
+                return "Firebase App Check cached token (\(tokenSummary))"
+            case .firebaseRefreshed(let tokenSummary):
+                return "Firebase App Check refreshed token (\(tokenSummary))"
+            case .fallbackToken:
+                return "MAX_BACKEND_APP_CHECK_TOKEN fallback token"
+            case .missing:
+                return "no App Check token"
+            }
+        }
     }
 
     private var bundleId: String {
@@ -256,10 +334,91 @@ final class MaxBackgroundPushRegistrationService {
         return String(responseBody.prefix(300))
     }
 
+    private func makeRegistrationMarker(fcmToken: String, transactionJWS: String) -> String {
+        let parts = transactionJWS.split(separator: ".")
+        guard parts.count >= 2,
+              let payloadData = base64URLDecodedData(String(parts[1])),
+              let payload = try? JSONSerialization.jsonObject(with: payloadData) as? [String: Any] else {
+            return "fcm=\(fcmToken)|transaction=<unreadable>"
+        }
+
+        let transactionId = payload["transactionId"] as? String ?? "<missing>"
+        let originalTransactionId = payload["originalTransactionId"] as? String ?? "<missing>"
+        let expiresDate = payload["expiresDate"] ?? "<missing>"
+        return "fcm=\(fcmToken)|originalTransactionId=\(originalTransactionId)|transactionId=\(transactionId)|expiresDate=\(expiresDate)"
+    }
+
+    private func transactionSummary(_ jws: String) -> String {
+        let parts = jws.split(separator: ".")
+        guard parts.count >= 2,
+              let payloadData = base64URLDecodedData(String(parts[1])),
+              let payload = try? JSONSerialization.jsonObject(with: payloadData) as? [String: Any] else {
+            return "StoreKit JWS payload=<unreadable>"
+        }
+
+        let productId = payload["productId"] as? String ?? "<missing>"
+        let payloadBundleId = payload["bundleId"] as? String ?? "<missing>"
+        let environment = payload["environment"] as? String ?? "<missing>"
+        let expiresDateDescription: String
+        if let expiresDateMilliseconds = payload["expiresDate"] as? Double {
+            let expiresDate = Date(timeIntervalSince1970: expiresDateMilliseconds / 1000.0)
+            expiresDateDescription = ISO8601DateFormatter().string(from: expiresDate)
+        } else if let expiresDateMilliseconds = payload["expiresDate"] as? Int {
+            let expiresDate = Date(timeIntervalSince1970: Double(expiresDateMilliseconds) / 1000.0)
+            expiresDateDescription = ISO8601DateFormatter().string(from: expiresDate)
+        } else {
+            expiresDateDescription = "<missing>"
+        }
+
+        return "productId=\(productId), transactionBundleId=\(payloadBundleId), transactionEnvironment=\(environment), expires=\(expiresDateDescription)"
+    }
+
+    private func appCheckTokenSummary(_ token: String) -> String {
+        let parts = token.split(separator: ".")
+        guard parts.count >= 2,
+              let payloadData = base64URLDecodedData(String(parts[1])),
+              let payload = try? JSONSerialization.jsonObject(with: payloadData) as? [String: Any] else {
+            return "claims=<unreadable>"
+        }
+
+        let subject = payload["sub"] as? String ?? "<missing>"
+        let issuer = payload["iss"] as? String ?? "<missing>"
+        let audience: String
+        if let audienceValue = payload["aud"] as? String {
+            audience = audienceValue
+        } else if let audienceValues = payload["aud"] as? [String] {
+            audience = audienceValues.joined(separator: ",")
+        } else {
+            audience = "<missing>"
+        }
+
+        let expiresDescription: String
+        if let expirationSeconds = payload["exp"] as? Double {
+            expiresDescription = ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: expirationSeconds))
+        } else if let expirationSeconds = payload["exp"] as? Int {
+            expiresDescription = ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: Double(expirationSeconds)))
+        } else {
+            expiresDescription = "<missing>"
+        }
+
+        return "sub=\(subject), aud=\(audience), iss=\(issuer), exp=\(expiresDescription)"
+    }
+
+    private func base64URLDecodedData(_ value: String) -> Data? {
+        var base64 = value
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+
+        let paddingLength = (4 - base64.count % 4) % 4
+        base64.append(String(repeating: "=", count: paddingLength))
+
+        return Data(base64Encoded: base64)
+    }
+
     private enum RegistrationError: LocalizedError {
         case invalidBackendURL
         case invalidResponse
-        case serverStatus(Int, String)
+        case serverStatus(Int, String, String, String?)
 
         var errorDescription: String? {
             switch self {
@@ -267,9 +426,28 @@ final class MaxBackgroundPushRegistrationService {
                 return "Invalid Max backend URL"
             case .invalidResponse:
                 return "Invalid Max backend response"
-            case .serverStatus(let status, let body):
+            case .serverStatus(let status, let body, let appCheckSource, let requestContext):
+                if status == 401 {
+                    var message = "Max backend returned HTTP 401: \(body). App Check credential source: \(appCheckSource)."
+                    if let requestContext {
+                        message += " StoreKit transaction: \(requestContext)."
+                    }
+                    message += " Verify the backend accepts Firebase app ID \(firebaseAppIdDescription()) for bundle ID \(Bundle.main.bundleIdentifier ?? "<unknown>"), and verify the Max StoreKit transaction environment matches what the backend accepts."
+                    return message
+                }
                 return "Max backend returned HTTP \(status): \(body)"
             }
+        }
+
+        private func firebaseAppIdDescription() -> String {
+            guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+                  let values = NSDictionary(contentsOfFile: path),
+                  let appId = values["GOOGLE_APP_ID"] as? String,
+                  !appId.isEmpty else {
+                return "<missing>"
+            }
+
+            return appId
         }
     }
 }

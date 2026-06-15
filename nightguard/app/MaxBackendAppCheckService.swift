@@ -14,10 +14,10 @@ final class MaxBackendAppCheckService {
 
     private init() {}
 
-    func token() async -> String? {
+    func token(forcingRefresh: Bool = false) async -> String? {
         #if canImport(FirebaseAppCheck)
         return await withCheckedContinuation { continuation in
-            AppCheck.appCheck().token(forcingRefresh: false) { token, error in
+            AppCheck.appCheck().token(forcingRefresh: forcingRefresh) { token, error in
                 if let error = error {
                     AppLogger.singleton.warning("Firebase App Check token unavailable: \(error.localizedDescription)", category: .backgroundUpdates)
                     continuation.resume(returning: nil)
