@@ -115,12 +115,7 @@ struct ProPromotionView: View {
 
                     if selectedPromotion == .pro {
                         SubscriptionOptionView(
-                            icon: "star.circle.fill",
-                            title: NSLocalizedString("Pro", comment: "Pro subscription option title"),
-                            subtitle: NSLocalizedString("Unlock Pro notifications, Live Activities, CarPlay and Watch statistics.", comment: "Pro subscription option subtitle"),
-                            showsHeader:purchaseManager.hasProFeatureAccess,
                             price: purchaseManager.formattedProPrice,
-                            statusText: proStatusText,
                             footnoteText: nil,
                             buttonTitle: purchaseManager.hasProFeatureAccess ? nil : NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"),
                             action: {
@@ -130,12 +125,7 @@ struct ProPromotionView: View {
                         )
                     } else {
                         SubscriptionOptionView(
-                            icon: "bolt.badge.clock.fill",
-                            title: NSLocalizedString("Max", comment: "Max subscription option title"),
-                            subtitle: NSLocalizedString("Includes all Pro features plus Max Background Updates.", comment: "Max subscription option subtitle"),
-                            showsHeader: purchaseManager.isMaxAccessAvailable,
                             price: purchaseManager.formattedMaxPrice,
-                            statusText: purchaseManager.isMaxAccessAvailable ? NSLocalizedString("Max Subscription Active", comment: "Max subscription active text") : nil,
                             footnoteText: maxUpgradeFootnoteText,
                             buttonTitle: purchaseManager.isMaxAccessAvailable ? nil : maxButtonTitle,
                             action: {
@@ -162,18 +152,6 @@ struct ProPromotionView: View {
             }
         }
         .accentColor(.nightguardAccent)
-    }
-
-    private var proStatusText: String? {
-        if purchaseManager.isMaxAccessAvailable {
-            return NSLocalizedString("Included with Max", comment: "Pro features included with Max status")
-        }
-
-        if purchaseManager.isProAccessAvailable {
-            return NSLocalizedString("Pro Version Unlocked", comment: "Pro Version Unlocked Text")
-        }
-
-        return nil
     }
 
     private var maxButtonTitle: String {
@@ -229,42 +207,13 @@ struct FeatureRow: View {
 }
 
 struct SubscriptionOptionView: View {
-    let icon: String
-    let title: String
-    let subtitle: String
-    var showsHeader = true
     let price: String?
-    let statusText: String?
     let footnoteText: String?
     let buttonTitle: String?
     let action: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            if showsHeader {
-                HStack(alignment: .top, spacing: 12) {
-                    Image(systemName: icon)
-                        .font(.title2)
-                        .foregroundColor(Color.nightguardAccent)
-                        .frame(width: 30)
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(title)
-                            .font(.headline)
-
-                        if let statusText {
-                            Label(statusText, systemImage: "checkmark.seal.fill")
-                                .font(.caption)
-                                .foregroundColor(.green)
-                        }
-
-                        Text(subtitle)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
-
             if let buttonTitle {
                 Button(action: action) {
                     VStack(spacing: 4) {
