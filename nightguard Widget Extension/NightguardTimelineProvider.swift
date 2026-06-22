@@ -61,6 +61,13 @@ struct NightguardTimelineProvider: TimelineProvider {
     private func getTimelineData(completion: @escaping (NightscoutDataEntry) -> Void) {
         
         BackgroundRefreshLogger.info("TimelineProvider is getting Timeline...")
+        if let snapshot = NightscoutDataRepository.singleton.loadLatestDisplaySnapshot(),
+           snapshot.isFresh() {
+            BackgroundRefreshLogger.info("TimelineProvider is using latest display snapshot...")
+            completion(NightscoutDataEntry(snapshot: snapshot))
+            return
+        }
+
         let oldData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
         let oldEntries = NightscoutDataRepository.singleton.loadTodaysBgData()
 

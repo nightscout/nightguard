@@ -112,7 +112,7 @@ class LiveActivityManager {
             )
         }
 
-        let contentState = makeContentState(from: nightscoutData)
+        let contentState = makeContentState(from: NightguardDisplaySnapshot.make(from: nightscoutData))
         var updatedActivityCount = 0
         for activity in activities {
             if #available(iOS 16.2, *) {
@@ -140,6 +140,7 @@ class LiveActivityManager {
 
     func update(with nightscoutData: NightscoutData) {
         #if os(iOS)
+        NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(from: nightscoutData)
         let displayValues = makeDisplayValues(from: nightscoutData)
 
         startOrUpdateActivity(
@@ -170,16 +171,22 @@ class LiveActivityManager {
     #if canImport(ActivityKit)
     @available(iOS 16.1, *)
     private func makeContentState(from nightscoutData: NightscoutData) -> NightguardActivityAttributes.ContentState {
-        let displayValues = makeDisplayValues(from: nightscoutData)
-        return makeContentState(
-            sgv: displayValues.sgv,
-            delta: displayValues.delta,
-            trendArrow: displayValues.trendArrow,
-            date: displayValues.date,
-            bgDelta: displayValues.bgDelta,
-            sgvColor: displayValues.sgvColor,
-            iob: displayValues.iob,
-            cob: displayValues.cob
+        makeContentState(from: NightguardDisplaySnapshot.make(from: nightscoutData))
+    }
+
+    @available(iOS 16.1, *)
+    private func makeContentState(from snapshot: NightguardDisplaySnapshot) -> NightguardActivityAttributes.ContentState {
+        NightguardActivityAttributes.ContentState(
+            sgv: snapshot.sgv,
+            delta: snapshot.bgdeltaString,
+            trendArrow: snapshot.bgdeltaArrow,
+            date: snapshot.date,
+            bgDelta: snapshot.bgdelta,
+            sgvColorRed: snapshot.sgvColorRed,
+            sgvColorGreen: snapshot.sgvColorGreen,
+            sgvColorBlue: snapshot.sgvColorBlue,
+            iob: snapshot.iob,
+            cob: snapshot.cob
         )
     }
 

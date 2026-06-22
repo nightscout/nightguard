@@ -796,10 +796,12 @@
 "Pro" = "Pro";
 "Pro unlocks the core premium features. For push-based background updates, choose Max." = "Pro avaa tärkeimmät premium-ominaisuudet. Valitse Max push-pohjaisia taustapäivityksiä varten.";
 "Max includes Pro and adds the background update features below." = "Max sisältää Pron ja lisää alla olevat taustapäivitysominaisuudet.";
+"All Pro Features" = "Kaikki Pro-ominaisuudet";
+"Includes every feature from the Pro subscription." = "Sisältää kaikki Pro-tilauksen ominaisuudet.";
 "Dynamic Island and Live Activity Updates" = "Dynamic Islandin ja Live-aktiviteettien päivitykset";
 "Updating Dynamic Island and Live Activities in the background is only possible through push notifications in Max. This is an Apple limitation." = "Dynamic Islandin ja Live-aktiviteettien päivitys taustalla on mahdollista vain Max-tilauksen push-ilmoituksilla. Tämä on Applen rajoitus.";
 "Why Max costs more" = "Miksi Max maksaa enemmän";
-"Every Max user receives thousands of push notifications per month. This requires a hosted server backend, which is why the higher price is unfortunately necessary." = "Jokainen Max-käyttäjä saa tuhansia push-ilmoituksia kuukaudessa. Tämä edellyttää ylläpidettyä palvelinta, minkä vuoksi korkeampi hinta on valitettavasti tarpeen.";
+"Every Max user receives thousands of push notifications per month. We use the subscription revenue to finance the required hosted server backend." = "Jokainen Max-käyttäjä saa tuhansia push-ilmoituksia kuukaudessa. Rahoitamme tarvittavan ylläpidetyn palvelimen tilaustuloilla.";
 "When upgrading from Pro to Max, Apple automatically accounts for your remaining Pro subscription time in the purchase dialog." = "Kun päivität Prosta Maxiin, Apple huomioi jäljellä olevan Pro-tilausaikasi automaattisesti ostovalintaikkunassa.";
 
 /* App Tour */

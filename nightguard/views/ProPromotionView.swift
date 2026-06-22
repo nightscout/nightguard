@@ -27,13 +27,6 @@ struct ProPromotionView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
-
-                    Picker("", selection: $selectedPromotion) {
-                        Text(NSLocalizedString("Pro", comment: "Pro subscription option title")).tag(PromotionFocus.pro)
-                        Text(NSLocalizedString("Max", comment: "Max subscription option title")).tag(PromotionFocus.max)
-                    }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal)
                 }
                 
                 // Philosophy
@@ -56,6 +49,14 @@ struct ProPromotionView: View {
                 
                 // Features
                 VStack(alignment: .leading, spacing: 16) {
+
+                    Picker("", selection: $selectedPromotion) {
+                        Text(NSLocalizedString("Pro", comment: "Pro subscription option title")).tag(PromotionFocus.pro)
+                        Text(NSLocalizedString("Max", comment: "Max subscription option title")).tag(PromotionFocus.max)
+                    }
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal)
+
                     if selectedPromotion == .pro {
                         FeatureRow(
                             icon: "bell.badge.fill",
@@ -88,6 +89,12 @@ struct ProPromotionView: View {
 
                     if selectedPromotion == .max {
                         FeatureRow(
+                            icon: "star.circle.fill",
+                            title: NSLocalizedString("All Pro Features", comment: "Max includes all Pro features title"),
+                            description: NSLocalizedString("Includes every feature from the Pro subscription.", comment: "Max includes all Pro features description")
+                        )
+
+                        FeatureRow(
                             icon: "bolt.badge.clock.fill",
                             title: NSLocalizedString("Max Background Updates", comment: "Max Feature Title"),
                             description: NSLocalizedString("Silent push wakeups improve background refreshes for the app, widgets, Live Activities and complications.", comment: "Max Feature Description")
@@ -102,7 +109,39 @@ struct ProPromotionView: View {
                         FeatureRow(
                             icon: "server.rack",
                             title: NSLocalizedString("Why Max costs more", comment: "Max price explanation title"),
-                            description: NSLocalizedString("Every Max user receives thousands of push notifications per month. This requires a hosted server backend, which is why the higher price is unfortunately necessary.", comment: "Max price explanation description")
+                            description: NSLocalizedString("Every Max user receives thousands of push notifications per month. We use the subscription revenue to finance the required hosted server backend.", comment: "Max price explanation description")
+                        )
+                    }
+
+                    if selectedPromotion == .pro {
+                        SubscriptionOptionView(
+                            icon: "star.circle.fill",
+                            title: NSLocalizedString("Pro", comment: "Pro subscription option title"),
+                            subtitle: NSLocalizedString("Unlock Pro notifications, Live Activities, CarPlay and Watch statistics.", comment: "Pro subscription option subtitle"),
+                            showsHeader:purchaseManager.hasProFeatureAccess,
+                            price: purchaseManager.formattedProPrice,
+                            statusText: proStatusText,
+                            footnoteText: nil,
+                            buttonTitle: purchaseManager.hasProFeatureAccess ? nil : NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"),
+                            action: {
+                                purchaseManager.buyProVersion()
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        )
+                    } else {
+                        SubscriptionOptionView(
+                            icon: "bolt.badge.clock.fill",
+                            title: NSLocalizedString("Max", comment: "Max subscription option title"),
+                            subtitle: NSLocalizedString("Includes all Pro features plus Max Background Updates.", comment: "Max subscription option subtitle"),
+                            showsHeader: purchaseManager.isMaxAccessAvailable,
+                            price: purchaseManager.formattedMaxPrice,
+                            statusText: purchaseManager.isMaxAccessAvailable ? NSLocalizedString("Max Subscription Active", comment: "Max subscription active text") : nil,
+                            footnoteText: maxUpgradeFootnoteText,
+                            buttonTitle: purchaseManager.isMaxAccessAvailable ? nil : maxButtonTitle,
+                            action: {
+                                purchaseManager.buyMaxVersion()
+                                presentationMode.wrappedValue.dismiss()
+                            }
                         )
                     }
                 }
@@ -111,43 +150,12 @@ struct ProPromotionView: View {
                 .cornerRadius(12)
                 .padding(.horizontal)
 
-                // Subscription choices
-                VStack(spacing: 12) {
-                    SubscriptionOptionView(
-                        icon: "star.circle.fill",
-                        title: NSLocalizedString("Pro", comment: "Pro subscription option title"),
-                        subtitle: NSLocalizedString("Unlock Pro notifications, Live Activities, CarPlay and Watch statistics.", comment: "Pro subscription option subtitle"),
-                        price: purchaseManager.formattedProPrice,
-                        statusText: proStatusText,
-                        footnoteText: nil,
-                        buttonTitle: purchaseManager.hasProFeatureAccess ? nil : NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"),
-                        action: {
-                            purchaseManager.buyProVersion()
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    )
-
-                    SubscriptionOptionView(
-                        icon: "bolt.badge.clock.fill",
-                        title: NSLocalizedString("Max", comment: "Max subscription option title"),
-                        subtitle: NSLocalizedString("Includes all Pro features plus Max Background Updates.", comment: "Max subscription option subtitle"),
-                        price: purchaseManager.formattedMaxPrice,
-                        statusText: purchaseManager.isMaxAccessAvailable ? NSLocalizedString("Max Subscription Active", comment: "Max subscription active text") : nil,
-                        footnoteText: maxUpgradeFootnoteText,
-                        buttonTitle: purchaseManager.isMaxAccessAvailable ? nil : maxButtonTitle,
-                        action: {
-                            purchaseManager.buyMaxVersion()
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    )
-                    
-                    Button(action: {
-                        onRemindLater()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text(NSLocalizedString("Remind me later", comment: "Pro Promotion Remind Button"))
-                            .foregroundColor(Color.nightguardAccent)
-                    }
+                Button(action: {
+                    onRemindLater()
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text(NSLocalizedString("Remind me later", comment: "Pro Promotion Remind Button"))
+                        .foregroundColor(Color.nightguardAccent)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 20)
@@ -224,6 +232,7 @@ struct SubscriptionOptionView: View {
     let icon: String
     let title: String
     let subtitle: String
+    var showsHeader = true
     let price: String?
     let statusText: String?
     let footnoteText: String?
@@ -232,25 +241,27 @@ struct SubscriptionOptionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .top, spacing: 12) {
-                Image(systemName: icon)
-                    .font(.title2)
-                    .foregroundColor(Color.nightguardAccent)
-                    .frame(width: 30)
+            if showsHeader {
+                HStack(alignment: .top, spacing: 12) {
+                    Image(systemName: icon)
+                        .font(.title2)
+                        .foregroundColor(Color.nightguardAccent)
+                        .frame(width: 30)
 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
-                        .font(.headline)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(title)
+                            .font(.headline)
 
-                    if let statusText {
-                        Label(statusText, systemImage: "checkmark.seal.fill")
-                            .font(.caption)
-                            .foregroundColor(.green)
+                        if let statusText {
+                            Label(statusText, systemImage: "checkmark.seal.fill")
+                                .font(.caption)
+                                .foregroundColor(.green)
+                        }
+
+                        Text(subtitle)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
                     }
-
-                    Text(subtitle)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
                 }
             }
 

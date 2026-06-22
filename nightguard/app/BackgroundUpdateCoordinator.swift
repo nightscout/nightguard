@@ -69,6 +69,12 @@ final class BackgroundUpdateCoordinator {
                     category: .backgroundUpdates
                 )
 
+                let snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(from: nightscoutData)
+                AppLogger.singleton.debug(
+                    "\(trigger.rawValue) stored display snapshot: SGV=\(snapshot.sgv), timestamp=\(snapshot.timestamp)",
+                    category: .backgroundUpdates
+                )
+
                 AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
 

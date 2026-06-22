@@ -69,6 +69,11 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
 
         WatchMessageService.singleton.onMessage { (message: NightscoutDataMessage) in
             NightscoutDataRepository.singleton.storeCurrentNightscoutData(message.nightscoutData)
+            let displaySnapshot = message.displaySnapshot ?? NightguardDisplaySnapshot.make(from: message.nightscoutData)
+            NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(displaySnapshot)
+            WidgetCenter.shared.reloadTimelines(ofKind: "org.duckdns.dhe.nightguard.NightguardDefaultWidgets")
+            WidgetCenter.shared.reloadTimelines(ofKind: "org.duckdns.dhe.nightguard.NightguardTimestampWidgets")
+            WidgetCenter.shared.reloadTimelines(ofKind: "org.duckdns.dhe.nightguard.NightguardGaugeWidgets")
             MainController.mainViewModel.pushBackgroundData(newNightscoutData: message.nightscoutData)
         }
         

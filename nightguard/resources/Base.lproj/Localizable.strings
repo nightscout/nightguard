@@ -643,10 +643,12 @@
 "Pro" = "Pro";
 "Pro unlocks the core premium features. For push-based background updates, choose Max." = "Pro unlocks the core premium features. For push-based background updates, choose Max.";
 "Max includes Pro and adds the background update features below." = "Max includes Pro and adds the background update features below.";
+"All Pro Features" = "All Pro Features";
+"Includes every feature from the Pro subscription." = "Includes every feature from the Pro subscription.";
 "Dynamic Island and Live Activity Updates" = "Dynamic Island and Live Activity Updates";
 "Updating Dynamic Island and Live Activities in the background is only possible through push notifications in Max. This is an Apple limitation." = "Updating Dynamic Island and Live Activities in the background is only possible through push notifications in Max. This is an Apple limitation.";
 "Why Max costs more" = "Why Max costs more";
-"Every Max user receives thousands of push notifications per month. This requires a hosted server backend, which is why the higher price is unfortunately necessary." = "Every Max user receives thousands of push notifications per month. This requires a hosted server backend, which is why the higher price is unfortunately necessary.";
+"Every Max user receives thousands of push notifications per month. We use the subscription revenue to finance the required hosted server backend." = "Every Max user receives thousands of push notifications per month. We use the subscription revenue to finance the required hosted server backend.";
 "When upgrading from Pro to Max, Apple automatically accounts for your remaining Pro subscription time in the purchase dialog." = "When upgrading from Pro to Max, Apple automatically accounts for your remaining Pro subscription time in the purchase dialog.";
 
 /* App Tour */

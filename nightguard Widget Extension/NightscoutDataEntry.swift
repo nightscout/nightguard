@@ -85,6 +85,51 @@ struct NightscoutDataEntry: TimelineEntry {
         configuration: ConfigurationIntent())
 }
 
+extension NightscoutDataEntry {
+    init(snapshot: NightguardDisplaySnapshot) {
+        self.init(
+            date: snapshot.date,
+            sgv: snapshot.sgv,
+            sgvColor: UIColor(
+                red: CGFloat(snapshot.sgvColorRed),
+                green: CGFloat(snapshot.sgvColorGreen),
+                blue: CGFloat(snapshot.sgvColorBlue),
+                alpha: 1
+            ),
+            bgdeltaString: snapshot.bgdeltaString,
+            bgdeltaColor: UIColor(
+                red: CGFloat(snapshot.bgdeltaColorRed),
+                green: CGFloat(snapshot.bgdeltaColorGreen),
+                blue: CGFloat(snapshot.bgdeltaColorBlue),
+                alpha: 1
+            ),
+            bgdeltaArrow: snapshot.bgdeltaArrow,
+            bgdelta: Float(snapshot.bgdelta),
+            time: NSNumber(value: snapshot.timestamp),
+            battery: snapshot.battery,
+            iob: snapshot.iob,
+            cob: snapshot.cob,
+            snoozedUntilTimestamp: snapshot.snoozedUntilTimestamp,
+            lastBGValues: [
+                BgEntry(
+                    value: snapshot.sgv,
+                    valueColor: UIColor(
+                        red: CGFloat(snapshot.sgvColorRed),
+                        green: CGFloat(snapshot.sgvColorGreen),
+                        blue: CGFloat(snapshot.sgvColorBlue),
+                        alpha: 1
+                    ),
+                    delta: snapshot.bgdeltaString,
+                    timestamp: snapshot.timestamp,
+                    arrow: snapshot.bgdeltaArrow
+                )
+            ],
+            errorMessage: "",
+            configuration: ConfigurationIntent()
+        )
+    }
+}
+
 struct BgEntry : Identifiable, Hashable {
     
     let id = UUID() 

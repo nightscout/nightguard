@@ -7,9 +7,76 @@
 //
 
 import Foundation
+import UIKit
 #if canImport(WidgetKit)
 import WidgetKit
 #endif
+
+struct NightguardDisplaySnapshot: Codable, Hashable {
+    static let maxFreshAge: TimeInterval = 15 * 60
+
+    let sgv: String
+    let bgdeltaString: String
+    let bgdeltaArrow: String
+    let bgdelta: Double
+    let timestamp: TimeInterval
+    let battery: String
+    let iob: String
+    let cob: String
+    let snoozedUntilTimestamp: TimeInterval
+    let sgvColorRed: Double
+    let sgvColorGreen: Double
+    let sgvColorBlue: Double
+    let bgdeltaColorRed: Double
+    let bgdeltaColorGreen: Double
+    let bgdeltaColorBlue: Double
+    let createdAt: Date
+
+    var date: Date {
+        Date(timeIntervalSince1970: timestamp / 1000)
+    }
+
+    func isFresh(referenceDate: Date = Date(), maxAge: TimeInterval = maxFreshAge) -> Bool {
+        referenceDate.timeIntervalSince(date) <= maxAge
+    }
+
+    static func make(from data: NightscoutData) -> NightguardDisplaySnapshot {
+        let displaySgv = UnitsConverter.mgdlToDisplayUnits(data.sgv)
+        let displayDelta = UnitsConverter.mgdlToDisplayUnitsWithSign("\(data.bgdelta)")
+        let sgvColor = UIColorChanger.getBgColor(displaySgv)
+        let bgdeltaColor = UIColorChanger.getDeltaLabelColor(data.bgdelta)
+        let sgvComponents = colorComponents(from: sgvColor)
+        let bgdeltaComponents = colorComponents(from: bgdeltaColor)
+
+        return NightguardDisplaySnapshot(
+            sgv: displaySgv,
+            bgdeltaString: displayDelta,
+            bgdeltaArrow: data.bgdeltaArrow,
+            bgdelta: Double(data.bgdelta),
+            timestamp: data.time.doubleValue,
+            battery: data.battery,
+            iob: data.iob,
+            cob: data.cob,
+            snoozedUntilTimestamp: AlarmRule.snoozedUntilTimestamp.value,
+            sgvColorRed: sgvComponents.red,
+            sgvColorGreen: sgvComponents.green,
+            sgvColorBlue: sgvComponents.blue,
+            bgdeltaColorRed: bgdeltaComponents.red,
+            bgdeltaColorGreen: bgdeltaComponents.green,
+            bgdeltaColorBlue: bgdeltaComponents.blue,
+            createdAt: Date()
+        )
+    }
+
+    private static func colorComponents(from color: UIColor) -> (red: Double, green: Double, blue: Double) {
+        var red: CGFloat = 1
+        var green: CGFloat = 1
+        var blue: CGFloat = 1
+        var alpha: CGFloat = 1
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return (Double(red), Double(green), Double(blue))
+    }
+}
 
 // Repository to store BgData using the NSUserDefaults
 class NightscoutDataRepository {
@@ -27,6 +94,7 @@ class NightscoutDataRepository {
         static let batteryChangeTime = "batteryChangeTime"
         static let deviceStatus = "deviceStatus"
         static let temporaryTarget = "temporaryTarget"
+        static let latestDisplaySnapshot = "latestDisplaySnapshot"
     }
     
     var isEmpty: Bool {
@@ -70,6 +138,28 @@ class NightscoutDataRepository {
             return NightscoutData()
         }
         return nightscoutData
+    }
+
+    func storeLatestDisplaySnapshot(_ snapshot: NightguardDisplaySnapshot) {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let data = try? JSONEncoder().encode(snapshot)
+        defaults?.set(data, forKey: Constants.latestDisplaySnapshot)
+    }
+
+    @discardableResult
+    func storeLatestDisplaySnapshot(from data: NightscoutData) -> NightguardDisplaySnapshot {
+        let snapshot = NightguardDisplaySnapshot.make(from: data)
+        storeLatestDisplaySnapshot(snapshot)
+        return snapshot
+    }
+
+    func loadLatestDisplaySnapshot() -> NightguardDisplaySnapshot? {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID),
+              let data = defaults.object(forKey: Constants.latestDisplaySnapshot) as? Data else {
+            return nil
+        }
+
+        return try? JSONDecoder().decode(NightguardDisplaySnapshot.self, from: data)
     }
     
     func storeTodaysBgData(_ todaysBgData : [BloodSugar]) {
