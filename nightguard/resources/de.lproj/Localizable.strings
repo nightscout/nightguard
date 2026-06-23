@@ -1,17 +1,12 @@
 /* Single line footer for Fast rise/drop */
-"%@ %@ in %d consecutive readings" = "%1$@ %2$@ in %3$d aufeinanderfolgenden Werten";
 
 /* Single line footer for predicted low */
-"%d minutes" = "%d Minuten";
 
 /* Option in low predicion alert settings */
-"%d Minutes" = "%d Minuten";
 
 /* Single line footer for Persistent high */
-"%d minutes < %d)." = "%1$d Minuten < %2$d).";
 
 /* Single line footer for missed readings alert */
-"%d minutes." = "%d Minuten.";
 
 /* Option */
 "1 Minute" = "1 Minute";
@@ -119,13 +114,11 @@
 "IFCC A1c" = "IFCC HbA1c";
 
 /* Title for confirmation */
-"IMPORTANT" = "WICHTIG";
 
 /* Button value for In range */
 "In Range" = "Im Ziel";
 
 /* Invalid data from NS entries API */
-"Invalid data with HTML received from Nightscout entries API" = "Ungültige HTML Daten von Ihrem Nightscout Server erhalten";
 
 /* Invalid readings */
 "Invalid readings" = "Ungültige Werte";
@@ -152,13 +145,12 @@
 "Low BG Alert" = "Alarm bei niedrigen Werten unter";
 
 /* Show low prediction warning */
-"Low Predicted in %dmin" = "Niedrig vorhergesagt in %dMin";
+"Low Predicted in %dmin" = "Niedrig vorhergesagt in %d Min.";
 
 /* Alarm settings title: Low prediction */
 "Low Prediction" = "Niedrig Vorhersage";
 
 /* Title in low predicion alert settings */
-"Low Prediction2" = "Niedrig Vorhersage";
 
 /* plurar unit */
 "minutes" = "Minuten";
@@ -179,7 +171,6 @@
 "No data received from Nightscout status API" = "Keine Werte von der Nightscout status API";
 
 /* No data from Pebble API */
-"No data received from Pebble Watch API" = "Keine Werte von der Pebble Watch API";
 
 /* Alert off */
 "Off" = "Aus";
@@ -209,7 +200,6 @@
 "Readings %" = "Werte %";
 
 /* Footer for Reduce screen brightness */
-"Reduce screen brightness after detecting user inactivity for more than selected time period." = "Bei längerer Inaktivität als selektiert die Helligkeit reduzieren.";
 
 /* Label for Apple Health access revocation */
 "Revoke access in Apple Health" = "Wiederrufe den Zugriff in Apple Health";
@@ -233,7 +223,7 @@
 "Snooze (do not alert) when values are high or low but the trend is going in the right direction." = "Schlummere (KEIN Alarm) bei hohen oder niedrigen Werten aber Trend in die richtige Richtung.";
 
 /* Snoozed duration in main page */
-"Snoozed for %dmin" = "Schlummere %dMin";
+"Snoozed for %dmin" = "Schlummern: %d Min.";
 
 /* Snoozed duration on watch */
 "Snoozed %dmin" = "Schlummere %dMin";
@@ -290,12 +280,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 /* Stats button value for Yesterday */
 "Yesterday" = "Gestern";
 
-/* Snoozed Label in Bedside Controller */
-"Snoozed for %dmin" = "Schlummern %dMin";
-
-/* Low Predicted Label in Bedside Controller */
-"Low Predicted in %dmin" = "Niedrig in %dMin";
-
 /* Persistent High BG in AlarmRule Class */
 "Persistent High BG" = "Dauerhaft Hoch";
 
@@ -311,14 +295,8 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 /* Fast Drop in AlarmRule Class */
 "Fast Drop" = "Fallend";
 
-/* Low Predicted in %dmin in AlarmRule Class */
-"Low Predicted in %dmin" = "Niedrig in %dMin";
-
 /* shorter text for watch: Low in %dmin in AlarmRule Class */
 "Low in %dmin" = "Niedrig %dMin";
-
-/* Watch Popup Info Label */
-"Info" = "Info";
 
 /* Watch Popup Refresh Label */
 "Refresh" = "Aktualisieren";
@@ -327,10 +305,8 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Snooze" = "Schlummern";
 
 /* Watch Popup Scroll Label */
-"Scroll" = "Scrollen";
 
 /* Watch Popup Zoom Label */
-"Zoom" = "Zoomen";
 
 /* Watch Interface Controller Cancel Label */
 "Cancel" = "Abbrechen";
@@ -393,7 +369,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Decline" = "Abbrechen";
 
 /* Set Target Message Title */
-"Set Target '%@'?" = "Temporäres Ziel '%@'?";
 
 /* Set Target Message Text */
 "Do you want to set a temporary target for %d minutes?" = "Möchten Sie das temporäre Ziel für %d Minuten setzen?";
@@ -406,9 +381,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Label for Temporary Target Duration */
 "Duration" = "Dauer";
-
-/* Minutes TT Unit */
-"minutes" = "Minuten";
 
 /* Hour TT Unit */
 "hour" = "Stunde";
@@ -462,10 +434,9 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Delete Target" = "Ziel abbrechen";
 
 /* Add Carbs Popup Title */
-"Add Carbs" = "Kohlenhydrate erfassen";
+"Add Carbs" = "Kohlenhydrate hinzufügen";
 
 /* Cancel Target Popup Text */
-"Do you want to enter %dg of consumed carbs?" = "Möchten Sie %dg Kohlenhydrate erfassen?";
 
 /* Section to enter Carbs */
 "Enter consumed Carbs" = "Kohlenhydrate erfassen";
@@ -473,14 +444,11 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 /* Label for the amount of carbs in gramm */
 "Gramms [g]" = "Gramm [g]";
 
-/* Button to add consumed Carbs */
-"Add Carbs" = "Kohlenhydrate hinzufügen";
-
 /* Add carbs popup modal text */
 "Do you want to add %dg of carbs?" = "Möchten Sie %dg Kohlenhydrate erfassen?";
 
 /* Snooze Menu Popup Button Text */
-"Stop Snoozing" = "Stopp Schlummern";
+"Stop Snoozing" = "Schlummern stoppen";
 
 /* Watch Snooze Menu Button 5min */
 "5min" = "5min";
@@ -520,9 +488,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Snooze popup title */
 "Snooze Alarms for" = "Alarme stoppen für";
-
-/* Stop Snoozing button */
-"Stop Snoozing" = "Schlummern stoppen";
 
 /* Main tab */
 "Main" = "Übersicht";
@@ -621,7 +586,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "days" = "Tage";
 
 /* Unit: hours */
-"hours" = "Stunden";
 
 /* Reservoir section header */
 "Reservoir" = "Reservoir";
@@ -641,9 +605,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 /* Pro Features Section Header */
 "Pro Features" = "Pro Funktionen";
 
-/* Pro Version Unlocked Text */
-"Pro Version Unlocked" = "Pro Abo aktiv";
-
 /* Button to start the app tour */
 "Start App Tour" = "App-Tour starten";
 
@@ -656,25 +617,25 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Cannula Age Critical" = "Katheder Alter kritisch";
 
 /* Cannula Age Notification Body */
-"Your cannula has reached its critical age." = "Dein Katheder hat das kritische Alter erreicht (%@).";
+"Your cannula has reached its critical age (%@)." = "Dein Katheter hat das kritische Alter erreicht (%@).";
 
 /* Sensor Age Notification Title */
 "Sensor Age Critical" = "Sensor Alter kritisch";
 
 /* Sensor Age Notification Body */
-"Your sensor has reached its critical age." = "Dein Sensor hat das kritische Alter erreicht (%@).";
+"Your sensor has reached its critical age (%@)." = "Dein Sensor hat das kritische Alter erreicht (%@).";
 
 /* Battery Age Notification Title */
 "Battery Age Critical" = "Pumpenbatterie Alter kritisch";
 
 /* Battery Age Notification Body */
-"Your pump battery has reached its critical age." = "Deine Pumpenbatterie hat das kritische Alter erreicht (%@).";
+"Your pump battery has reached its critical age (%@)." = "Deine Pumpenbatterie hat das kritische Alter erreicht (%@).";
 
 /* Reservoir Critical Notification Title */
 "Reservoir Critical" = "Reservoir kritisch";
 
 /* Reservoir Critical Notification Body */
-"Your reservoir is low." = "Dein Reservoir ist fast leer (%d Einheiten).";
+"Your reservoir is low (%d units)." = "Dein Reservoir ist fast leer (%d Einheiten).";
 
 /* Disclaimer Popup Title */
 "Disclaimer!" = "Haftungsausschluss!";
@@ -697,8 +658,6 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Tap to change" = "Tippen zum Wechseln";
 "Support & Subscribe" = "Unterstützen & Abonnieren";
 "Remind me later" = "Später erinnern";
-"Not now" = "Nicht jetzt";
-"Pro Version Unlocked" = "Pro Version freigeschaltet";
 "Max" = "Max";
 "Pro" = "Pro";
 "Pro unlocks the core premium features. For push-based background updates, choose Max." = "Pro schaltet die wichtigsten Premium-Funktionen frei. Für Push-basierte Hintergrundupdates wähle Max.";
@@ -737,6 +696,47 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "No active subscription found to restore." = "Kein aktives Abonnement zum Wiederherstellen gefunden.";
 "Purchases restored successfully." = "Käufe erfolgreich wiederhergestellt.";
 "Restore failed: %@" = "Wiederherstellung fehlgeschlagen: %@";
+
+/* Localization audit */
+"Alarm Name" = "Alarmname";
+"Alarm Sound" = "Alarmton";
+"BG Gauge" = "BZ-Anzeige";
+"BG Text" = "BZ-Text";
+"BG Values as Gauge" = "BZ-Werte als Anzeige";
+"BG Values as Text" = "BZ-Werte als Text";
+"BG with absolute Time" = "BZ mit absoluter Zeit";
+"Check BG every minute" = "BZ jede Minute prüfen";
+"Custom Alarm Sound" = "Eigener Alarmton";
+"Crown Zooms" = "Krone zoomt";
+"Define your own Alarm Sound by uploading an mp3 file from your iCloud account." = "Lege einen eigenen Alarmton fest, indem du eine MP3-Datei aus deinem iCloud-Account hochlädst.";
+"High Alert" = "Alarm bei hohen Werten";
+"If activated, a user defined alarm sound will be used." = "Wenn aktiviert, wird ein benutzerdefinierter Alarmton verwendet.";
+"Invalid change" = "Ungültige Änderung";
+"Invalid JSON received from API V2 Properties" = "Ungültiges JSON von API V2 Properties empfangen";
+"Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration." = "Ungültiges JSON von API V2 Properties empfangen: BZ-Daten fehlen. Prüfe die Nightscout-Konfiguration.";
+"Invalid JSON received from Entries V2 API" = "Ungültiges JSON von der Entries V2 API empfangen";
+"Low Alert" = "Alarm bei niedrigen Werten";
+"Max Background Updates" = "Max-Hintergrundaktualisierungen";
+"Max Subscription Active" = "Max-Abo aktiv";
+"NIGHTSCOUT" = "NIGHTSCOUT";
+"No" = "Nein";
+"No data received from API V2 Properties" = "Keine Daten von API V2 Properties empfangen";
+"No Gauge Support for this widget!" = "Dieses Widget unterstützt keine Anzeige!";
+"Not an implemented widget yet" = "Dieses Widget ist noch nicht implementiert";
+"Pick Custom Alarm Sound" = "Eigenen Alarmton auswählen";
+"Pro Features Included" = "Pro-Funktionen enthalten";
+"Show Care/Loop Data" = "Care-/Loop-Daten anzeigen";
+"Show Yesterdays BGs" = "BZ-Werte von gestern anzeigen";
+"Silent push wakeups improve background refreshes for the app, widgets, Live Activities and complications." = "Stille Push-Aktivierungen verbessern die Hintergrundaktualisierung der App, Widgets, Live Activities und Komplikationen.";
+"Snooze 30m" = "30 Min. schlummern";
+"Snooze all alarms for 30 minutes" = "Alle Alarme für 30 Minuten schlummern";
+"Subscribe to Max" = "Max abonnieren";
+"Upgrade to Max" = "Auf Max upgraden";
+"Yes" = "Ja";
+"Do you like the app?" = "Gefällt dir die App?";
+"If you like Nightguard, we would appreciate a review in the App Store." = "Wenn dir Nightguard gefällt, würden wir uns über eine Bewertung im App Store freuen.";
+"Pro Subscription Active" = "Pro-Abo aktiv";
+" ago" = " her";
 
 /* Legal section header */
 "Legal" = "Rechtliches";

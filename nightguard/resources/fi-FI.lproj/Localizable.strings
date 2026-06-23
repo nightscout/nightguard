@@ -1,17 +1,12 @@
 /* Single line footer for Fast rise/drop */
-"%@ %@ in %d consecutive readings" = "%1@ %2$@ %3$d peräkkäisessä lukemassa";
 
 /* Single line footer for predicted low */
-"%d minutes" = "%d minuuttia";
 
 /* Option in low predicion alert settings */
-"%d Minutes" = "%d minuuttia";
 
 /* Single line footer for Persistent high */
-"%d minutes < %d)." = "%1$d minuuttia < %2$d).";
 
 /* Single line footer for missed readings alert */
-"%d minutes." = "%d minuuttia.";
 
 /* Option */
 "1 Minute" = "1 minuutti";
@@ -119,13 +114,11 @@
 "IFCC A1c" = "IFCC A1c";
 
 /* Title for confirmation */
-"IMPORTANT" = "TÄRKEÄÄ";
 
 /* Button value for In range */
 "In Range" = "Tavoitteessa";
 
 /* Invalid data from NS entries API */
-"Invalid data with HTML received from Nightscout entries API" = "Virheellinen HTML data Nightscout merkintä APIsta";
 
 /* Invalid readings */
 "Invalid readings" = "Virheelliset lukemat";
@@ -152,13 +145,12 @@
 "Low BG Alert" = "Matala verensokeri";
 
 /* Show low prediction warning */
-"Low Predicted in %dmin" = "Matala %dmin";
+"Low Predicted in %dmin" = "Matala arvo ennustettu %d min kuluttua";
 
 /* Alarm settings title: Low prediction */
 "Low Prediction" = "Matalan ennuste";
 
 /* Title in low predicion alert settings */
-"Low Prediction2" = "Matalan ennuste";
 
 /* Option */
 "Minutes" = "minuuttia";
@@ -179,7 +171,6 @@
 "No data received from Nightscout status API" = "Ei dataa Nightscout status APIsta";
 
 /* No data from Pebble API */
-"No data received from Pebble Watch API" = "Ei dataa Pebble Watch APIsta";
 
 /* Alert off */
 "Off" = "Pois päältä";
@@ -209,7 +200,6 @@
 "Readings %" = "Lukema %";
 
 /* Footer for Reduce screen brightness */
-"Reduce screen brightness after detecting user inactivity for more than selected time period." = "Vähennä näytön kirkkautta kun passiivisuus yli valitun ajan.";
 
 /* Label for Apple Health access revocation */
 "Revoke access in Apple Health" = "Peru Apple Terveyden käyttöoikeus";
@@ -313,12 +303,6 @@
 /* Stats button value for Yesterday */
 "Yesterday" = "Eilen";
 
-/* Snoozed Label in Bedside Controller */
-"Snoozed for %dmin" = "Torkku %dmin";
-
-/* Low Predicted Label in Bedside Controller */
-"Low Predicted in %dmin" = "Matalan ennuste %dmin";
-
 /* Persistent High BG in AlarmRule Class */
 "Persistent High BG" = "Jatkuva korkea";
 
@@ -334,14 +318,8 @@
 /* Fast Drop in AlarmRule Class */
 "Fast Drop" = "Nopea lasku";
 
-/* Low Predicted in %dmin in AlarmRule Class */
-"Low Predicted in %dmin" = "Matalan ennuste %dmin";
-
 /* shorter text for watch: Low in %dmin in AlarmRule Class */
 "Low in %dmin" = "Matala %dmin";
-
-/* Watch Popup Info Label */
-"Info" = "Info";
 
 /* Watch Popup Refresh Label */
 "Refresh" = "Päivitä";
@@ -350,10 +328,8 @@
 "Snooze" = "Torkku";
 
 /* Watch Popup Scroll Label */
-"Scroll" = "Vieritys";
 
 /* Watch Popup Zoom Label */
-"Zoom" = "Zoomaus";
 
 /* Watch Interface Controller Cancel Label */
 "Cancel" = "Peruuta";
@@ -416,7 +392,6 @@
 "Decline" = "Peruuta";
 
 /* Set Target Message Title */
-"Set Target '%@'?" = "Aseta tavoite '%@'?";
 
 /* Set Target Message Text */
 "Do you want to set a temporary target for %d minutes?" = "Haluatko asettaa väliaikaisen tavoitteen %d minuutiksi?";
@@ -429,9 +404,6 @@
 
 /* Label for Temporary Target Duration */
 "Duration" = "Kesto";
-
-/* Minutes TT Unit */
-"minutes" = "minuuttia";
 
 /* Hour TT Unit */
 "hour" = "tunti";
@@ -488,16 +460,12 @@
 "Add Carbs" = "Lisää hiilihydraatit";
 
 /* Cancel Target Popup Text */
-"Do you want to enter %dg of consumed carbs?" = "Haluatko syöttää %dg kulutettuja hiilihydraatteja?";
 
 /* Section to enter Carbs */
 "Enter consumed Carbs" = "Syötä kulutetut hiilihydraatit";
 
 /* Label for the amount of carbs in gramm */
 "Gramms [g]" = "Määrä [g]";
-
-/* Button to add consumed Carbs */
-"Add Carbs" = "Lisää hiilihydraatit";
 
 /* Add carbs popup modal text */
 "Do you want to add %dg of carbs?" = "Haluatko lisätä %dg hiilihydraatteja?";
@@ -544,15 +512,6 @@
 /* Watch Action Button Menu */
 "Crown Zooms" = "Crown zoomaa";
 
-/* Watch Action Button Menu */
-"Refresh" = "Päivitä";
-
-/* Watch Action Button Menu */
-"Snooze" = "Torkku";
-
-/* Label for Show Care/Loop Data */
-"Show Care/Loop Data" = "Näytä Care/Loop tiedot";
-
 /* Alarm settings title: Custom Alarm Sound */
 "Alarm Sound" = "Hälytysääni";
 
@@ -587,10 +546,8 @@
 "Save" = "Tallenna";
 
 /* Button to reset the new Cannula Change Date */
-"Reset Cannula Change Date" = "Nollaa kanyylin vaihtopäivämäärä";
 
 /* Button to activate the new Cannula Change Date */
-"Set new Cannula Change Date" = "Aseta kanyylin vaihtopäivämäärä";
 
 /* Modify Cannula Change Date Popup Title */
 "Modify Cannula Change Date" = "Muokkaa kanyylin vaihtopäivämäärä";
@@ -605,10 +562,8 @@
 "Sensor change date" = "Sensori vaihdettu";
 
 /* Button to reset the new Sensor Change Date */
-"Reset Sensor Change Date" = "Nollaa sensorin vaihtopäivämäärä";
 
 /* Button to activate the new Sensor Change Date */
-"Set new Sensor Change Date" = "Aseta sensorin vaihtopäivämäärä";
 
 /* Modify Sensor Change Date Popup Title */
 "Modify Sensor Change Date" = "Muokkaa sensorin vaihtopäivämäärä";
@@ -623,10 +578,8 @@
 "Battery change date" = "Akku vaihdettu";
 
 /* Button to reset the new Battery Change Date */
-"Reset Battery Change Date" = "Nollaa akun vaihtopäivämäärä";
 
 /* Button to activate the new Sensor Change Date */
-"Set new Battery Change Date" = "Aseta akun vaihtopäivämäärä";
 
 /* Modify Battery Change Date Popup Title */
 "Modify Battery Change Date" = "Muokkaa akun vaihtopäivämäärää";
@@ -676,9 +629,6 @@
 /* Care tab */
 "Care" = "Huolenpito";
 
-/* Duration tab */
-"Duration" = "Kesto";
-
 /* Stats tab */
 "Stats" = "Tilastot";
 
@@ -687,9 +637,6 @@
 
 /* Snooze popup title */
 "Snooze Alarms for" = "Torkuta hälytykset";
-
-/* Stop Snoozing button */
-"Stop Snoozing" = "Lopeta torkku";
 
 /* Close button */
 "Close" = "Sulje";
@@ -728,7 +675,6 @@
 "days" = "päivää";
 
 /* Unit: hours */
-"hours" = "tuntia";
 
 /* Days label */
 "Days" = "d";
@@ -738,9 +684,6 @@
 
 /* Pro Features Section Header */
 "Pro Features" = "Pro-ominaisuudet";
-
-/* Pro Version Unlocked Text */
-"Pro Version Unlocked" = "Pro-tilaus aktiivinen";
 
 /* Button to start the app tour */
 "Start App Tour" = "Aloita sovellusesittely";
@@ -755,19 +698,19 @@
 "Cannula Age Critical" = "Kanyylin ikä kriittinen";
 
 /* Cannula Age Notification Body */
-"Your cannula has reached its critical age." = "Kanyyli on saavuttanut kriittisen iän (%@).";
+"Your cannula has reached its critical age (%@)." = "Kanyyli on saavuttanut kriittisen iän (%@).";
 
 /* Sensor Age Notification Title */
 "Sensor Age Critical" = "Sensorin ikä kriittinen";
 
 /* Sensor Age Notification Body */
-"Your sensor has reached its critical age." = "Sensori on saavuttanut kriittisen iän (%@).";
+"Your sensor has reached its critical age (%@)." = "Sensori on saavuttanut kriittisen iän (%@).";
 
 /* Battery Age Notification Title */
 "Battery Age Critical" = "Akun ikä kriittinen";
 
 /* Battery Age Notification Body */
-"Your pump battery has reached its critical age." = "Pumpun akku on saavuttanut kriittisen iän (%@).";
+"Your pump battery has reached its critical age (%@)." = "Pumpun akku on saavuttanut kriittisen iän (%@).";
 
 /* Disclaimer Popup Title */
 "Disclaimer!" = "Vastuuvapauslauseke!";
@@ -790,8 +733,6 @@
 "Tap to change" = "Vaihda napauttamalla";
 "Support & Subscribe" = "Tue ja tilaa";
 "Remind me later" = "Muistuta myöhemmin";
-"Not now" = "Ei nyt";
-"Pro Version Unlocked" = "Pro-versio avattu";
 "Max" = "Max";
 "Pro" = "Pro";
 "Pro unlocks the core premium features. For push-based background updates, choose Max." = "Pro avaa tärkeimmät premium-ominaisuudet. Valitse Max push-pohjaisia taustapäivityksiä varten.";
@@ -830,6 +771,32 @@
 "No active subscription found to restore." = "Aktiivista tilausta ei löytynyt palautettavaksi.";
 "Purchases restored successfully." = "Ostot palautettu onnistuneesti.";
 "Restore failed: %@" = "Palautus epäonnistui: %@";
+
+/* Localization audit */
+"%d units" = "%d yksikköä";
+"High Alert" = "Korkean arvon hälytys";
+"Invalid change" = "Virheellinen muutos";
+"Invalid JSON received from Entries V2 API" = "Entries V2 API palautti virheellistä JSON-dataa";
+"Low Alert" = "Matalan arvon hälytys";
+"Max Background Updates" = "Max-taustapäivitykset";
+"Max Subscription Active" = "Max-tilaus aktiivinen";
+"NIGHTSCOUT" = "NIGHTSCOUT";
+"No" = "Ei";
+"Pro Features Included" = "Pro-ominaisuudet sisältyvät tilaukseen";
+"Reservoir" = "Säiliö";
+"Reservoir Critical" = "Säiliön taso kriittinen";
+"Set thresholds for reservoir alerts. Warning turns the label yellow, Critical turns it red." = "Aseta säiliöhälytysten raja-arvot. Varoitus muuttaa merkinnän keltaiseksi ja kriittinen hälytys punaiseksi.";
+"Silent push wakeups improve background refreshes for the app, widgets, Live Activities and complications." = "Hiljaiset push-herätykset parantavat sovelluksen, widgettien, Live-aktiviteettien ja komplikaatioiden taustapäivityksiä.";
+"Snooze 30m" = "Torkuta 30 min";
+"Snooze all alarms for 30 minutes" = "Torkuta kaikkia hälytyksiä 30 minuuttia";
+"Subscribe to Max" = "Tilaa Max";
+"Upgrade to Max" = "Päivitä Maxiin";
+"Yes" = "Kyllä";
+"Your reservoir is low (%d units)." = "Säiliö on vähissä (%d yksikköä).";
+"Do you like the app?" = "Pidätkö sovelluksesta?";
+"If you like Nightguard, we would appreciate a review in the App Store." = "Jos pidät Nightguardista, arvostaisimme arvostelua App Storessa.";
+"Pro Subscription Active" = "Pro-tilaus aktiivinen";
+" ago" = " sitten";
 
 /* Legal section header */
 "Legal" = "Lakitiedot";

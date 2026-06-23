@@ -31,7 +31,7 @@ struct ProFeaturesSectionView: View {
                         .foregroundColor(.green)
                     Text(purchaseManager.isMaxAccessAvailable
                          ? NSLocalizedString("Pro Features Included", comment: "Pro features included with Max text")
-                         : NSLocalizedString("Pro Version Unlocked", comment: "Pro Version Unlocked Text"))
+                         : NSLocalizedString("Pro Subscription Active", comment: "Pro subscription active text"))
                 }
                 if purchaseManager.isMaxAccessAvailable {
                     HStack {

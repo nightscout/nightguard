@@ -156,7 +156,7 @@ class AlarmNotificationService: ObservableObject {
 
         let content = UNMutableNotificationContent()
         content.title = NSLocalizedString("Reservoir Critical", comment: "Reservoir Critical Notification Title")
-        content.body = String(format: NSLocalizedString("Your reservoir is low.", comment: "Reservoir Critical Notification Body"), reservoirUnits)
+        content.body = String(format: NSLocalizedString("Your reservoir is low (%d units).", comment: "Reservoir Critical Notification Body"), reservoirUnits)
         content.sound = .defaultCritical
         
         let request = UNNotificationRequest(identifier: "ReservoirCritical", content: content, trigger: nil)
@@ -172,7 +172,7 @@ class AlarmNotificationService: ObservableObject {
             changeDate: changeDate,
             criticalHours: criticalHours,
             title: NSLocalizedString("Cannula Age Critical", comment: "Cannula Age Notification Title"),
-            body: NSLocalizedString("Your cannula has reached its critical age.", comment: "Cannula Age Notification Body")
+            body: NSLocalizedString("Your cannula has reached its critical age (%@).", comment: "Cannula Age Notification Body")
         )
     }
 
@@ -183,7 +183,7 @@ class AlarmNotificationService: ObservableObject {
             changeDate: changeDate,
             criticalHours: criticalHours,
             title: NSLocalizedString("Sensor Age Critical", comment: "Sensor Age Notification Title"),
-            body: NSLocalizedString("Your sensor has reached its critical age.", comment: "Sensor Age Notification Body")
+            body: NSLocalizedString("Your sensor has reached its critical age (%@).", comment: "Sensor Age Notification Body")
         )
     }
 
@@ -194,7 +194,7 @@ class AlarmNotificationService: ObservableObject {
             changeDate: changeDate,
             criticalHours: criticalHours,
             title: NSLocalizedString("Battery Age Critical", comment: "Battery Age Notification Title"),
-            body: NSLocalizedString("Your pump battery has reached its critical age.", comment: "Battery Age Notification Body")
+            body: NSLocalizedString("Your pump battery has reached its critical age (%@).", comment: "Battery Age Notification Body")
         )
     }
 

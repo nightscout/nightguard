@@ -395,15 +395,15 @@ struct MainView: View {
         .fullScreenCover(isPresented: $showFullscreenMonitor) {
             BedsideView(currentNightscoutData: viewModel.nightscoutData)
         }
-        .alert(NSLocalizedString("Gefällt dir die App?", comment: "Review prompt title"), isPresented: $showReviewPrompt) {
-            Button(NSLocalizedString("Nein", comment: "Review prompt no button"), role: .destructive) {
+        .alert(NSLocalizedString("Do you like the app?", comment: "Review prompt title"), isPresented: $showReviewPrompt) {
+            Button(NSLocalizedString("No", comment: "Review prompt no button"), role: .destructive) {
                 UserDefaultsRepository.markReviewDeclinedForever()
             }
-            Button(NSLocalizedString("Ja", comment: "Review prompt yes button")) {
+            Button(NSLocalizedString("Yes", comment: "Review prompt yes button")) {
                 requestAppStoreReview()
             }
         } message: {
-            Text(NSLocalizedString("Wenn dir Nightguard gefällt, würden wir uns über eine Bewertung im App Store freuen.", comment: "Review prompt message"))
+            Text(NSLocalizedString("If you like Nightguard, we would appreciate a review in the App Store.", comment: "Review prompt message"))
         }
     }
 

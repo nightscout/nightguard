@@ -1,17 +1,12 @@
 /* Single line footer for Fast rise/drop */
-"%@ %@ in %d consecutive readings" = "%1$@ %2$@ in %3$d consecutive readings";
 
 /* Single line footer for predicted low */
-"%d minutes" = "%d minutes";
 
 /* Option in low predicion alert settings */
-"%d Minutes" = "%d Minutes";
 
 /* Single line footer for Persistent high */
-"%d minutes < %d)." = "%1$d minutes < %2$d).";
 
 /* Single line footer for missed readings alert */
-"%d minutes." = "%d minutes.";
 
 /* Option */
 "1 Minute" = "1 Minute";
@@ -144,10 +139,8 @@
 "Do you want to cancel an active temporary target?" = "Do you want to cancel an active temporary target?";
 
 /* Cancel Target Popup Text */
-"Do you want to enter %dg of consumed carbs?" = "Do you want to enter %dg of consumed carbs?";
 
 /* Cancel Target Popup Text */
-"Do you want to modify the change date to " = "Do you want to modify the change date to ";
 
 /* Set Target Message Text */
 "Do you want to set a temporary target for %d minutes?" = "Do you want to set a temporary target for %d minutes?";
@@ -269,7 +262,6 @@
 "Low Prediction" = "Low Prediction";
 
 /* Title in low predicion alert settings */
-"Low Prediction2" = "Low Prediction2";
 
 /* Label for Manually set Units */
 "Manually set Units" = "Manually set Units";
@@ -319,7 +311,6 @@
 "OK" = "OK";
 
 /* Popup Error-Ok-Button */
-"Ok" = "Ok";
 
 /* Link to NS site */
 "Open your Nightscout site" = "Open your Nightscout site";
@@ -358,7 +349,6 @@
 "Reason" = "Reason";
 
 /* Footer for Reduce screen brightness */
-"Reduce screen brightness after detecting user inactivity for more than selected time period." = "Reduce screen brightness after detecting user inactivity for more than selected time period.";
 
 /* Button to reset the Cannula Change Date
    Button to reset the Change Date */
@@ -387,7 +377,6 @@
 "Set Target" = "Set Target";
 
 /* Set Target Message Title */
-"Set Target '%@'?" = "Set Target '%@'?";
 
 /* Footer for Cannula Change Date */
 "Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date." = "Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date.";
@@ -560,7 +549,6 @@
 "days" = "days";
 
 /* Unit: hours */
-"hours" = "hours";
 
 /* Reservoir section header */
 "Reservoir" = "Reservoir";
@@ -580,9 +568,6 @@
 /* Pro Features Section Header */
 "Pro Features" = "Pro Features";
 
-/* Pro Version Unlocked Text */
-"Pro Version Unlocked" = "Pro Subscription Active";
-
 /* Button to start the app tour */
 "Start App Tour" = "Start App Tour";
 
@@ -596,25 +581,25 @@
 "Cannula Age Critical" = "Cannula Age Critical";
 
 /* Cannula Age Notification Body */
-"Your cannula has reached its critical age." = "Your cannula has reached its critical age (%@).";
+"Your cannula has reached its critical age (%@)." = "Your cannula has reached its critical age (%@).";
 
 /* Sensor Age Notification Title */
 "Sensor Age Critical" = "Sensor Age Critical";
 
 /* Sensor Age Notification Body */
-"Your sensor has reached its critical age." = "Your sensor has reached its critical age (%@).";
+"Your sensor has reached its critical age (%@)." = "Your sensor has reached its critical age (%@).";
 
 /* Battery Age Notification Title */
 "Battery Age Critical" = "Battery Age Critical";
 
 /* Battery Age Notification Body */
-"Your pump battery has reached its critical age." = "Your pump battery has reached its critical age (%@).";
+"Your pump battery has reached its critical age (%@)." = "Your pump battery has reached its critical age (%@).";
 
 /* Reservoir Critical Notification Title */
 "Reservoir Critical" = "Reservoir Critical";
 
 /* Reservoir Critical Notification Body */
-"Your reservoir is low." = "Your reservoir is low (%d units).";
+"Your reservoir is low (%d units)." = "Your reservoir is low (%d units).";
 
 /* Disclaimer Popup Title */
 "Disclaimer!" = "Disclaimer!";
@@ -637,8 +622,6 @@
 "Tap to change" = "Tap to change";
 "Support & Subscribe" = "Support & Subscribe";
 "Remind me later" = "Remind me later";
-"Not now" = "Not now";
-"Pro Version Unlocked" = "Pro Version Unlocked";
 "Max" = "Max";
 "Pro" = "Pro";
 "Pro unlocks the core premium features. For push-based background updates, choose Max." = "Pro unlocks the core premium features. For push-based background updates, choose Max.";
@@ -677,6 +660,60 @@
 "No active subscription found to restore." = "No active subscription found to restore.";
 "Purchases restored successfully." = "Purchases restored successfully.";
 "Restore failed: %@" = "Restore failed: %@";
+
+/* Localization audit */
+"10min" = "10min";
+"15min" = "15min";
+"1d" = "1d";
+"1h" = "1h";
+"20min" = "20min";
+"2h" = "2h";
+"30min" = "30min";
+"3h" = "3h";
+"45min" = "45min";
+"5min" = "5min";
+"6h" = "6h";
+"Activity" = "Activity";
+"Alarms" = "Alarms";
+"BG Gauge" = "BG Gauge";
+"BG Values as Gauge" = "BG Values as Gauge";
+"Cancel" = "Cancel";
+"Care" = "Care";
+"Check BG every minute" = "Check BG every minute";
+"Crown Scrolls" = "Crown Scrolls";
+"Crown Zooms" = "Crown Zooms";
+"Delete Target" = "Delete Target";
+"Do you want to add %dg of carbs?" = "Do you want to add %dg of carbs?";
+"Do you want to modify the change date to %@" = "Do you want to modify the change date to %@";
+"High Alert" = "High Alert";
+"Invalid change" = "Invalid change";
+"Low Alert" = "Low Alert";
+"Main" = "Main";
+"Max Background Updates" = "Max Background Updates";
+"Max Subscription Active" = "Max Subscription Active";
+"Meal Soon" = "Meal Soon";
+"NIGHTSCOUT" = "NIGHTSCOUT";
+"No" = "No";
+"No Gauge Support for this widget!" = "No Gauge Support for this widget!";
+"Not an implemented widget yet" = "Not an implemented widget yet";
+"Preferences" = "Preferences";
+"Pro Features Included" = "Pro Features Included";
+"Refresh" = "Refresh";
+"Silent push wakeups improve background refreshes for the app, widgets, Live Activities and complications." = "Silent push wakeups improve background refreshes for the app, widgets, Live Activities and complications.";
+"Snooze" = "Snooze";
+"Snooze 30m" = "Snooze 30m";
+"Snooze all alarms for 30 minutes" = "Snooze all alarms for 30 minutes";
+"Snoozed %dmin" = "Snoozed %dmin";
+"Stats" = "Stats";
+"Subscribe to Max" = "Subscribe to Max";
+"Too High" = "Too High";
+"Too Low" = "Too Low";
+"Upgrade to Max" = "Upgrade to Max";
+"Yes" = "Yes";
+"Do you like the app?" = "Do you like the app?";
+"If you like Nightguard, we would appreciate a review in the App Store." = "If you like Nightguard, we would appreciate a review in the App Store.";
+"Pro Subscription Active" = "Pro Subscription Active";
+" ago" = " ago";
 
 /* Legal section header */
 "Legal" = "Legal";
