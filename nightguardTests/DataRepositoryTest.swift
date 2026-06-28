@@ -93,6 +93,157 @@ class DataRepositoryTest: XCTestCase {
         // Then
         XCTAssertEqual(retrievedBgData.bgdeltaString, "12")
     }
+
+    func testDisplaySnapshotUsesWidgetHistoryReduction() {
+        // Given
+        UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(Units.mgdl.rawValue, forKey: "units")
+        let nightscoutData = NightscoutData()
+        nightscoutData.sgv = "130"
+        nightscoutData.bgdelta = 10
+        nightscoutData.bgdeltaArrow = "->"
+        nightscoutData.time = NSNumber(value: 400_000)
+
+        let previousValues = [
+            BloodSugar(value: 100, timestamp: 100_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 110, timestamp: 200_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 120, timestamp: 300_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 130, timestamp: 400_000, isMeteredBloodGlucoseValue: false, arrow: "->")
+        ]
+
+        // When
+        let snapshot = NightguardDisplaySnapshot.make(from: nightscoutData, previousValues: previousValues)
+
+        // Then
+        XCTAssertEqual(snapshot.lastBGValues.map(\.value), ["130", "120", "110"])
+        XCTAssertEqual(snapshot.lastBGValues.map(\.delta), ["+10", "+10", "+10"])
+        XCTAssertEqual(snapshot.lastBGValues.map(\.timestamp), [400_000, 300_000, 200_000])
+    }
+
+    func testDisplaySnapshotIncludesCurrentValueWhenHistoryIsBehind() {
+        // Given
+        UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(Units.mgdl.rawValue, forKey: "units")
+        let nightscoutData = NightscoutData()
+        nightscoutData.sgv = "130"
+        nightscoutData.bgdelta = 10
+        nightscoutData.bgdeltaArrow = "->"
+        nightscoutData.time = NSNumber(value: 400_000)
+
+        let previousValues = [
+            BloodSugar(value: 100, timestamp: 100_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 110, timestamp: 200_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 120, timestamp: 300_000, isMeteredBloodGlucoseValue: false, arrow: "->")
+        ]
+
+        // When
+        let snapshot = NightguardDisplaySnapshot.make(from: nightscoutData, previousValues: previousValues)
+
+        // Then
+        XCTAssertEqual(snapshot.lastBGValues.map(\.value), ["130", "120", "110"])
+        XCTAssertEqual(snapshot.lastBGValues.map(\.delta), ["+10", "+10", "+10"])
+        XCTAssertEqual(snapshot.lastBGValues.map(\.timestamp), [400_000, 300_000, 200_000])
+    }
+
+    func testStoreDisplaySnapshotUsesStoredTodaysHistoryWhenPreviousValuesAreOmitted() {
+        // Given
+        UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(Units.mgdl.rawValue, forKey: "units")
+        NightscoutDataRepository.singleton.storeTodaysBgData([
+            BloodSugar(value: 100, timestamp: 100_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 110, timestamp: 200_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 120, timestamp: 300_000, isMeteredBloodGlucoseValue: false, arrow: "->")
+        ])
+
+        let nightscoutData = NightscoutData()
+        nightscoutData.sgv = "130"
+        nightscoutData.bgdelta = 10
+        nightscoutData.bgdeltaArrow = "->"
+        nightscoutData.time = NSNumber(value: 400_000)
+
+        // When
+        let snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(from: nightscoutData)
+
+        // Then
+        XCTAssertEqual(snapshot.lastBGValues.map(\.value), ["130", "120", "110"])
+        XCTAssertEqual(snapshot.lastBGValues.map(\.delta), ["+10", "+10", "+10"])
+        XCTAssertEqual(snapshot.lastBGValues.map(\.timestamp), [400_000, 300_000, 200_000])
+    }
+
+    func testDisplaySnapshotFallsBackToCurrentValueWithoutPreviousValues() {
+        // Given
+        UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(Units.mgdl.rawValue, forKey: "units")
+        let nightscoutData = NightscoutData()
+        nightscoutData.sgv = "120"
+        nightscoutData.bgdelta = 5
+        nightscoutData.bgdeltaArrow = "->"
+        nightscoutData.time = NSNumber(value: 300_000)
+
+        // When
+        let snapshot = NightguardDisplaySnapshot.make(from: nightscoutData)
+
+        // Then
+        XCTAssertEqual(snapshot.lastBGValues.count, 1)
+        XCTAssertEqual(snapshot.lastBGValues.first?.value, "120")
+        XCTAssertEqual(snapshot.lastBGValues.first?.delta, "+5")
+    }
+
+    func testDisplaySnapshotReturnsAvailableHistoryWhenLessThanFourValuesExist() {
+        // Given
+        UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(Units.mgdl.rawValue, forKey: "units")
+        let nightscoutData = NightscoutData()
+        nightscoutData.sgv = "120"
+        nightscoutData.bgdelta = 10
+        nightscoutData.bgdeltaArrow = "->"
+        nightscoutData.time = NSNumber(value: 300_000)
+
+        let previousValues = [
+            BloodSugar(value: 100, timestamp: 100_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 110, timestamp: 200_000, isMeteredBloodGlucoseValue: false, arrow: "->"),
+            BloodSugar(value: 120, timestamp: 300_000, isMeteredBloodGlucoseValue: false, arrow: "->")
+        ]
+
+        // When
+        let snapshot = NightguardDisplaySnapshot.make(from: nightscoutData, previousValues: previousValues)
+
+        // Then
+        XCTAssertEqual(snapshot.lastBGValues.map(\.value), ["120", "110"])
+        XCTAssertEqual(snapshot.lastBGValues.map(\.delta), ["+10", "+10"])
+        XCTAssertEqual(snapshot.lastBGValues.map(\.timestamp), [300_000, 200_000])
+    }
+
+    func testDisplaySnapshotDecodesOldSnapshotWithoutHistory() throws {
+        // Given
+        let snapshot = NightguardDisplaySnapshot(
+            sgv: "120",
+            bgdeltaString: "+5",
+            bgdeltaArrow: "->",
+            bgdelta: 5,
+            timestamp: 300_000,
+            battery: "100",
+            iob: "0.0U",
+            cob: "0g",
+            snoozedUntilTimestamp: 0,
+            sgvColorRed: 0,
+            sgvColorGreen: 1,
+            sgvColorBlue: 0,
+            bgdeltaColorRed: 1,
+            bgdeltaColorGreen: 1,
+            bgdeltaColorBlue: 1,
+            createdAt: Date(),
+            lastBGValues: []
+        )
+        let encodedSnapshot = try JSONEncoder().encode(snapshot)
+        var json = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedSnapshot) as? [String: Any])
+        json.removeValue(forKey: "lastBGValues")
+        let oldSnapshotData = try JSONSerialization.data(withJSONObject: json)
+
+        // When
+        let decodedSnapshot = try JSONDecoder().decode(NightguardDisplaySnapshot.self, from: oldSnapshotData)
+
+        // Then
+        XCTAssertEqual(decodedSnapshot.lastBGValues.count, 1)
+        XCTAssertEqual(decodedSnapshot.lastBGValues.first?.value, "120")
+        XCTAssertEqual(decodedSnapshot.lastBGValues.first?.delta, "+5")
+        XCTAssertEqual(decodedSnapshot.lastBGValues.first?.timestamp, 300_000)
+    }
     
     func testStoreDeviceStatusData() {
 

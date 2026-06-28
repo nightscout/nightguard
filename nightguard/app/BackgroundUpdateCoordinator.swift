@@ -69,45 +69,75 @@ final class BackgroundUpdateCoordinator {
                     category: .backgroundUpdates
                 )
 
-                let snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(from: nightscoutData)
-                AppLogger.singleton.debug(
-                    "\(trigger.rawValue) stored display snapshot: SGV=\(snapshot.sgv), timestamp=\(snapshot.timestamp)",
-                    category: .backgroundUpdates
-                )
-
                 AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
 
-                Task {
-                    if #available(iOS 16.1, *) {
-                        let updateResult = await LiveActivityManager.shared.updateExistingActivities(with: nightscoutData)
-                        let logMessage = "\(trigger.rawValue) Live Activity update result: activities=\(updateResult.activityCount), updated=\(updateResult.updatedActivityCount), message=\(updateResult.message)"
-                        if updateResult.didUpdateAnyActivity {
-                            AppLogger.singleton.info(logMessage, category: .backgroundUpdates)
-                        } else {
-                            AppLogger.singleton.warning(logMessage, category: .backgroundUpdates)
-                        }
-                    }
-
-                    self.reloadWidgetTimelines(trigger: trigger)
-
-                    let deviceStatusData: DeviceStatusData = await withCheckedContinuation { continuation in
-                        let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
-                            continuation.resume(returning: deviceStatusData)
-                        }
+                let storedHistoryValues = NightscoutDataRepository.singleton.loadTodaysBgData()
+                NightscoutService.singleton.readTodaysChartData(oldValues: storedHistoryValues) { historyResult in
+                    let snapshot: NightguardDisplaySnapshot
+                    switch historyResult {
+                    case .data(let bloodSugarValues):
+                        let historyValues = NightguardDisplaySnapshot.historyValues(
+                            bloodSugarValues,
+                            including: nightscoutData
+                        )
+                        NightscoutDataRepository.singleton.storeTodaysBgData(historyValues)
+                        snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(
+                            from: nightscoutData,
+                            previousValues: historyValues
+                        )
+                    case .error(let error):
+                        AppLogger.singleton.warning(
+                            "\(trigger.rawValue) failed to fetch widget history values: \(error.localizedDescription)",
+                            category: .backgroundUpdates
+                        )
+                        let historyValues = NightguardDisplaySnapshot.historyValues(
+                            storedHistoryValues,
+                            including: nightscoutData
+                        )
+                        NightscoutDataRepository.singleton.storeTodaysBgData(historyValues)
+                        snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(
+                            from: nightscoutData,
+                            previousValues: historyValues
+                        )
                     }
 
                     AppLogger.singleton.debug(
-                        "\(trigger.rawValue) received device status: reservoir=\(deviceStatusData.reservoirUnits)",
+                        "\(trigger.rawValue) stored display snapshot: SGV=\(snapshot.sgv), timestamp=\(snapshot.timestamp), values=\(snapshot.lastBGValues.count)",
                         category: .backgroundUpdates
                     )
-                    AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
 
-                    if trigger == .bgTask {
-                        try? await Task.sleep(nanoseconds: 4_000_000_000)
+                    Task {
+                        if #available(iOS 16.1, *) {
+                            let updateResult = await LiveActivityManager.shared.updateExistingActivities(with: nightscoutData)
+                            let logMessage = "\(trigger.rawValue) Live Activity update result: activities=\(updateResult.activityCount), updated=\(updateResult.updatedActivityCount), message=\(updateResult.message)"
+                            if updateResult.didUpdateAnyActivity {
+                                AppLogger.singleton.info(logMessage, category: .backgroundUpdates)
+                            } else {
+                                AppLogger.singleton.warning(logMessage, category: .backgroundUpdates)
+                            }
+                        }
+
+                        self.reloadWidgetTimelines(trigger: trigger)
+
+                        let deviceStatusData: DeviceStatusData = await withCheckedContinuation { continuation in
+                            let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
+                                continuation.resume(returning: deviceStatusData)
+                            }
+                        }
+
+                        AppLogger.singleton.debug(
+                            "\(trigger.rawValue) received device status: reservoir=\(deviceStatusData.reservoirUnits)",
+                            category: .backgroundUpdates
+                        )
+                        AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
+
+                        if trigger == .bgTask {
+                            try? await Task.sleep(nanoseconds: 4_000_000_000)
+                        }
+
+                        finish(BackgroundUpdateResult(success: true, hasNewData: true, message: "Nightscout data processed"))
                     }
-
-                    finish(BackgroundUpdateResult(success: true, hasNewData: true, message: "Nightscout data processed"))
                 }
             }
         }

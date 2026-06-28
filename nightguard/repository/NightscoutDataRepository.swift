@@ -15,6 +15,16 @@ import WidgetKit
 struct NightguardDisplaySnapshot: Codable, Hashable {
     static let maxFreshAge: TimeInterval = 15 * 60
 
+    struct BgValue: Codable, Hashable {
+        let value: String
+        let valueColorRed: Double
+        let valueColorGreen: Double
+        let valueColorBlue: Double
+        let delta: String
+        let timestamp: Double
+        let arrow: String
+    }
+
     let sgv: String
     let bgdeltaString: String
     let bgdeltaArrow: String
@@ -31,6 +41,45 @@ struct NightguardDisplaySnapshot: Codable, Hashable {
     let bgdeltaColorGreen: Double
     let bgdeltaColorBlue: Double
     let createdAt: Date
+    let lastBGValues: [BgValue]
+
+    init(
+        sgv: String,
+        bgdeltaString: String,
+        bgdeltaArrow: String,
+        bgdelta: Double,
+        timestamp: TimeInterval,
+        battery: String,
+        iob: String,
+        cob: String,
+        snoozedUntilTimestamp: TimeInterval,
+        sgvColorRed: Double,
+        sgvColorGreen: Double,
+        sgvColorBlue: Double,
+        bgdeltaColorRed: Double,
+        bgdeltaColorGreen: Double,
+        bgdeltaColorBlue: Double,
+        createdAt: Date,
+        lastBGValues: [BgValue]
+    ) {
+        self.sgv = sgv
+        self.bgdeltaString = bgdeltaString
+        self.bgdeltaArrow = bgdeltaArrow
+        self.bgdelta = bgdelta
+        self.timestamp = timestamp
+        self.battery = battery
+        self.iob = iob
+        self.cob = cob
+        self.snoozedUntilTimestamp = snoozedUntilTimestamp
+        self.sgvColorRed = sgvColorRed
+        self.sgvColorGreen = sgvColorGreen
+        self.sgvColorBlue = sgvColorBlue
+        self.bgdeltaColorRed = bgdeltaColorRed
+        self.bgdeltaColorGreen = bgdeltaColorGreen
+        self.bgdeltaColorBlue = bgdeltaColorBlue
+        self.createdAt = createdAt
+        self.lastBGValues = lastBGValues
+    }
 
     var date: Date {
         Date(timeIntervalSince1970: timestamp / 1000)
@@ -40,13 +89,26 @@ struct NightguardDisplaySnapshot: Codable, Hashable {
         referenceDate.timeIntervalSince(date) <= maxAge
     }
 
-    static func make(from data: NightscoutData) -> NightguardDisplaySnapshot {
+    static func make(from data: NightscoutData, previousValues: [BloodSugar] = []) -> NightguardDisplaySnapshot {
         let displaySgv = UnitsConverter.mgdlToDisplayUnits(data.sgv)
         let displayDelta = UnitsConverter.mgdlToDisplayUnitsWithSign("\(data.bgdelta)")
         let sgvColor = UIColorChanger.getBgColor(displaySgv)
         let bgdeltaColor = UIColorChanger.getDeltaLabelColor(data.bgdelta)
         let sgvComponents = colorComponents(from: sgvColor)
         let bgdeltaComponents = colorComponents(from: bgdeltaColor)
+        let fallbackValue = BgValue(
+            value: displaySgv,
+            valueColorRed: sgvComponents.red,
+            valueColorGreen: sgvComponents.green,
+            valueColorBlue: sgvComponents.blue,
+            delta: displayDelta,
+            timestamp: data.time.doubleValue,
+            arrow: data.bgdeltaArrow
+        )
+        let lastBGValues = makeLastBGValues(
+            from: historyValues(previousValues, including: data),
+            fallbackValue: fallbackValue
+        )
 
         return NightguardDisplaySnapshot(
             sgv: displaySgv,
@@ -64,8 +126,87 @@ struct NightguardDisplaySnapshot: Codable, Hashable {
             bgdeltaColorRed: bgdeltaComponents.red,
             bgdeltaColorGreen: bgdeltaComponents.green,
             bgdeltaColorBlue: bgdeltaComponents.blue,
-            createdAt: Date()
+            createdAt: Date(),
+            lastBGValues: lastBGValues
         )
+    }
+
+    static func makeLastBGValues(from bloodSugarValues: [BloodSugar], fallbackValue: BgValue? = nil) -> [BgValue] {
+        let bgEntries = bloodSugarValues
+            .filter { $0.isValid }
+            .sorted { $0.timestamp < $1.timestamp }
+            .map { bloodSugar in
+                SnapshotBgEntry(
+                    value: UnitsConverter.mgdlToDisplayUnits(String(bloodSugar.value)),
+                    timestamp: bloodSugar.timestamp,
+                    arrow: bloodSugar.arrow
+                )
+            }
+
+        let reducedEntries = Array(bgEntries.suffix(4))
+        let values = calculateDeltaValues(reducedEntries).reversed()
+
+        if values.isEmpty, let fallbackValue {
+            return [fallbackValue]
+        }
+
+        return Array(values)
+    }
+
+    static func historyValues(_ bloodSugarValues: [BloodSugar], including data: NightscoutData) -> [BloodSugar] {
+        guard let currentValue = Float(data.sgv),
+              BloodSugar.isValid(value: currentValue),
+              data.time.doubleValue > 0 else {
+            return bloodSugarValues
+        }
+
+        let currentTimestamp = data.time.doubleValue
+        let currentBloodSugar = BloodSugar(
+            value: currentValue,
+            timestamp: currentTimestamp,
+            isMeteredBloodGlucoseValue: false,
+            arrow: data.bgdeltaArrow
+        )
+
+        return bloodSugarValues
+            .filter { abs($0.timestamp - currentTimestamp) > 0.5 }
+            + [currentBloodSugar]
+    }
+
+    private struct SnapshotBgEntry {
+        let value: String
+        let timestamp: Double
+        let arrow: String
+    }
+
+    private static func calculateDeltaValues(_ reducedEntries: [SnapshotBgEntry]) -> [BgValue] {
+        var preceedingEntry: SnapshotBgEntry?
+        var newEntries: [BgValue] = []
+
+        for bgEntry in reducedEntries {
+            if preceedingEntry?.value != nil {
+                let v1AsFloat = Float(bgEntry.value) ?? Float.zero
+                let v2AsFloat = Float(preceedingEntry?.value ?? bgEntry.value) ?? v1AsFloat
+                let valueColor = UIColorChanger.getBgColor(bgEntry.value)
+                let valueComponents = colorComponents(from: valueColor)
+
+                newEntries.append(
+                    BgValue(
+                        value: bgEntry.value,
+                        valueColorRed: valueComponents.red,
+                        valueColorGreen: valueComponents.green,
+                        valueColorBlue: valueComponents.blue,
+                        delta: Float(v1AsFloat - v2AsFloat).cleanSignedValue,
+                        timestamp: bgEntry.timestamp,
+                        arrow: bgEntry.arrow
+                    )
+                )
+            }
+
+            preceedingEntry = bgEntry
+        }
+
+        return newEntries
     }
 
     private static func colorComponents(from color: UIColor) -> (red: Double, green: Double, blue: Double) {
@@ -75,6 +216,57 @@ struct NightguardDisplaySnapshot: Codable, Hashable {
         var alpha: CGFloat = 1
         color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         return (Double(red), Double(green), Double(blue))
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case sgv
+        case bgdeltaString
+        case bgdeltaArrow
+        case bgdelta
+        case timestamp
+        case battery
+        case iob
+        case cob
+        case snoozedUntilTimestamp
+        case sgvColorRed
+        case sgvColorGreen
+        case sgvColorBlue
+        case bgdeltaColorRed
+        case bgdeltaColorGreen
+        case bgdeltaColorBlue
+        case createdAt
+        case lastBGValues
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.sgv = try container.decode(String.self, forKey: .sgv)
+        self.bgdeltaString = try container.decode(String.self, forKey: .bgdeltaString)
+        self.bgdeltaArrow = try container.decode(String.self, forKey: .bgdeltaArrow)
+        self.bgdelta = try container.decode(Double.self, forKey: .bgdelta)
+        self.timestamp = try container.decode(TimeInterval.self, forKey: .timestamp)
+        self.battery = try container.decode(String.self, forKey: .battery)
+        self.iob = try container.decode(String.self, forKey: .iob)
+        self.cob = try container.decode(String.self, forKey: .cob)
+        self.snoozedUntilTimestamp = try container.decode(TimeInterval.self, forKey: .snoozedUntilTimestamp)
+        self.sgvColorRed = try container.decode(Double.self, forKey: .sgvColorRed)
+        self.sgvColorGreen = try container.decode(Double.self, forKey: .sgvColorGreen)
+        self.sgvColorBlue = try container.decode(Double.self, forKey: .sgvColorBlue)
+        self.bgdeltaColorRed = try container.decode(Double.self, forKey: .bgdeltaColorRed)
+        self.bgdeltaColorGreen = try container.decode(Double.self, forKey: .bgdeltaColorGreen)
+        self.bgdeltaColorBlue = try container.decode(Double.self, forKey: .bgdeltaColorBlue)
+        self.createdAt = try container.decode(Date.self, forKey: .createdAt)
+        self.lastBGValues = try container.decodeIfPresent([BgValue].self, forKey: .lastBGValues) ?? [
+            BgValue(
+                value: sgv,
+                valueColorRed: sgvColorRed,
+                valueColorGreen: sgvColorGreen,
+                valueColorBlue: sgvColorBlue,
+                delta: bgdeltaString,
+                timestamp: timestamp,
+                arrow: bgdeltaArrow
+            )
+        ]
     }
 }
 
@@ -108,6 +300,7 @@ class NightscoutDataRepository {
         defaults?.removeObject(forKey: Constants.yesterdaysBgData)
         defaults?.removeObject(forKey: Constants.yesterdaysBgDataRaw)
         defaults?.removeObject(forKey: Constants.yesterdaysDayOfTheYear)
+        defaults?.removeObject(forKey: Constants.latestDisplaySnapshot)
         // this shouldn't be necessary anymore - remove it later
         defaults?.synchronize()
     }
@@ -147,8 +340,9 @@ class NightscoutDataRepository {
     }
 
     @discardableResult
-    func storeLatestDisplaySnapshot(from data: NightscoutData) -> NightguardDisplaySnapshot {
-        let snapshot = NightguardDisplaySnapshot.make(from: data)
+    func storeLatestDisplaySnapshot(from data: NightscoutData, previousValues: [BloodSugar] = []) -> NightguardDisplaySnapshot {
+        let historyValues = previousValues.isEmpty ? loadTodaysBgData() : previousValues
+        let snapshot = NightguardDisplaySnapshot.make(from: data, previousValues: historyValues)
         storeLatestDisplaySnapshot(snapshot)
         return snapshot
     }

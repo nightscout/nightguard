@@ -110,20 +110,20 @@ extension NightscoutDataEntry {
             iob: snapshot.iob,
             cob: snapshot.cob,
             snoozedUntilTimestamp: snapshot.snoozedUntilTimestamp,
-            lastBGValues: [
+            lastBGValues: snapshot.lastBGValues.map { bgValue in
                 BgEntry(
-                    value: snapshot.sgv,
+                    value: bgValue.value,
                     valueColor: UIColor(
-                        red: CGFloat(snapshot.sgvColorRed),
-                        green: CGFloat(snapshot.sgvColorGreen),
-                        blue: CGFloat(snapshot.sgvColorBlue),
+                        red: CGFloat(bgValue.valueColorRed),
+                        green: CGFloat(bgValue.valueColorGreen),
+                        blue: CGFloat(bgValue.valueColorBlue),
                         alpha: 1
                     ),
-                    delta: snapshot.bgdeltaString,
-                    timestamp: snapshot.timestamp,
-                    arrow: snapshot.bgdeltaArrow
+                    delta: bgValue.delta,
+                    timestamp: bgValue.timestamp,
+                    arrow: bgValue.arrow
                 )
-            ],
+            },
             errorMessage: "",
             configuration: ConfigurationIntent()
         )

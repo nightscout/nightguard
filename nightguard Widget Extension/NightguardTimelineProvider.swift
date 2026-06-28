@@ -9,6 +9,7 @@
 import Foundation
 import WidgetKit
 import UserNotifications
+import SwiftUI
 
 struct NightguardTimelineProvider: TimelineProvider {
     
@@ -73,15 +74,8 @@ struct NightguardTimelineProvider: TimelineProvider {
 
         if !oldData.isOlderThanXMinutes(15), !oldEntries.isEmpty {
             BackgroundRefreshLogger.info("TimelineProvider is using recently fetched app-group data...")
-            let bgEntries = oldEntries.map() { bgValue in
-                return BgEntry(
-                    value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
-                    valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                    delta: "0",
-                    timestamp: bgValue.timestamp,
-                    arrow: bgValue.arrow)
-            }
-            completion(convertToTimelineEntry(oldData, calculateDeltaValues(Array(bgEntries.suffix(4))), ""))
+            let bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
+            completion(convertToTimelineEntry(oldData, bgEntries, ""))
             return
         }
         
@@ -92,42 +86,18 @@ struct NightguardTimelineProvider: TimelineProvider {
             var errorMessage = ""
             if case .data(let bloodSugarValues) = result {
                 NightscoutDataRepository.singleton.storeTodaysBgData(bloodSugarValues)
-                bgEntries = bloodSugarValues.map() {bgValue in
-                    return BgEntry(
-                        value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
-                        valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                        delta: "0", timestamp: bgValue.timestamp, arrow: bgValue.arrow)
-                }
+                bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: bloodSugarValues))
             } else if case .error(let error) = result {
-                bgEntries = oldEntries.map() {bgValue in
-                    return BgEntry(
-                        value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
-                        valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                        delta: "0", timestamp: bgValue.timestamp, arrow: bgValue.arrow)
-                }
+                bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
                 errorMessage = error.localizedDescription
             } else {
                 // use old values if no new could be retrieved
-                bgEntries = oldEntries.map() {bgValue in
-                    return BgEntry(
-                        value: UnitsConverter.mgdlToDisplayUnits(String(bgValue.value)),
-                        valueColor: UIColorChanger.getBgColor(String(bgValue.value)),
-                        delta: "0", timestamp: bgValue.timestamp, arrow: bgValue.arrow)
-                }
-            }
-            
-            var reducedEntries = bgEntries
-            if bgEntries.count > 3 {
-                reducedEntries = []
-                for i in bgEntries.count-4..<bgEntries.count {
-                    reducedEntries.append(bgEntries[i])
-                }
+                bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
             }
             
             // if no new values could be retrieved -> the old ones will be returned.
-            let reducedEntriesWithDelta = calculateDeltaValues(reducedEntries)
-            let updatedData = updateDataWith(reducedEntriesWithDelta, oldData)
-            let entry = convertToTimelineEntry(updatedData, reducedEntriesWithDelta, errorMessage)
+            let updatedData = updateDataWith(bgEntries, oldData)
+            let entry = convertToTimelineEntry(updatedData, bgEntries, errorMessage)
             
             BackgroundRefreshLogger.info("TimelineProvider refreshed widgets...")
             // Notifications can be send from iOS only, so don't waste time for this in watchos:
@@ -141,14 +111,14 @@ struct NightguardTimelineProvider: TimelineProvider {
     
     private func updateDataWith(_ reducedEntries : [BgEntry], _ data: NightscoutData) -> NightscoutData{
         // use the more recent retrieved bgEntries (if available):
-        if reducedEntries.isEmpty {
+        guard let latestEntry = reducedEntries.first else {
             return data
         }
         
         let updatedNightscoutData = NightscoutData()
-        updatedNightscoutData.sgv = UnitsConverter.displayValueToMgdlString(reducedEntries.last?.value ?? "?")
-        updatedNightscoutData.bgdeltaString = UnitsConverter.displayValueToMgdlString(reducedEntries.last?.delta ?? "?")
-        updatedNightscoutData.time = NSNumber(value: (reducedEntries.last?.timestamp ?? 0) * 1000)
+        updatedNightscoutData.sgv = UnitsConverter.displayValueToMgdlString(latestEntry.value)
+        updatedNightscoutData.bgdeltaString = UnitsConverter.displayValueToMgdlString(latestEntry.delta)
+        updatedNightscoutData.time = NSNumber(value: latestEntry.timestamp)
         
         return updatedNightscoutData
     }
@@ -169,29 +139,25 @@ struct NightguardTimelineProvider: TimelineProvider {
             cob: data.cob,
             snoozedUntilTimestamp: 
                 AlarmRule.snoozedUntilTimestamp.value,
-            lastBGValues: bgValues.reversed(),
+            lastBGValues: bgValues,
             errorMessage: errorMessage,
             configuration: ConfigurationIntent())
     }
 
-    private func calculateDeltaValues(_ reducedEntries: [BgEntry]) -> [BgEntry] {
-        
-        var preceedingEntry: BgEntry?
-        var newEntries: [BgEntry] = []
-        for bgEntry in reducedEntries {
-            if preceedingEntry?.value != nil {
-                let v1AsFloat: Float = Float(bgEntry.value) ?? Float.zero
-                let v2AsFloat: Float = Float(preceedingEntry?.value ?? bgEntry.value) ?? v1AsFloat
-                let newEntry = BgEntry(
-                    value: bgEntry.value,
-                    valueColor: UIColorChanger.getBgColor(bgEntry.value),
-                    delta: Float(v1AsFloat - v2AsFloat).cleanSignedValue,
-                    timestamp: bgEntry.timestamp, arrow: bgEntry.arrow)
-                newEntries.append(newEntry)
-            }
-            preceedingEntry = bgEntry
+    private func makeBgEntries(from snapshotValues: [NightguardDisplaySnapshot.BgValue]) -> [BgEntry] {
+        snapshotValues.map { bgValue in
+            BgEntry(
+                value: bgValue.value,
+                valueColor: UIColor(
+                    red: CGFloat(bgValue.valueColorRed),
+                    green: CGFloat(bgValue.valueColorGreen),
+                    blue: CGFloat(bgValue.valueColorBlue),
+                    alpha: 1
+                ),
+                delta: bgValue.delta,
+                timestamp: bgValue.timestamp,
+                arrow: bgValue.arrow
+            )
         }
-        
-        return newEntries
     }
 }
