@@ -770,3 +770,86 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Pro Feature 3 Description */
 "Glucose and alarms on your CarPlay screen while driving." = "Glukosewerte und Alarme auf deinem CarPlay-Display während der Fahrt.";
+/* Client Certificate section header */
+"Client Certificate" = "Clientzertifikat";
+
+/* Client Certificate section footer */
+"Only needed if your Nightscout provider gave you a certificate file. Most users can skip this." = "Nur nötig, wenn dein Nightscout-Anbieter dir eine Zertifikatsdatei gegeben hat. Die meisten Nutzer können dies überspringen.";
+
+/* Client certificate name label */
+"Certificate" = "Zertifikat";
+
+/* Button to remove the client certificate */
+"Remove Certificate" = "Zertifikat entfernen";
+
+/* Button to import a client certificate */
+"Import Certificate..." = "Zertifikat importieren …";
+
+/* Certificate imported success indicator */
+"Imported" = "Importiert";
+
+/* Client certificate file read error */
+"The selected file could not be read." = "Die ausgewählte Datei konnte nicht gelesen werden.";
+
+/* Remove certificate confirmation title */
+"Remove Certificate?" = "Zertifikat entfernen?";
+
+/* Remove certificate confirm button */
+"Remove" = "Entfernen";
+
+/* Remove certificate confirmation message */
+"Nightscout sync will stop until you import a new certificate." = "Die Nightscout-Synchronisation wird gestoppt, bis du ein neues Zertifikat importierst.";
+/* OK button */
+"OK" = "OK";
+
+/* Client certificate password prompt footer */
+"Enter the password of the certificate file." = "Gib das Passwort der Zertifikatsdatei ein.";
+
+/* Client certificate password field */
+"Password" = "Passwort";
+
+/* Client certificate password prompt title */
+"Certificate Password" = "Zertifikatspasswort";
+
+/* Button to confirm the certificate import */
+"Import" = "Importieren";
+
+/* Client certificate wrong password error */
+"The certificate password is wrong." = "Das Zertifikatspasswort ist falsch.";
+
+/* Client certificate invalid file error */
+"The file is not a valid PKCS#12 (.p12/.pfx) certificate." = "Die Datei ist kein gültiges PKCS#12-Zertifikat (.p12/.pfx).";
+
+/* Client certificate keychain error */
+"The certificate could not be stored in the keychain." = "Das Zertifikat konnte nicht im Schlüsselbund gespeichert werden.";
+
+/* Client certificate expired error */
+"The certificate has expired." = "Das Zertifikat ist abgelaufen.";
+
+/* Expired certificate URL validation error */
+"Your client certificate expired on %@. Please import a new certificate." = "Dein Clientzertifikat ist am %@ abgelaufen. Bitte importiere ein neues Zertifikat.";
+
+/* Client certificate validation error */
+"The certificate is not valid for client authentication." = "Das Zertifikat ist nicht für Client-Authentifizierung gültig.";
+
+
+/* Certificate expiry date label */
+"Expires" = "Läuft ab";
+
+/* Certificate expired indicator */
+"Expired" = "Abgelaufen";
+
+/* Accessibility hint for import certificate button */
+"Select a PKCS#12 certificate file from your device" = "Wähle eine PKCS#12-Zertifikatsdatei von deinem Gerät aus";
+
+/* Accessibility hint for remove certificate button */
+"Removes the certificate. Nightscout sync will stop until a new certificate is imported." = "Entfernt das Zertifikat. Die Nightscout-Synchronisation wird gestoppt, bis ein neues Zertifikat importiert wird.";
+
+/* Accessibility label for certificate name with value */
+"Certificate: %@" = "Zertifikat: %@";
+
+/* Accessibility hint for certificate password field */
+"Enter the password that protects the certificate file" = "Gib das Passwort ein, das die Zertifikatsdatei schützt";
+
+/* Accessibility label for import success */
+"Certificate imported successfully" = "Zertifikat erfolgreich importiert";

@@ -41,7 +41,7 @@ class NightscoutService {
         }
         
         let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20) as URLRequest
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             dispatchOnMain { [unowned self] in
@@ -89,7 +89,7 @@ class NightscoutService {
             return nil
         }
         let request = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
             
             dispatchOnMain { [unowned self] in
@@ -193,7 +193,7 @@ class NightscoutService {
         
         let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -434,7 +434,7 @@ class NightscoutService {
         var request : URLRequest = URLRequest(url: url!, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         request.timeoutInterval = 70
         
-        let session : URLSession = URLSession.shared
+        let session : URLSession = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -632,7 +632,7 @@ class NightscoutService {
         
         let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -726,7 +726,7 @@ class NightscoutService {
         request.httpBody = nil
         request.addValue("0", forHTTPHeaderField: "Content-Length")
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -822,7 +822,7 @@ class NightscoutService {
         """
         request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -885,7 +885,7 @@ class NightscoutService {
         """
         request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -957,7 +957,7 @@ class NightscoutService {
         """
         request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -1022,7 +1022,7 @@ class NightscoutService {
         """
         request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -1087,7 +1087,7 @@ class NightscoutService {
         """
         request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -1152,7 +1152,7 @@ class NightscoutService {
         """
         request.httpBody = json.data(using: .utf8, allowLossyConversion: false)!
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -1207,7 +1207,7 @@ class NightscoutService {
         
         let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {
@@ -1335,7 +1335,7 @@ class NightscoutService {
         
         let request = URLRequest(url: url!, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 20)
         
-        let session = URLSession.shared
+        let session = NightscoutSessionDelegate.session
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             guard error == nil else {

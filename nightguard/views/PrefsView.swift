@@ -40,7 +40,9 @@ struct PrefsView: View {
                     urlErrorMessage: $urlErrorMessage,
                     validateAndSaveURL: validateAndSaveURL
                 )
-                
+
+                ClientCertificateSectionView()
+
                 UnitsSectionView(
                     manuallySetUnits: $manuallySetUnits,
                     selectedUnits: $selectedUnits,
@@ -122,8 +124,8 @@ struct PrefsView: View {
             } message: {
                 Text("Revoke access in Apple Health")
             }
-            .alert("Error", isPresented: $showURLErrorAlert) {
-                Button("OK", role: .cancel) {}
+            .alert(NSLocalizedString("Error", comment: "Error alert title"), isPresented: $showURLErrorAlert) {
+                Button(NSLocalizedString("OK", comment: "OK button"), role: .cancel) {}
             } message: {
                 Text(urlErrorMessage)
             }
@@ -193,7 +195,17 @@ struct PrefsView: View {
             isValidatingURL = false
 
             if let error = error {
-                urlErrorMessage = error.localizedDescription
+                // Check if the error might be caused by an expired client certificate
+                if ClientIdentityStore.getIdentity() != nil,
+                   let expiry = ClientIdentityStore.getExpiryDate(),
+                   expiry <= Date() {
+                    urlErrorMessage = String(format: NSLocalizedString(
+                        "Your client certificate expired on %@. Please import a new certificate.",
+                        comment: "Expired certificate URL validation error"
+                    ), expiry.formatted(date: .abbreviated, time: .omitted))
+                } else {
+                    urlErrorMessage = error.localizedDescription
+                }
             } else {
                 urlErrorMessage = ""
                 addUriToHistory(url: url.absoluteString)
