@@ -812,3 +812,91 @@
 
 /* Price per month */
 "%@ / month" = "%@ / kuukausi";
+/* Client Certificate section header */
+"Client Certificate" = "Asiakasvarmenne";
+
+/* Client Certificate section footer */
+"Only needed if your Nightscout provider gave you a certificate file. Most users can skip this." = "Tarvitaan vain, jos Nightscout-palveluntarjoaja on antanut sinulle varmennetiedoston. Useimmat käyttäjät voivat ohittaa tämän.";
+
+/* Client certificate name label */
+"Certificate" = "Varmenne";
+
+/* Button to remove the client certificate */
+"Remove Certificate" = "Poista varmenne";
+
+/* Button to import a client certificate */
+"Import Certificate..." = "Tuo varmenne …";
+
+/* Certificate imported success indicator */
+"Imported" = "Tuotu";
+
+/* Client certificate file read error */
+"The selected file could not be read." = "Valittua tiedostoa ei voitu lukea.";
+
+/* Remove certificate confirmation title */
+"Remove Certificate?" = "Poistetaanko varmenne?";
+
+/* Remove certificate confirm button */
+"Remove" = "Poista";
+
+/* Remove certificate confirmation message */
+"Nightscout sync will stop until you import a new certificate." = "Nightscout-synkronointi pysähtyy, kunnes tuot uuden varmenteen.";
+/* OK button */
+"OK" = "OK";
+
+/* Client certificate password prompt footer */
+"Enter the password of the certificate file." = "Syötä varmennetiedoston salasana.";
+
+/* Client certificate password field */
+"Password" = "Salasana";
+
+/* Client certificate password prompt title */
+"Certificate Password" = "Varmenteen salasana";
+
+
+/* Cancel button */
+"Cancel" = "Peruuta";
+
+
+/* Button to confirm the certificate import */
+"Import" = "Tuo";
+
+/* Client certificate wrong password error */
+"The certificate password is wrong." = "Varmenteen salasana on väärä.";
+
+/* Client certificate invalid file error */
+"The file is not a valid PKCS#12 (.p12/.pfx) certificate." = "Tiedosto ei ole kelvollinen PKCS#12-varmenne (.p12/.pfx).";
+
+/* Client certificate keychain error */
+"The certificate could not be stored in the keychain." = "Varmennetta ei voitu tallentaa avainnippuun.";
+
+/* Client certificate expired error */
+"The certificate has expired." = "Varmenne on vanhentunut.";
+
+/* Expired certificate URL validation error */
+"Your client certificate expired on %@. Please import a new certificate." = "Asiakasvarmenteesi vanheni %@. Tuo uusi varmenne.";
+
+/* Client certificate validation error */
+"The certificate is not valid for client authentication." = "Varmenne ei kelpaa asiakkaan todennukseen.";
+
+
+/* Certificate expiry date label */
+"Expires" = "Vanhenee";
+
+/* Certificate expired indicator */
+"Expired" = "Vanhentunut";
+
+/* Accessibility hint for import certificate button */
+"Select a PKCS#12 certificate file from your device" = "Valitse PKCS#12-varmennetiedosto laitteeltasi";
+
+/* Accessibility hint for remove certificate button */
+"Removes the certificate. Nightscout sync will stop until a new certificate is imported." = "Poistaa varmenteen. Nightscout-synkronointi pysähtyy, kunnes uusi varmenne tuodaan.";
+
+/* Accessibility label for certificate name with value */
+"Certificate: %@" = "Varmenne: %@";
+
+/* Accessibility hint for certificate password field */
+"Enter the password that protects the certificate file" = "Syötä salasana, joka suojaa varmennetiedostoa";
+
+/* Accessibility label for import success */
+"Certificate imported successfully" = "Varmenne tuotu onnistuneesti";

@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC1D51312F1A000000000131 /* ClientIdentityStoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50042F1A000000000004 /* ClientIdentityStoreTest.swift */; };
+		CC1D51212F1A000000000121 /* ClientCertificateSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50032F1A000000000003 /* ClientCertificateSectionView.swift */; };
+		CC1D51012F1A000000000101 /* ClientIdentityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50012F1A000000000001 /* ClientIdentityStore.swift */; };
+		CC1D51022F1A000000000102 /* ClientIdentityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50012F1A000000000001 /* ClientIdentityStore.swift */; };
+		CC1D51032F1A000000000103 /* ClientIdentityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50012F1A000000000001 /* ClientIdentityStore.swift */; };
+		CC1D51042F1A000000000104 /* ClientIdentityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50012F1A000000000001 /* ClientIdentityStore.swift */; };
+		CC1D51052F1A000000000105 /* ClientIdentityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50012F1A000000000001 /* ClientIdentityStore.swift */; };
+		CC1D51112F1A000000000111 /* NightscoutSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50022F1A000000000002 /* NightscoutSessionDelegate.swift */; };
+		CC1D51122F1A000000000112 /* NightscoutSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50022F1A000000000002 /* NightscoutSessionDelegate.swift */; };
+		CC1D51132F1A000000000113 /* NightscoutSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50022F1A000000000002 /* NightscoutSessionDelegate.swift */; };
+		CC1D51142F1A000000000114 /* NightscoutSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50022F1A000000000002 /* NightscoutSessionDelegate.swift */; };
+		CC1D51152F1A000000000115 /* NightscoutSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1D50022F1A000000000002 /* NightscoutSessionDelegate.swift */; };
 		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
 		43027A4C2EBFDBFD00BE71B9 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */; };
@@ -562,6 +574,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CC1D50042F1A000000000004 /* ClientIdentityStoreTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientIdentityStoreTest.swift; sourceTree = "<group>"; };
+		CC1D50032F1A000000000003 /* ClientCertificateSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientCertificateSectionView.swift; sourceTree = "<group>"; };
+		CC1D50012F1A000000000001 /* ClientIdentityStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientIdentityStore.swift; sourceTree = "<group>"; };
+		CC1D50022F1A000000000002 /* NightscoutSessionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutSessionDelegate.swift; sourceTree = "<group>"; };
 		127F207A227F018E00C90F07 /* nightguard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nightguard.entitlements; sourceTree = "<group>"; };
 		28A3509723F9B31400F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		28B03A3623F9CD8E000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -906,6 +922,7 @@
 				439C391A1C0E295C00D89872 /* ChartPainterTest.swift */,
 				43794F471C30482500DB8B58 /* DataRepositoryTest.swift */,
 				433AD0161CCE3E89001A76CD /* NightscoutServiceTest.swift */,
+				CC1D50042F1A000000000004 /* ClientIdentityStoreTest.swift */,
 				432E62E61D11F61500DD7978 /* UserDefaultsRepositoryTest.swift */,
 				4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */,
 				D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */,
@@ -1065,6 +1082,8 @@
 				439BDA902B225234004932EB /* regression */,
 				439BDA8F2B225220004932EB /* model */,
 				436D73B327C826F100639B15 /* AppleHealthService.swift */,
+				CC1D50012F1A000000000001 /* ClientIdentityStore.swift */,
+				CC1D50022F1A000000000002 /* NightscoutSessionDelegate.swift */,
 				D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */,
 				4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */,
 				43F1E1101D076C1C00C329A2 /* NightscoutService.swift */,
@@ -1143,6 +1162,7 @@
 			isa = PBXGroup;
 			children = (
 				43E777EF2F198E3C00BC8524 /* DisplayOptionsSectionView.swift */,
+				CC1D50032F1A000000000003 /* ClientCertificateSectionView.swift */,
 				43E777F02F198E3C00BC8524 /* NightscoutSectionView.swift */,
 				43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */,
 				43E777F22F198E3C00BC8524 /* ScreenSectionView.swift */,
@@ -1538,6 +1558,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC1D51212F1A000000000121 /* ClientCertificateSectionView.swift in Sources */,
+				CC1D51012F1A000000000101 /* ClientIdentityStore.swift in Sources */,
+				CC1D51112F1A000000000111 /* NightscoutSessionDelegate.swift in Sources */,
 				D1D96CC321FB0FA80035A60E /* SnoozeMessage.swift in Sources */,
 				D1D1623C2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift in Sources */,
 				D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */,
@@ -1665,6 +1688,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC1D51312F1A000000000131 /* ClientIdentityStoreTest.swift in Sources */,
+				CC1D51022F1A000000000102 /* ClientIdentityStore.swift in Sources */,
+				CC1D51122F1A000000000112 /* NightscoutSessionDelegate.swift in Sources */,
 				4351E6B41D2EFDFF001E4AE4 /* AlarmRuleTest.swift in Sources */,
 				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
 				D1CE8CC12204B07F0075FF8A /* Colors.swift in Sources */,
@@ -1808,6 +1834,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC1D51032F1A000000000103 /* ClientIdentityStore.swift in Sources */,
+				CC1D51132F1A000000000113 /* NightscoutSessionDelegate.swift in Sources */,
 				4334D98324C32D8200652D87 /* DateExtension.swift in Sources */,
 				43A6B4642F9E241600E2E596 /* AppLogger.swift in Sources */,
 				4346F9841D0773F700487541 /* TimeService.swift in Sources */,
@@ -1900,6 +1928,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC1D51042F1A000000000104 /* ClientIdentityStore.swift in Sources */,
+				CC1D51142F1A000000000114 /* NightscoutSessionDelegate.swift in Sources */,
 				4332FF5F2B1652BE00DBF917 /* UIApplicationExtension.swift in Sources */,
 				43D005E629DC9CBF003BCE92 /* AccessoryRectangularView.swift in Sources */,
 				43D005E729DC9CBF003BCE92 /* AccessoryInlineView.swift in Sources */,
@@ -1969,6 +1999,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC1D51052F1A000000000105 /* ClientIdentityStore.swift in Sources */,
+				CC1D51152F1A000000000115 /* NightscoutSessionDelegate.swift in Sources */,
 				43D005F829DC9DF1003BCE92 /* UIColorExtension.swift in Sources */,
 				435DFF6A29E0BAD0007A25EA /* StringExtension.swift in Sources */,
 				4323C49A2CCC0BC5006AD04B /* AccessoryRectangularTimestampView.swift in Sources */,

@@ -748,3 +748,91 @@
 
 /* Pro Feature 3 Description */
 "Glucose and alarms on your CarPlay screen while driving." = "Glucose and alarms on your CarPlay screen while driving.";
+/* Client Certificate section header */
+"Client Certificate" = "Client Certificate";
+
+/* Client Certificate section footer */
+"Only needed if your Nightscout provider gave you a certificate file. Most users can skip this." = "Only needed if your Nightscout provider gave you a certificate file. Most users can skip this.";
+
+/* Client certificate name label */
+"Certificate" = "Certificate";
+
+/* Button to remove the client certificate */
+"Remove Certificate" = "Remove Certificate";
+
+/* Button to import a client certificate */
+"Import Certificate..." = "Import Certificate...";
+
+/* Certificate imported success indicator */
+"Imported" = "Imported";
+
+/* Client certificate file read error */
+"The selected file could not be read." = "The selected file could not be read.";
+
+/* Remove certificate confirmation title */
+"Remove Certificate?" = "Remove Certificate?";
+
+/* Remove certificate confirm button */
+"Remove" = "Remove";
+
+/* Remove certificate confirmation message */
+"Nightscout sync will stop until you import a new certificate." = "Nightscout sync will stop until you import a new certificate.";
+/* OK button */
+"OK" = "OK";
+
+/* Client certificate password prompt footer */
+"Enter the password of the certificate file." = "Enter the password of the certificate file.";
+
+/* Client certificate password field */
+"Password" = "Password";
+
+
+/* Cancel button */
+"Cancel" = "Cancel";
+
+
+/* Button to confirm the certificate import */
+"Import" = "Import";
+
+/* Client certificate wrong password error */
+"The certificate password is wrong." = "The certificate password is wrong.";
+
+/* Client certificate invalid file error */
+"The file is not a valid PKCS#12 (.p12/.pfx) certificate." = "The file is not a valid PKCS#12 (.p12/.pfx) certificate.";
+
+/* Client certificate keychain error */
+"The certificate could not be stored in the keychain." = "The certificate could not be stored in the keychain.";
+
+/* Client certificate password prompt title */
+"Certificate Password" = "Certificate Password";
+
+/* Client certificate expired error */
+"The certificate has expired." = "The certificate has expired.";
+
+/* Expired certificate URL validation error */
+"Your client certificate expired on %@. Please import a new certificate." = "Your client certificate expired on %@. Please import a new certificate.";
+
+/* Client certificate validation error */
+"The certificate is not valid for client authentication." = "The certificate is not valid for client authentication.";
+
+
+/* Certificate expiry date label */
+"Expires" = "Expires";
+
+/* Certificate expired indicator */
+"Expired" = "Expired";
+
+/* Accessibility hint for import certificate button */
+"Select a PKCS#12 certificate file from your device" = "Select a PKCS#12 certificate file from your device";
+
+/* Accessibility hint for remove certificate button */
+"Removes the certificate. Nightscout sync will stop until a new certificate is imported." = "Removes the certificate. Nightscout sync will stop until a new certificate is imported.";
+
+/* Accessibility label for certificate name with value */
+"Certificate: %@" = "Certificate: %@";
+
+/* Accessibility hint for certificate password field */
+"Enter the password that protects the certificate file" = "Enter the password that protects the certificate file";
+
+/* Accessibility label for import success */
+"Certificate imported successfully" = "Certificate imported successfully";
