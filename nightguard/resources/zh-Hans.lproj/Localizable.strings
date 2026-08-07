@@ -1,0 +1,814 @@
+/* Single line footer for Fast rise/drop */
+
+/* Single line footer for predicted low */
+
+/* Option in low predicion alert settings */
+
+/* Single line footer for Persistent high */
+
+/* Single line footer for missed readings alert */
+
+/* Option */
+"1 Minute" = "1 分钟";
+
+/* Button value for A1c */
+"A1c" = "糖化血红蛋白";
+
+/* Label for Alert Notifications */
+"Alert Notifications" = "警报通知";
+
+/* Label for Duration Notifications toggle */
+"Duration Notifications" = "时长通知";
+
+/* Footer for Duration notifications */
+"DurationNotificationDescription" = "启用推送通知，以便在耗材使用时长达到临界值时收到提醒。";
+
+/* Label for Alert volume */
+"Alert Volume" = "警报音量";
+
+/* Label for duration options */
+"Alert when high BG for more than" = "高血糖持续超过以下时间时报警";
+
+/* Label for Alert when no data */
+"Alert when no data for more than" = "无数据超过以下时间时报警";
+
+/* Footer for Urgent High */
+"Alerts anytime when the blood glucose raises above this value." = "当血糖升高到此值以上时随时发出警报。";
+
+/* Footer for Alerts */
+"Alerts when a fast BG rise or drop is detected in the last consecutive readings." = "当检测到最近连续读数中血糖快速上升或下降时发出警报。";
+
+/* Footer for predicted low */
+"Alerts when a low BG value is predicted in less than %d minutes." = "当预测在 %d 分钟内会出现低血糖时发出警报。";
+
+/* Footer in low predicion alert settings */
+"Alerts when a low BG value is predicted in the near future (if the current trend is continued)." = "当预测不久的将来会出现低血糖时发出警报（如果当前趋势持续）。";
+
+/* footer for Persistent high */
+"Alerts when BG remains high for more than %d minutes or exceeds the urgent high value %@." = "当血糖保持高位超过 %1$d 分钟或超过紧急高值 %2$@ 时发出警报。";
+
+/* Footer for Fast rise/drop */
+"Alerts when BG values are rising or dropping with %@ %@, considering the last %d consecutive readings." = "当考虑到最近 %3$d 次连续读数，血糖以 %1$@ %2$@ 的速度上升或下降时发出警报。";
+
+/* Footer for missed readings alert */
+"Alerts when no data for more than %d minutes." = "当超过 %d 分钟没有数据时发出警报。";
+
+/* Footer for Alerts when no data is received */
+"Alerts when no data is received for a longer period. We suggest leaving this check ALWAYS ON." = "当长时间未收到数据时发出警报。我们建议始终保持此检查处于开启状态。";
+
+/* Footer for Persistent High */
+"Alerts when the BG remains high for a longer period. When on, this alert will delay the high BG alert until the period elapsed or until reaching a maximum BG level (urgent high)." = "当血糖长时间保持高位时发出警报。开启后，此警报将延迟高血糖警报，直到设定的时间过去或达到最高血糖水平（紧急高值）。";
+
+/* Footer for Low alert */
+"Alerts when the blood glucose drops below this value." = "当血糖降至此值以下时发出警报。";
+
+/* Footer for High alert */
+"Alerts when the blood glucose raises above this value." = "当血糖升至此值以上时发出警报。";
+
+/* Title for confirmation */
+"ARE YOU SURE?" = "您确定吗？";
+
+/* Button value for Average */
+"Average" = "平均值";
+
+/* Button value for Coefficient of Variation */
+"Coefficient of Variation" = "变异系数";
+
+/* Label for Consecutive Readings */
+"Consecutive Readings" = "连续读数";
+
+/* Label for delta */
+"Delta" = "差值";
+
+/* Label for Dim screen when idle */
+"Dim Screen When Idle" = "空闲时调暗屏幕";
+
+/* Footer for URL */
+"Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'. For the 'Care' actions to work you generally need to provide the security token here!" = "在此输入您的 Nightscout 服务器 URI。例如 'https://nightscout?token=mytoken'。要使“Care”功能正常工作，通常需要在此处提供安全令牌！";
+
+/* Label for Fast rise/drop */
+"Fast Rise/Drop" = "快速上升/下降";
+
+/* Body of confirmation */
+"For your safety, keep this switch ON for receiving alarms when no readings!" = "为了您的安全，请保持此开关开启，以便在无读数时接收警报！";
+
+/* Fullscreen monitor */
+"Fullscreen monitor" = "全屏监视器";
+
+/* Button value for High */
+"High" = "高";
+
+/* Alarm settings title: High alert */
+"High BG Alert" = "高血糖警报";
+
+/* Footer for consecutive readings */
+"How many consecutive readings to consider." = "需要考虑多少次连续读数。";
+
+/* Footer for Alert volume */
+"If overriding the system output volume, your custom volume level will be used rather than phone's current volume level." = "如果覆盖系统输出音量，将使用您自定义的音量级别，而不是手机当前的音量级别。";
+
+/* Footer for Progressive volume switch */
+"If selected, the alert will start quietly and increase the volume gradualy, reaching the maximum volume in selected time interval." = "如果选中，警报将以静音开始并逐渐增加音量，在选定的时间间隔内达到最大音量。";
+
+/* Button value for IFCC A1c */
+"IFCC A1c" = "IFCC 糖化血红蛋白";
+
+/* Title for confirmation */
+
+/* Button value for In range */
+"In Range" = "在范围内";
+
+/* Invalid data from NS entries API */
+
+/* Invalid readings */
+"Invalid readings" = "无效读数";
+
+/* Label for Keep the Screen Active */
+"Keep the Screen Active" = "保持屏幕常亮";
+
+/* Message for confirmation */
+"Keep this switch ON to disable the screenlock and prevent the app to get stopped!" = "保持此开关开启以禁用屏幕锁定并防止应用程序停止运行！";
+
+/* Footer for Dim Screen */
+"Keeping the screen active is of paramount importance if using the app as a night guard. We suggest leaving it ALWAYS ON." = "如果将此应用用作夜间监护，保持屏幕激活至关重要。我们建议始终保持开启。";
+
+/* Stats button value for Last 24h */
+"Last 24h" = "过去24小时";
+
+/* Stats button value for Last 8h */
+"Last 8h" = "过去8小时";
+
+/* Button value for Low */
+"Low" = "低";
+
+/* Alarm settings title: Low alert */
+"Low BG Alert" = "低血糖警报";
+
+/* Show low prediction warning */
+"Low Predicted in %dmin" = "预计 %d 分钟后低血糖";
+
+/* Alarm settings title: Low prediction */
+"Low Prediction" = "低血糖预测";
+
+/* Title in low predicion alert settings */
+
+/* Option */
+"Minutes" = "分钟";
+
+/* plurar unit */
+"minutes" = "分钟";
+
+/* Alarm settings title: Missed readings */
+"Missed Readings" = "缺失读数";
+
+/* Option */
+"Never" = "从不";
+
+/* No data from NS entries API */
+"No data received from Nightscout entries API" = "未从 Nightscout entries API 接收到数据";
+
+/* No data from NS status API */
+"No data received from Nightscout status API" = "未从 Nightscout status API 接收到数据";
+
+/* No data from Pebble API */
+
+/* Alert off */
+"Off" = "关闭";
+
+/* Link to NS site */
+"Open your Nightscout site" = "打开您的 Nightscout 站点";
+
+/* Alarm settings title: Other alerts */
+"Other Alerts" = "其他警报";
+
+/* Label for Override System Volume switch */
+"Override System Volume" = "覆盖系统音量";
+
+/* Alarm settings title: Persistent High */
+"Persistent High" = "持续高血糖";
+
+/* Label for prediction interval options */
+"Prediction interval" = "预测区间";
+
+/* Label for Progressive Volume */
+"Progressive Volume" = "渐进式音量";
+
+/* Text of Readings stats button */
+"Readings" = "读数";
+
+/* Text of Reading% stats button */
+"Readings %" = "读数百分比";
+
+/* Footer for Reduce screen brightness */
+
+/* Label for Apple Health access revocation */
+"Revoke access in Apple Health" = "撤销 Apple 健康访问权限";
+
+/* plurar unit */
+"seconds" = "秒";
+
+/* Label for Show BG on Badge */
+"Show BG on App Badge" = "在应用图标上显示血糖";
+
+/* Label for Show Care/Loop Data */
+"Show Care/Loop Data" = "显示 Care/Loop 数据";
+
+/* CarPlay status section header */
+"Glucose" = "血糖";
+
+/* CarPlay actions section header */
+"Actions" = "操作";
+
+/* CarPlay Pro required title */
+"Pro required" = "需要 Pro 版";
+
+/* CarPlay Pro required detail */
+"CarPlay is available with a Pro subscription." = "CarPlay 功能需订阅 Pro 版方可使用。";
+
+/* Pro Feature 3 Title */
+"CarPlay" = "CarPlay";
+
+/* Pro Feature 3 Description */
+"Glucose and alarms on your CarPlay screen while driving." = "驾驶时在 CarPlay 屏幕上显示血糖和警报。";
+
+/* Label for Show Yesterdays BG values in chart */
+"Show Yesterdays BGs" = "显示昨日血糖";
+
+/* Label for Show statistics */
+"Show Statistics" = "显示统计数据";
+
+/* Label for Smart snooze switch */
+"Smart Snooze" = "智能暂停";
+
+/* Text of snooze button */
+"snooze" = "暂停";
+
+/* Footer for smart snooze switch */
+"Snooze (do not alert) when values are high or low but the trend is going in the right direction." = "当数值偏高或偏低但趋势正朝正确方向发展时暂停（不报警）。";
+
+/* Snoozed duration in main page */
+"Snoozed for %dmin" = "已暂停 %d 分钟";
+
+/* Snoozed duration on watch */
+"Snoozed %dmin" = "已暂停 %d 分钟";
+
+/* Label for Snoozing actions */
+"Snoozing Actions" = "暂停操作";
+
+/* Title of Stats period */
+"Stats Period" = "统计周期";
+
+/* Button value for Std Deviation */
+"Std Deviation" = "标准差";
+
+/* Stop alert button */
+"Stop Alert" = "停止警报";
+
+/* Label for Apple Health synchronization */
+"Synchronize with Apple Health" = "同步至 Apple 健康";
+
+/* Test alert button */
+"Test Alert" = "测试警报";
+
+/* Empty or invalid Uri error */
+"The base URI is empty or invalid!" = "基础 URI 为空或无效！";
+
+/* Footer for delta */
+"The difference (delta) between two individual readings." = "两次单独读数之间的差值（增量）。";
+
+/* Stats button value for Today */
+"Today" = "今天";
+
+/* Stats button value for Today & Yesterday */
+"Today & Yesterday" = "今天和昨天";
+
+/* Unkown error while extracting Pebble API data */
+"Unknown error while extracting data from Pebble Watch API" = "从 Pebble Watch API 提取数据时发生未知错误";
+
+/* Label for Urgent High */
+"Urgent High" = "紧急高值";
+
+/* Title for URL */
+"URL" = "URL";
+
+/* Label for Version */
+"Version" = "版本";
+
+/* Label for Vibrate switch */
+"Vibrate" = "振动";
+
+/* Footer for Alert notifications */
+"AlarmNotificationDescription" = "当应用程序在后台运行时，您可以启用警报通知，以便在触发警报时引起您的注意。\n为此，您需要将 Nightguard 小组件添加到锁屏界面。但请注意，这些更新受 Apple 的预算限制。";
+
+/* Stats button value for Yesterday */
+"Yesterday" = "昨天";
+
+/* Persistent High BG in AlarmRule Class */
+"Persistent High BG" = "持续高血糖";
+
+/* High BG in AlarmRule Class */
+"High BG" = "高血糖";
+
+/* Low BG in AlarmRule Class */
+"Low BG" = "低血糖";
+
+/* Fast Rise in AlarmRule Class */
+"Fast Rise" = "快速上升";
+
+/* Fast Drop in AlarmRule Class */
+"Fast Drop" = "快速下降";
+
+/* shorter text for watch: Low in %dmin in AlarmRule Class */
+"Low in %dmin" = "%d分钟后低血糖";
+
+/* Watch Popup Refresh Label */
+"Refresh" = "刷新";
+
+/* Watch Popup Snooze Label */
+"Snooze" = "暂停";
+
+/* Watch Popup Scroll Label */
+
+/* Watch Popup Zoom Label */
+
+/* Watch Interface Controller Cancel Label */
+"Cancel" = "取消";
+
+/* SnoozeActionsViewController Quick Snooze Hint */
+"After an alert started, sometimes it is important to have a shortcut, a quick way to stop it for the moment." = "警报开始后，有时拥有一个快捷方式来暂时停止它非常重要。";
+
+/* Quick Snoozing Label */
+"Quick Snoozing" = "快速暂停";
+
+/* Snoozing with volume button hint */
+"NOTE: snoozing with volume buttons is enabled only if the \"Override System Volume\" option is ON (Alert Volume screen)" = "注意：仅当“覆盖系统音量”选项开启时（警报音量界面），才能使用音量按钮进行暂停";
+
+/* Shaking the phone Label */
+"Shaking the phone" = "摇晃手机";
+
+/* Volume Buttons Label */
+"Volume Buttons" = "音量按钮";
+
+/* Will do Nothing Quick Snooze Option */
+"Will do Nothing" = "无操作";
+
+/* Will show the Snooze Dialog Quick Snooze Option */
+"Will show the Snooze Dialog" = "显示暂停对话框";
+
+/* Will snooze for 1 Minute Dialog Quick Snooze Option */
+"Will snooze for 1 Minute" = "暂停 1 分钟";
+
+/* Will snooze for 5 Minutes Dialog Quick Snooze Option */
+"Will snooze for 5 Minutes" = "暂停 5 分钟";
+
+/* Will snooze for 10 Minutes Dialog Quick Snooze Option */
+"Will snooze for 10 Minutes" = "暂停 10 分钟";
+
+/* Alert popup body text for disabling all alerts */
+"It is not recommended to disable all alerts! Do you really want to disable all alerts?" = "不建议禁用所有警报！您确定要禁用所有警报吗？";
+
+/* Footer for disable all alerts switch */
+"Deactivate all alerts. This is NOT recommended. You will get no alarms or notifications at all anymore!" = "停用所有警报。不建议这样做。您将不再收到任何警报或通知！";
+
+/* Label for disable all alerts */
+"Disable all alerts" = "禁用所有警报";
+
+/* Popup OK-Button */
+"OK" = "确定";
+
+/* Popup YES-Button */
+"YES" = "是";
+
+/* Popup NO-Button */
+"NO" = "否";
+
+/* Popup Accept-Button */
+"Accept" = "接受";
+
+/* Popup Error Message Title */
+"Error" = "错误";
+
+/* Popup Decline-Button */
+"Decline" = "拒绝";
+
+/* Set Target Message Title */
+
+/* Set Target Message Text */
+"Do you want to set a temporary target for %d minutes?" = "您想设置一个持续 %d 分钟的临时目标吗？";
+
+/* Cancel Target Popup Title */
+"Cancel Target" = "取消目标";
+
+/* Cancel Target Popup Text */
+"Do you want to cancel an active temporary target?" = "您想取消当前活动的临时目标吗？";
+
+/* Label for Temporary Target Duration */
+"Duration" = "持续时间";
+
+/* Hour TT Unit */
+"hour" = "小时";
+
+/* Hours TT Unit */
+"hours" = "小时";
+
+/* Label for Temporary Target Value */
+"Target Value" = "目标值";
+
+/* Button to activate the Temporary Target */
+"Set Target" = "设置目标";
+
+/* Label for Temporary Target Section */
+"Set a new Temporary Target" = "设置新的临时目标";
+
+/* Label for the Temporary Target Reason */
+"Reason" = "原因";
+
+/* TT Reason Picker Activity */
+"Activity" = "运动";
+
+/* TT Reason Picker Too High */
+"Too High" = "过高";
+
+/* TT Reason Picker Too Low */
+"Too Low" = "过低";
+
+/* TT Reason Picker Meal Soon */
+"Meal Soon" = "即将进餐";
+
+/* Section to delete a temporary Target */
+"Delete an active Temporary Target" = "删除活动的临时目标";
+
+/* Button to delete a current Temporary Target */
+"Delete Temporary Target" = "删除临时目标";
+
+/* Error hint in case of a http 401 Exception */
+"You don't have write access to your nightscout site.\nDid you enter a security token in your nightscout base URI?" = "您没有 Nightscout 站点的写入权限。\n您是否在 Nightscout 基础 URI 中输入了安全令牌？";
+
+/* Footer for ManuallySetUnitsSwitch */
+"If enabled, you will override your Units-Setting of your nightscout backend. Usually you can disable this. Nightguard will determine the correct Units on its own." = "如果启用，将覆盖 Nightscout 后端的单位设置。通常可以禁用此项，Nightguard 会自动确定正确的单位。";
+
+/* Label for Manually set Units */
+"Manually set Units" = "手动设置单位";
+
+/* Label for 'Use the following Units' */
+"Use the following Units" = "使用以下单位";
+
+/* Watch-Button to delete a current Temporary Target */
+"Delete Target" = "删除目标";
+
+/* Add Carbs Popup Title */
+"Add Carbs" = "添加碳水";
+
+/* Cancel Target Popup Text */
+
+/* Section to enter Carbs */
+"Enter consumed Carbs" = "输入摄入的碳水化合物";
+
+/* Label for the amount of carbs in gramm */
+"Gramms [g]" = "克 [g]";
+
+/* Add carbs popup modal text */
+"Do you want to add %dg of carbs?" = "您想添加 %dg 碳水化合物吗？";
+
+/* Snooze Menu Popup Button Text */
+"Stop Snoozing" = "停止暂停";
+
+/* Watch Snooze Menu Button 5min */
+"5min" = "5分钟";
+
+/* Watch Snooze Menu Button 10min */
+"10min" = "10分钟";
+
+/* Watch Snooze Menu Button 15min */
+"15min" = "15分钟";
+
+/* Watch Snooze Menu Button 20min */
+"20min" = "20分钟";
+
+/* Watch Snooze Menu Button 30min */
+"30min" = "30分钟";
+
+/* Watch Snooze Menu Button 45min */
+"45min" = "45分钟";
+
+/* Watch Snooze Menu Button 1h */
+"1h" = "1小时";
+
+/* Watch Snooze Menu Button 2h */
+"2h" = "2小时";
+
+/* Watch Snooze Menu Button 3h */
+"3h" = "3小时";
+
+/* Watch Snooze Menu Button 6h */
+"6h" = "6小时";
+
+/* Watch Snooze Menu Button 1d */
+"1d" = "1天";
+
+/* Watch Action Button Menu */
+"Crown Scrolls" = "表冠滚动";
+
+/* Watch Action Button Menu */
+"Crown Zooms" = "表冠缩放";
+
+/* Alarm settings title: Custom Alarm Sound */
+"Alarm Sound" = "警报声音";
+
+/* Footer for Custom Alarm Sound */
+"Define your own Alarm Sound by uploading an mp3 file from your iCloud account." = "通过从 iCloud 账户上传 mp3 文件来自定义警报声音。";
+
+/* Footer in Custom Alarm Sound settings */
+"If activated, a user defined alarm sound will be used." = "如果激活，将使用用户自定义的警报声音。";
+
+/* Title in Custom Alarm Sound settings */
+"Custom Alarm Sound" = "自定义警报声音";
+
+/* Title for Alarm Name */
+"Alarm Name" = "警报名称";
+
+/* Button Pick Custom Alarm Sound */
+"Pick Custom Alarm Sound" = "选择自定义警报声音";
+
+/* Cannula Row Header */
+"Cannula" = "输注管路";
+
+/* Footer for Cannula Change Date */
+"Set the time when you changed your cannula. This will be displayed on the main screen as CAGE. Keep in mind that you just can reduce this date." = "设置更换输注管路的时间。这将在主屏幕上显示为 CAGE。请注意，您只能将此日期向前调整。";
+
+/* Label for Cannula Change Time */
+"Cannula change date" = "输注管路更换日期";
+
+/* Button to reset the new Cannula Change Date */
+"Reset" = "重置";
+
+/* Button to activate the new Cannula Change Date */
+"Save" = "保存";
+
+/* Button to reset the new Cannula Change Date */
+
+/* Button to activate the new Cannula Change Date */
+
+/* Modify Cannula Change Date Popup Title */
+"Modify Cannula Change Date" = "修改输注管路更换日期";
+
+/* Sensor Row Header */
+"Sensor" = "传感器";
+
+/* Footer for Sensor */
+"Set the time when you changed your sensor. This will be displayed on the main screen as SAGE. Keep in mind that you just can reduce this date." = "设置更换传感器的时间。这将在主屏幕上显示为 SAGE。请注意，您只能将此日期向前调整。";
+
+/* Label for Sensor Change Time */
+"Sensor change date" = "传感器更换日期";
+
+/* Button to reset the new Sensor Change Date */
+
+/* Button to activate the new Sensor Change Date */
+
+/* Modify Sensor Change Date Popup Title */
+"Modify Sensor Change Date" = "修改传感器更换日期";
+
+/* Battery Row Header */
+"Battery" = "电池";
+
+/* Footer for Battery */
+"Set the time when you changed your pump battery. This will be displayed on the main screen as BAGE. Keep in mind that you just can reduce this date." = "设置更换泵电池的时间。这将在主屏幕上显示为 BAGE。请注意，您只能将此日期向前调整。";
+
+/* Label for Battery Change Time */
+"Battery change date" = "电池更换日期";
+
+/* Button to reset the new Battery Change Date */
+
+/* Button to activate the new Sensor Change Date */
+
+/* Modify Battery Change Date Popup Title */
+"Modify Battery Change Date" = "修改电池更换日期";
+
+/* Cancel Target Popup Text */
+"Do you want to modify the change date to %@" = "您想将更换日期修改为 %@ 吗";
+
+/* Invalid JSON received from API V2 Properties */
+"Invalid JSON received from API V2 Properties" = "从 API V2 Properties 接收到无效的 JSON";
+
+/* Invalid JSON from API V2 Properties, missing bgs, check NS conf */
+"Invalid JSON received from API V2 Properties, missing bgs data. Check Nightscout configuration." = "从 API V2 Properties 接收到无效的 JSON，缺少 bgs 数据。请检查 Nightscout 配置。";
+
+/* No data from API V2 Properties Endpoint */
+"No data received from API V2 Properties" = "未从 API V2 Properties 接收到数据";
+
+/* Widget Configuration Display Name */
+"BG Values as Text" = "血糖值文本";
+
+/* Text Widget Display Name */
+"BG Text" = "血糖文本";
+
+/* Text Widget show BG Values with a fixed Timestamp */
+"BG with absolute Time" = "带绝对时间的血糖";
+
+/* Gauge Widget Display Name */
+"BG Gauge" = "血糖仪表";
+
+/* Gauge Widget Configuration Display Name */
+"BG Values as Gauge" = "血糖值仪表";
+
+/* Gauge Widget Not Implemented Error Message */
+"Not an implemented widget yet" = "该小组件尚未实现";
+
+/* Gauge Widget Not Supported Error Message */
+"No Gauge Support for this widget!" = "此小组件不支持仪表样式！";
+
+/* Label for Check BG every minute */
+"Check BG every minute" = "每分钟检查血糖";
+
+/* Main tab */
+"Main" = "主页";
+
+/* Alarms tab */
+"Alarms" = "警报";
+
+/* Care tab */
+"Care" = "护理";
+
+/* Stats tab */
+"Stats" = "统计";
+
+/* Preferences tab */
+"Preferences" = "偏好设置";
+
+/* Snooze popup title */
+"Snooze Alarms for" = "暂停警报";
+
+/* Close button */
+"Close" = "关闭";
+
+/* Disposables Age Warnings menu item */
+"Disposables Age Warnings" = "耗材使用时长警告";
+
+/* Sensor Age section header */
+"Sensor Age" = "传感器使用时长";
+
+/* Cannula Age section header */
+"Cannula Age" = "输注管路使用时长";
+
+/* Battery Age section header */
+"Battery Age" = "电池使用时长";
+
+/* Warning threshold label */
+"Warning" = "警告";
+
+/* Critical threshold label */
+"Critical" = "危急";
+
+/* Footer for sensor age alerts */
+"Set thresholds for sensor age alerts. Warning turns the label yellow, Critical turns it red." = "设置传感器使用时长警报阈值。警告会将标签变为黄色，危急会将其变为红色。";
+
+/* Footer for cannula age alerts */
+"Set thresholds for cannula age alerts. Warning turns the label yellow, Critical turns it red." = "设置输注管路使用时长警报阈值。警告会将标签变为黄色，危急会将其变为红色。";
+
+/* Footer for battery age alerts */
+"Set thresholds for pump battery age alerts. Warning turns the label yellow, Critical turns it red." = "设置泵电池使用时长警报阈值。警告会将标签变为黄色，危急会将其变为红色。";
+
+/* Age alerts summary in AlarmView */
+"Sensor: %dd, Cannula: %@, Battery: %dd" = "传感器：%1$d天，输注管路：%2$@，电池：%3$d天";
+
+/* Unit: days */
+"days" = "天";
+
+/* Unit: hours */
+
+/* Days label */
+"Days" = "天";
+
+/* Hours label */
+"Hours" = "小时";
+
+/* Pro Features Section Header */
+"Pro Features" = "Pro 功能";
+
+/* Button to start the app tour */
+"Start App Tour" = "开始应用导览";
+
+/* Unlock Pro Version Button */
+"Unlock Pro Version" = "解锁 Pro 版";
+
+/* Restore Purchases Button */
+"Restore Purchases" = "恢复购买";
+
+/* Cannula Age Notification Title */
+"Cannula Age Critical" = "输注管路使用时长危急";
+
+/* Cannula Age Notification Body */
+"Your cannula has reached its critical age (%@)." = "您的输注管路已达到危急使用时长（%@）。";
+
+/* Sensor Age Notification Title */
+"Sensor Age Critical" = "传感器使用时长危急";
+
+/* Sensor Age Notification Body */
+"Your sensor has reached its critical age (%@)." = "您的传感器已达到危急使用时长（%@）。";
+
+/* Battery Age Notification Title */
+"Battery Age Critical" = "电池使用时长危急";
+
+/* Battery Age Notification Body */
+"Your pump battery has reached its critical age (%@)." = "您的泵电池已达到危急使用时长（%@）。";
+
+/* Disclaimer Popup Title */
+"Disclaimer!" = "免责声明！";
+
+/* Disclaimer Popup Message */
+"Don't use this App for medical decisions! It comes with absolutely NO WARRANTY. It is maintained by volunteers only. Use it at your own risk!" = "请勿使用此应用做出医疗决定！本应用不提供任何形式的保证。它仅由志愿者维护。使用风险自负！";
+
+/* Pro Promotion */
+"Support Nightguard" = "支持 Nightguard";
+"The app will always stay free and open source." = "本应用将始终保持免费和开源。";
+"You can support the app by subscribing and get some extra features as a goodie!" = "您可以通过订阅来支持本应用，并获得一些额外功能作为福利！";
+"Pro Notifications" = "Pro 通知";
+"Push Notifications for Cannula Age, Battery Age, Sensor Age and Reservoir capacity." = "输注管路、电池、传感器使用时长及储药器容量的推送通知。";
+"Live Activities" = "实时活动";
+"Support for the dynamic island and live activities to see your BG at a glance." = "支持灵动岛和实时活动，让您一眼就能看到血糖值。";
+"Watch Statistics" = "手表统计";
+"See the four main glucose stats directly on your Apple Watch in a compact 2x2 view." = "在 Apple Watch 上以紧凑的 2x2 视图直接查看四项主要血糖统计数据。";
+"Unlock Pro to see the four main stats on your Apple Watch." = "解锁 Pro 版以在 Apple Watch 上查看四项主要统计数据。";
+"Subscribe on iPhone" = "在 iPhone 上订阅";
+"Tap to change" = "点击更改";
+"Support & Subscribe" = "支持与订阅";
+"Remind me later" = "稍后提醒我";
+"Max" = "Max";
+"Pro" = "Pro";
+"Pro unlocks the core premium features. For push-based background updates, choose Max." = "Pro 解锁核心高级功能。如需基于推送的后台更新，请选择 Max。";
+"Max includes Pro and adds the background update features below." = "Max 包含 Pro 的所有功能，并增加以下后台更新特性。";
+"All Pro Features" = "所有 Pro 功能";
+"Includes every feature from the Pro subscription." = "包含 Pro 订阅的所有功能。";
+"Dynamic Island and Live Activity Updates" = "灵动岛与实时活动更新";
+"Updating Dynamic Island and Live Activities in the background is only possible through push notifications in Max. This is an Apple limitation." = "由于 Apple 的限制，仅 Max 版可通过推送通知在后台更新灵动岛和实时活动。";
+"Why Max costs more" = "为什么 Max 价格更高";
+"Every Max user receives thousands of push notifications per month. We use the subscription revenue to finance the required hosted server backend." = "每位 Max 用户每月会收到数千条推送通知。我们使用订阅收入来资助所需的托管服务器后端。";
+"When upgrading from Pro to Max, Apple automatically accounts for your remaining Pro subscription time in the purchase dialog." = "从 Pro 升级到 Max 时，Apple 会在购买对话框中自动折算您剩余的 Pro 订阅时间。";
+
+/* App Tour */
+"Welcome to Nightguard" = "欢迎使用 Nightguard";
+"See your current glucose level, trend, and device status at a glance." = "一目了然地查看您当前的血糖水平、趋势和设备状态。";
+"Smart Alarms" = "智能警报";
+"Manage your glucose alarms and snoozing options. Receive customizable alerts when values are out of range." = "管理您的血糖警报和暂停选项。当数值超出范围时接收可定制的警报。";
+"Care Portal" = "护理门户";
+"Log treatments, carb entries, and temporary targets directly from the app." = "直接在应用中记录治疗、碳水摄入和临时目标。";
+"Visualize the duration of your insulin on board (IOB) and carbs on board (COB)." = "可视化体内活性胰岛素（IOB）和活性碳水化合物（COB）的持续时间。";
+"Statistics" = "统计";
+"View detailed statistics and reports of your glucose history to analyze trends." = "查看详细的血糖历史统计数据和报告以分析趋势。";
+"Setup Nightscout" = "设置 Nightscout";
+"Enter your Nightscout URL and API Token to get started." = "输入您的 Nightscout URL 和 API 令牌以开始使用。";
+"NIGHTSCOUT URL" = "NIGHTSCOUT URL";
+"API TOKEN" = "API 令牌";
+"Help" = "帮助";
+"The Token needs to have the \"careportal\" role." = "令牌需要具有 \"careportal\" 角色。";
+"RESULTING URL: %@" = "生成的 URL：%@";
+"Save & Start" = "保存并开始";
+"Enter later" = "稍后输入";
+"Skip" = "跳过";
+
+/* New strings */
+"Manage Subscription" = "管理订阅";
+"No active subscription found to restore." = "未找到可恢复的有效订阅。";
+"Purchases restored successfully." = "购买项目恢复成功。";
+"Restore failed: %@" = "恢复失败：%@";
+
+/* Localization audit */
+"%d units" = "%d 单位";
+"High Alert" = "高血糖警报";
+"Invalid change" = "无效更改";
+"Invalid JSON received from Entries V2 API" = "从 Entries V2 API 接收到无效的 JSON";
+"Low Alert" = "低血糖警报";
+"Max Background Updates" = "Max 后台更新";
+"Max Subscription Active" = "Max 订阅已激活";
+"NIGHTSCOUT" = "NIGHTSCOUT";
+"No" = "否";
+"Pro Features Included" = "包含 Pro 功能";
+"Reservoir" = "储药器";
+"Reservoir Critical" = "储药器余量危急";
+"Set thresholds for reservoir alerts. Warning turns the label yellow, Critical turns it red." = "设置储药器警报阈值。警告会将标签变为黄色，危急会将其变为红色。";
+"Silent push wakeups improve background refreshes for the app, widgets, Live Activities and complications." = "静默推送唤醒可改善应用、小组件、实时活动和表盘复杂功能的后台刷新。";
+"Snooze 30m" = "暂停 30 分钟";
+"Snooze all alarms for 30 minutes" = "将所有警报暂停 30 分钟";
+"Subscribe to Max" = "订阅 Max";
+"Upgrade to Max" = "升级至 Max";
+"Yes" = "是";
+"Your reservoir is low (%d units)." = "您的储药器余量较低（%d 单位）。";
+"Do you like the app?" = "您喜欢这款应用吗？";
+"If you like Nightguard, we would appreciate a review in the App Store." = "如果您喜欢 Nightguard，希望能得到您在 App Store 的评价。";
+"Pro Subscription Active" = "Pro 订阅已激活";
+" ago" = "前";
+
+/* Legal section header */
+"Legal" = "法律信息";
+
+/* Link to Terms of Use */
+"Terms of Use (EULA)" = "使用条款 (EULA)";
+
+/* Link to Privacy Policy */
+"Privacy Policy" = "隐私政策";
+
+/* Description for Apple Health synchronization */
+"AppleHealthSyncDescription" = "血糖值将同步到“健康”应用。其他应用可从那里读取这些数据。Nightguard 本身不会分析 Apple 健康中的数据。";
+
+/* Price per month */
+"%@ / month" = "%@ / 月";
