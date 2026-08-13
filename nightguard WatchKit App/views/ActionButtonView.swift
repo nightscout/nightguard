@@ -30,10 +30,10 @@ struct ActionButtonView: View {
                 viewModel.cycleCrownMode()
             }) {
                 VStack() {
-                    Image(systemName: nextCrownModeIcon)
+                    Image(systemName: crownModeIcon)
                         .resizable()
                         .frame(width: getButtonSize(), height: getButtonSize())
-                    Text(nextCrownModeTitle)
+                    Text(crownModeTitle)
                         .lineLimit(1)
                         .font(.system(size: 11))
                 }
@@ -60,29 +60,25 @@ struct ActionButtonView: View {
         .focusable(false)
     }
 
-    private var nextCrownModeTitle: String {
+    private var crownModeTitle: String {
         switch viewModel.crownMode {
         case .scroll:
-            return NSLocalizedString("Crown Zooms", comment: "Watch Action Button Menu")
-        case .zoom:
-            return UserDefaultsRepository.watchProAccessAvailable.value
-                ? NSLocalizedString("Crown Selects", comment: "Watch Action Button Menu")
-                : NSLocalizedString("Crown Scrolls", comment: "Watch Action Button Menu")
-        case .select:
             return NSLocalizedString("Crown Scrolls", comment: "Watch Action Button Menu")
+        case .zoom:
+            return NSLocalizedString("Crown Zooms", comment: "Watch Action Button Menu")
+        case .select:
+            return NSLocalizedString("Crown Selects", comment: "Watch Action Button Menu")
         }
     }
 
-    private var nextCrownModeIcon: String {
+    private var crownModeIcon: String {
         switch viewModel.crownMode {
         case .scroll:
-            return "plus.magnifyingglass"
+            return "arrow.left.and.right"
         case .zoom:
-            return UserDefaultsRepository.watchProAccessAvailable.value
-                ? "scope"
-                : "rectangle.portrait.arrowtriangle.2.outward"
+            return "plus.magnifyingglass"
         case .select:
-            return "rectangle.portrait.arrowtriangle.2.outward"
+            return "scope"
         }
     }
 }

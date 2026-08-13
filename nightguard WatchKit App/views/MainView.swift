@@ -14,6 +14,7 @@ struct MainView: View {
     
     @State var crownValue = 0.0
     @State var oldCrownValue = 0.0
+    @State var lastSelectionMoveTime = Date.distantPast
     
     // update the ui every 15 seconds:
     let timer = Timer.publish(every: 15, on: .current, in: .common).autoconnect()
@@ -57,6 +58,13 @@ struct MainView: View {
 
         oldCrownValue = crownValue
         guard rotationDelta != 0 else { return }
+
+        // Crown updates can arrive in a rapid burst. Keep every deliberate
+        // movement usable, while limiting how often the selected reading can
+        // advance during a fast turn.
+        let now = Date()
+        guard now.timeIntervalSince(lastSelectionMoveTime) >= 0.15 else { return }
+        lastSelectionMoveTime = now
         viewModel.skScene.moveSelection(by: rotationDelta > 0 ? 1 : -1)
     }
     
@@ -176,7 +184,15 @@ struct MainView: View {
                         if #available(watchOSApplicationExtension 7.0, *) {
                             SpriteView(scene: viewModel.skScene)
                                 .focusable(true)
-                                .digitalCrownRotation($crownValue, from: 0, through: 10000, by: 15, sensitivity: .high, isContinuous: true, isHapticFeedbackEnabled: true)
+                                .digitalCrownRotation(
+                                    $crownValue,
+                                    from: 0,
+                                    through: 10000,
+                                    by: 15,
+                                    sensitivity: .high,
+                                    isContinuous: true,
+                                    isHapticFeedbackEnabled: true
+                                )
                                 .onReceive(Just(crownValue)) { output in
                                     switch viewModel.crownMode {
                                     case .scroll:
@@ -220,6 +236,7 @@ struct MainView: View {
             }
             .onChange(of: viewModel.crownMode) { _ in
                 oldCrownValue = crownValue
+                lastSelectionMoveTime = .distantPast
             }
     }
 }
