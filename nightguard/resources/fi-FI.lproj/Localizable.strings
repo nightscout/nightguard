@@ -817,3 +817,8 @@
 
 /* Price per month */
 "%@ / month" = "%@ / kuukausi";
+
+/* Subscription information tabs */
+"Pro Subscription Information" = "Pro-tilauksen tiedot";
+"Max Subscription Information" = "Max-tilauksen tiedot";
+"Thank You for Your Support" = "Kiitos tuestasi 💚";

@@ -8,9 +8,22 @@ import SwiftUI
 struct ProPromotionView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var purchaseManager = PurchaseManager.shared
-    @State private var selectedPromotion: PromotionFocus = .pro
+    @State private var selectedPromotion: PromotionFocus
+    private let initialPromotion: PromotionFocus
+    private let showsRemindLater: Bool
     
     var onRemindLater: () -> Void = {}
+
+    init(
+        initialPromotion: PromotionFocus = .pro,
+        showsRemindLater: Bool = true,
+        onRemindLater: @escaping () -> Void = {}
+    ) {
+        _selectedPromotion = State(initialValue: initialPromotion)
+        self.initialPromotion = initialPromotion
+        self.showsRemindLater = showsRemindLater
+        self.onRemindLater = onRemindLater
+    }
     
     var body: some View {
         ScrollView {
@@ -146,18 +159,23 @@ struct ProPromotionView: View {
                 .cornerRadius(12)
                 .padding(.horizontal)
 
-                Button(action: {
-                    onRemindLater()
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Text(NSLocalizedString("Remind me later", comment: "Pro Promotion Remind Button"))
-                        .foregroundColor(Color.nightguardAccent)
+                if showsRemindLater {
+                    Button(action: {
+                        onRemindLater()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text(NSLocalizedString("Remind me later", comment: "Pro Promotion Remind Button"))
+                            .foregroundColor(Color.nightguardAccent)
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 20)
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 20)
             }
         }
         .accentColor(.nightguardAccent)
+        .onAppear {
+            selectedPromotion = initialPromotion
+        }
     }
 
     private var maxButtonTitle: String {
@@ -175,9 +193,11 @@ struct ProPromotionView: View {
     }
 }
 
-private enum PromotionFocus: Hashable {
+enum PromotionFocus: Hashable, Identifiable {
     case pro
     case max
+
+    var id: Self { self }
 
     var introText: String {
         switch self {

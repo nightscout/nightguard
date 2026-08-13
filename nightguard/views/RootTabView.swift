@@ -28,6 +28,7 @@ struct RootTabView: View {
 
     @State private var showAppTour = false
     @State private var showGlobalProPromotion = false
+    @ObservedObject private var purchaseManager = PurchaseManager.shared
 
 
 
@@ -209,6 +210,20 @@ struct RootTabView: View {
                 }
                 .accessibilityIdentifier("tab_prefs")
                 .tag(TabIdentifier.prefs)
+
+            // Subscription tabs are intentionally placed next to Preferences so
+            // they also appear as top-level entries in the tab bar's More menu.
+            if purchaseManager.isMaxAccessAvailable {
+                subscriptionTab(initialPromotion: .max, tab: .subscribeMax, title: "Thank You for Your Support", icon: "heart.fill")
+            } else {
+                subscriptionTab(
+                    initialPromotion: .pro,
+                    tab: .subscribePro,
+                    title: purchaseManager.hasProFeatureAccess ? "Thank You for Your Support" : "Pro Subscription Information",
+                    icon: purchaseManager.hasProFeatureAccess ? "heart.fill" : "star.circle"
+                )
+                subscriptionTab(initialPromotion: .max, tab: .subscribeMax, title: "Max Subscription Information", icon: "bolt.circle")
+            }
         }
         .accentColor(.white)
         .onAppear {
@@ -283,6 +298,21 @@ struct RootTabView: View {
 
     private func forceLandscape() {
         AppDelegate.updateOrientationLock(.landscape, rotateTo: .landscapeRight)
+    }
+
+    private func subscriptionTab(initialPromotion: PromotionFocus, tab: TabIdentifier, title: String, icon: String) -> some View {
+        ProPromotionView(initialPromotion: initialPromotion, showsRemindLater: false)
+            .accentColor(Color.nightguardAccent)
+            .onAppear {
+                if selectedTab == tab {
+                    forcePortrait()
+                }
+            }
+            .tabItem {
+                Image(systemName: icon)
+                Text(NSLocalizedString(title, comment: "Subscription tab"))
+            }
+            .tag(tab)
     }
 }
 

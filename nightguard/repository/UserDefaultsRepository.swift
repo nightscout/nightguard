@@ -419,6 +419,8 @@ enum TabIdentifier: String, CaseIterable, AnyConvertible, Equatable, Identifiabl
     case duration = "duration"
     case stats = "stats"
     case prefs = "prefs"
+    case subscribePro = "subscribePro"
+    case subscribeMax = "subscribeMax"
     
     var id: String { rawValue }
 

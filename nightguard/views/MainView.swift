@@ -211,6 +211,8 @@ struct MainView: View {
     @State private var showFullscreenMonitor = false
     @State private var showSnoozePopup = false
     @State private var showActionsMenuPopup = false
+    @State private var showPreferences = false
+    @State private var promotionFocus: PromotionFocus?
     @State private var showReviewPrompt = false
     @State private var chartScene: ChartScene?
     @Environment(\.selectedTab) private var selectedTab
@@ -359,6 +361,22 @@ struct MainView: View {
                                     Button(NSLocalizedString("Fullscreen monitor", comment: "Fullscreen monitor")) {
                                         showFullscreenMonitor = true
                                     }
+                                    Button(NSLocalizedString("Preferences", comment: "Preferences menu item")) {
+                                        showPreferences = true
+                                    }
+                                    if !PurchaseManager.shared.hasProFeatureAccess {
+                                        Button(NSLocalizedString("Unlock Pro Version", comment: "Subscribe to Pro menu item")) {
+                                            promotionFocus = .pro
+                                        }
+                                    }
+                                    if !PurchaseManager.shared.isMaxAccessAvailable {
+                                        Button(NSLocalizedString(
+                                            PurchaseManager.shared.hasProFeatureAccess ? "Upgrade to Max" : "Subscribe to Max",
+                                            comment: "Subscribe to Max menu item"
+                                        )) {
+                                            promotionFocus = .max
+                                        }
+                                    }
                                     Button(NSLocalizedString("Cancel", comment: "Cancel"), role: .cancel) {}
                                 }
                             }
@@ -411,6 +429,18 @@ struct MainView: View {
         }
         .sheet(isPresented: $showSnoozePopup) {
             SnoozePopupView()
+        }
+        .sheet(isPresented: $showPreferences) {
+            PrefsView()
+        }
+        .sheet(item: $promotionFocus) { promotionFocus in
+            ProPromotionView(
+                initialPromotion: promotionFocus,
+                showsRemindLater: false,
+                onRemindLater: {
+                    UserDefaultsRepository.markProPromotionSeen()
+                }
+            )
         }
         .fullScreenCover(isPresented: $showFullscreenMonitor) {
             BedsideView(currentNightscoutData: viewModel.nightscoutData)

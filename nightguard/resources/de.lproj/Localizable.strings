@@ -776,3 +776,8 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* Pro Feature 3 Description */
 "Glucose and alarms on your CarPlay screen while driving." = "Glukosewerte und Alarme auf deinem CarPlay-Display während der Fahrt.";
+
+/* Tabs mit Abo-Informationen */
+"Pro Subscription Information" = "Pro-Abo Informationen";
+"Max Subscription Information" = "Max-Abo Informationen";
+"Thank You for Your Support" = "Danke für den Support 💚";

@@ -186,6 +186,7 @@ struct DurationView: View {
             }
             .sheet(isPresented: $showProPromotion) {
                 ProPromotionView(
+                    showsRemindLater: false,
                     onRemindLater: {
                         UserDefaultsRepository.markProPromotionSeen()
                     }

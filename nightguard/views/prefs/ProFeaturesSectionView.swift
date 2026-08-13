@@ -10,7 +10,7 @@ import SwiftUI
 struct ProFeaturesSectionView: View {
 
     @ObservedObject var purchaseManager: PurchaseManager
-    @Binding var showProPromotion: Bool
+    @Binding var promotionFocus: PromotionFocus?
 
     var body: some View {
         Section(header: 
@@ -18,7 +18,7 @@ struct ProFeaturesSectionView: View {
                 Text(NSLocalizedString("Pro Features", comment: "Pro Features Section Header"))
                 Spacer()
                 Button(action: {
-                    showProPromotion = true
+                    promotionFocus = .pro
                     UserDefaultsRepository.markProPromotionSeen()
                 }) {
                     Image(systemName: "questionmark.circle")
@@ -41,7 +41,7 @@ struct ProFeaturesSectionView: View {
                     }
                 } else {
                     Button(action: {
-                        purchaseManager.buyMaxVersion()
+                        promotionFocus = .max
                     }) {
                         Text(NSLocalizedString("Upgrade to Max", comment: "Upgrade to Max Button"))
                     }
@@ -49,9 +49,14 @@ struct ProFeaturesSectionView: View {
                 Link(NSLocalizedString("Manage Subscription", comment: "Link to manage subscription"), destination: URL(string: "https://apps.apple.com/account/subscriptions")!)
             } else {
                 Button(action: {
-                    showProPromotion = true
+                    promotionFocus = .pro
                 }) {
                     Text(NSLocalizedString("Unlock Pro Version", comment: "Unlock Pro Version Button"))
+                }
+                Button(action: {
+                    promotionFocus = .max
+                }) {
+                    Text(NSLocalizedString("Subscribe to Max", comment: "Subscribe to Max Button"))
                 }
                 Button(action: {
                     purchaseManager.restorePurchases()
@@ -69,5 +74,8 @@ struct ProFeaturesSectionView: View {
 }
 
 #Preview {
-    ProFeaturesSectionView(purchaseManager: PurchaseManager.shared, showProPromotion: .constant(false))
+    ProFeaturesSectionView(
+        purchaseManager: PurchaseManager.shared,
+        promotionFocus: .constant(.pro)
+    )
 }
