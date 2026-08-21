@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NightscoutSectionView: View {
     @Binding var nightscoutURL: String
+    @Binding var apiToken: String
     @Binding var isValidatingURL: Bool
     @Binding var urlErrorMessage: String
     
@@ -17,7 +18,7 @@ struct NightscoutSectionView: View {
     var body: some View {
         Section(
             header: Text("NIGHTSCOUT"),
-            footer: Text("Enter the URI to your Nightscout Server here. E.g. 'https://nightscout?token=mytoken'. For the 'Care' actions to work you generally need to provide the security token here!")
+            footer: Text("Enter the URL of your Nightscout server and an access token. The token normally needs the careportal role for Care actions.")
                 .font(.footnote)
         ) {
             HStack {
@@ -42,6 +43,20 @@ struct NightscoutSectionView: View {
                 if isValidatingURL {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
+                }
+            }
+
+            HStack {
+                SecureField("API Token", text: $apiToken)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                if !apiToken.isEmpty {
+                    Button(action: { apiToken = "" }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .accessibilityIdentifier("clear_token_button")
                 }
             }
 

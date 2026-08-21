@@ -10,6 +10,7 @@ import WidgetKit
 
 struct PrefsView: View {
     @State private var nightscoutURL = UserDefaultsRepository.baseUri.value
+    @State private var apiToken = UserDefaultsRepository.nightscoutToken
     @State private var manuallySetUnits = UserDefaultsRepository.manuallySetUnits.value
     @State private var selectedUnits = UserDefaultsRepository.units.value
     @State private var keepScreenActive = SharedUserDefaultsRepository.screenlockSwitchState.value
@@ -24,6 +25,7 @@ struct PrefsView: View {
     @State private var showKeepScreenActiveAlert = false
     @State private var showAppleHealthAlert = false
     @State private var showURLErrorAlert = false
+    @State private var showReloadTodayAlert = false
     @State private var urlErrorMessage = ""
     @State private var isValidatingURL = false
     @State private var showAppTour = false
@@ -36,10 +38,31 @@ struct PrefsView: View {
             Form {
                 NightscoutSectionView(
                     nightscoutURL: $nightscoutURL,
+                    apiToken: $apiToken,
                     isValidatingURL: $isValidatingURL,
                     urlErrorMessage: $urlErrorMessage,
                     validateAndSaveURL: validateAndSaveURL
                 )
+
+                Section(header: Text(NSLocalizedString("Data", comment: "Data settings section"))) {
+                    Button {
+                        showReloadTodayAlert = true
+                    } label: {
+                        Label(
+                            NSLocalizedString("Reload today's data", comment: "Reload today's Nightscout data button"),
+                            systemImage: "arrow.clockwise"
+                        )
+                    }
+                    .disabled(nightscoutURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .accessibilityIdentifier("reload_today_button")
+
+                    Text(NSLocalizedString(
+                        "Deletes only local values for today. Nightscout data is not changed.",
+                        comment: "Description for local data reload"
+                    ))
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
                 
                 UnitsSectionView(
                     manuallySetUnits: $manuallySetUnits,
@@ -130,6 +153,23 @@ struct PrefsView: View {
             } message: {
                 Text(urlErrorMessage)
             }
+            .alert(
+                NSLocalizedString("Reload today's data?", comment: "Reload today's data confirmation title"),
+                isPresented: $showReloadTodayAlert
+            ) {
+                Button("Cancel", role: .cancel) {}
+                Button(
+                    NSLocalizedString("Delete local data and reload", comment: "Confirm local data reload"),
+                    role: .destructive
+                ) {
+                    reloadTodaysData()
+                }
+            } message: {
+                Text(NSLocalizedString(
+                    "Today's locally cached glucose values and treatments will be removed and fetched again from Nightscout.",
+                    comment: "Reload today's data confirmation message"
+                ))
+            }
             .sheet(isPresented: $showAppTour, onDismiss: {
                 loadCurrentValues()
             }) {
@@ -151,6 +191,7 @@ struct PrefsView: View {
     
     private func loadCurrentValues() {
         nightscoutURL = UserDefaultsRepository.baseUri.value
+        apiToken = UserDefaultsRepository.nightscoutToken
         manuallySetUnits = UserDefaultsRepository.manuallySetUnits.value
         selectedUnits = UserDefaultsRepository.units.value
         keepScreenActive = SharedUserDefaultsRepository.screenlockSwitchState.value
@@ -185,7 +226,12 @@ struct PrefsView: View {
         isValidatingURL = true
         urlErrorMessage = ""
 
-        UserDefaultsRepository.baseUri.value = url.absoluteString
+        guard UserDefaultsRepository.setNightscoutCredentials(baseURL: url, token: apiToken) else {
+            isValidatingURL = false
+            urlErrorMessage = NSLocalizedString("The API token could not be stored securely.", comment: "Keychain storage error")
+            return
+        }
+        UserDefaultSyncMessage().send()
 
         // Reset cache and data
         NightscoutCacheService.singleton.resetCache()
@@ -200,9 +246,16 @@ struct PrefsView: View {
                 urlErrorMessage = error.localizedDescription
             } else {
                 urlErrorMessage = ""
-                addUriToHistory(url: url.absoluteString)
+                addUriToHistory(url: UserDefaultsRepository.baseUri.value)
             }
         }
+    }
+
+    private func reloadTodaysData() {
+        NightscoutCacheService.singleton.resetTodaysData()
+        TreatmentsStream.singleton.resetForReload()
+        UserDefaultsRepository.treatments.value = []
+        NotificationCenter.default.post(name: .nightscoutDataRefreshRequested, object: nil)
     }
 
     private func retrieveAndStoreNightscoutUnits(completion: @escaping (Error?) -> Void) {

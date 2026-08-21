@@ -115,12 +115,12 @@ extension WatchMessageService: WCSessionDelegate {
     
     // This method gets called when the watch requests the baseUri from the Nightscout Backend
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-        print("Received message (with reply handler): \(message)")
+        print("Received watch message (with reply handler): \(redactedMessage(message))")
         received(message, replyHandler: replyHandler)
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        print("Received message: \(message)")
+        print("Received watch message: \(redactedMessage(message))")
         received(message)
     }
     
@@ -145,6 +145,22 @@ extension WatchMessageService: WCSessionDelegate {
     func sessionDidDeactivate(_ session: WCSession) {
     }
     #endif
+
+    private func redactedMessage(_ message: [String: Any]) -> [String: Any] {
+        var redacted = message
+        let nightscoutTokenKey = "_nightscoutToken"
+        if redacted[nightscoutTokenKey] != nil {
+            redacted[nightscoutTokenKey] = "<redacted>"
+        }
+        if let baseURI = redacted[UserDefaultsRepository.baseUri.key] as? String,
+           var components = URLComponents(string: baseURI) {
+            components.queryItems = components.queryItems?.map {
+                $0.name == "token" ? URLQueryItem(name: $0.name, value: "<redacted>") : $0
+            }
+            redacted[UserDefaultsRepository.baseUri.key] = components.string ?? "<redacted-url>"
+        }
+        return redacted
+    }
 }
 
 

@@ -79,7 +79,7 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
         
         // user defaults sync message
         WatchMessageService.singleton.onMessage { (message: UserDefaultSyncMessage) in
-            
+
             // update user default values from "watch sync" group, keeping track of which of them were updated
             var updatedKeys: [String] = []
             let observationToken = UserDefaultsValueGroups.observeChanges(in: UserDefaultsValueGroups.GroupNames.watchSync) { value, _ in
@@ -94,6 +94,10 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
                 if let anyValue = message.dictionary[value.key] {
                     value.anyValue = anyValue
                 }
+            }
+
+            if let token = message.dictionary[UserDefaultSyncMessage.nightscoutTokenKey] as? String {
+                UserDefaultsRepository.storeSyncedNightscoutToken(token)
             }
             
             // update the "last watch sync update id" field

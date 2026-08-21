@@ -42,6 +42,7 @@ class AppLogger: ObservableObject {
         enum LogCategory: String, CaseIterable, Codable {
             case all = "All"
             case backgroundUpdates = "Background Updates"
+            case nightscout = "Nightscout"
         }
     }
 

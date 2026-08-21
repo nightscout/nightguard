@@ -6,5 +6,9 @@
 	<array>
 		<string>group.de.my-wan.dhe.nightguard</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)de.my-wan.dhe.nightguard.shared</string>
+	</array>
 </dict>
 </plist>

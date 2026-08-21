@@ -10,6 +10,21 @@ import XCTest
 
 class UserDefaultsRepositoryTest : XCTestCase {
 
+    func testLegacyTokenURLIsMigratedToCredentialStore() {
+        let originalURL = UserDefaultsRepository.baseUri.value
+        defer { UserDefaultsRepository.baseUri.value = originalURL }
+
+        UserDefaultsRepository.baseUri.value = "https://migration-test.example.org/nightscout?tenant=one&token=care-secret"
+
+        XCTAssertEqual(UserDefaultsRepository.baseUri.value, "https://migration-test.example.org/nightscout?tenant=one")
+        XCTAssertEqual(UserDefaultsRepository.nightscoutToken, "care-secret")
+        XCTAssertFalse(UserDefaultsRepository.baseUri.value.contains("token="))
+
+        if let cleanURL = UserDefaultsRepository.cleanBaseURL() {
+            _ = NightscoutCredentialStore.shared.removeToken(for: cleanURL)
+        }
+    }
+
     override func setUp() {
         super.setUp()
         // Clear treatments before each test to ensure isolation

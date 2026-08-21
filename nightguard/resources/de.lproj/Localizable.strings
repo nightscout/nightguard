@@ -781,3 +781,11 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Pro Subscription Information" = "Pro-Abo Informationen";
 "Max Subscription Information" = "Max-Abo Informationen";
 "Thank You for Your Support" = "Danke für den Support 💚";
+
+/* Lokale Daten neu laden */
+"Data" = "Daten";
+"Reload today's data" = "Daten des Tages neu laden";
+"Deletes only local values for today. Nightscout data is not changed." = "Löscht nur die lokal gespeicherten Werte des heutigen Tages. Die Nightscout-Daten werden nicht verändert.";
+"Reload today's data?" = "Daten des Tages neu laden?";
+"Delete local data and reload" = "Lokale Daten löschen und neu laden";
+"Today's locally cached glucose values and treatments will be removed and fetched again from Nightscout." = "Die lokal gespeicherten Glukosewerte und Treatments des heutigen Tages werden gelöscht und erneut von Nightscout geladen.";

@@ -25,24 +25,30 @@ class TemporaryTarget {
         let temporaryTarget = TemporaryTarget.init()
         
         let units = temporaryTargetDict["units"] as? String ?? "mgdl"
+        let targetTop = (temporaryTargetDict["targetTop"] as? NSNumber)?.doubleValue
+        let targetBottom = (temporaryTargetDict["targetBottom"] as? NSNumber)?.doubleValue
         if units.contains("mol") {
             // Looks like targetTop is stored as mmol => convert to mgdl
             temporaryTarget.targetTop =
-                Int(UnitsConverter.mmolToMgdl(temporaryTargetDict["targetTop"] as? Float ?? 5.0))
+                Int(UnitsConverter.mmolToMgdl(Float(targetTop ?? 5.0)))
         } else {
-            temporaryTarget.targetTop = temporaryTargetDict["targetTop"] as? Int ?? 100
+            temporaryTarget.targetTop = Int(targetTop ?? 100)
         }
         
         if units.contains("mol") {
             // looks like targetBottom is stored as mmol => convert to mgdl
             temporaryTarget.targetBottom =
-                Int(UnitsConverter.mmolToMgdl(temporaryTargetDict["targetBottom"] as? Float ?? 5.0))
+                Int(UnitsConverter.mmolToMgdl(Float(targetBottom ?? 5.0)))
         } else {
-            temporaryTarget.targetBottom = temporaryTargetDict["targetBottom"] as? Int ?? 100
+            temporaryTarget.targetBottom = Int(targetBottom ?? 100)
         }
         
         temporaryTarget.createdAt = temporaryTargetDict["created_at"] as? String
-        temporaryTarget.duration = temporaryTargetDict["duration"] as? Int
+        if temporaryTarget.createdAt == nil,
+           let timestamp = (temporaryTargetDict["date"] as? NSNumber)?.doubleValue {
+            temporaryTarget.createdAt = Date(timeIntervalSince1970: timestamp / 1000).convertToIsoDateTime()
+        }
+        temporaryTarget.duration = (temporaryTargetDict["duration"] as? NSNumber)?.intValue
         
         return temporaryTarget
     }

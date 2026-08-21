@@ -332,6 +332,18 @@ class NightscoutDataRepository {
         // this shouldn't be necessary anymore - remove it later
         defaults?.synchronize()
     }
+
+    /// Removes only the locally cached values belonging to today. Historical
+    /// data for yesterday and long-lived care metadata remain untouched; the
+    /// temporary target is cleared so it can be fetched again immediately.
+    func clearTodaysData() {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults?.removeObject(forKey: Constants.currentBgData)
+        defaults?.removeObject(forKey: Constants.todaysBgData)
+        defaults?.removeObject(forKey: Constants.latestDisplaySnapshot)
+        defaults?.removeObject(forKey: Constants.temporaryTarget)
+        defaults?.synchronize()
+    }
     
     func storeCurrentNightscoutData(_ bgData : NightscoutData) {
         

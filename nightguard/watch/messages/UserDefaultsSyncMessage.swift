@@ -9,6 +9,8 @@
 import Foundation
 
 class UserDefaultSyncMessage: WatchMessage {
+
+    static let nightscoutTokenKey = "_nightscoutToken"
     
     var dictionary: [String : Any]
     
@@ -24,6 +26,7 @@ class UserDefaultSyncMessage: WatchMessage {
         
         // add the last watch sync update id also in the dictionary
         dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] = UserDefaultsRepository.lastWatchSyncUpdateId.anyValue
+        dictionary[Self.nightscoutTokenKey] = UserDefaultsRepository.nightscoutToken
         
         self.dictionary = dictionary
     }

@@ -8,6 +8,10 @@
 
 import Foundation
 
+extension Notification.Name {
+    static let nightscoutDataRefreshRequested = Notification.Name("NightscoutDataRefreshRequested")
+}
+
 // This is a facade in front of the nightscout service. It is used to reduce the
 // amount of turnarounds to the real backend to a minimum.
 class NightscoutCacheService: NSObject {
@@ -39,29 +43,29 @@ class NightscoutCacheService: NSObject {
     fileprivate let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     
     // housekeeping of pending requests
-    fileprivate var todaysBgDataTasks: [URLSessionTask] = []
-    fileprivate var yesterdaysBgDataTasks: [URLSessionTask] = []
-    fileprivate var currentNightscoutDataTasks: [URLSessionTask] = []
+    fileprivate var todaysBgDataTasks: [NightscoutTask] = []
+    fileprivate var yesterdaysBgDataTasks: [NightscoutTask] = []
+    fileprivate var currentNightscoutDataTasks: [NightscoutTask] = []
     fileprivate var temporaryTargetData: TemporaryTargetData = TemporaryTargetData()
     
     // are there any running "todays bg data" requests?
     var hasTodaysBgDataPendingRequests: Bool {
         serialQueue.sync {
-            return todaysBgDataTasks.contains(where: { task in task.state == .running })
+            return todaysBgDataTasks.contains(where: { $0.nightscoutIsRunning })
         }
     }
 
     // are there any running "yesterdays bg data" requests?
     var hasYesterdaysBgDataPendingRequests: Bool {
         serialQueue.sync {
-            return yesterdaysBgDataTasks.contains(where: { task in task.state == .running })
+            return yesterdaysBgDataTasks.contains(where: { $0.nightscoutIsRunning })
         }
     }
 
     // are there any running "current nightscout data" requests?
     var hasCurrentNightscoutDataPendingRequests: Bool {
         serialQueue.sync {
-            return currentNightscoutDataTasks.contains(where: { task in task.state == .running })
+            return currentNightscoutDataTasks.contains(where: { $0.nightscoutIsRunning })
         }
     }
 
@@ -79,6 +83,25 @@ class NightscoutCacheService: NSObject {
     func resetCache() {
         yesterdaysDayOfTheYear = nil
         NightscoutDataRepository.singleton.clearAll()
+    }
+
+    /// Clears the in-memory and persisted values for today without touching
+    /// yesterday's history, then lets the active view model fetch fresh data.
+    func resetTodaysData() {
+        let tasksToCancel = serialQueue.sync { () -> [NightscoutTask] in
+            let tasks = todaysBgDataTasks + currentNightscoutDataTasks
+            todaysBgDataTasks.removeAll()
+            currentNightscoutDataTasks.removeAll()
+            todaysBgData = []
+            currentNightscoutData = NightscoutData()
+            temporaryTargetData = TemporaryTargetData()
+            newDataReceived = true
+            return tasks
+        }
+
+        tasksToCancel.forEach { $0.cancel() }
+        NightscoutDataRepository.singleton.clearTodaysData()
+        AppLogger.singleton.info("NightscoutCacheService: cleared today's local data; requesting a fresh server reload", category: .nightscout)
     }
     
     func getCannulaChangeTime() -> Date {
@@ -209,7 +232,7 @@ class NightscoutCacheService: NSObject {
                     resultHandler(result)
                 }) {
                     // cleanup (delete not running tasks) and add the current started one
-                    todaysBgDataTasks.removeAll(where: { task in task.state != .running })
+                    todaysBgDataTasks.removeAll(where: { !$0.nightscoutIsRunning })
                     todaysBgDataTasks.append(task)
                 } else {
                     resultHandler(nil)
@@ -284,7 +307,7 @@ class NightscoutCacheService: NSObject {
             }) {
                 serialQueue.sync {
                     // cleanup (delete not running tasks) and add the current started one
-                    yesterdaysBgDataTasks.removeAll(where: { task in task.state != .running })
+                    yesterdaysBgDataTasks.removeAll(where: { !$0.nightscoutIsRunning })
                     yesterdaysBgDataTasks.append(task)
                 }
             } else {
@@ -339,7 +362,7 @@ class NightscoutCacheService: NSObject {
             resultHandler(result)
         }) {
             // cleanup (delete not running tasks) and add the current started one
-            currentNightscoutDataTasks.removeAll(where: { task in task.state != .running })
+            currentNightscoutDataTasks.removeAll(where: { !$0.nightscoutIsRunning })
             currentNightscoutDataTasks.append(task)
         } else {
             resultHandler(nil)
