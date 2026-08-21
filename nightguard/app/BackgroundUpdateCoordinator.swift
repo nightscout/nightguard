@@ -40,6 +40,7 @@ final class BackgroundUpdateCoordinator {
 
         AppLogger.singleton.debug("\(trigger.rawValue) background update started", category: .backgroundUpdates)
 
+        NightscoutSyncCoordinator.shared.refreshEntriesAndTreatments(force: true)
         let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: true) { [weak self] result in
             guard let self = self else { return }
 
@@ -72,8 +73,15 @@ final class BackgroundUpdateCoordinator {
                 AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
                 WatchService.singleton.sendToWatchCurrentNightwatchData()
 
-                let storedHistoryValues = NightscoutDataRepository.singleton.loadTodaysBgData()
-                NightscoutService.singleton.readTodaysChartData(oldValues: storedHistoryValues) { historyResult in
+                var didReceiveHistoryResult = false
+                var storedHistoryValues: [BloodSugar] = []
+                storedHistoryValues = NightscoutCacheService.singleton.loadTodaysData { historyResult in
+                    guard let historyResult else { return }
+                    didReceiveHistoryResult = true
+                    processHistory(historyResult, fallback: storedHistoryValues)
+                }
+
+                func processHistory(_ historyResult: NightscoutRequestResult<[BloodSugar]>, fallback: [BloodSugar]) {
                     let snapshot: NightguardDisplaySnapshot
                     switch historyResult {
                     case .data(let bloodSugarValues):
@@ -138,6 +146,14 @@ final class BackgroundUpdateCoordinator {
 
                         finish(BackgroundUpdateResult(success: true, hasNewData: true, message: "Nightscout data processed"))
                     }
+                }
+
+                // If the central stream already had a fresh head, the cache
+                // facade reports no asynchronous result. Use its returned
+                // values immediately in that case.
+                if !didReceiveHistoryResult,
+                   !NightscoutCacheService.singleton.hasTodaysBgDataPendingRequests {
+                    processHistory(.data(storedHistoryValues), fallback: storedHistoryValues)
                 }
             }
         }

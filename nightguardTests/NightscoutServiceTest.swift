@@ -36,6 +36,34 @@ private final class NightscoutMockURLProtocol: URLProtocol {
 
 class NightscoutServiceTest: XCTestCase {
 
+    func testEntriesHeadParserKeepsSGVAndManualMeterValues() throws {
+        let payload = Data("""
+        [
+          {"identifier":"sgv-1","date":1724198400000,"type":"sgv","sgv":123,"direction":"Flat","units":"mg/dL"},
+          {"_id":"mbg-1","date":"2024-08-21T00:00:00.000Z","type":"mbg","mbg":137},
+          {"date":1724198401000,"type":"unknown"}
+        ]
+        """.utf8)
+
+        let records = try NightscoutService.singleton.parseEntryRecords(from: payload)
+
+        XCTAssertEqual(records.count, 2)
+        XCTAssertEqual(records.first?.storageKey, "sgv-1")
+        XCTAssertEqual(records.first?.sgv, 123)
+        XCTAssertEqual(records.first?.direction, "Flat")
+        XCTAssertEqual(records.last?.storageKey, "mbg-1")
+        XCTAssertEqual(records.last?.mbg, 137)
+        XCTAssertNil(records.last?.sgv)
+    }
+
+    func testEntryRecordFallbackKeyAllowsCorrectionsAtSameTimestamp() {
+        let original = NightscoutEntryRecord(dateMillis: 1724198400000, type: "sgv", sgv: 120)
+        let correction = NightscoutEntryRecord(dateMillis: 1724198400000, type: "sgv", sgv: 125)
+
+        XCTAssertEqual(original.storageKey, correction.storageKey)
+        XCTAssertNotEqual(original.sgv, correction.sgv)
+    }
+
     func testV3URLConstructionPreservesServerSubpathAndFilterValues() throws {
         let baseURL = try XCTUnwrap(URL(string: "https://example.org/nightscout"))
         let url = try XCTUnwrap(NightscoutAPIClient.shared.makeURL(
@@ -166,6 +194,48 @@ class NightscoutServiceTest: XCTestCase {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2)
+    }
+
+    func testV3EntriesRequestUsesServerDefaultLimit() throws {
+        let restoreCredentials = useTemporaryCredentials(url: "https://entries-v3.example.org/nightscout", token: "care-secret")
+        defer { restoreCredentials() }
+
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let client = NightscoutAPIClient(session: URLSession(configuration: configuration))
+        var entriesQuery: [String: String] = [:]
+        NightscoutMockURLProtocol.handler = { request in
+            let url = try XCTUnwrap(request.url)
+            if url.path.hasSuffix("/api/v3/version") {
+                return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("{}".utf8))
+            }
+            XCTAssertEqual(url.path, "/nightscout/api/v3/entries")
+            let components = try XCTUnwrap(URLComponents(url: url, resolvingAgainstBaseURL: false))
+            entriesQuery = Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value ?? "") })
+            XCTAssertNil(entriesQuery["limit"])
+            return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("[]".utf8))
+        }
+        defer { NightscoutMockURLProtocol.handler = nil }
+
+        let expectation = expectation(description: "v3 entries request completed")
+        _ = client.requestV3(
+            path: "api/v3/entries",
+            query: ["sort$desc": "date", "fields": "date,sgv"],
+            legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "500"]),
+            fallbackOnTransportFailure: false,
+            legacyUseAccessTokenHeader: true
+        ) { result in
+            guard case .success = result else {
+                XCTFail("Expected a successful v3 entries request")
+                expectation.fulfill()
+                return
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+
+        XCTAssertEqual(entriesQuery["sort$desc"], "date")
+        XCTAssertEqual(entriesQuery["fields"], "date,sgv")
     }
 
     func testV3ResponseEnvelopeIsUnwrapped() throws {

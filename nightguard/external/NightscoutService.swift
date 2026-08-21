@@ -99,6 +99,8 @@ final class NightscoutAPIClient {
         method: String = "GET",
         body: Data? = nil,
         legacy: NightscoutLegacyEndpoint? = nil,
+        fallbackOnTransportFailure: Bool = true,
+        legacyUseAccessTokenHeader: Bool = false,
         completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void
     ) -> NightscoutTask? {
         guard let baseURL = UserDefaultsRepository.cleanBaseURL() else {
@@ -111,7 +113,7 @@ final class NightscoutAPIClient {
         determineV3Support(
             baseURL: baseURL,
             trackedTask: trackedTask,
-            allowTransportFallback: method.uppercased() == "GET"
+            allowTransportFallback: method.uppercased() == "GET" && fallbackOnTransportFailure
         ) { result in
             switch result {
             case .failure(let error):
@@ -124,6 +126,7 @@ final class NightscoutAPIClient {
                     body: body,
                     trackedTask: trackedTask,
                     compatibilityFallback: true,
+                    useAccessTokenHeader: legacyUseAccessTokenHeader,
                     completion: completion
                 )
             case .success(true):
@@ -136,6 +139,8 @@ final class NightscoutAPIClient {
                     legacy: legacy,
                     trackedTask: trackedTask,
                     mayRefreshJWT: true,
+                    fallbackOnTransportFailure: fallbackOnTransportFailure,
+                    legacyUseAccessTokenHeader: legacyUseAccessTokenHeader,
                     completion: completion
                 )
             }
@@ -225,12 +230,14 @@ final class NightscoutAPIClient {
         legacy: NightscoutLegacyEndpoint?,
         trackedTask: NightscoutRequestTask,
         mayRefreshJWT: Bool,
+        fallbackOnTransportFailure: Bool,
+        legacyUseAccessTokenHeader: Bool,
         completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void
     ) {
         let accessToken = UserDefaultsRepository.nightscoutToken
         if accessToken.isEmpty {
             performV3Request(baseURL: baseURL, path: path, query: query, method: method, body: body, jwt: nil, trackedTask: trackedTask) { result in
-                if self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: true) {
+                if self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: fallbackOnTransportFailure, allowTransportFailure: fallbackOnTransportFailure) {
                     self.logWarning("Nightscout v3 read returned HTTP 401 without a JWT; using v1 compatibility mode")
                     self.performLegacy(
                         legacy,
@@ -238,6 +245,7 @@ final class NightscoutAPIClient {
                         body: body,
                         trackedTask: trackedTask,
                         compatibilityFallback: true,
+                        useAccessTokenHeader: legacyUseAccessTokenHeader,
                         completion: completion
                     )
                 } else {
@@ -258,8 +266,8 @@ final class NightscoutAPIClient {
                     if case .failure(let error as NightscoutHTTPError) = result,
                        error.statusCode == 401, mayRefreshJWT {
                         self.invalidateJWT(baseURL: baseURL, accessToken: accessToken)
-                        self.performAuthorizedV3(baseURL: baseURL, path: path, query: query, method: method, body: body, legacy: legacy, trackedTask: trackedTask, mayRefreshJWT: false, completion: completion)
-                    } else if self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: false) {
+                        self.performAuthorizedV3(baseURL: baseURL, path: path, query: query, method: method, body: body, legacy: legacy, trackedTask: trackedTask, mayRefreshJWT: false, fallbackOnTransportFailure: fallbackOnTransportFailure, legacyUseAccessTokenHeader: legacyUseAccessTokenHeader, completion: completion)
+                    } else if self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: false, allowTransportFailure: fallbackOnTransportFailure) {
                         self.logWarning("Nightscout v3 GET failed (\(self.resultErrorSummary(result))); using v1 compatibility mode")
                         self.performLegacy(
                             legacy,
@@ -267,6 +275,7 @@ final class NightscoutAPIClient {
                             body: body,
                             trackedTask: trackedTask,
                             compatibilityFallback: true,
+                            useAccessTokenHeader: legacyUseAccessTokenHeader,
                             completion: completion
                         )
                     } else {
@@ -507,14 +516,18 @@ final class NightscoutAPIClient {
         result: Result<(Data, HTTPURLResponse), Error>,
         method: String,
         legacy: NightscoutLegacyEndpoint?,
-        allowUnauthorized: Bool
+        allowUnauthorized: Bool,
+        allowTransportFailure: Bool
     ) -> Bool {
         guard method.uppercased() == "GET", legacy != nil else { return false }
         guard case .failure(let error) = result else { return false }
         if let httpError = error as? NightscoutHTTPError {
+            if httpError.statusCode == 404 || httpError.statusCode == 405 {
+                return true
+            }
             return allowUnauthorized && httpError.statusCode == 401
         }
-        return isTransportFailure(error)
+        return allowTransportFailure && isTransportFailure(error)
     }
 
     private func isTransportFailure(_ error: Error) -> Bool {
@@ -585,16 +598,23 @@ class NightscoutService {
             return nil
         }
 
-        // The legacy endpoint's count-only form is served from the same
-        // in-memory entries cache as the current-value request below.
+        // Keep this compatibility helper v3-first as well. Normal UI code
+        // uses the shared entries stream, but older callers must not make v1
+        // the primary API path.
         AppLogger.singleton.debug(
-            "NightscoutService: requesting chart preview through the cache-friendly v1 entries endpoint",
+            "NightscoutService: requesting chart preview through the v3 entries collection",
             category: .nightscout
         )
-        return NightscoutAPIClient.shared.requestLegacy(
-            path: "api/v1/entries.json",
-            query: ["count": "20"],
-            useAccessTokenHeader: true
+        return NightscoutAPIClient.shared.requestV3(
+            path: "api/v3/entries",
+            query: [
+                "limit": "20",
+                "sort$desc": "date",
+                "fields": "date,sgv"
+            ],
+            legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "20"]),
+            fallbackOnTransportFailure: false,
+            legacyUseAccessTokenHeader: true
         ) { result in
             switch result {
             case .failure(let error):
@@ -618,6 +638,117 @@ class NightscoutService {
             }
         }
     }
+
+    /// Reads the newest entries through the generic v3 collection. The server
+    /// applies its configured API3_MAX_LIMIT when no explicit limit is sent;
+    /// the returned records are deliberately raw enough for all consumers
+    /// (current value, charts and manual meter values) to derive their own
+    /// views from one synchronized snapshot.
+    @discardableResult
+    func readEntriesHead(
+        resultHandler: @escaping (NightscoutRequestResult<[NightscoutEntryRecord]>) -> Void
+    ) -> NightscoutTask? {
+        guard !UserDefaultsRepository.baseUri.value.isEmpty else {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
+        }
+
+        let trackedTask = NightscoutRequestTask()
+        let startedAt = Date()
+        AppLogger.singleton.debug(
+            "NightscoutService: requesting entries stream through v3 server default limit",
+            category: .nightscout
+        )
+
+        let finish: (NightscoutRequestResult<[NightscoutEntryRecord]>) -> Void = { result in
+            trackedTask.finish()
+            dispatchOnMain { resultHandler(result) }
+        }
+
+        let parseResponse: (Data, String) -> Void = { data, source in
+            do {
+                let records = try self.parseEntryRecords(from: data)
+                let elapsed = Int(Date().timeIntervalSince(startedAt) * 1000)
+                AppLogger.singleton.info(
+                    "NightscoutService: entries stream head succeeded source=\(source) count=\(records.count) duration=\(elapsed)ms",
+                    category: .nightscout
+                )
+                finish(.data(records))
+            } catch {
+                self.logServiceError("Entries stream response could not be decoded: \(error.localizedDescription)")
+                finish(.error(error))
+            }
+        }
+
+        let v3Task = NightscoutAPIClient.shared.requestV3(
+            path: "api/v3/entries",
+            query: [
+                "sort$desc": "date",
+                "fields": "identifier,_id,date,mills,type,sgv,mbg,direction,units"
+            ],
+            legacy: NightscoutLegacyEndpoint(
+                path: "api/v1/entries.json",
+                query: ["count": "500"]
+            ),
+            fallbackOnTransportFailure: false,
+            legacyUseAccessTokenHeader: true
+        ) { result in
+            switch result {
+            case .success(let response):
+                // requestV3 transparently uses the configured v1 endpoint
+                // only when the v3 capability check reports 404/405. The
+                // API client logs that compatibility transition explicitly.
+                parseResponse(response.0, "v3-or-v1-compatibility")
+            case .failure(let error):
+                AppLogger.singleton.error(
+                    "NightscoutService: v3 entries stream failed; v1 fallback was not used for this runtime/authentication error: \(error.localizedDescription)",
+                    category: .nightscout
+                )
+                finish(.error(error))
+            }
+        }
+        if let v3Task { trackedTask.add(v3Task) }
+        return trackedTask
+    }
+
+    func parseEntryRecords(from data: Data) throws -> [NightscoutEntryRecord] {
+        let json = try JSONSerialization.jsonObject(with: data)
+        guard let entries = json as? [[String: Any]] else {
+            throw createNoDataError(description: NSLocalizedString("Invalid entries response from Nightscout.", comment: "Invalid entries response"))
+        }
+
+        return entries.compactMap { entry in
+            guard let dateMillis = timestampMillis(entry["date"] ?? entry["mills"]) else { return nil }
+
+            let sgv = doubleValue(entry["sgv"])
+            let mbg = doubleValue(entry["mbg"])
+            let explicitType = (entry["type"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+            let type = explicitType.flatMap { $0.isEmpty ? nil : $0 }
+                ?? (sgv != nil ? "sgv" : (mbg != nil ? "mbg" : "unknown"))
+            guard sgv != nil || mbg != nil || type != "unknown" else { return nil }
+
+            let identifier = stringValue(entry["identifier"])
+            let objectID = stringValue(entry["_id"])
+            let rawJSON = try? JSONSerialization.data(withJSONObject: entry, options: [])
+            return NightscoutEntryRecord(
+                identifier: identifier,
+                objectID: objectID,
+                dateMillis: dateMillis,
+                type: type,
+                sgv: sgv,
+                mbg: mbg,
+                direction: stringValue(entry["direction"]),
+                units: stringValue(entry["units"]),
+                rawJSON: rawJSON
+            )
+        }
+    }
+
+    private func stringValue(_ value: Any?) -> String? {
+        if let value = value as? String, !value.isEmpty { return value }
+        if let value = value as? NSNumber { return value.stringValue }
+        return nil
+    }
     
     /* Reads the nightscout status from the backend. This is used to determine the configured
      Unit, whether it's mg/dL or mmol/l */
@@ -628,8 +759,9 @@ class NightscoutService {
             return nil
         }
 
-        // Units are exposed by the lightweight status endpoint. Querying the
-        // newest entry through v3 would add a database sort to app startup.
+        // Units are exposed by the lightweight status endpoint. This remains a
+        // separate compatibility endpoint and is not part of the Entries
+        // collection stream.
         AppLogger.singleton.debug(
             "NightscoutService: requesting glucose units through the cache-friendly v1 status endpoint",
             category: .nightscout
@@ -731,7 +863,9 @@ class NightscoutService {
         return NightscoutAPIClient.shared.requestV3(
             path: "api/v3/entries",
             query: v3Query,
-            legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: legacyQuery)
+            legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: legacyQuery),
+            fallbackOnTransportFailure: false,
+            legacyUseAccessTokenHeader: true
         ) { result in
             switch result {
             case .failure(let error):
@@ -959,18 +1093,23 @@ class NightscoutService {
             return nil
         }
 
-        // cgm-remote-monitor can answer the simple v1 count query from its
-        // in-memory entries cache. The equivalent v3 search has to go through
-        // the generic storage path and may scan a very large collection just
-        // to sort two values, so keep this latency-critical read cache-first.
+        // Keep this compatibility helper v3-first. Normal UI code derives the
+        // current value from the shared entries stream, but this method must
+        // still honor the v3-first migration when called directly.
         AppLogger.singleton.debug(
-            "NightscoutService: requesting current glucose through the cache-friendly v1 entries endpoint",
+            "NightscoutService: requesting current glucose through the v3 entries collection",
             category: .nightscout
         )
-        return NightscoutAPIClient.shared.requestLegacy(
-            path: "api/v1/entries.json",
-            query: ["count": "2"],
-            useAccessTokenHeader: true
+        return NightscoutAPIClient.shared.requestV3(
+            path: "api/v3/entries",
+            query: [
+                "limit": "2",
+                "sort$desc": "date",
+                "fields": "identifier,_id,date,sgv,direction,units"
+            ],
+            legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "2"]),
+            fallbackOnTransportFailure: false,
+            legacyUseAccessTokenHeader: true
         ) { result in
             switch result {
             case .failure(let error):
@@ -1006,6 +1145,45 @@ class NightscoutService {
                     dispatchOnMain { resultHandler(.error(error)) }
                 }
             }
+        }
+    }
+
+    /// Derives the current glucose value and delta from an already synchronized
+    /// entries snapshot. This intentionally performs no entries request.
+    func makeCurrentData(
+        from records: [NightscoutEntryRecord],
+        resultHandler: @escaping (NightscoutRequestResult<NightscoutData>) -> Void
+    ) {
+        let glucoseRecords = records
+            .filter { $0.sgv != nil }
+            .sorted { $0.dateMillis < $1.dateMillis }
+
+        guard let latest = glucoseRecords.last,
+              let latestValue = latest.sgv,
+              latestValue.isFinite,
+              latest.dateMillis > 0 else {
+            let error = createNoDataError(description: NSLocalizedString("No glucose data received from Nightscout.", comment: "No current glucose data"))
+            self.logServiceError("Current glucose could not be derived from the entries stream: \(error.localizedDescription)")
+            dispatchOnMain { resultHandler(.error(error)) }
+            return
+        }
+
+        let nightscoutData = NightscoutData()
+        nightscoutData.sgv = String(format: "%.0f", latestValue)
+        nightscoutData.time = NSNumber(value: latest.dateMillis)
+        nightscoutData.bgdeltaArrow = directionToArrow(latest.direction ?? "")
+
+        if glucoseRecords.count > 1 {
+            let previous = glucoseRecords[glucoseRecords.count - 2]
+            if let previousValue = previous.sgv {
+                let delta = Float(latestValue - previousValue)
+                nightscoutData.bgdelta = delta
+                nightscoutData.bgdeltaString = String(format: "%+.0f", delta)
+            }
+        }
+
+        loadPropertiesEnrichment(into: nightscoutData) {
+            dispatchOnMain { resultHandler(.data(nightscoutData)) }
         }
     }
 
