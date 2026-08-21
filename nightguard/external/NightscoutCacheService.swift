@@ -25,6 +25,11 @@ class NightscoutCacheService: NSObject {
     fileprivate var yesterdaysBgDataRaw : [BloodSugar] = []
     fileprivate var yesterdaysDayOfTheYear : Int? = nil
     fileprivate var currentNightscoutData : NightscoutData = NightscoutData.init()
+
+    // Keep the last hour of the previous day available while the new day starts.
+    // This prevents the no-data alarm from seeing an empty history immediately
+    // after midnight.
+    fileprivate let dayTransitionGracePeriod: TimeInterval = 60 * 60
     
     fileprivate var cannulaAge : Date? = nil
     fileprivate var sensorAge : Date? = nil
@@ -226,19 +231,19 @@ class NightscoutCacheService: NSObject {
         return currentNightscoutData.time.doubleValue > (todaysBgData.last?.timestamp ?? 0)
     }
     
-    fileprivate func removeYesterdaysEntries(bgValues : [BloodSugar]) -> [BloodSugar] {
-        
-        var todaysValues : [BloodSugar] = []
-        
-        let startOfCurrentDay = TimeService.getStartOfCurrentDay()
-        
-        for bgValue in bgValues {
-            if bgValue.timestamp > startOfCurrentDay {
-                todaysValues.append(bgValue)
-            }
+    func removeYesterdaysEntries(bgValues: [BloodSugar], currentDate: Date = TimeService.getToday()) -> [BloodSugar] {
+        let calendar = Calendar.current
+        let startOfCurrentDay = calendar.startOfDay(for: currentDate)
+        let startOfTransitionWindow = calendar.date(
+            byAdding: .second,
+            value: -Int(dayTransitionGracePeriod),
+            to: startOfCurrentDay
+        ) ?? startOfCurrentDay
+        let startOfTransitionWindowTimestamp = startOfTransitionWindow.timeIntervalSince1970 * 1000
+
+        return bgValues.filter { bgValue in
+            bgValue.timestamp >= startOfTransitionWindowTimestamp
         }
-        
-        return todaysValues
     }
     
     // Reads the blood glucose data from yesterday
