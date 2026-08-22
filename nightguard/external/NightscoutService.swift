@@ -686,6 +686,8 @@ class NightscoutService {
             query: [
                 "date$gte": "\(streamCutoffMillis)",
                 "sort$desc": "date",
+                "type$in": "sgv|mbg",
+                "limit": "500",
                 "fields": "identifier,_id,date,mills,type,sgv,mbg,direction,units"
             ],
             legacy: NightscoutLegacyEndpoint(
