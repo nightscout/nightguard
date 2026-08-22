@@ -533,10 +533,10 @@ final class NightscoutEntriesStream {
         if records.isEmpty {
             // Migrate the old split caches once. This keeps the first stream
             // refresh useful even when the app is upgraded with no network.
-            let today = NightscoutDataRepository.singleton.loadTodaysBgData().map {
+            let today = NightscoutDataRepository.singleton.loadTodaysBgData().compactMap {
                 legacyRecord(from: $0)
             }
-            let yesterday = NightscoutDataRepository.singleton.loadYesterdaysBgDataRaw().map {
+            let yesterday = NightscoutDataRepository.singleton.loadYesterdaysBgDataRaw().compactMap {
                 legacyRecord(from: $0)
             }
             records = today + yesterday
@@ -549,11 +549,25 @@ final class NightscoutEntriesStream {
         records = prune(records)
     }
 
-    private func legacyRecord(from bloodSugar: BloodSugar) -> NightscoutEntryRecord {
+    private func legacyRecord(from bloodSugar: BloodSugar) -> NightscoutEntryRecord? {
+        var timestamp = bloodSugar.timestamp
+        // Older persisted values can contain seconds instead of milliseconds.
+        // Normalize those safely before using the timestamp as a key.
+        if timestamp.isFinite && timestamp > 0 && timestamp < 10_000_000_000 {
+            timestamp *= 1000
+        }
+        guard timestamp.isFinite, timestamp > 0, timestamp <= 100_000_000_000_000 else {
+            AppLogger.singleton.warning(
+                "NightscoutEntriesStream: skipped invalid legacy glucose timestamp \(bloodSugar.timestamp)",
+                category: .nightscout
+            )
+            return nil
+        }
+
         let type = bloodSugar.isMeteredBloodGlucoseValue ? "mbg" : "sgv"
         return NightscoutEntryRecord(
-            storageKey: "legacy:\(type):\(Int(bloodSugar.timestamp))",
-            dateMillis: bloodSugar.timestamp,
+            storageKey: "legacy:\(type):\(String(format: "%.0f", timestamp))",
+            dateMillis: timestamp,
             type: type,
             sgv: bloodSugar.isMeteredBloodGlucoseValue ? nil : Double(bloodSugar.value),
             mbg: bloodSugar.isMeteredBloodGlucoseValue ? Double(bloodSugar.value) : nil,

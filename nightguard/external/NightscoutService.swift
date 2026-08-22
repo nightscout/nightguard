@@ -655,8 +655,9 @@ class NightscoutService {
 
         let trackedTask = NightscoutRequestTask()
         let startedAt = Date()
+        let streamCutoffMillis = (Date().timeIntervalSince1970 - (48 * 60 * 60)) * 1000
         AppLogger.singleton.debug(
-            "NightscoutService: requesting entries stream through v3 server default limit",
+            "NightscoutService: requesting entries stream through v3 with 48-hour cutoff",
             category: .nightscout
         )
 
@@ -683,6 +684,7 @@ class NightscoutService {
         let v3Task = NightscoutAPIClient.shared.requestV3(
             path: "api/v3/entries",
             query: [
+                "date$gte": "\(streamCutoffMillis)",
                 "sort$desc": "date",
                 "fields": "identifier,_id,date,mills,type,sgv,mbg,direction,units"
             ],

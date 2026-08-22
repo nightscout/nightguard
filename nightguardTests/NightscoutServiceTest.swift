@@ -64,6 +64,12 @@ class NightscoutServiceTest: XCTestCase {
         XCTAssertNotEqual(original.sgv, correction.sgv)
     }
 
+    func testEntryRecordKeyDoesNotTrapOnOutOfRangeTimestamp() {
+        let record = NightscoutEntryRecord(dateMillis: Double.greatestFiniteMagnitude, type: "sgv", sgv: 120)
+
+        XCTAssertTrue(record.storageKey.hasPrefix("sgv:"))
+    }
+
     func testV3URLConstructionPreservesServerSubpathAndFilterValues() throws {
         let baseURL = try XCTUnwrap(URL(string: "https://example.org/nightscout"))
         let url = try XCTUnwrap(NightscoutAPIClient.shared.makeURL(

@@ -54,7 +54,12 @@ struct NightscoutEntryRecord: Codable, Hashable {
         self.storageKey = storageKey
             ?? identifier
             ?? objectID
-            ?? "\(type):\(Int(dateMillis))"
+            ?? Self.fallbackStorageKey(type: type, dateMillis: dateMillis)
+    }
+
+    private static func fallbackStorageKey(type: String, dateMillis: Double) -> String {
+        let timestamp = dateMillis.isFinite ? String(format: "%.0f", dateMillis) : "invalid"
+        return "\(type):\(timestamp)"
     }
 
     var bloodSugar: BloodSugar? {
