@@ -70,6 +70,17 @@ class NightscoutServiceTest: XCTestCase {
         XCTAssertTrue(record.storageKey.hasPrefix("sgv:"))
     }
 
+    func testEntryRecordNormalizesNightscoutDirectionForWidgets() {
+        let record = NightscoutEntryRecord(
+            dateMillis: 1724198400000,
+            type: "sgv",
+            sgv: 120,
+            direction: "FortyFiveUp"
+        )
+
+        XCTAssertEqual(record.bloodSugar?.arrow, "↗")
+    }
+
     func testV3URLConstructionPreservesServerSubpathAndFilterValues() throws {
         let baseURL = try XCTUnwrap(URL(string: "https://example.org/nightscout"))
         let url = try XCTUnwrap(NightscoutAPIClient.shared.makeURL(

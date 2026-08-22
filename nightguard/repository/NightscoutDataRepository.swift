@@ -68,7 +68,7 @@ struct NightscoutEntryRecord: Codable, Hashable {
                 value: Float(sgv),
                 timestamp: dateMillis,
                 isMeteredBloodGlucoseValue: false,
-                arrow: direction ?? "-"
+                arrow: normalizedArrow
             )
         }
         if let mbg {
@@ -80,6 +80,20 @@ struct NightscoutEntryRecord: Codable, Hashable {
             )
         }
         return nil
+    }
+
+    private var normalizedArrow: String {
+        switch direction ?? "" {
+        case "DoubleUp": return "↑↑"
+        case "SingleUp": return "↑"
+        case "FortyFiveUp": return "↗"
+        case "Flat": return "→"
+        case "FortyFiveDown": return "↘"
+        case "SingleDown": return "↓"
+        case "DoubleDown": return "↓↓"
+        case "↑↑", "↑", "↗", "→", "↘", "↓", "↓↓": return direction ?? "-"
+        default: return "-"
+        }
     }
 }
 
