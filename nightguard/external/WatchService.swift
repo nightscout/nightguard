@@ -15,12 +15,14 @@ class WatchService {
     
     private var lastSentNightscoutDataTime: NSNumber?
     private var lastWatchUpdateTime: Date?
-    private var lastWatchComplicationUpdateTime: Date?
     
-    func sendToWatchCurrentNightwatchData() {
+    func sendToWatchCurrentNightwatchData(
+        nightscoutData suppliedNightscoutData: NightscoutData? = nil,
+        displaySnapshot suppliedDisplaySnapshot: NightguardDisplaySnapshot? = nil
+    ) {
         
         // send ONLY if the phone app has new nightscout data
-        let nightscoutData = NightscoutCacheService.singleton.getCurrentNightscoutData()
+        let nightscoutData = suppliedNightscoutData ?? NightscoutCacheService.singleton.getCurrentNightscoutData()
         guard !nightscoutData.isOlderThanXMinutes(15) else {
             return
         }
@@ -39,8 +41,26 @@ class WatchService {
                 // do nothing, last watch update was more recent than update rate, will skip updating it now!
             } else {
                 
-                // do update!
-                NightscoutDataMessage().send()
+                // Send the regular application context for the watch app.
+                let message: NightscoutDataMessage
+                if let suppliedDisplaySnapshot {
+                    message = NightscoutDataMessage(
+                        nightscoutData: nightscoutData,
+                        displaySnapshot: suppliedDisplaySnapshot
+                    )
+                } else {
+                    message = NightscoutDataMessage()
+                }
+                message.send()
+
+                // updateApplicationContext does not reliably wake the watch
+                // app in the background. A complication transfer does, and
+                // the receiving handler reloads all WidgetKit timelines.
+                if WCSession.default.isComplicationEnabled {
+                    var complicationMessage = message.dictionary
+                    complicationMessage["_type"] = String(describing: type(of: message))
+                    WCSession.default.transferCurrentComplicationUserInfo(complicationMessage)
+                }
                 self.lastSentNightscoutDataTime = nightscoutData.time
                 self.lastWatchUpdateTime = Date()
             }

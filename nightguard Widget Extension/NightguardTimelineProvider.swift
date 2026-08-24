@@ -79,34 +79,52 @@ struct NightguardTimelineProvider: TimelineProvider {
             return
         }
         
-        NightscoutService.singleton.readTodaysChartData(oldValues: []) { (result: NightscoutRequestResult<[BloodSugar]>) in
-            
-            BackgroundRefreshLogger.info("TimelineProvider received new nightscout data...")
-            var bgEntries : [BgEntry]
-            var errorMessage = ""
-            if case .data(let bloodSugarValues) = result {
-                NightscoutDataRepository.singleton.storeTodaysBgData(bloodSugarValues)
-                bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: bloodSugarValues))
-            } else if case .error(let error) = result {
-                bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
-                errorMessage = error.localizedDescription
-            } else {
-                // use old values if no new could be retrieved
-                bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
+        NightscoutService.singleton.readLatestEntriesHybrid { result in
+            BackgroundRefreshLogger.info("TimelineProvider received hybrid Nightscout data...")
+            switch result {
+            case .error(let error):
+                let bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
+                BackgroundRefreshLogger.info("TimelineProvider refresh failed: \(error.localizedDescription)")
+                completion(convertToTimelineEntry(oldData, bgEntries, error.localizedDescription))
+            case .data(let records):
+                NightscoutService.singleton.makeCurrentData(from: records, enrichWithProperties: false) { currentResult in
+                    switch currentResult {
+                    case .error(let error):
+                        let bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
+                        BackgroundRefreshLogger.info("TimelineProvider could not derive current glucose: \(error.localizedDescription)")
+                        completion(convertToTimelineEntry(oldData, bgEntries, error.localizedDescription))
+                    case .data(let currentData):
+                        currentData.battery = oldData.battery
+                        currentData.iob = oldData.iob
+                        currentData.cob = oldData.cob
+                        currentData.reservoirUnits = oldData.reservoirUnits
+                        let history = mergeHistory(oldEntries + records.compactMap(\.bloodSugar), including: currentData)
+                        NightscoutDataRepository.singleton.storeCurrentNightscoutData(currentData)
+                        NightscoutDataRepository.singleton.storeTodaysBgData(history)
+                        let snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(
+                            from: currentData,
+                            previousValues: history
+                        )
+                        BackgroundRefreshLogger.info("TimelineProvider published snapshot timestamp=\(snapshot.timestamp)")
+                        #if os(iOS)
+                        AlarmNotificationService.singleton.notifyIfAlarmActivated(currentData)
+                        #endif
+                        completion(NightscoutDataEntry(snapshot: snapshot))
+                    }
+                }
             }
-            
-            // if no new values could be retrieved -> the old ones will be returned.
-            let updatedData = updateDataWith(bgEntries, oldData)
-            let entry = convertToTimelineEntry(updatedData, bgEntries, errorMessage)
-            
-            BackgroundRefreshLogger.info("TimelineProvider refreshed widgets...")
-            // Notifications can be send from iOS only, so don't waste time for this in watchos:
-            #if os(iOS)
-            AlarmNotificationService.singleton.notifyIfAlarmActivated(updatedData)
-            #endif
-            
-            completion(entry)
         }
+    }
+
+    private func mergeHistory(_ values: [BloodSugar], including currentData: NightscoutData) -> [BloodSugar] {
+        var valuesByKey: [String: BloodSugar] = [:]
+        for value in NightguardDisplaySnapshot.historyValues(values, including: currentData)
+            where value.isValid && value.timestamp > 0 {
+            let type = value.isMeteredBloodGlucoseValue ? "mbg" : "sgv"
+            valuesByKey["\(type):\(String(format: "%.0f", value.timestamp))"] = value
+        }
+        let sorted = valuesByKey.values.sorted { $0.timestamp < $1.timestamp }
+        return NightscoutCacheService.singleton.removeYesterdaysEntries(bgValues: sorted)
     }
     
     private func updateDataWith(_ reducedEntries : [BgEntry], _ data: NightscoutData) -> NightscoutData{

@@ -81,7 +81,10 @@ final class NightscoutAPIClient {
 
     private enum V3Support { case supported, unsupported }
     private let defaultRequestTimeout: TimeInterval = 20
-    private let v3ReadTimeout: TimeInterval = 8
+    // A watchOS widget extension often has to wake its radio before the
+    // request can start. Eight seconds proved too aggressive for that path
+    // and made otherwise healthy v3 servers look unavailable in background.
+    private let v3ReadTimeout: TimeInterval = 20
     private let session: URLSession
     private let lock = NSLock()
     private var supportByServer: [String: V3Support] = [:]
@@ -575,6 +578,88 @@ enum NightscoutRequestResult<T> {
     case error(Error)
 }
 
+final class HybridEntriesAccumulator {
+    private let lock = NSLock()
+    private var receivedSources: [String] = []
+    private var successfulRecords: [(source: String, records: [NightscoutEntryRecord])] = []
+    private var errors: [Error] = []
+    private var completed = false
+    private let completion: (NightscoutRequestResult<[NightscoutEntryRecord]>, String) -> Void
+
+    init(completion: @escaping (NightscoutRequestResult<[NightscoutEntryRecord]>, String) -> Void) {
+        self.completion = completion
+    }
+
+    func receive(_ result: NightscoutRequestResult<[NightscoutEntryRecord]>, source: String) {
+        var resolvedResult: NightscoutRequestResult<[NightscoutEntryRecord]>?
+        var sourceSummary = source
+
+        lock.lock()
+        guard !completed else {
+            lock.unlock()
+            return
+        }
+
+        receivedSources.append(source)
+        switch result {
+        case .data(let records):
+            successfulRecords.append((source, records))
+        case .error(let error):
+            errors.append(error)
+        }
+
+        if resolvedResult == nil, receivedSources.count >= 2 {
+            completed = true
+            if successfulRecords.isEmpty {
+                resolvedResult = .error(errors.last ?? NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown))
+            } else {
+                resolvedResult = .data(merged(successfulRecords.flatMap(\.records)))
+                sourceSummary = successfulRecords.map(\.source).joined(separator: "+")
+            }
+        }
+        lock.unlock()
+
+        if let resolvedResult {
+            completion(resolvedResult, sourceSummary)
+        }
+    }
+
+    func finishAvailable(reason: String) {
+        var resolvedResult: NightscoutRequestResult<[NightscoutEntryRecord]>?
+        var sourceSummary = reason
+
+        lock.lock()
+        guard !completed else {
+            lock.unlock()
+            return
+        }
+        completed = true
+        if successfulRecords.isEmpty {
+            resolvedResult = .error(errors.last ?? URLError(.timedOut))
+        } else {
+            resolvedResult = .data(merged(successfulRecords.flatMap(\.records)))
+            sourceSummary = successfulRecords.map(\.source).joined(separator: "+") + "+" + reason
+        }
+        lock.unlock()
+
+        if let resolvedResult {
+            completion(resolvedResult, sourceSummary)
+        }
+    }
+
+    private func merged(_ records: [NightscoutEntryRecord]) -> [NightscoutEntryRecord] {
+        var recordsByKey: [String: NightscoutEntryRecord] = [:]
+        records.forEach { record in
+            if let existing = recordsByKey[record.storageKey] {
+                recordsByKey[record.storageKey] = record.dateMillis >= existing.dateMillis ? record : existing
+            } else {
+                recordsByKey[record.storageKey] = record
+            }
+        }
+        return recordsByKey.values.sorted { $0.dateMillis < $1.dateMillis }
+    }
+}
+
 /* All data that is read from nightscout is accessed using this boundary. */
 class NightscoutService {
     
@@ -613,7 +698,7 @@ class NightscoutService {
                 "fields": "date,sgv"
             ],
             legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "20"]),
-            fallbackOnTransportFailure: false,
+            fallbackOnTransportFailure: true,
             legacyUseAccessTokenHeader: true
         ) { result in
             switch result {
@@ -694,24 +779,98 @@ class NightscoutService {
                 path: "api/v1/entries.json",
                 query: ["count": "500"]
             ),
-            fallbackOnTransportFailure: false,
+            fallbackOnTransportFailure: true,
             legacyUseAccessTokenHeader: true
         ) { result in
             switch result {
             case .success(let response):
                 // requestV3 transparently uses the configured v1 endpoint
-                // only when the v3 capability check reports 404/405. The
-                // API client logs that compatibility transition explicitly.
+                // when v3 is unavailable or a transient transport failure
+                // occurs. The API client logs that transition explicitly.
                 parseResponse(response.0, "v3-or-v1-compatibility")
             case .failure(let error):
                 AppLogger.singleton.error(
-                    "NightscoutService: v3 entries stream failed; v1 fallback was not used for this runtime/authentication error: \(error.localizedDescription)",
+                    "NightscoutService: entries stream failed after v3/compatibility handling: \(error.localizedDescription)",
                     category: .nightscout
                 )
                 finish(.error(error))
             }
         }
         if let v3Task { trackedTask.add(v3Task) }
+        return trackedTask
+    }
+
+    /// Reads only the entries needed for the current display. Both APIs are
+    /// started together because the v1 entries cache is substantially faster
+    /// on some Nightscout installations while v3 remains the preferred modern
+    /// source. A fresh response can complete the request immediately; stale
+    /// responses are held until the other API has had a chance to provide a
+    /// newer value.
+    @discardableResult
+    func readLatestEntriesHybrid(
+        limit: Int = 20,
+        apiClient: NightscoutAPIClient = .shared,
+        resultHandler: @escaping (NightscoutRequestResult<[NightscoutEntryRecord]>) -> Void
+    ) -> NightscoutTask? {
+        guard !UserDefaultsRepository.baseUri.value.isEmpty else {
+            resultHandler(.error(createEmptyOrInvalidUriError()))
+            return nil
+        }
+
+        let trackedTask = NightscoutRequestTask()
+        let accumulator = HybridEntriesAccumulator { result, sourceSummary in
+            trackedTask.finish()
+            AppLogger.singleton.info(
+                "NightscoutService: hybrid display entries completed source=\(sourceSummary)",
+                category: .nightscout
+            )
+            dispatchOnMain { resultHandler(result) }
+        }
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 8) {
+            accumulator.finishAvailable(reason: "deadline")
+        }
+
+        func parsedResult(_ result: Result<(Data, HTTPURLResponse), Error>) -> NightscoutRequestResult<[NightscoutEntryRecord]> {
+            switch result {
+            case .failure(let error):
+                return .error(error)
+            case .success(let response):
+                do {
+                    return .data(try self.parseEntryRecords(from: response.0))
+                } catch {
+                    return .error(error)
+                }
+            }
+        }
+
+        let requestedLimit = max(2, min(limit, 100))
+        if let task = apiClient.requestV3(
+            path: "api/v3/entries",
+            query: [
+                "sort$desc": "date",
+                "type$in": "sgv|mbg",
+                "limit": "\(requestedLimit)",
+                "fields": "identifier,_id,date,mills,type,sgv,mbg,direction,units"
+            ],
+            fallbackOnTransportFailure: false,
+            completion: { result in
+                accumulator.receive(parsedResult(result), source: "v3")
+            }
+        ) {
+            trackedTask.add(task)
+        }
+
+        if let task = apiClient.requestLegacy(
+            path: "api/v1/entries.json",
+            query: ["count": "\(requestedLimit)"],
+            useAccessTokenHeader: true,
+            completion: { result in
+                accumulator.receive(parsedResult(result), source: "v1")
+            }
+        ) {
+            trackedTask.add(task)
+        }
+
         return trackedTask
     }
 
@@ -868,7 +1027,7 @@ class NightscoutService {
             path: "api/v3/entries",
             query: v3Query,
             legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: legacyQuery),
-            fallbackOnTransportFailure: false,
+            fallbackOnTransportFailure: true,
             legacyUseAccessTokenHeader: true
         ) { result in
             switch result {
@@ -1112,7 +1271,7 @@ class NightscoutService {
                 "fields": "identifier,_id,date,sgv,direction,units"
             ],
             legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "2"]),
-            fallbackOnTransportFailure: false,
+            fallbackOnTransportFailure: true,
             legacyUseAccessTokenHeader: true
         ) { result in
             switch result {
@@ -1156,6 +1315,7 @@ class NightscoutService {
     /// entries snapshot. This intentionally performs no entries request.
     func makeCurrentData(
         from records: [NightscoutEntryRecord],
+        enrichWithProperties: Bool = true,
         resultHandler: @escaping (NightscoutRequestResult<NightscoutData>) -> Void
     ) {
         let glucoseRecords = records
@@ -1184,6 +1344,11 @@ class NightscoutService {
                 nightscoutData.bgdelta = delta
                 nightscoutData.bgdeltaString = String(format: "%+.0f", delta)
             }
+        }
+
+        guard enrichWithProperties else {
+            dispatchOnMain { resultHandler(.data(nightscoutData)) }
+            return
         }
 
         loadPropertiesEnrichment(into: nightscoutData) {

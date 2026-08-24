@@ -40,8 +40,9 @@ final class BackgroundUpdateCoordinator {
 
         AppLogger.singleton.debug("\(trigger.rawValue) background update started", category: .backgroundUpdates)
 
-        NightscoutSyncCoordinator.shared.refreshEntriesAndTreatments(force: true)
-        let _ = NightscoutCacheService.singleton.loadCurrentNightscoutData(forceRefresh: true) { [weak self] result in
+        let previousData = NightscoutDataRepository.singleton.loadCurrentNightscoutData()
+        let previousTimestamp = previousData.time.doubleValue
+        let _ = NightscoutService.singleton.readLatestEntriesHybrid { [weak self] result in
             guard let self = self else { return }
 
             func finish(_ result: BackgroundUpdateResult) {
@@ -55,108 +56,85 @@ final class BackgroundUpdateCoordinator {
                 completion(result)
             }
 
-            guard let result = result else {
-                finish(BackgroundUpdateResult(success: true, hasNewData: false, message: "No Nightscout result"))
-                return
-            }
-
             switch result {
             case .error(let error):
                 AppLogger.singleton.error("\(trigger.rawValue) background update failed: \(error)", category: .backgroundUpdates)
                 finish(BackgroundUpdateResult(success: false, hasNewData: false, message: "Nightscout error"))
-            case .data(let nightscoutData):
-                AppLogger.singleton.debug(
-                    "\(trigger.rawValue) fetched Nightscout data: SGV=\(nightscoutData.sgv), timestamp=\(nightscoutData.time)",
-                    category: .backgroundUpdates
-                )
-
-                AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
-                WatchService.singleton.sendToWatchCurrentNightwatchData()
-
-                var didReceiveHistoryResult = false
-                var storedHistoryValues: [BloodSugar] = []
-                storedHistoryValues = NightscoutCacheService.singleton.loadTodaysData { historyResult in
-                    guard let historyResult else { return }
-                    didReceiveHistoryResult = true
-                    processHistory(historyResult, fallback: storedHistoryValues)
-                }
-
-                func processHistory(_ historyResult: NightscoutRequestResult<[BloodSugar]>, fallback: [BloodSugar]) {
-                    let snapshot: NightguardDisplaySnapshot
-                    switch historyResult {
-                    case .data(let bloodSugarValues):
-                        let historyValues = NightguardDisplaySnapshot.historyValues(
-                            bloodSugarValues,
-                            including: nightscoutData
-                        )
-                        NightscoutDataRepository.singleton.storeTodaysBgData(historyValues)
-                        snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(
-                            from: nightscoutData,
-                            previousValues: historyValues
-                        )
+            case .data(let records):
+                NightscoutService.singleton.makeCurrentData(from: records, enrichWithProperties: false) { currentResult in
+                    switch currentResult {
                     case .error(let error):
-                        AppLogger.singleton.warning(
-                            "\(trigger.rawValue) failed to fetch widget history values: \(error.localizedDescription)",
-                            category: .backgroundUpdates
-                        )
-                        let historyValues = NightguardDisplaySnapshot.historyValues(
-                            storedHistoryValues,
-                            including: nightscoutData
-                        )
+                        AppLogger.singleton.error("\(trigger.rawValue) could not derive current glucose: \(error)", category: .backgroundUpdates)
+                        finish(BackgroundUpdateResult(success: false, hasNewData: false, message: "No current glucose"))
+                    case .data(let nightscoutData):
+                        nightscoutData.battery = previousData.battery
+                        nightscoutData.iob = previousData.iob
+                        nightscoutData.cob = previousData.cob
+                        nightscoutData.reservoirUnits = previousData.reservoirUnits
+                        let fetchedHistory = records.compactMap(\.bloodSugar)
+                        let storedHistory = NightscoutDataRepository.singleton.loadTodaysBgData()
+                        let historyValues = self.mergeHistory(storedHistory + fetchedHistory, including: nightscoutData)
+
+                        NightscoutCacheService.singleton.updateCurrentNightscoutData(newNightscoutData: nightscoutData)
                         NightscoutDataRepository.singleton.storeTodaysBgData(historyValues)
-                        snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(
+                        let snapshot = NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(
                             from: nightscoutData,
                             previousValues: historyValues
                         )
-                    }
+                        let hasNewData = nightscoutData.time.doubleValue > previousTimestamp
 
-                    AppLogger.singleton.debug(
-                        "\(trigger.rawValue) stored display snapshot: SGV=\(snapshot.sgv), timestamp=\(snapshot.timestamp), values=\(snapshot.lastBGValues.count)",
-                        category: .backgroundUpdates
-                    )
-
-                    Task {
-                        if #available(iOS 16.1, *) {
-                            let updateResult = await LiveActivityManager.shared.refreshActivitiesForBackgroundUpdate(with: nightscoutData)
-                            let logMessage = "\(trigger.rawValue) Live Activity refresh result: activities=\(updateResult.activityCount), endedExpired=\(updateResult.endedExpiredActivityCount), updated=\(updateResult.updatedActivityCount), started=\(updateResult.startedActivityCount), message=\(updateResult.message)"
-                            if updateResult.didChangeAnyActivity {
-                                AppLogger.singleton.info(logMessage, category: .backgroundUpdates)
-                            } else {
-                                AppLogger.singleton.warning(logMessage, category: .backgroundUpdates)
-                            }
-                        }
-
-                        self.reloadWidgetTimelines(trigger: trigger)
-
-                        let deviceStatusData: DeviceStatusData = await withCheckedContinuation { continuation in
-                            let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
-                                continuation.resume(returning: deviceStatusData)
-                            }
-                        }
-
-                        AppLogger.singleton.debug(
-                            "\(trigger.rawValue) received device status: reservoir=\(deviceStatusData.reservoirUnits)",
+                        AppLogger.singleton.info(
+                            "\(trigger.rawValue) published display state: SGV=\(nightscoutData.sgv), timestamp=\(nightscoutData.time), history=\(historyValues.count), hasNewData=\(hasNewData)",
                             category: .backgroundUpdates
                         )
-                        AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
 
-                        if trigger == .bgTask {
-                            try? await Task.sleep(nanoseconds: 4_000_000_000)
+                        // Publish the critical display state before optional
+                        // background work can consume the remaining budget.
+                        AlarmNotificationService.singleton.notifyIfAlarmActivated(nightscoutData)
+                        self.reloadWidgetTimelines(trigger: trigger)
+                        WatchService.singleton.sendToWatchCurrentNightwatchData(
+                            nightscoutData: nightscoutData,
+                            displaySnapshot: snapshot
+                        )
+
+                        _ = NightscoutSyncCoordinator.shared.refreshTreatments { treatments in
+                            TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: treatments)
                         }
 
-                        finish(BackgroundUpdateResult(success: true, hasNewData: true, message: "Nightscout data processed"))
-                    }
-                }
+                        Task {
+                            if #available(iOS 16.1, *) {
+                                let updateResult = await LiveActivityManager.shared.refreshActivitiesForBackgroundUpdate(with: nightscoutData)
+                                let logMessage = "\(trigger.rawValue) Live Activity refresh result: activities=\(updateResult.activityCount), endedExpired=\(updateResult.endedExpiredActivityCount), updated=\(updateResult.updatedActivityCount), started=\(updateResult.startedActivityCount), message=\(updateResult.message)"
+                                if updateResult.didChangeAnyActivity {
+                                    AppLogger.singleton.info(logMessage, category: .backgroundUpdates)
+                                } else {
+                                    AppLogger.singleton.warning(logMessage, category: .backgroundUpdates)
+                                }
+                            }
 
-                // If the central stream already had a fresh head, the cache
-                // facade reports no asynchronous result. Use its returned
-                // values immediately in that case.
-                if !didReceiveHistoryResult,
-                   !NightscoutCacheService.singleton.hasTodaysBgDataPendingRequests {
-                    processHistory(.data(storedHistoryValues), fallback: storedHistoryValues)
+                            let deviceStatusData: DeviceStatusData = await withCheckedContinuation { continuation in
+                                let _ = NightscoutCacheService.singleton.getDeviceStatusData { deviceStatusData in
+                                    continuation.resume(returning: deviceStatusData)
+                                }
+                            }
+                            AlarmNotificationService.singleton.notifyIfReservoirCritical(deviceStatusData.reservoirUnits)
+                            finish(BackgroundUpdateResult(success: true, hasNewData: hasNewData, message: "Nightscout display state processed"))
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private func mergeHistory(_ values: [BloodSugar], including currentData: NightscoutData) -> [BloodSugar] {
+        var valuesByKey: [String: BloodSugar] = [:]
+        let withCurrent = NightguardDisplaySnapshot.historyValues(values, including: currentData)
+        for value in withCurrent where value.isValid && value.timestamp > 0 {
+            let type = value.isMeteredBloodGlucoseValue ? "mbg" : "sgv"
+            valuesByKey["\(type):\(String(format: "%.0f", value.timestamp))"] = value
+        }
+        let sorted = valuesByKey.values.sorted { $0.timestamp < $1.timestamp }
+        return NightscoutCacheService.singleton.removeYesterdaysEntries(bgValues: sorted)
     }
 
     private func reloadWidgetTimelines(trigger: BackgroundUpdateTrigger) {

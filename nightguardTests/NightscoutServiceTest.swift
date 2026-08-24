@@ -36,6 +36,64 @@ private final class NightscoutMockURLProtocol: URLProtocol {
 
 class NightscoutServiceTest: XCTestCase {
 
+    func testHybridEntriesWaitsForFreshFallbackWhenV3HeadIsStale() {
+        let staleTimestamp = Date().addingTimeInterval(-40 * 60).timeIntervalSince1970 * 1000
+        let freshTimestamp = Date().addingTimeInterval(-2 * 60).timeIntervalSince1970 * 1000
+        let stale = NightscoutEntryRecord(dateMillis: staleTimestamp, type: "sgv", sgv: 110)
+        let fresh = NightscoutEntryRecord(dateMillis: freshTimestamp, type: "sgv", sgv: 125)
+        let expectation = expectation(description: "fresh hybrid result")
+        var completionCount = 0
+
+        let accumulator = HybridEntriesAccumulator { result, source in
+            completionCount += 1
+            guard case .data(let records) = result else {
+                XCTFail("Expected a successful hybrid result")
+                expectation.fulfill()
+                return
+            }
+            XCTAssertEqual(source, "v3+v1")
+            XCTAssertEqual(records.last?.sgv, 125)
+            expectation.fulfill()
+        }
+
+        accumulator.receive(.data([stale]), source: "v3")
+        XCTAssertEqual(completionCount, 0)
+        accumulator.receive(.data([fresh]), source: "v1")
+
+        waitForExpectations(timeout: 1)
+        XCTAssertEqual(completionCount, 1)
+    }
+
+    func testHybridEntriesUsesNewestConfirmedStaleValueFromBothAPIs() {
+        let older = NightscoutEntryRecord(
+            dateMillis: Date().addingTimeInterval(-45 * 60).timeIntervalSince1970 * 1000,
+            type: "sgv",
+            sgv: 110
+        )
+        let newer = NightscoutEntryRecord(
+            dateMillis: Date().addingTimeInterval(-35 * 60).timeIntervalSince1970 * 1000,
+            type: "sgv",
+            sgv: 115
+        )
+        let expectation = expectation(description: "confirmed stale hybrid result")
+
+        let accumulator = HybridEntriesAccumulator { result, source in
+            guard case .data(let records) = result else {
+                XCTFail("Expected stale server data to remain available for no-data alarms")
+                expectation.fulfill()
+                return
+            }
+            XCTAssertEqual(source, "v3+v1")
+            XCTAssertEqual(records.max(by: { $0.dateMillis < $1.dateMillis })?.sgv, 115)
+            expectation.fulfill()
+        }
+
+        accumulator.receive(.data([older]), source: "v3")
+        accumulator.receive(.data([newer]), source: "v1")
+
+        waitForExpectations(timeout: 1)
+    }
+
     func testEntriesHeadParserKeepsSGVAndManualMeterValues() throws {
         let payload = Data("""
         [
@@ -176,6 +234,57 @@ class NightscoutServiceTest: XCTestCase {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2)
+    }
+
+    func testFallsBackToV1WhenV3EntriesRequestTimesOut() throws {
+        let restoreCredentials = useTemporaryCredentials(url: "https://entries-timeout.example.org", token: "care-secret")
+        defer { restoreCredentials() }
+
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let client = NightscoutAPIClient(session: URLSession(configuration: configuration))
+        var requestedPaths: [String] = []
+        NightscoutMockURLProtocol.handler = { request in
+            let url = try XCTUnwrap(request.url)
+            requestedPaths.append(url.path)
+            if url.path == "/api/v3/version" {
+                return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("{}".utf8))
+            }
+            if url.path == "/api/v2/authorization/request/token=care-secret" {
+                return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("{\"token\":\"temporary-jwt\"}".utf8))
+            }
+            if url.path == "/api/v3/entries" {
+                throw URLError(.timedOut)
+            }
+            XCTAssertEqual(url.path, "/api/v1/entries.json")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "API-SECRET"), "care-secret")
+            return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("[{\"sgv\":125}]".utf8))
+        }
+        defer { NightscoutMockURLProtocol.handler = nil }
+
+        let expectation = expectation(description: "v1 entries fallback completed")
+        _ = client.requestV3(
+            path: "api/v3/entries",
+            legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "1"]),
+            fallbackOnTransportFailure: true,
+            legacyUseAccessTokenHeader: true
+        ) { result in
+            guard case .success(let response) = result else {
+                XCTFail("Expected v1 fallback after the v3 entries timeout")
+                expectation.fulfill()
+                return
+            }
+            XCTAssertEqual(String(data: response.0, encoding: .utf8), "[{\"sgv\":125}]")
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+
+        XCTAssertEqual(requestedPaths, [
+            "/api/v3/version",
+            "/api/v2/authorization/request/token=care-secret",
+            "/api/v3/entries",
+            "/api/v1/entries.json"
+        ])
     }
 
     func testCacheFriendlyLegacyRequestUsesAccessTokenHeader() throws {
