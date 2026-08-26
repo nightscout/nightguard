@@ -258,20 +258,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }        
         
         WatchMessageService.singleton.onMessage { (message: WatchSyncRequestMessage) in
-            
-            // compare the "last sync update id" received from watch and compare it with phone value: if not equal, the watch has not the latest user defaults data and a sync should be performed
-            if let anyWatchUpdateId = message.dictionary[UserDefaultsRepository.lastWatchSyncUpdateId.key] {
-                let watchUpdateId = type(of: UserDefaultsRepository.lastWatchSyncUpdateId).ValueType.fromAny(anyWatchUpdateId)
-                if UserDefaultsRepository.lastWatchSyncUpdateId.value != watchUpdateId {
 
-                    // perform sync!
-                    UserDefaultSyncMessage().send()
-
-                    #if MAIN_APP
-                    AppLogger.singleton.debug("Handling WatchSyncRequestMessage: UUID on watch didn't match phone UUID")
-                    #endif
-                }
-            }
+            // Always answer with the complete settings payload. The
+            // Nightscout token moved from the synced URL into Keychain with
+            // API v3 and is therefore not represented by the update UUID.
+            // Sending it here repairs missing credentials on upgraded watches.
+            UserDefaultSyncMessage().send()
             
             // same comparison for snoozing timestamp
             if let anyWatchSnoozeTimestamp = message.dictionary["snoozedUntilTimestamp"] {

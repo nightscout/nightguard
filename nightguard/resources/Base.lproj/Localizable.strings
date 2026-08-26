@@ -758,3 +758,11 @@
 "Pro Subscription Information" = "Pro Subscription Information";
 "Max Subscription Information" = "Max Subscription Information";
 "Thank You for Your Support" = "Thank you for your support 💚";
+
+/* Local data reload */
+"Data" = "Data";
+"Reload today's data" = "Reload today's data";
+"Deletes only local values for today. Nightscout data is not changed." = "Deletes only local values for today. Nightscout data is not changed.";
+"Reload today's data?" = "Reload today's data?";
+"Delete local data and reload" = "Delete local data and reload";
+"Today's locally cached glucose values and treatments will be removed and fetched again from Nightscout." = "Today's locally cached glucose values and treatments will be removed and fetched again from Nightscout.";

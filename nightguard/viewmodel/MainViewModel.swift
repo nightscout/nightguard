@@ -442,11 +442,11 @@ class MainViewModel: ObservableObject, Identifiable {
     func refreshData(forceRefresh: Bool, moveToLatestValue: Bool) {
         showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
 
+        NightscoutSyncCoordinator.shared.refreshEntriesAndTreatments(force: forceRefresh)
         loadCurrentBgData(forceRefresh: forceRefresh)
         loadCareData()
         loadDeviceStatusData()
         loadChartData(forceRepaint: forceRefresh, moveToLatestValue: moveToLatestValue)
-        loadTreatments()
 
         alarmRuleMessage = determineInfoLabel()
 
@@ -455,12 +455,6 @@ class MainViewModel: ObservableObject, Identifiable {
         #else
         evaluateAlarmActivationState()
         #endif
-    }
-
-    fileprivate func loadTreatments() {
-        NightscoutService.singleton.readLatestTreatements { treatments in
-            TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: treatments)
-        }
     }
 
     func determineInfoLabel() -> String {

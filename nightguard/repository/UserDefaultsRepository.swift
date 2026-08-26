@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Security
 import UIKit
 
 // https://stackoverflow.com/a/44806984
@@ -24,7 +25,7 @@ extension URL {
 class UserDefaultsRepository {
     
     fileprivate static var url: URL?
-    fileprivate static var token: String?
+    fileprivate static var legacyToken: String?
     
     static let baseUri = UserDefaultsValue<String>(
         key: "hostUri",
@@ -119,17 +120,118 @@ class UserDefaultsRepository {
     /* Parses the URI entered in the UI and extracts the token if one is present. */
     fileprivate static func parseBaseUri() {
         url = nil
-        token = nil
+        legacyToken = nil
         let urlString = baseUri.value
         if !urlString.isEmpty {
-            url = URL(string: urlString)!
-            let tokenString = url?.valueOf("token")
-            if ((tokenString) != nil) {
-                token = String(describing: tokenString!)
-                print(token!)
+            guard let parsedURL = URL(string: urlString) else { return }
+            legacyToken = normalizedToken(parsedURL.valueOf("token") ?? "")
+
+            if let token = legacyToken, !token.isEmpty,
+               let cleanURL = removingToken(from: parsedURL),
+               NightscoutCredentialStore.shared.setToken(token, for: cleanURL) {
+                url = cleanURL
+                if cleanURL.absoluteString != urlString {
+                    baseUri.value = cleanURL.absoluteString
+                }
+            } else {
+                url = parsedURL
             }
         }
+        #if os(iOS)
+        migrateLegacyURIHistory()
+        #endif
     }
+
+    static var nightscoutToken: String {
+        if url == nil {
+            parseBaseUri()
+        }
+        guard let serverURL = url else { return legacyToken ?? "" }
+        return NightscoutCredentialStore.shared.token(for: serverURL) ?? legacyToken ?? ""
+    }
+
+    @discardableResult
+    static func setNightscoutCredentials(baseURL: URL, token: String) -> Bool {
+        let cleanURL = removingToken(from: baseURL) ?? baseURL
+        let explicitToken = normalizedToken(token)
+        let embeddedToken = normalizedToken(baseURL.valueOf("token") ?? "")
+        let trimmedToken = explicitToken.isEmpty ? embeddedToken : explicitToken
+        let didStore = trimmedToken.isEmpty
+            ? NightscoutCredentialStore.shared.removeToken(for: cleanURL)
+            : NightscoutCredentialStore.shared.setToken(trimmedToken, for: cleanURL)
+        guard didStore else { return false }
+
+        legacyToken = nil
+        url = cleanURL
+        baseUri.value = cleanURL.absoluteString
+        return true
+    }
+
+    static func storeSyncedNightscoutToken(_ token: String) {
+        if url == nil {
+            parseBaseUri()
+        }
+        guard let serverURL = url else { return }
+        let trimmedToken = normalizedToken(token)
+        if trimmedToken.isEmpty {
+            _ = NightscoutCredentialStore.shared.removeToken(for: serverURL)
+        } else {
+            _ = NightscoutCredentialStore.shared.setToken(trimmedToken, for: serverURL)
+        }
+        legacyToken = nil
+    }
+
+    static func cleanBaseURL() -> URL? {
+        if url == nil {
+            parseBaseUri()
+        }
+        guard let currentURL = url else { return nil }
+        return removingToken(from: currentURL) ?? currentURL
+    }
+
+    static func authenticatedWebURL() -> URL? {
+        guard let baseURL = cleanBaseURL() else { return nil }
+        let token = nightscoutToken
+        guard !token.isEmpty, var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false) else {
+            return baseURL
+        }
+        var items = components.queryItems ?? []
+        items.removeAll { $0.name == "token" }
+        items.append(URLQueryItem(name: "token", value: token))
+        components.queryItems = items
+        return components.url
+    }
+
+    private static func removingToken(from sourceURL: URL) -> URL? {
+        guard var components = URLComponents(url: sourceURL, resolvingAgainstBaseURL: false) else { return nil }
+        let remainingItems = (components.queryItems ?? []).filter { $0.name != "token" }
+        components.queryItems = remainingItems.isEmpty ? nil : remainingItems
+        return components.url
+    }
+
+    private static func normalizedToken(_ token: String) -> String {
+        let trimmed = token.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.hasPrefix("token=") ? String(trimmed.dropFirst("token=".count)) : trimmed
+    }
+
+    #if os(iOS)
+    private static func migrateLegacyURIHistory() {
+        let existing = nightscoutUris.value
+        let migrated = existing.map { uri -> String in
+            guard let parsedURL = URL(string: uri),
+                  let cleanURL = removingToken(from: parsedURL),
+                  let token = parsedURL.valueOf("token"),
+                  !token.isEmpty,
+                  NightscoutCredentialStore.shared.setToken(normalizedToken(token), for: cleanURL) else {
+                return uri
+            }
+            return cleanURL.absoluteString
+        }
+        if migrated != existing {
+            nightscoutUris.value = Array(migrated.prefix(5))
+        }
+    }
+    #endif
     
     fileprivate static func validateUrl(_ stringURL : String) -> Bool {
         
@@ -161,15 +263,18 @@ class UserDefaultsRepository {
         guard var urlComponents = URLComponents(string: String(describing: requestUri)) else {
             return nil
         }
-        urlComponents.queryItems = []
-        for (queryParam, queryValue) in queryParams {
-            urlComponents.queryItems?.append(URLQueryItem(name: queryParam, value: queryValue))
+        var queryItems = (urlComponents.queryItems ?? []).filter {
+            $0.name != "token" && queryParams[$0.name] == nil
         }
+        queryItems.append(contentsOf: queryParams.sorted(by: { $0.key < $1.key }).map {
+            URLQueryItem(name: $0.key, value: $0.value)
+        })
 
-        if (token != nil) {
-            urlComponents.queryItems?.append(URLQueryItem(name: "token", value: String(describing: token!)))
+        let token = nightscoutToken
+        if !token.isEmpty {
+            queryItems.append(URLQueryItem(name: "token", value: token))
         }
-        print(urlComponents.url ?? "")
+        urlComponents.queryItems = queryItems.isEmpty ? nil : queryItems
         return urlComponents.url
     }
     
@@ -409,6 +514,85 @@ class UserDefaultsRepository {
         _ = reviewLastPromptDate
         _ = reviewDeclinedForever
         _ = watchProAccessAvailable
+    }
+}
+
+final class NightscoutCredentialStore {
+    static let shared = NightscoutCredentialStore()
+
+    private let service = "de.my-wan.dhe.nightguard.nightscout-token"
+    private let accessGroup = "C8JJ9Q567Z.de.my-wan.dhe.nightguard.shared"
+
+    private init() {}
+
+    func token(for serverURL: URL) -> String? {
+        var query = baseQuery(for: serverURL)
+        query[kSecReturnData as String] = true
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
+
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        guard status == errSecSuccess,
+              let data = item as? Data,
+              let token = String(data: data, encoding: .utf8) else {
+            return nil
+        }
+        return token
+    }
+
+    @discardableResult
+    func setToken(_ token: String, for serverURL: URL) -> Bool {
+        guard let data = token.data(using: .utf8) else { return false }
+        let query = baseQuery(for: serverURL)
+        let attributes: [String: Any] = [
+            kSecValueData as String: data,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+        ]
+
+        let updateStatus = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+        if updateStatus == errSecSuccess { return true }
+        guard updateStatus == errSecItemNotFound else { return false }
+
+        var item = query
+        attributes.forEach { item[$0.key] = $0.value }
+        return SecItemAdd(item as CFDictionary, nil) == errSecSuccess
+    }
+
+    @discardableResult
+    func removeToken(for serverURL: URL) -> Bool {
+        let status = SecItemDelete(baseQuery(for: serverURL) as CFDictionary)
+        return status == errSecSuccess || status == errSecItemNotFound
+    }
+
+    private func baseQuery(for serverURL: URL) -> [String: Any] {
+        var query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: credentialKey(for: serverURL)
+        ]
+        #if !targetEnvironment(simulator)
+        query[kSecAttrAccessGroup as String] = accessGroup
+        #endif
+        return query
+    }
+
+    private func credentialKey(for serverURL: URL) -> String {
+        guard var components = URLComponents(url: serverURL, resolvingAgainstBaseURL: false) else {
+            return serverURL.absoluteString
+        }
+        let scheme = components.scheme?.lowercased()
+        let host = components.host?.lowercased()
+        let queryItems = components.queryItems?
+            .filter { $0.name != "token" }
+            .sorted {
+                if $0.name == $1.name { return ($0.value ?? "") < ($1.value ?? "") }
+                return $0.name < $1.name
+            }
+        components.scheme = scheme
+        components.host = host
+        components.queryItems = queryItems
+        components.fragment = nil
+        return components.url?.absoluteString ?? serverURL.absoluteString
     }
 }
 

@@ -156,10 +156,10 @@ struct ConfigurationTourPage: View {
                         }
                     }
                 },
-                footer: Text(NSLocalizedString("The Token needs to have the \"careportal\" role.", comment: "")) + (nightscoutURL.isEmpty ? Text("") : (Text("\n") + Text(String(format: NSLocalizedString("RESULTING URL: %@", comment: ""), previewURL)).font(.caption).foregroundColor(.secondary)))
+                footer: Text(NSLocalizedString("The Token needs to have the \"careportal\" role. It is stored securely in the Keychain.", comment: "")) + (nightscoutURL.isEmpty ? Text("") : (Text("\n") + Text(String(format: NSLocalizedString("SERVER: %@", comment: ""), previewURL)).font(.caption).foregroundColor(.secondary)))
             ) {
                 HStack {
-                    TextField("e.g. update-b4d85ed628a3e34f", text: $apiToken)
+                    SecureField("e.g. update-b4d85ed628a3e34f", text: $apiToken)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                     
@@ -218,6 +218,7 @@ struct ConfigurationTourPage: View {
     private func loadExistingSettings() {
         let currentFullURL = UserDefaultsRepository.baseUri.value.trimmingCharacters(in: .whitespaces)
         guard !currentFullURL.isEmpty else { return }
+        apiToken = UserDefaultsRepository.nightscoutToken
         
         if let components = URLComponents(string: currentFullURL) {
             // Extract token
@@ -254,15 +255,6 @@ struct ConfigurationTourPage: View {
             finalURL = "https://" + finalURL
         }
         
-        // Add token if provided
-        let token = apiToken.trimmingCharacters(in: .whitespaces)
-        if !token.isEmpty {
-            if finalURL.contains("?") {
-                finalURL += "&token=" + token
-            } else {
-                finalURL += "?token=" + token
-            }
-        }
         return finalURL
     }
     
@@ -274,18 +266,11 @@ struct ConfigurationTourPage: View {
             finalURL = "https://" + finalURL
         }
         
-        // Add token if provided
-        let token = apiToken.trimmingCharacters(in: .whitespaces)
-        if !token.isEmpty {
-            if finalURL.contains("?") {
-                finalURL += "&token=" + token
-            } else {
-                finalURL += "?token=" + token
-            }
+        guard let serverURL = URL(string: finalURL),
+              UserDefaultsRepository.setNightscoutCredentials(baseURL: serverURL, token: apiToken) else {
+            return
         }
-        
-        // Save to UserDefaultsRepository
-        UserDefaultsRepository.baseUri.value = finalURL
+        UserDefaultSyncMessage().send()
         
         // Reset cache and data to ensure clean start
         NightscoutCacheService.singleton.resetCache()

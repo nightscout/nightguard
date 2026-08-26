@@ -12,6 +12,91 @@ import UIKit
 import WidgetKit
 #endif
 
+/// A lossless, locally persisted representation of a Nightscout entry.
+///
+/// The app derives display values from this record instead of maintaining
+/// several independently fetched entry lists. Keeping the original payload
+/// also lets us add fields later without having to re-download historical
+/// data.
+struct NightscoutEntryRecord: Codable, Hashable {
+    let storageKey: String
+    let identifier: String?
+    let objectID: String?
+    let dateMillis: Double
+    let type: String
+    let sgv: Double?
+    let mbg: Double?
+    let direction: String?
+    let units: String?
+    let rawJSON: Data?
+
+    init(
+        storageKey: String? = nil,
+        identifier: String? = nil,
+        objectID: String? = nil,
+        dateMillis: Double,
+        type: String,
+        sgv: Double? = nil,
+        mbg: Double? = nil,
+        direction: String? = nil,
+        units: String? = nil,
+        rawJSON: Data? = nil
+    ) {
+        self.identifier = identifier
+        self.objectID = objectID
+        self.dateMillis = dateMillis
+        self.type = type
+        self.sgv = sgv
+        self.mbg = mbg
+        self.direction = direction
+        self.units = units
+        self.rawJSON = rawJSON
+        self.storageKey = storageKey
+            ?? identifier
+            ?? objectID
+            ?? Self.fallbackStorageKey(type: type, dateMillis: dateMillis)
+    }
+
+    private static func fallbackStorageKey(type: String, dateMillis: Double) -> String {
+        let timestamp = dateMillis.isFinite ? String(format: "%.0f", dateMillis) : "invalid"
+        return "\(type):\(timestamp)"
+    }
+
+    var bloodSugar: BloodSugar? {
+        if let sgv {
+            return BloodSugar(
+                value: Float(sgv),
+                timestamp: dateMillis,
+                isMeteredBloodGlucoseValue: false,
+                arrow: normalizedArrow
+            )
+        }
+        if let mbg {
+            return BloodSugar(
+                value: Float(mbg),
+                timestamp: dateMillis,
+                isMeteredBloodGlucoseValue: true,
+                arrow: "-"
+            )
+        }
+        return nil
+    }
+
+    private var normalizedArrow: String {
+        switch direction ?? "" {
+        case "DoubleUp": return "↑↑"
+        case "SingleUp": return "↑"
+        case "FortyFiveUp": return "↗"
+        case "Flat": return "→"
+        case "FortyFiveDown": return "↘"
+        case "SingleDown": return "↓"
+        case "DoubleDown": return "↓↓"
+        case "↑↑", "↑", "↗", "→", "↘", "↓", "↓↓": return direction ?? "-"
+        default: return "-"
+        }
+    }
+}
+
 struct NightguardDisplaySnapshot: Codable, Hashable {
     static let maxFreshAge: TimeInterval = 15 * 60
     static let liveActivityHistoryDuration: TimeInterval = 60 * 60
@@ -315,6 +400,7 @@ class NightscoutDataRepository {
         static let deviceStatus = "deviceStatus"
         static let temporaryTarget = "temporaryTarget"
         static let latestDisplaySnapshot = "latestDisplaySnapshot"
+        static let nightscoutEntries = "nightscoutEntries"
     }
     
     var isEmpty: Bool {
@@ -329,7 +415,20 @@ class NightscoutDataRepository {
         defaults?.removeObject(forKey: Constants.yesterdaysBgDataRaw)
         defaults?.removeObject(forKey: Constants.yesterdaysDayOfTheYear)
         defaults?.removeObject(forKey: Constants.latestDisplaySnapshot)
+        defaults?.removeObject(forKey: Constants.nightscoutEntries)
         // this shouldn't be necessary anymore - remove it later
+        defaults?.synchronize()
+    }
+
+    /// Removes only the locally cached values belonging to today. Historical
+    /// data for yesterday and long-lived care metadata remain untouched; the
+    /// temporary target is cleared so it can be fetched again immediately.
+    func clearTodaysData() {
+        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        defaults?.removeObject(forKey: Constants.currentBgData)
+        defaults?.removeObject(forKey: Constants.todaysBgData)
+        defaults?.removeObject(forKey: Constants.latestDisplaySnapshot)
+        defaults?.removeObject(forKey: Constants.temporaryTarget)
         defaults?.synchronize()
     }
     
@@ -412,6 +511,27 @@ class NightscoutDataRepository {
     func loadYesterdaysBgDataRaw() -> [BloodSugar] {
         
         return loadBgData(keyName: Constants.yesterdaysBgDataRaw)
+    }
+
+    func storeNightscoutEntries(_ entries: [NightscoutEntryRecord]) {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else { return }
+        guard let data = try? JSONEncoder().encode(entries) else {
+            AppLogger.singleton.error("NightscoutDataRepository: could not encode (entries.count) raw entries", category: .nightscout)
+            return
+        }
+        defaults.set(data, forKey: Constants.nightscoutEntries)
+    }
+
+    func loadNightscoutEntries() -> [NightscoutEntryRecord] {
+        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID),
+              let data = defaults.data(forKey: Constants.nightscoutEntries) else {
+            return []
+        }
+        guard let entries = try? JSONDecoder().decode([NightscoutEntryRecord].self, from: data) else {
+            AppLogger.singleton.warning("NightscoutDataRepository: raw entries cache could not be decoded; ignoring it", category: .nightscout)
+            return []
+        }
+        return entries
     }
     
     func loadYesterdaysDayOfTheYear() -> Int {

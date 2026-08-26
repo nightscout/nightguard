@@ -35,4 +35,19 @@ class TargetDataTest : XCTestCase {
         // Then
         XCTAssertEqual(temporaryTarget.targetTop, 180, "If no unit is available - it should treated as mgdl")
     }
+
+    func testParsingV3TimestampAndNumericFields() {
+        let timestamp = 1_724_198_400_000 as NSNumber
+        let temporaryTarget = TemporaryTarget.parse(temporaryTargetDict: [
+            "date": timestamp,
+            "duration": 30.0,
+            "targetTop": 120.0,
+            "targetBottom": 90.0
+        ])
+
+        XCTAssertEqual(temporaryTarget.targetTop, 120)
+        XCTAssertEqual(temporaryTarget.targetBottom, 90)
+        XCTAssertEqual(temporaryTarget.duration, 30)
+        XCTAssertNotNil(temporaryTarget.createdAt)
+    }
 }

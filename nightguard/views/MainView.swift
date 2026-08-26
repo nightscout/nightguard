@@ -421,6 +421,9 @@ struct MainView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NightscoutDataUpdated"))) { _ in
             maybePresentReviewPrompt()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .nightscoutDataRefreshRequested)) { _ in
+            viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
+        }
         .onChange(of: selectedTab) { newTab in
             viewModel.handleVisibilityChange(isVisible: newTab == .main)
         }

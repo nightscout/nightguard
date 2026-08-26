@@ -74,7 +74,7 @@ class NightscoutViewModel: ObservableObject {
             webView.stopLoading()
         }
 
-        guard let baseUri = URL(string: UserDefaultsRepository.baseUri.value) else { return }
+        guard let baseUri = UserDefaultsRepository.authenticatedWebURL() else { return }
         let request = URLRequest(url: baseUri)
         webView.load(request)
     }
@@ -120,7 +120,7 @@ struct NightscoutWebView: UIViewRepresentable {
         viewModel.webView = webView
 
         // Load Nightscout
-        if let baseUri = URL(string: UserDefaultsRepository.baseUri.value) {
+        if let baseUri = UserDefaultsRepository.authenticatedWebURL() {
             let request = URLRequest(url: baseUri)
             webView.load(request)
         }
@@ -197,12 +197,12 @@ struct NightscoutWebView: UIViewRepresentable {
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            NSLog("Nightscout navigation succeeded: \(String(describing: webView.url))")
+            NSLog("Nightscout navigation succeeded")
             viewModel.didFinishLoading(url: webView.url)
         }
 
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            NSLog("Nightscout navigation failed: \(error)")
+            NSLog("Nightscout navigation failed: \(error.localizedDescription)")
             viewModel.didFailLoading()
         }
     }

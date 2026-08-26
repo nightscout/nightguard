@@ -28,6 +28,11 @@ class NightscoutDataMessage: WatchMessage {
         self.displaySnapshot = NightscoutDataRepository.singleton.loadLatestDisplaySnapshot()
             ?? NightscoutDataRepository.singleton.storeLatestDisplaySnapshot(from: nightscoutData)
     }
+
+    init(nightscoutData: NightscoutData, displaySnapshot: NightguardDisplaySnapshot) {
+        self.nightscoutData = nightscoutData
+        self.displaySnapshot = displaySnapshot
+    }
     
     required init?(dictionary: [String : Any]) {
         guard let data = dictionary["nightscoutData"] as? Data, let nightscoutData = try? JSONDecoder().decode(NightscoutData.self, from: data) else {
