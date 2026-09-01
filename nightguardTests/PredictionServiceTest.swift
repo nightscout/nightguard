@@ -73,6 +73,16 @@ class PredictionServiceTest: XCTestCase {
         print(nextHourReadings[3].value)
         XCTAssertTrue((170...180).contains(nextHourReadings[3].value), "The predicted value in around 15-20 minutes should be between 170 and 180")
     }
+
+    func testNextHourGappedStillProducesValuesForStaleReferenceReadings() {
+        for offset in [6.0, 9.0, 11.0] {
+            storeReadingsInCache([BloodSugar](values: ascendingBgValues, lastReadingOffset: offset * 60))
+
+            let gappedReadings = PredictionService.singleton.nextHourGapped
+
+            XCTAssertEqual(gappedReadings.count, 12, "Expected 5-minute predictions for a reference (offset) minutes behind now")
+        }
+    }
     
     func testMinutesToLow() {
         

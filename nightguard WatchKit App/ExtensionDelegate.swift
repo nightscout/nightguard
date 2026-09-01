@@ -141,6 +141,7 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
         // Use this method to pause ongoing tasks, disable timers, etc.
         
         AppState.isUIActive = false
+        MainController.mainViewModel.chartDidResignActive()
         
         print("Application will resign active.")
         AppMessageService.singleton.keepAwakePhoneApp()

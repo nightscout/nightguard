@@ -17,6 +17,28 @@ import WidgetKit
 import Combine
 #endif
 
+struct ChartAutoScrollPolicy {
+    let inactivityInterval: TimeInterval
+    private(set) var lastInteractionDate: Date? = nil
+
+    init(inactivityInterval: TimeInterval = 10) {
+        self.inactivityInterval = inactivityInterval
+    }
+
+    mutating func recordInteraction(at date: Date = Date()) {
+        lastInteractionDate = date
+    }
+
+    mutating func reset() {
+        lastInteractionDate = nil
+    }
+
+    func remainingDelay(at date: Date = Date()) -> TimeInterval {
+        guard let lastInteractionDate else { return 0 }
+        return max(0, inactivityInterval - date.timeIntervalSince(lastInteractionDate))
+    }
+}
+
 class MainViewModel: ObservableObject, Identifiable {
 
     // MARK: - Published Properties - Current Nightscout Data
@@ -58,6 +80,12 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var skScene: ChartScene
     @Published var cachedTodaysBgValues: [BloodSugar] = []
     @Published var cachedYesterdaysBgValues: [BloodSugar] = []
+
+    // Chart auto-follow is shared by iOS and watchOS. The platform-specific
+    // visibility checks live in chartCanAutoScroll below.
+    private var chartAutoScrollPolicy = ChartAutoScrollPolicy()
+    private var chartAutoScrollWorkItem: DispatchWorkItem?
+    private var isChartVisible = false
 
     #if os(watchOS)
     // MARK: - Watch-Specific Properties
@@ -182,6 +210,7 @@ class MainViewModel: ObservableObject, Identifiable {
                 self.hasEnteredBackground = true
                 self.shouldSuppressLocalAlarmUntilRefreshCompletes = true
                 self.stopTimer()
+                self.chartDidResignActive()
                 AlarmSound.stop()
             }
             .store(in: &cancellables)
@@ -200,7 +229,9 @@ class MainViewModel: ObservableObject, Identifiable {
                     if self.isVisible {
                         self.startTimer(forceRepaint: true, forceDataRefresh: true)
                     }
+                    self.chartDidBecomeActive()
                 } else {
+                    self.chartDidBecomeActive()
                     // AppDelegate installs a fresh 10-second local snooze for
                     // every activation, including temporary inactive states.
                     self.evaluateAlarmActivationState()
@@ -245,11 +276,13 @@ class MainViewModel: ObservableObject, Identifiable {
         self.isVisible = isVisible
 
         if isVisible && wasInvisible {
+            chartDidAppear()
             startTimer(
                 forceRepaint: true,
                 forceDataRefresh: shouldSuppressLocalAlarmUntilRefreshCompletes
             )
         } else if !isVisible {
+            chartDidDisappear()
             stopTimer()
         }
     }
@@ -436,6 +469,71 @@ class MainViewModel: ObservableObject, Identifiable {
         WKInterfaceDevice.current().play(.notification)
     }
     #endif
+
+    // MARK: - Shared Chart Auto-Follow
+
+    func chartDidAppear() {
+        isChartVisible = true
+        chartAutoScrollPolicy.reset()
+        reconcileChartAutoScroll()
+    }
+
+    func chartDidDisappear() {
+        isChartVisible = false
+        cancelChartAutoScroll()
+    }
+
+    func chartDidBecomeActive() {
+        guard chartCanAutoScroll else { return }
+
+        chartAutoScrollPolicy.reset()
+        reconcileChartAutoScroll()
+    }
+
+    func chartDidResignActive() {
+        cancelChartAutoScroll()
+        skScene.stopMovingToLatestValue()
+    }
+
+    func chartInteractionDidChange() {
+        chartAutoScrollPolicy.recordInteraction()
+        skScene.stopMovingToLatestValue()
+        reconcileChartAutoScroll()
+    }
+
+    private func chartDidRepaint() {
+        reconcileChartAutoScroll()
+    }
+
+    private var chartCanAutoScroll: Bool {
+        #if os(watchOS)
+        return isChartVisible && AppState.isUIActive
+        #else
+        return isChartVisible && isVisible
+        #endif
+    }
+
+    private func reconcileChartAutoScroll(at date: Date = Date()) {
+        cancelChartAutoScroll()
+        guard chartCanAutoScroll else { return }
+
+        let remainingDelay = chartAutoScrollPolicy.remainingDelay(at: date)
+        guard remainingDelay > 0 else {
+            skScene.moveToLatestValue(animated: true)
+            return
+        }
+
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.reconcileChartAutoScroll()
+        }
+        chartAutoScrollWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + remainingDelay, execute: workItem)
+    }
+
+    private func cancelChartAutoScroll() {
+        chartAutoScrollWorkItem?.cancel()
+        chartAutoScrollWorkItem = nil
+    }
 
     // MARK: - Shared Methods
 
@@ -732,22 +830,28 @@ class MainViewModel: ObservableObject, Identifiable {
         let bounds = device.screenBounds
         let canvasWidth = bounds.width * 6
 
+        // Auto-follow on watchOS is governed by the interaction timeout, so a
+        // repaint cannot unexpectedly override a recent Crown interaction.
+        _ = moveToLatestValue
         skScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: canvasWidth,
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
-            moveToLatestValue: moveToLatestValue,
+            moveToLatestValue: false,
             displayDaysLegend: false,
             useConstrastfulColors: false,
             showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value)
+        chartDidRepaint()
         #else
+        _ = moveToLatestValue
         skScene.paintChart(
             [todaysDataWithPrediction, yesterdaysData],
             newCanvasWidth: CGFloat(2048),
             maxYDisplayValue: CGFloat(UserDefaultsRepository.maximumBloodGlucoseDisplayed.value),
-            moveToLatestValue: moveToLatestValue,
+            moveToLatestValue: false,
             useContrastfulColors: false,
             showYesterdaysBgs: UserDefaultsRepository.showYesterdaysBgs.value)
+        chartDidRepaint()
         #endif
     }
 

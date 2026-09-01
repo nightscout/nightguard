@@ -22,6 +22,9 @@ class ChartScene : SKScene {
     // the maximum blood glucose value that will be displayed in the chart
     var maxYDisplayValue : CGFloat = 350
     var showYesterdaysBgs : Bool = true
+    private(set) var latestXPosition: CGFloat?
+
+    private let moveToLatestActionKey = "moveToLatestValue"
 
     // MARK: - Chart selection
     private let selectionTimeout: TimeInterval = 5
@@ -89,7 +92,8 @@ class ChartScene : SKScene {
             return
         }
 
-        // Clear any existing actions before applying new texture
+        // Clear any existing actions before applying new texture. The caller
+        // can immediately re-apply the auto-follow policy after this repaint.
         self.chartNode.removeAllActions()
 
         let chartTexture = SKTexture(image: chartImage!)
@@ -97,15 +101,37 @@ class ChartScene : SKScene {
         self.chartNode.size = chartImage!.size
         self.chartNode.zPosition = 1
         
-        // only show the move animation, if we have data at all.
-        // In the latter case, displayPosition is 0
-        if moveToLatestValue && displayPosition > 0 {
-            let newXPosition = normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width))
-            let moveToNewValue = SKAction.move(
-                to: CGPoint(x: newXPosition, y: 0),
-                duration: 1)
-            self.chartNode.run(moveToNewValue)
+        // Keep the latest target independent of the repaint. This lets the
+        // watch return to the newest value after an inactivity timeout without
+        // drawing the entire chart again.
+        if displayPosition > 0 {
+            latestXPosition = normalizedXPosition(-CGFloat(displayPosition) + CGFloat(size.width))
+        } else {
+            latestXPosition = nil
         }
+
+        if moveToLatestValue {
+            self.moveToLatestValue(animated: true)
+        }
+    }
+
+    func moveToLatestValue(animated: Bool = true) {
+        guard let latestXPosition else { return }
+
+        chartNode.removeAction(forKey: moveToLatestActionKey)
+        guard animated else {
+            chartNode.position = CGPoint(x: latestXPosition, y: 0)
+            return
+        }
+
+        let action = SKAction.move(
+            to: CGPoint(x: latestXPosition, y: 0),
+            duration: 1)
+        chartNode.run(action, withKey: moveToLatestActionKey)
+    }
+
+    func stopMovingToLatestValue() {
+        chartNode.removeAction(forKey: moveToLatestActionKey)
     }
         
     // maxYDisplayValue is the maximum Value that will be displayed in the chart.
@@ -438,7 +464,7 @@ class ChartScene : SKScene {
     }
     
     fileprivate func moveXTranslationPosition(_ x : CGFloat) {
-    
+        stopMovingToLatestValue()
         let newXPosition = chartNode.position.x + CGFloat(x)
         chartNode.position = CGPoint(x: normalizedXPosition(newXPosition), y: chartNode.position.y)
     }

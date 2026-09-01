@@ -29,13 +29,17 @@ struct MainView: View {
    }
 
     fileprivate func scrollChart() {
-        if abs(oldCrownValue - crownValue) > 1000 {
+        let rotationDelta = oldCrownValue - crownValue
+        if abs(rotationDelta) > 1000 {
             // the counter jumped from 0 to 1000 (or vice versa). Ignore this
             oldCrownValue = crownValue
             return
         }
-        viewModel.skScene.moveChart(-1 * (oldCrownValue - crownValue))
         self.oldCrownValue = crownValue
+        guard rotationDelta != 0 else { return }
+
+        viewModel.chartInteractionDidChange()
+        viewModel.skScene.moveChart(-1 * rotationDelta)
     }
     
     fileprivate func zoomChart() {
@@ -46,6 +50,9 @@ struct MainView: View {
             return
         }
         self.oldCrownValue = crownValue
+        guard rotationDelta != 0 else { return }
+
+        viewModel.chartInteractionDidChange()
         viewModel.skScene.scale(1 + CGFloat(-1 * rotationDelta / 500), keepScale: true)
     }
 
@@ -58,6 +65,8 @@ struct MainView: View {
 
         oldCrownValue = crownValue
         guard rotationDelta != 0 else { return }
+
+        viewModel.chartInteractionDidChange()
 
         // Crown updates can arrive in a rapid burst. Keep every deliberate
         // movement usable, while limiting how often the selected reading can
@@ -220,6 +229,7 @@ struct MainView: View {
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .edgesIgnoringSafeArea(.bottom)
             .onAppear() {
+                viewModel.chartDidAppear()
                 viewModel.refreshData(forceRefresh: false, moveToLatestValue: true)
                 
                 // Request Data from the main app
@@ -232,7 +242,11 @@ struct MainView: View {
                 viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
             }
             .onReceive(refreshDataOnAppBecameActiveNotification) { _ in
+                viewModel.chartDidBecomeActive()
                 viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
+            }
+            .onDisappear() {
+                viewModel.chartDidDisappear()
             }
             .onChange(of: viewModel.crownMode) { _ in
                 oldCrownValue = crownValue

@@ -65,6 +65,10 @@ struct ChartView: UIViewRepresentable {
         }
 
         @objc func handlePan(_ recognizer: UIPanGestureRecognizer) {
+            if recognizer.state == .began || recognizer.state == .changed || recognizer.state == .ended {
+                viewModel.chartInteractionDidChange()
+            }
+
             guard !chartScene.isSelecting else {
                 guard let view = recognizer.view else { return }
                 chartScene.moveSelection(toSceneX: recognizer.location(in: view).x)
@@ -92,6 +96,10 @@ struct ChartView: UIViewRepresentable {
         @objc func handlePinch(_ recognizer: UIPinchGestureRecognizer) {
             guard !chartScene.isSelecting else { return }
 
+            if recognizer.state == .began || recognizer.state == .changed || recognizer.state == .ended {
+                viewModel.chartInteractionDidChange()
+            }
+
             if recognizer.state == .ended {
                 chartScene.scale(recognizer.scale, keepScale: true)
             } else {
@@ -104,6 +112,7 @@ struct ChartView: UIViewRepresentable {
                   let view = recognizer.view else { return }
 
             chartScene.toggleSelection(atSceneX: recognizer.location(in: view).x)
+            viewModel.chartInteractionDidChange()
         }
     }
 }
@@ -407,6 +416,7 @@ struct MainView: View {
                 }
 
                 viewModel.isVisible = true
+                viewModel.chartDidAppear()
 
                 // Start timer - it will fire immediately and handle all initialization
                 viewModel.startTimer(forceRepaint: true)
@@ -416,6 +426,7 @@ struct MainView: View {
         .statusBar(hidden: true)
         .onDisappear {
             viewModel.isVisible = false
+            viewModel.chartDidDisappear()
             viewModel.stopTimer()
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NightscoutDataUpdated"))) { _ in

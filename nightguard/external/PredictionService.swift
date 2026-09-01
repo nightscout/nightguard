@@ -46,7 +46,10 @@ class PredictionService {
             minutesDistance = Int(round((nextHourReadings.first?.date.timeIntervalSince(referenceReading.date) ?? 0) / 60))
         }
         
-        let luckyIndex = (5 - minutesDistance) % 5
+        // Swift's remainder keeps the sign of the left operand. Normalize it
+        // to a positive index so stale reference readings (for example 6–9
+        // minutes behind the first prediction) still produce gapped values.
+        let luckyIndex = ((5 - minutesDistance) % 5 + 5) % 5
         let firstIndex = (minutesDistance == 0) ? 1 : 0 // skip first index if the very first prediction if too close to reference reading
         let result = (firstIndex..<nextHourReadings.count).filter({ $0 % 5 == luckyIndex }).map { nextHourReadings[$0] }
         

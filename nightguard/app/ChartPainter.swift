@@ -200,22 +200,31 @@ class ChartPainter {
                 
 //                print(endBGValue.date)
                 
-                // a time in future indicates a predicted value!
-                let nextReadingPoint = CGPoint(x: calcXValue(bgValues[currentPoint].timestamp), y: endOfLineYValue)
-
+                // A time in the future indicates a predicted value. Flush
+                // the measured path first, then draw the transition and all
+                // following prediction segments as one dashed purple path.
                 context.strokePath()
 
-//                context.beginPath();
-                
                 // fading points, opacity decreases in distant future (one hour)
                 let opacity = Swift.min(1, Swift.max(0, CGFloat(3600 + distanceFromNow) / 4200))
                 let pointColor = PURPLE.withAlphaComponent(opacity)
                 context.setFillColor(pointColor.cgColor)
                 context.setStrokeColor(pointColor.cgColor)
+                context.setLineDash(phase: 0, lengths: [4, 4])
+
+                let beginReadingPoint = CGPoint(x: calcXValue(beginBGValue.timestamp), y: beginOfLineYValue)
+                let nextReadingPoint = CGPoint(x: calcXValue(endBGValue.timestamp), y: endOfLineYValue)
+                context.beginPath()
+                context.move(to: beginReadingPoint)
+                context.addLine(to: nextReadingPoint)
+                context.strokePath()
+
                 let rect = CGRect(origin: nextReadingPoint, size: CGSize(width: 2, height: 2))
                 context.addEllipse(in: rect)
                 context.drawPath(using: .fillStroke)
-                context.strokePath()
+                context.setLineDash(phase: 0, lengths: [])
+                context.setStrokeColor(foregroundColor)
+                context.beginPath()
             } else {
             
                 useRedColorIfLineWillBeReducedToMaxYValue(
@@ -701,6 +710,7 @@ class ChartPainter {
         var newMinYValue = minimumYValue
         var newMaxYValue = Float(min(CGFloat(maximumYValue), value2: maxYDisplayValue))
         
+        let now = Date()
         for dayIndex in 0..<days.count {
             for bgValue in days[dayIndex] {
                 
@@ -708,18 +718,18 @@ class ChartPainter {
                     continue
                 }
                 
-                if (dayIndex == 0) && (bgValue.date > Date()) {
-                    // do not consider predicted values
-                    continue
+                // Predictions must extend the horizontal chart range so they
+                // can be painted, but must not stretch the glucose scale.
+                let isFuturePrediction = dayIndex == 0 && bgValue.date > now
+                if !isFuturePrediction {
+                    if bgValue.value < newMinYValue {
+                        newMinYValue = bgValue.value
+                    }
+                    if bgValue.value > newMaxYValue {
+                        newMaxYValue = Float(min(CGFloat(bgValue.value), value2: maxYDisplayValue))
+                    }
                 }
-                
-                if bgValue.value < newMinYValue {
-                    newMinYValue = bgValue.value
-                }
-                if bgValue.value > newMaxYValue {
-                    newMaxYValue = Float(min(CGFloat(bgValue.value), value2: maxYDisplayValue))
-                }
-            
+
                 if bgValue.timestamp < newMinXValue {
                     newMinXValue = bgValue.timestamp
                 }

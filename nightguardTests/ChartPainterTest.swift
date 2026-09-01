@@ -33,6 +33,28 @@ class ChartPainterTest: XCTestCase {
         chartPainter.adjustMinMaxXYCoordinates([[BloodSugar.init(value: 100, timestamp: 10000, isMeteredBloodGlucoseValue: false, arrow: "-"), BloodSugar.init(value: 200, timestamp: 20000, isMeteredBloodGlucoseValue: false, arrow: "-")]], maxYDisplayValue: 20000, upperBoundNiceValue: 180, lowerBoundNiceValue: 80)
         XCTAssertEqual(chartPainter.maximumXValue, 20000)
     }
+
+    func testFuturePredictionsExtendXRangeWithoutChangingYRange() {
+        let now = Date()
+        let measured = BloodSugar(value: 100, timestamp: now.addingTimeInterval(-300).timeIntervalSince1970 * 1000, isMeteredBloodGlucoseValue: false, arrow: "-")
+        let prediction = BloodSugar(value: 300, timestamp: now.addingTimeInterval(300).timeIntervalSince1970 * 1000, isMeteredBloodGlucoseValue: false, arrow: "-")
+
+        chartPainter.adjustMinMaxXYCoordinates([[measured, prediction]], maxYDisplayValue: 350, upperBoundNiceValue: 180, lowerBoundNiceValue: 80)
+
+        XCTAssertEqual(chartPainter.maximumYValue, 180)
+        XCTAssertEqual(chartPainter.maximumXValue, prediction.timestamp)
+    }
+
+    func testLatestPredictionIsReturnedAsDisplayPosition() {
+        let now = Date()
+        let measured = BloodSugar(value: 100, timestamp: now.addingTimeInterval(-300).timeIntervalSince1970 * 1000, isMeteredBloodGlucoseValue: false, arrow: "-")
+        let prediction = BloodSugar(value: 120, timestamp: now.addingTimeInterval(300).timeIntervalSince1970 * 1000, isMeteredBloodGlucoseValue: false, arrow: "-")
+        let painter = ChartPainter(canvasWidth: 600, canvasHeight: 200)
+
+        let (_, displayPosition) = painter.drawImage([[measured, prediction], []], maxBgValue: 350, upperBoundNiceValue: 180, lowerBoundNiceValue: 80, displayDaysLegend: false, showYesterdaysBGValues: false, useContrastfulColors: false)
+
+        XCTAssertEqual(displayPosition, painter.canvasWidth)
+    }
     
     func testYMaxAdjustementIsWorking() {
         chartPainter.adjustMinMaxXYCoordinates([[BloodSugar.init(value: 220, timestamp: 0, isMeteredBloodGlucoseValue: false, arrow: "-")]], maxYDisplayValue: 220, upperBoundNiceValue: 180, lowerBoundNiceValue: 80)
@@ -95,6 +117,62 @@ class ChartPainterTest: XCTestCase {
         scene.moveSelection(toSceneX: 300)
         XCTAssertEqual(scene.selectedBloodSugar?.timestamp, secondTimestamp)
         scene.deactivateSelection()
+    }
+
+    func testChartAutoScrollPolicyWaitsTenSecondsAfterLastInteraction() {
+        let start = Date(timeIntervalSince1970: 1_000)
+        var policy = ChartAutoScrollPolicy(inactivityInterval: 10)
+
+        XCTAssertEqual(policy.remainingDelay(at: start), 0)
+
+        policy.recordInteraction(at: start)
+        XCTAssertEqual(policy.remainingDelay(at: start), 10)
+        XCTAssertEqual(policy.remainingDelay(at: start.addingTimeInterval(9)), 1)
+        XCTAssertEqual(policy.remainingDelay(at: start.addingTimeInterval(10)), 0)
+    }
+
+    func testChartAutoScrollPolicyRestartsDelayForEveryInteraction() {
+        let start = Date(timeIntervalSince1970: 1_000)
+        var policy = ChartAutoScrollPolicy(inactivityInterval: 10)
+
+        policy.recordInteraction(at: start)
+        policy.recordInteraction(at: start.addingTimeInterval(8))
+
+        XCTAssertEqual(policy.remainingDelay(at: start.addingTimeInterval(10)), 8)
+        XCTAssertEqual(policy.remainingDelay(at: start.addingTimeInterval(18)), 0)
+
+        policy.reset()
+        XCTAssertEqual(policy.remainingDelay(at: start.addingTimeInterval(18)), 0)
+    }
+
+    func testChartCanMoveToLatestValueWithoutRepainting() {
+        let firstTimestamp = Date().addingTimeInterval(-600).timeIntervalSince1970 * 1000
+        let secondTimestamp = Date().addingTimeInterval(-300).timeIntervalSince1970 * 1000
+        let first = BloodSugar(value: 100, timestamp: firstTimestamp, isMeteredBloodGlucoseValue: false, arrow: "-")
+        let second = BloodSugar(value: 140, timestamp: secondTimestamp, isMeteredBloodGlucoseValue: false, arrow: "-")
+        let scene = ChartScene(size: CGSize(width: 300, height: 200), newCanvasWidth: 600, useContrastfulColors: false, showYesterdaysBgs: false)
+
+        scene.paintChart([[first, second], []], newCanvasWidth: 600, maxYDisplayValue: 350, moveToLatestValue: false, displayDaysLegend: false, useConstrastfulColors: false, showYesterdaysBgs: false)
+        scene.chartNode.position = CGPoint(x: -100, y: 0)
+        scene.moveToLatestValue(animated: false)
+
+        XCTAssertEqual(scene.chartNode.position.x, scene.latestXPosition ?? .nan)
+        XCTAssertNotEqual(scene.chartNode.position.x, -100)
+    }
+
+    func testLatestPositionSurvivesARepaintThatCancelsTheCurrentAnimation() {
+        let firstTimestamp = Date().addingTimeInterval(-600).timeIntervalSince1970 * 1000
+        let secondTimestamp = Date().addingTimeInterval(-300).timeIntervalSince1970 * 1000
+        let first = BloodSugar(value: 100, timestamp: firstTimestamp, isMeteredBloodGlucoseValue: false, arrow: "-")
+        let second = BloodSugar(value: 140, timestamp: secondTimestamp, isMeteredBloodGlucoseValue: false, arrow: "-")
+        let scene = ChartScene(size: CGSize(width: 300, height: 200), newCanvasWidth: 600, useContrastfulColors: false, showYesterdaysBgs: false)
+        let days = [[first, second], []]
+
+        scene.paintChart(days, newCanvasWidth: 600, maxYDisplayValue: 350, moveToLatestValue: true, displayDaysLegend: false, useConstrastfulColors: false, showYesterdaysBgs: false)
+        scene.paintChart(days, newCanvasWidth: 600, maxYDisplayValue: 350, moveToLatestValue: false, displayDaysLegend: false, useConstrastfulColors: false, showYesterdaysBgs: false)
+        scene.moveToLatestValue(animated: false)
+
+        XCTAssertEqual(scene.chartNode.position.x, scene.latestXPosition ?? .nan)
     }
 
     func testChartSelectionIncludesTreatmentsNearSelectedBloodSugar() {
