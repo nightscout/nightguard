@@ -144,7 +144,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         applyInitialLocalAudioSuppressionIfNeeded(application: application, launchOptions: launchOptions)
 
         // Initialize the stored UserDefaultsData
-        TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
+        TreatmentsStream.singleton.restoreTreatments(UserDefaultsRepository.treatments.value)
 
         // Enable Background Updates
         BGTaskScheduler.shared.register(forTaskWithIdentifier: appProcessingTaskId, using: nil) { task in

@@ -131,7 +131,7 @@ class MainViewModel: ObservableObject, Identifiable {
         #endif
 
         // Read stored historical data
-        TreatmentsStream.singleton.treatments = UserDefaultsRepository.treatments.value
+        TreatmentsStream.singleton.restoreTreatments(UserDefaultsRepository.treatments.value)
 
         refreshData(forceRefresh: true, moveToLatestValue: true)
 
@@ -442,7 +442,18 @@ class MainViewModel: ObservableObject, Identifiable {
     func refreshData(forceRefresh: Bool, moveToLatestValue: Bool) {
         showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
 
-        NightscoutSyncCoordinator.shared.refreshEntriesAndTreatments(force: forceRefresh)
+        NightscoutSyncCoordinator.shared.refreshEntriesAndTreatments(force: forceRefresh) { [weak self] treatments in
+            guard let self else { return }
+            let treatmentsChanged = TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: treatments)
+            guard treatmentsChanged else { return }
+
+            UserDefaultsRepository.treatments.value = TreatmentsStream.singleton.treatments
+            paintChartData(
+                todaysData: cachedTodaysBgValues,
+                yesterdaysData: cachedYesterdaysBgValues,
+                moveToLatestValue: false
+            )
+        }
         loadCurrentBgData(forceRefresh: forceRefresh)
         loadCareData()
         loadDeviceStatusData()

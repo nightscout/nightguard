@@ -102,8 +102,8 @@ class ChartPainterTest: XCTestCase {
         let glucose = BloodSugar(value: 120, timestamp: timestamp, isMeteredBloodGlucoseValue: false, arrow: "-")
         let treatment = MealBolusTreatment(id: "selection-test", timestamp: timestamp + 60 * 1000, carbs: 30, insulin: 2)
         let previousTreatments = TreatmentsStream.singleton.treatments
-        TreatmentsStream.singleton.treatments = [treatment]
-        defer { TreatmentsStream.singleton.treatments = previousTreatments }
+        TreatmentsStream.singleton.restoreTreatments([treatment])
+        defer { TreatmentsStream.singleton.restoreTreatments(previousTreatments) }
 
         let scene = ChartScene(size: CGSize(width: 300, height: 200), newCanvasWidth: 600, useContrastfulColors: false, showYesterdaysBgs: false)
         scene.paintChart([[glucose, BloodSugar(value: 130, timestamp: timestamp + 300 * 1000, isMeteredBloodGlucoseValue: false, arrow: "-")], []], newCanvasWidth: 600, maxYDisplayValue: 350, moveToLatestValue: false, displayDaysLegend: false, useConstrastfulColors: false, showYesterdaysBgs: false)
@@ -111,6 +111,93 @@ class ChartPainterTest: XCTestCase {
 
         XCTAssertEqual(scene.selectedTreatments.count, 1)
         XCTAssertTrue(scene.selectedTreatments.first is MealBolusTreatment)
+    }
+
+    func testDelayedTreatmentChangesStreamAfterGlucoseCouldAlreadyBePainted() {
+        let previousTreatments = TreatmentsStream.singleton.treatments
+        TreatmentsStream.singleton.resetForReload()
+        defer { TreatmentsStream.singleton.restoreTreatments(previousTreatments) }
+
+        let timestamp = Date().timeIntervalSince1970 * 1000
+        let changed = TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: [[
+            "_id": "delayed-meal",
+            "eventType": "Meal Bolus",
+            "mills": timestamp,
+            "carbs": 42,
+            "insulin": 3.5
+        ]])
+
+        XCTAssertTrue(changed)
+        XCTAssertEqual(TreatmentsStream.singleton.treatments.count, 1)
+        let meal = TreatmentsStream.singleton.treatments.first as? MealBolusTreatment
+        XCTAssertEqual(meal?.timestamp, timestamp)
+        XCTAssertEqual(meal?.carbs, 42)
+        XCTAssertEqual(meal?.insulin, 3.5)
+    }
+
+    func testIdenticalTreatmentResponseDoesNotCreateDuplicateOrReportChange() {
+        let previousTreatments = TreatmentsStream.singleton.treatments
+        TreatmentsStream.singleton.resetForReload()
+        defer { TreatmentsStream.singleton.restoreTreatments(previousTreatments) }
+
+        let treatment: [String: Any] = [
+            "identifier": "same-carb",
+            "eventType": "Carb Correction",
+            "mills": Date().timeIntervalSince1970 * 1000,
+            "carbs": 20
+        ]
+
+        XCTAssertTrue(TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: [treatment]))
+        XCTAssertFalse(TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: [treatment]))
+        XCTAssertEqual(TreatmentsStream.singleton.treatments.count, 1)
+    }
+
+    func testExistingTreatmentIsReplacedWhenServerCompletesItsValues() {
+        let previousTreatments = TreatmentsStream.singleton.treatments
+        TreatmentsStream.singleton.resetForReload()
+        defer { TreatmentsStream.singleton.restoreTreatments(previousTreatments) }
+
+        let timestamp = Date().timeIntervalSince1970 * 1000
+        let initial: [String: Any] = [
+            "_id": "completed-meal",
+            "eventType": "Meal Bolus",
+            "mills": timestamp,
+            "carbs": 0,
+            "insulin": 2.0
+        ]
+        let completed: [String: Any] = [
+            "_id": "completed-meal",
+            "eventType": "Meal Bolus",
+            "mills": timestamp,
+            "carbs": 35,
+            "insulin": 2.0
+        ]
+
+        XCTAssertTrue(TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: [initial]))
+        XCTAssertTrue(TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: [completed]))
+        XCTAssertEqual(TreatmentsStream.singleton.treatments.count, 1)
+        XCTAssertEqual((TreatmentsStream.singleton.treatments.first as? MealBolusTreatment)?.carbs, 35)
+    }
+
+    func testRestoredTreatmentIsIndexedAndNotAddedAgain() {
+        let previousTreatments = TreatmentsStream.singleton.treatments
+        defer { TreatmentsStream.singleton.restoreTreatments(previousTreatments) }
+
+        let timestamp = Date().timeIntervalSince1970 * 1000
+        TreatmentsStream.singleton.restoreTreatments([
+            MealBolusTreatment(id: "persisted-meal", timestamp: timestamp, carbs: 30, insulin: 2.5)
+        ])
+
+        let changed = TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: [[
+            "_id": "persisted-meal",
+            "eventType": "Meal Bolus",
+            "mills": timestamp,
+            "carbs": 30,
+            "insulin": 2.5
+        ]])
+
+        XCTAssertFalse(changed)
+        XCTAssertEqual(TreatmentsStream.singleton.treatments.count, 1)
     }
 
     func testChartSelectionIgnoresPreviousDayValues() {

@@ -640,16 +640,17 @@ final class NightscoutSyncCoordinator {
     /// stream; treatments are fetched into their existing dedicated model.
     /// Both requests are coalesced independently when foreground and
     /// background consumers overlap.
-    func refreshEntriesAndTreatments(force: Bool) {
+    func refreshEntriesAndTreatments(
+        force: Bool,
+        treatmentsCompletion: @escaping ([[String: Any]]) -> Void
+    ) {
         _ = NightscoutEntriesStream.shared.refresh(force: force) { result in
             if case .error(let error) = result {
                 AppLogger.singleton.warning("NightscoutSyncCoordinator: entries cycle retained local data after error: \(error.localizedDescription)", category: .nightscout)
             }
         }
         _ = refreshTreatments { treatments in
-            #if MAIN_APP
-            TreatmentsStream.singleton.addNewJsonTreatments(jsonTreatments: treatments)
-            #endif
+            treatmentsCompletion(treatments)
         }
     }
 
