@@ -30,6 +30,9 @@ struct PrefsView: View {
     @State private var isValidatingURL = false
     @State private var showAppTour = false
     @State private var promotionFocus: PromotionFocus?
+    @State private var lastSavedNightscoutURL = UserDefaultsRepository.baseUri.value
+    @State private var lastSavedAPIToken = UserDefaultsRepository.nightscoutToken
+    @State private var credentialValidationGeneration = 0
 
     @ObservedObject var purchaseManager = PurchaseManager.shared
     
@@ -41,7 +44,7 @@ struct PrefsView: View {
                     apiToken: $apiToken,
                     isValidatingURL: $isValidatingURL,
                     urlErrorMessage: $urlErrorMessage,
-                    validateAndSaveURL: validateAndSaveURL
+                    validateAndSaveURL: saveCredentialsIfChanged
                 )
 
                 Section(header: Text(NSLocalizedString("Data", comment: "Data settings section"))) {
@@ -133,6 +136,9 @@ struct PrefsView: View {
             .onAppear {
                 loadCurrentValues()
             }
+            .onDisappear {
+                saveCredentialsIfChanged()
+            }
             .alert("ARE YOU SURE?", isPresented: $showKeepScreenActiveAlert) {
                 Button("No", role: .cancel) {
                     keepScreenActive = true
@@ -192,6 +198,8 @@ struct PrefsView: View {
     private func loadCurrentValues() {
         nightscoutURL = UserDefaultsRepository.baseUri.value
         apiToken = UserDefaultsRepository.nightscoutToken
+        lastSavedNightscoutURL = nightscoutURL
+        lastSavedAPIToken = apiToken
         manuallySetUnits = UserDefaultsRepository.manuallySetUnits.value
         selectedUnits = UserDefaultsRepository.units.value
         keepScreenActive = SharedUserDefaultsRepository.screenlockSwitchState.value
@@ -211,6 +219,8 @@ struct PrefsView: View {
     }
 
     private func validateAndSaveURL() {
+        credentialValidationGeneration += 1
+        let validationGeneration = credentialValidationGeneration
         var urlString = nightscoutURL.trimmingCharacters(in: .whitespaces)
 
         // Add protocol if missing
@@ -220,6 +230,7 @@ struct PrefsView: View {
         }
 
         guard !urlString.isEmpty, let url = URL(string: urlString) else {
+            isValidatingURL = false
             return
         }
 
@@ -231,6 +242,10 @@ struct PrefsView: View {
             urlErrorMessage = NSLocalizedString("The API token could not be stored securely.", comment: "Keychain storage error")
             return
         }
+        nightscoutURL = UserDefaultsRepository.baseUri.value
+        apiToken = UserDefaultsRepository.nightscoutToken
+        lastSavedNightscoutURL = nightscoutURL
+        lastSavedAPIToken = apiToken
         UserDefaultSyncMessage().send()
 
         // Reset cache and data
@@ -240,15 +255,27 @@ struct PrefsView: View {
         NightscoutDataRepository.singleton.storeCurrentNightscoutData(NightscoutData())
 
         retrieveAndStoreNightscoutUnits { error in
-            isValidatingURL = false
+            DispatchQueue.main.async {
+                guard validationGeneration == credentialValidationGeneration else { return }
+                isValidatingURL = false
 
-            if let error = error {
-                urlErrorMessage = error.localizedDescription
-            } else {
-                urlErrorMessage = ""
-                addUriToHistory(url: UserDefaultsRepository.baseUri.value)
+                if let error = error {
+                    urlErrorMessage = error.localizedDescription
+                } else {
+                    urlErrorMessage = ""
+                    addUriToHistory(url: UserDefaultsRepository.baseUri.value)
+                }
             }
         }
+    }
+
+    private func saveCredentialsIfChanged() {
+        let trimmedURL = nightscoutURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedToken = apiToken.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmedURL != lastSavedNightscoutURL || trimmedToken != lastSavedAPIToken else {
+            return
+        }
+        validateAndSaveURL()
     }
 
     private func reloadTodaysData() {

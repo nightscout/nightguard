@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct NightscoutSectionView: View {
+    private enum Field: Hashable {
+        case url
+        case token
+    }
+
     @Binding var nightscoutURL: String
     @Binding var apiToken: String
     @Binding var isValidatingURL: Bool
     @Binding var urlErrorMessage: String
     
     var validateAndSaveURL: () -> Void
+
+    @FocusState private var focusedField: Field?
     
     var body: some View {
         Section(
@@ -26,8 +33,10 @@ struct NightscoutSectionView: View {
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .keyboardType(.URL)
+                    .focused($focusedField, equals: .url)
+                    .submitLabel(.done)
                     .onSubmit {
-                        validateAndSaveURL()
+                        focusedField = nil
                     }
                 if !nightscoutURL.isEmpty {
                     Button(action: {
@@ -50,8 +59,16 @@ struct NightscoutSectionView: View {
                 SecureField("API Token", text: $apiToken)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
+                    .focused($focusedField, equals: .token)
+                    .submitLabel(.done)
+                    .onSubmit {
+                        focusedField = nil
+                    }
                 if !apiToken.isEmpty {
-                    Button(action: { apiToken = "" }) {
+                    Button(action: {
+                        apiToken = ""
+                        validateAndSaveURL()
+                    }) {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundColor(.gray)
                     }
@@ -64,6 +81,11 @@ struct NightscoutSectionView: View {
                 Text("❌ \(urlErrorMessage)")
                     .foregroundColor(.red)
                     .font(.caption)
+            }
+        }
+        .onChange(of: focusedField) { newField in
+            if newField == nil {
+                validateAndSaveURL()
             }
         }
     }

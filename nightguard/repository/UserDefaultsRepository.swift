@@ -26,6 +26,7 @@ class UserDefaultsRepository {
     
     fileprivate static var url: URL?
     fileprivate static var legacyToken: String?
+    static var credentialStore: NightscoutCredentialStoring = NightscoutCredentialStore.shared
     
     static let baseUri = UserDefaultsValue<String>(
         key: "hostUri",
@@ -118,7 +119,7 @@ class UserDefaultsRepository {
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
 
     /* Parses the URI entered in the UI and extracts the token if one is present. */
-    fileprivate static func parseBaseUri() {
+    static func parseBaseUri() {
         url = nil
         legacyToken = nil
         let urlString = baseUri.value
@@ -128,18 +129,16 @@ class UserDefaultsRepository {
 
             if let token = legacyToken, !token.isEmpty,
                let cleanURL = removingToken(from: parsedURL) {
-                // Keep the URL free of credentials even if Keychain access is
-                // temporarily unavailable (for example in an unsigned
-                // simulator test host). The in-memory legacyToken remains a
-                // session-only fallback until secure storage is available.
-                _ = NightscoutCredentialStore.shared.setToken(token, for: cleanURL)
-                url = cleanURL
-                if cleanURL.absoluteString != urlString {
-                    baseUri.value = cleanURL.absoluteString
-                    // Updating baseUri triggers parseBaseUri() again. Restore
-                    // the in-memory fallback after that re-entrant parse when
-                    // secure storage was unavailable.
-                    legacyToken = token
+                if credentialStore.setToken(token, for: cleanURL) {
+                    url = cleanURL
+                    if cleanURL.absoluteString != urlString {
+                        baseUri.value = cleanURL.absoluteString
+                    }
+                } else {
+                    // Do not remove the only durable copy of the credential.
+                    // Keeping the legacy URL lets the app use the in-memory
+                    // fallback and retry the migration on the next launch.
+                    url = parsedURL
                 }
             } else {
                 url = parsedURL
@@ -155,7 +154,7 @@ class UserDefaultsRepository {
             parseBaseUri()
         }
         guard let serverURL = url else { return legacyToken ?? "" }
-        return NightscoutCredentialStore.shared.token(for: serverURL) ?? legacyToken ?? ""
+        return credentialStore.token(for: serverURL) ?? legacyToken ?? ""
     }
 
     @discardableResult
@@ -165,8 +164,8 @@ class UserDefaultsRepository {
         let embeddedToken = normalizedToken(baseURL.valueOf("token") ?? "")
         let trimmedToken = explicitToken.isEmpty ? embeddedToken : explicitToken
         let didStore = trimmedToken.isEmpty
-            ? NightscoutCredentialStore.shared.removeToken(for: cleanURL)
-            : NightscoutCredentialStore.shared.setToken(trimmedToken, for: cleanURL)
+            ? credentialStore.removeToken(for: cleanURL)
+            : credentialStore.setToken(trimmedToken, for: cleanURL)
         guard didStore else { return false }
 
         legacyToken = nil
@@ -182,9 +181,9 @@ class UserDefaultsRepository {
         guard let serverURL = url else { return }
         let trimmedToken = normalizedToken(token)
         if trimmedToken.isEmpty {
-            _ = NightscoutCredentialStore.shared.removeToken(for: serverURL)
+            _ = credentialStore.removeToken(for: serverURL)
         } else {
-            _ = NightscoutCredentialStore.shared.setToken(trimmedToken, for: serverURL)
+            _ = credentialStore.setToken(trimmedToken, for: serverURL)
         }
         legacyToken = nil
     }
@@ -230,7 +229,7 @@ class UserDefaultsRepository {
                   let cleanURL = removingToken(from: parsedURL),
                   let token = parsedURL.valueOf("token"),
                   !token.isEmpty,
-                  NightscoutCredentialStore.shared.setToken(normalizedToken(token), for: cleanURL) else {
+                  credentialStore.setToken(normalizedToken(token), for: cleanURL) else {
                 return uri
             }
             return cleanURL.absoluteString
@@ -525,7 +524,13 @@ class UserDefaultsRepository {
     }
 }
 
-final class NightscoutCredentialStore {
+protocol NightscoutCredentialStoring: AnyObject {
+    func token(for serverURL: URL) -> String?
+    func setToken(_ token: String, for serverURL: URL) -> Bool
+    func removeToken(for serverURL: URL) -> Bool
+}
+
+final class NightscoutCredentialStore: NightscoutCredentialStoring {
     static let shared = NightscoutCredentialStore()
 
     private let service = "de.my-wan.dhe.nightguard.nightscout-token"

@@ -12,17 +12,111 @@ class UserDefaultsRepositoryTest : XCTestCase {
 
     func testLegacyTokenURLIsMigratedToCredentialStore() {
         let originalURL = UserDefaultsRepository.baseUri.value
-        defer { UserDefaultsRepository.baseUri.value = originalURL }
+        let originalHistory = UserDefaultsRepository.nightscoutUris.value
+        let originalCredentialStore = UserDefaultsRepository.credentialStore
+        let credentialStore = StubNightscoutCredentialStore()
+        UserDefaultsRepository.credentialStore = credentialStore
+        defer {
+            UserDefaultsRepository.credentialStore = originalCredentialStore
+            UserDefaultsRepository.baseUri.value = originalURL
+            UserDefaultsRepository.nightscoutUris.value = originalHistory
+        }
 
         UserDefaultsRepository.baseUri.value = "https://migration-test.example.org/nightscout?tenant=one&token=care-secret"
 
         XCTAssertEqual(UserDefaultsRepository.baseUri.value, "https://migration-test.example.org/nightscout?tenant=one")
         XCTAssertEqual(UserDefaultsRepository.nightscoutToken, "care-secret")
         XCTAssertFalse(UserDefaultsRepository.baseUri.value.contains("token="))
+        XCTAssertEqual(
+            credentialStore.token(for: URL(string: "https://migration-test.example.org/nightscout?tenant=one")!),
+            "care-secret"
+        )
+    }
 
-        if let cleanURL = UserDefaultsRepository.cleanBaseURL() {
-            _ = NightscoutCredentialStore.shared.removeToken(for: cleanURL)
+    func testLegacyTokenURLIsPreservedWhenCredentialStoreFails() {
+        let originalURL = UserDefaultsRepository.baseUri.value
+        let originalHistory = UserDefaultsRepository.nightscoutUris.value
+        let originalCredentialStore = UserDefaultsRepository.credentialStore
+        let credentialStore = StubNightscoutCredentialStore()
+        credentialStore.shouldSucceed = false
+        UserDefaultsRepository.credentialStore = credentialStore
+        defer {
+            UserDefaultsRepository.credentialStore = originalCredentialStore
+            UserDefaultsRepository.baseUri.value = originalURL
+            UserDefaultsRepository.nightscoutUris.value = originalHistory
         }
+
+        let legacyURL = "https://migration-failure.example.org/nightscout?token=care-secret"
+        UserDefaultsRepository.baseUri.value = legacyURL
+
+        XCTAssertEqual(UserDefaultsRepository.baseUri.value, legacyURL)
+        XCTAssertEqual(UserDefaultsRepository.nightscoutToken, "care-secret")
+
+        credentialStore.shouldSucceed = true
+        UserDefaultsRepository.parseBaseUri()
+
+        XCTAssertEqual(UserDefaultsRepository.baseUri.value, "https://migration-failure.example.org/nightscout")
+        XCTAssertEqual(UserDefaultsRepository.nightscoutToken, "care-secret")
+    }
+
+    func testLegacyURIHistoryIsOnlyCleanedAfterTokenWasStored() {
+        let originalURL = UserDefaultsRepository.baseUri.value
+        let originalHistory = UserDefaultsRepository.nightscoutUris.value
+        let originalCredentialStore = UserDefaultsRepository.credentialStore
+        let credentialStore = StubNightscoutCredentialStore()
+        credentialStore.shouldSucceed = false
+        UserDefaultsRepository.credentialStore = credentialStore
+        defer {
+            UserDefaultsRepository.credentialStore = originalCredentialStore
+            UserDefaultsRepository.baseUri.value = originalURL
+            UserDefaultsRepository.nightscoutUris.value = originalHistory
+        }
+
+        let legacyHistoryURL = "https://history-migration.example.org/nightscout?token=history-secret"
+        UserDefaultsRepository.nightscoutUris.value = [legacyHistoryURL]
+        UserDefaultsRepository.parseBaseUri()
+
+        XCTAssertEqual(UserDefaultsRepository.nightscoutUris.value, [legacyHistoryURL])
+
+        credentialStore.shouldSucceed = true
+        UserDefaultsRepository.parseBaseUri()
+
+        XCTAssertEqual(
+            UserDefaultsRepository.nightscoutUris.value,
+            ["https://history-migration.example.org/nightscout"]
+        )
+    }
+
+    func testSettingAndRemovingNightscoutCredentialsUsesCredentialStore() {
+        let originalURL = UserDefaultsRepository.baseUri.value
+        let originalHistory = UserDefaultsRepository.nightscoutUris.value
+        let originalCredentialStore = UserDefaultsRepository.credentialStore
+        let credentialStore = StubNightscoutCredentialStore()
+        UserDefaultsRepository.credentialStore = credentialStore
+        defer {
+            UserDefaultsRepository.credentialStore = originalCredentialStore
+            UserDefaultsRepository.baseUri.value = originalURL
+            UserDefaultsRepository.nightscoutUris.value = originalHistory
+        }
+
+        let urlWithEmbeddedToken = URL(
+            string: "https://settings-token.example.org/nightscout?tenant=one&token=old-secret"
+        )!
+        XCTAssertTrue(
+            UserDefaultsRepository.setNightscoutCredentials(
+                baseURL: urlWithEmbeddedToken,
+                token: "token=new-secret"
+            )
+        )
+
+        let cleanURL = URL(string: "https://settings-token.example.org/nightscout?tenant=one")!
+        XCTAssertEqual(UserDefaultsRepository.baseUri.value, cleanURL.absoluteString)
+        XCTAssertEqual(UserDefaultsRepository.nightscoutToken, "new-secret")
+        XCTAssertEqual(credentialStore.token(for: cleanURL), "new-secret")
+
+        XCTAssertTrue(UserDefaultsRepository.setNightscoutCredentials(baseURL: cleanURL, token: ""))
+        XCTAssertEqual(UserDefaultsRepository.nightscoutToken, "")
+        XCTAssertNil(credentialStore.token(for: cleanURL))
     }
 
     override func setUp() {
@@ -133,5 +227,26 @@ class UserDefaultsRepositoryTest : XCTestCase {
     
     func testTabIdentifierToAny() {
         XCTAssertEqual(TabIdentifier.care.toAny() as? String, "care")
+    }
+}
+
+private final class StubNightscoutCredentialStore: NightscoutCredentialStoring {
+    var shouldSucceed = true
+    private var tokens: [String: String] = [:]
+
+    func token(for serverURL: URL) -> String? {
+        tokens[serverURL.absoluteString]
+    }
+
+    func setToken(_ token: String, for serverURL: URL) -> Bool {
+        guard shouldSucceed else { return false }
+        tokens[serverURL.absoluteString] = token
+        return true
+    }
+
+    func removeToken(for serverURL: URL) -> Bool {
+        guard shouldSucceed else { return false }
+        tokens.removeValue(forKey: serverURL.absoluteString)
+        return true
     }
 }
