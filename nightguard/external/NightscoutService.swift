@@ -1109,8 +1109,13 @@ class NightscoutService {
            let nestedDate = dateObject["$date"] {
             return timestampMillis(nestedDate)
         }
-        guard let isoString = value as? String,
-              let date = ISO8601DateFormatter().date(from: isoString) else {
+        guard let isoString = value as? String else {
+            return nil
+        }
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        guard let date = formatter.date(from: isoString)
+                ?? ISO8601DateFormatter().date(from: isoString) else {
             return nil
         }
         return date.timeIntervalSince1970 * 1000

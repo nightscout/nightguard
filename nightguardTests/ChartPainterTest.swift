@@ -114,7 +114,9 @@ class ChartPainterTest: XCTestCase {
 
         XCTAssertEqual(scene.selectedBloodSugar?.timestamp, firstTimestamp)
 
-        scene.moveSelection(toSceneX: 300)
+        // The two plotted points are at x=0 and x=600. x=300 is exactly
+        // halfway between them, so either point is a valid nearest match.
+        scene.moveSelection(toSceneX: 500)
         XCTAssertEqual(scene.selectedBloodSugar?.timestamp, secondTimestamp)
         scene.deactivateSelection()
     }

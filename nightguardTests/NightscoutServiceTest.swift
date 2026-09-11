@@ -335,6 +335,9 @@ class NightscoutServiceTest: XCTestCase {
             if url.path.hasSuffix("/api/v3/version") {
                 return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("{}".utf8))
             }
+            if url.path.hasSuffix("/api/v2/authorization/request/token=care-secret") {
+                return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("{\"token\":\"temporary-jwt\"}".utf8))
+            }
             XCTAssertEqual(url.path, "/nightscout/api/v3/entries")
             let components = try XCTUnwrap(URLComponents(url: url, resolvingAgainstBaseURL: false))
             entriesQuery = Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value ?? "") })
@@ -452,16 +455,18 @@ class NightscoutServiceTest: XCTestCase {
 
     private func useTemporaryCredentials(url: String, token: String) -> () -> Void {
         let originalURL = UserDefaultsRepository.baseUri.value
-        let originalToken = UserDefaultsRepository.nightscoutToken
         let temporaryURL = URL(string: url)!
-        XCTAssertTrue(UserDefaultsRepository.setNightscoutCredentials(baseURL: temporaryURL, token: token))
+        // These service tests use an ephemeral URLSession and must also run
+        // on unsigned simulator builds, where Keychain access is not
+        // guaranteed. Keeping the token in the legacy URL exercises the same
+        // request construction without making the mock depend on Keychain.
+        var temporaryURI = temporaryURL.absoluteString
+        if !token.isEmpty {
+            temporaryURI += "?token=\(token.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? token)"
+        }
+        UserDefaultsRepository.baseUri.value = temporaryURI
         return {
-            _ = NightscoutCredentialStore.shared.removeToken(for: temporaryURL)
-            if let url = URL(string: originalURL), !originalURL.isEmpty {
-                _ = UserDefaultsRepository.setNightscoutCredentials(baseURL: url, token: originalToken)
-            } else {
-                UserDefaultsRepository.baseUri.value = ""
-            }
+            UserDefaultsRepository.baseUri.value = originalURL
         }
     }
     

@@ -127,11 +127,19 @@ class UserDefaultsRepository {
             legacyToken = normalizedToken(parsedURL.valueOf("token") ?? "")
 
             if let token = legacyToken, !token.isEmpty,
-               let cleanURL = removingToken(from: parsedURL),
-               NightscoutCredentialStore.shared.setToken(token, for: cleanURL) {
+               let cleanURL = removingToken(from: parsedURL) {
+                // Keep the URL free of credentials even if Keychain access is
+                // temporarily unavailable (for example in an unsigned
+                // simulator test host). The in-memory legacyToken remains a
+                // session-only fallback until secure storage is available.
+                _ = NightscoutCredentialStore.shared.setToken(token, for: cleanURL)
                 url = cleanURL
                 if cleanURL.absoluteString != urlString {
                     baseUri.value = cleanURL.absoluteString
+                    // Updating baseUri triggers parseBaseUri() again. Restore
+                    // the in-memory fallback after that re-entrant parse when
+                    // secure storage was unavailable.
+                    legacyToken = token
                 }
             } else {
                 url = parsedURL
