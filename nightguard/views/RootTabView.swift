@@ -24,8 +24,6 @@ struct RootTabView: View {
 
     @State private var selectedTab: TabIdentifier
 
-    @State private var orientation = UIDeviceOrientation.portrait
-
     @State private var showAppTour = false
     @State private var showGlobalProPromotion = false
     @ObservedObject private var purchaseManager = PurchaseManager.shared
@@ -100,9 +98,7 @@ struct RootTabView: View {
                 .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: MainView onAppear. selectedTab: \(self.selectedTab)")
-                    if self.selectedTab == .main {
-                        forcePortrait()
-                    }
+                    if self.selectedTab == .main { forcePortrait() }
                 }
                 .environment(\.selectedTab, selectedTab)
                 .tabItem {
@@ -120,9 +116,7 @@ struct RootTabView: View {
                 .accentColor(Color.nightguardAccent)
                 .navigationViewStyle(StackNavigationViewStyle())
                 .onAppear {
-                    if self.selectedTab == .alarms {
-                        forcePortrait()
-                    }
+                    if self.selectedTab == .alarms { forcePortrait() }
                 }
                 .tabItem {
                     Image("Alarm")
@@ -136,9 +130,7 @@ struct RootTabView: View {
             CareView(selectedTab: selectionBinding)
                 .accentColor(Color.nightguardAccent)
                 .onAppear {
-                    if self.selectedTab == .care {
-                        forcePortrait()
-                    }
+                    if self.selectedTab == .care { forcePortrait() }
                 }
                 .tabItem {
                     Image("Care")
@@ -153,9 +145,7 @@ struct RootTabView: View {
                 .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: DurationView onAppear. selectedTab: \(self.selectedTab)")
-                    if self.selectedTab == .duration {
-                        forcePortrait()
-                    }
+                    if self.selectedTab == .duration { forcePortrait() }
                 }
                 .tabItem {
                     Image(systemName: "clock.arrow.circlepath")
@@ -170,9 +160,14 @@ struct RootTabView: View {
                 .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: StatsView onAppear. selectedTab: \(self.selectedTab)")
-                    if self.selectedTab == .stats {
-                        forceLandscape()
-                    }
+                    // Selecting an item from the system More list may not
+                    // update the SwiftUI selection binding first.
+                    forceLandscape()
+                }
+                .onDisappear {
+                    // The system More list is hosted outside this TabView and
+                    // therefore does not always update selectedTab when opened.
+                    forcePortrait()
                 }
                 .tabItem {
                     Image("Stats")
@@ -187,8 +182,8 @@ struct RootTabView: View {
                 .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: PrefsView onAppear. selectedTab: \(self.selectedTab)")
-                    if self.selectedTab == .prefs {
-                        forcePortrait()
+                    DispatchQueue.main.async {
+                        if self.selectedTab == .prefs { forcePortrait() }
                     }
                 }
                 .tabItem {
@@ -292,9 +287,7 @@ struct RootTabView: View {
         ProPromotionView(initialPromotion: initialPromotion, showsRemindLater: false)
             .accentColor(Color.nightguardAccent)
             .onAppear {
-                if selectedTab == tab {
-                    forcePortrait()
-                }
+                if self.selectedTab == tab { forcePortrait() }
             }
             .tabItem {
                 Image(systemName: icon)

@@ -117,6 +117,70 @@ class NightguardUITests: XCTestCase {
         }
         snapshot("08-preferences")
     }
+
+    func testStatsOrientationWhenNavigatingThroughMore() throws {
+        app.terminate()
+        app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        // A fresh simulator shows configuration even with appTourSeen set.
+        let closeConfiguration = app.navigationBars.buttons["Close"]
+        if closeConfiguration.waitForExistence(timeout: 3) {
+            closeConfiguration.tap()
+        }
+        // Keep the device fixed: the app must request every interface rotation.
+        XCUIDevice.shared.orientation = .portrait
+        let tabBar = app.tabBars.firstMatch
+
+        func assertLandscape(_ expected: Bool, file: StaticString = #filePath, line: UInt = #line) {
+            let predicate = NSPredicate { _, _ in
+                let frame = self.app.windows.firstMatch.frame
+                return frame.width > 0 && frame.height > 0 &&
+                    (expected ? frame.width > frame.height : frame.height > frame.width)
+            }
+            let orientation = XCTNSPredicateExpectation(predicate: predicate, object: app)
+            XCTAssertEqual(XCTWaiter.wait(for: [orientation], timeout: 10), .completed,
+                           file: file, line: line)
+            let frame = app.windows.firstMatch.frame
+            XCTAssertEqual(frame.width > frame.height, expected, file: file, line: line)
+        }
+
+        func openMore() {
+            tabBar.buttons["More"].tap()
+            // Returning from another tab restores the last More destination.
+            // Reselect More to pop that destination back to the list.
+            if !app.tables.cells.staticTexts["Stats"].waitForExistence(timeout: 2) {
+                tabBar.buttons["More"].tap()
+            }
+            XCTAssertTrue(app.tables.cells.staticTexts["Stats"].waitForExistence(timeout: 5))
+        }
+
+        // The UI-test runner's idiom can be phone even on an iPad simulator.
+        let windowFrame = app.windows.firstMatch.frame
+        if min(windowFrame.width, windowFrame.height) >= 600 {
+            throw XCTSkip("This regression covers the iPhone More navigation layout")
+        }
+
+        assertLandscape(false)
+        XCTAssertTrue(tabBar.buttons["More"].waitForExistence(timeout: 10))
+        for _ in 0..<3 {
+            openMore()
+            app.tables.cells.staticTexts["Stats"].tap()
+            assertLandscape(true)
+            openMore()
+            assertLandscape(false)
+            app.tables.cells.staticTexts["Preferences"].tap()
+            XCTAssertTrue(app.textFields.firstMatch.waitForExistence(timeout: 5))
+            assertLandscape(false)
+        }
+
+        for index in 0..<4 {
+            openMore()
+            app.tables.cells.staticTexts["Stats"].tap()
+            assertLandscape(true)
+            tabBar.buttons.element(boundBy: index).tap()
+            assertLandscape(false)
+        }
+    }
     
     fileprivate func selectPreferencesTab(using tabBar: XCUIElement? = nil) {
         selectTab(identifier: "tab_prefs", index: 5, using: tabBar)
