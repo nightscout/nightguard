@@ -12,6 +12,71 @@ class ChartPainterTest: XCTestCase {
 
     let chartPainter : ChartPainter = ChartPainter(canvasWidth: 165, canvasHeight: 125)
 
+    func testStatisticsNormalizationKeepsAscendingV3ValuesChronological() {
+        let calendar = statisticsTestCalendar()
+        let values = [
+            statisticsReading(value: 100, year: 2026, month: 9, day: 11, hour: 8, minute: 0, calendar: calendar),
+            statisticsReading(value: 110, year: 2026, month: 9, day: 11, hour: 9, minute: 0, calendar: calendar)
+        ]
+
+        let normalized = StatisticsRepository.normalizeForChart(values, calendar: calendar)
+
+        XCTAssertEqual(normalized.map(\.value), [100, 110])
+        XCTAssertLessThan(normalized[0].timestamp, normalized[1].timestamp)
+        assertStatisticsReferenceDay(normalized, calendar: calendar)
+    }
+
+    func testStatisticsNormalizationSortsDescendingV1ValuesChronologically() {
+        let calendar = statisticsTestCalendar()
+        let metered = statisticsReading(
+            value: 110,
+            year: 2026,
+            month: 9,
+            day: 10,
+            hour: 9,
+            minute: 0,
+            isMetered: true,
+            calendar: calendar
+        )
+        let values = [
+            metered,
+            statisticsReading(value: 100, year: 2026, month: 9, day: 10, hour: 8, minute: 0, calendar: calendar)
+        ]
+
+        let normalized = StatisticsRepository.normalizeForChart(values, calendar: calendar)
+
+        XCTAssertEqual(normalized.map(\.value), [100, 110])
+        XCTAssertTrue(normalized[1].isMeteredBloodGlucoseValue)
+        assertStatisticsReferenceDay(normalized, calendar: calendar)
+    }
+
+    func testStatisticsDayLoadingTrackerRejectsDuplicateRequestsUntilFinished() {
+        var tracker = StatisticsDayLoadingTracker()
+
+        XCTAssertTrue(tracker.beginLoading(0))
+        XCTAssertFalse(tracker.beginLoading(0))
+        XCTAssertTrue(tracker.beginLoading(1))
+
+        tracker.finishLoading(0, succeeded: true)
+
+        XCTAssertTrue(tracker.beginLoading(0))
+        XCTAssertEqual(tracker.loadingDays, [0, 1])
+    }
+
+    func testStatisticsDayLoadingTrackerWaitsForExplicitRetryAfterFailure() {
+        var tracker = StatisticsDayLoadingTracker()
+
+        XCTAssertTrue(tracker.beginLoading(0))
+        tracker.finishLoading(0, succeeded: false)
+
+        XCTAssertFalse(tracker.beginLoading(0))
+        XCTAssertEqual(tracker.failedDays, [0])
+
+        tracker.allowRetry(0)
+
+        XCTAssertTrue(tracker.beginLoading(0))
+    }
+
     func testXMinAdjustementIsWorking() {
         chartPainter.adjustMinMaxXYCoordinates([[BloodSugar.init(value: 100, timestamp: 10000, isMeteredBloodGlucoseValue: false, arrow: "-"), BloodSugar.init(value: 200, timestamp: 20000, isMeteredBloodGlucoseValue: false, arrow: "-")]], maxYDisplayValue: 10000, upperBoundNiceValue: 180, lowerBoundNiceValue: 80)
         XCTAssertEqual(chartPainter.minimumXValue, 10000)
@@ -291,5 +356,53 @@ class ChartPainterTest: XCTestCase {
         scene.activateSelection(atSceneX: 0)
 
         XCTAssertEqual(scene.selectedBloodSugar?.timestamp, currentTimestamp)
+    }
+
+    private func statisticsTestCalendar() -> Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        return calendar
+    }
+
+    private func statisticsReading(
+        value: Float,
+        year: Int,
+        month: Int,
+        day: Int,
+        hour: Int,
+        minute: Int,
+        isMetered: Bool = false,
+        calendar: Calendar
+    ) -> BloodSugar {
+        let date = calendar.date(from: DateComponents(
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute
+        ))!
+        return BloodSugar(
+            value: value,
+            timestamp: date.timeIntervalSince1970 * 1000,
+            isMeteredBloodGlucoseValue: isMetered,
+            arrow: "-"
+        )
+    }
+
+    private func assertStatisticsReferenceDay(
+        _ readings: [BloodSugar],
+        calendar: Calendar,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        for reading in readings {
+            let components = calendar.dateComponents(
+                [.year, .month, .day],
+                from: Date(timeIntervalSince1970: reading.timestamp / 1000)
+            )
+            XCTAssertEqual(components.year, 1971, file: file, line: line)
+            XCTAssertEqual(components.month, 1, file: file, line: line)
+            XCTAssertEqual(components.day, 1, file: file, line: line)
+        }
     }
 }

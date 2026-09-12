@@ -39,6 +39,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static func updateOrientationLock(_ lock: UIInterfaceOrientationMask, rotateTo orientation: UIInterfaceOrientation? = nil) {
         orientationLock = lock
 
+        #if MAIN_APP
+        let requestedDescription = orientation.map { String($0.rawValue) } ?? "automatic"
+        let currentDescription = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first.map { $0.interfaceOrientation.rawValue }
+            .map(String.init) ?? "unknown"
+        AppLogger.singleton.debug(
+            "Orientation update requested lock=\(lock.rawValue) rotateTo=\(requestedDescription) current=\(currentDescription)",
+            category: .all
+        )
+        #endif
+
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
             if let orientation = orientation {
                 UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
@@ -59,7 +71,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             windowScene.requestGeometryUpdate(geometryPreferences) { error in
                 #if MAIN_APP
-                AppLogger.singleton.error("Error requesting orientation update: \(error.localizedDescription)")
+                AppLogger.singleton.error(
+                    "Error requesting orientation update: \(error.localizedDescription); requestedLock=\(lock.rawValue) requestedOrientation=\(orientation?.rawValue.description ?? "automatic") currentOrientation=\(windowScene.interfaceOrientation.rawValue)",
+                    category: .all
+                )
                 #endif
             }
         } else {

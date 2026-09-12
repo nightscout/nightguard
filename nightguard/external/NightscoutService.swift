@@ -103,6 +103,8 @@ final class NightscoutAPIClient {
         body: Data? = nil,
         legacy: NightscoutLegacyEndpoint? = nil,
         fallbackOnTransportFailure: Bool = true,
+        allowLegacyFallback: Bool = true,
+        readTimeout: TimeInterval? = nil,
         legacyUseAccessTokenHeader: Bool = false,
         completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void
     ) -> NightscoutTask? {
@@ -112,26 +114,37 @@ final class NightscoutAPIClient {
             return nil
         }
 
+        let effectiveReadTimeout = readTimeout ?? self.v3ReadTimeout
+        logInfo(
+            "V3 request started endpoint=\(safeEndpoint(path: path, query: query)) timeout=\(Int(effectiveReadTimeout))s fallbackOnTransportFailure=\(fallbackOnTransportFailure) allowLegacyFallback=\(allowLegacyFallback) tokenConfigured=\(!UserDefaultsRepository.nightscoutToken.isEmpty)"
+        )
+
         let trackedTask = NightscoutRequestTask()
         determineV3Support(
             baseURL: baseURL,
             trackedTask: trackedTask,
-            allowTransportFallback: method.uppercased() == "GET" && fallbackOnTransportFailure
+            allowTransportFallback: method.uppercased() == "GET" && fallbackOnTransportFailure,
+            timeout: effectiveReadTimeout
         ) { result in
             switch result {
             case .failure(let error):
                 trackedTask.finish()
                 completion(.failure(error))
             case .success(false):
-                self.performLegacy(
-                    legacy,
-                    method: method,
-                    body: body,
-                    trackedTask: trackedTask,
-                    compatibilityFallback: true,
-                    useAccessTokenHeader: legacyUseAccessTokenHeader,
-                    completion: completion
-                )
+                if allowLegacyFallback {
+                    self.performLegacy(
+                        legacy,
+                        method: method,
+                        body: body,
+                        trackedTask: trackedTask,
+                        compatibilityFallback: true,
+                        useAccessTokenHeader: legacyUseAccessTokenHeader,
+                        completion: completion
+                    )
+                } else {
+                    trackedTask.finish()
+                    completion(.failure(NightscoutHTTPError(statusCode: 404, endpoint: "/api/v3/version")))
+                }
             case .success(true):
                 self.performAuthorizedV3(
                     baseURL: baseURL,
@@ -143,6 +156,8 @@ final class NightscoutAPIClient {
                     trackedTask: trackedTask,
                     mayRefreshJWT: true,
                     fallbackOnTransportFailure: fallbackOnTransportFailure,
+                    allowLegacyFallback: allowLegacyFallback,
+                    readTimeout: readTimeout ?? self.v3ReadTimeout,
                     legacyUseAccessTokenHeader: legacyUseAccessTokenHeader,
                     completion: completion
                 )
@@ -176,6 +191,7 @@ final class NightscoutAPIClient {
         baseURL: URL,
         trackedTask: NightscoutRequestTask,
         allowTransportFallback: Bool,
+        timeout: TimeInterval,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
         let key = baseURL.absoluteString
@@ -183,6 +199,7 @@ final class NightscoutAPIClient {
         let cached = supportByServer[key]
         lock.unlock()
         if let cached = cached {
+            logInfo("V3 capability cache hit server=\(baseURL.host ?? "unknown") supported=\(cached == .supported)")
             completion(.success(cached == .supported))
             return
         }
@@ -192,8 +209,12 @@ final class NightscoutAPIClient {
             completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL)))
             return
         }
-        let task = session.dataTask(with: request(url: url, method: "GET", body: nil, timeoutInterval: v3ReadTimeout)) { _, response, error in
+        let startedAt = Date()
+        logInfo("V3 capability request started endpoint=/api/v3/version timeout=\(Int(timeout))s")
+        let task = session.dataTask(with: request(url: url, method: "GET", body: nil, timeoutInterval: timeout)) { _, response, error in
+            let duration = Int(Date().timeIntervalSince(startedAt) * 1000)
             if let error = error {
+                self.logError("V3 capability request failed durationMs=\(duration) \(self.errorSummary(error))")
                 if allowTransportFallback && self.isTransportFailure(error) {
                     self.logWarning("Nightscout v3 capability check failed (\(self.errorSummary(error))); trying v1 compatibility mode")
                     completion(.success(false))
@@ -204,19 +225,20 @@ final class NightscoutAPIClient {
                 return
             }
             guard let http = response as? HTTPURLResponse else {
-                self.logError("Nightscout v3 capability check failed: invalid server response")
+                self.logError("V3 capability request failed durationMs=\(duration): invalid server response")
                 completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadServerResponse)))
                 return
             }
             if http.statusCode == 404 || http.statusCode == 405 {
                 self.setSupport(.unsupported, for: key)
-                self.logInfo("Nightscout v3 is unavailable (HTTP \(http.statusCode)); using v1 compatibility mode")
+                self.logWarning("V3 capability response HTTP \(http.statusCode) durationMs=\(duration); V3 is unavailable")
                 completion(.success(false))
             } else if (200..<300).contains(http.statusCode) {
                 self.setSupport(.supported, for: key)
+                self.logInfo("V3 capability response HTTP \(http.statusCode) durationMs=\(duration); V3 is supported")
                 completion(.success(true))
             } else {
-                self.logError("Nightscout v3 capability check returned HTTP \(http.statusCode)")
+                self.logError("V3 capability response HTTP \(http.statusCode) durationMs=\(duration)")
                 completion(.failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/api/v3/version")))
             }
         }
@@ -234,13 +256,15 @@ final class NightscoutAPIClient {
         trackedTask: NightscoutRequestTask,
         mayRefreshJWT: Bool,
         fallbackOnTransportFailure: Bool,
+        allowLegacyFallback: Bool,
+        readTimeout: TimeInterval,
         legacyUseAccessTokenHeader: Bool,
         completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void
     ) {
         let accessToken = UserDefaultsRepository.nightscoutToken
         if accessToken.isEmpty {
-            performV3Request(baseURL: baseURL, path: path, query: query, method: method, body: body, jwt: nil, trackedTask: trackedTask) { result in
-                if self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: fallbackOnTransportFailure, allowTransportFailure: fallbackOnTransportFailure) {
+            performV3Request(baseURL: baseURL, path: path, query: query, method: method, body: body, jwt: nil, trackedTask: trackedTask, readTimeout: readTimeout) { result in
+                if allowLegacyFallback && self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: fallbackOnTransportFailure, allowTransportFailure: fallbackOnTransportFailure) {
                     self.logWarning("Nightscout v3 read returned HTTP 401 without a JWT; using v1 compatibility mode")
                     self.performLegacy(
                         legacy,
@@ -259,18 +283,18 @@ final class NightscoutAPIClient {
             return
         }
 
-        obtainJWT(baseURL: baseURL, accessToken: accessToken, trackedTask: trackedTask) { jwtResult in
+        obtainJWT(baseURL: baseURL, accessToken: accessToken, trackedTask: trackedTask, timeout: readTimeout) { jwtResult in
             switch jwtResult {
             case .failure(let error):
                 trackedTask.finish()
                 completion(.failure(error))
             case .success(let jwt):
-                self.performV3Request(baseURL: baseURL, path: path, query: query, method: method, body: body, jwt: jwt, trackedTask: trackedTask) { result in
+                self.performV3Request(baseURL: baseURL, path: path, query: query, method: method, body: body, jwt: jwt, trackedTask: trackedTask, readTimeout: readTimeout) { result in
                     if case .failure(let error as NightscoutHTTPError) = result,
                        error.statusCode == 401, mayRefreshJWT {
                         self.invalidateJWT(baseURL: baseURL, accessToken: accessToken)
-                        self.performAuthorizedV3(baseURL: baseURL, path: path, query: query, method: method, body: body, legacy: legacy, trackedTask: trackedTask, mayRefreshJWT: false, fallbackOnTransportFailure: fallbackOnTransportFailure, legacyUseAccessTokenHeader: legacyUseAccessTokenHeader, completion: completion)
-                    } else if self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: false, allowTransportFailure: fallbackOnTransportFailure) {
+                        self.performAuthorizedV3(baseURL: baseURL, path: path, query: query, method: method, body: body, legacy: legacy, trackedTask: trackedTask, mayRefreshJWT: false, fallbackOnTransportFailure: fallbackOnTransportFailure, allowLegacyFallback: allowLegacyFallback, readTimeout: readTimeout, legacyUseAccessTokenHeader: legacyUseAccessTokenHeader, completion: completion)
+                    } else if allowLegacyFallback && self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: false, allowTransportFailure: fallbackOnTransportFailure) {
                         self.logWarning("Nightscout v3 GET failed (\(self.resultErrorSummary(result))); using v1 compatibility mode")
                         self.performLegacy(
                             legacy,
@@ -290,33 +314,40 @@ final class NightscoutAPIClient {
         }
     }
 
-    private func performV3Request(baseURL: URL, path: String, query: [String: String], method: String, body: Data?, jwt: String?, trackedTask: NightscoutRequestTask, completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void) {
+    private func performV3Request(baseURL: URL, path: String, query: [String: String], method: String, body: Data?, jwt: String?, trackedTask: NightscoutRequestTask, readTimeout: TimeInterval, completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void) {
         let endpoint = safeEndpoint(path: path, query: query)
         guard let url = makeURL(baseURL: baseURL, path: path, query: query) else {
             logError("Nightscout v3 request rejected: invalid endpoint \(endpoint)")
             completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL)))
             return
         }
-        let timeout = method.uppercased() == "GET" ? v3ReadTimeout : defaultRequestTimeout
+        let timeout = method.uppercased() == "GET" ? readTimeout : defaultRequestTimeout
+        let startedAt = Date()
+        logInfo("V3 data request started endpoint=\(endpoint) timeout=\(Int(timeout))s")
         var urlRequest = request(url: url, method: method, body: body, timeoutInterval: timeout)
         if let jwt = jwt { urlRequest.setValue("Bearer \(jwt)", forHTTPHeaderField: "Authorization") }
         let task = session.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
-                self.logError("Nightscout v3 request \(endpoint) failed (timeout \(Int(timeout))s): \(self.errorSummary(error))")
+                let duration = Int(Date().timeIntervalSince(startedAt) * 1000)
+                self.logError("V3 data request failed endpoint=\(endpoint) durationMs=\(duration) timeout=\(Int(timeout))s \(self.errorSummary(error))")
                 completion(.failure(error))
                 return
             }
             guard let http = response as? HTTPURLResponse else {
-                self.logError("Nightscout v3 request \(endpoint) failed: invalid server response")
+                self.logError("V3 data request failed endpoint=\(endpoint): invalid server response")
                 completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadServerResponse)))
                 return
             }
             guard (200..<300).contains(http.statusCode) else {
-                self.logError("Nightscout v3 request \(endpoint) returned HTTP \(http.statusCode)")
+                let duration = Int(Date().timeIntervalSince(startedAt) * 1000)
+                self.logError("V3 data response endpoint=\(endpoint) HTTP \(http.statusCode) durationMs=\(duration)")
                 completion(.failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/\(path)")))
                 return
             }
-            completion(.success((self.v3PayloadData(from: data ?? Data()), http)))
+            let payload = self.v3PayloadData(from: data ?? Data())
+            let duration = Int(Date().timeIntervalSince(startedAt) * 1000)
+            self.logInfo("V3 data response endpoint=\(endpoint) HTTP \(http.statusCode) bytes=\(payload.count) durationMs=\(duration)")
+            completion(.success((payload, http)))
         }
         trackedTask.add(task)
         task.resume()
@@ -389,11 +420,12 @@ final class NightscoutAPIClient {
         return payload
     }
 
-    private func obtainJWT(baseURL: URL, accessToken: String, trackedTask: NightscoutRequestTask, completion: @escaping (Result<String, Error>) -> Void) {
+    private func obtainJWT(baseURL: URL, accessToken: String, trackedTask: NightscoutRequestTask, timeout: TimeInterval, completion: @escaping (Result<String, Error>) -> Void) {
         let key = credentialKey(baseURL: baseURL, accessToken: accessToken)
         lock.lock()
         if let jwt = jwtByCredential[key] {
             lock.unlock()
+            logInfo("V3 JWT cache hit server=\(baseURL.host ?? "unknown")")
             completion(.success(jwt))
             return
         }
@@ -410,32 +442,36 @@ final class NightscoutAPIClient {
             completeJWT(key: key, result: .failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL)))
             return
         }
-        let task = session.dataTask(with: request(url: url, method: "GET", body: nil)) { data, response, error in
+        let startedAt = Date()
+        logInfo("V3 JWT request started server=\(baseURL.host ?? "unknown") timeout=\(Int(timeout))s")
+        let task = session.dataTask(with: request(url: url, method: "GET", body: nil, timeoutInterval: timeout)) { data, response, error in
             if let error = error {
-                self.logError("Nightscout JWT exchange failed: \(self.errorSummary(error))")
+                let duration = Int(Date().timeIntervalSince(startedAt) * 1000)
+                self.logError("V3 JWT request failed durationMs=\(duration) \(self.errorSummary(error))")
                 self.completeJWT(key: key, result: .failure(error))
                 return
             }
             guard let http = response as? HTTPURLResponse else {
-                self.logError("Nightscout JWT exchange failed: invalid server response")
+                self.logError("V3 JWT request failed: invalid server response")
                 self.completeJWT(key: key, result: .failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorBadServerResponse)))
                 return
             }
             guard (200..<300).contains(http.statusCode) else {
-                self.logError("Nightscout JWT exchange returned HTTP \(http.statusCode)")
+                self.logError("V3 JWT response HTTP \(http.statusCode)")
                 self.completeJWT(key: key, result: .failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/api/v2/authorization/request")))
                 return
             }
             guard let data = data,
                   let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                   let jwt = json["token"] as? String, !jwt.isEmpty else {
-                self.logError("Nightscout JWT exchange returned an invalid response")
+                self.logError("V3 JWT response HTTP \(http.statusCode) contained no usable token")
                 self.completeJWT(key: key, result: .failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotParseResponse)))
                 return
             }
             self.lock.lock()
             self.jwtByCredential[key] = jwt
             self.lock.unlock()
+            self.logInfo("V3 JWT response HTTP \(http.statusCode) durationMs=\(Int(Date().timeIntervalSince(startedAt) * 1000)) tokenCached=true")
             self.completeJWT(key: key, result: .success(jwt))
         }
         trackedTask.add(task)
@@ -773,7 +809,7 @@ class NightscoutService {
                 "sort$desc": "date",
                 "type$in": "sgv|mbg",
                 "limit": "500",
-                "fields": "identifier,_id,date,mills,type,sgv,mbg,direction,units"
+                "fields": "identifier,_id,date,dateString,mills,type,sgv,mbg,direction,units"
             ],
             legacy: NightscoutLegacyEndpoint(
                 path: "api/v1/entries.json",
@@ -850,7 +886,7 @@ class NightscoutService {
                 "sort$desc": "date",
                 "type$in": "sgv|mbg",
                 "limit": "\(requestedLimit)",
-                "fields": "identifier,_id,date,mills,type,sgv,mbg,direction,units"
+                "fields": "identifier,_id,date,dateString,mills,type,sgv,mbg,direction,units"
             ],
             fallbackOnTransportFailure: false,
             completion: { result in
@@ -881,7 +917,7 @@ class NightscoutService {
         }
 
         return entries.compactMap { entry in
-            guard let dateMillis = timestampMillis(entry["date"] ?? entry["mills"]) else { return nil }
+            guard let dateMillis = entryTimestampMillis(entry) else { return nil }
 
             let sgv = doubleValue(entry["sgv"])
             let mbg = doubleValue(entry["mbg"])
@@ -1001,7 +1037,7 @@ class NightscoutService {
     }
     
     @discardableResult
-    func readChartDataWithinPeriodOfTime(oldValues : [BloodSugar], _ timestamp1 : Date, timestamp2 : Date, resultHandler : @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> NightscoutTask? {
+    func readChartDataWithinPeriodOfTime(oldValues: [BloodSugar], _ timestamp1: Date, timestamp2: Date, v3Only: Bool = false, timeout: TimeInterval? = nil, resultHandler: @escaping (NightscoutRequestResult<[BloodSugar]>) -> Void) -> NightscoutTask? {
         guard !UserDefaultsRepository.baseUri.value.isEmpty else {
             resultHandler(.error(createEmptyOrInvalidUriError()))
             return nil
@@ -1014,64 +1050,152 @@ class NightscoutService {
             "find[date][$lte]": "\(to)",
             "count": "1440"
         ]
+        let v3PageSize = 500
+        let v3MaximumPages = 8
         let v3Query = [
-            "date$gt": "\(from)",
-            "date$lte": "\(to)",
+            // The main view uses this latest-entries query successfully. Some
+            // installations return an unfiltered first page for date range
+            // operators when legacy and V3 entry types are mixed, so select
+            // the requested day locally below instead of relying on those
+            // server-side date predicates.
+            "sort$desc": "date",
             "type$in": "sgv|mbg",
-            "sort": "date",
-            "limit": "500",
-            "fields": "identifier,_id,date,type,sgv,mbg,direction"
+            "limit": "\(v3PageSize)",
+            "fields": "date,dateString,mills,type,sgv,mbg,direction"
         ]
 
-        return NightscoutAPIClient.shared.requestV3(
-            path: "api/v3/entries",
-            query: v3Query,
-            legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: legacyQuery),
-            fallbackOnTransportFailure: true,
-            legacyUseAccessTokenHeader: true
-        ) { result in
-            switch result {
-            case .failure(let error):
-                dispatchOnMain { resultHandler(.error(error)) }
-            case .success(let response):
-                do {
-                    guard let entries = try JSONSerialization.jsonObject(with: response.0) as? [[String: Any]] else {
-                        throw NSError(domain: "EntriesJSONError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from the Nightscout entries API.", comment: "Invalid entries JSON")])
-                    }
-                    let entriesInRange = entries.filter { entry in
-                        guard let timestamp = self.timestampMillis(entry["date"]) else { return false }
-                        return timestamp > from && timestamp <= to
-                    }
-                    if entriesInRange.count != entries.count {
-                        AppLogger.singleton.debug(
-                            "NightscoutService: filtered \(entries.count - entriesInRange.count) glucose entry/entries outside the requested time range",
-                            category: .nightscout
-                        )
-                    }
-                    if !entries.isEmpty && entriesInRange.isEmpty {
-                        AppLogger.singleton.warning(
-                            "NightscoutService: all returned glucose entries were outside the requested time range (from=\(from), to=\(to))",
-                            category: .nightscout
-                        )
-                    }
+        AppLogger.singleton.info(
+            "Statistics request interval from=\(Int(from)) to=\(Int(to)) v3From=\(timestamp1.convertToIsoDateTime()) v3To=\(timestamp2.convertToIsoDateTime()) v3Only=\(v3Only) timeout=\(Int(timeout ?? 20))s pageSize=\(v3PageSize) maxPages=\(v3MaximumPages) serverSort=desc(date) localSort=timestamp",
+            category: .nightscout
+        )
 
-                    let parsed = entriesInRange.compactMap { entry -> BloodSugar? in
-                        guard let timestamp = self.timestampMillis(entry["date"]) else { return nil }
-                        if let sgv = self.doubleValue(entry["sgv"]) {
-                            return BloodSugar(value: Float(sgv), timestamp: timestamp, isMeteredBloodGlucoseValue: false, arrow: self.directionToArrow(entry["direction"] as? String ?? ""))
+        // API3 supports pagination through `skip` and `limit`.  A single
+        // latest page is enough for the main view, but a five-day statistics
+        // view can span several pages.  Keep requesting older pages until the
+        // oldest returned timestamp reaches the requested day.  We still do
+        // the final day filtering locally because some installations ignore
+        // API3 date predicates when legacy and V3 entry types are mixed.
+        let trackedTask = NightscoutRequestTask()
+        var allEntries: [[String: Any]] = []
+        var didFinish = false
+
+        func finish(_ result: NightscoutRequestResult<[BloodSugar]>) {
+            guard !didFinish else { return }
+            didFinish = true
+            trackedTask.finish()
+            dispatchOnMain { resultHandler(result) }
+        }
+
+        func finishWithData() {
+            let responseTimestamps = allEntries.compactMap { self.entryTimestampMillis($0) }
+            let responseFields = Set(allEntries.flatMap { $0.keys }).sorted().joined(separator: ",")
+            let entriesInRange = allEntries.filter { entry in
+                guard let timestamp = self.entryTimestampMillis(entry) else { return false }
+                return timestamp >= from && timestamp < to
+            }
+            if allEntries.count != entriesInRange.count {
+                AppLogger.singleton.debug(
+                    "NightscoutService: filtered \(allEntries.count - entriesInRange.count) glucose entry/entries outside the requested time range",
+                    category: .nightscout
+                )
+            }
+            if !allEntries.isEmpty && entriesInRange.isEmpty {
+                let firstResponseDate = responseTimestamps.min().map { Date(timeIntervalSince1970: $0 / 1000).convertToIsoDateTime() } ?? "none"
+                let lastResponseDate = responseTimestamps.max().map { Date(timeIntervalSince1970: $0 / 1000).convertToIsoDateTime() } ?? "none"
+                AppLogger.singleton.warning(
+                    "NightscoutService: paged V3 response did not cover the requested local time range (requestedFrom=\(timestamp1.convertToIsoDateTime()), requestedTo=\(timestamp2.convertToIsoDateTime()), responseEntries=\(allEntries.count), timestampCount=\(responseTimestamps.count), fields=[\(responseFields)], responseFirst=\(firstResponseDate), responseLast=\(lastResponseDate), firstTimestampMillis=\(responseTimestamps.min() ?? 0), lastTimestampMillis=\(responseTimestamps.max() ?? 0))",
+                    category: .nightscout
+                )
+            }
+
+            let parsed = entriesInRange.compactMap { entry -> BloodSugar? in
+                guard let timestamp = self.entryTimestampMillis(entry) else { return nil }
+                if let sgv = self.doubleValue(entry["sgv"]) {
+                    return BloodSugar(value: Float(sgv), timestamp: timestamp, isMeteredBloodGlucoseValue: false, arrow: self.directionToArrow(entry["direction"] as? String ?? ""))
+                }
+                if let mbg = self.doubleValue(entry["mbg"]) {
+                    return BloodSugar(value: Float(mbg), timestamp: timestamp, isMeteredBloodGlucoseValue: true, arrow: "-")
+                }
+                return nil
+            }.sorted { $0.timestamp < $1.timestamp }
+            let merged = self.mergeInTheNewData(oldValues: oldValues, newValues: parsed)
+            AppLogger.singleton.info(
+                "Statistics response decoded entries=\(allEntries.count) pages=\((allEntries.count + v3PageSize - 1) / v3PageSize) inRange=\(entriesInRange.count) parsed=\(parsed.count) merged=\(merged.count)",
+                category: .nightscout
+            )
+            finish(.data(merged))
+        }
+
+        func requestPage(_ page: Int) {
+            var pageQuery = v3Query
+            let skip = page * v3PageSize
+            if skip > 0 {
+                pageQuery["skip"] = "\(skip)"
+            }
+            AppLogger.singleton.debug(
+                "Statistics V3 page request page=\(page + 1)/\(v3MaximumPages) skip=\(skip) limit=\(v3PageSize)",
+                category: .nightscout
+            )
+            let pageTask = NightscoutAPIClient.shared.requestV3(
+                path: "api/v3/entries",
+                query: pageQuery,
+                legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: legacyQuery),
+                fallbackOnTransportFailure: !v3Only,
+                allowLegacyFallback: !v3Only,
+                readTimeout: timeout,
+                legacyUseAccessTokenHeader: true
+            ) { result in
+                switch result {
+                case .failure(let error):
+                    AppLogger.singleton.error(
+                        "Statistics response failed interval from=\(Int(from)) to=\(Int(to)) page=\(page + 1) skip=\(skip): type=\(String(reflecting: type(of: error))) description=\(error.localizedDescription)",
+                        category: .nightscout
+                    )
+                    finish(.error(error))
+                case .success(let response):
+                    do {
+                        guard let entries = try JSONSerialization.jsonObject(with: response.0) as? [[String: Any]] else {
+                            throw NSError(domain: "EntriesJSONError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from the Nightscout entries API.", comment: "Invalid entries JSON")])
                         }
-                        if let mbg = self.doubleValue(entry["mbg"]) {
-                            return BloodSugar(value: Float(mbg), timestamp: timestamp, isMeteredBloodGlucoseValue: true, arrow: "-")
+                        let responseTimestamps = entries.compactMap { self.entryTimestampMillis($0) }
+                        AppLogger.singleton.debug(
+                            "Statistics raw response page=\(page + 1) skip=\(skip) entries=\(entries.count) timestampCount=\(responseTimestamps.count) firstTimestamp=\(responseTimestamps.min() ?? 0) lastTimestamp=\(responseTimestamps.max() ?? 0)",
+                            category: .nightscout
+                        )
+                        allEntries.append(contentsOf: entries)
+                        let oldestTimestamp = responseTimestamps.min()
+                        let reachedRequestedDay = oldestTimestamp.map { $0 <= from } ?? false
+                        let reachedPageLimit = page + 1 >= v3MaximumPages
+                        if !v3Only || entries.isEmpty || reachedRequestedDay || reachedPageLimit {
+                            if reachedPageLimit && !reachedRequestedDay {
+                                AppLogger.singleton.warning(
+                                    "NightscoutService: statistics pagination stopped at page limit before reaching requested time range (requestedFrom=\(timestamp1.convertToIsoDateTime()), oldestTimestampMillis=\(oldestTimestamp ?? 0), pages=\(page + 1))",
+                                    category: .nightscout
+                                )
+                            }
+                            finishWithData()
+                        } else {
+                            requestPage(page + 1)
                         }
-                        return nil
-                    }.sorted { $0.timestamp < $1.timestamp }
-                    let merged = self.mergeInTheNewData(oldValues: oldValues, newValues: parsed)
-                    dispatchOnMain { resultHandler(.data(merged)) }
-                } catch {
-                    dispatchOnMain { resultHandler(.error(error)) }
+                    } catch {
+                        AppLogger.singleton.error(
+                            "Statistics response JSON parsing failed page=\(page + 1) type=\(String(reflecting: type(of: error))) description=\(error.localizedDescription)",
+                            category: .nightscout
+                        )
+                        finish(.error(error))
+                    }
                 }
             }
+            guard let task = pageTask else {
+                let error = NSError(domain: "NightscoutRequestError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("The Nightscout request could not be started.", comment: "Nightscout request could not start")])
+                finish(.error(error))
+                return
+            }
+            trackedTask.add(task)
         }
+
+        requestPage(0)
+        return trackedTask
     }
     
     // append the oldvalues but leave duplicates
@@ -1100,14 +1224,30 @@ class NightscoutService {
     }
 
     /// Nightscout has returned entry dates as both millisecond numbers and
-    /// ISO-8601 strings across API versions.
+    /// ISO-8601 strings across API versions. API v3 may expose the ISO value
+    /// as `dateString` while older installations expose `date` or `mills`.
+    private func entryTimestampMillis(_ entry: [String: Any]) -> Double? {
+        for key in ["date", "dateString", "mills"] {
+            if let timestamp = timestampMillis(entry[key]) {
+                return timestamp
+            }
+        }
+        return nil
+    }
+
     private func timestampMillis(_ value: Any?) -> Double? {
         if let numeric = doubleValue(value) {
-            return numeric
+            // A few Nightscout versions serialize entry dates as Unix seconds
+            // while others use milliseconds. BloodSugar always uses millis.
+            return abs(numeric) < 100_000_000_000 ? numeric * 1000 : numeric
         }
         if let dateObject = value as? [String: Any],
            let nestedDate = dateObject["$date"] {
             return timestampMillis(nestedDate)
+        }
+        if let dateObject = value as? [String: Any],
+           let numberLong = dateObject["$numberLong"] {
+            return timestampMillis(numberLong)
         }
         guard let isoString = value as? String else {
             return nil
@@ -1222,14 +1362,14 @@ class NightscoutService {
     }
     
     @discardableResult
-    func readDay(_ nrOfDaysAgo : Int, callbackHandler : @escaping (_ nrOfDay : Int, NightscoutRequestResult<[BloodSugar]>) -> Void) -> NightscoutTask? {
+    func readDay(_ nrOfDaysAgo: Int, v3Only: Bool = false, timeout: TimeInterval? = nil, callbackHandler: @escaping (_ nrOfDay: Int, NightscoutRequestResult<[BloodSugar]>) -> Void) -> NightscoutTask? {
         let timeNrOfDaysAgo = TimeService.getNrOfDaysAgo(nrOfDaysAgo)
         
         let calendar = Calendar.current
         let startNrOfDaysAgo = calendar.startOfDay(for: timeNrOfDaysAgo)
         let endNrOfDaysAgo = startNrOfDaysAgo.addingTimeInterval(24 * 60 * 60)
         
-        return readChartDataWithinPeriodOfTime(oldValues: [], startNrOfDaysAgo, timestamp2: endNrOfDaysAgo) { result in
+        return readChartDataWithinPeriodOfTime(oldValues: [], startNrOfDaysAgo, timestamp2: endNrOfDaysAgo, v3Only: v3Only, timeout: timeout) { result in
             callbackHandler(nrOfDaysAgo, result)
         }
     }
@@ -1273,7 +1413,7 @@ class NightscoutService {
             query: [
                 "limit": "2",
                 "sort$desc": "date",
-                "fields": "identifier,_id,date,sgv,direction,units"
+                "fields": "identifier,_id,date,dateString,sgv,direction,units"
             ],
             legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "2"]),
             fallbackOnTransportFailure: true,
@@ -1285,9 +1425,9 @@ class NightscoutService {
             case .success(let response):
                 do {
                     guard let entries = try JSONSerialization.jsonObject(with: response.0) as? [[String: Any]],
-                          let latest = entries.max(by: { (self.timestampMillis($0["date"]) ?? 0) < (self.timestampMillis($1["date"]) ?? 0) }),
+                          let latest = entries.max(by: { (self.entryTimestampMillis($0) ?? 0) < (self.entryTimestampMillis($1) ?? 0) }),
                           let latestValue = self.doubleValue(latest["sgv"]),
-                          let latestDate = self.timestampMillis(latest["date"]) else {
+                          let latestDate = self.entryTimestampMillis(latest) else {
                         throw self.createNoDataError(description: NSLocalizedString("No glucose data received from Nightscout.", comment: "No current glucose data"))
                     }
 
@@ -1297,8 +1437,8 @@ class NightscoutService {
                     nightscoutData.bgdeltaArrow = self.directionToArrow(latest["direction"] as? String ?? "")
 
                     let previous = entries
-                        .filter { (self.timestampMillis($0["date"]) ?? 0) < latestDate }
-                        .max(by: { (self.timestampMillis($0["date"]) ?? 0) < (self.timestampMillis($1["date"]) ?? 0) })
+                        .filter { (self.entryTimestampMillis($0) ?? 0) < latestDate }
+                        .max(by: { (self.entryTimestampMillis($0) ?? 0) < (self.entryTimestampMillis($1) ?? 0) })
                     if let previousValue = self.doubleValue(previous?["sgv"]) {
                         let delta = Float(latestValue - previousValue)
                         nightscoutData.bgdelta = delta

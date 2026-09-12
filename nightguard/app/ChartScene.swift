@@ -69,6 +69,11 @@ class ChartScene : SKScene {
         self.canvasWidth = newCanvasWidth
         self.maxXPosition = 0
         self.minXPosition = size.width - canvasWidth
+
+        AppLogger.singleton.debug(
+            "ChartScene: paint requested days=\(days.count) valueCounts=\(days.map(\.count)) scene=\(size.width)x\(size.height) canvasWidth=\(canvasWidth)",
+            category: .nightscout
+        )
         
         let chartPainter : ChartPainter = ChartPainter(
             canvasWidth: Int(canvasWidth),
@@ -89,7 +94,18 @@ class ChartScene : SKScene {
         if chartImage == nil
             || ((chartImage?.size.width ?? 0) <= CGFloat(0))
             || ((chartImage?.size.height ?? 0) <= CGFloat(0)) {
+            AppLogger.singleton.error(
+                "ChartScene: ChartPainter returned no drawable image valueCounts=\(days.map(\.count)) scene=\(size.width)x\(size.height)",
+                category: .nightscout
+            )
             return
+        }
+
+        if chartImage?.size == CGSize(width: 10, height: 10) {
+            AppLogger.singleton.warning(
+                "ChartScene: ChartPainter returned its empty placeholder image valueCounts=\(days.map(\.count))",
+                category: .nightscout
+            )
         }
 
         // Clear any existing actions before applying new texture. The caller

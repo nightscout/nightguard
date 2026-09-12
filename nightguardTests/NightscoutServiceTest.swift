@@ -114,6 +114,21 @@ class NightscoutServiceTest: XCTestCase {
         XCTAssertNil(records.last?.sgv)
     }
 
+    func testEntriesHeadParserAcceptsDateStringAndMongoExtendedDates() throws {
+        let payload = Data("""
+        [
+          {"dateString":"2024-08-21T00:00:00.000Z","type":"sgv","sgv":140},
+          {"date":{"$date":{"$numberLong":"1724198401000"}},"type":"sgv","sgv":141}
+        ]
+        """.utf8)
+
+        let records = try NightscoutService.singleton.parseEntryRecords(from: payload)
+
+        XCTAssertEqual(records.count, 2)
+        XCTAssertEqual(records.compactMap(\.sgv), [140.0, 141.0])
+        XCTAssertEqual(records.map(\.dateMillis), [1724198400000.0, 1724198401000.0])
+    }
+
     func testEntryRecordFallbackKeyAllowsCorrectionsAtSameTimestamp() {
         let original = NightscoutEntryRecord(dateMillis: 1724198400000, type: "sgv", sgv: 120)
         let correction = NightscoutEntryRecord(dateMillis: 1724198400000, type: "sgv", sgv: 125)
@@ -234,6 +249,45 @@ class NightscoutServiceTest: XCTestCase {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2)
+    }
+
+    func testV3OnlyDoesNotFallBackWhenCapabilityCheckTimesOut() throws {
+        let restoreCredentials = useTemporaryCredentials(url: "https://v3-only-timeout.example.org", token: "")
+        defer { restoreCredentials() }
+
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let client = NightscoutAPIClient(session: URLSession(configuration: configuration))
+        var requestedPaths: [String] = []
+        NightscoutMockURLProtocol.handler = { request in
+            let url = try XCTUnwrap(request.url)
+            requestedPaths.append(url.path)
+            if url.path.hasSuffix("/api/v3/version") {
+                throw URLError(.timedOut)
+            }
+            return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("[]".utf8))
+        }
+        defer { NightscoutMockURLProtocol.handler = nil }
+
+        let expectation = expectation(description: "v3-only timeout completed")
+        _ = client.requestV3(
+            path: "api/v3/entries",
+            legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "1"]),
+            fallbackOnTransportFailure: false,
+            allowLegacyFallback: false,
+            readTimeout: 1
+        ) { result in
+            guard case .failure(let error as URLError) = result else {
+                XCTFail("Expected the V3 timeout to be returned")
+                expectation.fulfill()
+                return
+            }
+            XCTAssertEqual(error.code, .timedOut)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+        XCTAssertEqual(requestedPaths, ["/api/v3/version"])
     }
 
     func testFallsBackToV1WhenV3EntriesRequestTimesOut() throws {

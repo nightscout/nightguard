@@ -172,12 +172,6 @@ struct RootTabView: View {
                     print("DEBUG: StatsView onAppear. selectedTab: \(self.selectedTab)")
                     if self.selectedTab == .stats {
                         forceLandscape()
-                    } else {
-                        print("DEBUG: StatsView appeared with mismatch. Fixing selection.")
-                        DispatchQueue.main.async {
-                            self.selectedTab = .stats
-                            forceLandscape()
-                        }
                     }
                 }
                 .tabItem {
@@ -195,12 +189,6 @@ struct RootTabView: View {
                     print("DEBUG: PrefsView onAppear. selectedTab: \(self.selectedTab)")
                     if self.selectedTab == .prefs {
                         forcePortrait()
-                    } else {
-                        print("DEBUG: PrefsView appeared with mismatch. Fixing selection.")
-                        DispatchQueue.main.async {
-                            self.selectedTab = .prefs
-                            forcePortrait()
-                        }
                     }
                 }
                 .tabItem {
