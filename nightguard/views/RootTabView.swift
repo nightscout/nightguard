@@ -166,10 +166,13 @@ struct RootTabView: View {
                     // restore the previously selected More item (Preferences)
                     // when the landscape geometry update completes.
                     if self.selectedTab != .stats {
+                        let selectedTabAtAppearance = self.selectedTab
                         DispatchQueue.main.async {
-                            guard self.selectedTab != .stats else { return }
-                            self.selectedTab = .stats
-                            UserDefaultsRepository.currentTab.value = .stats
+                            guard self.selectedTab == selectedTabAtAppearance || self.selectedTab == .stats else { return }
+                            if self.selectedTab != .stats {
+                                self.selectedTab = .stats
+                                UserDefaultsRepository.currentTab.value = .stats
+                            }
                             forceLandscape()
                         }
                     } else {
@@ -189,8 +192,14 @@ struct RootTabView: View {
                 .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: PrefsView onAppear. selectedTab: \(self.selectedTab)")
+                    let selectedTabAtAppearance = self.selectedTab
                     DispatchQueue.main.async {
-                        if self.selectedTab == .prefs { forcePortrait() }
+                        guard self.selectedTab == selectedTabAtAppearance || self.selectedTab == .prefs else { return }
+                        if self.selectedTab != .prefs {
+                            self.selectedTab = .prefs
+                            UserDefaultsRepository.currentTab.value = .prefs
+                        }
+                        forcePortrait()
                     }
                 }
                 .tabItem {
