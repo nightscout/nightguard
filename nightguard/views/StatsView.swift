@@ -15,10 +15,9 @@ struct StatsView: View {
     @State private var loadingTracker = StatisticsDayLoadingTracker()
     @State private var dayErrors: [Int: String] = [:]
 
-    // Statistics requests cover a full day and may wake a remote Nightscout
-    // instance from sleep. Keep this aligned with the V3 client's normal
-    // read timeout so a slow response is not reported as unavailable after
-    // only eight seconds.
+    // The combined five-day statistics request may wake a remote Nightscout
+    // instance from sleep and may need several pages for one-minute data.
+    // Keep this aligned with the V3 client's normal read timeout.
     private static let statisticsReadTimeout: TimeInterval = 20
 
     var body: some View {
@@ -116,69 +115,87 @@ struct StatsView: View {
             category: .nightscout
         )
 
-        var filteredDays: [[BloodSugar]] = []
+        var cachedDays = Array(repeating: [BloodSugar](), count: 5)
+        var missingDays: [Int] = []
+        for index in 0..<5 {
+            if let day = StatisticsRepository.singleton.readDay(index) {
+                cachedDays[index] = day
+                AppLogger.singleton.debug(
+                    "StatsView: day \(index) served from cache with \(day.count) value(s)",
+                    category: .nightscout
+                )
+            } else {
+                missingDays.append(index)
+            }
+        }
 
-        for (index, shouldDisplay) in daysToDisplay.enumerated() {
-            if shouldDisplay {
-                if let day = StatisticsRepository.singleton.readDay(index) {
-                    AppLogger.singleton.debug(
-                        "StatsView: day \(index) served from cache with \(day.count) value(s)",
-                        category: .nightscout
-                    )
-                    filteredDays.append(day)
-                } else if loadingTracker.beginLoading(index) {
-                    AppLogger.singleton.info(
-                        "StatsView: starting V3-only request for day \(index), timeout=\(Int(Self.statisticsReadTimeout))s, baseURLConfigured=\(!UserDefaultsRepository.baseUri.value.isEmpty)",
-                        category: .nightscout
-                    )
-                    NightscoutService.singleton.readDay(
-                        index,
-                        v3Only: true,
-                        timeout: Self.statisticsReadTimeout
-                    ) {
-                        (nrOfDay: Int, result: NightscoutRequestResult<[BloodSugar]>) in
-                        switch result {
-                        case .data(let bgValues):
+        if !missingDays.isEmpty {
+            var startedDays: [Int] = []
+            for index in 0..<5 where loadingTracker.beginLoading(index) {
+                startedDays.append(index)
+            }
+
+            if !startedDays.isEmpty {
+                AppLogger.singleton.info(
+                    "StatsView: starting combined V3-only request for days=0...4 missing=\(missingDays), timeout=\(Int(Self.statisticsReadTimeout))s, baseURLConfigured=\(!UserDefaultsRepository.baseUri.value.isEmpty)",
+                    category: .nightscout
+                )
+                NightscoutService.singleton.readStatisticsDays(
+                    dayCount: 5,
+                    v3Only: true,
+                    timeout: Self.statisticsReadTimeout
+                ) { result in
+                    switch result {
+                    case .data(let days):
+                        for index in 0..<5 {
+                            let bgValues = index < days.count ? days[index] : []
                             let normalizedBgValues = StatisticsRepository.normalizeForChart(bgValues)
                             AppLogger.singleton.info(
-                                "StatsView: day \(nrOfDay) response decoded raw=\(bgValues.count), normalized=\(normalizedBgValues.count)",
+                                "StatsView: combined response day \(index) raw=\(bgValues.count), normalized=\(normalizedBgValues.count)",
                                 category: .nightscout
                             )
                             guard normalizedBgValues.count > 1 else {
-                                loadingTracker.finishLoading(nrOfDay, succeeded: false)
-                                dayErrors[nrOfDay] = normalizedBgValues.isEmpty
-                                    ? "No glucose readings were returned for this day."
-                                    : "At least two glucose readings are needed to draw this chart."
+                                loadingTracker.finishLoading(index, succeeded: false)
+                                if daysToDisplay[index] {
+                                    dayErrors[index] = normalizedBgValues.isEmpty
+                                        ? "No glucose readings were returned for this day."
+                                        : "At least two glucose readings are needed to draw this chart."
+                                }
                                 AppLogger.singleton.error(
-                                    "StatsView: day \(nrOfDay) cannot be drawn because only \(normalizedBgValues.count) normalized value(s) were returned",
+                                    "StatsView: day \(index) cannot be drawn because only \(normalizedBgValues.count) normalized value(s) were returned from the combined response",
                                     category: .nightscout
                                 )
-                                return
+                                continue
                             }
-                            loadingTracker.finishLoading(nrOfDay, succeeded: true)
-                            dayErrors.removeValue(forKey: nrOfDay)
-                            StatisticsRepository.singleton.saveDay(nrOfDay, bloodSugarArray: normalizedBgValues)
-                            loadAndPaintChart()
-                        case .error(let error):
-                            loadingTracker.finishLoading(nrOfDay, succeeded: false)
-                            dayErrors[nrOfDay] = error.localizedDescription
-                            AppLogger.singleton.error(
-                                "StatsView: day \(nrOfDay) request failed type=\(String(reflecting: type(of: error))) description=\(error.localizedDescription)",
-                                category: .nightscout
-                            )
+                            loadingTracker.finishLoading(index, succeeded: true)
+                            dayErrors.removeValue(forKey: index)
+                            StatisticsRepository.singleton.saveDay(index, bloodSugarArray: normalizedBgValues)
                         }
+                        loadAndPaintChart()
+                    case .error(let error):
+                        for index in 0..<5 {
+                            loadingTracker.finishLoading(index, succeeded: false)
+                            if daysToDisplay[index] {
+                                dayErrors[index] = error.localizedDescription
+                            }
+                        }
+                        AppLogger.singleton.error(
+                            "StatsView: combined statistics request failed type=\(String(reflecting: type(of: error))) description=\(error.localizedDescription)",
+                            category: .nightscout
+                        )
+                        loadAndPaintChart()
                     }
-                    filteredDays.append([])
-                } else {
-                    AppLogger.singleton.debug(
-                        "StatsView: day \(index) request is already running or waiting for retry",
-                        category: .nightscout
-                    )
-                    filteredDays.append([])
                 }
             } else {
-                filteredDays.append([])
+                AppLogger.singleton.debug(
+                    "StatsView: combined statistics request is already running or waiting for retry; missing=\(missingDays)",
+                    category: .nightscout
+                )
             }
+        }
+
+        let filteredDays = cachedDays.enumerated().map { index, day in
+            daysToDisplay[index] ? day : []
         }
 
         paintChart(scene: scene, days: filteredDays)

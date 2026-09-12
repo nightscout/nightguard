@@ -1050,8 +1050,12 @@ class NightscoutService {
             "find[date][$lte]": "\(to)",
             "count": "1440"
         ]
-        let v3PageSize = 500
-        let v3MaximumPages = 8
+        // Do not assume a fixed sampling interval here. Some installations
+        // provide one value every five minutes, others every minute. The
+        // first request therefore uses Nightscout's configured API3 maximum;
+        // older pages are fetched only when the requested range is not yet
+        // covered.
+        let v3MaximumPages = 32
         let v3Query = [
             // The main view uses this latest-entries query successfully. Some
             // installations return an unfiltered first page for date range
@@ -1060,12 +1064,11 @@ class NightscoutService {
             // server-side date predicates.
             "sort$desc": "date",
             "type$in": "sgv|mbg",
-            "limit": "\(v3PageSize)",
             "fields": "date,dateString,mills,type,sgv,mbg,direction"
         ]
 
         AppLogger.singleton.info(
-            "Statistics request interval from=\(Int(from)) to=\(Int(to)) v3From=\(timestamp1.convertToIsoDateTime()) v3To=\(timestamp2.convertToIsoDateTime()) v3Only=\(v3Only) timeout=\(Int(timeout ?? 20))s pageSize=\(v3PageSize) maxPages=\(v3MaximumPages) serverSort=desc(date) localSort=timestamp",
+            "Statistics request interval from=\(Int(from)) to=\(Int(to)) v3From=\(timestamp1.convertToIsoDateTime()) v3To=\(timestamp2.convertToIsoDateTime()) v3Only=\(v3Only) timeout=\(Int(timeout ?? 20))s pageSize=serverDefault maxPages=\(v3MaximumPages) serverSort=desc(date) localSort=timestamp",
             category: .nightscout
         )
 
@@ -1078,6 +1081,8 @@ class NightscoutService {
         let trackedTask = NightscoutRequestTask()
         var allEntries: [[String: Any]] = []
         var didFinish = false
+        var pagesRequested = 0
+        var previousOldestTimestamp: Double?
 
         func finish(_ result: NightscoutRequestResult<[BloodSugar]>) {
             guard !didFinish else { return }
@@ -1120,20 +1125,19 @@ class NightscoutService {
             }.sorted { $0.timestamp < $1.timestamp }
             let merged = self.mergeInTheNewData(oldValues: oldValues, newValues: parsed)
             AppLogger.singleton.info(
-                "Statistics response decoded entries=\(allEntries.count) pages=\((allEntries.count + v3PageSize - 1) / v3PageSize) inRange=\(entriesInRange.count) parsed=\(parsed.count) merged=\(merged.count)",
+                "Statistics response decoded entries=\(allEntries.count) pages=\(pagesRequested) inRange=\(entriesInRange.count) parsed=\(parsed.count) merged=\(merged.count)",
                 category: .nightscout
             )
             finish(.data(merged))
         }
 
-        func requestPage(_ page: Int) {
+        func requestPage(page: Int, skip: Int) {
             var pageQuery = v3Query
-            let skip = page * v3PageSize
             if skip > 0 {
                 pageQuery["skip"] = "\(skip)"
             }
             AppLogger.singleton.debug(
-                "Statistics V3 page request page=\(page + 1)/\(v3MaximumPages) skip=\(skip) limit=\(v3PageSize)",
+                "Statistics V3 page request page=\(page + 1)/\(v3MaximumPages) skip=\(skip) limit=serverDefault",
                 category: .nightscout
             )
             let pageTask = NightscoutAPIClient.shared.requestV3(
@@ -1157,6 +1161,7 @@ class NightscoutService {
                         guard let entries = try JSONSerialization.jsonObject(with: response.0) as? [[String: Any]] else {
                             throw NSError(domain: "EntriesJSONError", code: -1, userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Invalid JSON received from the Nightscout entries API.", comment: "Invalid entries JSON")])
                         }
+                        pagesRequested = page + 1
                         let responseTimestamps = entries.compactMap { self.entryTimestampMillis($0) }
                         AppLogger.singleton.debug(
                             "Statistics raw response page=\(page + 1) skip=\(skip) entries=\(entries.count) timestampCount=\(responseTimestamps.count) firstTimestamp=\(responseTimestamps.min() ?? 0) lastTimestamp=\(responseTimestamps.max() ?? 0)",
@@ -1166,7 +1171,19 @@ class NightscoutService {
                         let oldestTimestamp = responseTimestamps.min()
                         let reachedRequestedDay = oldestTimestamp.map { $0 <= from } ?? false
                         let reachedPageLimit = page + 1 >= v3MaximumPages
-                        if !v3Only || entries.isEmpty || reachedRequestedDay || reachedPageLimit {
+                        let priorOldestTimestamp = previousOldestTimestamp
+                        let didNotProgress = page > 0 &&
+                            oldestTimestamp != nil &&
+                            priorOldestTimestamp != nil &&
+                            oldestTimestamp! >= priorOldestTimestamp!
+                        previousOldestTimestamp = oldestTimestamp ?? previousOldestTimestamp
+                        if didNotProgress {
+                            AppLogger.singleton.warning(
+                                "NightscoutService: statistics pagination stopped because the server did not return an older page (page=\(page + 1), skip=\(skip), oldestTimestampMillis=\(oldestTimestamp ?? 0), previousOldestTimestampMillis=\(priorOldestTimestamp ?? 0))",
+                                category: .nightscout
+                            )
+                        }
+                        if !v3Only || entries.isEmpty || reachedRequestedDay || reachedPageLimit || didNotProgress {
                             if reachedPageLimit && !reachedRequestedDay {
                                 AppLogger.singleton.warning(
                                     "NightscoutService: statistics pagination stopped at page limit before reaching requested time range (requestedFrom=\(timestamp1.convertToIsoDateTime()), oldestTimestampMillis=\(oldestTimestamp ?? 0), pages=\(page + 1))",
@@ -1175,7 +1192,7 @@ class NightscoutService {
                             }
                             finishWithData()
                         } else {
-                            requestPage(page + 1)
+                            requestPage(page: page + 1, skip: allEntries.count)
                         }
                     } catch {
                         AppLogger.singleton.error(
@@ -1194,7 +1211,7 @@ class NightscoutService {
             trackedTask.add(task)
         }
 
-        requestPage(0)
+        requestPage(page: 0, skip: 0)
         return trackedTask
     }
     
@@ -1371,6 +1388,71 @@ class NightscoutService {
         
         return readChartDataWithinPeriodOfTime(oldValues: [], startNrOfDaysAgo, timestamp2: endNrOfDaysAgo, v3Only: v3Only, timeout: timeout) { result in
             callbackHandler(nrOfDaysAgo, result)
+        }
+    }
+
+    /// Reads the complete statistics window in one V3 request sequence and
+    /// partitions the result into current day through four days ago. The
+    /// underlying request starts with the server's configured page size and
+    /// only uses `skip` when that first page does not reach the oldest day.
+    @discardableResult
+    func readStatisticsDays(
+        dayCount: Int = 5,
+        v3Only: Bool = true,
+        timeout: TimeInterval? = nil,
+        callbackHandler: @escaping (NightscoutRequestResult<[[BloodSugar]]>) -> Void
+    ) -> NightscoutTask? {
+        guard dayCount > 0 else {
+            callbackHandler(.data([]))
+            return nil
+        }
+
+        let calendar = Calendar.current
+        let todayStart = calendar.startOfDay(for: TimeService.getToday())
+        guard let oldestDayStart = calendar.date(byAdding: .day, value: -(dayCount - 1), to: todayStart),
+              let tomorrowStart = calendar.date(byAdding: .day, value: 1, to: todayStart) else {
+            let error = NSError(
+                domain: "StatisticsDateError",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("The statistics date range could not be calculated.", comment: "Statistics date range error")]
+            )
+            callbackHandler(.error(error))
+            return nil
+        }
+
+        AppLogger.singleton.info(
+            "NightscoutService: starting combined statistics request days=\(dayCount) from=\(oldestDayStart.convertToIsoDateTime()) to=\(tomorrowStart.convertToIsoDateTime())",
+            category: .nightscout
+        )
+
+        return readChartDataWithinPeriodOfTime(
+            oldValues: [],
+            oldestDayStart,
+            timestamp2: tomorrowStart,
+            v3Only: v3Only,
+            timeout: timeout
+        ) { result in
+            switch result {
+            case .error(let error):
+                callbackHandler(.error(error))
+            case .data(let values):
+                var days = Array(repeating: [BloodSugar](), count: dayCount)
+                for dayIndex in 0..<dayCount {
+                    guard let dayStart = calendar.date(byAdding: .day, value: -dayIndex, to: todayStart),
+                          let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) else {
+                        continue
+                    }
+                    let fromMillis = dayStart.timeIntervalSince1970 * 1000
+                    let toMillis = dayEnd.timeIntervalSince1970 * 1000
+                    days[dayIndex] = values.filter { $0.timestamp >= fromMillis && $0.timestamp < toMillis }
+                }
+                let counts = days.enumerated().map { "D\($0.offset + 1)=\($0.element.count)" }.joined(separator: ",")
+                AppLogger.singleton.info(
+                    "NightscoutService: combined statistics response partitioned values=\(values.count) [\(counts)]",
+                    category: .nightscout
+                )
+                callbackHandler(.data(days))
+            }
         }
     }
     
