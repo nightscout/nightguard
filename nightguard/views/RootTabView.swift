@@ -303,7 +303,15 @@ struct RootTabView: View {
         ProPromotionView(initialPromotion: initialPromotion, showsRemindLater: false)
             .accentColor(Color.nightguardAccent)
             .onAppear {
-                if self.selectedTab == tab { forcePortrait() }
+                let selectedTabAtAppearance = self.selectedTab
+                DispatchQueue.main.async {
+                    guard self.selectedTab == selectedTabAtAppearance || self.selectedTab == tab else { return }
+                    if self.selectedTab != tab {
+                        self.selectedTab = tab
+                        UserDefaultsRepository.currentTab.value = tab
+                    }
+                    forcePortrait()
+                }
             }
             .tabItem {
                 Image(systemName: icon)
