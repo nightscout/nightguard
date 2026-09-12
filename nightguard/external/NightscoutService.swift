@@ -1057,11 +1057,12 @@ class NightscoutService {
         // covered.
         let v3MaximumPages = 32
         let v3Query = [
-            // The main view uses this latest-entries query successfully. Some
-            // installations return an unfiltered first page for date range
-            // operators when legacy and V3 entry types are mixed, so select
-            // the requested day locally below instead of relying on those
-            // server-side date predicates.
+            // API v3 explicitly supports date filters, sorting and paging.
+            // Restrict the database query to the requested window first; the
+            // local range check below remains necessary for older servers
+            // which have been observed to ignore date operators.
+            "date$gte": "\(from)",
+            "date$lt": "\(to)",
             "sort$desc": "date",
             "type$in": "sgv|mbg",
             "fields": "date,dateString,mills,type,sgv,mbg,direction"
@@ -1075,8 +1076,10 @@ class NightscoutService {
         // API3 supports pagination through `skip` and `limit`.  A single
         // latest page is enough for the main view, but a five-day statistics
         // view can span several pages.  Keep requesting older pages until the
-        // oldest returned timestamp reaches the requested day.  We still do
-        // the final day filtering locally because some installations ignore
+        // oldest returned timestamp reaches the requested day.  The explicit
+        // descending sort is important here: it makes skip pagination stable
+        // and lets us stop as soon as the requested lower bound is covered.
+        // The final local range filter protects installations which ignore
         // API3 date predicates when legacy and V3 entry types are mixed.
         let trackedTask = NightscoutRequestTask()
         var allEntries: [[String: Any]] = []
