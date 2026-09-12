@@ -160,14 +160,21 @@ struct RootTabView: View {
                 .accentColor(Color.nightguardAccent)
                 .onAppear {
                     print("DEBUG: StatsView onAppear. selectedTab: \(self.selectedTab)")
-                    // Selecting an item from the system More list may not
-                    // update the SwiftUI selection binding first.
-                    forceLandscape()
-                }
-                .onDisappear {
-                    // The system More list is hosted outside this TabView and
-                    // therefore does not always update selectedTab when opened.
-                    forcePortrait()
+                    // Selecting an item from the system More list can present
+                    // Stats before the SwiftUI selection binding is updated.
+                    // Synchronize it asynchronously so the TabView does not
+                    // restore the previously selected More item (Preferences)
+                    // when the landscape geometry update completes.
+                    if self.selectedTab != .stats {
+                        DispatchQueue.main.async {
+                            guard self.selectedTab != .stats else { return }
+                            self.selectedTab = .stats
+                            UserDefaultsRepository.currentTab.value = .stats
+                            forceLandscape()
+                        }
+                    } else {
+                        forceLandscape()
+                    }
                 }
                 .tabItem {
                     Image("Stats")
