@@ -84,7 +84,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
             BuildableName = "nightguard.app"
-            BlueprintName = "nightguard WatchKit App"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -102,7 +101,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43647BF11BFF6435004389F9"
             BuildableName = "nightguard.app"
-            BlueprintName = "nightguard WatchKit App"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

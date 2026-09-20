@@ -75,7 +75,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43D005CE29DC9BFA003BCE92"
             BuildableName = "nightguard ComplicationExtension.appex"
-            BlueprintName = "nightguard ComplicationExtension"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -118,7 +117,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43D005CE29DC9BFA003BCE92"
             BuildableName = "nightguard ComplicationExtension.appex"
-            BlueprintName = "nightguard ComplicationExtension"
             ReferencedContainer = "container:nightguard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
