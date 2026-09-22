@@ -55,7 +55,7 @@ struct AlarmView: View {
                     .font(.footnote)
             ) {
                 Toggle("Disable all alerts", isOn: $disableAllAlerts)
-                    .onChange(of: disableAllAlerts) { newValue in
+                    .onChange(of: disableAllAlerts) { _, newValue in
                         if !newValue {
                             AlarmRule.areAlertsGenerallyDisabled.value = newValue
                         } else {
@@ -83,7 +83,7 @@ struct AlarmView: View {
                             in: Float(UnitsConverter.mgdlToDisplayUnits(minAlertAbove))...Float(UnitsConverter.mgdlToDisplayUnits(maxAlertAbove)),
                             step: sliderIncrement
                         )
-                        .onChange(of: highBGValue) { newValue in
+                        .onChange(of: highBGValue) { _, newValue in
                             let mgdlValue = UnitsConverter.displayValueToMgdl(newValue)
                             guard mgdlValue > UserDefaultsRepository.lowerBound.value else {
                                 invalidChangeMessage = "High BG value should be above low BG value!"
@@ -114,7 +114,7 @@ struct AlarmView: View {
                             in: Float(UnitsConverter.mgdlToDisplayUnits(minAlertBelow))...Float(UnitsConverter.mgdlToDisplayUnits(maxAlertBelow)),
                             step: sliderIncrement
                         )
-                        .onChange(of: lowBGValue) { newValue in
+                        .onChange(of: lowBGValue) { _, newValue in
                             let mgdlValue = UnitsConverter.displayValueToMgdl(newValue)
                             guard mgdlValue < UserDefaultsRepository.upperBound.value else {
                                 invalidChangeMessage = "Low BG value should be below low BG value!"
@@ -183,7 +183,7 @@ struct AlarmView: View {
                         .font(.footnote)
                 ) {
                     Toggle("Smart Snooze", isOn: $smartSnoozeEnabled)
-                        .onChange(of: smartSnoozeEnabled) { newValue in
+                    .onChange(of: smartSnoozeEnabled) { _, newValue in
                             AlarmRule.isSmartSnoozeEnabled.value = newValue
                         }
                 }
@@ -339,7 +339,7 @@ struct MissedReadingsView: View {
                     .font(.footnote)
             ) {
                 Toggle("Missed Readings", isOn: $missedReadingsEnabled)
-                    .onChange(of: missedReadingsEnabled) { newValue in
+                .onChange(of: missedReadingsEnabled) { _, newValue in
                         if newValue {
                             AlarmRule.noDataAlarmEnabled.value = newValue
                         } else {
@@ -402,7 +402,7 @@ struct FastRiseDropView: View {
                     .font(.footnote)
             ) {
                 Toggle("Fast Rise/Drop", isOn: $fastRiseDropEnabled)
-                    .onChange(of: fastRiseDropEnabled) { newValue in
+                    .onChange(of: fastRiseDropEnabled) { _, newValue in
                         AlarmRule.isEdgeDetectionAlarmEnabled.value = newValue
                     }
             }
@@ -419,7 +419,7 @@ struct FastRiseDropView: View {
                         }
                     }
                     .pickerStyle(.segmented)
-                    .onChange(of: consecutiveReadings) { newValue in
+                    .onChange(of: consecutiveReadings) { _, newValue in
                         AlarmRule.numberOfConsecutiveValues.value = newValue
                     }
                 }
@@ -438,7 +438,7 @@ struct FastRiseDropView: View {
                             in: (UserDefaultsRepository.units.value == .mmol ? 0.1 : 1)...(UserDefaultsRepository.units.value == .mmol ? 2.0 : 36),
                             step: UserDefaultsRepository.units.value == .mmol ? 0.1 : 1
                         )
-                        .onChange(of: deltaValue) { newValue in
+                        .onChange(of: deltaValue) { _, newValue in
                             AlarmRule.deltaAmount.value = UnitsConverter.displayValueToMgdl(newValue)
                         }
                     }
@@ -480,7 +480,7 @@ struct PersistentHighView: View {
                     .font(.footnote)
             ) {
                 Toggle("Persistent High", isOn: $persistentHighEnabled)
-                    .onChange(of: persistentHighEnabled) { newValue in
+                    .onChange(of: persistentHighEnabled) { _, newValue in
                         AlarmRule.isPersistentHighEnabled.value = newValue
                     }
             }
@@ -522,7 +522,7 @@ struct PersistentHighView: View {
                             in: Float(UnitsConverter.mgdlToDisplayUnits(AlarmRule.alertIfAboveValue.value))...Float(UnitsConverter.mgdlToDisplayUnits(300)),
                             step: sliderIncrement
                         )
-                        .onChange(of: urgentHighValue) { newValue in
+                        .onChange(of: urgentHighValue) { _, newValue in
                             let mgdlValue = UnitsConverter.displayValueToMgdl(newValue)
                             AlarmRule.persistentHighUpperBound.value = mgdlValue
                         }
@@ -567,7 +567,7 @@ struct LowPredictionView: View {
                     .font(.footnote)
             ) {
                 Toggle("Low Prediction", isOn: $lowPredictionEnabled)
-                    .onChange(of: lowPredictionEnabled) { newValue in
+                    .onChange(of: lowPredictionEnabled) { _, newValue in
                         AlarmRule.isLowPredictionEnabled.value = newValue
                     }
             }
@@ -621,7 +621,7 @@ struct AlertVolumeView: View {
                     .font(.footnote)
             ) {
                 Toggle("Override System Volume", isOn: $overrideSystemVolume)
-                    .onChange(of: overrideSystemVolume) { newValue in
+                    .onChange(of: overrideSystemVolume) { _, newValue in
                         AlarmSound.overrideSystemOutputVolume.value = newValue
                     }
 
@@ -631,7 +631,7 @@ struct AlertVolumeView: View {
                             Image(systemName: "speaker.wave.1.fill")
                                 .foregroundColor(.gray)
                             Slider(value: $volume, in: 0...1)
-                                .onChange(of: volume) { newValue in
+                                .onChange(of: volume) { _, newValue in
                                     AlarmSound.systemOutputVolume.value = newValue
                                 }
                             Image(systemName: "speaker.wave.3.fill")
@@ -650,14 +650,14 @@ struct AlertVolumeView: View {
                         Text(progressiveVolumeLabel(for: option)).tag(option)
                     }
                 }
-                .onChange(of: progressiveVolume) { newValue in
+                .onChange(of: progressiveVolume) { _, newValue in
                     AlarmSound.fadeInTimeInterval.value = TimeInterval(newValue)
                 }
             }
 
             Section {
                 Toggle("Vibrate", isOn: $vibrate)
-                    .onChange(of: vibrate) { newValue in
+                    .onChange(of: vibrate) { _, newValue in
                         AlarmSound.vibrate.value = newValue
                     }
             }
@@ -737,7 +737,7 @@ struct SnoozeActionsView: View {
                         Text(option.description).tag(option)
                     }
                 }
-                .onChange(of: shakingAction) { newValue in
+                .onChange(of: shakingAction) { _, newValue in
                     UserDefaultsRepository.shakingOnAlertSnoozeOption.value = newValue
                 }
 
@@ -746,7 +746,7 @@ struct SnoozeActionsView: View {
                         Text(option.description).tag(option)
                     }
                 }
-                .onChange(of: volumeKeysAction) { newValue in
+                .onChange(of: volumeKeysAction) { _, newValue in
                     UserDefaultsRepository.volumeKeysOnAlertSnoozeOption.value = newValue
                 }
             }
@@ -775,7 +775,7 @@ struct AlarmSoundView: View {
                     .font(.footnote)
             ) {
                 Toggle("Custom Alarm Sound", isOn: $customAlarmSoundEnabled)
-                    .onChange(of: customAlarmSoundEnabled) { newValue in
+                    .onChange(of: customAlarmSoundEnabled) { _, newValue in
                         AlarmSound.playCustomAlarmSound.value = newValue
                     }
             }

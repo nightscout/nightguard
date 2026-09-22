@@ -76,11 +76,11 @@ class Matrix
     func inverted() -> Matrix {
         var result = self.values
         
-        var pivot: __CLPK_integer = 0
-        var error: __CLPK_integer = 0
+        var pivot: __LAPACK_int = 0
+        var error: __LAPACK_int = 0
         var workspace = 0.0
         
-        var N = __CLPK_integer(sqrt(Double(self.values.count)))
+        var N = __LAPACK_int(sqrt(Double(self.values.count)))
         var M = N
         var LDA = N
         dgetrf_(&M, &N, &result, &LDA, &pivot, &error)

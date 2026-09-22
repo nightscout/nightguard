@@ -36,7 +36,7 @@ struct CareView: View {
                             Text(NSLocalizedString(reason, comment: "")).tag(reason)
                         }
                     }
-                    .onChange(of: selectedReason) { newValue in
+                    .onChange(of: selectedReason) { _, newValue in
                         UserDefaultsRepository.temporaryTargetReason.value = newValue
                         restoreDefaultTargetValue(for: newValue)
                         restoreDefaultDuration(for: newValue)
@@ -47,7 +47,7 @@ struct CareView: View {
                             Text(durationLabel(for: duration)).tag(duration)
                         }
                     }
-                    .onChange(of: selectedDuration) { newValue in
+                    .onChange(of: selectedDuration) { _, newValue in
                         UserDefaultsRepository.temporaryTargetDuration.value = newValue
                         storeNewDefault(duration: newValue)
                     }
@@ -57,7 +57,7 @@ struct CareView: View {
                             Text(UnitsConverter.mgdlToDisplayUnits(String(describing: value))).tag(value)
                         }
                     }
-                    .onChange(of: selectedTargetValue) { newValue in
+                    .onChange(of: selectedTargetValue) { _, newValue in
                         UserDefaultsRepository.temporaryTargetAmount.value = newValue
                         storeNewDefault(value: newValue)
                     }
@@ -89,7 +89,7 @@ struct CareView: View {
                             Text("\(carbs)g").tag(carbs)
                         }
                     }
-                    .onChange(of: selectedCarbs) { newValue in
+                    .onChange(of: selectedCarbs) { _, newValue in
                         UserDefaultsRepository.carbs.value = newValue
                     }
 

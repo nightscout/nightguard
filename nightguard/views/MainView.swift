@@ -435,7 +435,7 @@ struct MainView: View {
         .onReceive(NotificationCenter.default.publisher(for: .nightscoutDataRefreshRequested)) { _ in
             viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
         }
-        .onChange(of: selectedTab) { newTab in
+        .onChange(of: selectedTab) { _, newTab in
             viewModel.handleVisibilityChange(isVisible: newTab == .main)
         }
         .sheet(isPresented: $showNightscout) {

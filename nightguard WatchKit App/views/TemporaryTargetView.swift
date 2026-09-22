@@ -53,7 +53,7 @@ struct TemporaryTargetView: View {
                                 .font(.system(size: 14))
                         }
                     }
-                    .onChange(of: selectedLocalizedTemporaryTargetReason) { _ in
+                    .onChange(of: selectedLocalizedTemporaryTargetReason) { _, _ in
                         UserDefaultsRepository.temporaryTargetReason.value =
                             TemporaryTargetView.userDefaultsToTemporaryTargetReasons.key(
                                 from: $selectedLocalizedTemporaryTargetReason.wrappedValue) ?? ""
@@ -69,7 +69,7 @@ struct TemporaryTargetView: View {
                             Text("\(temporaryTargetDuration)")
                         }
                     }
-                    .onChange(of: selectedTemporaryTargetDuration) { _ in
+                    .onChange(of: selectedTemporaryTargetDuration) { _, _ in
                         UserDefaultsRepository.temporaryTargetDuration.value =
                             $selectedTemporaryTargetDuration.wrappedValue 
                     }

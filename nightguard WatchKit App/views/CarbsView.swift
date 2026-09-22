@@ -36,7 +36,7 @@ struct CarbsView: View {
                                 .font(.system(size: 14))
                         }
                     }
-                    .onChange(of: selectedCarbs) { _ in
+                    .onChange(of: selectedCarbs) { _, _ in
                         UserDefaultsRepository.carbs.value =
                             convertCarbsToInt(carbsString: selectedCarbs)
                     }

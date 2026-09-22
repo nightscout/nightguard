@@ -29,7 +29,11 @@ extension UIApplication {
                 // success!
                 dispatchOnMain {
                     
-                    UIApplication.shared.applicationIconBadgeNumber = sgvAsInt
+                    if #available(iOS 16.0, *) {
+                        UNUserNotificationCenter.current().setBadgeCount(sgvAsInt)
+                    } else {
+                        UIApplication.shared.setValue(sgvAsInt, forKey: "applicationIconBadgeNumber")
+                    }
                 }
             }
         }
@@ -40,7 +44,11 @@ extension UIApplication {
      * Removes the current BG value from app badge
      */
     func clearAppBadge() {
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        if #available(iOS 16.0, *) {
+            UNUserNotificationCenter.current().setBadgeCount(0)
+        } else {
+            UIApplication.shared.setValue(0, forKey: "applicationIconBadgeNumber")
+        }
     }
 }
 #endif

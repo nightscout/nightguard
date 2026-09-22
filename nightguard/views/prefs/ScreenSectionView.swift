@@ -20,7 +20,7 @@ struct ScreenSectionView: View {
                 .font(.footnote)
         ) {
             Toggle("Keep the Screen Active", isOn: $keepScreenActive)
-                .onChange(of: keepScreenActive) { newValue in
+                .onChange(of: keepScreenActive) { _, newValue in
                     if newValue {
                         SharedUserDefaultsRepository.screenlockSwitchState.value = newValue
                     } else {
@@ -36,7 +36,7 @@ struct ScreenSectionView: View {
                     }
                 }
                 .pickerStyle(.automatic)
-                .onChange(of: dimScreenWhenIdle) { newValue in
+                .onChange(of: dimScreenWhenIdle) { _, newValue in
                     UserDefaultsRepository.dimScreenWhenIdle.value = newValue
                 }
             }

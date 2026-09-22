@@ -69,19 +69,19 @@ func solve(_ A: [Double], _ B: [Double], TRANS: String = "T") -> [Double] {
     
     // Get the dimensions of the matrix. An NxN matrix has N^2
     // elements, so sqrt( N^2 ) will return N, the dimension
-    var N: __CLPK_integer = __CLPK_integer( sqrt( Double( A.count ) ) )
+    var N: __LAPACK_int = __LAPACK_int( sqrt( Double( A.count ) ) )
     
     // Number of columns on the RHS
-    var NRHS: __CLPK_integer = 1
+    var NRHS: __LAPACK_int = 1
     
     // Leading dimension of A and B
-    var LDA: __CLPK_integer = N
-    var LDB: __CLPK_integer = N
+    var LDA: __LAPACK_int = N
+    var LDB: __LAPACK_int = N
     
     // Initialize some arrays for the dgetrf_() function
-    var pivots: [__CLPK_integer] = [__CLPK_integer](repeating: 0, count: Int(N))
+    var pivots: [__LAPACK_int] = [__LAPACK_int](repeating: 0, count: Int(N))
     
-    var error: __CLPK_integer = 0
+    var error: __LAPACK_int = 0
     
     // Perform LU factorization
     
@@ -133,10 +133,11 @@ func solve(_ A: [Double], _ B: [Double], TRANS: String = "T") -> [Double] {
         ///
 //        dgetrs_( UnsafeMutablePointer($0), &N, &NRHS, &inMatrix, &LDA, &pivots, &solution, &LDB, &error )
 //    }
-//    let cs = (TRANS as NSString).utf8String
-//    var buffer = UnsafeMutablePointer<Int8>(cs)
-    let buffer = UnsafeMutablePointer<Int8>(mutating: (TRANS as NSString).utf8String)
-    dgetrs_(buffer, &N, &NRHS, &inMatrix, &LDA, &pivots, &solution, &LDB, &error )
+    var transCharacters = Array(TRANS.utf8CString)
+    transCharacters.withUnsafeMutableBufferPointer { buffer in
+        guard let transPointer = buffer.baseAddress else { return }
+        dgetrs_(transPointer, &N, &NRHS, &inMatrix, &LDA, &pivots, &solution, &LDB, &error)
+    }
     
     // Return zero instead of NaN when something failed.
     return solution.map({ $0.isNaN ? 0 : $0 })

@@ -19,7 +19,7 @@ struct UnitsSectionView: View {
                 .font(.footnote)
         ) {
             Toggle("Manually set Units", isOn: $manuallySetUnits)
-                .onChange(of: manuallySetUnits) { newValue in
+                .onChange(of: manuallySetUnits) { _, newValue in
                     UserDefaultsRepository.manuallySetUnits.value = newValue
                     onUnitsChanged()
                 }
@@ -30,7 +30,7 @@ struct UnitsSectionView: View {
                         Text(unit.description).tag(unit)
                     }
                 }
-                .onChange(of: selectedUnits) { newValue in
+                .onChange(of: selectedUnits) { _, newValue in
                     UserDefaultsRepository.units.value = newValue
                     onUnitsChanged()
                 }

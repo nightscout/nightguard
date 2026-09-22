@@ -83,7 +83,7 @@ struct NightscoutSectionView: View {
                     .font(.caption)
             }
         }
-        .onChange(of: focusedField) { newField in
+        .onChange(of: focusedField) { _, newField in
             if newField == nil {
                 validateAndSaveURL()
             }

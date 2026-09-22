@@ -79,7 +79,7 @@ struct AgeAlertsView: View {
                             in: 1...30,
                             step: 1
                         )
-                        .onChange(of: sensorWarningDays) { newValue in
+                        .onChange(of: sensorWarningDays) { _, newValue in
                             let hours = Int(newValue * 24)
                             guard hours < UserDefaultsRepository.sensorAgeHoursUntilCritical.value else {
                                 // Reset to previous value if >= critical
@@ -102,7 +102,7 @@ struct AgeAlertsView: View {
                             in: 1...30,
                             step: 1
                         )
-                        .onChange(of: sensorCriticalDays) { newValue in
+                        .onChange(of: sensorCriticalDays) { _, newValue in
                             let hours = Int(newValue * 24)
                             guard hours > UserDefaultsRepository.sensorAgeHoursUntilWarning.value else {
                                 // Reset to previous value if <= warning
@@ -133,7 +133,7 @@ struct AgeAlertsView: View {
                             in: 1...30,
                             step: 1
                         )
-                        .onChange(of: batteryWarningDays) { newValue in
+                        .onChange(of: batteryWarningDays) { _, newValue in
                             let hours = Int(newValue * 24)
                             guard hours < UserDefaultsRepository.batteryAgeHoursUntilCritical.value else {
                                 batteryWarningDays = Float(UserDefaultsRepository.batteryAgeHoursUntilWarning.value) / 24.0
@@ -155,7 +155,7 @@ struct AgeAlertsView: View {
                             in: 1...30,
                             step: 1
                         )
-                        .onChange(of: batteryCriticalDays) { newValue in
+                        .onChange(of: batteryCriticalDays) { _, newValue in
                             let hours = Int(newValue * 24)
                             guard hours > UserDefaultsRepository.batteryAgeHoursUntilWarning.value else {
                                 batteryCriticalDays = Float(UserDefaultsRepository.batteryAgeHoursUntilCritical.value) / 24.0
@@ -193,7 +193,7 @@ struct AgeAlertsView: View {
                                     .font(.system(.body, design: .monospaced))
                                     .frame(minWidth: 30, alignment: .trailing)
                             }
-                            .onChange(of: cannulaWarningDays) { _ in
+                            .onChange(of: cannulaWarningDays) { _, _ in
                                 saveCannulaWarning()
                             }
                         }
@@ -213,7 +213,7 @@ struct AgeAlertsView: View {
                                     .font(.system(.body, design: .monospaced))
                                     .frame(minWidth: 30, alignment: .trailing)
                             }
-                            .onChange(of: cannulaWarningHours) { _ in
+                            .onChange(of: cannulaWarningHours) { _, _ in
                                 saveCannulaWarning()
                             }
                         }
@@ -240,7 +240,7 @@ struct AgeAlertsView: View {
                                     .font(.system(.body, design: .monospaced))
                                     .frame(minWidth: 30, alignment: .trailing)
                             }
-                            .onChange(of: cannulaCriticalDays) { _ in
+                            .onChange(of: cannulaCriticalDays) { _, _ in
                                 saveCannulaCritical()
                             }
                         }
@@ -260,7 +260,7 @@ struct AgeAlertsView: View {
                                     .font(.system(.body, design: .monospaced))
                                     .frame(minWidth: 30, alignment: .trailing)
                             }
-                            .onChange(of: cannulaCriticalHours) { _ in
+                            .onChange(of: cannulaCriticalHours) { _, _ in
                                 saveCannulaCritical()
                             }
                         }
@@ -286,7 +286,7 @@ struct AgeAlertsView: View {
                             in: 0...300,
                             step: 5
                         )
-                        .onChange(of: reservoirWarning) { newValue in
+                        .onChange(of: reservoirWarning) { _, newValue in
                             let value = Int(newValue)
                             guard value > UserDefaultsRepository.reservoirUnitsCritical.value else {
                                 reservoirWarning = Float(UserDefaultsRepository.reservoirUnitsWarning.value)
@@ -308,7 +308,7 @@ struct AgeAlertsView: View {
                             in: 0...300,
                             step: 5
                         )
-                        .onChange(of: reservoirCritical) { newValue in
+                        .onChange(of: reservoirCritical) { _, newValue in
                             let value = Int(newValue)
                             guard value < UserDefaultsRepository.reservoirUnitsWarning.value else {
                                 reservoirCritical = Float(UserDefaultsRepository.reservoirUnitsCritical.value)

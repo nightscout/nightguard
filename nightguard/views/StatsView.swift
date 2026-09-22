@@ -86,7 +86,7 @@ struct StatsView: View {
                 chartSize = size
                 daysToDisplay = UserDefaultsRepository.daysToBeDisplayed.value
             }
-            .onChange(of: geometry.size) { newSize in
+            .onChange(of: geometry.size) { _, newSize in
                 let size = CGSize(width: newSize.width, height: newSize.height - 50)
                 setupChart(size: size)
                 chartSize = size

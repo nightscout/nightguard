@@ -150,7 +150,7 @@ class LiveActivityManager {
             previousValues: historyValues
         )
 
-        guard #available(iOS 16.1, *) else { return }
+        guard #available(iOS 16.2, *) else { return }
         let contentState = makeContentState(
             from: snapshot,
             historyValues: NightguardDisplaySnapshot.makeLiveActivityHistory(
@@ -168,7 +168,7 @@ class LiveActivityManager {
         
         Task {
             for activity in Activity<NightguardActivityAttributes>.activities {
-                await activity.end(dismissalPolicy: .immediate)
+                await activity.end(nil, dismissalPolicy: .immediate)
             }
         }
         #endif

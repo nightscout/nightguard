@@ -55,7 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let orientation = orientation {
                 UIDevice.current.setValue(orientation.rawValue, forKey: "orientation")
             }
-            UINavigationController.attemptRotationToDeviceOrientation()
             return
         }
 

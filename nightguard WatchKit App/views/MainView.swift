@@ -248,7 +248,7 @@ struct MainView: View {
             .onDisappear() {
                 viewModel.chartDidDisappear()
             }
-            .onChange(of: viewModel.crownMode) { _ in
+            .onChange(of: viewModel.crownMode) { _, _ in
                 oldCrownValue = crownValue
                 lastSelectionMoveTime = .distantPast
             }

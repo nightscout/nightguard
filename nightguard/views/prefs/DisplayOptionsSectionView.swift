@@ -19,33 +19,33 @@ struct DisplayOptionsSectionView: View {
     var body: some View {
         Section {
             Toggle("Show Statistics", isOn: $showStats)
-                .onChange(of: showStats) { newValue in
+                .onChange(of: showStats) { _, newValue in
                     UserDefaultsRepository.showStats.value = newValue
                 }
 
             Toggle("Show Care/Loop Data", isOn: $showCareAndLoopData)
-                .onChange(of: showCareAndLoopData) { newValue in
+                .onChange(of: showCareAndLoopData) { _, newValue in
                     UserDefaultsRepository.showCareAndLoopData.value = newValue
                 }
 
             Toggle("Show Yesterdays BGs", isOn: $showYesterdaysBgs)
-                .onChange(of: showYesterdaysBgs) { newValue in
+                .onChange(of: showYesterdaysBgs) { _, newValue in
                     UserDefaultsRepository.showYesterdaysBgs.value = newValue
                 }
 
             Toggle("Check BG every minute", isOn: $checkBGEveryMinute)
-                .onChange(of: checkBGEveryMinute) { newValue in
+                .onChange(of: checkBGEveryMinute) { _, newValue in
                     UserDefaultsRepository.checkBGEveryMinute.value = newValue
                 }
 
             Toggle("Show BG on App Badge", isOn: $showBGOnAppBadge)
-                .onChange(of: showBGOnAppBadge) { newValue in
+                .onChange(of: showBGOnAppBadge) { _, newValue in
                     SharedUserDefaultsRepository.showBGOnAppBadge.value = newValue
                 }
 
             VStack(alignment: .leading, spacing: 4) {
                 Toggle("Synchronize with Apple Health", isOn: $appleHealthSync)
-                    .onChange(of: appleHealthSync) { newValue in
+                    .onChange(of: appleHealthSync) { _, newValue in
                         if AppleHealthService.singleton.isAuthorized() {
                             showAppleHealthAlert = true
                             appleHealthSync = true
