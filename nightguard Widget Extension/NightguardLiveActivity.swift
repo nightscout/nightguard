@@ -14,36 +14,16 @@ import ActivityKit
 struct NightguardLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: NightguardActivityAttributes.self) { context in
-            // Lock screen/banner UI
-            HStack(spacing: 12) {
-                HStack(spacing: 8) {
-                    Text(context.state.sgv)
-                        .font(.system(size: 50, weight: .bold))
-                        .foregroundColor(.primary)
-                    
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text(context.state.trendArrow)
-                                .font(.title)
-                            Text(context.state.delta)
-                                .font(.title3)
-                                .foregroundColor(.secondary)
-                        }
-                        Text(context.state.date, style: .time)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                }
-
-                if !context.state.glucoseSamples.isEmpty {
-                    GlucoseSparkline(
-                        samples: context.state.glucoseSamples,
-                        lowerTarget: context.state.lowerTarget,
-                        upperTarget: context.state.upperTarget,
-                        lineColor: glucoseColor(for: context.state)
-                    )
-                    .frame(minWidth: 100, maxWidth: .infinity)
-                    .frame(height: 64)
+            // Prefer the familiar side-by-side layout. Measure the complete
+            // readout so long values cannot steal the chart's minimum width.
+            ViewThatFits(in: .horizontal) {
+                lockScreenRow(for: context.state, compact: false)
+                lockScreenRow(for: context.state, compact: true)
+                VStack(alignment: .leading, spacing: 6) {
+                    lockScreenReadout(for: context.state, compact: true)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                    lockScreenChart(for: context.state, height: 54)
                 }
             }
             .padding()
@@ -51,85 +31,55 @@ struct NightguardLiveActivity: Widget {
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Keep the value and trend together so the chart can sit clearly
-                // to their right as a separate visual block.
-                DynamicIslandExpandedRegion(.leading) {
-                    HStack(alignment: .firstTextBaseline, spacing: 9) {
-                        Text(context.state.sgv)
-                            .font(.system(size: 52, weight: .bold, design: .rounded))
-                            .fixedSize(horizontal: true, vertical: false)
-                            .layoutPriority(1)
-                            .foregroundColor(glucoseColor(for: context.state))
-
-                        HStack(alignment: .firstTextBaseline, spacing: 5) {
-                            Text(context.state.delta)
-                                .font(.system(size: 25, weight: .semibold, design: .rounded))
-                                .fixedSize(horizontal: true, vertical: false)
-                                .layoutPriority(1)
-                                .foregroundColor(glucoseColor(for: context.state))
-
-                            Text(context.state.trendArrow)
-                                .font(.system(size: 30, weight: .medium))
-                                .fixedSize(horizontal: true, vertical: false)
-                        }
-                        .fixedSize(horizontal: true, vertical: false)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 8)
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    VStack(spacing: 0) {
-                        if !context.state.glucoseSamples.isEmpty {
-                            GlucoseSparkline(
-                                samples: context.state.glucoseSamples,
-                                lowerTarget: context.state.lowerTarget,
-                                upperTarget: context.state.upperTarget,
-                                lineColor: glucoseColor(for: context.state)
-                            )
-                            .frame(
-                                minWidth: 120,
-                                idealWidth: 190,
-                                maxWidth: .infinity,
-                                minHeight: 54,
-                                maxHeight: 54
-                            )
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(.trailing, 8)
-                }
+                // Use the full width below the camera for the value and chart.
+                // Each candidate declares its required width; narrow displays
+                // can choose smaller type or put the chart on a second row.
                 DynamicIslandExpandedRegion(.bottom) {
-                    HStack(spacing: 8) {
-                        if !context.state.iob.isEmpty {
-                            Text("IOB: \(context.state.iob)")
+                    VStack(spacing: 8) {
+                        ViewThatFits(in: .horizontal) {
+                            expandedRow(for: context.state, compact: false)
+                            expandedRow(for: context.state, compact: true)
+                            VStack(alignment: .leading, spacing: 6) {
+                                expandedReadout(for: context.state, compact: true)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.6)
+                                expandedChart(for: context.state)
+                            }
                         }
+                        HStack(spacing: 8) {
+                            if !context.state.iob.isEmpty {
+                                Text("IOB: \(context.state.iob)")
+                            }
 
-                        if !context.state.iob.isEmpty && !context.state.cob.isEmpty {
-                            Text("•")
-                                .foregroundColor(.secondary.opacity(0.65))
+                            if !context.state.iob.isEmpty && !context.state.cob.isEmpty {
+                                Text("•")
+                                    .foregroundColor(.secondary.opacity(0.65))
+                            }
+
+                            if !context.state.cob.isEmpty {
+                                Text("COB: \(context.state.cob)")
+                            }
+
+                            Spacer(minLength: 8)
+
+                            HStack(spacing: 3) {
+                                Text(context.state.date, style: .relative)
+                                Text("ago")
+                            }
+                            .monospacedDigit()
                         }
-
-                        if !context.state.cob.isEmpty {
-                            Text("COB: \(context.state.cob)")
-                        }
-
-                        Spacer(minLength: 8)
-
-                        HStack(spacing: 3) {
-                            Text(context.state.date, style: .relative)
-                            Text("ago")
-                        }
-                        .monospacedDigit()
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                     }
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.75)
-                    .padding(.horizontal, 12)
+                    .padding(.horizontal, 8)
                 }
             } compactLeading: {
                 Text(context.state.sgv)
                     .fontWeight(.bold)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                     .foregroundColor(Color(red: context.state.sgvColorRed, green: context.state.sgvColorGreen, blue: context.state.sgvColorBlue))
             } compactTrailing: {
                 HStack(spacing: 2) {
@@ -137,14 +87,97 @@ struct NightguardLiveActivity: Widget {
                     Text(context.state.delta)
                 }
                 .font(.caption)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
                 .foregroundColor(Color(red: context.state.sgvColorRed, green: context.state.sgvColorGreen, blue: context.state.sgvColorBlue))
             } minimal: {
                 Text(context.state.sgv)
                     .fontWeight(.bold)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                     .foregroundColor(Color(red: context.state.sgvColorRed, green: context.state.sgvColorGreen, blue: context.state.sgvColorBlue))
             }
             .widgetURL(URL(string: "nightguard://open"))
             .keylineTint(Color(red: context.state.sgvColorRed, green: context.state.sgvColorGreen, blue: context.state.sgvColorBlue))
+        }
+    }
+
+    private func lockScreenRow(for state: NightguardActivityAttributes.ContentState, compact: Bool) -> some View {
+        HStack(spacing: 12) {
+            lockScreenReadout(for: state, compact: compact)
+                .fixedSize(horizontal: true, vertical: false)
+            lockScreenChart(for: state)
+        }
+    }
+
+    private func lockScreenReadout(for state: NightguardActivityAttributes.ContentState, compact: Bool) -> some View {
+        HStack(spacing: 8) {
+            Text(state.sgv)
+                .font(.system(size: compact ? 36 : 50, weight: .bold))
+                .foregroundColor(.primary)
+                .layoutPriority(1)
+
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(state.trendArrow)
+                        .font(compact ? .system(size: 23) : .title)
+                    Text(state.delta)
+                        .font(compact ? .system(size: 17) : .title3)
+                        .foregroundColor(.secondary)
+                }
+                Text(state.date, style: .time)
+                    .font(compact ? .system(size: 12) : .caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func lockScreenChart(for state: NightguardActivityAttributes.ContentState, height: CGFloat = 64) -> some View {
+        if !state.glucoseSamples.isEmpty {
+            GlucoseSparkline(
+                samples: state.glucoseSamples,
+                lowerTarget: state.lowerTarget,
+                upperTarget: state.upperTarget,
+                lineColor: glucoseColor(for: state)
+            )
+            .frame(minWidth: 100, maxWidth: .infinity)
+            .frame(height: height)
+        }
+    }
+
+    private func expandedRow(for state: NightguardActivityAttributes.ContentState, compact: Bool) -> some View {
+        HStack(spacing: 12) {
+            expandedReadout(for: state, compact: compact)
+                .fixedSize(horizontal: true, vertical: false)
+            expandedChart(for: state)
+        }
+    }
+
+    private func expandedReadout(for state: NightguardActivityAttributes.ContentState, compact: Bool) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Text(state.sgv)
+                .font(.system(size: compact ? 36 : 52, weight: .bold, design: .rounded))
+                .layoutPriority(1)
+            Text(state.delta)
+                .font(.system(size: compact ? 19 : 25, weight: .semibold, design: .rounded))
+            Text(state.trendArrow)
+                .font(.system(size: compact ? 23 : 30, weight: .medium))
+        }
+        .foregroundColor(glucoseColor(for: state))
+    }
+
+    @ViewBuilder
+    private func expandedChart(for state: NightguardActivityAttributes.ContentState) -> some View {
+        if !state.glucoseSamples.isEmpty {
+            GlucoseSparkline(
+                samples: state.glucoseSamples,
+                lowerTarget: state.lowerTarget,
+                upperTarget: state.upperTarget,
+                lineColor: glucoseColor(for: state)
+            )
+            .frame(minWidth: 120, maxWidth: .infinity)
+            .frame(height: 54)
         }
     }
 
@@ -172,9 +205,9 @@ private struct GlucoseSparkline: View {
             let yAxisWidth: CGFloat = 24
             let plotRect = CGRect(
                 x: yAxisWidth + 4,
-                y: 3,
-                width: max(geometry.size.width - yAxisWidth - 4, 1),
-                height: max(geometry.size.height - 6, 1)
+                y: 6,
+                width: max(geometry.size.width - yAxisWidth - 7, 1),
+                height: max(geometry.size.height - 12, 1)
             )
 
             ZStack {
@@ -204,13 +237,15 @@ private struct GlucoseSparkline: View {
                             y: yPosition(for: sampleValueBounds.upperBound, in: plotRect)
                         )
 
-                    Text(axisLabel(for: sampleValueBounds.lowerBound))
-                        .font(.system(size: 8, weight: .medium, design: .rounded))
-                        .foregroundColor(.secondary)
-                        .position(
-                            x: yAxisWidth / 2,
-                            y: yPosition(for: sampleValueBounds.lowerBound, in: plotRect)
-                        )
+                    if sampleValueBounds.lowerBound != sampleValueBounds.upperBound {
+                        Text(axisLabel(for: sampleValueBounds.lowerBound))
+                            .font(.system(size: 8, weight: .medium, design: .rounded))
+                            .foregroundColor(.secondary)
+                            .position(
+                                x: yAxisWidth / 2,
+                                y: yPosition(for: sampleValueBounds.lowerBound, in: plotRect)
+                            )
+                    }
                 }
             }
         }
@@ -229,6 +264,9 @@ private struct GlucoseSparkline: View {
             return normalizedLowerTarget...normalizedUpperTarget
         }
 
+        if minimum == maximum {
+            return (minimum - 1)...(maximum + 1)
+        }
         return minimum...maximum
     }
 

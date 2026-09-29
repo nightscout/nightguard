@@ -267,7 +267,51 @@ class DataRepositoryTest: XCTestCase {
         )
 
         // Then
-        XCTAssertEqual(history.map(\.value), [120, 130])
+        XCTAssertEqual(history.map(\.value), [100, 130])
+    }
+
+    func testLiveActivityMinuteSamplesCoverTheWholeHour() {
+        let latestTimestamp = 10_000_000.0
+        let values = (0...60).map { minute in
+            BloodSugar(value: Float(100 + minute),
+                       timestamp: latestTimestamp - Double(60 - minute) * 60_000,
+                       isMeteredBloodGlucoseValue: false, arrow: "→")
+        }
+        let data = NightscoutData()
+        data.sgv = "160"
+        data.time = NSNumber(value: latestTimestamp)
+
+        let history = NightguardDisplaySnapshot.makeLiveActivityHistory(from: values, including: data)
+
+        XCTAssertEqual(history.map(\.timestamp), stride(from: 0, through: 60, by: 5).map {
+            latestTimestamp - Double(60 - $0) * 60_000
+        })
+        XCTAssertEqual(history.last?.value, 160)
+    }
+
+    func testLiveActivityHistoryPreservesGapsAndHandlesSmallLimits() {
+        let latestTimestamp = 10_000_000.0
+        let minutes = [0, 1, 2, 3, 40, 41, 50, 59, 60]
+        let values = minutes.map { minute in
+            BloodSugar(value: Float(100 + minute),
+                       timestamp: latestTimestamp - Double(60 - minute) * 60_000,
+                       isMeteredBloodGlucoseValue: false, arrow: "→")
+        }
+        let data = NightscoutData()
+        data.sgv = "160"
+        data.time = NSNumber(value: latestTimestamp)
+
+        let history = NightguardDisplaySnapshot.makeLiveActivityHistory(
+            from: values, including: data, maximumSampleCount: 5)
+        XCTAssertLessThanOrEqual(history.count, 5)
+        XCTAssertEqual(history.first?.timestamp, values.first?.timestamp)
+        XCTAssertEqual(history.last?.timestamp, latestTimestamp)
+        XCTAssertTrue(history.allSatisfy { sample in values.contains { $0.timestamp == sample.timestamp } })
+        XCTAssertTrue(zip(history, history.dropFirst()).contains { $1.timestamp - $0.timestamp > 15 * 60_000 })
+        XCTAssertEqual(NightguardDisplaySnapshot.makeLiveActivityHistory(
+            from: values, including: data, maximumSampleCount: 1).map(\.timestamp), [latestTimestamp])
+        XCTAssertTrue(NightguardDisplaySnapshot.makeLiveActivityHistory(
+            from: values, including: data, maximumSampleCount: 0).isEmpty)
     }
 
     #if canImport(ActivityKit)

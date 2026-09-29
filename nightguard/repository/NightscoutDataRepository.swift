@@ -283,7 +283,28 @@ struct NightguardDisplaySnapshot: Codable, Hashable {
             $0.timestamp >= earliestTimestamp && $0.timestamp <= latestTimestamp
         }
 
-        return Array(valuesWithinDuration.suffix(maximumSampleCount))
+        guard valuesWithinDuration.count > maximumSampleCount else {
+            return valuesWithinDuration
+        }
+        guard maximumSampleCount > 1,
+              let first = valuesWithinDuration.first,
+              let last = valuesWithinDuration.last,
+              last.timestamp > first.timestamp else {
+            return Array(valuesWithinDuration.suffix(1))
+        }
+
+        // Keep the oldest sample and the newest sample in each time bucket.
+        // A fixed count of trailing samples would only cover twelve minutes
+        // for sensors that report every minute.
+        let bucketCount = maximumSampleCount - 1
+        let bucketDuration = (last.timestamp - first.timestamp) / Double(bucketCount)
+        var buckets = [BloodSugar?](repeating: nil, count: bucketCount)
+        for sample in valuesWithinDuration.dropFirst() {
+            let index = min(bucketCount - 1, max(0,
+                Int(ceil((sample.timestamp - first.timestamp) / bucketDuration)) - 1))
+            buckets[index] = sample
+        }
+        return [first] + buckets.compactMap { $0 }
     }
 
     private struct SnapshotBgEntry {
