@@ -20,6 +20,7 @@ import Combine
 struct ChartAutoScrollPolicy {
     let inactivityInterval: TimeInterval
     private(set) var lastInteractionDate: Date? = nil
+    private var earliestScrollDate = Date.distantPast
 
     init(inactivityInterval: TimeInterval = 10) {
         self.inactivityInterval = inactivityInterval
@@ -29,14 +30,47 @@ struct ChartAutoScrollPolicy {
         lastInteractionDate = date
     }
 
-    mutating func reset() {
+    mutating func reset(initialDelay: TimeInterval = 0, at date: Date = Date()) {
         lastInteractionDate = nil
+        earliestScrollDate = initialDelay > 0 ? date.addingTimeInterval(initialDelay) : .distantPast
     }
 
     func remainingDelay(at date: Date = Date()) -> TimeInterval {
-        guard let lastInteractionDate else { return 0 }
-        return max(0, inactivityInterval - date.timeIntervalSince(lastInteractionDate))
+        let interactionDelay = lastInteractionDate.map {
+            inactivityInterval - date.timeIntervalSince($0)
+        } ?? 0
+        return max(0, max(earliestScrollDate.timeIntervalSince(date), interactionDelay))
     }
+}
+
+// Owned by the persistent model, not by a transient SwiftUI View value.
+// All calls and the deferred action run on the main queue.
+final class DeferredAppearanceRefresh {
+    static let delay: TimeInterval = 0.5
+    private var workItem: DispatchWorkItem?
+    private var generation = 0
+
+    var isPending: Bool { workItem != nil }
+
+    func schedule(after delay: TimeInterval = DeferredAppearanceRefresh.delay, action: @escaping () -> Void) {
+        cancel()
+        let scheduledGeneration = generation
+        let item = DispatchWorkItem { [weak self] in
+            guard let self, self.generation == scheduledGeneration else { return }
+            self.workItem = nil
+            action()
+        }
+        workItem = item
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: item)
+    }
+
+    func cancel() {
+        generation += 1
+        workItem?.cancel()
+        workItem = nil
+    }
+
+    deinit { workItem?.cancel() }
 }
 
 class MainViewModel: ObservableObject, Identifiable {
@@ -89,6 +123,9 @@ class MainViewModel: ObservableObject, Identifiable {
 
     #if os(watchOS)
     // MARK: - Watch-Specific Properties
+    private let appearanceRefresh = DeferredAppearanceRefresh()
+    private var needsAppearanceRefresh = false
+
     enum CrownMode {
         case scroll
         case zoom
@@ -391,6 +428,29 @@ class MainViewModel: ObservableObject, Identifiable {
     #if os(watchOS)
     // MARK: - Watch-Specific Methods
 
+    func watchMainViewDidAppear() {
+        chartDidAppear()
+        needsAppearanceRefresh = true
+        scheduleAppearanceRefresh()
+    }
+
+    private func scheduleAppearanceRefresh() {
+        appearanceRefresh.schedule { [weak self] in
+            guard let self, self.isChartVisible, AppState.isUIActive else { return }
+            self.needsAppearanceRefresh = false
+            self.refreshData(forceRefresh: false, moveToLatestValue: false)
+            // Also defer the phone reply, which can trigger a forced repaint.
+            WatchSyncRequestMessage().send()
+            UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(
+                UserDefaultsRepository.units.value.rawValue, forKey: "units")
+        }
+    }
+
+    func refreshWatchDataIfReady() {
+        guard !appearanceRefresh.isPending, !needsAppearanceRefresh else { return }
+        refreshData(forceRefresh: false, moveToLatestValue: false)
+    }
+
     // Retrieve data that has been obtained from a background task.
     // Update the UI, Complication and send Notifications
     func pushBackgroundData(newNightscoutData: NightscoutData) {
@@ -474,18 +534,41 @@ class MainViewModel: ObservableObject, Identifiable {
 
     func chartDidAppear() {
         isChartVisible = true
+        #if os(watchOS)
+        skScene.stopMovingToLatestValue()
+        chartAutoScrollPolicy.reset(initialDelay: DeferredAppearanceRefresh.delay)
+        #else
         chartAutoScrollPolicy.reset()
+        #endif
         reconcileChartAutoScroll()
     }
 
     func chartDidDisappear() {
         isChartVisible = false
         cancelChartAutoScroll()
+        #if os(watchOS)
+        appearanceRefresh.cancel()
+        needsAppearanceRefresh = false
+        skScene.stopMovingToLatestValue()
+        #endif
     }
 
     func chartDidBecomeActive() {
         guard chartCanAutoScroll else { return }
 
+        #if os(watchOS)
+        // Do not reset a Crown interaction or bypass the appearance delay.
+        if appearanceRefresh.isPending {
+            reconcileChartAutoScroll()
+            return
+        }
+        if needsAppearanceRefresh {
+            chartAutoScrollPolicy.reset(initialDelay: DeferredAppearanceRefresh.delay)
+            scheduleAppearanceRefresh()
+            reconcileChartAutoScroll()
+            return
+        }
+        #endif
         chartAutoScrollPolicy.reset()
         reconcileChartAutoScroll()
     }
@@ -493,6 +576,9 @@ class MainViewModel: ObservableObject, Identifiable {
     func chartDidResignActive() {
         cancelChartAutoScroll()
         skScene.stopMovingToLatestValue()
+        #if os(watchOS)
+        appearanceRefresh.cancel()
+        #endif
     }
 
     func chartInteractionDidChange() {

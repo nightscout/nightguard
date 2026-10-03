@@ -25,7 +25,6 @@ struct MainView: View {
     init(mainViewModel: MainViewModel) {
         
         self.viewModel = mainViewModel
-        viewModel.refreshData(forceRefresh: true, moveToLatestValue: true)
    }
 
     fileprivate func scrollChart() {
@@ -229,21 +228,14 @@ struct MainView: View {
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .edgesIgnoringSafeArea(.bottom)
             .onAppear() {
-                viewModel.chartDidAppear()
-                viewModel.refreshData(forceRefresh: false, moveToLatestValue: true)
-                
-                // Request Data from the main app
-                // especially the baseUri if missing
-                WatchSyncRequestMessage().send()
-                print("*************** \(UserDefaultsRepository.units.value)")
-                UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(UserDefaultsRepository.units.value.rawValue, forKey: "units")
+                viewModel.watchMainViewDidAppear()
             }
             .onReceive(timer) { _ in
-                viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
+                viewModel.refreshWatchDataIfReady()
             }
             .onReceive(refreshDataOnAppBecameActiveNotification) { _ in
                 viewModel.chartDidBecomeActive()
-                viewModel.refreshData(forceRefresh: false, moveToLatestValue: false)
+                viewModel.refreshWatchDataIfReady()
             }
             .onDisappear() {
                 viewModel.chartDidDisappear()
