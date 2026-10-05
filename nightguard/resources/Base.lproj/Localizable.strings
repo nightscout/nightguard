@@ -778,3 +778,7 @@
 "Previous sign-in: new" = "Previous sign-in: new";
 "The sign-in supplied by the server has already expired according to the device clock." = "The sign-in supplied by the server has already expired according to the device clock.";
 "The Nightscout response contains no usable sign-in." = "The Nightscout response contains no usable sign-in.";
+
+/* Direct V1 API preference */
+"Always use V1 API" = "Always use V1 API";
+"Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery.";

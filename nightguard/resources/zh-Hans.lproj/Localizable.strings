@@ -812,3 +812,6 @@
 
 /* Price per month */
 "%@ / month" = "%@ / 月";
+/* Direct V1 API preference */
+"Always use V1 API" = "始终使用 V1 API";
+"Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "直接通过 V1 加载血糖和治疗数据，无需 V3 检查或登录。IOB、COB 和上传设备电量仍通过 V2 获取。";

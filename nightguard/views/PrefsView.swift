@@ -10,6 +10,7 @@ import WidgetKit
 
 struct PrefsView: View {
     @State private var nightscoutURL = UserDefaultsRepository.baseUri.value
+    @State private var forceV1API = UserDefaultsRepository.forceV1API.value
     @State private var apiToken = UserDefaultsRepository.nightscoutToken
     @State private var manuallySetUnits = UserDefaultsRepository.manuallySetUnits.value
     @State private var selectedUnits = UserDefaultsRepository.units.value
@@ -41,11 +42,18 @@ struct PrefsView: View {
             Form {
                 NightscoutSectionView(
                     nightscoutURL: $nightscoutURL,
+                    forceV1API: $forceV1API,
                     apiToken: $apiToken,
                     isValidatingURL: $isValidatingURL,
                     urlErrorMessage: $urlErrorMessage,
                     validateAndSaveURL: saveCredentialsIfChanged
                 )
+
+                .onChange(of: forceV1API) { _, newValue in
+                    UserDefaultsRepository.forceV1API.value = newValue
+                    NotificationCenter.default.post(name: .nightscoutDataRefreshRequested, object: nil)
+                    WidgetCenter.shared.reloadAllTimelines()
+                }
 
                 Section(header: Text(NSLocalizedString("Data", comment: "Data settings section"))) {
                     Button {
@@ -197,6 +205,7 @@ struct PrefsView: View {
     
     private func loadCurrentValues() {
         nightscoutURL = UserDefaultsRepository.baseUri.value
+        forceV1API = UserDefaultsRepository.forceV1API.value
         apiToken = UserDefaultsRepository.nightscoutToken
         lastSavedNightscoutURL = nightscoutURL
         lastSavedAPIToken = apiToken

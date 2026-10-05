@@ -173,6 +173,13 @@ final class NightscoutAPIClient {
             return nil
         }
 
+        if UserDefaultsRepository.forceV1API.value {
+            let trackedTask = NightscoutRequestTask()
+            logInfo("Direct V1 request selected by preference")
+            performLegacy(legacy, method: method, body: body, trackedTask: trackedTask, completion: completion)
+            return trackedTask
+        }
+
         let effectiveReadTimeout = readTimeout ?? self.v3ReadTimeout
         logInfo(
             "V3 request started endpoint=\(safeEndpoint(path: path, query: query)) timeout=\(Int(effectiveReadTimeout))s fallbackOnTransportFailure=\(fallbackOnTransportFailure) allowLegacyFallback=\(allowLegacyFallback) tokenConfigured=\(!UserDefaultsRepository.nightscoutToken.isEmpty)"
@@ -820,11 +827,9 @@ class NightscoutService {
             return nil
         }
 
-        // Keep this compatibility helper v3-first as well. Normal UI code
-        // uses the shared entries stream, but older callers must not make v1
-        // the primary API path.
+        // Compatibility callers share the configured API selection.
         AppLogger.singleton.debug(
-            "NightscoutService: requesting chart preview through the v3 entries collection",
+            "NightscoutService: requesting chart preview through the configured entries API",
             category: .nightscout
         )
         return NightscoutAPIClient.shared.requestV3(
@@ -878,7 +883,7 @@ class NightscoutService {
         let startedAt = Date()
         let streamCutoffMillis = (Date().timeIntervalSince1970 - (48 * 60 * 60)) * 1000
         AppLogger.singleton.debug(
-            "NightscoutService: requesting entries stream through v3 with 48-hour cutoff",
+            "NightscoutService: requesting entries stream through the configured API",
             category: .nightscout
         )
 
@@ -919,13 +924,10 @@ class NightscoutService {
         ) { result in
             switch result {
             case .success(let response):
-                // requestV3 transparently uses the configured v1 endpoint
-                // when v3 is unavailable or a transient transport failure
-                // occurs. The API client logs that transition explicitly.
-                parseResponse(response.0, "v3-or-v1-compatibility")
+                parseResponse(response.0, response.1.url?.path ?? "entries")
             case .failure(let error):
                 AppLogger.singleton.error(
-                    "NightscoutService: entries stream failed after v3/compatibility handling: \(error.localizedDescription)",
+                    "NightscoutService: entries stream request failed: \(error.localizedDescription)",
                     category: .nightscout
                 )
                 finish(.error(error))
@@ -952,19 +954,6 @@ class NightscoutService {
             return nil
         }
 
-        let trackedTask = NightscoutRequestTask()
-        let accumulator = HybridEntriesAccumulator { result, sourceSummary in
-            trackedTask.finish()
-            AppLogger.singleton.info(
-                "NightscoutService: hybrid display entries completed source=\(sourceSummary)",
-                category: .nightscout
-            )
-            dispatchOnMain { resultHandler(result) }
-        }
-        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 8) {
-            accumulator.finishAvailable(reason: "deadline")
-        }
-
         func parsedResult(_ result: Result<(Data, HTTPURLResponse), Error>) -> NightscoutRequestResult<[NightscoutEntryRecord]> {
             switch result {
             case .failure(let error):
@@ -979,6 +968,29 @@ class NightscoutService {
         }
 
         let requestedLimit = max(2, min(limit, 100))
+        if UserDefaultsRepository.forceV1API.value {
+            return apiClient.requestLegacy(
+                path: "api/v1/entries.json",
+                query: ["count": "\(requestedLimit)"]
+            ) { result in
+                let parsed = parsedResult(result)
+                dispatchOnMain { resultHandler(parsed) }
+            }
+        }
+
+        let trackedTask = NightscoutRequestTask()
+        let accumulator = HybridEntriesAccumulator { result, sourceSummary in
+            trackedTask.finish()
+            AppLogger.singleton.info(
+                "NightscoutService: hybrid display entries completed source=\(sourceSummary)",
+                category: .nightscout
+            )
+            dispatchOnMain { resultHandler(result) }
+        }
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 8) {
+            accumulator.finishAvailable(reason: "deadline")
+        }
+
         if let task = apiClient.requestV3(
             path: "api/v3/entries",
             query: [
@@ -1597,7 +1609,7 @@ class NightscoutService {
         // current value from the shared entries stream, but this method must
         // still honor the v3-first migration when called directly.
         AppLogger.singleton.debug(
-            "NightscoutService: requesting current glucose through the v3 entries collection",
+            "NightscoutService: requesting current glucose through the configured entries API",
             category: .nightscout
         )
         return NightscoutAPIClient.shared.requestV3(

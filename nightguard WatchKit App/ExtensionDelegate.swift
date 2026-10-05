@@ -107,6 +107,10 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
             
             // we should repaint current value if some used defaults values were changed
             let hasChangedUri = updatedKeys.contains(UserDefaultsRepository.baseUri.key)
+            let hasChangedAPIMode = updatedKeys.contains(UserDefaultsRepository.forceV1API.key)
+            if hasChangedAPIMode {
+                WidgetCenter.shared.reloadAllTimelines()
+            }
             let hasChangedUnits = updatedKeys.contains(UserDefaultsRepository.units.key)
             let hasChangedReservoirSettings = updatedKeys.contains(UserDefaultsRepository.reservoirUnitsWarning.key) ||
                                               updatedKeys.contains(UserDefaultsRepository.reservoirUnitsCritical.key)
@@ -118,7 +122,7 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
                 NightscoutCacheService.singleton.resetCache()
             }
             
-            let shouldRepaintCurrentBgData = hasChangedUri || hasChangedUnits || hasChangedReservoirSettings
+            let shouldRepaintCurrentBgData = hasChangedUri || hasChangedAPIMode || hasChangedUnits || hasChangedReservoirSettings
             let shouldRepaintCharts = true // do it always!
             if shouldRepaintCurrentBgData || shouldRepaintCharts {
                 MainController.mainViewModel.refreshData(forceRefresh: true, moveToLatestValue: false)

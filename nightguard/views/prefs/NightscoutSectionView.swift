@@ -14,6 +14,7 @@ struct NightscoutSectionView: View {
     }
 
     @Binding var nightscoutURL: String
+    @Binding var forceV1API: Bool
     @Binding var apiToken: String
     @Binding var isValidatingURL: Bool
     @Binding var urlErrorMessage: String
@@ -76,6 +77,12 @@ struct NightscoutSectionView: View {
                     .accessibilityIdentifier("clear_token_button")
                 }
             }
+
+            Toggle("Always use V1 API", isOn: $forceV1API)
+                .accessibilityIdentifier("force_v1_api_toggle")
+            Text("Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
 
             if !urlErrorMessage.isEmpty {
                 Text("❌ \(urlErrorMessage)")

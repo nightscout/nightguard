@@ -822,3 +822,7 @@
 "Pro Subscription Information" = "Pro-tilauksen tiedot";
 "Max Subscription Information" = "Max-tilauksen tiedot";
 "Thank You for Your Support" = "Kiitos tuestasi 💚";
+
+/* Direct V1 API preference */
+"Always use V1 API" = "Käytä aina V1-rajapintaa";
+"Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "Lataa glukoositiedot ja hoitotiedot suoraan V1-rajapinnan kautta ilman V3-tarkistuksia tai kirjautumista. V2 on edelleen käytössä IOB-, COB- ja lähettimen akkutiedoille.";

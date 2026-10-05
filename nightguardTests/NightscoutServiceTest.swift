@@ -35,6 +35,142 @@ private final class NightscoutMockURLProtocol: URLProtocol {
 }
 
 class NightscoutServiceTest: XCTestCase {
+    private var originalForceV1API = false
+
+    override func setUp() {
+        super.setUp()
+        originalForceV1API = UserDefaultsRepository.forceV1API.value
+        UserDefaultsRepository.forceV1API.value = false
+    }
+
+    override func tearDown() {
+        UserDefaultsRepository.forceV1API.value = originalForceV1API
+        super.tearDown()
+    }
+
+    func testForcedV1StatisticsPaginatesWithoutCapabilityCheck() throws {
+        UserDefaultsRepository.forceV1API.value = true
+        try checkStatisticsPagination(versionStatus: 404, forbidVersionCheck: true)
+    }
+
+    func testForcedV1SkipsAuthorizationAndPreservesTreatmentRequests() throws {
+        let restore = useTemporaryCredentials(url: "https://forced.example.org/nightscout", token: "reader+secret")
+        defer { restore() }
+        UserDefaultsRepository.forceV1API.value = true
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let client = NightscoutAPIClient(session: URLSession(configuration: configuration))
+        var paths: [String] = []
+        NightscoutMockURLProtocol.handler = { request in
+            let url = try XCTUnwrap(request.url)
+            paths.append(url.path)
+            XCTAssertEqual(url.path, "/nightscout/api/v1/treatments")
+            let query = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+            XCTAssertEqual(query.first { $0.name == "token" }?.value, "reader+secret")
+            XCTAssertEqual(query.first { $0.name == "count" }?.value, "5")
+            if request.httpMethod == "POST" {
+                var body = request.httpBody
+                if body == nil, let stream = request.httpBodyStream {
+                    stream.open()
+                    defer { stream.close() }
+                    var data = Data()
+                    var buffer = [UInt8](repeating: 0, count: 1024)
+                    while stream.hasBytesAvailable {
+                        let count = stream.read(&buffer, maxLength: buffer.count)
+                        if count <= 0 { break }
+                        data.append(buffer, count: count)
+                    }
+                    body = data
+                }
+                XCTAssertEqual(body, Data("{\"carbs\":10}".utf8))
+            }
+            return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("[]".utf8))
+        }
+        defer { NightscoutMockURLProtocol.handler = nil }
+        for method in ["GET", "POST"] {
+            let finished = expectation(description: method)
+            _ = client.requestV3(path: "api/v3/treatments", method: method,
+                body: method == "POST" ? Data("{\"carbs\":10}".utf8) : nil,
+                legacy: NightscoutLegacyEndpoint(path: "api/v1/treatments", query: ["count": "5"]),
+                allowLegacyFallback: false) { result in
+                if case .failure(let error) = result { XCTFail("Unexpected error: \(error)") }
+                finished.fulfill()
+            }
+            waitForExpectations(timeout: 2)
+        }
+        XCTAssertEqual(paths.count, 2)
+    }
+
+    func testForcedV1DisplayCompletesWithOneRequestForFreshStaleEmptyAndFailedResponses() throws {
+        let restore = useTemporaryCredentials(url: "https://display.example.org", token: "")
+        defer { restore() }
+        UserDefaultsRepository.forceV1API.value = true
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let client = NightscoutAPIClient(session: URLSession(configuration: configuration))
+        defer { NightscoutMockURLProtocol.handler = nil }
+        for age: TimeInterval in [0, 3600, -1, -2] {
+            var requests = 0
+            NightscoutMockURLProtocol.handler = { request in
+                requests += 1
+                let url = try XCTUnwrap(request.url)
+                XCTAssertEqual(url.path, "/api/v1/entries.json")
+                let data = age < 0 ? Data("[]".utf8) : try JSONSerialization.data(withJSONObject: [
+                    ["date": Date().addingTimeInterval(-age).timeIntervalSince1970 * 1000, "sgv": 123]
+                ])
+                return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: age == -2 ? 401 : 200, httpVersion: nil, headerFields: nil)), data)
+            }
+            let finished = expectation(description: "direct display \(age)")
+            finished.assertForOverFulfill = true
+            _ = NightscoutService.singleton.readLatestEntriesHybrid(apiClient: client) { result in
+                switch result {
+                case .data(let records):
+                    XCTAssertNotEqual(age, -2)
+                    XCTAssertEqual(records.count, age == -1 ? 0 : 1)
+                case .error:
+                    XCTAssertEqual(age, -2)
+                }
+                finished.fulfill()
+            }
+            waitForExpectations(timeout: 2)
+            XCTAssertEqual(requests, 1)
+        }
+    }
+
+    func testForcedV1RejectsMissingLegacyEndpointWithoutNetworkRequest() {
+        let restore = useTemporaryCredentials(url: "https://missing.example.org", token: "")
+        defer { restore() }
+        UserDefaultsRepository.forceV1API.value = true
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let client = NightscoutAPIClient(session: URLSession(configuration: configuration))
+        NightscoutMockURLProtocol.handler = { _ in
+            XCTFail("Forced V1 must not make a V3 request")
+            throw URLError(.unsupportedURL)
+        }
+        defer { NightscoutMockURLProtocol.handler = nil }
+        let finished = expectation(description: "missing legacy endpoint")
+        _ = client.requestV3(path: "api/v3/entries") { result in
+            guard case .failure(let error) = result else { return XCTFail("Expected failure") }
+            XCTAssertEqual((error as NSError).code, NSURLErrorUnsupportedURL)
+            finished.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+    }
+
+    func testAPIModeIsPersistedAndIncludedInWatchSyncInBothDirections() {
+        UserDefaultsRepository.initializeSyncValues()
+        XCTAssertTrue(UserDefaultsRepository.forceV1API.defaultValue)
+        for enabled in [true, false] {
+            UserDefaultsRepository.forceV1API.value = enabled
+            let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
+            XCTAssertEqual(defaults.bool(forKey: "forceV1API"), enabled)
+            let freshValue = UserDefaultsValue<Bool>(key: "forceV1API", default: false)
+            XCTAssertEqual(freshValue.value, enabled)
+            XCTAssertTrue(UserDefaultsValueGroups.values(from: UserDefaultsValueGroups.GroupNames.watchSync)?.contains { $0.key == "forceV1API" } == true)
+        }
+    }
+
 
     func testStatisticsLoadsAllFiveDaysThroughV1Fallback() throws {
         try checkStatisticsPagination(versionStatus: 404)
@@ -48,7 +184,7 @@ class NightscoutServiceTest: XCTestCase {
         try checkStatisticsPagination(versionStatus: nil)
     }
 
-    private func checkStatisticsPagination(versionStatus: Int?) throws {
+    private func checkStatisticsPagination(versionStatus: Int?, forbidVersionCheck: Bool = false) throws {
         let restore = useTemporaryCredentials(url: "https://statistics.example.org", token: "")
         defer { restore() }
         let configuration = URLSessionConfiguration.ephemeral
@@ -66,6 +202,7 @@ class NightscoutServiceTest: XCTestCase {
         NightscoutMockURLProtocol.handler = { request in
             let url = try XCTUnwrap(request.url)
             if url.path == "/api/v3/version" {
+                XCTAssertFalse(forbidVersionCheck, "Forced V1 must skip the capability check")
                 guard let versionStatus else { throw URLError(.timedOut) }
                 return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: versionStatus, httpVersion: nil, headerFields: nil)), Data())
             }

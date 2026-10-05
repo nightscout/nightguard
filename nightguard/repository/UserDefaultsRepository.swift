@@ -46,6 +46,10 @@ class UserDefaultsRepository {
         })
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
+    /// Prefer the legacy data API; optional V2 properties remain enabled.
+    static let forceV1API = UserDefaultsValue<Bool>(key: "forceV1API", default: true)
+        .group(UserDefaultsValueGroups.GroupNames.watchSync)
+
     static let alarmSoundUri = UserDefaultsValue<String>(
         key: "alarmSoundUri",
         default: "",
@@ -490,6 +494,7 @@ class UserDefaultsRepository {
 
     static func initializeSyncValues() {
         _ = baseUri
+        _ = forceV1API
         _ = units
         _ = upperBound
         _ = lowerBound

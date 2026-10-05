@@ -801,3 +801,7 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Previous sign-in: new" = "Vorherige Anmeldung: neu";
 "The sign-in supplied by the server has already expired according to the device clock." = "Die vom Server gelieferte Anmeldung ist laut Gerätezeit bereits abgelaufen.";
 "The Nightscout response contains no usable sign-in." = "Die Antwort von Nightscout enthält keine verwendbare Anmeldung.";
+
+/* Direct V1 API preference */
+"Always use V1 API" = "V1-API dauerhaft verwenden";
+"Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "Lädt Glukosedaten und Treatments direkt über V1, ohne V3-Prüfung oder Anmeldung. V2 bleibt für IOB, COB und den Uploader-Akku aktiv.";
