@@ -766,3 +766,15 @@
 "Reload today's data?" = "Reload today's data?";
 "Delete local data and reload" = "Delete local data and reload";
 "Today's locally cached glucose values and treatments will be removed and fetched again from Nightscout." = "Today's locally cached glucose values and treatments will be removed and fetched again from Nightscout.";
+
+/* Authentication diagnostics */
+"The server denied the Nightscout API check." = "The server denied the Nightscout API check.";
+"Nightscout rejected sign-in with the saved access token." = "Nightscout rejected sign-in with the saved access token.";
+"Nightscout rejected renewal of the sign-in." = "Nightscout rejected renewal of the sign-in.";
+"Nightscout rejected the data request even after signing in again." = "Nightscout rejected the data request even after signing in again.";
+"Nightscout requires sign-in. No access token was available for this request." = "Nightscout requires sign-in. No access token was available for this request.";
+"Nightscout denied access through the V1 API." = "Nightscout denied access through the V1 API.";
+"Previous sign-in: cached" = "Previous sign-in: cached";
+"Previous sign-in: new" = "Previous sign-in: new";
+"The sign-in supplied by the server has already expired according to the device clock." = "The sign-in supplied by the server has already expired according to the device clock.";
+"The Nightscout response contains no usable sign-in." = "The Nightscout response contains no usable sign-in.";

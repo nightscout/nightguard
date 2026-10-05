@@ -36,6 +36,111 @@ private final class NightscoutMockURLProtocol: URLProtocol {
 
 class NightscoutServiceTest: XCTestCase {
 
+    func testStatisticsLoadsAllFiveDaysThroughV1Fallback() throws {
+        try checkStatisticsPagination(versionStatus: 404)
+    }
+
+    func testStatisticsPaginatesV3WithFallbackEnabled() throws {
+        try checkStatisticsPagination(versionStatus: 200)
+    }
+
+    func testStatisticsFallsBackAfterCapabilityTimeout() throws {
+        try checkStatisticsPagination(versionStatus: nil)
+    }
+
+    private func checkStatisticsPagination(versionStatus: Int?) throws {
+        let restore = useTemporaryCredentials(url: "https://statistics.example.org", token: "")
+        defer { restore() }
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let service = NightscoutService(statisticsClient: NightscoutAPIClient(session: URLSession(configuration: configuration)))
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: TimeService.getToday())
+        let start = try XCTUnwrap(calendar.date(byAdding: .day, value: -4, to: today))
+        let end = try XCTUnwrap(calendar.date(byAdding: .day, value: 1, to: today))
+        let from = start.timeIntervalSince1970 * 1000
+        let to = end.timeIntervalSince1970 * 1000
+        let timestamps = Array(stride(from: from, to: to, by: 60_000)).reversed().map { $0 }
+        let pageSize = 1000 // A server may impose a smaller cap than requested.
+        var offsets: [Int] = []
+        NightscoutMockURLProtocol.handler = { request in
+            let url = try XCTUnwrap(request.url)
+            if url.path == "/api/v3/version" {
+                guard let versionStatus else { throw URLError(.timedOut) }
+                return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: versionStatus, httpVersion: nil, headerFields: nil)), Data())
+            }
+            let legacy = versionStatus != 200
+            XCTAssertEqual(url.path, legacy ? "/api/v1/entries.json" : "/api/v3/entries")
+            let query = Dictionary(uniqueKeysWithValues: (URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []).map { ($0.name, $0.value ?? "") })
+            XCTAssertEqual(Double(query[legacy ? "find[date][$gte]" : "date$gte"] ?? ""), from)
+            XCTAssertEqual(Double(query[legacy ? "find[date][$lt]" : "date$lt"] ?? ""), to)
+            let skip = Int(query["skip"] ?? "0") ?? 0
+            offsets.append(skip)
+            let entries: [[String: Any]] = timestamps.dropFirst(skip).prefix(pageSize).map {
+                ["date": $0, "sgv": 120, "type": "sgv"]
+            }
+            let payload: Any = legacy ? entries : ["result": entries]
+            return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), try JSONSerialization.data(withJSONObject: payload))
+        }
+        defer { NightscoutMockURLProtocol.handler = nil }
+        let completed = expectation(description: "complete five-day statistics")
+        _ = service.readStatisticsDays { result in
+            switch result {
+            case .error(let error): XCTFail("Statistics failed: \(error)")
+            case .data(let days):
+                XCTAssertEqual(days.count, 5)
+                XCTAssertEqual(days.flatMap { $0 }.count, timestamps.count)
+                XCTAssertEqual(days.last?.first?.timestamp, from)
+                for index in 0..<5 {
+                    let dayStart = calendar.date(byAdding: .day, value: -index, to: today)!
+                    let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart)!
+                    XCTAssertEqual(days[index].count, Int(dayEnd.timeIntervalSince(dayStart) / 60))
+                }
+            }
+            completed.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+        XCTAssertEqual(offsets, Array(stride(from: 0, to: timestamps.count, by: pageSize)))
+    }
+
+    func testAuthenticationErrorsIncludeDiagnosticStageAndJWTSource() {
+        let cases: [(NightscoutAuthenticationStage, String)] = [
+            (.version, "NS401-VERSION"),
+            (.jwt, "NS401-JWT"),
+            (.renew, "NS401-RENEW"),
+            (.retry, "NS401-RETRY"),
+            (.noToken, "NS401-NONE"),
+            (.legacy, "NS401-V1")
+        ]
+
+        for (stage, code) in cases {
+            let error = NightscoutHTTPError(statusCode: 401, endpoint: "/test", authenticationStage: stage)
+            XCTAssertTrue(error.localizedDescription.contains(code), "Expected \(code) in \(error.localizedDescription)")
+            XCTAssertTrue(error.localizedDescription.contains("HTTP 401"))
+        }
+
+        let cachedError = NightscoutHTTPError(
+            statusCode: 401,
+            endpoint: "/test",
+            authenticationStage: .retry,
+            previousJWTSource: .cached
+        )
+        XCTAssertTrue(cachedError.localizedDescription.contains(NightscoutJWTSource.cached.message))
+
+        let freshError = NightscoutHTTPError(
+            statusCode: 401,
+            endpoint: "/test",
+            authenticationStage: .renew,
+            previousJWTSource: .fresh
+        )
+        XCTAssertTrue(freshError.localizedDescription.contains(NightscoutJWTSource.fresh.message))
+    }
+
+    func testJWTResponseErrorsHaveDistinctDiagnosticCodes() {
+        XCTAssertTrue(NightscoutJWTResponseError.expired.localizedDescription.contains("NSJWT-EXPIRED"))
+        XCTAssertTrue(NightscoutJWTResponseError.unusable.localizedDescription.contains("NSJWT-RESPONSE"))
+    }
+
     func testHybridEntriesWaitsForFreshFallbackWhenV3HeadIsStale() {
         let staleTimestamp = Date().addingTimeInterval(-40 * 60).timeIntervalSince1970 * 1000
         let freshTimestamp = Date().addingTimeInterval(-2 * 60).timeIntervalSince1970 * 1000
@@ -172,7 +277,7 @@ class NightscoutServiceTest: XCTestCase {
         XCTAssertEqual(query["date$gt"], "1724198400000")
         XCTAssertEqual(query["type$in"], "sgv|mbg")
         XCTAssertEqual(query["sort$desc"], "date")
-        XCTAssertNil(query["token"])
+        XCTAssertEqual(query["token"], "care-secret")
     }
 
     func testV3URLConstructionRemovesLegacyTokenFromBaseURL() throws {
@@ -182,7 +287,7 @@ class NightscoutServiceTest: XCTestCase {
         let query = Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value ?? "") })
 
         XCTAssertEqual(query["tenant"], "one")
-        XCTAssertNil(query["token"])
+        XCTAssertEqual(query["token"], "care-secret")
     }
 
     func testFallsBackToV1WhenV3IsUnavailable() throws {
@@ -311,7 +416,8 @@ class NightscoutServiceTest: XCTestCase {
                 throw URLError(.timedOut)
             }
             XCTAssertEqual(url.path, "/api/v1/entries.json")
-            XCTAssertEqual(request.value(forHTTPHeaderField: "API-SECRET"), "care-secret")
+            XCTAssertNil(request.value(forHTTPHeaderField: "API-SECRET"))
+            XCTAssertEqual(URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.filter { $0.name == "token" }.map(\.value), ["care-secret"])
             return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("[{\"sgv\":125}]".utf8))
         }
         defer { NightscoutMockURLProtocol.handler = nil }
@@ -320,8 +426,7 @@ class NightscoutServiceTest: XCTestCase {
         _ = client.requestV3(
             path: "api/v3/entries",
             legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "1"]),
-            fallbackOnTransportFailure: true,
-            legacyUseAccessTokenHeader: true
+            fallbackOnTransportFailure: true
         ) { result in
             guard case .success(let response) = result else {
                 XCTFail("Expected v1 fallback after the v3 entries timeout")
@@ -341,7 +446,7 @@ class NightscoutServiceTest: XCTestCase {
         ])
     }
 
-    func testCacheFriendlyLegacyRequestUsesAccessTokenHeader() throws {
+    func testLegacyRequestUsesAccessTokenQueryParameter() throws {
         let restoreCredentials = useTemporaryCredentials(url: "https://cache.example.org/nightscout", token: "care-secret")
         defer { restoreCredentials() }
 
@@ -354,20 +459,20 @@ class NightscoutServiceTest: XCTestCase {
             let query = Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value ?? "") })
             XCTAssertEqual(url.path, "/nightscout/api/v1/devicestatus.json")
             XCTAssertEqual(query["count"], "5")
-            XCTAssertNil(query["token"])
-            XCTAssertEqual(request.value(forHTTPHeaderField: "API-SECRET"), "care-secret")
+            XCTAssertEqual(query["token"], "care-secret")
+            XCTAssertNil(request.value(forHTTPHeaderField: "API-SECRET"))
+            XCTAssertEqual(URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.filter { $0.name == "token" }.map(\.value), ["care-secret"])
             return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("[]".utf8))
         }
         defer { NightscoutMockURLProtocol.handler = nil }
 
-        let expectation = expectation(description: "cache-friendly device status request completed")
+        let expectation = expectation(description: "legacy device status request completed")
         _ = client.requestLegacy(
             path: "api/v1/devicestatus.json",
-            query: ["count": "5"],
-            useAccessTokenHeader: true
+            query: ["count": "5"]
         ) { result in
             guard case .success = result else {
-                XCTFail("Expected a successful cache-friendly legacy request")
+                XCTFail("Expected a successful legacy request")
                 expectation.fulfill()
                 return
             }
@@ -405,8 +510,7 @@ class NightscoutServiceTest: XCTestCase {
             path: "api/v3/entries",
             query: ["sort$desc": "date", "fields": "date,sgv"],
             legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "500"]),
-            fallbackOnTransportFailure: false,
-            legacyUseAccessTokenHeader: true
+            fallbackOnTransportFailure: false
         ) { result in
             guard case .success = result else {
                 XCTFail("Expected a successful v3 entries request")
@@ -498,6 +602,8 @@ class NightscoutServiceTest: XCTestCase {
                 return
             }
             XCTAssertEqual(error.statusCode, 401)
+            XCTAssertTrue(error.localizedDescription.contains("NS401-RETRY"))
+            XCTAssertTrue(error.localizedDescription.contains(NightscoutJWTSource.fresh.message))
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2)
@@ -505,6 +611,64 @@ class NightscoutServiceTest: XCTestCase {
         XCTAssertEqual(requestedPaths.filter { $0 == "/api/v2/authorization/request/token=care-secret" }.count, 2)
         XCTAssertEqual(requestedPaths.filter { $0 == "/api/v3/entries" }.count, 2)
         XCTAssertFalse(requestedPaths.contains("/api/v1/entries.json"))
+    }
+
+    func testLegacyWritesPreserveBodyAndEncodeTokenOnce() throws {
+        let token = "care-secret&extra=value+#?"
+        let restore = useTemporaryCredentials(url: "https://legacy-write.example.org/nightscout", token: token)
+        defer { restore() }
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let client = NightscoutAPIClient(session: URLSession(configuration: configuration))
+        let body = Data("{\"eventType\":\"Temporary Target\"}".utf8)
+        NightscoutMockURLProtocol.handler = { request in
+            let url = try XCTUnwrap(request.url)
+            let items = try XCTUnwrap(URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems)
+            XCTAssertEqual(url.path, "/nightscout/api/v1/treatments")
+            XCTAssertEqual(items.filter { $0.name == "token" }.map(\.value), [token])
+            XCTAssertEqual(items.filter { $0.name == "count" }.map(\.value), ["1"])
+            XCTAssertNil(request.value(forHTTPHeaderField: "API-SECRET"))
+            XCTAssertEqual(request.httpMethod, "POST")
+            // URLSession can convert the request body into a stream for URLProtocol.
+            if let stream = request.httpBodyStream {
+                stream.open()
+                defer { stream.close() }
+                var bytes = [UInt8](repeating: 0, count: 1024)
+                let count = stream.read(&bytes, maxLength: bytes.count)
+                XCTAssertEqual(Data(bytes.prefix(max(0, count))), body)
+            } else {
+                XCTAssertEqual(request.httpBody, body)
+            }
+            return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("{}".utf8))
+        }
+        defer { NightscoutMockURLProtocol.handler = nil }
+        let finished = expectation(description: "legacy write")
+        _ = client.requestLegacy(path: "api/v1/treatments", query: ["count": "1"], method: "POST", body: body) { result in
+            if case .failure(let error) = result { XCTFail("Unexpected error: \(error)") }
+            finished.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+    }
+
+    func testLegacyRequestWithoutCredentialsOmitsToken() throws {
+        let restore = useTemporaryCredentials(url: "https://legacy-public.example.org", token: "")
+        defer { restore() }
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [NightscoutMockURLProtocol.self]
+        let client = NightscoutAPIClient(session: URLSession(configuration: configuration))
+        NightscoutMockURLProtocol.handler = { request in
+            let url = try XCTUnwrap(request.url)
+            XCTAssertFalse((URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []).contains { $0.name == "token" })
+            XCTAssertNil(request.value(forHTTPHeaderField: "API-SECRET"))
+            return (try XCTUnwrap(HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)), Data("[]".utf8))
+        }
+        defer { NightscoutMockURLProtocol.handler = nil }
+        let finished = expectation(description: "anonymous legacy read")
+        _ = client.requestLegacy(path: "api/v1/entries.json", query: ["count": "1"]) { result in
+            if case .failure(let error) = result { XCTFail("Unexpected error: \(error)") }
+            finished.fulfill()
+        }
+        waitForExpectations(timeout: 2)
     }
 
     private func useTemporaryCredentials(url: String, token: String) -> () -> Void {
@@ -516,7 +680,9 @@ class NightscoutServiceTest: XCTestCase {
         // request construction without making the mock depend on Keychain.
         var temporaryURI = temporaryURL.absoluteString
         if !token.isEmpty {
-            temporaryURI += "?token=\(token.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? token)"
+            var tokenAllowed = CharacterSet.urlQueryAllowed
+            tokenAllowed.remove(charactersIn: "&+#?")
+            temporaryURI += "?token=\(token.addingPercentEncoding(withAllowedCharacters: tokenAllowed) ?? token)"
         }
         UserDefaultsRepository.baseUri.value = temporaryURI
         return {

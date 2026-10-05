@@ -60,13 +60,63 @@ struct NightscoutLegacyEndpoint {
     let query: [String: String]
 }
 
+enum NightscoutAuthenticationStage: String {
+    case version = "NS401-VERSION"
+    case jwt = "NS401-JWT"
+    case renew = "NS401-RENEW"
+    case retry = "NS401-RETRY"
+    case noToken = "NS401-NONE"
+    case legacy = "NS401-V1"
+
+    var message: String {
+        switch self {
+        case .version: return NSLocalizedString("The server denied the Nightscout API check.", comment: "Authentication diagnostic")
+        case .jwt: return NSLocalizedString("Nightscout rejected sign-in with the saved access token.", comment: "Authentication diagnostic")
+        case .renew: return NSLocalizedString("Nightscout rejected renewal of the sign-in.", comment: "Authentication diagnostic")
+        case .retry: return NSLocalizedString("Nightscout rejected the data request even after signing in again.", comment: "Authentication diagnostic")
+        case .noToken: return NSLocalizedString("Nightscout requires sign-in. No access token was available for this request.", comment: "Authentication diagnostic")
+        case .legacy: return NSLocalizedString("Nightscout denied access through the V1 API.", comment: "Authentication diagnostic")
+        }
+    }
+}
+
+enum NightscoutJWTSource {
+    case cached, fresh
+
+    var message: String {
+        switch self {
+        case .cached: return NSLocalizedString("Previous sign-in: cached", comment: "Authentication diagnostic")
+        case .fresh: return NSLocalizedString("Previous sign-in: new", comment: "Authentication diagnostic")
+        }
+    }
+}
+
+enum NightscoutJWTResponseError: LocalizedError {
+    case expired, unusable
+
+    var errorDescription: String? {
+        switch self {
+        case .expired:
+            return NSLocalizedString("The sign-in supplied by the server has already expired according to the device clock.", comment: "Authentication diagnostic") + "\nNSJWT-EXPIRED"
+        case .unusable:
+            return NSLocalizedString("The Nightscout response contains no usable sign-in.", comment: "Authentication diagnostic") + "\nNSJWT-RESPONSE"
+        }
+    }
+}
+
 struct NightscoutHTTPError: LocalizedError {
     let statusCode: Int
     let endpoint: String
+    var authenticationStage: NightscoutAuthenticationStage? = nil
+    var previousJWTSource: NightscoutJWTSource? = nil
 
     var errorDescription: String? {
         switch statusCode {
         case 401:
+            if let stage = authenticationStage {
+                let previous = previousJWTSource.map { "\n" + $0.message } ?? ""
+                return stage.message + "\nHTTP 401 · " + stage.rawValue + previous
+            }
             return NSLocalizedString("The Nightscout token is invalid or has expired.", comment: "Nightscout HTTP 401")
         case 403:
             return NSLocalizedString("The Nightscout token does not have permission for this operation.", comment: "Nightscout HTTP 403")
@@ -94,7 +144,11 @@ final class NightscoutAPIClient {
     }
     private let jwtRefreshMargin: TimeInterval = 60
     private var jwtByCredential: [String: CachedJWT] = [:]
-    private var pendingJWT: [String: [(Result<String, Error>) -> Void]] = [:]
+    private struct ObtainedJWT {
+        let token: String
+        let source: NightscoutJWTSource
+    }
+    private var pendingJWT: [String: [(Result<ObtainedJWT, Error>) -> Void]] = [:]
 
     init(session: URLSession = .shared) {
         self.session = session
@@ -110,7 +164,7 @@ final class NightscoutAPIClient {
         fallbackOnTransportFailure: Bool = true,
         allowLegacyFallback: Bool = true,
         readTimeout: TimeInterval? = nil,
-        legacyUseAccessTokenHeader: Bool = false,
+
         completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void
     ) -> NightscoutTask? {
         guard let baseURL = UserDefaultsRepository.cleanBaseURL() else {
@@ -143,12 +197,12 @@ final class NightscoutAPIClient {
                         body: body,
                         trackedTask: trackedTask,
                         compatibilityFallback: true,
-                        useAccessTokenHeader: legacyUseAccessTokenHeader,
+
                         completion: completion
                     )
                 } else {
                     trackedTask.finish()
-                    completion(.failure(NightscoutHTTPError(statusCode: 404, endpoint: "/api/v3/version")))
+                    completion(.failure(NightscoutHTTPError(statusCode: 404, endpoint: "/api/v3/version", authenticationStage: .version)))
                 }
             case .success(true):
                 self.performAuthorizedV3(
@@ -163,7 +217,7 @@ final class NightscoutAPIClient {
                     fallbackOnTransportFailure: fallbackOnTransportFailure,
                     allowLegacyFallback: allowLegacyFallback,
                     readTimeout: readTimeout ?? self.v3ReadTimeout,
-                    legacyUseAccessTokenHeader: legacyUseAccessTokenHeader,
+
                     completion: completion
                 )
             }
@@ -177,7 +231,7 @@ final class NightscoutAPIClient {
         query: [String: String] = [:],
         method: String = "GET",
         body: Data? = nil,
-        useAccessTokenHeader: Bool = false,
+
         completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void
     ) -> NightscoutTask? {
         let trackedTask = NightscoutRequestTask()
@@ -186,7 +240,7 @@ final class NightscoutAPIClient {
             method: method,
             body: body,
             trackedTask: trackedTask,
-            useAccessTokenHeader: useAccessTokenHeader,
+
             completion: completion
         )
         return trackedTask
@@ -244,7 +298,7 @@ final class NightscoutAPIClient {
                 completion(.success(true))
             } else {
                 self.logError("V3 capability response HTTP \(http.statusCode) durationMs=\(duration)")
-                completion(.failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/api/v3/version")))
+                completion(.failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/api/v3/version", authenticationStage: .version)))
             }
         }
         trackedTask.add(task)
@@ -260,10 +314,11 @@ final class NightscoutAPIClient {
         legacy: NightscoutLegacyEndpoint?,
         trackedTask: NightscoutRequestTask,
         mayRefreshJWT: Bool,
+        previousJWTSource: NightscoutJWTSource? = nil,
         fallbackOnTransportFailure: Bool,
         allowLegacyFallback: Bool,
         readTimeout: TimeInterval,
-        legacyUseAccessTokenHeader: Bool,
+
         completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void
     ) {
         let accessToken = UserDefaultsRepository.nightscoutToken
@@ -277,7 +332,7 @@ final class NightscoutAPIClient {
                         body: body,
                         trackedTask: trackedTask,
                         compatibilityFallback: true,
-                        useAccessTokenHeader: legacyUseAccessTokenHeader,
+
                         completion: completion
                     )
                 } else {
@@ -291,14 +346,33 @@ final class NightscoutAPIClient {
         obtainJWT(baseURL: baseURL, accessToken: accessToken, trackedTask: trackedTask, timeout: readTimeout) { jwtResult in
             switch jwtResult {
             case .failure(let error):
+                if allowLegacyFallback && self.shouldFallbackToLegacy(result: .failure(error), method: method, legacy: legacy, allowUnauthorized: false, allowTransportFailure: false) {
+                    self.logWarning("Nightscout JWT endpoint unavailable (\(self.errorSummary(error))); using v1 compatibility mode")
+                    self.performLegacy(
+                        legacy,
+                        method: method,
+                        body: body,
+                        trackedTask: trackedTask,
+                        compatibilityFallback: true,
+                        completion: completion
+                    )
+                    return
+                }
                 trackedTask.finish()
-                completion(.failure(error))
-            case .success(let jwt):
+                if var httpError = error as? NightscoutHTTPError, httpError.statusCode == 401 {
+                    httpError.authenticationStage = mayRefreshJWT ? .jwt : .renew
+                    httpError.previousJWTSource = previousJWTSource
+                    completion(.failure(httpError))
+                } else {
+                    completion(.failure(error))
+                }
+            case .success(let obtained):
+                let jwt = obtained.token
                 self.performV3Request(baseURL: baseURL, path: path, query: query, method: method, body: body, jwt: jwt, trackedTask: trackedTask, readTimeout: readTimeout) { result in
                     if case .failure(let error as NightscoutHTTPError) = result,
                        error.statusCode == 401, mayRefreshJWT {
                         self.invalidateJWT(baseURL: baseURL, accessToken: accessToken, rejectedToken: jwt)
-                        self.performAuthorizedV3(baseURL: baseURL, path: path, query: query, method: method, body: body, legacy: legacy, trackedTask: trackedTask, mayRefreshJWT: false, fallbackOnTransportFailure: fallbackOnTransportFailure, allowLegacyFallback: allowLegacyFallback, readTimeout: readTimeout, legacyUseAccessTokenHeader: legacyUseAccessTokenHeader, completion: completion)
+                        self.performAuthorizedV3(baseURL: baseURL, path: path, query: query, method: method, body: body, legacy: legacy, trackedTask: trackedTask, mayRefreshJWT: false, previousJWTSource: obtained.source, fallbackOnTransportFailure: fallbackOnTransportFailure, allowLegacyFallback: allowLegacyFallback, readTimeout: readTimeout, completion: completion)
                     } else if allowLegacyFallback && self.shouldFallbackToLegacy(result: result, method: method, legacy: legacy, allowUnauthorized: false, allowTransportFailure: fallbackOnTransportFailure) {
                         self.logWarning("Nightscout v3 GET failed (\(self.resultErrorSummary(result))); using v1 compatibility mode")
                         self.performLegacy(
@@ -307,12 +381,17 @@ final class NightscoutAPIClient {
                             body: body,
                             trackedTask: trackedTask,
                             compatibilityFallback: true,
-                            useAccessTokenHeader: legacyUseAccessTokenHeader,
+
                             completion: completion
                         )
                     } else {
                         trackedTask.finish()
-                        completion(result)
+                        completion(result.mapError { error in
+                            guard var httpError = error as? NightscoutHTTPError, httpError.statusCode == 401 else { return error }
+                            httpError.authenticationStage = .retry
+                            httpError.previousJWTSource = obtained.source
+                            return httpError
+                        })
                     }
                 }
             }
@@ -346,7 +425,7 @@ final class NightscoutAPIClient {
             guard (200..<300).contains(http.statusCode) else {
                 let duration = Int(Date().timeIntervalSince(startedAt) * 1000)
                 self.logError("V3 data response endpoint=\(endpoint) HTTP \(http.statusCode) durationMs=\(duration)")
-                completion(.failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/\(path)")))
+                completion(.failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/\(path)", authenticationStage: jwt == nil ? .noToken : nil)))
                 return
             }
             let payload = self.v3PayloadData(from: data ?? Data())
@@ -358,9 +437,9 @@ final class NightscoutAPIClient {
         task.resume()
     }
 
-    private func performLegacy(_ endpoint: NightscoutLegacyEndpoint?, method: String, body: Data?, trackedTask: NightscoutRequestTask, compatibilityFallback: Bool = false, useAccessTokenHeader: Bool = false, completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void) {
+    private func performLegacy(_ endpoint: NightscoutLegacyEndpoint?, method: String, body: Data?, trackedTask: NightscoutRequestTask, compatibilityFallback: Bool = false, completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void) {
         guard let endpoint = endpoint,
-              let url = legacyURL(endpoint, useAccessTokenHeader: useAccessTokenHeader) else {
+              let url = UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: endpoint.path, queryParams: endpoint.query) else {
             logError("Nightscout legacy request rejected: invalid endpoint")
             trackedTask.finish()
             completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL)))
@@ -370,16 +449,7 @@ final class NightscoutAPIClient {
         if compatibilityFallback {
             logInfo("Nightscout v1 compatibility request started \(endpointDescription)")
         }
-        var urlRequest = request(url: url, method: method, body: body)
-        if useAccessTokenHeader {
-            let accessToken = UserDefaultsRepository.nightscoutToken
-            if !accessToken.isEmpty {
-                // cgm-remote-monitor accepts an access token in API-SECRET.
-                // Keeping it out of the query leaves `count` as the only
-                // query parameter, which enables the server-side cache path.
-                urlRequest.setValue(accessToken, forHTTPHeaderField: "API-SECRET")
-            }
-        }
+        let urlRequest = request(url: url, method: method, body: body)
         let task = session.dataTask(with: urlRequest) { data, response, error in
             defer { trackedTask.finish() }
             if let error = error {
@@ -394,7 +464,7 @@ final class NightscoutAPIClient {
             }
             guard (200..<300).contains(http.statusCode) else {
                 self.logError("Nightscout v1 request \(endpointDescription) returned HTTP \(http.statusCode)")
-                completion(.failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/\(endpoint.path)")))
+                completion(.failure(NightscoutHTTPError(statusCode: http.statusCode, endpoint: "/\(endpoint.path)", authenticationStage: .legacy)))
                 return
             }
             if compatibilityFallback {
@@ -404,14 +474,6 @@ final class NightscoutAPIClient {
         }
         trackedTask.add(task)
         task.resume()
-    }
-
-    private func legacyURL(_ endpoint: NightscoutLegacyEndpoint, useAccessTokenHeader: Bool) -> URL? {
-        if useAccessTokenHeader,
-           let baseURL = UserDefaultsRepository.cleanBaseURL() {
-            return makeURL(baseURL: baseURL, path: endpoint.path, query: endpoint.query)
-        }
-        return UserDefaultsRepository.getUrlWithPathAndQueryParameters(path: endpoint.path, queryParams: endpoint.query)
     }
 
     private func v3PayloadData(from data: Data) -> Data {
@@ -425,13 +487,13 @@ final class NightscoutAPIClient {
         return payload
     }
 
-    private func obtainJWT(baseURL: URL, accessToken: String, trackedTask: NightscoutRequestTask, timeout: TimeInterval, completion: @escaping (Result<String, Error>) -> Void) {
+    private func obtainJWT(baseURL: URL, accessToken: String, trackedTask: NightscoutRequestTask, timeout: TimeInterval, completion: @escaping (Result<ObtainedJWT, Error>) -> Void) {
         let key = credentialKey(baseURL: baseURL, accessToken: accessToken)
         lock.lock()
         if let jwt = jwtByCredential[key], jwt.expiresAt.timeIntervalSinceNow > jwtRefreshMargin {
             lock.unlock()
             logInfo("V3 JWT cache hit server=\(baseURL.host ?? "unknown")")
-            completion(.success(jwt.token))
+            completion(.success(ObtainedJWT(token: jwt.token, source: .cached)))
             return
         }
         jwtByCredential.removeValue(forKey: key)
@@ -471,13 +533,13 @@ final class NightscoutAPIClient {
                   let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                   let jwt = json["token"] as? String, !jwt.isEmpty else {
                 self.logError("V3 JWT response HTTP \(http.statusCode) contained no usable token")
-                self.completeJWT(key: key, result: .failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotParseResponse)))
+                self.completeJWT(key: key, result: .failure(NightscoutJWTResponseError.unusable))
                 return
             }
             // Never send a token that the authorization endpoint already returned expired.
             if let expiration = Self.jwtExpiration(jwt), expiration <= Date() {
                 self.logError("V3 JWT response contained an expired token")
-                self.completeJWT(key: key, result: .failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotParseResponse)))
+                self.completeJWT(key: key, result: .failure(NightscoutJWTResponseError.expired))
                 return
             }
             self.logInfo("V3 JWT response HTTP \(http.statusCode) durationMs=\(Int(Date().timeIntervalSince(startedAt) * 1000))")
@@ -498,7 +560,7 @@ final class NightscoutAPIClient {
         }
         let completions = pendingJWT.removeValue(forKey: key) ?? []
         lock.unlock()
-        completions.forEach { $0(result) }
+        completions.forEach { $0(result.map { ObtainedJWT(token: $0, source: .fresh) }) }
     }
 
     private static func jwtExpiration(_ token: String) -> Date? {
@@ -734,6 +796,12 @@ class NightscoutService {
     
     static let singleton = NightscoutService()
     
+    private let statisticsClient: NightscoutAPIClient
+
+    init(statisticsClient: NightscoutAPIClient = .shared) {
+        self.statisticsClient = statisticsClient
+    }
+
     let ONE_DAY_IN_MICROSECONDS = Double(60*60*24*1000)
     let DIRECTIONS = ["-", "↑↑", "↑", "↗", "→", "↘︎", "↓", "↓↓", "-", "-"]
     
@@ -767,8 +835,7 @@ class NightscoutService {
                 "fields": "date,sgv"
             ],
             legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "20"]),
-            fallbackOnTransportFailure: true,
-            legacyUseAccessTokenHeader: true
+            fallbackOnTransportFailure: true
         ) { result in
             switch result {
             case .failure(let error):
@@ -848,8 +915,7 @@ class NightscoutService {
                 path: "api/v1/entries.json",
                 query: ["count": "500"]
             ),
-            fallbackOnTransportFailure: true,
-            legacyUseAccessTokenHeader: true
+            fallbackOnTransportFailure: true
         ) { result in
             switch result {
             case .success(let response):
@@ -932,7 +998,7 @@ class NightscoutService {
         if let task = apiClient.requestLegacy(
             path: "api/v1/entries.json",
             query: ["count": "\(requestedLimit)"],
-            useAccessTokenHeader: true,
+
             completion: { result in
                 accumulator.receive(parsedResult(result), source: "v1")
             }
@@ -995,7 +1061,7 @@ class NightscoutService {
         // separate compatibility endpoint and is not part of the Entries
         // collection stream.
         AppLogger.singleton.debug(
-            "NightscoutService: requesting glucose units through the cache-friendly v1 status endpoint",
+            "NightscoutService: requesting glucose units through the v1 status endpoint",
             category: .nightscout
         )
         return readLegacyStatus(resultHandler)
@@ -1004,8 +1070,7 @@ class NightscoutService {
     @discardableResult
     private func readLegacyStatus(_ resultHandler: @escaping (NightscoutRequestResult<Units>) -> Void) -> NightscoutTask? {
         return NightscoutAPIClient.shared.requestLegacy(
-            path: "api/v1/status.json",
-            useAccessTokenHeader: true
+            path: "api/v1/status.json"
         ) { result in
             switch result {
             case .failure(let error):
@@ -1079,8 +1144,8 @@ class NightscoutService {
         let from = timestamp1.timeIntervalSince1970 * 1000
         let to = timestamp2.timeIntervalSince1970 * 1000
         let legacyQuery = [
-            "find[date][$gt]": "\(from)",
-            "find[date][$lte]": "\(to)",
+            "find[date][$gte]": "\(from)",
+            "find[date][$lt]": "\(to)",
             "count": "1440"
         ]
         // Do not assume a fixed sampling interval here. Some installations
@@ -1088,7 +1153,7 @@ class NightscoutService {
         // first request therefore uses Nightscout's configured API3 maximum;
         // older pages are fetched only when the requested range is not yet
         // covered.
-        let v3MaximumPages = 32
+        let maximumPages = 32
         let v3Query = [
             // API v3 explicitly supports date filters, sorting and paging.
             // Restrict the database query to the requested window first; the
@@ -1102,7 +1167,7 @@ class NightscoutService {
         ]
 
         AppLogger.singleton.info(
-            "Statistics request interval from=\(Int(from)) to=\(Int(to)) v3From=\(timestamp1.convertToIsoDateTime()) v3To=\(timestamp2.convertToIsoDateTime()) v3Only=\(v3Only) timeout=\(Int(timeout ?? 20))s pageSize=serverDefault maxPages=\(v3MaximumPages) serverSort=desc(date) localSort=timestamp",
+            "Statistics request interval from=\(Int(from)) to=\(Int(to)) v3From=\(timestamp1.convertToIsoDateTime()) v3To=\(timestamp2.convertToIsoDateTime()) v3Only=\(v3Only) timeout=\(Int(timeout ?? 20))s pageSize=serverDefault maxPages=\(maximumPages) serverSort=desc(date) localSort=timestamp",
             category: .nightscout
         )
 
@@ -1119,6 +1184,8 @@ class NightscoutService {
         var didFinish = false
         var pagesRequested = 0
         var previousOldestTimestamp: Double?
+        var previousWasLegacy: Bool?
+        var legacyEntriesReceived = 0
 
         func finish(_ result: NightscoutRequestResult<[BloodSugar]>) {
             guard !didFinish else { return }
@@ -1144,7 +1211,7 @@ class NightscoutService {
                 let firstResponseDate = responseTimestamps.min().map { Date(timeIntervalSince1970: $0 / 1000).convertToIsoDateTime() } ?? "none"
                 let lastResponseDate = responseTimestamps.max().map { Date(timeIntervalSince1970: $0 / 1000).convertToIsoDateTime() } ?? "none"
                 AppLogger.singleton.warning(
-                    "NightscoutService: paged V3 response did not cover the requested local time range (requestedFrom=\(timestamp1.convertToIsoDateTime()), requestedTo=\(timestamp2.convertToIsoDateTime()), responseEntries=\(allEntries.count), timestampCount=\(responseTimestamps.count), fields=[\(responseFields)], responseFirst=\(firstResponseDate), responseLast=\(lastResponseDate), firstTimestampMillis=\(responseTimestamps.min() ?? 0), lastTimestampMillis=\(responseTimestamps.max() ?? 0))",
+                    "NightscoutService: paged entries response did not cover the requested local time range (requestedFrom=\(timestamp1.convertToIsoDateTime()), requestedTo=\(timestamp2.convertToIsoDateTime()), responseEntries=\(allEntries.count), timestampCount=\(responseTimestamps.count), fields=[\(responseFields)], responseFirst=\(firstResponseDate), responseLast=\(lastResponseDate), firstTimestampMillis=\(responseTimestamps.min() ?? 0), lastTimestampMillis=\(responseTimestamps.max() ?? 0))",
                     category: .nightscout
                 )
             }
@@ -1172,18 +1239,19 @@ class NightscoutService {
             if skip > 0 {
                 pageQuery["skip"] = "\(skip)"
             }
+            var legacyPageQuery = legacyQuery
+            legacyPageQuery["skip"] = "\(legacyEntriesReceived)"
             AppLogger.singleton.debug(
-                "Statistics V3 page request page=\(page + 1)/\(v3MaximumPages) skip=\(skip) limit=serverDefault",
+                "Statistics page request page=\(page + 1)/\(maximumPages) skip=\(skip) limit=serverDefault",
                 category: .nightscout
             )
-            let pageTask = NightscoutAPIClient.shared.requestV3(
+            let pageTask = statisticsClient.requestV3(
                 path: "api/v3/entries",
                 query: pageQuery,
-                legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: legacyQuery),
+                legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: legacyPageQuery),
                 fallbackOnTransportFailure: !v3Only,
                 allowLegacyFallback: !v3Only,
-                readTimeout: timeout,
-                legacyUseAccessTokenHeader: true
+                readTimeout: timeout
             ) { result in
                 switch result {
                 case .failure(let error):
@@ -1203,10 +1271,16 @@ class NightscoutService {
                             "Statistics raw response page=\(page + 1) skip=\(skip) entries=\(entries.count) timestampCount=\(responseTimestamps.count) firstTimestamp=\(responseTimestamps.min() ?? 0) lastTimestamp=\(responseTimestamps.max() ?? 0)",
                             category: .nightscout
                         )
+                        let isLegacy = response.1.url?.path.hasSuffix("/api/v1/entries.json") == true
+                        if previousWasLegacy != isLegacy {
+                            previousOldestTimestamp = nil
+                        }
+                        previousWasLegacy = isLegacy
+                        if isLegacy { legacyEntriesReceived += entries.count }
                         allEntries.append(contentsOf: entries)
                         let oldestTimestamp = responseTimestamps.min()
                         let reachedRequestedDay = oldestTimestamp.map { $0 <= from } ?? false
-                        let reachedPageLimit = page + 1 >= v3MaximumPages
+                        let reachedPageLimit = page + 1 >= maximumPages
                         let priorOldestTimestamp = previousOldestTimestamp
                         let didNotProgress = page > 0 &&
                             oldestTimestamp != nil &&
@@ -1219,7 +1293,7 @@ class NightscoutService {
                                 category: .nightscout
                             )
                         }
-                        if !v3Only || entries.isEmpty || reachedRequestedDay || reachedPageLimit || didNotProgress {
+                        if entries.isEmpty || reachedRequestedDay || reachedPageLimit || didNotProgress {
                             if reachedPageLimit && !reachedRequestedDay {
                                 AppLogger.singleton.warning(
                                     "NightscoutService: statistics pagination stopped at page limit before reaching requested time range (requestedFrom=\(timestamp1.convertToIsoDateTime()), oldestTimestampMillis=\(oldestTimestamp ?? 0), pages=\(page + 1))",
@@ -1434,7 +1508,7 @@ class NightscoutService {
     @discardableResult
     func readStatisticsDays(
         dayCount: Int = 5,
-        v3Only: Bool = true,
+        v3Only: Bool = false,
         timeout: TimeInterval? = nil,
         callbackHandler: @escaping (NightscoutRequestResult<[[BloodSugar]]>) -> Void
     ) -> NightscoutTask? {
@@ -1534,8 +1608,7 @@ class NightscoutService {
                 "fields": "identifier,_id,date,dateString,sgv,direction,units"
             ],
             legacy: NightscoutLegacyEndpoint(path: "api/v1/entries.json", query: ["count": "2"]),
-            fallbackOnTransportFailure: true,
-            legacyUseAccessTokenHeader: true
+            fallbackOnTransportFailure: true
         ) { result in
             switch result {
             case .failure(let error):
@@ -2002,19 +2075,15 @@ class NightscoutService {
             return nil
         }
 
-        // cgm-remote-monitor serves this exact v1 query from its in-memory
-        // devicestatus cache (when `count` is the only query parameter). The
-        // generic v3 search has to query MongoDB and can become very slow on
-        // large devicestatus collections, so use the cache-friendly endpoint
-        // for this non-critical, read-only status panel.
+        // Keep device status on the V1 endpoint for compatibility. Like all
+        // V1 requests, it sends the access token as a URL query parameter.
         AppLogger.singleton.debug(
-            "NightscoutService: requesting device status through the cache-friendly v1 endpoint",
+            "NightscoutService: requesting device status through the v1 endpoint",
             category: .nightscout
         )
         return NightscoutAPIClient.shared.requestLegacy(
             path: "api/v1/devicestatus.json",
-            query: ["count": "5"],
-            useAccessTokenHeader: true
+            query: ["count": "5"]
         ) { result in
             guard case .success(let response) = result,
                   let statuses = try? JSONSerialization.jsonObject(with: response.0) as? [[String: Any]] else {

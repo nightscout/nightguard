@@ -186,7 +186,7 @@ struct ErrorToastView: View {
                 .font(.system(size: 14, weight: .medium))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)
-                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Button(action: onClose) {

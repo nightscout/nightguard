@@ -137,12 +137,12 @@ struct StatsView: View {
 
             if !startedDays.isEmpty {
                 AppLogger.singleton.info(
-                    "StatsView: starting combined V3-only request for days=0...4 missing=\(missingDays), timeout=\(Int(Self.statisticsReadTimeout))s, baseURLConfigured=\(!UserDefaultsRepository.baseUri.value.isEmpty)",
+                    "StatsView: starting combined request with v1 fallback for days=0...4 missing=\(missingDays), timeout=\(Int(Self.statisticsReadTimeout))s, baseURLConfigured=\(!UserDefaultsRepository.baseUri.value.isEmpty)",
                     category: .nightscout
                 )
                 NightscoutService.singleton.readStatisticsDays(
                     dayCount: 5,
-                    v3Only: true,
+                    v3Only: false,
                     timeout: Self.statisticsReadTimeout
                 ) { result in
                     switch result {

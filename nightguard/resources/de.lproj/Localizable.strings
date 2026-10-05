@@ -789,3 +789,15 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Reload today's data?" = "Daten des Tages neu laden?";
 "Delete local data and reload" = "Lokale Daten löschen und neu laden";
 "Today's locally cached glucose values and treatments will be removed and fetched again from Nightscout." = "Die lokal gespeicherten Glukosewerte und Treatments des heutigen Tages werden gelöscht und erneut von Nightscout geladen.";
+
+/* Authentication diagnostics */
+"The server denied the Nightscout API check." = "Der Server verweigert die Prüfung der Nightscout-API.";
+"Nightscout rejected sign-in with the saved access token." = "Nightscout hat die Anmeldung mit dem gespeicherten Zugangstoken abgelehnt.";
+"Nightscout rejected renewal of the sign-in." = "Nightscout hat die Erneuerung der Anmeldung abgelehnt.";
+"Nightscout rejected the data request even after signing in again." = "Nightscout hat den Datenabruf auch nach erneuter Anmeldung abgelehnt.";
+"Nightscout requires sign-in. No access token was available for this request." = "Nightscout verlangt eine Anmeldung. Für diese Anfrage war kein Zugangstoken verfügbar.";
+"Nightscout denied access through the V1 API." = "Nightscout hat den Zugriff über die V1-API abgelehnt.";
+"Previous sign-in: cached" = "Vorherige Anmeldung: gespeichert";
+"Previous sign-in: new" = "Vorherige Anmeldung: neu";
+"The sign-in supplied by the server has already expired according to the device clock." = "Die vom Server gelieferte Anmeldung ist laut Gerätezeit bereits abgelaufen.";
+"The Nightscout response contains no usable sign-in." = "Die Antwort von Nightscout enthält keine verwendbare Anmeldung.";
