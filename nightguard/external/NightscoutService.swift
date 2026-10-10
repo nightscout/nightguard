@@ -1197,7 +1197,6 @@ class NightscoutService {
         var pagesRequested = 0
         var previousOldestTimestamp: Double?
         var previousWasLegacy: Bool?
-        var legacyEntriesReceived = 0
 
         func finish(_ result: NightscoutRequestResult<[BloodSugar]>) {
             guard !didFinish else { return }
@@ -1252,7 +1251,9 @@ class NightscoutService {
                 pageQuery["skip"] = "\(skip)"
             }
             var legacyPageQuery = legacyQuery
-            legacyPageQuery["skip"] = "\(legacyEntriesReceived)"
+            // V1 entries ignores skip. Move the exclusive upper bound back
+            // instead, including when an older V3 page falls back to V1.
+            legacyPageQuery["find[date][$lt]"] = "\(min(to, previousOldestTimestamp ?? to))"
             AppLogger.singleton.debug(
                 "Statistics page request page=\(page + 1)/\(maximumPages) skip=\(skip) limit=serverDefault",
                 category: .nightscout
@@ -1288,7 +1289,6 @@ class NightscoutService {
                             previousOldestTimestamp = nil
                         }
                         previousWasLegacy = isLegacy
-                        if isLegacy { legacyEntriesReceived += entries.count }
                         allEntries.append(contentsOf: entries)
                         let oldestTimestamp = responseTimestamps.min()
                         let reachedRequestedDay = oldestTimestamp.map { $0 <= from } ?? false

@@ -17,6 +17,13 @@ struct StatisticsDayLoadingTracker {
         return loadingDays.insert(day).inserted
     }
 
+    /// A combined request must be triggered by a missing, retryable day,
+    /// never by a day which is already available in the cache.
+    mutating func beginLoadingMissingDays(_ missingDays: [Int]) -> [Int] {
+        guard loadingDays.isEmpty else { return [] }
+        return missingDays.filter { beginLoading($0) }
+    }
+
     mutating func finishLoading(_ day: Int, succeeded: Bool) {
         loadingDays.remove(day)
         if succeeded {

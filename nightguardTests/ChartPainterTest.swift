@@ -77,6 +77,33 @@ class ChartPainterTest: XCTestCase {
         XCTAssertTrue(tracker.beginLoading(0))
     }
 
+    func testCombinedStatisticsDoesNotReloadCachedDaysWhenOlderDaysFailed() {
+        var tracker = StatisticsDayLoadingTracker()
+        XCTAssertEqual(tracker.beginLoadingMissingDays([0, 1, 2, 3, 4]), [0, 1, 2, 3, 4])
+        for day in 0..<5 {
+            tracker.finishLoading(day, succeeded: day < 2)
+        }
+
+        // StatsView calls its load method again after processing the response.
+        // Days 0 and 1 are cached; the missing days must wait for explicit retry.
+        for _ in 0..<3 {
+            XCTAssertTrue(tracker.beginLoadingMissingDays([2, 3, 4]).isEmpty)
+            XCTAssertTrue(tracker.loadingDays.isEmpty)
+        }
+
+        tracker.allowRetryForFailedDays()
+        XCTAssertEqual(tracker.beginLoadingMissingDays([2, 3, 4]), [2, 3, 4])
+        XCTAssertEqual(tracker.loadingDays, [2, 3, 4])
+    }
+
+    func testCombinedStatisticsAllowsOnlyOneRequestEvenIfAnotherDayBecomesMissing() {
+        var tracker = StatisticsDayLoadingTracker()
+        XCTAssertEqual(tracker.beginLoadingMissingDays([2]), [2])
+        XCTAssertTrue(tracker.beginLoadingMissingDays([0, 1, 2, 3, 4]).isEmpty)
+        tracker.finishLoading(2, succeeded: true)
+        XCTAssertEqual(tracker.beginLoadingMissingDays([0]), [0])
+    }
+
     func testXMinAdjustementIsWorking() {
         chartPainter.adjustMinMaxXYCoordinates([[BloodSugar.init(value: 100, timestamp: 10000, isMeteredBloodGlucoseValue: false, arrow: "-"), BloodSugar.init(value: 200, timestamp: 20000, isMeteredBloodGlucoseValue: false, arrow: "-")]], maxYDisplayValue: 10000, upperBoundNiceValue: 180, lowerBoundNiceValue: 80)
         XCTAssertEqual(chartPainter.minimumXValue, 10000)

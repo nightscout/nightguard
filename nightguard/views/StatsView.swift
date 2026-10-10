@@ -130,10 +130,7 @@ struct StatsView: View {
         }
 
         if !missingDays.isEmpty {
-            var startedDays: [Int] = []
-            for index in 0..<5 where loadingTracker.beginLoading(index) {
-                startedDays.append(index)
-            }
+            let startedDays = loadingTracker.beginLoadingMissingDays(missingDays)
 
             if !startedDays.isEmpty {
                 AppLogger.singleton.info(

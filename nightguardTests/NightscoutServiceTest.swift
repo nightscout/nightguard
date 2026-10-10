@@ -50,7 +50,7 @@ class NightscoutServiceTest: XCTestCase {
 
     func testForcedV1StatisticsPaginatesWithoutCapabilityCheck() throws {
         UserDefaultsRepository.forceV1API.value = true
-        try checkStatisticsPagination(versionStatus: 404, forbidVersionCheck: true)
+        try checkStatisticsPagination(versionStatus: 404, forbidVersionCheck: true, pageSize: 730)
     }
 
     func testForcedV1SkipsAuthorizationAndPreservesTreatmentRequests() throws {
@@ -184,7 +184,7 @@ class NightscoutServiceTest: XCTestCase {
         try checkStatisticsPagination(versionStatus: nil)
     }
 
-    private func checkStatisticsPagination(versionStatus: Int?, forbidVersionCheck: Bool = false) throws {
+    private func checkStatisticsPagination(versionStatus: Int?, forbidVersionCheck: Bool = false, pageSize: Int = 1000) throws {
         let restore = useTemporaryCredentials(url: "https://statistics.example.org", token: "")
         defer { restore() }
         let configuration = URLSessionConfiguration.ephemeral
@@ -197,7 +197,7 @@ class NightscoutServiceTest: XCTestCase {
         let from = start.timeIntervalSince1970 * 1000
         let to = end.timeIntervalSince1970 * 1000
         let timestamps = Array(stride(from: from, to: to, by: 60_000)).reversed().map { $0 }
-        let pageSize = 1000 // A server may impose a smaller cap than requested.
+        // A server may impose a smaller cap than requested.
         var offsets: [Int] = []
         NightscoutMockURLProtocol.handler = { request in
             let url = try XCTUnwrap(request.url)
@@ -210,8 +210,16 @@ class NightscoutServiceTest: XCTestCase {
             XCTAssertEqual(url.path, legacy ? "/api/v1/entries.json" : "/api/v3/entries")
             let query = Dictionary(uniqueKeysWithValues: (URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []).map { ($0.name, $0.value ?? "") })
             XCTAssertEqual(Double(query[legacy ? "find[date][$gte]" : "date$gte"] ?? ""), from)
-            XCTAssertEqual(Double(query[legacy ? "find[date][$lt]" : "date$lt"] ?? ""), to)
-            let skip = Int(query["skip"] ?? "0") ?? 0
+            let upperBound = try XCTUnwrap(Double(query[legacy ? "find[date][$lt]" : "date$lt"] ?? ""))
+            let skip: Int
+            if legacy {
+                XCTAssertNil(query["skip"], "V1 ignores skip; pagination must advance the date bound")
+                XCTAssertEqual(upperBound, offsets.isEmpty ? to : timestamps[min(offsets.last! + pageSize, timestamps.count) - 1])
+                skip = timestamps.prefix { $0 >= upperBound }.count
+            } else {
+                XCTAssertEqual(upperBound, to)
+                skip = Int(query["skip"] ?? "0") ?? 0
+            }
             offsets.append(skip)
             let entries: [[String: Any]] = timestamps.dropFirst(skip).prefix(pageSize).map {
                 ["date": $0, "sgv": 120, "type": "sgv"]
