@@ -34,6 +34,46 @@ private final class NightscoutMockURLProtocol: URLProtocol {
     override func stopLoading() {}
 }
 
+final class ReportCalculationTest: XCTestCase {
+    private func request() -> ReportRequest {
+        var settings = ReportSettings()
+        settings.period = ReportPeriod.day.rawValue
+        let now = ISO8601DateFormatter().date(from: "2026-10-11T12:00:00Z")!
+        return ReportRequest(settings: settings, timeZone: TimeZone(secondsFromGMT: 0)!, now: now)
+    }
+
+    func testFiveMinuteInterpolationIncludesFirstMidnightValueAndPreservesLongGaps() {
+        let report = request()
+        let readings = [
+            ReportGlucose(date: report.start.addingTimeInterval(3 * 60), value: 62, isMeter: false),
+            ReportGlucose(date: report.start.addingTimeInterval(10 * 60), value: 72, isMeter: false),
+            ReportGlucose(date: report.start.addingTimeInterval(30 * 60), value: 80, isMeter: false)
+        ]
+        let samples = ReportCalculator.normalizedReadings(readings, request: report)
+        XCTAssertEqual(samples.map(\.value), [62, 64, 72, 80])
+        XCTAssertEqual(samples.map { Int($0.date.timeIntervalSince(report.start) / 60) }, [0, 5, 10, 30])
+    }
+
+    func testTemporaryBasalPercentIsRelativeToProfileRateAndExpiresAtExactTime() {
+        let report = request()
+        let profile = ReportProfile(name: "Default", isDefault: true,
+                                    effectiveAt: report.start.addingTimeInterval(-86400), timeZone: TimeZone(secondsFromGMT: 0)!,
+                                    dia: nil, carbsPerHour: nil,
+                                    basal: [ReportSchedulePoint(minutes: 0, value: 2)],
+                                    carbRatio: [], sensitivity: [], targetLow: [], targetHigh: [])
+        let treatments = [
+            ReportTreatment(date: report.start.addingTimeInterval(3600), kind: "Temp Basal", carbs: 0, insulin: 0,
+                            duration: 30, rate: nil, percent: -100, profileName: nil),
+            ReportTreatment(date: report.start.addingTimeInterval(7200), kind: "Temp Basal", carbs: 0, insulin: 0,
+                            duration: 30, rate: nil, percent: 50, profileName: nil)
+        ]
+        let series = ReportCalculator.basalSeriesForDay(report.start, end: report.end,
+                                                        profiles: [profile], treatments: treatments)!
+        let delivered = series.reduce(0) { $0 + $1.deliveredRate * $1.end.timeIntervalSince($1.date) / 3600 }
+        XCTAssertEqual(delivered, 47.5, accuracy: 0.0001)
+    }
+}
+
 class NightscoutServiceTest: XCTestCase {
     private var originalForceV1API = false
 

@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AAB100000000000000000001 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000001 /* ReportView.swift */; };
+		AAB100000000000000000002 /* ReportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000002 /* ReportModel.swift */; };
+		AAB100000000000000000003 /* ReportDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000003 /* ReportDataProvider.swift */; };
+		AAB100000000000000000004 /* ReportCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000004 /* ReportCalculator.swift */; };
+		AAB100000000000000000104 /* ReportCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000004 /* ReportCalculator.swift */; };
+		AAB100000000000000000102 /* ReportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000002 /* ReportModel.swift */; };
+		AAB100000000000000000005 /* ReportPDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000005 /* ReportPDFRenderer.swift */; };
 		28B03A3723F9CD8E000939E6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28B03A3523F9CD8E000939E6 /* Localizable.strings */; };
 		28E3B4F12404075900A4EE25 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E3B4F02404075800A4EE25 /* SnapshotHelper.swift */; };
 		43027A4C2EBFDBFD00BE71B9 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */; };
@@ -583,6 +590,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AAB200000000000000000001 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
+		AAB200000000000000000002 /* ReportModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportModel.swift; sourceTree = "<group>"; };
+		AAB200000000000000000003 /* ReportDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDataProvider.swift; sourceTree = "<group>"; };
+		AAB200000000000000000004 /* ReportCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCalculator.swift; sourceTree = "<group>"; };
+		AAB200000000000000000005 /* ReportPDFRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPDFRenderer.swift; sourceTree = "<group>"; };
 		127F207A227F018E00C90F07 /* nightguard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nightguard.entitlements; sourceTree = "<group>"; };
 		28A3509723F9B31400F2AE60 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		28B03A3623F9CD8E000939E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -904,6 +916,7 @@
 				439BDA8E2B22520E004932EB /* external */,
 				439BDA8C2B2251D7004932EB /* repository */,
 				439BDA8B2B225176004932EB /* app */,
+				AAB300000000000000000001 /* report */,
 				43CC9E0224E868180008F397 /* extensions */,
 				D144FFB120D7AEF60036E021 /* resources */,
 				43F1E1181D076D2800C329A2 /* domain */,
@@ -1253,6 +1266,7 @@
 				43E899502F2BF06D00A357B9 /* ProPromotionView.swift */,
 				430EB4FC2F1FFD4600CAF155 /* AppTourView.swift */,
 				43027A4B2EBFDBFD00BE71B9 /* RootTabView.swift */,
+				AAB200000000000000000001 /* ReportView.swift */,
 				4391E57A2EBF520000530260 /* BedsideView.swift */,
 				43027A672EC8863E00BE71B9 /* NightscoutView.swift */,
 				43027A572EC52B3D00BE71B9 /* SnoozePopupView.swift */,
@@ -1269,6 +1283,17 @@
 				43EF91B122688892000E79B5 /* SlideToSnoozeView.swift */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		AAB300000000000000000001 /* report */ = {
+			isa = PBXGroup;
+			children = (
+				AAB200000000000000000002 /* ReportModel.swift */,
+				AAB200000000000000000003 /* ReportDataProvider.swift */,
+				AAB200000000000000000004 /* ReportCalculator.swift */,
+				AAB200000000000000000005 /* ReportPDFRenderer.swift */,
+			);
+			path = report;
 			sourceTree = "<group>";
 		};
 		D1D96CB821FB0DC50035A60E /* watch */ = {
@@ -1561,6 +1586,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAB100000000000000000001 /* ReportView.swift in Sources */,
+				AAB100000000000000000002 /* ReportModel.swift in Sources */,
+				AAB100000000000000000003 /* ReportDataProvider.swift in Sources */,
+				AAB100000000000000000004 /* ReportCalculator.swift in Sources */,
+				AAB100000000000000000005 /* ReportPDFRenderer.swift in Sources */,
 				D1D96CC321FB0FA80035A60E /* SnoozeMessage.swift in Sources */,
 				D1D1623C2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift in Sources */,
 				D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */,
@@ -1688,6 +1718,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAB100000000000000000102 /* ReportModel.swift in Sources */,
+				AAB100000000000000000104 /* ReportCalculator.swift in Sources */,
 				4351E6B41D2EFDFF001E4AE4 /* AlarmRuleTest.swift in Sources */,
 				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
 				D1CE8CC12204B07F0075FF8A /* Colors.swift in Sources */,
