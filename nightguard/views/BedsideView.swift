@@ -11,9 +11,10 @@ import Combine
 struct BedsideView: View {
     @Environment(\.dismiss) private var dismiss
     let currentNightscoutData: NightscoutData?
+    @ObservedObject var viewModel: MainViewModel
 
+    @State private var showSnoozePopup = false
     @State private var currentTime: String = ""
-    @State private var snoozeInfo: String?
     @State private var alertReason: String?
     @State private var alertColor: Color = .red
 
@@ -24,10 +25,25 @@ struct BedsideView: View {
             ZStack {
                 Color.black.ignoresSafeArea()
 
-                if isLandscape(size: geometry.size) {
-                    landscapeContent(size: geometry.size)
-                } else {
-                    portraitContent
+                VStack(spacing: 8) {
+                    GeometryReader { contentGeometry in
+                        if isLandscape(size: geometry.size) {
+                            landscapeContent(size: contentGeometry.size)
+                        } else {
+                            portraitContent(size: contentGeometry.size)
+                        }
+                    }
+                    .padding(.top, 64)
+
+                    if viewModel.showSnoozeSlider {
+                        SlideToSnooze(snoozeText: $viewModel.snoozeButtonText, lowPredictionText: $viewModel.lowPredictionText) {
+                            showSnoozePopup = true
+                        }
+                        .frame(height: 80)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 8)
+                        .accessibilityIdentifier("bedsideSnoozeSlider")
+                    }
                 }
 
                 closeButtonOverlay
@@ -39,56 +55,55 @@ struct BedsideView: View {
             updateCurrentTime()
             updateAlarmInfo()
         }
-        .onDisappear {
-            AppDelegate.updateOrientationLock(.portrait, rotateTo: .portrait)
-        }
         .onReceive(timer) { _ in
             updateCurrentTime()
             updateAlarmInfo()
+        }
+        .sheet(isPresented: $showSnoozePopup, onDismiss: updateAlarmInfo) {
+            SnoozePopupView()
         }
     }
 
     // MARK: - Computed Properties
 
-    private var portraitContent: some View {
-        VStack(spacing: 20) {
-            Spacer()
+    private func portraitContent(size: CGSize) -> some View {
+        let scale = min(1, max(0.35, size.height / 650))
+
+        return VStack(spacing: 20 * scale) {
+            Spacer(minLength: 0)
 
             Text(bgValue)
-                .font(.system(size: 190, weight: .bold))
+                .font(.system(size: 190 * scale, weight: .bold))
                 .foregroundColor(bgColor)
                 .minimumScaleFactor(0.45)
+                .lineLimit(1)
 
-            deltaStack(fontSize: 74, spacing: 12)
+            deltaStack(fontSize: 74 * scale, spacing: 12 * scale)
 
             Text(lastUpdateValue)
-                .font(.system(size: 50))
+                .font(.system(size: 50 * scale))
                 .foregroundColor(lastUpdateColor)
 
             Text(currentTime)
-                .font(.system(size: 46))
+                .font(.system(size: 46 * scale))
                 .foregroundColor(.white)
 
-            Spacer()
-
-            if let snoozeInfo = snoozeInfo {
-                Text(snoozeInfo)
-                    .font(.system(size: 28))
-                    .foregroundColor(.white)
-                    .minimumScaleFactor(0.7)
-                    .lineLimit(1)
-                    .padding(.bottom, 10)
-            }
+            Spacer(minLength: 0)
 
             if let alertReason = alertReason {
                 Text(alertReason)
-                    .font(.system(size: 44))
+                    .font(.system(size: 44 * scale))
                     .foregroundColor(alertColor)
-                    .padding(.bottom, 20)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.5)
+                    .padding(.bottom, 20 * scale)
             }
 
-            Spacer()
+            Spacer(minLength: 0)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, 16)
     }
 
     private var closeButtonOverlay: some View {
@@ -154,6 +169,7 @@ struct BedsideView: View {
 
     @ViewBuilder
     private func landscapeContent(size: CGSize) -> some View {
+        let scale = min(1, max(0.35, size.height / 400))
         let infoColumnWidth = min(max(size.width * 0.24, 210), 290)
         let horizontalPadding: CGFloat = 24
         let interColumnSpacing: CGFloat = 24
@@ -161,48 +177,42 @@ struct BedsideView: View {
 
         HStack(spacing: interColumnSpacing) {
             Text(bgValue)
-                .font(.system(size: max(bgFontSize, 210), weight: .bold))
+                .font(.system(size: max(bgFontSize, 100), weight: .bold))
                 .foregroundColor(bgColor)
                 .minimumScaleFactor(0.22)
                 .lineLimit(1)
             .frame(maxHeight: .infinity, alignment: .center)
             .layoutPriority(1)
 
-            VStack(alignment: .leading, spacing: 14) {
-                Spacer()
+            VStack(alignment: .leading, spacing: 14 * scale) {
+                Spacer(minLength: 0)
 
-                deltaStack(fontSize: 72, spacing: 12)
+                deltaStack(fontSize: 72 * scale, spacing: 12 * scale)
 
                 Text(lastUpdateValue)
-                    .font(.system(size: 46, weight: .medium))
+                    .font(.system(size: 46 * scale, weight: .medium))
                     .foregroundColor(lastUpdateColor)
 
                 Text(currentTime)
-                    .font(.system(size: 42))
+                    .font(.system(size: 42 * scale))
                     .foregroundColor(.white)
-
-                if let snoozeInfo = snoozeInfo {
-                    Text(snoozeInfo)
-                        .font(.system(size: 24))
-                        .foregroundColor(.white)
-                        .minimumScaleFactor(0.7)
-                        .lineLimit(1)
-                }
 
                 if let alertReason = alertReason {
                     Text(alertReason)
-                        .font(.system(size: 38, weight: .medium))
+                        .font(.system(size: 38 * scale, weight: .medium))
                         .foregroundColor(alertColor)
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.5)
                 }
 
-                Spacer()
+                Spacer(minLength: 0)
             }
             .frame(width: infoColumnWidth)
             .frame(maxHeight: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .padding(.horizontal, horizontalPadding)
-        .padding(.vertical, 28)
+        .padding(.vertical, 12 * scale)
     }
 
     private func deltaStack(fontSize: CGFloat, spacing: CGFloat) -> some View {
@@ -215,6 +225,8 @@ struct BedsideView: View {
                 .font(.system(size: fontSize))
                 .foregroundColor(deltaColor)
         }
+        .lineLimit(1)
+        .minimumScaleFactor(0.5)
     }
 
     private func isLandscape(size: CGSize) -> Bool {
@@ -228,14 +240,13 @@ struct BedsideView: View {
     }
 
     private func updateAlarmInfo() {
-        var newSnoozeInfo: String?
+        viewModel.updateSnoozeButtonText()
         var newAlertReason: String?
         var newAlertColor: Color = .red
         var showAlertReason = true
 
         if AlarmRule.isSnoozed() {
             let remainingSnoozeMinutes = AlarmRule.getRemainingSnoozeMinutes()
-            newSnoozeInfo = String(format: NSLocalizedString("Snoozed for %dmin", comment: "Snoozed Label in Bedside Controller"), remainingSnoozeMinutes)
 
             // Show alert reason message if less than 5 minutes of snoozing (to be prepared!)
             showAlertReason = remainingSnoozeMinutes < 5
@@ -254,7 +265,6 @@ struct BedsideView: View {
             }
         }
 
-        snoozeInfo = newSnoozeInfo
         alertReason = newAlertReason
         alertColor = newAlertColor
     }
@@ -264,6 +274,6 @@ struct BedsideView: View {
 
 struct BedsideView_Previews: PreviewProvider {
     static var previews: some View {
-        BedsideView(currentNightscoutData: nil)
+        BedsideView(currentNightscoutData: nil, viewModel: MainViewModel())
     }
 }

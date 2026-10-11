@@ -127,6 +127,7 @@ class NightguardUITests: XCTestCase {
         if closeConfiguration.waitForExistence(timeout: 3) {
             closeConfiguration.tap()
         }
+
         // Keep the device fixed: the app must request every interface rotation.
         XCUIDevice.shared.orientation = .portrait
         let tabBar = app.tabBars.firstMatch
@@ -182,6 +183,186 @@ class NightguardUITests: XCTestCase {
         }
     }
     
+    func testActionsMenuWithDisabledAlarms() {
+        app.terminate()
+        app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        XCUIDevice.shared.orientation = .portrait
+        app.launch()
+
+        func dismissConfigurationIfNeeded() {
+            let close = app.navigationBars.buttons["Close"]
+            if close.waitForExistence(timeout: 3) { close.tap() }
+        }
+
+        let actions = app.buttons["actionsMenuButton"]
+        let mainSlider = app.descendants(matching: .any)["mainSnoozeSlider"].firstMatch
+        let bedsideSlider = app.descendants(matching: .any)["bedsideSnoozeSlider"].firstMatch
+
+        func verifyDisabledAlarms() {
+            XCTAssertTrue(actions.waitForExistence(timeout: 10))
+            XCTAssertTrue(actions.isHittable)
+            XCTAssertTrue(app.windows.firstMatch.frame.contains(actions.frame))
+            XCTAssertFalse(mainSlider.exists)
+            actions.tap()
+            let fullscreen = app.buttons["Fullscreen monitor"].firstMatch
+            XCTAssertTrue(fullscreen.waitForExistence(timeout: 5))
+            fullscreen.tap()
+            let close = app.buttons["fullscreenCloseButton"]
+            XCTAssertTrue(close.waitForExistence(timeout: 5))
+            XCTAssertTrue(close.isHittable)
+            XCTAssertFalse(bedsideSlider.exists)
+            close.tap()
+            XCTAssertTrue(actions.waitForExistence(timeout: 5))
+        }
+
+        // Seed and persist a disabled state before restarting with setup resets skipped.
+        app.terminate()
+        app.launchArguments += ["--uitesting-start-disabled"]
+        app.launch()
+        dismissConfigurationIfNeeded()
+        verifyDisabledAlarms()
+
+        app.terminate()
+        app.launchArguments.removeLast()
+        app.launchArguments.append("--uitesting-preserve-alarm-settings")
+        app.launch()
+        dismissConfigurationIfNeeded()
+        verifyDisabledAlarms()
+
+        app.terminate()
+        app.launchArguments.removeLast()
+        app.launch()
+        dismissConfigurationIfNeeded()
+        XCTAssertTrue(mainSlider.waitForExistence(timeout: 5))
+        XCTAssertTrue(actions.isHittable)
+        XCTAssertTrue(app.windows.firstMatch.frame.contains(actions.frame))
+    }
+
+    func testBedsideSnoozeAcrossOrientations() {
+        verifyBedsideSnoozeAcrossOrientations(language: "en")
+    }
+
+    func testBedsideSnoozeAcrossOrientationsInGerman() {
+        verifyBedsideSnoozeAcrossOrientations(language: "de")
+    }
+
+    private func verifyBedsideSnoozeAcrossOrientations(language: String) {
+        let isGerman = language == "de"
+        app.terminate()
+        app.launchArguments += ["-AppleLanguages", "(\(language))", "-AppleLocale", isGerman ? "de_DE" : "en_US"]
+        XCUIDevice.shared.orientation = .portrait
+        app.launch()
+        defer { XCUIDevice.shared.orientation = .portrait }
+
+        let closeConfiguration = app.navigationBars.buttons[isGerman ? "Schließen" : "Close"]
+        if closeConfiguration.waitForExistence(timeout: 3) {
+            closeConfiguration.tap()
+        }
+
+        let initialWindow = app.windows.firstMatch.frame
+        let isTablet = min(initialWindow.width, initialWindow.height) >= 600
+
+        let actions = app.buttons["actionsMenuButton"]
+        XCTAssertTrue(actions.waitForExistence(timeout: 15))
+        actions.tap()
+        let fullscreen = app.buttons[isGerman ? "Vollbildmonitor" : "Fullscreen monitor"].firstMatch
+        XCTAssertTrue(fullscreen.waitForExistence(timeout: 5))
+        fullscreen.tap()
+
+        let slider = app.descendants(matching: .any)["bedsideSnoozeSlider"].firstMatch
+        let close = app.buttons["fullscreenCloseButton"]
+
+        func assertOrientation(landscape: Bool) {
+            let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+                let frame = self.app.windows.firstMatch.frame
+                return frame.width > 0 && frame.height > 0 &&
+                    (landscape ? frame.width > frame.height : frame.height > frame.width)
+            }, object: app)
+            XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 10), .completed)
+        }
+
+        func openSnooze(using element: XCUIElement) {
+            XCTAssertTrue(element.waitForExistence(timeout: 5))
+            let start = element.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0.5))
+                .withOffset(CGVector(dx: 40, dy: 0))
+            let end = element.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 0.5))
+                .withOffset(CGVector(dx: -10, dy: 0))
+            start.press(forDuration: 0.1, thenDragTo: end)
+            XCTAssertTrue(app.buttons["snoozePopupCloseButton"].waitForExistence(timeout: 5))
+        }
+
+        func scrollTo(_ button: XCUIElement) {
+            let scrollView = app.scrollViews["snoozeOptionsScrollView"]
+            for _ in 0..<10 {
+                if button.exists && button.isHittable { return }
+                scrollView.swipeUp()
+            }
+            XCTAssertTrue(button.isHittable)
+        }
+
+        let orientations: [UIDeviceOrientation] = [.portrait, .landscapeLeft, .landscapeRight]
+        let durations = [5, 1440, 10]
+        for (index, orientation) in orientations.enumerated() {
+            XCUIDevice.shared.orientation = orientation
+            assertOrientation(landscape: index > 0)
+            XCTAssertTrue(slider.waitForExistence(timeout: 5))
+            XCTAssertTrue(close.isHittable)
+            let window = app.windows.firstMatch.frame
+            XCTAssertTrue(window.contains(slider.frame))
+            XCTAssertGreaterThan(slider.frame.minY, close.frame.maxY)
+            let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+            attachment.name = "Bedside orientation \(orientation.rawValue)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+
+            openSnooze(using: slider)
+            let option = app.buttons["snoozeOption_\(durations[index])"]
+            scrollTo(option)
+            option.tap()
+            XCTAssertTrue(slider.waitForExistence(timeout: 5))
+            XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", isGerman ? "Schlummern:" : "Snoozed for")).firstMatch.waitForExistence(timeout: 5))
+            assertOrientation(landscape: index > 0)
+        }
+
+        // Rotate with the popup open, then dismiss only the popup.
+        openSnooze(using: slider)
+        XCUIDevice.shared.orientation = .portrait
+        assertOrientation(landscape: false)
+        XCUIDevice.shared.orientation = .landscapeLeft
+        assertOrientation(landscape: true)
+        app.buttons["snoozePopupCloseButton"].tap()
+        XCTAssertTrue(slider.waitForExistence(timeout: 5))
+        assertOrientation(landscape: true)
+
+        close.tap()
+        // iPad multitasking follows device rotation even when an app requests
+        // an orientation lock. The forced return to portrait covers iPhone.
+        if isTablet {
+            XCUIDevice.shared.orientation = .portrait
+        }
+        assertOrientation(landscape: false)
+        let mainSlider = app.descendants(matching: .any)["mainSnoozeSlider"].firstMatch
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label BEGINSWITH %@", isGerman ? "Schlummern: 10 Min." : "Snoozed for 10min")).firstMatch.waitForExistence(timeout: 5))
+        openSnooze(using: mainSlider)
+        let stop = app.buttons["stopSnoozingButton"]
+        scrollTo(stop)
+        stop.tap()
+        XCTAssertTrue(mainSlider.waitForExistence(timeout: 5))
+
+        // Stop Snoozing must also work without leaving the bedside monitor.
+        actions.tap()
+        fullscreen.tap()
+        openSnooze(using: slider)
+        app.buttons["snoozeOption_5"].tap()
+        openSnooze(using: slider)
+        scrollTo(stop)
+        stop.tap()
+        XCTAssertTrue(slider.waitForExistence(timeout: 5))
+        XCTAssertTrue(close.isHittable)
+        XCTAssertTrue(app.staticTexts[isGerman ? "schlummern" : "snooze"].firstMatch.waitForExistence(timeout: 5))
+        close.tap()
+    }
+
     fileprivate func selectPreferencesTab(using tabBar: XCUIElement? = nil) {
         selectTab(identifier: "tab_prefs", index: 5, using: tabBar)
     }

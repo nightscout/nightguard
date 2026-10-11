@@ -142,8 +142,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func configureAppForTesting() -> Void {
         UIView.setAnimationsEnabled(false)
-        // Ensure alarms are enabled so the actions menu button is visible for UI tests
-        AlarmRule.areAlertsGenerallyDisabled.value = false
+        // Start UI tests with enabled alarms unless testing persisted settings.
+        if !CommandLine.arguments.contains("--uitesting-preserve-alarm-settings") {
+            AlarmRule.areAlertsGenerallyDisabled.value = CommandLine.arguments.contains("--uitesting-start-disabled")
+        }
         // Suppress App Tour
         UserDefaultsRepository.appTourSeen.value = true
         // Suppress Disclaimer

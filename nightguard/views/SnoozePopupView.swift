@@ -35,53 +35,61 @@ struct SnoozePopupView: View {
             ZStack {
                 Color.black.ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    // Title
-                    Text(NSLocalizedString("Snooze Alarms for", comment: "Snooze popup title"))
-                        .font(.system(size: 24, weight: .medium))
-                        .foregroundColor(.white)
-                        .padding(.top, 20)
-                        .padding(.bottom, 30)
+                GeometryReader { geometry in
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            // Title
+                            Text(NSLocalizedString("Snooze Alarms for", comment: "Snooze popup title"))
+                                .font(.system(size: 24, weight: .medium))
+                                .foregroundColor(.white)
+                                .padding(.top, 20)
+                                .padding(.bottom, 30)
 
-                    // Snooze buttons grid
-                    LazyVGrid(columns: [
-                        GridItem(.flexible(), spacing: 16),
-                        GridItem(.flexible(), spacing: 16)
-                    ], spacing: 16) {
-                        ForEach(snoozeOptions, id: \.minutes) { option in
-                            Button(action: {
-                                snoozeMinutes(option.minutes)
-                            }) {
-                                Text(option.label)
-                                    .font(.system(size: deviceFontSize, weight: .regular))
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: buttonHeight)
-                                    .background(Color.gray.opacity(0.3))
-                                    .cornerRadius(4)
+                            // Snooze buttons grid
+                            LazyVGrid(columns: [
+                                GridItem(.flexible(), spacing: 16),
+                                GridItem(.flexible(), spacing: 16)
+                            ], spacing: 16) {
+                                ForEach(snoozeOptions, id: \.minutes) { option in
+                                    Button(action: {
+                                        snoozeMinutes(option.minutes)
+                                    }) {
+                                        Text(option.label)
+                                            .font(.system(size: deviceFontSize, weight: .regular))
+                                            .foregroundColor(.white)
+                                            .frame(maxWidth: .infinity)
+                                            .frame(height: buttonHeight)
+                                            .background(Color.gray.opacity(0.3))
+                                            .cornerRadius(4)
+                                    }
+                                    .accessibilityIdentifier("snoozeOption_\(option.minutes)")
+                                }
+                            }
+                            .padding(.horizontal, 16)
+
+                            Spacer(minLength: 20)
+
+                            // Stop Snoozing button (only visible if snoozed)
+                            if isSnoozed {
+                                Button(action: {
+                                    stopSnoozing()
+                                }) {
+                                    Text(NSLocalizedString("Stop Snoozing", comment: "Stop Snoozing button"))
+                                        .font(.system(size: stopSnoozingFontSize, weight: .medium))
+                                        .foregroundColor(.black)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: buttonHeight)
+                                        .background(Color.white)
+                                        .cornerRadius(4)
+                                }
+                                .accessibilityIdentifier("stopSnoozingButton")
+                                .padding(.horizontal, 16)
+                                .padding(.bottom, 20)
                             }
                         }
+                        .frame(minHeight: geometry.size.height)
                     }
-                    .padding(.horizontal, 16)
-
-                    Spacer()
-
-                    // Stop Snoozing button (only visible if snoozed)
-                    if isSnoozed {
-                        Button(action: {
-                            stopSnoozing()
-                        }) {
-                            Text(NSLocalizedString("Stop Snoozing", comment: "Stop Snoozing button"))
-                                .font(.system(size: stopSnoozingFontSize, weight: .medium))
-                                .foregroundColor(.black)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: buttonHeight)
-                                .background(Color.white)
-                                .cornerRadius(4)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 20)
-                    }
+                    .accessibilityIdentifier("snoozeOptionsScrollView")
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -93,6 +101,7 @@ struct SnoozePopupView: View {
                         Image(systemName: "xmark")
                             .foregroundColor(.white)
                     }
+                    .accessibilityIdentifier("snoozePopupCloseButton")
                 }
             }
         }

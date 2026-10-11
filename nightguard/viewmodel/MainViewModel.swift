@@ -155,7 +155,7 @@ class MainViewModel: ObservableObject, Identifiable {
     @Published var errorToastMessage: String = ""
     @Published var showErrorToast: Bool = false
     @Published var showStatsPanelView: Bool = true
-    @Published var showActionsMenu: Bool = true
+    @Published var showSnoozeSlider: Bool = true
     @Published var slideToSnoozeHeight: CGFloat = 80
     @Published var snoozeButtonText: String = "snooze"
     @Published var lowPredictionText: String = ""
@@ -227,7 +227,7 @@ class MainViewModel: ObservableObject, Identifiable {
         }
 
         observationTokens.append(AlarmRule.areAlertsGenerallyDisabled.observeChanges { [weak self] value in
-            self?.showActionsMenu = !value
+            self?.showSnoozeSlider = !value
             self?.slideToSnoozeHeight = value ? 0 : 80
         })
 
@@ -280,7 +280,7 @@ class MainViewModel: ObservableObject, Identifiable {
     private func loadiOSInitialData() {
         showStatsPanelView = UserDefaultsRepository.showStats.value
         showCareAndLoopData = UserDefaultsRepository.showCareAndLoopData.value
-        showActionsMenu = !AlarmRule.areAlertsGenerallyDisabled.value
+        showSnoozeSlider = !AlarmRule.areAlertsGenerallyDisabled.value
         slideToSnoozeHeight = AlarmRule.areAlertsGenerallyDisabled.value ? 0 : 80
         updateSnoozeButtonText()
     }

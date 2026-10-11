@@ -336,59 +336,27 @@ struct MainView: View {
                     .frame(minHeight: 150, maxHeight: .infinity)
                     .padding(.bottom, 8)
 
-                    // Slide to snooze
+                    // Snooze slider and always-available actions menu
                     ZStack {
-                        if viewModel.showActionsMenu {
-                            SlideToSnooze(snoozeText: $viewModel.snoozeButtonText, lowPredictionText: $viewModel.lowPredictionText) {
-                                showSnoozePopup = true
+                        if viewModel.showSnoozeSlider {
+                            ZStack {
+                                SlideToSnooze(snoozeText: $viewModel.snoozeButtonText, lowPredictionText: $viewModel.lowPredictionText) {
+                                    showSnoozePopup = true
+                                }
+                                .accessibilityIdentifier("mainSnoozeSlider")
+
+                                HStack {
+                                    Spacer()
+                                    actionsMenuButton
+                                }
                             }
                             .frame(height: viewModel.slideToSnoozeHeight)
-
-                            // Actions menu button
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    showActionsMenuPopup = true
-                                }) {
-                                    Image("Action")
-                                        .resizable()
-                                        .frame(width: 32, height: 32)
-                                        .foregroundColor(.gray)
+                        } else {
+                            Color.clear
+                                .frame(height: 0)
+                                .overlay(alignment: .bottomTrailing) {
+                                    actionsMenuButton
                                 }
-                                .frame(width: 48, height: 48)
-                                .background(Color(UIColor.darkGray.withAlphaComponent(0.3)))
-                                .clipShape(Circle())
-                                .padding(.trailing, 8)
-                                .accessibilityIdentifier("actionsMenuButton")
-                                .onLongPressGesture {
-                                    showNightscout = true
-                                }
-                                .confirmationDialog("Actions", isPresented: $showActionsMenuPopup, titleVisibility: .hidden) {
-                                    Button(NSLocalizedString("Open your Nightscout site", comment: "Link to NS site")) {
-                                        showNightscout = true
-                                    }
-                                    Button(NSLocalizedString("Fullscreen monitor", comment: "Fullscreen monitor")) {
-                                        showFullscreenMonitor = true
-                                    }
-                                    Button(NSLocalizedString("Preferences", comment: "Preferences menu item")) {
-                                        showPreferences = true
-                                    }
-                                    if !PurchaseManager.shared.hasProFeatureAccess {
-                                        Button(NSLocalizedString("Unlock Pro Version", comment: "Subscribe to Pro menu item")) {
-                                            promotionFocus = .pro
-                                        }
-                                    }
-                                    if !PurchaseManager.shared.isMaxAccessAvailable {
-                                        Button(NSLocalizedString(
-                                            PurchaseManager.shared.hasProFeatureAccess ? "Upgrade to Max" : "Subscribe to Max",
-                                            comment: "Subscribe to Max menu item"
-                                        )) {
-                                            promotionFocus = .max
-                                        }
-                                    }
-                                    Button(NSLocalizedString("Cancel", comment: "Cancel"), role: .cancel) {}
-                                }
-                            }
                         }
                     }
                     .padding(.bottom, 8)
@@ -456,8 +424,11 @@ struct MainView: View {
                 }
             )
         }
-        .fullScreenCover(isPresented: $showFullscreenMonitor) {
-            BedsideView(currentNightscoutData: viewModel.nightscoutData)
+        .fullScreenCover(isPresented: $showFullscreenMonitor, onDismiss: {
+            AppDelegate.updateOrientationLock(.portrait, rotateTo: .portrait)
+            viewModel.updateSnoozeButtonText()
+        }) {
+            BedsideView(currentNightscoutData: viewModel.nightscoutData, viewModel: viewModel)
         }
         .alert(NSLocalizedString("Do you like the app?", comment: "Review prompt title"), isPresented: $showReviewPrompt) {
             Button(NSLocalizedString("No", comment: "Review prompt no button"), role: .destructive) {
@@ -471,15 +442,59 @@ struct MainView: View {
         }
     }
 
+    private var actionsMenuButton: some View {
+        Button(action: {
+            showActionsMenuPopup = true
+        }) {
+            Image("Action")
+                .resizable()
+                .frame(width: 32, height: 32)
+                .foregroundColor(.gray)
+        }
+        .frame(width: 48, height: 48)
+        .background(Color(UIColor.darkGray.withAlphaComponent(0.3)))
+        .clipShape(Circle())
+        .padding(.trailing, 8)
+        .accessibilityIdentifier("actionsMenuButton")
+        .onLongPressGesture {
+            showNightscout = true
+        }
+        .confirmationDialog("Actions", isPresented: $showActionsMenuPopup, titleVisibility: .hidden) {
+            Button(NSLocalizedString("Open your Nightscout site", comment: "Link to NS site")) {
+                showNightscout = true
+            }
+            Button(NSLocalizedString("Fullscreen monitor", comment: "Fullscreen monitor")) {
+                showFullscreenMonitor = true
+            }
+            Button(NSLocalizedString("Preferences", comment: "Preferences menu item")) {
+                showPreferences = true
+            }
+            if !PurchaseManager.shared.hasProFeatureAccess {
+                Button(NSLocalizedString("Unlock Pro Version", comment: "Subscribe to Pro menu item")) {
+                    promotionFocus = .pro
+                }
+            }
+            if !PurchaseManager.shared.isMaxAccessAvailable {
+                Button(NSLocalizedString(
+                    PurchaseManager.shared.hasProFeatureAccess ? "Upgrade to Max" : "Subscribe to Max",
+                    comment: "Subscribe to Max menu item"
+                )) {
+                    promotionFocus = .max
+                }
+            }
+            Button(NSLocalizedString("Cancel", comment: "Cancel"), role: .cancel) {}
+        }
+    }
+
     private func calculateChartHeight(totalHeight: CGFloat) -> CGFloat {
         // Calculate heights of other UI components
         let topSectionHeight: CGFloat = 200 // Estimated BG value section
         let careDataHeight: CGFloat = viewModel.showCareAndLoopData ? 50 : 0
         let statsPanelHeight: CGFloat = viewModel.showStatsPanelView ? 88 : 0
-        let snoozeHeight: CGFloat = viewModel.slideToSnoozeHeight
+        let bottomControlsHeight: CGFloat = viewModel.showSnoozeSlider ? viewModel.slideToSnoozeHeight : 0
         let spacing: CGFloat = 24
 
-        let usedHeight = topSectionHeight + careDataHeight + statsPanelHeight + snoozeHeight + spacing
+        let usedHeight = topSectionHeight + careDataHeight + statsPanelHeight + bottomControlsHeight + spacing
         let chartHeight = max(150, totalHeight - usedHeight)
 
         return chartHeight
