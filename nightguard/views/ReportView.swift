@@ -24,6 +24,16 @@ struct ReportView: View {
     var body: some View {
         NavigationView {
             Form {
+                Section {
+                    HStack(spacing: 8) {
+                        Text(NSLocalizedString("PDF Reports", comment: "Report feature title"))
+                            .font(.headline)
+                        Text(NSLocalizedString("Beta", comment: "Report feature status"))
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.secondary)
+                    }
+                }
                 if !purchaseManager.hasProFeatureAccess {
                     Section {
                         Label(NSLocalizedString("PDF reports with Pro", comment: "Report teaser"), systemImage: "doc.richtext")

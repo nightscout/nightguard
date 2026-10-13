@@ -107,7 +107,7 @@ struct ProPromotionView: View {
 
                         FeatureRow(
                             icon: "doc.richtext",
-                            title: NSLocalizedString("PDF Reports", comment: "Pro report feature title"),
+                            title: "\(NSLocalizedString("PDF Reports", comment: "Pro report feature title")) · \(NSLocalizedString("Beta", comment: "Report feature status"))",
                             description: NSLocalizedString("Create and share PDF summaries of glucose and treatment history for personal reference.", comment: "Pro report feature description")
                         )
                     }
