@@ -264,7 +264,7 @@ struct RootTabView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .showProPromotionRequest)) { _ in
-            guard !PurchaseManager.shared.hasProFeatureAccess else {
+            guard PurchaseManager.shared.isMaxStatusResolved, !PurchaseManager.shared.hasProFeatureAccess else {
                 return
             }
 

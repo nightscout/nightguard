@@ -42,8 +42,12 @@ struct ReportRequest {
     let low: Double
     let high: Double
     let unit: Units
+    let locale: Locale
+    static let targetLow = 80.0
+    static let targetHigh = 180.0
+    static let mmolFactor = 18.0182
 
-    init(settings: ReportSettings, timeZone: TimeZone = .current, now: Date = Date()) {
+    init(settings: ReportSettings, timeZone: TimeZone = .current, now: Date = Date(), unit: Units? = nil, locale: Locale = .current) {
         self.settings = settings
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = timeZone
@@ -51,9 +55,10 @@ struct ReportRequest {
         let today = calendar.startOfDay(for: now)
         self.end = today
         self.start = calendar.date(byAdding: .day, value: -(ReportPeriod(rawValue: settings.period) ?? .week).rawValue, to: today)!
-        self.low = Double(UserDefaultsRepository.lowerBound.value)
-        self.high = Double(UserDefaultsRepository.upperBound.value)
-        self.unit = UserDefaultsRepository.units.value
+        self.low = Self.targetLow
+        self.high = Self.targetHigh
+        self.unit = unit ?? UserDefaultsRepository.units.value
+        self.locale = locale
     }
 
     var days: [Date] {
@@ -63,7 +68,7 @@ struct ReportRequest {
 
     func dateText(_ date: Date, format: String = "dd.MM.yyyy") -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale.current
+        formatter.locale = locale
         formatter.timeZone = calendar.timeZone
         formatter.dateFormat = format
         return formatter.string(from: date)
@@ -73,9 +78,11 @@ struct ReportRequest {
         "\(dateText(start)) – \(dateText(calendar.date(byAdding: .day, value: -1, to: end)!))"
     }
 
+    func displayValue(_ value: Double) -> Double { unit == .mmol ? value / Self.mmolFactor : value }
+
     var glucoseUnit: String { unit == .mmol ? "mmol/L" : "mg/dL" }
     func displayGlucose(_ value: Double) -> String {
-        unit == .mmol ? String(format: "%.1f", value / 18.0182) : String(format: "%.0f", value)
+        ReportFormatting.number(displayValue(value), digits: unit == .mmol ? 1 : 0, locale: locale)
     }
 }
 
@@ -88,12 +95,15 @@ struct ReportGlucose {
 struct ReportTreatment {
     let date: Date
     let kind: String
-    let carbs: Double
-    let insulin: Double
+    var carbs: Double
+    var insulin: Double
     let duration: Double
     let rate: Double?
     let percent: Double?
     let profileName: String?
+    var isSMB = false
+    var targetLow: Double?
+    var targetHigh: Double?
 }
 
 struct ReportSchedulePoint {
@@ -135,7 +145,20 @@ struct ReportDistribution {
     let inRange: Int
     let high: Int
     var count: Int { low + inRange + high }
-    func percent(_ count: Int) -> String { self.count == 0 ? "–" : String(format: "%.0f%%", 100 * Double(count) / Double(self.count)) }
+    enum Band: Int { case low, inRange, high }
+
+    // Largest remainders preserve a total of 100% without altering the counts.
+    func percent(_ band: Band) -> String {
+        guard count > 0 else { return "–" }
+        let exact = [low, inRange, high].map { 100 * Double($0) / Double(count) }
+        var rounded = exact.map { Int(floor($0)) }
+        let order = exact.indices.sorted {
+            let lhs = exact[$0] - Double(rounded[$0]), rhs = exact[$1] - Double(rounded[$1])
+            return lhs == rhs ? $0 < $1 : lhs > rhs
+        }
+        for index in order.prefix(100 - rounded.reduce(0, +)) { rounded[index] += 1 }
+        return "\(rounded[band.rawValue])%"
+    }
 }
 
 struct ReportDay {
@@ -149,6 +172,7 @@ struct ReportDay {
     let basal: Double?
     let profileBasal: Double?
     let mean: Double?
+    var targetSeries: [ReportTargetPoint] = []
     var totalInsulin: Double? { basal.map { $0 + bolus } }
 }
 
@@ -178,4 +202,33 @@ struct ReportAnalysis {
     let pgr: Double?
     let profiles: [ReportProfile]
     let changeCounts: [String: Int]
+}
+
+struct ReportTargetPoint {
+    let date: Date
+    let end: Date
+    let low: Double
+    let high: Double
+}
+
+struct ReportAnnotation {
+    let date: Date
+    var value: Double
+    var count: Int
+}
+
+enum ReportFormatting {
+    static var insulinUnit: String { NSLocalizedString("Report insulin unit", comment: "Insulin unit in PDF") }
+
+    static func number(_ value: Double?, digits: Int, locale: Locale = .current) -> String {
+        guard let value = value, value.isFinite else { return "–" }
+        let formatter = NumberFormatter()
+        formatter.locale = locale
+        formatter.numberStyle = .decimal
+        formatter.roundingMode = .halfUp
+        formatter.usesGroupingSeparator = false
+        formatter.minimumFractionDigits = digits
+        formatter.maximumFractionDigits = digits
+        return formatter.string(from: NSNumber(value: value)) ?? "–"
+    }
 }

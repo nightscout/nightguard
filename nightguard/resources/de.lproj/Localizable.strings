@@ -699,6 +699,7 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Manage Subscription" = "Abo verwalten";
 "No active subscription found to restore." = "Kein aktives Abonnement zum Wiederherstellen gefunden.";
 "Purchases restored successfully." = "Käufe erfolgreich wiederhergestellt.";
+"Unable to verify purchases. Please try again." = "Käufe konnten nicht überprüft werden. Bitte erneut versuchen.";
 "Restore failed: %@" = "Wiederherstellung fehlgeschlagen: %@";
 
 /* Localization audit */
@@ -888,3 +889,24 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "CGP HYPO axis" = "Intensität HYPO [mg/dL × min²]";
 "CGP HYPER axis" = "Intensität HYPER [mg/dL × min²]";
 "Mean glucose" = "Mittlere Glukose";
+"All information is provided without warranty. Not for medical decisions." = "Alle Angaben ohne Gewähr. Nicht für medizinische Entscheidungen.";
+
+"Report insulin unit" = "IE";
+
+"Report target range" = "Report-Zielbereich";
+
+"Profile basal" = "Profilbasal";
+
+"Bolus / basal share" = "Bolus- / Basalanteil";
+
+"HYPO intensity" = "Intensität HYPO";
+
+"HYPER intensity" = "Intensität HYPER";
+
+"min/day" = "min/Tag";
+
+"CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP-Grenzen: %@–%@ %@. ToR: Minuten außerhalb dieses Bereichs; CV: Glukoseschwankung; HYPO/HYPER: Stärke der Abweichungen.";
+
+"Report daily legend" = "Blau: Glukose/Bolus/abgegebenes Basal; Türkis: Profilbasal; Violett: Zielwert; Orange: KH; rote Punkte: blutige Messung.\n▼ Mikrobolus; S Sensorwechsel; K Katheterwechsel; R Ampullenwechsel; [ ] Summe innerhalb 60 min. Grün: Report-Zielbereich.";
+
+"Name" = "Name";

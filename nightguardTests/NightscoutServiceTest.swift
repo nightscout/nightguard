@@ -9,6 +9,7 @@
 import Foundation
 
 import XCTest
+import PDFKit
 
 private final class NightscoutMockURLProtocol: URLProtocol {
     static var handler: ((URLRequest) throws -> (HTTPURLResponse, Data))?
@@ -72,6 +73,149 @@ final class ReportCalculationTest: XCTestCase {
         let delivered = series.reduce(0) { $0 + $1.deliveredRate * $1.end.timeIntervalSince($1.date) / 3600 }
         XCTAssertEqual(delivered, 47.5, accuracy: 0.0001)
     }
+    private func event(_ minutes: Double, kind: String = "Meal Bolus", carbs: Double = 0,
+                       insulin: Double = 0, duration: Double = 0, smb: Bool = false,
+                       low: Double? = nil, high: Double? = nil) -> ReportTreatment {
+        ReportTreatment(date: request().start.addingTimeInterval(minutes * 60), kind: kind,
+                        carbs: carbs, insulin: insulin, duration: duration, rate: nil, percent: nil,
+                        profileName: nil, isSMB: smb, targetLow: low, targetHigh: high)
+    }
+
+    private func profile() -> ReportProfile {
+        ReportProfile(name: "Default", isDefault: true, effectiveAt: request().start.addingTimeInterval(-86400),
+                      timeZone: TimeZone(secondsFromGMT: 0)!, dia: 5, carbsPerHour: 20,
+                      basal: [ReportSchedulePoint(minutes: 0, value: 2)], carbRatio: [], sensitivity: [],
+                      targetLow: [ReportSchedulePoint(minutes: 0, value: 120)],
+                      targetHigh: [ReportSchedulePoint(minutes: 0, value: 120)])
+    }
+
+    func testReportRangeIsIndependentOfAlarmSettingsAndUnits() {
+        let low = UserDefaultsRepository.lowerBound.value
+        let high = UserDefaultsRepository.upperBound.value
+        defer { UserDefaultsRepository.lowerBound.value = low; UserDefaultsRepository.upperBound.value = high }
+        UserDefaultsRepository.lowerBound.value = 50
+        UserDefaultsRepository.upperBound.value = 250
+        let report = ReportRequest(settings: ReportSettings(), unit: .mmol, locale: Locale(identifier: "de_DE"))
+        XCTAssertEqual(report.low, 80)
+        XCTAssertEqual(report.high, 180)
+        XCTAssertEqual(report.displayGlucose(report.low), "4,4")
+        XCTAssertEqual(report.displayGlucose(report.high), "10,0")
+        let counts = ReportCalculator.classify([79, 80, 179, 180], low: report.low, high: report.high)
+        XCTAssertEqual(counts.low, 1); XCTAssertEqual(counts.inRange, 2); XCTAssertEqual(counts.high, 1)
+    }
+
+    func testPercentageRoundingPreservesOneHundredAndReferenceDistribution() {
+        let distribution = ReportDistribution(low: 206, inRange: 1510, high: 286)
+        XCTAssertEqual(distribution.percent(.low), "10%")
+        XCTAssertEqual(distribution.percent(.inRange), "76%")
+        XCTAssertEqual(distribution.percent(.high), "14%")
+        XCTAssertEqual(ReportDistribution(low: 0, inRange: 0, high: 0).percent(.inRange), "–")
+        XCTAssertEqual(ReportFormatting.number(7.65, digits: 1, locale: Locale(identifier: "de_DE")), "7,7")
+        XCTAssertEqual(ReportFormatting.number(39.45, digits: 1, locale: Locale(identifier: "de_DE")), "39,5")
+    }
+
+    func testNinetyDayPDFIncludesEveryDayAndMissingDataPages() throws {
+        var settings = ReportSettings()
+        settings.period = 90
+        let report = ReportRequest(settings: settings, timeZone: TimeZone(identifier: "Europe/Berlin")!,
+                                   now: ISO8601DateFormatter().date(from: "2026-11-01T12:00:00Z")!)
+        let analysis = ReportCalculator.calculate(ReportDataset(readings: [], treatments: [], profiles: []), request: report)
+        let url = try ReportPDFRenderer().render(request: report, analysis: analysis)
+        defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
+        let document = try XCTUnwrap(PDFDocument(url: url))
+        XCTAssertEqual(document.pageCount, 22)
+        let text = try XCTUnwrap(document.string)
+        for day in report.days { XCTAssertTrue(text.contains(report.dateText(day, format: "EEE, dd.MM.yyyy"))) }
+    }
+
+    func testWizardDeduplicationIsSharedByTotalsAndAnnotationsAndKeepsSMB() {
+        let events = [event(10, insulin: 5.6), event(11, kind: "Bolus Wizard", carbs: 60, insulin: 5.6),
+                      event(20, insulin: 0.4, smb: true)]
+        let analysis = ReportCalculator.calculate(ReportDataset(readings: [], treatments: events, profiles: [profile()]), request: request())
+        let day = analysis.days[0]
+        XCTAssertEqual(day.carbs, 60)
+        XCTAssertEqual(day.bolus, 6, accuracy: 0.00001)
+        XCTAssertEqual(day.treatments.filter { !$0.isSMB }.reduce(0) { $0 + $1.insulin }, 5.6)
+        let labels = ReportCalculator.annotations(day.treatments.filter { !$0.isSMB }, field: \.insulin)
+        XCTAssertEqual(labels.count, 1); XCTAssertEqual(labels[0].value, 5.6); XCTAssertEqual(labels[0].count, 1)
+    }
+
+    func testAnnotationsGroupFromFirstEventWithoutChainingAndSortInput() {
+        let labels = ReportCalculator.annotations([event(80, carbs: 30), event(0, carbs: 10), event(40, carbs: 20)], field: \.carbs)
+        XCTAssertEqual(labels.map(\.value), [30, 30])
+        XCTAssertEqual(labels.map(\.count), [2, 1])
+        XCTAssertEqual(labels[1].date, request().start.addingTimeInterval(80 * 60))
+        XCTAssertEqual(ReportCalculator.annotations([event(0, carbs: 1), event(60, carbs: 2)], field: \.carbs).count, 2)
+    }
+
+    func testTemporaryTargetsCarryAcrossMidnightExpireAndCancelWithoutRevivingOldTarget() {
+        let report = request()
+        let events = [event(-30, kind: "Temporary Target", duration: 90, low: 150, high: 160),
+                      event(30, kind: "Temporary Target", duration: 10, low: 90, high: 100),
+                      event(50, kind: "Temporary Target", duration: 20, low: 140, high: 140),
+                      event(55, kind: "Temporary Target", duration: 0)]
+        let series = ReportCalculator.targetSeriesForDay(report.start, end: report.end, profiles: [profile()], treatments: events)
+        XCTAssertEqual(series.map(\.low), [150, 90, 120, 140, 120])
+        XCTAssertEqual(series.map { Int($0.date.timeIntervalSince(report.start) / 60) }, [0, 30, 40, 50, 55])
+        XCTAssertEqual(series.last?.end, report.end)
+    }
+
+    func testDecoderPreservesSMBAndConvertsTemporaryTargetUnits() {
+        let report = request()
+        let rows: [[String: Any]] = [
+            ["_id": "1", "created_at": report.start.timeIntervalSince1970 * 1000, "eventType": "Correction Bolus", "type": "smb", "insulin": 0.3],
+            ["_id": "2", "created_at": report.start.timeIntervalSince1970 * 1000, "eventType": "Temporary Target", "units": "mmol/L", "targetBottom": 5.5, "targetTop": 6.5, "duration": 30],
+            ["_id": "3", "created_at": report.start.timeIntervalSince1970 * 1000, "eventType": "Correction Bolus", "isSMB": true]
+        ]
+        let events = ReportDataProvider().decodeTreatments(rows, start: report.start, end: report.end)
+        XCTAssertEqual(events.filter(\.isSMB).count, 2)
+        let target = events.first { $0.kind == "Temporary Target" }!
+        XCTAssertEqual(target.targetLow!, 5.5 * ReportRequest.mmolFactor, accuracy: 0.00001)
+        XCTAssertEqual(target.targetHigh!, 6.5 * ReportRequest.mmolFactor, accuracy: 0.00001)
+    }
+
+    func testCGPAndInsulinStatisticsDoNotChangeWithDisplayUnit() {
+        let report = request()
+        let readings = (0..<288).map { ReportGlucose(date: report.start.addingTimeInterval(Double($0) * 300), value: $0 % 2 == 0 ? 65 : 190, isMeter: false) }
+        let data = ReportDataset(readings: readings, treatments: [event(40, insulin: 3)], profiles: [profile()])
+        let mg = ReportCalculator.calculate(data, request: report)
+        let mmolRequest = ReportRequest(settings: report.settings, timeZone: report.calendar.timeZone,
+                                        now: report.end.addingTimeInterval(3600), unit: .mmol)
+        let mmol = ReportCalculator.calculate(data, request: mmolRequest)
+        XCTAssertEqual(mg.pgr, mmol.pgr)
+        XCTAssertEqual(mg.days[0].totalInsulin, mmol.days[0].totalInsulin)
+        XCTAssertEqual(ReportCalculator.cgpReference[4], 90)
+        XCTAssertEqual(ReportCalculator.scaleCGP(90, axis: 4), 14)
+        XCTAssertEqual(ReportFormatting.number(mmolRequest.displayValue(43.5), digits: 1, locale: Locale(identifier: "de_DE")), "2,4")
+    }
+
+    func testPDFRendersBothUnitsAndPaginatesLongProfilesWithoutDroppingIntervals() throws {
+        var settings = request().settings
+        settings.name = String(repeating: "Long name ", count: 20)
+        settings.birthDate = request().start
+        settings.diabetesSince = "2012"
+        settings.insulin = "Example"
+        let points = (0..<48).map { ReportSchedulePoint(minutes: $0 * 30, value: Double($0 + 1)) }
+        let longProfile = ReportProfile(name: "Long schedule", isDefault: true, effectiveAt: request().start,
+            timeZone: request().calendar.timeZone, dia: 5, carbsPerHour: 20, basal: points,
+            carbRatio: [], sensitivity: [], targetLow: profile().targetLow, targetHigh: profile().targetHigh)
+        for unit in [Units.mmol, .mgdl] {
+            let report = ReportRequest(settings: settings, timeZone: request().calendar.timeZone,
+                                       now: request().end.addingTimeInterval(3600), unit: unit, locale: Locale(identifier: "de_DE"))
+            let readings = [ReportGlucose(date: report.start, value: 120, isMeter: false),
+                            ReportGlucose(date: report.start.addingTimeInterval(300), value: 120, isMeter: false)]
+            let analysis = ReportCalculator.calculate(ReportDataset(readings: readings, treatments: [], profiles: [longProfile]), request: report)
+            let url = try ReportPDFRenderer().render(request: report, analysis: analysis)
+            defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
+            let document = try XCTUnwrap(PDFDocument(url: url))
+            XCTAssertGreaterThanOrEqual(document.pageCount, 7)
+            let text = try XCTUnwrap(document.string)
+            XCTAssertTrue(text.contains("23:30–24:00"))
+            XCTAssertTrue(text.contains(report.glucoseUnit))
+            XCTAssertTrue(text.contains(unit == .mmol ? "6,7" : "120"))
+        }
+    }
+
 }
 
 class NightscoutServiceTest: XCTestCase {

@@ -662,6 +662,7 @@
 "Manage Subscription" = "Manage Subscription";
 "No active subscription found to restore." = "No active subscription found to restore.";
 "Purchases restored successfully." = "Purchases restored successfully.";
+"Unable to verify purchases. Please try again." = "Unable to verify purchases. Please try again.";
 "Restore failed: %@" = "Restore failed: %@";
 
 /* Localization audit */
@@ -865,3 +866,24 @@
 "CGP HYPO axis" = "HYPO intensity [mg/dL × min²]";
 "CGP HYPER axis" = "HYPER intensity [mg/dL × min²]";
 "Mean glucose" = "Mean glucose";
+"All information is provided without warranty. Not for medical decisions." = "All information is provided without warranty. Not for medical decisions.";
+
+"Report insulin unit" = "U";
+
+"Report target range" = "Report target range";
+
+"Profile basal" = "Profile basal";
+
+"Bolus / basal share" = "Bolus / basal share";
+
+"HYPO intensity" = "HYPO intensity";
+
+"HYPER intensity" = "HYPER intensity";
+
+"min/day" = "min/day";
+
+"CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits.";
+
+"Report daily legend" = "Blue: glucose/bolus/delivered basal; teal: profile basal; purple: target; orange: carbs; red dots: meter.\n▼ Microbolus; S sensor change; K cannula change; R reservoir change; [ ] sum within 60 min. Green: report target range.";
+
+"Name" = "Name";

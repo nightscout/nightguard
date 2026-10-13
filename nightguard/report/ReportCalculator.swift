@@ -13,16 +13,17 @@ enum ReportCalculator {
             let dayEnd = request.calendar.date(byAdding: .day, value: 1, to: dayStart)!
             let dayReadings = (sensors + meters).filter { $0.date >= dayStart && $0.date < dayEnd }.sorted { $0.date < $1.date }
             let daySensors = dayReadings.filter { !$0.isMeter }
-            let events = data.treatments.filter { $0.date >= dayStart && $0.date < dayEnd }
-            let carbs = treatmentTotal(events, field: \.carbs)
-            let bolus = treatmentTotal(events, field: \.insulin)
+            let events = normalizedTreatments(data.treatments.filter { $0.date >= dayStart && $0.date < dayEnd })
+            let carbs = events.reduce(0) { $0 + $1.carbs }
+            let bolus = events.reduce(0) { $0 + $1.insulin }
             let basalSeries = basalSeriesForDay(dayStart, end: dayEnd, profiles: data.profiles, treatments: data.treatments) ?? []
             let profileBasal = basalSeries.isEmpty ? nil : basalSeries.reduce(0) { $0 + $1.profileRate * $1.end.timeIntervalSince($1.date) / 3600 }
             let basal = basalSeries.isEmpty ? nil : basalSeries.reduce(0) { $0 + $1.deliveredRate * $1.end.timeIntervalSince($1.date) / 3600 }
             return ReportDay(date: dayStart, readings: dayReadings, treatments: events,
                              distribution: classify(daySensors.map(\.value), low: request.low, high: request.high),
                              carbs: carbs, bolus: bolus, basalSeries: basalSeries, basal: basal, profileBasal: profileBasal,
-                             mean: daySensors.isEmpty ? nil : daySensors.reduce(0) { $0 + $1.value } / Double(daySensors.count))
+                             mean: daySensors.isEmpty ? nil : daySensors.reduce(0) { $0 + $1.value } / Double(daySensors.count),
+                             targetSeries: targetSeriesForDay(dayStart, end: dayEnd, profiles: data.profiles, treatments: data.treatments))
         }
 
         // Nightscout Reporter computes GVI from consecutive five-minute samples.
@@ -57,8 +58,8 @@ enum ReportCalculator {
         }
         // CGP uses the reporter's clinical analysis range, independently of the
         // wider low/high alert bounds configured in Nightguard.
-        let cgpLow = 80.0
-        let cgpHigh = 180.0
+        let cgpLow = ReportRequest.targetLow
+        let cgpHigh = ReportRequest.targetHigh
         let tor = values.isEmpty ? nil : 1440 * Double(values.filter { $0 < cgpLow || $0 > cgpHigh }.count) / Double(values.count)
         let intensity = cgpIntensity(samples, low: cgpLow, high: cgpHigh, request: request)
         let variation = mean.flatMap { $0 > 0 ? (sd ?? 0) / $0 * 100 : nil }
@@ -66,7 +67,7 @@ enum ReportCalculator {
         let pgr: Double?
         if cgpValues.allSatisfy({ $0 != nil }) {
             let radii = zip(cgpValues, [0, 1, 2, 3, 4]).map { scaleCGP($0.0!, axis: $0.1) }
-            let healthy = [0.0, 16.7, 0.0, 0.0, 90.0].enumerated().map { scaleCGP($0.element, axis: $0.offset) }
+            let healthy = cgpReference.enumerated().map { scaleCGP($0.element, axis: $0.offset) }
             pgr = polygonArea(radii) / polygonArea(healthy)
         } else { pgr = nil }
         var counts: [String: Int] = [:]
@@ -106,20 +107,83 @@ enum ReportCalculator {
         }
     }
 
-    private static func treatmentTotal(_ events: [ReportTreatment], field: KeyPath<ReportTreatment, Double>) -> Double {
-        events.reduce(0) { total, event in
-            let value = event[keyPath: field]
-            guard value > 0 else { return total }
-            if event.kind.lowercased() == "bolus wizard" {
-                let duplicated = events.contains { other in
+    // Clear each duplicated field independently: a wizard can contain valid carbs
+    // alongside a bolus that was already recorded by the pump.
+    static func normalizedTreatments(_ events: [ReportTreatment]) -> [ReportTreatment] {
+        events.map { event in
+            var result = event
+            for field in [\ReportTreatment.carbs, \ReportTreatment.insulin] {
+                let value = event[keyPath: field]
+                let duplicated = event.kind.lowercased() == "bolus wizard" && events.contains { other in
                     other.kind.lowercased() != "bolus wizard" &&
                     abs(other.date.timeIntervalSince(event.date)) <= 120 &&
                     abs(other[keyPath: field] - value) < 0.01
                 }
-                if duplicated { return total }
+                result[keyPath: field] = value.isFinite && value > 0 && !duplicated ? value : 0
             }
-            return total + value
+            return result
+        }.sorted { $0.date < $1.date }
+    }
+
+    static func annotations(_ events: [ReportTreatment], field: KeyPath<ReportTreatment, Double>) -> [ReportAnnotation] {
+        var groups: [ReportAnnotation] = []
+        for event in events.sorted(by: { $0.date < $1.date }) where event[keyPath: field] > 0 {
+            if let last = groups.last, event.date.timeIntervalSince(last.date) < 3600 {
+                groups[groups.count - 1].value += event[keyPath: field]
+                groups[groups.count - 1].count += 1
+            } else {
+                groups.append(ReportAnnotation(date: event.date, value: event[keyPath: field], count: 1))
+            }
         }
+        return groups
+    }
+
+    static func targetSeriesForDay(_ start: Date, end: Date, profiles: [ReportProfile], treatments: [ReportTreatment]) -> [ReportTargetPoint] {
+        let events = treatments.filter {
+            $0.date < end && ["temporary target", "profile switch"].contains($0.kind.lowercased())
+        }.sorted { $0.date < $1.date }
+        var boundaries: Set<Date> = [start, end]
+        var cursor = start
+        while cursor < end { boundaries.insert(cursor); cursor = cursor.addingTimeInterval(60) }
+        for profile in profiles where profile.effectiveAt > start && profile.effectiveAt < end {
+            boundaries.insert(profile.effectiveAt)
+        }
+        for event in events {
+            if event.date > start { boundaries.insert(event.date) }
+            let expiry = event.date.addingTimeInterval(event.duration * 60)
+            if expiry > start && expiry < end { boundaries.insert(expiry) }
+        }
+        let times = boundaries.sorted()
+        var result: [ReportTargetPoint] = []
+        var eventIndex = 0
+        var temporary: ReportTreatment?
+        var switchName: String?
+        for index in times.indices.dropLast() {
+            let date = times[index]
+            while eventIndex < events.count && events[eventIndex].date <= date {
+                let event = events[eventIndex]
+                if event.kind.lowercased() == "temporary target" { temporary = event }
+                else { switchName = event.profileName }
+                eventIndex += 1
+            }
+            let profile = activeProfile(at: date, profiles: profiles, switchName: switchName)
+            var low = profile.flatMap { $0.value($0.targetLow, at: date) }
+            var high = profile.flatMap { $0.value($0.targetHigh, at: date) }
+            if let temp = temporary, temp.duration > 0,
+               temp.date.addingTimeInterval(temp.duration * 60) > date,
+               let bottom = temp.targetLow, let top = temp.targetHigh,
+               bottom.isFinite, top.isFinite, bottom > 0, top >= bottom {
+                low = bottom; high = top
+            }
+            guard let bottom = low, let top = high, bottom.isFinite, top.isFinite,
+                  bottom > 0, top >= bottom else { continue }
+            if let last = result.last, last.end == date, last.low == bottom, last.high == top {
+                result[result.count - 1] = ReportTargetPoint(date: last.date, end: times[index + 1], low: bottom, high: top)
+            } else {
+                result.append(ReportTargetPoint(date: date, end: times[index + 1], low: bottom, high: top))
+            }
+        }
+        return result
     }
 
     private static func percentile(_ sorted: [Double], _ percent: Double) -> Double {
@@ -248,7 +312,9 @@ enum ReportCalculator {
         return (hypo / Double(request.days.count), hyper / Double(request.days.count))
     }
 
-    private static func scaleCGP(_ value: Double, axis: Int) -> Double {
+    static let cgpReference = [0.0, 16.7, 0.0, 0.0, 90.0]
+
+    static func scaleCGP(_ value: Double, axis: Int) -> Double {
         switch axis {
         case 0: return pow(max(0, value) * 0.00614, 1.581) + 14
         case 1: return max(0, value - 17) * 0.92 + 14

@@ -101,7 +101,8 @@ class ChartScene : SKScene {
             return
         }
 
-        if chartImage?.size == CGSize(width: 10, height: 10) {
+        let hasDrawableInput = days.count != 1 && days.contains { $0.count > 1 }
+        if hasDrawableInput && chartImage?.size == CGSize(width: 10, height: 10) {
             AppLogger.singleton.warning(
                 "ChartScene: ChartPainter returned its empty placeholder image valueCounts=\(days.map(\.count))",
                 category: .nightscout

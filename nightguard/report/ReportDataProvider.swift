@@ -191,7 +191,7 @@ final class ReportDataProvider {
         page(0)
     }
 
-    private func decodeReadings(_ rows: [[String: Any]], start: Date, end: Date) -> [ReportGlucose] {
+    func decodeReadings(_ rows: [[String: Any]], start: Date, end: Date) -> [ReportGlucose] {
         var seen = Set<String>()
         return rows.compactMap { row -> ReportGlucose? in
             guard let millis = timestamp(row, field: "date"), let value = number(row["sgv"] ?? row["mbg"]),
@@ -205,7 +205,7 @@ final class ReportDataProvider {
         }.sorted { $0.date < $1.date }
     }
 
-    private func decodeTreatments(_ rows: [[String: Any]], start: Date, end: Date) -> [ReportTreatment] {
+    func decodeTreatments(_ rows: [[String: Any]], start: Date, end: Date) -> [ReportTreatment] {
         var seen = Set<String>()
         return rows.compactMap { row -> ReportTreatment? in
             guard let millis = timestamp(row, field: "created_at") else { return nil }
@@ -214,14 +214,19 @@ final class ReportDataProvider {
             let kind = row["eventType"] as? String ?? ""
             let key = (row["_id"] as? String) ?? (row["identifier"] as? String) ?? String(data: (try? JSONSerialization.data(withJSONObject: row, options: .sortedKeys)) ?? Data(), encoding: .utf8) ?? UUID().uuidString
             guard seen.insert(key).inserted else { return nil }
+            let scale = (row["units"] as? String ?? "mg/dl").lowercased().contains("mmol") ? ReportRequest.mmolFactor : 1
+            let smb = (row["isSMB"] as? Bool == true) || kind.lowercased() == "smb" ||
+                (row["type"] as? String)?.lowercased() == "smb"
             return ReportTreatment(date: date, kind: kind, carbs: number(row["carbs"]) ?? 0,
                                    insulin: number(row["insulin"]) ?? 0, duration: number(row["duration"]) ?? 0,
                                    rate: number(row["absolute"]) ?? number(row["rate"]), percent: number(row["percent"]),
-                                   profileName: row["profile"] as? String)
+                                   profileName: row["profile"] as? String, isSMB: smb,
+                                   targetLow: number(row["targetBottom"]).map { $0 * scale },
+                                   targetHigh: number(row["targetTop"]).map { $0 * scale })
         }.sorted { $0.date < $1.date }
     }
 
-    private func decodeProfiles(_ rows: [[String: Any]]) -> [ReportProfile] {
+    func decodeProfiles(_ rows: [[String: Any]]) -> [ReportProfile] {
         rows.flatMap { row -> [ReportProfile] in
             guard let start = timestamp(row, field: "startDate"),
                   let store = row["store"] as? [String: Any] else { return [] }
@@ -231,7 +236,7 @@ final class ReportDataProvider {
             return store.compactMap { name, raw -> ReportProfile? in
                 guard let data = raw as? [String: Any] else { return nil }
                 let units = ((data["units"] as? String) ?? (row["units"] as? String) ?? "mg/dl").lowercased()
-                let glucoseScale = units.contains("mmol") ? 18.0182 : 1.0
+                let glucoseScale = units.contains("mmol") ? ReportRequest.mmolFactor : 1.0
                 return ReportProfile(name: name, isDefault: name == defaultName,
                                      effectiveAt: Date(timeIntervalSince1970: start / 1000), timeZone: (data["timezone"] as? String).flatMap(TimeZone.init(identifier:)) ?? zone,
                                      dia: number(data["dia"]), carbsPerHour: number(data["carbs_hr"]),

@@ -142,7 +142,7 @@ struct ProPromotionView: View {
                         SubscriptionOptionView(
                             price: purchaseManager.formattedProPrice,
                             footnoteText: nil,
-                            buttonTitle: purchaseManager.hasProFeatureAccess ? nil : NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"),
+                            buttonTitle: (!purchaseManager.isMaxStatusResolved || purchaseManager.hasProFeatureAccess) ? nil : NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"),
                             action: {
                                 purchaseManager.buyProVersion()
                                 presentationMode.wrappedValue.dismiss()
@@ -152,7 +152,7 @@ struct ProPromotionView: View {
                         SubscriptionOptionView(
                             price: purchaseManager.formattedMaxPrice,
                             footnoteText: maxUpgradeFootnoteText,
-                            buttonTitle: purchaseManager.isMaxAccessAvailable ? nil : maxButtonTitle,
+                            buttonTitle: (!purchaseManager.isMaxStatusResolved || purchaseManager.isMaxAccessAvailable) ? nil : maxButtonTitle,
                             action: {
                                 purchaseManager.buyMaxVersion()
                                 presentationMode.wrappedValue.dismiss()

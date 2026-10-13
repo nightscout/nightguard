@@ -770,6 +770,7 @@
 "Manage Subscription" = "管理订阅";
 "No active subscription found to restore." = "未找到可恢复的有效订阅。";
 "Purchases restored successfully." = "购买项目恢复成功。";
+"Unable to verify purchases. Please try again." = "无法验证购买项目。请重试。";
 "Restore failed: %@" = "恢复失败：%@";
 
 /* Localization audit */
@@ -898,3 +899,24 @@
 "CGP HYPO axis" = "低血糖强度 [mg/dL × min²]";
 "CGP HYPER axis" = "高血糖强度 [mg/dL × min²]";
 "Mean glucose" = "平均血糖";
+"All information is provided without warranty. Not for medical decisions." = "所有信息不作保证。请勿用于医疗决策。";
+
+"Report insulin unit" = "U";
+
+"Report target range" = "报告目标范围";
+
+"Profile basal" = "配置基础率";
+
+"Bolus / basal share" = "大剂量 / 基础胰岛素占比";
+
+"HYPO intensity" = "低血糖强度";
+
+"HYPER intensity" = "高血糖强度";
+
+"min/day" = "分钟/天";
+
+"CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP 范围：%@–%@ %@。ToR：范围外的分钟数；CV：血糖变异；HYPO/HYPER：低/高血糖强度。";
+
+"Report daily legend" = "蓝色：血糖/大剂量/实际基础率；青色：配置基础率；紫色：目标；橙色：碳水；红点：指尖血糖。\n▼ 微量大剂量；S 更换传感器；K 更换导管；R 更换储药器；[ ] 60 分钟内合计。绿色：报告目标范围。";
+
+"Name" = "姓名";

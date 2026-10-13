@@ -21,12 +21,7 @@ class VolumeChangeDetector: NSObject {
             }
             
             if isActive {
-                do {
-                    try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playback)))
-                    try AVAudioSession.sharedInstance().setActive(true)
-                } catch {
-                    NSLog("VolumeChangeDetector - error activating audio session")
-                }
+                AudioSessionController.activatePlayback(context: "VolumeChangeDetector") { _ in }
                 AVAudioSession.sharedInstance().addObserver(self, forKeyPath: "outputVolume", options: NSKeyValueObservingOptions.new, context: nil)
             } else {
                 AVAudioSession.sharedInstance().removeObserver(self, forKeyPath: "outputVolume")
@@ -49,7 +44,84 @@ class VolumeChangeDetector: NSObject {
     }
 }
 
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
-	return input.rawValue
+enum AudioSessionController {
+    static func activatePlayback(context: String, completion: @escaping (Bool) -> Void) {
+        let session = AVAudioSession.sharedInstance()
+
+        do {
+            try session.setCategory(.playback)
+        } catch {
+            NSLog("\(context) - error configuring audio session: \(error)")
+            completion(false)
+            return
+        }
+
+        #if os(watchOS)
+        if #available(watchOS 5.0, *) {
+            session.activate(options: []) { activated, error in
+                if let error = error {
+                    NSLog("\(context) - error activating audio session: \(error)")
+                }
+                completion(activated)
+            }
+        } else {
+            activateSynchronously(session, context: context, completion: completion)
+        }
+        #else
+        if #available(iOS 27.0, *) {
+            session.activate(options: []) { activated, error in
+                if let error = error {
+                    NSLog("\(context) - error activating audio session: \(error)")
+                }
+                completion(activated)
+            }
+        } else {
+            activateSynchronously(session, context: context, completion: completion)
+        }
+        #endif
+    }
+
+    static func deactivatePlayback() {
+        let session = AVAudioSession.sharedInstance()
+
+        #if os(watchOS)
+        if #available(watchOS 27.0, *) {
+            session.deactivate(options: .notifyOthersOnDeactivation) { _, error in
+                if let error = error {
+                    NSLog("AlarmSound - error deactivating audio session: \(error)")
+                }
+            }
+        } else {
+            deactivateSynchronously(session)
+        }
+        #else
+        if #available(iOS 27.0, *) {
+            session.deactivate(options: .notifyOthersOnDeactivation) { _, error in
+                if let error = error {
+                    NSLog("AlarmSound - error deactivating audio session: \(error)")
+                }
+            }
+        } else {
+            deactivateSynchronously(session)
+        }
+        #endif
+    }
+
+    private static func activateSynchronously(
+        _ session: AVAudioSession,
+        context: String,
+        completion: @escaping (Bool) -> Void
+    ) {
+        do {
+            try session.setActive(true)
+            completion(true)
+        } catch {
+            NSLog("\(context) - error activating audio session: \(error)")
+            completion(false)
+        }
+    }
+
+    private static func deactivateSynchronously(_ session: AVAudioSession) {
+        try? session.setActive(false, options: .notifyOthersOnDeactivation)
+    }
 }

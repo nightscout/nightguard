@@ -7,10 +7,13 @@
 
 import Foundation
 import StoreKit
+#if os(iOS) && MAIN_APP
+import UIKit
+#endif
 
 class PurchaseManager: NSObject, ObservableObject {
     
-    static let shared = PurchaseManager()
+    static let shared = PurchaseManager(defaults: .standard, observeStoreKit: true)
     
     let proProductIdentifier = "app.hermanns.nightguard.pro"
     let maxProductIdentifier = "app.hermanns.nightguard.max"
@@ -42,7 +45,8 @@ class PurchaseManager: NSObject, ObservableObject {
     }
     
     @Published var isProAccessAvailable: Bool = false
-    @Published var isMaxAccessAvailable: Bool = false
+    @Published private(set) var isMaxAccessAvailable: Bool = false
+    @Published private(set) var isMaxStatusResolved = false
     @Published var products: [SKProduct] = []
 
     var hasProFeatureAccess: Bool {
@@ -72,22 +76,107 @@ class PurchaseManager: NSObject, ObservableObject {
     @Published var showingRestoreAlert = false
     
     private var isRestoring = false
+    private var maxUpdatesTask: Task<Void, Never>?
+    private var maxRefreshTimer: Timer?
+    private let purchaseDefaults: UserDefaults
+    private let maxClock: () -> Date
+    private let readMaxTransactions: () async throws -> [MaxSubscriptionTransaction]
+    private let proValidationOverride: ((@escaping (Bool?) -> Void) -> Void)?
+    private let observeStoreKit: Bool
+
+    @MainActor private var maxMonitorStorage: MaxSubscriptionMonitor?
+    @MainActor private var maxMonitor: MaxSubscriptionMonitor {
+        if let maxMonitorStorage { return maxMonitorStorage }
+        let monitor = MaxSubscriptionMonitor(defaults: purchaseDefaults, now: maxClock,
+                                             readTransactions: readMaxTransactions,
+                                             didRefresh: { [weak self] in self?.handleMaxRefresh() })
+        maxMonitorStorage = monitor
+        return monitor
+    }
+
+    @MainActor
+    private func handleMaxRefresh() {
+        isMaxStatusResolved = maxMonitor.hasResolvedStatus
+        updateSubscriptionStatus(maxActive: maxMonitor.isActive)
+        #if os(iOS) && MAIN_APP
+        if maxMonitor.lastCheckFailed {
+            AppLogger.singleton.warning("Max entitlement verification failed; retaining only the unexpired verified cache", category: .backgroundUpdates)
+        }
+        #endif
+    }
+
+    @MainActor
+    func refreshMaxStatusIfNeeded() async {
+        await maxMonitor.refresh()
+    }
+
+    @MainActor
+    func startMaxStatusChecks() {
+        maxRefreshTimer?.invalidate()
+        Task { await refreshMaxStatusIfNeeded() }
+        // Foreground activations only check the due time; frequent switches do not
+        // enumerate StoreKit. While continuously active, check every 15 minutes.
+        let nextCheck = maxMonitor.lastCheckedAt?.addingTimeInterval(MaxSubscriptionMonitor.refreshInterval) ?? Date()
+        let timer = Timer(fireAt: max(nextCheck, Date().addingTimeInterval(1)),
+                          interval: MaxSubscriptionMonitor.refreshInterval,
+                          target: self, selector: #selector(maxRefreshTimerDidFire),
+                          userInfo: nil, repeats: true)
+        timer.tolerance = 5
+        RunLoop.main.add(timer, forMode: .common)
+        maxRefreshTimer = timer
+    }
+
+    func stopMaxStatusChecks() {
+        maxRefreshTimer?.invalidate()
+        maxRefreshTimer = nil
+    }
+
+    @objc private func maxRefreshTimerDidFire() {
+        Task { @MainActor in await refreshMaxStatusIfNeeded() }
+    }
+
+    private func observeMaxTransactions() {
+        maxUpdatesTask = Task { @MainActor [weak self] in
+            for await result in Transaction.updates {
+                guard !Task.isCancelled else { break }
+                guard result.unsafePayloadValue.productID == MaxSubscriptionTransaction.productID else { continue }
+                await self?.maxMonitor.refresh(force: true)
+                // SKPaymentQueue remains responsible for finishing purchases.
+            }
+        }
+    }
     
-    private override init() {
-        self.isProAccessAvailable = UserDefaults.standard.bool(forKey: proProductIdentifier)
-        self.isMaxAccessAvailable = UserDefaults.standard.bool(forKey: maxProductIdentifier)
+    init(defaults: UserDefaults,
+         now: @escaping () -> Date = Date.init,
+         readMaxTransactions: @escaping () async throws -> [MaxSubscriptionTransaction] = MaxSubscriptionMonitor.storeKitTransactions,
+         proValidation: ((@escaping (Bool?) -> Void) -> Void)? = nil,
+         observeStoreKit: Bool = false) {
+        purchaseDefaults = defaults
+        maxClock = now
+        self.readMaxTransactions = readMaxTransactions
+        proValidationOverride = proValidation
+        self.observeStoreKit = observeStoreKit
+        self.isProAccessAvailable = defaults.bool(forKey: proProductIdentifier)
+        self.isMaxAccessAvailable = MaxSubscriptionCache.load(from: defaults)?.isActive(at: now()) == true
         super.init()
         
         // Ensure initial watch status is in sync with last known state
-        UserDefaultsRepository.watchProAccessAvailable.value = self.hasProFeatureAccess
+        if self.hasProFeatureAccess {
+            UserDefaultsRepository.watchProAccessAvailable.value = true
+        }
         
-        SKPaymentQueue.default().add(self)
-        fetchProducts()
-        validateReceipt() // Check subscription status on launch
+        if observeStoreKit {
+            SKPaymentQueue.default().add(self)
+            fetchProducts()
+            observeMaxTransactions()
+            validateReceipt() // Check subscription status on launch
+        }
     }
     
     deinit {
-        SKPaymentQueue.default().remove(self)
+        maxUpdatesTask?.cancel()
+        maxRefreshTimer?.invalidate()
+        if observeStoreKit { SKPaymentQueue.default().remove(self) }
     }
     
     func fetchProducts() {
@@ -115,52 +204,42 @@ class PurchaseManager: NSObject, ObservableObject {
     }
     
     func restorePurchases() {
+        guard !isRestoring else { return }
         isRestoring = true
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
     
-    private func updateSubscriptionStatus(proActive: Bool, maxActive: Bool) {
-        DispatchQueue.main.async {
-            let hadProFeatureAccess = self.hasProFeatureAccess
-            let maxChanged = self.isMaxAccessAvailable != maxActive
-
-            self.isProAccessAvailable = proActive
-            self.isMaxAccessAvailable = maxActive
-            UserDefaults.standard.set(proActive, forKey: self.proProductIdentifier)
-            UserDefaults.standard.set(maxActive, forKey: self.maxProductIdentifier)
-
-            let hasProFeatureAccess = self.hasProFeatureAccess
-            UserDefaultsRepository.watchProAccessAvailable.value = hasProFeatureAccess
-
-            if hadProFeatureAccess != hasProFeatureAccess {
-                NotificationCenter.default.post(name: NSNotification.Name("ProAccessStatusChanged"), object: nil)
-
-                if hasProFeatureAccess {
-                    self.rescheduleAllAgeNotifications()
-                } else {
-                    // Optionally cancel notifications if subscription expired
-                    // AlarmNotificationService.singleton.cancelAgeNotifications()
-                }
-            }
-
-            if maxChanged {
-                NotificationCenter.default.post(name: NSNotification.Name("MaxAccessStatusChanged"), object: nil)
-            }
-
-            if self.isRestoring {
-                self.isRestoring = false
-                self.restoreAlertMessage = hasProFeatureAccess
-                    ? NSLocalizedString("Purchases restored successfully.", comment: "Restore success message")
-                    : NSLocalizedString("No active subscription found to restore.", comment: "Restore error message")
-                self.showingRestoreAlert = true
-            }
-
-            #if os(iOS) && MAIN_APP
-            MaxBackgroundPushRegistrationService.shared.configureForCurrentEntitlement()
-            #endif
+    @MainActor
+    private func updateSubscriptionStatus(proActive: Bool? = nil, maxActive: Bool? = nil) {
+        let hadProFeatureAccess = hasProFeatureAccess
+        let previousMax = isMaxAccessAvailable
+        if let proActive {
+            isProAccessAvailable = proActive
+            purchaseDefaults.set(proActive, forKey: proProductIdentifier)
         }
+        if let maxActive {
+            isMaxAccessAvailable = maxActive
+            // Kept for compatibility, but never read as proof of Max access.
+            purchaseDefaults.set(maxActive, forKey: maxProductIdentifier)
+        }
+        // Do not revoke Watch access because the initial Max check is still pending.
+        if isMaxStatusResolved || hasProFeatureAccess {
+            UserDefaultsRepository.watchProAccessAvailable.value = hasProFeatureAccess
+        }
+        if hadProFeatureAccess != hasProFeatureAccess {
+            NotificationCenter.default.post(name: NSNotification.Name("ProAccessStatusChanged"), object: nil)
+            if observeStoreKit && hasProFeatureAccess { rescheduleAllAgeNotifications() }
+        }
+        if previousMax != isMaxAccessAvailable {
+            NotificationCenter.default.post(name: NSNotification.Name("MaxAccessStatusChanged"), object: nil)
+        }
+        #if os(iOS) && MAIN_APP
+        if observeStoreKit && isMaxStatusResolved {
+            MaxBackgroundPushRegistrationService.shared.configureForCurrentEntitlement()
+        }
+        #endif
     }
-    
+
     private func rescheduleAllAgeNotifications() {
         let cannulaDate = NightscoutCacheService.singleton.getCannulaChangeTime()
         let sensorDate = NightscoutCacheService.singleton.getSensorChangeTime()
@@ -173,77 +252,71 @@ class PurchaseManager: NSObject, ObservableObject {
     
     // MARK: - Receipt Validation
     
-    func validateReceipt() {
-        guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
-              FileManager.default.fileExists(atPath: appStoreReceiptURL.path) else {
-            print("No receipt found")
-            updateSubscriptionStatus(proActive: false, maxActive: false)
-            return
-        }
-        
-        do {
-            let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
-            let receiptString = receiptData.base64EncodedString(options: [])
-            
-            // First check Sandbox, then Production if needed
-            verifyReceipt(receiptString: receiptString, url: URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!)
-        } catch {
-            print("Couldn't read receipt data with error: " + error.localizedDescription)
-            updateSubscriptionStatus(proActive: false, maxActive: false)
-        }
-    }
-    
-    private func verifyReceipt(receiptString: String, url: URL) {
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-            let requestDictionary = ["receipt-data": receiptString, "password": sharedSecret]
-        
-        guard let requestData = try? JSONSerialization.data(withJSONObject: requestDictionary) else { return }
-        request.httpBody = requestData
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Receipt validation error: \(error)")
-                return
-            }
-            
-            guard let data = data,
-                  let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-                return
-            }
-            
-            if let status = json["status"] as? Int {
-                if status == 0 {
-                    // Valid receipt
-                    self.parseReceiptResponse(json)
-                } else if status == 21007 {
-                    // Sandbox receipt sent to Production environment, retry with Sandbox
-                    self.verifyReceipt(receiptString: receiptString, url: URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!)
-                } else if status == 21008 {
-                    // Production receipt sent to Sandbox, retry with Production
-                    self.verifyReceipt(receiptString: receiptString, url: URL(string: "https://buy.itunes.apple.com/verifyReceipt")!)
-                } else {
-                    print("Receipt verification failed with status: \(status)")
-                    self.updateSubscriptionStatus(proActive: false, maxActive: false)
+    func validateReceipt(completion: ((Bool) -> Void)? = nil) {
+        Task { @MainActor in
+            let maxRefresh = Task { @MainActor in await self.maxMonitor.refresh(force: true) }
+            validateProReceipt { proActive in
+                Task { @MainActor in
+                    await maxRefresh.value
+                    if let proActive { self.updateSubscriptionStatus(proActive: proActive) }
+                    completion?(proActive == true || (proActive != nil && !self.maxMonitor.lastCheckFailed))
                 }
             }
         }
-        task.resume()
     }
-    
-    private func parseReceiptResponse(_ json: [String: Any]) {
-        guard let latestReceiptInfo = json["latest_receipt_info"] as? [[String: Any]] else {
-            // No subscription info found
-            updateSubscriptionStatus(proActive: false, maxActive: false)
+
+    // Legacy receipts remain responsible for Pro only. Every completion path is
+    // reported, so restoring cannot hang or complete before the Max check.
+    private func validateProReceipt(completion: @escaping (Bool?) -> Void) {
+        if let proValidationOverride {
+            proValidationOverride(completion)
             return
         }
+        guard let url = Bundle.main.appStoreReceiptURL,
+              FileManager.default.fileExists(atPath: url.path) else {
+            completion(false)
+            return
+        }
+        do {
+            let receipt = try Data(contentsOf: url, options: .alwaysMapped).base64EncodedString()
+            verifyReceipt(receiptString: receipt,
+                          url: URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!,
+                          completion: completion)
+        } catch {
+            completion(false)
+        }
+    }
 
-        updateSubscriptionStatus(
-            proActive: isSubscriptionActive(productIdentifier: proProductIdentifier, latestReceiptInfo: latestReceiptInfo),
-            maxActive: isSubscriptionActive(productIdentifier: maxProductIdentifier, latestReceiptInfo: latestReceiptInfo)
-        )
+    private func verifyReceipt(receiptString: String, url: URL, redirectsRemaining: Int = 1,
+                               completion: @escaping (Bool?) -> Void) {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = 30
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let data = try? JSONSerialization.data(withJSONObject: ["receipt-data": receiptString, "password": sharedSecret]) else {
+            completion(nil)
+            return
+        }
+        request.httpBody = data
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard error == nil, let httpResponse = response as? HTTPURLResponse,
+                  (200..<300).contains(httpResponse.statusCode), let data,
+                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let status = json["status"] as? Int else {
+                completion(nil)
+                return
+            }
+            if status == 0 {
+                let receiptInfo = json["latest_receipt_info"] as? [[String: Any]] ?? []
+                completion(self.isSubscriptionActive(productIdentifier: self.proProductIdentifier, latestReceiptInfo: receiptInfo))
+            } else if (status == 21007 || status == 21008), redirectsRemaining > 0 {
+                let host = status == 21007 ? "sandbox.itunes.apple.com" : "buy.itunes.apple.com"
+                self.verifyReceipt(receiptString: receiptString, url: URL(string: "https://\(host)/verifyReceipt")!,
+                                   redirectsRemaining: redirectsRemaining - 1, completion: completion)
+            } else {
+                completion(false)
+            }
+        }.resume()
     }
 
     private func isSubscriptionActive(productIdentifier: String, latestReceiptInfo: [[String: Any]]) -> Bool {
@@ -268,26 +341,13 @@ class PurchaseManager: NSObject, ObservableObject {
         return false
     }
 
+    @MainActor
     func currentMaxTransactionJWS() async throws -> String {
-        #if os(iOS) && MAIN_APP
-        if #available(iOS 15.0, *) {
-            for await verificationResult in Transaction.currentEntitlements {
-                guard case .verified(let transaction) = verificationResult,
-                      transaction.productID == maxProductIdentifier,
-                      transaction.revocationDate == nil else {
-                    continue
-                }
-
-                if let expirationDate = transaction.expirationDate, expirationDate <= Date() {
-                    continue
-                }
-
-                return verificationResult.jwsRepresentation
-            }
+        // Do not run a second, independent entitlement check for registration.
+        guard isMaxStatusResolved, let jws = maxMonitor.currentJWS else {
+            throw MaxTransactionError.unavailable
         }
-        #endif
-
-        throw MaxTransactionError.unavailable
+        return jws
     }
 
     enum MaxTransactionError: LocalizedError {
@@ -316,7 +376,7 @@ extension PurchaseManager: SKPaymentTransactionObserver {
                 validateReceipt() // Validate to unlock
             case .restored:
                 SKPaymentQueue.default().finishTransaction(transaction)
-                validateReceipt() // Validate to unlock
+                if !isRestoring { validateReceipt() }
             case .failed:
                 SKPaymentQueue.default().finishTransaction(transaction)
             case .deferred, .purchasing:
@@ -328,7 +388,16 @@ extension PurchaseManager: SKPaymentTransactionObserver {
     }
     
     func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
-        validateReceipt()
+        validateReceipt { [weak self] succeeded in
+            guard let self, self.isRestoring else { return }
+            self.isRestoring = false
+            self.restoreAlertMessage = succeeded
+                ? (self.hasProFeatureAccess
+                   ? NSLocalizedString("Purchases restored successfully.", comment: "Restore success message")
+                   : NSLocalizedString("No active subscription found to restore.", comment: "Restore error message"))
+                : NSLocalizedString("Unable to verify purchases. Please try again.", comment: "Restore verification failure")
+            self.showingRestoreAlert = true
+        }
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {

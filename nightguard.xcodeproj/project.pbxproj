@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AAB100000000000000000105 /* ReportPDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000005 /* ReportPDFRenderer.swift */; };
+		AAB100000000000000000103 /* ReportDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000003 /* ReportDataProvider.swift */; };
 		AAB100000000000000000001 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000001 /* ReportView.swift */; };
 		AAB100000000000000000002 /* ReportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000002 /* ReportModel.swift */; };
 		AAB100000000000000000003 /* ReportDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB200000000000000000003 /* ReportDataProvider.swift */; };
@@ -60,6 +62,7 @@
 		430EB4F32F1D4BB900CAF155 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
 		430EB4F42F1D4BED00CAF155 /* SharedUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */; };
 		430EB4F52F1D4C1700CAF155 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		81A32A3AE14740E780CB615B /* MaxSubscriptionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C29D911E7CB4B85BBAD6692 /* MaxSubscriptionMonitor.swift */; };
 		430EB4F62F1D6F0600CAF155 /* PredictionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D133079D21C8D4CF00DC6879 /* PredictionService.swift */; };
 		430EB4F72F1D6F3800CAF155 /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		430EB4F82F1D6FD200CAF155 /* AlarmNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DA7C6D21BE83D600B39675 /* AlarmNotificationService.swift */; };
@@ -68,10 +71,12 @@
 		430EB4FB2F1D70DF00CAF155 /* AlarmRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EB1D07693300C329A2 /* AlarmRule.swift */; };
 		430EB4FD2F1FFD4600CAF155 /* AppTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB4FC2F1FFD4600CAF155 /* AppTourView.swift */; };
 		430EB4FE2F215F9C00CAF155 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		F79A491BF3724AE38C3CB4AE /* MaxSubscriptionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C29D911E7CB4B85BBAD6692 /* MaxSubscriptionMonitor.swift */; };
 		430EB5002F215F9D00CAF155 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB4FF2F215F9D00CAF155 /* SceneDelegate.swift */; };
 		430EB5022F215F9D00CAF155 /* CarPlaySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5012F215F9D00CAF155 /* CarPlaySceneDelegate.swift */; };
 		430EB5042F5A000100CAF155 /* BackgroundUpdateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5032F5A000100CAF155 /* BackgroundUpdateCoordinator.swift */; };
 		430EB5062F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5052F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift */; };
+		CCB64969FC6C453A8CF686E9 /* MaxPushRegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB26454FBA4651AC606B5B /* MaxPushRegistrationCoordinator.swift */; };
 		430EB5082F5A000300CAF155 /* MaxBackendAppCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5072F5A000300CAF155 /* MaxBackendAppCheckService.swift */; };
 		430EB50A2F5A000400CAF155 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 430EB5092F5A000400CAF155 /* FirebaseMessaging */; };
 		430FD8D41E7C8738002A23F0 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */; };
@@ -98,6 +103,7 @@
 		432E62E01D10AF3800DD7978 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
 		432E62E11D10AF3900DD7978 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62DE1D10ACD200DD7978 /* Units.swift */; };
 		432E62E71D11F61500DD7978 /* UserDefaultsRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62E61D11F61500DD7978 /* UserDefaultsRepositoryTest.swift */; };
+		BA585015DC374DE4B4E56343 /* MaxSubscriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EF56F54F72548B6BCF0DB68 /* MaxSubscriptionTests.swift */; };
 		432E62E91D143CF900DD7978 /* UnitsConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62E81D143CF900DD7978 /* UnitsConverter.swift */; };
 		432E62EB1D15EFC600DD7978 /* FloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62EA1D15EFC600DD7978 /* FloatExtension.swift */; };
 		432E62EC1D15EFEC00DD7978 /* FloatExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432E62EA1D15EFC600DD7978 /* FloatExtension.swift */; };
@@ -352,8 +358,11 @@
 		43D826AE2F0598F5003563A2 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D826AC2F0598F5003563A2 /* MainViewModel.swift */; };
 		43D826AF2F0598F5003563A2 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D826AC2F0598F5003563A2 /* MainViewModel.swift */; };
 		43E777E92F19874700BC8524 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		AA8D739832814C438B551179 /* MaxSubscriptionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C29D911E7CB4B85BBAD6692 /* MaxSubscriptionMonitor.swift */; };
 		43E777EB2F1987BF00BC8524 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		0ABF702819DF4E35939DB502 /* MaxSubscriptionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C29D911E7CB4B85BBAD6692 /* MaxSubscriptionMonitor.swift */; };
 		43E777EC2F1987D100BC8524 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		7714A08585EA40A395FD271F /* MaxSubscriptionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C29D911E7CB4B85BBAD6692 /* MaxSubscriptionMonitor.swift */; };
 		43E777F52F198E3C00BC8524 /* ScreenSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F22F198E3C00BC8524 /* ScreenSectionView.swift */; };
 		43E777F62F198E3C00BC8524 /* NightscoutSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777F02F198E3C00BC8524 /* NightscoutSectionView.swift */; };
 		43E777F72F198E3C00BC8524 /* DisplayOptionsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777EF2F198E3C00BC8524 /* DisplayOptionsSectionView.swift */; };
@@ -400,6 +409,7 @@
 		A6D112B202A31088FCA84B99 /* NightscoutCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317D2F11FB0E875004F964B /* NightscoutCacheService.swift */; };
 		A6D112B302A31088FCA84B99 /* SharedUserDefaultsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE674628D78C8C00285798 /* SharedUserDefaultsRepository.swift */; };
 		A6D112B402A31088FCA84B99 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E777E72F19874700BC8524 /* PurchaseManager.swift */; };
+		576BD9319007432394DBCFEB /* MaxSubscriptionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C29D911E7CB4B85BBAD6692 /* MaxSubscriptionMonitor.swift */; };
 		A6D112B502A31088FCA84B99 /* NightscoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E1101D076C1C00C329A2 /* NightscoutService.swift */; };
 		A6D112B602A31088FCA84B99 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D826AC2F0598F5003563A2 /* MainViewModel.swift */; };
 		A6D112B702A31088FCA84B99 /* ChartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E89E561E659102005B0A65 /* ChartScene.swift */; };
@@ -407,6 +417,7 @@
 		A6D112B902A31088FCA84B99 /* RequestAlarmNotificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4317702E25CF273C00E8C991 /* RequestAlarmNotificationMessage.swift */; };
 		A6D112BA02A31088FCA84B99 /* EmptyWatchMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123EFE721FB643D00CE8718 /* EmptyWatchMessage.swift */; };
 		A6D112BB02A31088FCA84B99 /* MaxBackgroundPushRegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5052F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift */; };
+		3149C534B9AD4F1E9214E61C /* MaxPushRegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEB26454FBA4651AC606B5B /* MaxPushRegistrationCoordinator.swift */; };
 		A6D112BC02A31088FCA84B99 /* MaxBackendAppCheckService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430EB5072F5A000300CAF155 /* MaxBackendAppCheckService.swift */; };
 		A6D112BD02A31088FCA84B99 /* SnoozePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43027A572EC52B3D00BE71B9 /* SnoozePopupView.swift */; };
 		A6D112BE02A31088FCA84B99 /* AppleHealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D73B327C826F100639B15 /* AppleHealthService.swift */; };
@@ -623,6 +634,7 @@
 		430EB5012F215F9D00CAF155 /* CarPlaySceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarPlaySceneDelegate.swift; path = nightguard/CarPlaySceneDelegate.swift; sourceTree = SOURCE_ROOT; };
 		430EB5032F5A000100CAF155 /* BackgroundUpdateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundUpdateCoordinator.swift; sourceTree = "<group>"; };
 		430EB5052F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxBackgroundPushRegistrationService.swift; sourceTree = "<group>"; };
+		0AEB26454FBA4651AC606B5B /* MaxPushRegistrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxPushRegistrationCoordinator.swift; sourceTree = "<group>"; };
 		430EB5072F5A000300CAF155 /* MaxBackendAppCheckService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxBackendAppCheckService.swift; sourceTree = "<group>"; };
 		430FD8D31E7C8738002A23F0 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		43119B861C383CF500DD6D35 /* UIColorChanger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorChanger.swift; sourceTree = "<group>"; };
@@ -634,6 +646,7 @@
 		43288A6F1D20284600EE3999 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		432E62DE1D10ACD200DD7978 /* Units.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
 		432E62E61D11F61500DD7978 /* UserDefaultsRepositoryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsRepositoryTest.swift; sourceTree = "<group>"; };
+		2EF56F54F72548B6BCF0DB68 /* MaxSubscriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxSubscriptionTests.swift; sourceTree = "<group>"; };
 		432E62E81D143CF900DD7978 /* UnitsConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitsConverter.swift; sourceTree = "<group>"; };
 		432E62EA1D15EFC600DD7978 /* FloatExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatExtension.swift; sourceTree = "<group>"; };
 		432E62EE1D17359600DD7978 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -714,6 +727,7 @@
 		43D005E529DC9CBF003BCE92 /* NightscoutDataEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NightscoutDataEntry.swift; sourceTree = "<group>"; };
 		43D826AC2F0598F5003563A2 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		43E777E72F19874700BC8524 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
+		0C29D911E7CB4B85BBAD6692 /* MaxSubscriptionMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxSubscriptionMonitor.swift; sourceTree = "<group>"; };
 		43E777EF2F198E3C00BC8524 /* DisplayOptionsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOptionsSectionView.swift; sourceTree = "<group>"; };
 		43E777F02F198E3C00BC8524 /* NightscoutSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutSectionView.swift; sourceTree = "<group>"; };
 		43E777F12F198E3C00BC8524 /* ProFeaturesSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeaturesSectionView.swift; sourceTree = "<group>"; };
@@ -943,6 +957,7 @@
 				433AD0161CCE3E89001A76CD /* NightscoutServiceTest.swift */,
 				43F7A0002F00000100000001 /* NightscoutCacheServiceTest.swift */,
 				432E62E61D11F61500DD7978 /* UserDefaultsRepositoryTest.swift */,
+				2EF56F54F72548B6BCF0DB68 /* MaxSubscriptionTests.swift */,
 				4351E6B11D2EFDFE001E4AE4 /* TimeServiceTest.swift */,
 				D112DD3921EB502300ECFB5E /* BloodSugarArrayTest.swift */,
 				D112DD3B21EB507E00ECFB5E /* PredictionServiceTest.swift */,
@@ -1066,6 +1081,7 @@
 			isa = PBXGroup;
 			children = (
 				43E777E72F19874700BC8524 /* PurchaseManager.swift */,
+				0C29D911E7CB4B85BBAD6692 /* MaxSubscriptionMonitor.swift */,
 				D1CE8CBF2204B07F0075FF8A /* Colors.swift */,
 				43E89E561E659102005B0A65 /* ChartScene.swift */,
 				43F1E0F21D07698000C329A2 /* AlarmSound.swift */,
@@ -1079,6 +1095,7 @@
 				B429E994A0A3E27C5DBF08EB /* LiveActivityManager.swift */,
 				430EB5032F5A000100CAF155 /* BackgroundUpdateCoordinator.swift */,
 				430EB5052F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift */,
+				0AEB26454FBA4651AC606B5B /* MaxPushRegistrationCoordinator.swift */,
 				430EB5072F5A000300CAF155 /* MaxBackendAppCheckService.swift */,
 			);
 			path = app;
@@ -1652,6 +1669,7 @@
 				D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */,
 				D13A4C1C2221E43A00C71F08 /* GenericWatchMessage.swift in Sources */,
 				43E777E92F19874700BC8524 /* PurchaseManager.swift in Sources */,
+				AA8D739832814C438B551179 /* MaxSubscriptionMonitor.swift in Sources */,
 				D13A4C202221E49200C71F08 /* NightSafeMessage.swift in Sources */,
 				432E62DF1D10ACD200DD7978 /* Units.swift in Sources */,
 				D123EFEE21FB782C00CE8718 /* NightscoutDataMessage.swift in Sources */,
@@ -1707,6 +1725,7 @@
 				430EB5022F215F9D00CAF155 /* CarPlaySceneDelegate.swift in Sources */,
 				430EB5042F5A000100CAF155 /* BackgroundUpdateCoordinator.swift in Sources */,
 				430EB5062F5A000200CAF155 /* MaxBackgroundPushRegistrationService.swift in Sources */,
+				CCB64969FC6C453A8CF686E9 /* MaxPushRegistrationCoordinator.swift in Sources */,
 				430EB5082F5A000300CAF155 /* MaxBackendAppCheckService.swift in Sources */,
 				D16C8EDB221068F000192117 /* VolumeChangeDetector.swift in Sources */,
 				A6D112AB02A31088FCA84B99 /* LiveActivityAttributes.swift in Sources */,
@@ -1719,6 +1738,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAB100000000000000000102 /* ReportModel.swift in Sources */,
+				AAB100000000000000000105 /* ReportPDFRenderer.swift in Sources */,
+				AAB100000000000000000103 /* ReportDataProvider.swift in Sources */,
 				AAB100000000000000000104 /* ReportCalculator.swift in Sources */,
 				4351E6B41D2EFDFF001E4AE4 /* AlarmRuleTest.swift in Sources */,
 				439C391B1C0E295C00D89872 /* ChartPainterTest.swift in Sources */,
@@ -1737,6 +1758,7 @@
 				A6D112B902A31088FCA84B99 /* RequestAlarmNotificationMessage.swift in Sources */,
 				A6D112BA02A31088FCA84B99 /* EmptyWatchMessage.swift in Sources */,
 				A6D112BB02A31088FCA84B99 /* MaxBackgroundPushRegistrationService.swift in Sources */,
+				3149C534B9AD4F1E9214E61C /* MaxPushRegistrationCoordinator.swift in Sources */,
 				A6D112BC02A31088FCA84B99 /* MaxBackendAppCheckService.swift in Sources */,
 				A6D112BD02A31088FCA84B99 /* SnoozePopupView.swift in Sources */,
 				A6D112BE02A31088FCA84B99 /* AppleHealthService.swift in Sources */,
@@ -1749,9 +1771,11 @@
 				430EB4F62F1D6F0600CAF155 /* PredictionService.swift in Sources */,
 				D112DD3621E9E2E900ECFB5E /* TimerExtension.swift in Sources */,
 				430EB4FE2F215F9C00CAF155 /* PurchaseManager.swift in Sources */,
+				F79A491BF3724AE38C3CB4AE /* MaxSubscriptionMonitor.swift in Sources */,
 				D1ECDA202201075B002BE6F9 /* ObservationToken.swift in Sources */,
 				4378768824FAACF9009E163E /* UIViewControllerExtension.swift in Sources */,
 				432E62E71D11F61500DD7978 /* UserDefaultsRepositoryTest.swift in Sources */,
+				BA585015DC374DE4B4E56343 /* MaxSubscriptionTests.swift in Sources */,
 				4302C6A625DC66A80052777F /* BolusWizardTreatment.swift in Sources */,
 				43794F491C30489C00DB8B58 /* NightscoutDataRepository.swift in Sources */,
 				A6D112AC02A31088FCA84B99 /* LiveActivityAttributes.swift in Sources */,
@@ -1851,6 +1875,7 @@
 				A6D112B202A31088FCA84B99 /* NightscoutCacheService.swift in Sources */,
 				A6D112B302A31088FCA84B99 /* SharedUserDefaultsRepository.swift in Sources */,
 				A6D112B402A31088FCA84B99 /* PurchaseManager.swift in Sources */,
+				576BD9319007432394DBCFEB /* MaxSubscriptionMonitor.swift in Sources */,
 				A6D112B502A31088FCA84B99 /* NightscoutService.swift in Sources */,
 				4381661E3060548400BC0809 /* EmptyWatchMessage.swift in Sources */,
 				43A6B4622F9E241600E2E596 /* AppLogger.swift in Sources */,
@@ -1936,6 +1961,7 @@
 				43E9F70527386ED800C6AEB3 /* UIImageExtension.swift in Sources */,
 				D133079921C85FAE00DC6879 /* Regression.swift in Sources */,
 				430EB4F52F1D4C1700CAF155 /* PurchaseManager.swift in Sources */,
+				81A32A3AE14740E780CB615B /* MaxSubscriptionMonitor.swift in Sources */,
 				43961F752533708D00B1492B /* TemporaryTargetView.swift in Sources */,
 				D133079B21C85FAE00DC6879 /* Matrix.swift in Sources */,
 				D123EFE621FB31FF00CE8718 /* WatchMessageService.swift in Sources */,
@@ -2010,6 +2036,7 @@
 				4332FF6D2B16596E00DBF917 /* Matrix.swift in Sources */,
 				438DACA528D25BA700FBF520 /* UIColorExtension.swift in Sources */,
 				43E777EC2F1987D100BC8524 /* PurchaseManager.swift in Sources */,
+				7714A08585EA40A395FD271F /* MaxSubscriptionMonitor.swift in Sources */,
 				438DACB028D25D1400FBF520 /* TimerExtension.swift in Sources */,
 				438DACAE28D25CDC00FBF520 /* VolumeChangeDetector.swift in Sources */,
 				43B303E029E54D5000AB260B /* TemporaryTarget.swift in Sources */,
@@ -2057,6 +2084,7 @@
 				43730E402F314A680065BDB0 /* ColorExtension.swift in Sources */,
 				43C825842B1A8EF8004B2674 /* WatchMessageService.swift in Sources */,
 				43E777EB2F1987BF00BC8524 /* PurchaseManager.swift in Sources */,
+				0ABF702819DF4E35939DB502 /* MaxSubscriptionMonitor.swift in Sources */,
 				43D005FE29DC9FA0003BCE92 /* Helpers.swift in Sources */,
 				435DFF7329E1E858007A25EA /* ViewExtension.swift in Sources */,
 				43D005F329DC9DCA003BCE92 /* Units.swift in Sources */,

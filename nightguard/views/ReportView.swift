@@ -63,8 +63,8 @@ struct ReportView: View {
                         Text(ReportRequest(settings: settings).rangeText)
                             .foregroundColor(.secondary)
                         Text(String(format: NSLocalizedString("Range: %@–%@ %@", comment: "Report"),
-                                    ReportRequest(settings: settings).displayGlucose(Double(UserDefaultsRepository.lowerBound.value)),
-                                    ReportRequest(settings: settings).displayGlucose(Double(UserDefaultsRepository.upperBound.value)),
+                                    ReportRequest(settings: settings).displayGlucose(ReportRequest.targetLow),
+                                    ReportRequest(settings: settings).displayGlucose(ReportRequest.targetHigh),
                                     ReportRequest(settings: settings).glucoseUnit))
                             .font(.footnote)
                             .foregroundColor(.secondary)
