@@ -662,6 +662,7 @@
 "Manage Subscription" = "Manage Subscription";
 "No active subscription found to restore." = "No active subscription found to restore.";
 "Purchases restored successfully." = "Purchases restored successfully.";
+"Unable to verify purchases. Please try again." = "Unable to verify purchases. Please try again.";
 "Restore failed: %@" = "Restore failed: %@";
 
 /* Localization audit */
@@ -782,3 +783,108 @@
 /* Direct V1 API preference */
 "Always use V1 API" = "Always use V1 API";
 "Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery.";
+/* PDF reports */
+"Report" = "Report";
+"1 day" = "1 day";
+"1 week" = "1 week";
+"1 month" = "1 month";
+"3 months" = "3 months";
+"PDF Reports" = "PDF Reports";
+"Beta" = "Beta";
+"PDF reports with Pro" = "PDF reports with Pro";
+"Create and share PDF summaries of glucose and treatment history for personal reference." = "Create and share PDF summaries of glucose and treatment history for personal reference.";
+"Personal information" = "Personal information";
+"Date of birth" = "Date of birth";
+"Include date of birth" = "Include date of birth";
+"CGP limits: 80–180 mg/dL. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP limits: 80–180 mg/dL. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits.";
+"Diabetes since" = "Diabetes since";
+"Insulin" = "Insulin";
+"Period" = "Period";
+"Export period" = "Export period";
+"Range: %@–%@ %@" = "Range: %@–%@ %@";
+"Create PDF report" = "Create PDF report";
+"The PDF stays on this device until you choose where to share or save it." = "The PDF stays on this device until you choose where to share or save it.";
+"Report unavailable" = "Report unavailable";
+"Configure Nightscout in Preferences before creating a report." = "Configure Nightscout in Preferences before creating a report.";
+"No glucose data was found for the selected period." = "No glucose data was found for the selected period.";
+"PDF report" = "PDF report";
+"Share PDF" = "Share PDF";
+"Done" = "Done";
+"Report summary" = "Report summary";
+"Data coverage" = "Data coverage";
+"Report days" = "Report days";
+"Average measurement interval" = "Average measurement interval";
+"very good" = "very good";
+"good" = "good";
+"high" = "high";
+"excellent" = "excellent";
+"poor" = "poor";
+"very poor" = "very poor";
+"Zone" = "Zone";
+"Green: reference range • Orange: selected period" = "Green: reference range • Orange: selected period";
+"ToR: minutes outside target; CV: glucose variation; HYPO/HYPER: intensity beyond target." = "ToR: minutes outside target; CV: glucose variation; HYPO/HYPER: intensity beyond target.";
+"Glucose readings" = "Glucose readings";
+"Reservoir changes" = "Reservoir changes";
+"Cannula changes" = "Cannula changes";
+"Sensor changes" = "Sensor changes";
+"Personal range" = "Personal range";
+"Standard range" = "Standard range";
+"Glucose and risk" = "Glucose and risk";
+"Minimum / maximum" = "Minimum / maximum";
+"Mean / standard deviation" = "Mean / standard deviation";
+"Estimated HbA1c" = "Estimated HbA1c";
+"Treatment per day" = "Treatment per day";
+"Carbohydrates / bolus" = "Carbohydrates / bolus";
+"Basal / total insulin" = "Basal / total insulin";
+"Basal insulin is reconstructed from Nightscout profiles and events where available." = "Basal insulin is reconstructed from Nightscout profiles and events where available.";
+"Therapy profile" = "Therapy profile";
+"No Nightscout profile available for this period." = "No Nightscout profile available for this period.";
+"Carbohydrate absorption" = "Carbohydrate absorption";
+"ICR (g/U)" = "ICR (g/U)";
+"Basal (U/h)" = "Basal (U/h)";
+"Target" = "Target";
+"Glucose percentiles" = "Glucose percentiles";
+"Insufficient glucose data" = "Insufficient glucose data";
+"Median" = "Median";
+"Daily charts" = "Daily charts";
+"No glucose data" = "No glucose data";
+"Mean" = "Mean";
+"Carbs" = "Carbs";
+"Bolus" = "Bolus";
+"Basal" = "Basal";
+"PGR is a research metric; its prediction of long-term complications has not been established." = "PGR is a research metric; its prediction of long-term complications has not been established.";
+"Period comparison" = "Period comparison";
+"Glucose range" = "Glucose range";
+"Total insulin / basal (U)" = "Total insulin / basal (U)";
+"Carbohydrates (g)" = "Carbohydrates (g)";
+"Red: low • Green: in range • Yellow: high" = "Red: low • Green: in range • Yellow: high";
+"The report is too large to retrieve completely." = "The report is too large to retrieve completely.";
+"Nightscout returned invalid report data." = "Nightscout returned invalid report data.";
+"The Nightscout API changed during the report download." = "The Nightscout API changed during the report download.";
+"Nightscout stopped advancing through report data." = "Nightscout stopped advancing through report data.";
+"CGP ToR axis" = "ToR [min/d]";
+"CGP CV axis" = "VarK [%]";
+"CGP HYPO axis" = "HYPO intensity [mg/dL × min²]";
+"CGP HYPER axis" = "HYPER intensity [mg/dL × min²]";
+"Mean glucose" = "Mean glucose";
+"All information is provided without warranty. Not for medical decisions." = "All information is provided without warranty. Not for medical decisions.";
+
+"Report insulin unit" = "U";
+
+"Report target range" = "Report target range";
+
+"Profile basal" = "Profile basal";
+
+"Bolus / basal share" = "Bolus / basal share";
+
+"HYPO intensity" = "HYPO intensity";
+
+"HYPER intensity" = "HYPER intensity";
+
+"min/day" = "min/day";
+
+"CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits.";
+
+"Report daily legend" = "Blue: glucose/bolus/delivered basal; teal: profile basal; purple: target; orange: carbs; red dots: meter.\n▼ Microbolus; S sensor change; K cannula change; R reservoir change; [ ] sum within 60 min. Green: report target range.";
+
+"Name" = "Name";

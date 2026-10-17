@@ -469,12 +469,12 @@ struct MainView: View {
             Button(NSLocalizedString("Preferences", comment: "Preferences menu item")) {
                 showPreferences = true
             }
-            if !PurchaseManager.shared.hasProFeatureAccess {
+            if PurchaseManager.shared.isMaxStatusResolved && !PurchaseManager.shared.hasProFeatureAccess {
                 Button(NSLocalizedString("Unlock Pro Version", comment: "Subscribe to Pro menu item")) {
                     promotionFocus = .pro
                 }
             }
-            if !PurchaseManager.shared.isMaxAccessAvailable {
+            if PurchaseManager.shared.isMaxStatusResolved && !PurchaseManager.shared.isMaxAccessAvailable {
                 Button(NSLocalizedString(
                     PurchaseManager.shared.hasProFeatureAccess ? "Upgrade to Max" : "Subscribe to Max",
                     comment: "Subscribe to Max menu item"

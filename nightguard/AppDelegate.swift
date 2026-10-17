@@ -297,7 +297,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         WatchMessageService.singleton.onMessage { (_: ShowProPromotionMessage) in
-            guard !PurchaseManager.shared.hasProFeatureAccess else {
+            guard PurchaseManager.shared.isMaxStatusResolved, !PurchaseManager.shared.hasProFeatureAccess else {
                 return
             }
 
@@ -326,6 +326,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        PurchaseManager.shared.stopMaxStatusChecks()
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
@@ -384,6 +385,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        PurchaseManager.shared.startMaxStatusChecks()
         // Every activation gets a fresh grace period. This also covers temporary
         // inactive states and scene transitions which do not enter background.
         applyTransientLocalAudioSuppression()

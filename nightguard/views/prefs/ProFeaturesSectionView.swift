@@ -25,7 +25,9 @@ struct ProFeaturesSectionView: View {
                 }
             }
         ) {
-            if purchaseManager.hasProFeatureAccess {
+            if !purchaseManager.isMaxStatusResolved && !purchaseManager.hasProFeatureAccess {
+                ProgressView()
+            } else if purchaseManager.hasProFeatureAccess {
                 HStack {
                     Image(systemName: "checkmark.seal.fill")
                         .foregroundColor(.green)
@@ -39,7 +41,7 @@ struct ProFeaturesSectionView: View {
                             .foregroundColor(.green)
                         Text(NSLocalizedString("Max Subscription Active", comment: "Max subscription active text"))
                     }
-                } else {
+                } else if purchaseManager.isMaxStatusResolved {
                     Button(action: {
                         promotionFocus = .max
                     }) {

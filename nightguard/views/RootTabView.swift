@@ -187,6 +187,26 @@ struct RootTabView: View {
                 }
                 .tag(TabIdentifier.stats)
 
+            ReportView()
+                .accentColor(Color.nightguardAccent)
+                .onAppear {
+                    let selectedTabAtAppearance = self.selectedTab
+                    DispatchQueue.main.async {
+                        guard self.selectedTab == selectedTabAtAppearance || self.selectedTab == .report else { return }
+                        if self.selectedTab != .report {
+                            self.selectedTab = .report
+                            UserDefaultsRepository.currentTab.value = .report
+                        }
+                        forcePortrait()
+                    }
+                }
+                .tabItem {
+                    Image(systemName: "doc.richtext")
+                    Text(NSLocalizedString("Report", comment: "Report tab"))
+                        .accessibilityIdentifier("tab_report")
+                }
+                .tag(TabIdentifier.report)
+
             // Preferences Tab
             PrefsView()
                 .accentColor(Color.nightguardAccent)
@@ -244,7 +264,7 @@ struct RootTabView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .showProPromotionRequest)) { _ in
-            guard !PurchaseManager.shared.hasProFeatureAccess else {
+            guard PurchaseManager.shared.isMaxStatusResolved, !PurchaseManager.shared.hasProFeatureAccess else {
                 return
             }
 

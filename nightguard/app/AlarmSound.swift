@@ -44,6 +44,8 @@ class AlarmSound {
     fileprivate static var systemOutputVolumeBeforeOverride: Float?
     
     fileprivate static var playingTimer: Timer?
+    fileprivate static var playbackRequestID = 0
+    fileprivate static var isStartingPlayback = false
     
     fileprivate static let soundURL = Bundle.main.url(forResource: "alarm", withExtension: "mp3")
     fileprivate static var audioPlayer: AVAudioPlayer?
@@ -83,6 +85,8 @@ class AlarmSound {
     }
     
     static func stop() {
+        self.playbackRequestID += 1
+        self.isStartingPlayback = false
         self.playingTimer?.invalidate()
         self.playingTimer = nil
         
@@ -90,7 +94,7 @@ class AlarmSound {
         self.audioPlayer = nil
         
         self.restoreSystemOutputVolume()
-        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        AudioSessionController.deactivatePlayback()
     }
     
     static func play() {
@@ -101,7 +105,7 @@ class AlarmSound {
         }
         #endif
         
-        guard !self.isPlaying else {
+        guard !self.isPlaying && !self.isStartingPlayback else {
             return
         }
         
@@ -124,7 +128,7 @@ class AlarmSound {
     
     static func playDefaultSound() {
         
-        guard !self.isPlaying else {
+        guard !self.isPlaying && !self.isStartingPlayback else {
             return
         }
         
@@ -135,49 +139,72 @@ class AlarmSound {
     }
     
     fileprivate static func play(url : URL) {
-        
+
+        self.playbackRequestID += 1
+        let requestID = self.playbackRequestID
+        self.isStartingPlayback = true
+
         do {
-            self.audioPlayer = try AVAudioPlayer(contentsOf: url)
-            self.audioPlayer?.delegate = self.audioPlayerDelegate
-            
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playback)))
-            try AVAudioSession.sharedInstance().setActive(true)
-            
-            // Play endless loops
-            self.audioPlayer?.numberOfLoops = -1
-            
-            // init volume before start playing (mute if fade-in)
-            
-            self.audioPlayer?.volume = (self.muted || (self.fadeInTimeInterval.value > 0)) ? 0.0 : 1.0
-            
-            if !(self.audioPlayer?.prepareToPlay() ?? false) {
-                NSLog("AlarmSound - audio player failed preparing to play")
-            }
-            
-            if self.audioPlayer?.play() ?? false {
-                if !self.isPlaying {
-                    NSLog("AlarmSound - not playing after calling play")
-                    NSLog("AlarmSound - rate value: \(String(describing: self.audioPlayer?.rate))")
+            let player = try AVAudioPlayer(contentsOf: url)
+            player.delegate = self.audioPlayerDelegate
+            self.audioPlayer = player
+
+            AudioSessionController.activatePlayback(context: "AlarmSound") { activated in
+                DispatchQueue.main.async {
+                    guard self.playbackRequestID == requestID, self.audioPlayer === player else {
+                        return
+                    }
+
+                    self.isStartingPlayback = false
+
+                    guard activated else {
+                        self.audioPlayer = nil
+                        if url != self.soundURL {
+                            self.playDefaultSound()
+                        }
+                        return
+                    }
+
+                    self.startPlayback(player)
                 }
-            } else {
-                NSLog("AlarmSound - audio player failed to play")
             }
-            
-            // do fade-in
-            if !self.muted && (self.fadeInTimeInterval.value > 0) {
-                self.audioPlayer?.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
-            }
-            
-            self.playingTimer = Timer.schedule(repeatInterval: 1.0, handler: self.onPlayingTimer)
-            
         } catch let error {
+            self.isStartingPlayback = false
+            self.audioPlayer = nil
             NSLog("AlarmSound - unable to play sound; error: \(error). Removing the cached reference to the local file.")
             if (url != self.soundURL) {
                 // Fallback to the default sound since the custom sound seems to be broken:
                 self.playDefaultSound()
-                return
             }
         }
+    }
+
+    fileprivate static func startPlayback(_ player: AVAudioPlayer) {
+        // Play endless loops
+        player.numberOfLoops = -1
+
+        // init volume before start playing (mute if fade-in)
+        player.volume = (self.muted || (self.fadeInTimeInterval.value > 0)) ? 0.0 : 1.0
+
+        if !player.prepareToPlay() {
+            NSLog("AlarmSound - audio player failed preparing to play")
+        }
+
+        if player.play() {
+            if !self.isPlaying {
+                NSLog("AlarmSound - not playing after calling play")
+                NSLog("AlarmSound - rate value: \(String(describing: player.rate))")
+            }
+        } else {
+            NSLog("AlarmSound - audio player failed to play")
+        }
+
+        // do fade-in
+        if !self.muted && (self.fadeInTimeInterval.value > 0) {
+            player.setVolume(1.0, fadeDuration: self.fadeInTimeInterval.value)
+        }
+
+        self.playingTimer = Timer.schedule(repeatInterval: 1.0, handler: self.onPlayingTimer)
     }
     
     fileprivate static func onPlayingTimer(timer: Timer?) {
@@ -257,11 +284,6 @@ class AudioPlayerDelegate: NSObject, AVAudioPlayerDelegate {
     func audioPlayerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
         NSLog("AlarmRule - audioPlayerEndInterruption withOptions: \(flags)")
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
-	return input.rawValue
 }
 
 fileprivate func calculateAbsoluteUrl(relativeURL : URL) -> URL {

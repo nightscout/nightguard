@@ -14,8 +14,6 @@ final class MaxBackgroundPushRegistrationService {
     static let shared = MaxBackgroundPushRegistrationService()
 
     private let tokenKey = "maxBackgroundPushFCMToken"
-    private let registrationTokenKey = "maxBackgroundPushRegisteredToken"
-    private let registrationMarkerKey = "maxBackgroundPushRegistrationMarker"
     private let backendURLKey = "MAX_BACKEND_BASE_URL"
     private let defaultBackendBaseURL = "https://nightguard-backend--nightguard-app.europe-west4.hosted.app"
     private let appCheckTokenKey = "MAX_BACKEND_APP_CHECK_TOKEN"
@@ -23,16 +21,37 @@ final class MaxBackgroundPushRegistrationService {
 
     private init() {}
 
+    @MainActor private lazy var registrationCoordinator = MaxPushRegistrationCoordinator(
+        desiredRegistration: { [weak self] in
+            guard let self, PurchaseManager.shared.isMaxStatusResolved else { return .unresolved }
+            guard PurchaseManager.shared.isMaxAccessAvailable else { return .inactive }
+            guard let token = UserDefaults.standard.string(forKey: self.tokenKey), !token.isEmpty,
+                  let jws = try? await PurchaseManager.shared.currentMaxTransactionJWS() else { return .unresolved }
+            return .active(token: token, jws: jws, marker: self.makeRegistrationMarker(fcmToken: token, transactionJWS: jws))
+        },
+        register: { [weak self] token, jws in
+            guard let self else { return }
+            try await self.sendRegistration(fcmToken: token, transactionJWS: jws, backendBaseURL: self.resolvedBackendBaseURL())
+        },
+        unregister: { [weak self] token in
+            guard let self else { return }
+            try await self.sendUnregistration(fcmToken: token, backendBaseURL: self.resolvedBackendBaseURL())
+        },
+        onError: { error in
+            AppLogger.singleton.warning("Max registration reconciliation failed: \(error.localizedDescription)", category: .backgroundUpdates)
+        }
+    )
+
     func configureForCurrentEntitlement() {
-        DispatchQueue.main.async {
+        Task { @MainActor in
+            guard PurchaseManager.shared.isMaxStatusResolved else { return }
             if PurchaseManager.shared.isMaxAccessAvailable {
-                AppLogger.singleton.debug("Max entitlement active; starting silent push registration flow", category: .backgroundUpdates)
                 UIApplication.shared.registerForRemoteNotifications()
-                self.registerStoredTokenIfPossible()
-            } else {
-                AppLogger.singleton.debug("Max entitlement inactive; starting silent push unregistration flow", category: .backgroundUpdates)
-                self.unregisterStoredTokenIfNeeded()
+                if UserDefaults.standard.string(forKey: tokenKey) == nil {
+                    fetchFCMTokenIfPossible()
+                }
             }
+            await registrationCoordinator.reconcile()
         }
     }
 
@@ -53,62 +72,7 @@ final class MaxBackgroundPushRegistrationService {
     }
 
     private func registerStoredTokenIfPossible() {
-        guard PurchaseManager.shared.isMaxAccessAvailable else {
-            AppLogger.singleton.debug("Skipping Max device registration: Max access is unavailable", category: .backgroundUpdates)
-            return
-        }
-
-        guard let fcmToken = UserDefaults.standard.string(forKey: tokenKey), !fcmToken.isEmpty else {
-            AppLogger.singleton.warning("Skipping Max device registration: no FCM token stored yet", category: .backgroundUpdates)
-            fetchFCMTokenIfPossible()
-            return
-        }
-
-        let backendBaseURL = resolvedBackendBaseURL()
-
-        Task {
-            do {
-                AppLogger.singleton.debug("Preparing Max device registration: backend=\(backendDescription(backendBaseURL)), bundleId=\(bundleId), fcmToken=\(maskedToken(fcmToken))", category: .backgroundUpdates)
-                let transactionJWS = try await PurchaseManager.shared.currentMaxTransactionJWS()
-                let registrationMarker = makeRegistrationMarker(fcmToken: fcmToken, transactionJWS: transactionJWS)
-
-                if UserDefaults.standard.string(forKey: registrationMarkerKey) == registrationMarker {
-                    AppLogger.singleton.info("Skipping Max device registration: FCM token and StoreKit transaction already registered locally token=\(maskedToken(fcmToken))", category: .backgroundUpdates)
-                    return
-                }
-
-                AppLogger.singleton.debug("Max StoreKit transaction available; sending device registration with \(transactionSummary(transactionJWS))", category: .backgroundUpdates)
-                try await sendRegistration(fcmToken: fcmToken, transactionJWS: transactionJWS, backendBaseURL: backendBaseURL)
-                UserDefaults.standard.set(fcmToken, forKey: registrationTokenKey)
-                UserDefaults.standard.set(registrationMarker, forKey: registrationMarkerKey)
-                AppLogger.singleton.info("Registered Max device for silent FCM push: token=\(maskedToken(fcmToken))", category: .backgroundUpdates)
-            } catch {
-                AppLogger.singleton.error("Max device registration failed for token=\(maskedToken(fcmToken)): \(error.localizedDescription)", category: .backgroundUpdates)
-            }
-        }
-    }
-
-    private func unregisterStoredTokenIfNeeded() {
-        guard let registeredMarker = UserDefaults.standard.string(forKey: registrationTokenKey), !registeredMarker.isEmpty else {
-            AppLogger.singleton.debug("Skipping Max device unregistration: no locally registered FCM token exists", category: .backgroundUpdates)
-            return
-        }
-        let registeredToken = registeredMarker
-
-        let backendBaseURL = resolvedBackendBaseURL()
-
-        Task {
-            do {
-                AppLogger.singleton.debug("Sending Max device unregistration: backend=\(backendDescription(backendBaseURL)), token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
-                try await sendUnregistration(fcmToken: registeredToken, backendBaseURL: backendBaseURL)
-                AppLogger.singleton.info("Unregistered Max device for silent FCM push: token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
-            } catch {
-                AppLogger.singleton.warning("Max device unregistration failed for token=\(maskedToken(registeredToken)): \(error.localizedDescription)", category: .backgroundUpdates)
-            }
-            UserDefaults.standard.removeObject(forKey: registrationTokenKey)
-            UserDefaults.standard.removeObject(forKey: registrationMarkerKey)
-            AppLogger.singleton.debug("Removed local Max registration marker for token=\(maskedToken(registeredToken))", category: .backgroundUpdates)
-        }
+        Task { @MainActor in await registrationCoordinator.reconcile() }
     }
 
     private func fetchFCMTokenIfPossible() {

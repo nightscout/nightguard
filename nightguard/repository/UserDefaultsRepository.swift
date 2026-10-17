@@ -620,6 +620,7 @@ enum TabIdentifier: String, CaseIterable, AnyConvertible, Equatable, Identifiabl
     case care = "care"
     case duration = "duration"
     case stats = "stats"
+    case report = "report"
     case prefs = "prefs"
     case subscribePro = "subscribePro"
     case subscribeMax = "subscribeMax"

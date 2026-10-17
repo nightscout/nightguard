@@ -104,6 +104,12 @@ struct ProPromotionView: View {
                             title: NSLocalizedString("Interactive Chart Selection", comment: "Pro Feature 5 Title"),
                             description: NSLocalizedString("Touch the chart to inspect exact glucose values, timestamps, boluses and carbs on iPhone and Apple Watch.", comment: "Pro Feature 5 Description")
                         )
+
+                        FeatureRow(
+                            icon: "doc.richtext",
+                            title: "\(NSLocalizedString("PDF Reports", comment: "Pro report feature title")) · \(NSLocalizedString("Beta", comment: "Report feature status"))",
+                            description: NSLocalizedString("Create and share PDF summaries of glucose and treatment history for personal reference.", comment: "Pro report feature description")
+                        )
                     }
 
                     if selectedPromotion == .max {
@@ -136,7 +142,7 @@ struct ProPromotionView: View {
                         SubscriptionOptionView(
                             price: purchaseManager.formattedProPrice,
                             footnoteText: nil,
-                            buttonTitle: purchaseManager.hasProFeatureAccess ? nil : NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"),
+                            buttonTitle: (!purchaseManager.isMaxStatusResolved || purchaseManager.hasProFeatureAccess) ? nil : NSLocalizedString("Support & Subscribe", comment: "Pro Promotion Subscribe Button"),
                             action: {
                                 purchaseManager.buyProVersion()
                                 presentationMode.wrappedValue.dismiss()
@@ -146,7 +152,7 @@ struct ProPromotionView: View {
                         SubscriptionOptionView(
                             price: purchaseManager.formattedMaxPrice,
                             footnoteText: maxUpgradeFootnoteText,
-                            buttonTitle: purchaseManager.isMaxAccessAvailable ? nil : maxButtonTitle,
+                            buttonTitle: (!purchaseManager.isMaxStatusResolved || purchaseManager.isMaxAccessAvailable) ? nil : maxButtonTitle,
                             action: {
                                 purchaseManager.buyMaxVersion()
                                 presentationMode.wrappedValue.dismiss()

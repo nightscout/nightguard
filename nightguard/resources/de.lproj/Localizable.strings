@@ -699,6 +699,7 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 "Manage Subscription" = "Abo verwalten";
 "No active subscription found to restore." = "Kein aktives Abonnement zum Wiederherstellen gefunden.";
 "Purchases restored successfully." = "Käufe erfolgreich wiederhergestellt.";
+"Unable to verify purchases. Please try again." = "Käufe konnten nicht überprüft werden. Bitte erneut versuchen.";
 "Restore failed: %@" = "Wiederherstellung fehlgeschlagen: %@";
 
 /* Localization audit */
@@ -805,3 +806,108 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 /* Direct V1 API preference */
 "Always use V1 API" = "V1-API dauerhaft verwenden";
 "Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "Lädt Glukosedaten und Treatments direkt über V1, ohne V3-Prüfung oder Anmeldung. V2 bleibt für IOB, COB und den Uploader-Akku aktiv.";
+/* PDF-Berichte */
+"Report" = "Bericht";
+"1 day" = "1 Tag";
+"1 week" = "1 Woche";
+"1 month" = "1 Monat";
+"3 months" = "3 Monate";
+"PDF Reports" = "PDF-Berichte";
+"Beta" = "Beta";
+"PDF reports with Pro" = "PDF-Berichte mit Pro";
+"Create and share PDF summaries of glucose and treatment history for personal reference." = "Erstelle und teile PDF-Übersichten zu deinem Glukose- und Behandlungsverlauf für den persönlichen Überblick.";
+"Personal information" = "Persönliche Angaben";
+"Date of birth" = "Geburtsdatum";
+"Include date of birth" = "Geburtsdatum im Bericht anzeigen";
+"CGP limits: 80–180 mg/dL. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP-Grenzen: 80–180 mg/dL. ToR: Minuten außerhalb dieses Bereichs; CV: Glukoseschwankung; HYPO/HYPER: Stärke der Abweichungen.";
+"Diabetes since" = "Diabetes seit";
+"Insulin" = "Insulin";
+"Period" = "Zeitraum";
+"Export period" = "Exportzeitraum";
+"Range: %@–%@ %@" = "Zielbereich: %@–%@ %@";
+"Create PDF report" = "PDF-Bericht erstellen";
+"The PDF stays on this device until you choose where to share or save it." = "Das PDF bleibt auf diesem Gerät, bis du es teilst oder speicherst.";
+"Report unavailable" = "Bericht nicht verfügbar";
+"Configure Nightscout in Preferences before creating a report." = "Richte Nightscout in den Einstellungen ein, bevor du einen Bericht erstellst.";
+"No glucose data was found for the selected period." = "Für den gewählten Zeitraum wurden keine Glukosedaten gefunden.";
+"PDF report" = "PDF-Bericht";
+"Share PDF" = "PDF teilen";
+"Done" = "Fertig";
+"Report summary" = "Auswertung";
+"Data coverage" = "Datenumfang";
+"Report days" = "Ausgewertete Tage";
+"Average measurement interval" = "Mittleres Messintervall";
+"very good" = "sehr gut";
+"good" = "gut";
+"high" = "erhöht";
+"excellent" = "exzellent";
+"poor" = "schlecht";
+"very poor" = "sehr schlecht";
+"Zone" = "Zone";
+"Green: reference range • Orange: selected period" = "Grün: Referenzbereich • Orange: gewählter Zeitraum";
+"ToR: minutes outside target; CV: glucose variation; HYPO/HYPER: intensity beyond target." = "ToR: Minuten außerhalb des Zielbereichs; CV: Glukoseschwankung; HYPO/HYPER: Stärke der Abweichung.";
+"Glucose readings" = "Glukosemessungen";
+"Reservoir changes" = "Ampullenwechsel";
+"Cannula changes" = "Katheterwechsel";
+"Sensor changes" = "Sensorwechsel";
+"Personal range" = "Eigene Grenzwerte";
+"Standard range" = "Standardgrenzwerte";
+"Glucose and risk" = "Glukose und Risiko";
+"Minimum / maximum" = "Niedrigster / höchster Wert";
+"Mean / standard deviation" = "Mittelwert / Standardabweichung";
+"Estimated HbA1c" = "Geschätzter HbA1c";
+"Treatment per day" = "Behandlung pro Tag";
+"Carbohydrates / bolus" = "Kohlenhydrate / Bolus";
+"Basal / total insulin" = "Basal / Gesamtinsulin";
+"Basal insulin is reconstructed from Nightscout profiles and events where available." = "Basalinsulin wurde, soweit möglich, aus Nightscout-Profilen und Ereignissen rekonstruiert.";
+"Therapy profile" = "Therapieprofil";
+"No Nightscout profile available for this period." = "Für diesen Zeitraum ist kein Nightscout-Profil verfügbar.";
+"Carbohydrate absorption" = "Kohlenhydrataktivität";
+"ICR (g/U)" = "ICR (g/IE)";
+"Basal (U/h)" = "Basal (IE/h)";
+"Target" = "Zielwert";
+"Glucose percentiles" = "Glukose-Perzentile";
+"Insufficient glucose data" = "Zu wenige Glukosedaten";
+"Median" = "Median";
+"Daily charts" = "Tagesgrafiken";
+"No glucose data" = "Keine Glukosedaten";
+"Mean" = "Mittelwert";
+"Carbs" = "KH";
+"Bolus" = "Bolus";
+"Basal" = "Basal";
+"PGR is a research metric; its prediction of long-term complications has not been established." = "PGR ist eine Forschungskennzahl; eine Vorhersage von Langzeitfolgen ist nicht belegt.";
+"Period comparison" = "Zeitraumauswertung";
+"Glucose range" = "Glukosebereiche";
+"Total insulin / basal (U)" = "Gesamtinsulin / Basal (IE)";
+"Carbohydrates (g)" = "Kohlenhydrate (g)";
+"Red: low • Green: in range • Yellow: high" = "Rot: niedrig • Grün: im Zielbereich • Gelb: hoch";
+"The report is too large to retrieve completely." = "Der Bericht ist zu groß, um alle Daten vollständig abzurufen.";
+"Nightscout returned invalid report data." = "Nightscout hat ungültige Berichtsdaten geliefert.";
+"The Nightscout API changed during the report download." = "Die Nightscout-API hat sich während des Datenabrufs geändert.";
+"Nightscout stopped advancing through report data." = "Nightscout liefert keine weiteren Berichtsdaten.";
+"CGP ToR axis" = "ToR [min/Tag]";
+"CGP CV axis" = "VarK [%]";
+"CGP HYPO axis" = "Intensität HYPO [mg/dL × min²]";
+"CGP HYPER axis" = "Intensität HYPER [mg/dL × min²]";
+"Mean glucose" = "Mittlere Glukose";
+"All information is provided without warranty. Not for medical decisions." = "Alle Angaben ohne Gewähr. Nicht für medizinische Entscheidungen.";
+
+"Report insulin unit" = "IE";
+
+"Report target range" = "Report-Zielbereich";
+
+"Profile basal" = "Profilbasal";
+
+"Bolus / basal share" = "Bolus- / Basalanteil";
+
+"HYPO intensity" = "Intensität HYPO";
+
+"HYPER intensity" = "Intensität HYPER";
+
+"min/day" = "min/Tag";
+
+"CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP-Grenzen: %@–%@ %@. ToR: Minuten außerhalb dieses Bereichs; CV: Glukoseschwankung; HYPO/HYPER: Stärke der Abweichungen.";
+
+"Report daily legend" = "Blau: Glukose/Bolus/abgegebenes Basal; Türkis: Profilbasal; Violett: Zielwert; Orange: KH; rote Punkte: blutige Messung.\n▼ Mikrobolus; S Sensorwechsel; K Katheterwechsel; R Ampullenwechsel; [ ] Summe innerhalb 60 min. Grün: Report-Zielbereich.";
+
+"Name" = "Name";

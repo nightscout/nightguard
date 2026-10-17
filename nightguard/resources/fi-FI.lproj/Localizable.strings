@@ -775,6 +775,7 @@
 "Manage Subscription" = "Hallitse tilausta";
 "No active subscription found to restore." = "Aktiivista tilausta ei löytynyt palautettavaksi.";
 "Purchases restored successfully." = "Ostot palautettu onnistuneesti.";
+"Unable to verify purchases. Please try again." = "Ostoja ei voitu vahvistaa. Yritä uudelleen.";
 "Restore failed: %@" = "Palautus epäonnistui: %@";
 
 /* Localization audit */
@@ -826,3 +827,108 @@
 /* Direct V1 API preference */
 "Always use V1 API" = "Käytä aina V1-rajapintaa";
 "Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "Lataa glukoositiedot ja hoitotiedot suoraan V1-rajapinnan kautta ilman V3-tarkistuksia tai kirjautumista. V2 on edelleen käytössä IOB-, COB- ja lähettimen akkutiedoille.";
+/* PDF-raportit */
+"Report" = "Raportti";
+"1 day" = "1 päivä";
+"1 week" = "1 viikko";
+"1 month" = "1 kuukausi";
+"3 months" = "3 kuukautta";
+"PDF Reports" = "PDF-raportit";
+"Beta" = "Beta";
+"PDF reports with Pro" = "PDF-raportit Prossa";
+"Create and share PDF summaries of glucose and treatment history for personal reference." = "Luo ja jaa PDF-yhteenvetoja glukoosi- ja hoitohistoriasta omaa tarkastelua varten.";
+"Personal information" = "Henkilötiedot";
+"Date of birth" = "Syntymäaika";
+"Include date of birth" = "Näytä syntymäaika raportissa";
+"CGP limits: 80–180 mg/dL. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP-rajat: 80–180 mg/dL. ToR: minuutit tämän alueen ulkopuolella; CV: glukoosin vaihtelu; HYPO/HYPER: poikkeaman voimakkuus.";
+"Diabetes since" = "Diabetes vuodesta";
+"Insulin" = "Insuliini";
+"Period" = "Ajanjakso";
+"Export period" = "Raportin ajanjakso";
+"Range: %@–%@ %@" = "Tavoitealue: %@–%@ %@";
+"Create PDF report" = "Luo PDF-raportti";
+"The PDF stays on this device until you choose where to share or save it." = "PDF pysyy laitteella, kunnes päätät jakaa tai tallentaa sen.";
+"Report unavailable" = "Raportti ei ole saatavilla";
+"Configure Nightscout in Preferences before creating a report." = "Määritä Nightscout asetuksissa ennen raportin luontia.";
+"No glucose data was found for the selected period." = "Valitulta ajanjaksolta ei löytynyt glukoositietoja.";
+"PDF report" = "PDF-raportti";
+"Share PDF" = "Jaa PDF";
+"Done" = "Valmis";
+"Report summary" = "Yhteenveto";
+"Data coverage" = "Tietojen kattavuus";
+"Report days" = "Raportin päivät";
+"Glucose readings" = "Glukoosimittaukset";
+"Average measurement interval" = "Mittausväli keskimäärin";
+"very good" = "erittäin hyvä";
+"good" = "hyvä";
+"high" = "korkea";
+"excellent" = "erinomainen";
+"poor" = "heikko";
+"very poor" = "erittäin heikko";
+"Zone" = "Alue";
+"Green: reference range • Orange: selected period" = "Vihreä: viitealue • Oranssi: valittu ajanjakso";
+"ToR: minutes outside target; CV: glucose variation; HYPO/HYPER: intensity beyond target." = "ToR: minuutit tavoitealueen ulkopuolella; CV: glukoosin vaihtelu; HYPO/HYPER: poikkeaman voimakkuus.";
+"Reservoir changes" = "Säiliön vaihdot";
+"Cannula changes" = "Kanyylin vaihdot";
+"Sensor changes" = "Sensorin vaihdot";
+"Personal range" = "Oma tavoitealue";
+"Standard range" = "Vakioalue";
+"Glucose and risk" = "Glukoosi ja riski";
+"Minimum / maximum" = "Alin / ylin arvo";
+"Mean / standard deviation" = "Keskiarvo / keskihajonta";
+"Estimated HbA1c" = "Arvioitu HbA1c";
+"Treatment per day" = "Hoito päivässä";
+"Carbohydrates / bolus" = "Hiilihydraatit / bolus";
+"Basal / total insulin" = "Basaali / kokonaisinsuliini";
+"Basal insulin is reconstructed from Nightscout profiles and events where available." = "Basaali-insuliini on arvioitu Nightscoutin profiileista ja tapahtumista saatavuuden mukaan.";
+"Therapy profile" = "Hoitoprofiili";
+"No Nightscout profile available for this period." = "Tälle ajanjaksolle ei ole Nightscout-profiilia.";
+"Carbohydrate absorption" = "Hiilihydraattien imeytyminen";
+"ICR (g/U)" = "ICR (g/U)";
+"Basal (U/h)" = "Basaali (U/h)";
+"Target" = "Tavoite";
+"Glucose percentiles" = "Glukoosipersentiilit";
+"Insufficient glucose data" = "Glukoositietoja on liian vähän";
+"Median" = "Mediaani";
+"Daily charts" = "Päiväkaaviot";
+"No glucose data" = "Ei glukoositietoja";
+"Mean" = "Keskiarvo";
+"Carbs" = "Hiilihydraatit";
+"Bolus" = "Bolus";
+"Basal" = "Basaali";
+"PGR is a research metric; its prediction of long-term complications has not been established." = "PGR on tutkimusmittari; sen kykyä ennustaa pitkäaikaiskomplikaatioita ei ole osoitettu.";
+"Period comparison" = "Ajanjakson vertailu";
+"Glucose range" = "Glukoosialue";
+"Total insulin / basal (U)" = "Kokonaisinsuliini / basaali (U)";
+"Carbohydrates (g)" = "Hiilihydraatit (g)";
+"Red: low • Green: in range • Yellow: high" = "Punainen: matala • Vihreä: tavoitealueella • Keltainen: korkea";
+"The report is too large to retrieve completely." = "Raportti on liian suuri ladattavaksi kokonaan.";
+"Nightscout returned invalid report data." = "Nightscout palautti virheellisiä raporttitietoja.";
+"The Nightscout API changed during the report download." = "Nightscoutin rajapinta muuttui latauksen aikana.";
+"Nightscout stopped advancing through report data." = "Nightscout ei palauttanut lisää raporttitietoja.";
+"CGP ToR axis" = "ToR [min/vrk]";
+"CGP CV axis" = "VarK [%]";
+"CGP HYPO axis" = "HYPO-intensiteetti [mg/dL × min²]";
+"CGP HYPER axis" = "HYPER-intensiteetti [mg/dL × min²]";
+"Mean glucose" = "Keskimääräinen glukoosi";
+"All information is provided without warranty. Not for medical decisions." = "Kaikki tiedot ilman takuuta. Ei lääketieteellisiin päätöksiin.";
+
+"Report insulin unit" = "U";
+
+"Report target range" = "Raportin tavoitealue";
+
+"Profile basal" = "Profiilin basaali";
+
+"Bolus / basal share" = "Bolus- / basaaliosuus";
+
+"HYPO intensity" = "HYPO-intensiteetti";
+
+"HYPER intensity" = "HYPER-intensiteetti";
+
+"min/day" = "min/vrk";
+
+"CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP-rajat: %@–%@ %@. ToR: minuutit alueen ulkopuolella; CV: glukoosin vaihtelu; HYPO/HYPER: poikkeamien voimakkuus.";
+
+"Report daily legend" = "Sininen: glukoosi/bolus/annosteltu basaali; turkoosi: profiilin basaali; violetti: tavoite; oranssi: HH; punainen: verimittaus.\n▼ Mikrobolus; S sensorinvaihto; K kanyylinvaihto; R säiliönvaihto; [ ] summa 60 minuutin sisällä. Vihreä: tavoitealue.";
+
+"Name" = "Nimi";

@@ -770,6 +770,7 @@
 "Manage Subscription" = "管理订阅";
 "No active subscription found to restore." = "未找到可恢复的有效订阅。";
 "Purchases restored successfully." = "购买项目恢复成功。";
+"Unable to verify purchases. Please try again." = "无法验证购买项目。请重试。";
 "Restore failed: %@" = "恢复失败：%@";
 
 /* Localization audit */
@@ -815,3 +816,108 @@
 /* Direct V1 API preference */
 "Always use V1 API" = "始终使用 V1 API";
 "Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "直接通过 V1 加载血糖和治疗数据，无需 V3 检查或登录。IOB、COB 和上传设备电量仍通过 V2 获取。";
+/* PDF 报告 */
+"Report" = "报告";
+"1 day" = "1 天";
+"1 week" = "1 周";
+"1 month" = "1 个月";
+"3 months" = "3 个月";
+"PDF Reports" = "PDF 报告";
+"Beta" = "测试版";
+"PDF reports with Pro" = "Pro 专属 PDF 报告";
+"Create and share PDF summaries of glucose and treatment history for personal reference." = "创建并分享血糖和治疗历史的 PDF 摘要，供个人查看。";
+"Personal information" = "个人信息";
+"Date of birth" = "出生日期";
+"Include date of birth" = "在报告中显示出生日期";
+"CGP limits: 80–180 mg/dL. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP 范围：80–180 mg/dL。ToR：超出此范围的分钟数；CV：血糖波动；HYPO/HYPER：偏差程度。";
+"Diabetes since" = "患糖尿病起始时间";
+"Insulin" = "胰岛素";
+"Period" = "时间范围";
+"Export period" = "导出时间范围";
+"Range: %@–%@ %@" = "目标范围：%@–%@ %@";
+"Create PDF report" = "生成 PDF 报告";
+"The PDF stays on this device until you choose where to share or save it." = "PDF 会保留在此设备上，直到你选择分享或保存。";
+"Report unavailable" = "报告不可用";
+"Configure Nightscout in Preferences before creating a report." = "生成报告前，请先在设置中配置 Nightscout。";
+"No glucose data was found for the selected period." = "所选时间范围内没有血糖数据。";
+"PDF report" = "PDF 报告";
+"Share PDF" = "分享 PDF";
+"Done" = "完成";
+"Report summary" = "报告摘要";
+"Data coverage" = "数据覆盖情况";
+"Report days" = "报告天数";
+"Glucose readings" = "血糖读数";
+"Average measurement interval" = "平均测量间隔";
+"very good" = "很好";
+"good" = "良好";
+"high" = "偏高";
+"excellent" = "优秀";
+"poor" = "较差";
+"very poor" = "很差";
+"Zone" = "区域";
+"Green: reference range • Orange: selected period" = "绿色：参考范围 • 橙色：所选时间段";
+"ToR: minutes outside target; CV: glucose variation; HYPO/HYPER: intensity beyond target." = "ToR：超出目标范围的分钟数；CV：血糖变异；HYPO/HYPER：超出目标的程度。";
+"Reservoir changes" = "储药器更换次数";
+"Cannula changes" = "输注管更换次数";
+"Sensor changes" = "传感器更换次数";
+"Personal range" = "个人目标范围";
+"Standard range" = "标准目标范围";
+"Glucose and risk" = "血糖与风险";
+"Minimum / maximum" = "最低值 / 最高值";
+"Mean / standard deviation" = "平均值 / 标准差";
+"Estimated HbA1c" = "估算 HbA1c";
+"Treatment per day" = "每日治疗数据";
+"Carbohydrates / bolus" = "碳水化合物 / 餐时胰岛素";
+"Basal / total insulin" = "基础胰岛素 / 总胰岛素";
+"Basal insulin is reconstructed from Nightscout profiles and events where available." = "基础胰岛素根据可用的 Nightscout 配置和事件估算。";
+"Therapy profile" = "治疗配置";
+"No Nightscout profile available for this period." = "此时间范围内没有可用的 Nightscout 配置。";
+"Carbohydrate absorption" = "碳水化合物吸收";
+"ICR (g/U)" = "碳水比 (克/单位)";
+"Basal (U/h)" = "基础率 (单位/小时)";
+"Target" = "目标值";
+"Glucose percentiles" = "血糖百分位图";
+"Insufficient glucose data" = "血糖数据不足";
+"Median" = "中位数";
+"Daily charts" = "每日图表";
+"No glucose data" = "没有血糖数据";
+"Mean" = "平均值";
+"Carbs" = "碳水";
+"Bolus" = "追加胰岛素";
+"Basal" = "基础胰岛素";
+"PGR is a research metric; its prediction of long-term complications has not been established." = "PGR 是研究指标，其预测长期并发症的能力尚未得到证实。";
+"Period comparison" = "时间范围比较";
+"Glucose range" = "血糖范围";
+"Total insulin / basal (U)" = "总胰岛素 / 基础胰岛素 (单位)";
+"Carbohydrates (g)" = "碳水化合物 (克)";
+"Red: low • Green: in range • Yellow: high" = "红色：低 • 绿色：目标范围内 • 黄色：高";
+"The report is too large to retrieve completely." = "报告数据过多，无法完整下载。";
+"Nightscout returned invalid report data." = "Nightscout 返回了无效的报告数据。";
+"The Nightscout API changed during the report download." = "下载期间 Nightscout 接口发生变化。";
+"Nightscout stopped advancing through report data." = "Nightscout 未返回更多报告数据。";
+"CGP ToR axis" = "ToR [分钟/天]";
+"CGP CV axis" = "VarK [%]";
+"CGP HYPO axis" = "低血糖强度 [mg/dL × min²]";
+"CGP HYPER axis" = "高血糖强度 [mg/dL × min²]";
+"Mean glucose" = "平均血糖";
+"All information is provided without warranty. Not for medical decisions." = "所有信息不作保证。请勿用于医疗决策。";
+
+"Report insulin unit" = "U";
+
+"Report target range" = "报告目标范围";
+
+"Profile basal" = "配置基础率";
+
+"Bolus / basal share" = "大剂量 / 基础胰岛素占比";
+
+"HYPO intensity" = "低血糖强度";
+
+"HYPER intensity" = "高血糖强度";
+
+"min/day" = "分钟/天";
+
+"CGP limits: %@–%@ %@. ToR: minutes outside this range; CV: glucose variation; HYPO/HYPER: intensity beyond the limits." = "CGP 范围：%@–%@ %@。ToR：范围外的分钟数；CV：血糖变异；HYPO/HYPER：低/高血糖强度。";
+
+"Report daily legend" = "蓝色：血糖/大剂量/实际基础率；青色：配置基础率；紫色：目标；橙色：碳水；红点：指尖血糖。\n▼ 微量大剂量；S 更换传感器；K 更换导管；R 更换储药器；[ ] 60 分钟内合计。绿色：报告目标范围。";
+
+"Name" = "姓名";
