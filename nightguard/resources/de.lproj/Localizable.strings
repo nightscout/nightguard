@@ -697,6 +697,7 @@ Damit diese funktionieren, müssen Nightguard Widgets auf dem Lock-Screen platzi
 
 /* New strings */
 "Manage Subscription" = "Abo verwalten";
+"Next Subscription Refresh" = "Nächste Abo-Aktualisierung";
 "No active subscription found to restore." = "Kein aktives Abonnement zum Wiederherstellen gefunden.";
 "Purchases restored successfully." = "Käufe erfolgreich wiederhergestellt.";
 "Unable to verify purchases. Please try again." = "Käufe konnten nicht überprüft werden. Bitte erneut versuchen.";

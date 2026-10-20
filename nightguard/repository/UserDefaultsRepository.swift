@@ -89,9 +89,9 @@ class UserDefaultsRepository {
     static let daysToBeDisplayed = UserDefaultsValue<[Bool]>(key: "daysToBeDisplayed", default: [true, true, true, true, true])
     
     // blood glucose upper/lower bounds (definition of user's bg range)
-    static let upperBound = UserDefaultsValue<Float>(key: "upperBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfAboveValue") as? Float) ?? 180)
+    static let upperBound = UserDefaultsValue<Float>(key: "upperBound", default: (AppGroupPreferences.defaults?.object(forKey: "alertIfAboveValue") as? Float) ?? 180)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
-    static let lowerBound = UserDefaultsValue<Float>(key: "lowerBound", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "alertIfBelowValue") as? Float) ?? 80)
+    static let lowerBound = UserDefaultsValue<Float>(key: "lowerBound", default: (AppGroupPreferences.defaults?.object(forKey: "alertIfBelowValue") as? Float) ?? 80)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
 
     static let maximumBloodGlucoseDisplayed = UserDefaultsValue<Float>(key: "maximumBloodGlucoseDisplayed", default: 350)
@@ -289,39 +289,39 @@ class UserDefaultsRepository {
         return urlComponents.url
     }
     
-    static let temporaryTargetReason = UserDefaultsValue<String>(key: "temporaryTargetReason", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargeReasont") as? String) ?? "Too Low")
+    static let temporaryTargetReason = UserDefaultsValue<String>(key: "temporaryTargetReason", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargeReasont") as? String) ?? "Too Low")
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let temporaryTargetDuration = UserDefaultsValue<Int>(key: "temporaryTargetDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetDuration") as? Int) ?? 60)
+    static let temporaryTargetDuration = UserDefaultsValue<Int>(key: "temporaryTargetDuration", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetDuration") as? Int) ?? 60)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let temporaryTargetAmount = UserDefaultsValue<Int>(key: "temporaryTargetAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetAmount") as? Int) ?? 72)
+    static let temporaryTargetAmount = UserDefaultsValue<Int>(key: "temporaryTargetAmount", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetAmount") as? Int) ?? 72)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     
-    static let temporaryTargetActivityDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetActivityDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetActivityDefaultAmount") as? Int) ?? 130)
+    static let temporaryTargetActivityDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetActivityDefaultAmount", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetActivityDefaultAmount") as? Int) ?? 130)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let temporaryTargetTooLowDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetTooLowDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetTooLowDefaultAmount") as? Int) ?? 120)
+    static let temporaryTargetTooLowDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetTooLowDefaultAmount", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetTooLowDefaultAmount") as? Int) ?? 120)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let temporaryTargetTooHighDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetTooHighDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetTooHighDefaultAmount") as? Int) ?? 72)
+    static let temporaryTargetTooHighDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetTooHighDefaultAmount", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetTooHighDefaultAmount") as? Int) ?? 72)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let temporaryTargetMealSoonDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetMealSoonDefaultAmount", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetMealSoonDefaultAmount") as? Int) ?? 80)
+    static let temporaryTargetMealSoonDefaultAmount = UserDefaultsValue<Int>(key: "temporaryTargetMealSoonDefaultAmount", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetMealSoonDefaultAmount") as? Int) ?? 80)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
 
 
-    static let temporaryTargetActivityDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetActivityDefaultDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetActivityDefaultDuration") as? Int) ?? 120)
+    static let temporaryTargetActivityDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetActivityDefaultDuration", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetActivityDefaultDuration") as? Int) ?? 120)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let temporaryTargetTooLowDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetTooLowDefaultDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetTooLowDefaultDuration") as? Int) ?? 60)
+    static let temporaryTargetTooLowDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetTooLowDefaultDuration", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetTooLowDefaultDuration") as? Int) ?? 60)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let temporaryTargetTooHighDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetTooHighDefaultDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetTooHighDefaultDuration") as? Int) ?? 60)
+    static let temporaryTargetTooHighDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetTooHighDefaultDuration", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetTooHighDefaultDuration") as? Int) ?? 60)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let temporaryTargetMealSoonDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetMealSoonDefaultDuration", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "temporaryTargetMealSoonDefaultDuration") as? Int) ?? 60)
+    static let temporaryTargetMealSoonDefaultDuration = UserDefaultsValue<Int>(key: "temporaryTargetMealSoonDefaultDuration", default: (AppGroupPreferences.defaults?.object(forKey: "temporaryTargetMealSoonDefaultDuration") as? Int) ?? 60)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     static func getDefaultTemporaryTargetAmountForReason() -> Int {
@@ -356,7 +356,7 @@ class UserDefaultsRepository {
         }
     }
     
-    static let carbs = UserDefaultsValue<Int>(key: "carbs", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "carbs") as? Int) ?? 3)
+    static let carbs = UserDefaultsValue<Int>(key: "carbs", default: (AppGroupPreferences.defaults?.object(forKey: "carbs") as? Int) ?? 3)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     // Definition of the Age Colors
@@ -417,7 +417,7 @@ class UserDefaultsRepository {
         default: 50)
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
-    static let treatments = UserDefaultsValue<[Treatment]>(key: "treatments", default: (UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: "treatments") as? [Treatment]) ?? [])
+    static let treatments = UserDefaultsValue<[Treatment]>(key: "treatments", default: (AppGroupPreferences.defaults?.object(forKey: "treatments") as? [Treatment]) ?? [])
         .group(UserDefaultsValueGroups.GroupNames.watchSync)
     
     // Has the user seen the App Tour?

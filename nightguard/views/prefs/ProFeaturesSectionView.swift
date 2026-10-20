@@ -41,6 +41,16 @@ struct ProFeaturesSectionView: View {
                             .foregroundColor(.green)
                         Text(NSLocalizedString("Max Subscription Active", comment: "Max subscription active text"))
                     }
+                    if let nextRefresh = purchaseManager.nextMaxRefreshAt {
+                        HStack(alignment: .firstTextBaseline) {
+                            Text(NSLocalizedString("Next Subscription Refresh", comment: "Next Max subscription refresh label"))
+                            Spacer(minLength: 8)
+                            Text(nextRefresh, format: .dateTime.weekday(.wide).day().month(.abbreviated).hour().minute())
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.trailing)
+                        }
+                        .font(.footnote)
+                    }
                 } else if purchaseManager.isMaxStatusResolved {
                     Button(action: {
                         promotionFocus = .max

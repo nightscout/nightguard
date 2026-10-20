@@ -47,6 +47,7 @@ class PurchaseManager: NSObject, ObservableObject {
     @Published var isProAccessAvailable: Bool = false
     @Published private(set) var isMaxAccessAvailable: Bool = false
     @Published private(set) var isMaxStatusResolved = false
+    @Published private(set) var nextMaxRefreshAt: Date?
     @Published var products: [SKProduct] = []
 
     var hasProFeatureAccess: Bool {
@@ -97,6 +98,7 @@ class PurchaseManager: NSObject, ObservableObject {
     @MainActor
     private func handleMaxRefresh() {
         isMaxStatusResolved = maxMonitor.hasResolvedStatus
+        nextMaxRefreshAt = maxMonitor.lastCheckedAt?.addingTimeInterval(MaxSubscriptionMonitor.refreshInterval)
         updateSubscriptionStatus(maxActive: maxMonitor.isActive)
         #if os(iOS) && MAIN_APP
         if maxMonitor.lastCheckFailed {

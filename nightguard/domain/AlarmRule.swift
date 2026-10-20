@@ -499,7 +499,7 @@ class AlarmRule {
     }
 
     private static func rawAlarmSetting<T: AnyConvertible>(forKey key: String, as type: T.Type) -> T? {
-        guard let rawValue = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.object(forKey: key) else {
+        guard let rawValue = AppGroupPreferences.defaults?.object(forKey: key) else {
             return nil
         }
 

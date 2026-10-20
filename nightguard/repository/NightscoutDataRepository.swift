@@ -429,7 +429,7 @@ class NightscoutDataRepository {
     }
     
     func clearAll() {
-         let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+         let defaults = AppGroupPreferences.defaults
         defaults?.removeObject(forKey: Constants.currentBgData)
         defaults?.removeObject(forKey: Constants.todaysBgData)
         defaults?.removeObject(forKey: Constants.yesterdaysBgData)
@@ -445,7 +445,7 @@ class NightscoutDataRepository {
     /// data for yesterday and long-lived care metadata remain untouched; the
     /// temporary target is cleared so it can be fetched again immediately.
     func clearTodaysData() {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         defaults?.removeObject(forKey: Constants.currentBgData)
         defaults?.removeObject(forKey: Constants.todaysBgData)
         defaults?.removeObject(forKey: Constants.latestDisplaySnapshot)
@@ -455,7 +455,7 @@ class NightscoutDataRepository {
     
     func storeCurrentNightscoutData(_ bgData : NightscoutData) {
         
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         NSKeyedArchiver.setClassName("NightscoutData", for: NightscoutData.self)
         try?
             defaults?.set(
@@ -465,7 +465,7 @@ class NightscoutDataRepository {
     
     func loadCurrentNightscoutData() -> NightscoutData {
         
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = AppGroupPreferences.defaults else {
             // Nothing has been stored before => return dummy-Data
             return NightscoutData()
         }
@@ -482,7 +482,7 @@ class NightscoutDataRepository {
     }
 
     func storeLatestDisplaySnapshot(_ snapshot: NightguardDisplaySnapshot) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         let data = try? JSONEncoder().encode(snapshot)
         defaults?.set(data, forKey: Constants.latestDisplaySnapshot)
     }
@@ -496,7 +496,7 @@ class NightscoutDataRepository {
     }
 
     func loadLatestDisplaySnapshot() -> NightguardDisplaySnapshot? {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID),
+        guard let defaults = AppGroupPreferences.defaults,
               let data = defaults.object(forKey: Constants.latestDisplaySnapshot) as? Data else {
             return nil
         }
@@ -535,7 +535,7 @@ class NightscoutDataRepository {
     }
 
     func storeNightscoutEntries(_ entries: [NightscoutEntryRecord]) {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else { return }
+        guard let defaults = AppGroupPreferences.defaults else { return }
         guard let data = try? JSONEncoder().encode(entries) else {
             AppLogger.singleton.error("NightscoutDataRepository: could not encode (entries.count) raw entries", category: .nightscout)
             return
@@ -544,7 +544,7 @@ class NightscoutDataRepository {
     }
 
     func loadNightscoutEntries() -> [NightscoutEntryRecord] {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID),
+        guard let defaults = AppGroupPreferences.defaults,
               let data = defaults.data(forKey: Constants.nightscoutEntries) else {
             return []
         }
@@ -556,7 +556,7 @@ class NightscoutDataRepository {
     }
     
     func loadYesterdaysDayOfTheYear() -> Int {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = AppGroupPreferences.defaults else {
             // Nothing has been stored before => return dummy-Data
             return -1
         }
@@ -565,12 +565,12 @@ class NightscoutDataRepository {
     }
     
     func storeYesterdaysDayOfTheYear(yesterdaysDayOfTheYear : Int) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         defaults?.set(yesterdaysDayOfTheYear, forKey: Constants.yesterdaysDayOfTheYear)
     }
     
     func loadCannulaChangeTime() -> Date {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = AppGroupPreferences.defaults else {
             // Nothing has been stored before => return dummy-Data
             return Date()
         }
@@ -587,12 +587,12 @@ class NightscoutDataRepository {
     }
     
     func storeCannulaChangeTime(cannulaChangeTime : Date) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         defaults?.set(cannulaChangeTime.timeIntervalSince1970, forKey: Constants.cannulaChangeTime)
     }
     
     func loadSensorChangeTime() -> Date {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = AppGroupPreferences.defaults else {
             // Nothing has been stored before => return dummy-Data
             return Date()
         }
@@ -609,12 +609,12 @@ class NightscoutDataRepository {
     }
     
     func storeSensorChangeTime(sensorChangeTime : Date) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         defaults?.set(sensorChangeTime.timeIntervalSince1970, forKey: Constants.sensorChangeTime)
     }
     
     func loadBatteryChangeTime() -> Date {
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = AppGroupPreferences.defaults else {
             // Nothing has been stored before => return dummy-Data
             return Date()
         }
@@ -631,20 +631,20 @@ class NightscoutDataRepository {
     }
     
     func storeBatteryChangeTime(batteryChangeTime : Date) {
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         defaults?.set(batteryChangeTime.timeIntervalSince1970, forKey: Constants.batteryChangeTime)
     }
     
     func storeDeviceStatusData(deviceStatusData : DeviceStatusData) {
         
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         NSKeyedArchiver.setClassName("DeviceStatusData", for: DeviceStatusData.self)
         defaults?.set(try? NSKeyedArchiver.archivedData(withRootObject: deviceStatusData, requiringSecureCoding: true), forKey: Constants.deviceStatus)
     }
     
     func loadDeviceStatusData() -> DeviceStatusData {
         
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = AppGroupPreferences.defaults else {
             // Nothing has been stored before => return dummy-Data
             return DeviceStatusData()
         }
@@ -662,14 +662,14 @@ class NightscoutDataRepository {
     
     func storeTemporaryTargetData(temporaryTargetData : TemporaryTargetData) {
         
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         NSKeyedArchiver.setClassName("TemporaryTargetData", for: TemporaryTargetData.self)
         defaults?.set(try? NSKeyedArchiver.archivedData(withRootObject: temporaryTargetData, requiringSecureCoding: true), forKey: Constants.temporaryTarget)
     }
     
     func loadTemporaryTargetData() -> TemporaryTargetData {
         
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = AppGroupPreferences.defaults else {
             // Nothing has been stored before => return dummy-Data
             return TemporaryTargetData()
         }
@@ -689,7 +689,7 @@ class NightscoutDataRepository {
         
         print("Storing \(bgData.count) using key \(keyName)")
         
-        let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID)
+        let defaults = AppGroupPreferences.defaults
         defaults?.set(
             try? NSKeyedArchiver.archivedData(withRootObject: bgData, requiringSecureCoding: true),
             forKey: keyName)
@@ -697,7 +697,7 @@ class NightscoutDataRepository {
     
     fileprivate func loadBgData(keyName : String) -> [BloodSugar] {
         
-        guard let defaults = UserDefaults(suiteName: AppConstants.APP_GROUP_ID) else {
+        guard let defaults = AppGroupPreferences.defaults else {
             // Nothing has been stored before => return dummy-Data
             return []
         }

@@ -441,7 +441,7 @@ class MainViewModel: ObservableObject, Identifiable {
             self.refreshData(forceRefresh: false, moveToLatestValue: false)
             // Also defer the phone reply, which can trigger a forced repaint.
             WatchSyncRequestMessage().send()
-            UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.set(
+            AppGroupPreferences.defaults?.set(
                 UserDefaultsRepository.units.value.rawValue, forKey: "units")
         }
     }

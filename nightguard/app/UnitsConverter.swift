@@ -26,7 +26,7 @@ class UnitsConverter {
         // so do this on main Thread only:
         var units = Units.mmol
         //dispatchOnMain {
-        units = Units.fromAny(UserDefaults(suiteName: AppConstants.APP_GROUP_ID)?.value(forKey: "units") ?? Units.mmol.rawValue) ?? Units.mmol
+        units = Units.fromAny(AppGroupPreferences.defaults?.value(forKey: "units") ?? Units.mmol.rawValue) ?? Units.mmol
         //}
        
         if units == Units.mgdl {

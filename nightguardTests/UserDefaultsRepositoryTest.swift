@@ -250,3 +250,113 @@ private final class StubNightscoutCredentialStore: NightscoutCredentialStoring {
         return true
     }
 }
+
+
+final class BoundedLogFileTests: XCTestCase {
+    private var directory: URL!
+    private var fileURL: URL { directory.appendingPathComponent("logs.json") }
+
+    override func setUpWithError() throws {
+        directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    }
+
+    override func tearDownWithError() throws {
+        try FileManager.default.removeItem(at: directory)
+    }
+
+    func testHistorySurvivesRestartAndKeepsNewestEntries() throws {
+        let store = BoundedLogFile<String>(fileURL: fileURL, maxEntries: 3, maxBytes: 1024)
+        for index in 0..<10 { store.append("entry-\(index)") }
+        XCTAssertEqual(store.snapshot(), ["entry-7", "entry-8", "entry-9"])
+        let restored = BoundedLogFile<String>(fileURL: fileURL, maxEntries: 3, maxBytes: 1024)
+        XCTAssertEqual(restored.snapshot(), store.snapshot())
+    }
+
+    func testEncodedByteLimitIncludesJSONEscapingAndUnicode() throws {
+        let store = BoundedLogFile<String>(fileURL: fileURL, maxEntries: 500, maxBytes: 256)
+        for _ in 0..<20 { store.append(String(repeating: "😀\"\n", count: 10)) }
+        let entries = store.snapshot()
+        XCTAssertFalse(entries.isEmpty)
+        XCTAssertLessThan(entries.count, 20)
+        let data = try Data(contentsOf: fileURL)
+        XCTAssertLessThanOrEqual(data.count, 256)
+        XCTAssertEqual(try JSONDecoder().decode([String].self, from: data), entries)
+    }
+
+    func testMessageLimitPreservesValidUTF8AndMarksTruncation() {
+        let message = String(repeating: "😀é", count: 2000)
+        let bounded = LogStorage.boundedMessage(message)
+        XCTAssertLessThanOrEqual(bounded.utf8.count, 4096)
+        XCTAssertTrue(bounded.hasSuffix("[truncated]"))
+        XCTAssertFalse(bounded.contains("�"))
+        XCTAssertEqual(LogStorage.boundedMessage("short"), "short")
+    }
+
+    func testOversizedAndCorruptFilesAreDiscarded() throws {
+        for data in [Data(repeating: 65, count: 1025), Data("invalid JSON".utf8)] {
+            try data.write(to: fileURL)
+            let store = BoundedLogFile<String>(fileURL: fileURL, maxEntries: 3, maxBytes: 1024)
+            XCTAssertEqual(store.snapshot(), [])
+            XCTAssertFalse(FileManager.default.fileExists(atPath: fileURL.path))
+            store.append("recovered")
+            XCTAssertEqual(store.snapshot(), ["recovered"])
+        }
+    }
+
+    func testClearCannotBeUndoneByQueuedWrites() {
+        let store = BoundedLogFile<String>(fileURL: fileURL, maxEntries: 500, maxBytes: 4096)
+        for index in 0..<100 { store.append("entry-\(index)") }
+        store.clear()
+        XCTAssertEqual(store.snapshot(), [])
+        XCTAssertFalse(FileManager.default.fileExists(atPath: fileURL.path))
+        store.append("after-clear")
+        XCTAssertEqual(store.snapshot(), ["after-clear"])
+    }
+
+    func testConcurrentLoggingAndFailedWritesRemainUsable() throws {
+        let blocker = directory.appendingPathComponent("not-a-directory")
+        try Data().write(to: blocker)
+        let store = BoundedLogFile<String>(fileURL: blocker.appendingPathComponent("logs.json"), maxEntries: 10, maxBytes: 1024)
+        DispatchQueue.concurrentPerform(iterations: 30) { store.append("entry-\($0)") }
+        XCTAssertEqual(store.snapshot().count, 10)
+        store.clear()
+        XCTAssertTrue(store.snapshot().isEmpty)
+    }
+
+    func testLegacyCleanupPreservesOtherPreferencesAndIsRepeatable() {
+        let suite = "BoundedLogFileTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        defaults.set(Data(repeating: 1, count: 128 * 1024), forKey: "AppLogger.persistedLogs")
+        defaults.set(["old"], forKey: "BackgroundRefreshLogger.sharedLogs")
+        defaults.set("configured-server", forKey: "baseUri")
+        defaults.set(Data([1, 2, 3]), forKey: "nightscoutEntries")
+        for _ in 0..<2 { LogStorage.removeLegacyLogs(from: defaults) }
+        XCTAssertNil(defaults.object(forKey: "AppLogger.persistedLogs"))
+        XCTAssertNil(defaults.object(forKey: "BackgroundRefreshLogger.sharedLogs"))
+        XCTAssertEqual(defaults.string(forKey: "baseUri"), "configured-server")
+        XCTAssertEqual(defaults.data(forKey: "nightscoutEntries"), Data([1, 2, 3]))
+    }
+
+    func testCallbacksPublishOnMainInClearOrder() {
+        let completed = expectation(description: "ordered snapshots")
+        let store = BoundedLogFile<String>(fileURL: fileURL, maxEntries: 3, maxBytes: 1024)
+        var snapshots: [[String]] = []
+        store.append("before") { entries in
+            XCTAssertTrue(Thread.isMainThread)
+            snapshots.append(entries)
+        }
+        store.clear { entries in
+            XCTAssertTrue(Thread.isMainThread)
+            snapshots.append(entries)
+        }
+        store.append("after") { entries in
+            XCTAssertTrue(Thread.isMainThread)
+            snapshots.append(entries)
+            XCTAssertEqual(snapshots, [["before"], [], ["after"]])
+            completed.fulfill()
+        }
+        wait(for: [completed], timeout: 5)
+    }
+}

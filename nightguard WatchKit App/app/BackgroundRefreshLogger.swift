@@ -11,7 +11,9 @@ import Foundation
 // A debugging tool that keeps info about the nightscout data updates obtained through background tasks (URL sessions) or updates received from the phone app (that also relies on background fetch for refreshing its data).
 class BackgroundRefreshLogger {
 
-    static var logs: [String] = []
+    private static let store = BoundedMemoryLog<String>(maxEntries: 100, maxBytes: 128 * 1024)
+    private static let infoLock = NSRecursiveLock()
+    static var logs: [String] { store.snapshot() }
     static var receivedData: [String] = []
 
     // keep some background refrehs related stats data...
@@ -51,42 +53,17 @@ class BackgroundRefreshLogger {
     private static var appStartTime: Date?
     private static let showLogs = true
 
-    // App Group shared logs for iOS app visibility
-    private static let sharedLogsKey = "BackgroundRefreshLogger.sharedLogs"
-    private static let sharedLogsMaxCount = 100
-    private static let appGroupId = "group.de.my-wan.dhe.nightguard"
-
     static func info(_ text: String) {
+        infoLock.lock()
+        defer { infoLock.unlock() }
         resetStatsDataIfNeeded()
 
-        let logEntry = formattedTime(Date()) + " " + text
-        NSLog(logEntry)
-
-        if showLogs {
-            logs.append(logEntry)
-        }
-
-        // Mirror to shared UserDefaults for iOS app's LogsView
-        appendToSharedLogs(logEntry)
-    }
-
-    private static func appendToSharedLogs(_ entry: String) {
-        guard let sharedDefaults = UserDefaults(suiteName: appGroupId) else { return }
-
-        var sharedLogs = sharedDefaults.stringArray(forKey: sharedLogsKey) ?? []
-        sharedLogs.append(entry)
-
-        // Keep only the most recent entries
-        if sharedLogs.count > sharedLogsMaxCount {
-            sharedLogs = Array(sharedLogs.suffix(sharedLogsMaxCount))
-        }
-
-        sharedDefaults.set(sharedLogs, forKey: sharedLogsKey)
+        let logEntry = LogStorage.boundedMessage(formattedTime(Date()) + " " + text)
+        if showLogs { store.append(logEntry) }
     }
 
     static func clearSharedLogs() {
-        guard let sharedDefaults = UserDefaults(suiteName: appGroupId) else { return }
-        sharedDefaults.removeObject(forKey: sharedLogsKey)
+        store.clear()
     }
 
     private static func resetStatsDataIfNeeded() {
@@ -110,7 +87,7 @@ class BackgroundRefreshLogger {
             BackgroundRefreshLogger.logStartTime = now
 
             // reset log data
-            logs.removeAll()
+            store.clear()
             info("Reseting logs (new day), but continuing stats from app start (\(formattedTime(appStartTime)))")
             receivedData.removeAll()
 

@@ -96,7 +96,7 @@ class UserDefaultsValue<T: AnyConvertible & Equatable> : UserDefaultsAnyValue {
     
     // user defaults used for persistence
     private class var defaults: UserDefaults {
-        return UserDefaults(suiteName: AppConstants.APP_GROUP_ID)!
+        return AppGroupPreferences.defaults!
     }
     
     init(key: String, default defaultValue: T, onChange: ((T) -> Void)? = nil, validation: ((T) -> T?)? = nil) {
