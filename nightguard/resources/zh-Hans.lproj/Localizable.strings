@@ -242,6 +242,7 @@
 
 /* Text of snooze button */
 "snooze" = "暂停";
+"Snoozed for %ds" = "暂停 %d 秒";
 
 /* Footer for smart snooze switch */
 "Snooze (do not alert) when values are high or low but the trend is going in the right direction." = "当数值偏高或偏低但趋势正朝正确方向发展时暂停（不报警）。";
@@ -512,6 +513,13 @@
 /* Watch Action Button Menu */
 "Crown Zooms" = "表冠缩放";
 
+/* Watch Action Button Menu */
+"Crown Selects" = "表冠选择";
+
+/* Watch quick entry values */
+"Bolus %.1fU" = "追加胰岛素 %.1fU";
+"Carbs %dg" = "碳水 %dg";
+
 /* Alarm settings title: Custom Alarm Sound */
 "Alarm Sound" = "警报声音";
 
@@ -728,6 +736,8 @@
 "Support for the dynamic island and live activities to see your BG at a glance." = "支持灵动岛和实时活动，让您一眼就能看到血糖值。";
 "Watch Statistics" = "手表统计";
 "See the four main glucose stats directly on your Apple Watch in a compact 2x2 view." = "在 Apple Watch 上以紧凑的 2x2 视图直接查看四项主要血糖统计数据。";
+"Interactive Chart Selection" = "交互式图表选择";
+"Touch the chart to inspect exact glucose values, timestamps, boluses and carbs on iPhone and Apple Watch." = "点按图表即可查看 iPhone 和 Apple Watch 上的准确血糖值、时间、大剂量和碳水。";
 "Unlock Pro to see the four main stats on your Apple Watch." = "解锁 Pro 版以在 Apple Watch 上查看四项主要统计数据。";
 "Subscribe on iPhone" = "在 iPhone 上订阅";
 "Tap to change" = "点击更改";
@@ -813,6 +823,32 @@
 
 /* Price per month */
 "%@ / month" = "%@ / 月";
+
+/* Subscription information tabs */
+"Pro Subscription Information" = "Pro 订阅信息";
+"Max Subscription Information" = "Max 订阅信息";
+"Thank You for Your Support" = "感谢您的支持 💚";
+
+/* Local data reload */
+"Data" = "数据";
+"Reload today's data" = "重新加载今日数据";
+"Deletes only local values for today. Nightscout data is not changed." = "仅删除今日的本地数值，Nightscout 数据不会改变。";
+"Reload today's data?" = "重新加载今日数据？";
+"Delete local data and reload" = "删除本地数据并重新加载";
+"Today's locally cached glucose values and treatments will be removed and fetched again from Nightscout." = "今日本地缓存的血糖值和治疗记录将被删除，并重新从 Nightscout 获取。";
+
+/* Authentication diagnostics */
+"The server denied the Nightscout API check." = "服务器拒绝了 Nightscout 接口检查。";
+"Nightscout rejected sign-in with the saved access token." = "Nightscout 拒绝了使用已保存访问令牌的登录。";
+"Nightscout rejected renewal of the sign-in." = "Nightscout 拒绝了登录令牌的续期。";
+"Nightscout rejected the data request even after signing in again." = "即使重新登录后，Nightscout 仍拒绝了数据请求。";
+"Nightscout requires sign-in. No access token was available for this request." = "Nightscout 要求登录，本次请求没有可用的访问令牌。";
+"Nightscout denied access through the V1 API." = "Nightscout 拒绝了通过 V1 接口的访问。";
+"Previous sign-in: cached" = "上次登录：缓存";
+"Previous sign-in: new" = "上次登录：新建";
+"The sign-in supplied by the server has already expired according to the device clock." = "根据设备时间，服务器提供的登录令牌已经过期。";
+"The Nightscout response contains no usable sign-in." = "Nightscout 响应中没有可用的登录信息。";
+
 /* Direct V1 API preference */
 "Always use V1 API" = "始终使用 V1 API";
 "Loads glucose and treatments directly through V1, without V3 checks or sign-in. V2 remains enabled for IOB, COB and uploader battery." = "直接通过 V1 加载血糖和治疗数据，无需 V3 检查或登录。IOB、COB 和上传设备电量仍通过 V2 获取。";
