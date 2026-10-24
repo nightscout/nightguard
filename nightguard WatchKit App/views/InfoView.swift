@@ -14,7 +14,6 @@ struct InfoView: View {
     @State private var baseUri: String = UserDefaultsRepository.baseUri.value
     @State private var versionText: String = ""
     @State private var cachedValuesText: String = ""
-    @State private var backgroundUpdatesText: String = ""
 
     var body: some View {
         ScrollView {
@@ -42,15 +41,6 @@ struct InfoView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text(cachedValuesText)
-                    .font(.system(size: 12))
-                    .frame(maxWidth: .infinity, alignment: .center)
-
-                // Background Updates Section
-                Text("Background updates:")
-                    .font(.system(size: 15))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                Text(backgroundUpdatesText)
                     .font(.system(size: 12))
                     .frame(maxWidth: .infinity, alignment: .center)
             }
@@ -91,27 +81,5 @@ struct InfoView: View {
         let todaysBgData = NightscoutDataRepository.singleton.loadTodaysBgData()
         let yesterdaysBgData = NightscoutDataRepository.singleton.loadYesterdaysBgData()
         cachedValuesText = "\(todaysBgData.count) / \(yesterdaysBgData.count)"
-
-        // background updates
-        var text = "📱Updates initiated by phone app: \(BackgroundRefreshLogger.phoneUpdates)"
-        text += "\nNew data: \(BackgroundRefreshLogger.phoneUpdatesWithNewData), existing: \(BackgroundRefreshLogger.phoneUpdatesWithSameData), old: \(BackgroundRefreshLogger.phoneUpdatesWithOldData)\n"
-
-        text += "\n⌚Background updates: \(BackgroundRefreshLogger.backgroundRefreshes) (\(BackgroundRefreshLogger.formattedBackgroundRefreshesPerHour) per hour)"
-        text += "\nBackground URL sessions: \(BackgroundRefreshLogger.backgroundURLSessions) (\(BackgroundRefreshLogger.formattedBackgroundRefreshesStartingURLSessions))"
-
-        text += "\nNew data: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithNewData), existing: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithSameData), old: \(BackgroundRefreshLogger.backgroundURLSessionUpdatesWithOldData)\n"
-
-        if !BackgroundRefreshLogger.receivedData.isEmpty {
-            text += "\nReceived data:\n"
-            text += BackgroundRefreshLogger.receivedData.joined(separator: "\n")
-            text += "\n"
-        }
-
-        if !BackgroundRefreshLogger.logs.isEmpty {
-            text += "\nLogs from background tasks:\n"
-            text += BackgroundRefreshLogger.logs.joined(separator: "\n")
-        }
-
-        backgroundUpdatesText = text
     }
 }

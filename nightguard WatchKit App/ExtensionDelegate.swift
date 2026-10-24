@@ -44,7 +44,6 @@ class ExtensionDelegate: NSObject, WKApplicationDelegate {
         // keep myself in class property (see above why...)
         ExtensionDelegate.singleton = self
         
-        BackgroundRefreshLogger.info("Application did finish launching")
         AppMessageService.singleton.keepAwakePhoneApp()
     }
 

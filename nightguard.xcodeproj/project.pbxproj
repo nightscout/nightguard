@@ -171,8 +171,6 @@
 		4351E6B41D2EFDFF001E4AE4 /* AlarmRuleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4351E6B31D2EFDFF001E4AE4 /* AlarmRuleTest.swift */; };
 		4359241824A2895200F2D1A7 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
 		4359241924A2895500F2D1A7 /* BloodSugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F1E0EC1D07693300C329A2 /* BloodSugar.swift */; };
-		435CBD902B323B920091A2FA /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
-		435CBD912B323D950091A2FA /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
 		435DFF6029E0A68C007A25EA /* AccessoryCircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435DFF5F29E0A68C007A25EA /* AccessoryCircularView.swift */; };
 		435DFF6129E0A691007A25EA /* AccessoryCircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435DFF5F29E0A68C007A25EA /* AccessoryCircularView.swift */; };
 		435DFF6429E0A90A007A25EA /* AccessoryCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435DFF6329E0A90A007A25EA /* AccessoryCornerView.swift */; };
@@ -485,7 +483,6 @@
 		D1BA903520D3033500A0EBD1 /* GroupedLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */; };
 		D1BA903820D3046600A0EBD1 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */; };
 		D1BA903A20D304BE00A0EBD1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */; };
-		D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */; };
 		D1CE8CC02204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
 		D1CE8CC12204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
 		D1CE8CC22204B07F0075FF8A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE8CBF2204B07F0075FF8A /* Colors.swift */; };
@@ -797,7 +794,6 @@
 		D1BA903420D3033500A0EBD1 /* GroupedLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedLabelsView.swift; sourceTree = "<group>"; };
 		D1BA903720D3046600A0EBD1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		D1BA903920D304BE00A0EBD1 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
-		D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshLogger.swift; sourceTree = "<group>"; };
 		D1CE8CBF2204B07F0075FF8A /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D1D1623B2218BF7A006F990A /* UIScreen+AnimatedBrightness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+AnimatedBrightness.swift"; sourceTree = "<group>"; };
 		D1D1623D221AAC05006F990A /* WatchSyncRequestMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSyncRequestMessage.swift; sourceTree = "<group>"; };
@@ -1051,7 +1047,6 @@
 			children = (
 				4313C8DF2EEA1676004D8E1A /* NightguardApp.swift */,
 				43119B861C383CF500DD6D35 /* UIColorChanger.swift */,
-				D1BD14E6205BCCF200B93389 /* BackgroundRefreshLogger.swift */,
 				4330E3EE25D3239C0054A0A6 /* AppState.swift */,
 			);
 			path = app;
@@ -1919,7 +1914,6 @@
 				4346F9841D0773F700487541 /* TimeService.swift in Sources */,
 				D123EFEC21FB70A700CE8718 /* KeepAwakeMessage.swift in Sources */,
 				D1D96CB421F85BC70035A60E /* UserDefaultsValue.swift in Sources */,
-				D1BD14E7205BCCF200B93389 /* BackgroundRefreshLogger.swift in Sources */,
 				435DFF7229E1E858007A25EA /* ViewExtension.swift in Sources */,
 				4302C67825DB0E0D0052777F /* Treatment.swift in Sources */,
 				D1E6B898219C6A86007ED4FE /* Helpers.swift in Sources */,
@@ -2055,7 +2049,6 @@
 				43C825852B1A8F27004B2674 /* SnoozeMessage.swift in Sources */,
 				438DACA428D25B8D00FBF520 /* DateExtension.swift in Sources */,
 				438DAC9D28D25AA200FBF520 /* Helpers.swift in Sources */,
-				435CBD902B323B920091A2FA /* BackgroundRefreshLogger.swift in Sources */,
 				438DAC9F28D25B2400FBF520 /* Treatment.swift in Sources */,
 				438DAC9A28D25A3D00FBF520 /* AppConstants.swift in Sources */,
 				438DACA728D25BF400FBF520 /* FloatExtension.swift in Sources */,
@@ -2109,7 +2102,6 @@
 				435DFF6629E0B8CB007A25EA /* UIColorChanger.swift in Sources */,
 				43D005F429DC9DD0003BCE92 /* BloodSugar.swift in Sources */,
 				43B303E129E54D5000AB260B /* TemporaryTarget.swift in Sources */,
-				435CBD912B323D950091A2FA /* BackgroundRefreshLogger.swift in Sources */,
 				4332FF6A2B1658E800DBF917 /* PredictionService.swift in Sources */,
 				4332FF602B1652BF00DBF917 /* UIApplicationExtension.swift in Sources */,
 				43D005F729DC9DE4003BCE92 /* DoubleExtension.swift in Sources */,
@@ -2341,7 +2333,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1039;
+				CURRENT_PROJECT_VERSION = 1043;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
@@ -2349,7 +2341,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.7.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2372,7 +2364,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard WatchKit App/nightguard.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1039;
+				CURRENT_PROJECT_VERSION = 1043;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = "nightguard WatchKit App/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
@@ -2380,7 +2372,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.7.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2400,7 +2392,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1039;
+				CURRENT_PROJECT_VERSION = 1043;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -2410,7 +2402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.7.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2429,7 +2421,7 @@
 				CODE_SIGN_ENTITLEMENTS = nightguard/scoutwatch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1039;
+				CURRENT_PROJECT_VERSION = 1043;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = nightguard/Info.plist;
@@ -2438,7 +2430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.7.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard";
 				PRODUCT_NAME = nightguard;
 				PROVISIONING_PROFILE = "";
@@ -2544,7 +2536,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1039;
+				CURRENT_PROJECT_VERSION = 1043;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2556,7 +2548,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.7.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.widgetextension";
@@ -2584,7 +2576,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1039;
+				CURRENT_PROJECT_VERSION = 1043;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Widget Extension/Info.plist";
@@ -2596,7 +2588,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.7.1;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.widgetextension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2621,7 +2613,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1039;
+				CURRENT_PROJECT_VERSION = 1043;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2634,7 +2626,7 @@
 					"@executable_path/../../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.7.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.complication2";
@@ -2664,7 +2656,7 @@
 				CODE_SIGN_ENTITLEMENTS = "nightguard ComplicationExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1039;
+				CURRENT_PROJECT_VERSION = 1043;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "nightguard Complication/Info.plist";
@@ -2677,7 +2669,7 @@
 					"@executable_path/../../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 4.7.0;
+				MARKETING_VERSION = 4.7.1;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.my-wan.dhe.nightguard.watchkitapp.complication2";
 				PRODUCT_NAME = "$(TARGET_NAME)";

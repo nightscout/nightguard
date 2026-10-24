@@ -61,10 +61,8 @@ struct NightguardTimelineProvider: TimelineProvider {
     
     private func getTimelineData(completion: @escaping (NightscoutDataEntry) -> Void) {
         
-        BackgroundRefreshLogger.info("TimelineProvider is getting Timeline...")
         if let snapshot = NightscoutDataRepository.singleton.loadLatestDisplaySnapshot(),
            snapshot.isFresh() {
-            BackgroundRefreshLogger.info("TimelineProvider is using latest display snapshot...")
             completion(NightscoutDataEntry(snapshot: snapshot))
             return
         }
@@ -73,25 +71,21 @@ struct NightguardTimelineProvider: TimelineProvider {
         let oldEntries = NightscoutDataRepository.singleton.loadTodaysBgData()
 
         if !oldData.isOlderThanXMinutes(15), !oldEntries.isEmpty {
-            BackgroundRefreshLogger.info("TimelineProvider is using recently fetched app-group data...")
             let bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
             completion(convertToTimelineEntry(oldData, bgEntries, ""))
             return
         }
         
         NightscoutService.singleton.readLatestEntriesHybrid { result in
-            BackgroundRefreshLogger.info("TimelineProvider received hybrid Nightscout data...")
             switch result {
             case .error(let error):
                 let bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
-                BackgroundRefreshLogger.info("TimelineProvider refresh failed: \(error.localizedDescription)")
                 completion(convertToTimelineEntry(oldData, bgEntries, error.localizedDescription))
             case .data(let records):
                 NightscoutService.singleton.makeCurrentData(from: records, enrichWithProperties: false) { currentResult in
                     switch currentResult {
                     case .error(let error):
                         let bgEntries = makeBgEntries(from: NightguardDisplaySnapshot.makeLastBGValues(from: oldEntries))
-                        BackgroundRefreshLogger.info("TimelineProvider could not derive current glucose: \(error.localizedDescription)")
                         completion(convertToTimelineEntry(oldData, bgEntries, error.localizedDescription))
                     case .data(let currentData):
                         currentData.battery = oldData.battery
@@ -105,7 +99,6 @@ struct NightguardTimelineProvider: TimelineProvider {
                             from: currentData,
                             previousValues: history
                         )
-                        BackgroundRefreshLogger.info("TimelineProvider published snapshot timestamp=\(snapshot.timestamp)")
                         #if os(iOS)
                         AlarmNotificationService.singleton.notifyIfAlarmActivated(currentData)
                         #endif
